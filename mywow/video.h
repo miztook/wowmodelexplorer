@@ -1,0 +1,23 @@
+#pragma once
+
+#include "SColor.h"
+#include "S3DVertex.h"
+#include "IImage.h"
+#include "ITexture.h"
+#include "SMaterial.h"
+#include "VertexIndexBuffer.h"
+#include "SLight.h"
+#include "IMaterialRenderer.h"
+#include "IMaterialRenderServices.h"
+#include "IVideoDriver.h"
+#include "IDrawServices.h"
+#include "IHardwareBufferServices.h"
+#include "IShader.h"
+#include "IShaderServices.h"
+#include "IFTFont.h"
+#include "IMesh.h"
+#include "IParticleSystemServices.h"
+#include "IRibbonEmitterServices.h"
+
+#include "IManualMeshServices.h"
+#include "IManualTextureServices.h"
