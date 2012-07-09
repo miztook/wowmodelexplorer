@@ -333,7 +333,7 @@ inline s32 wow_character::getBlinkGeosetIndex()
 	case RACE_BLOODELF:
 		return Gender ? 1 : 2;
 	case RACE_WORGEN:
-		return Gender ? 1 : 5;
+		return Gender ? -1 : 5;
 	case RACE_TAUREN:
 	case RACE_GOBLIN:
 		return 2;

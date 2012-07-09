@@ -1295,9 +1295,12 @@ void wow_character::buildVisibleGeosets()
 			DynGeosets[i].Textures[0] = NULL;
 		}
 
-		if (id == 0)
+		if (id == 0)		
 		{
-			GeoShow[i] = true;
+			if (Race == RACE_WORGEN && i >= 3)		//i>=3¿«»ÀŒ Ã‚
+				GeoShow[i] = false;
+			else
+				GeoShow[i] = true;
 			continue;
 		}
 	
