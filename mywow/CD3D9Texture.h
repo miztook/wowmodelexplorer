@@ -31,9 +31,9 @@ public:
 
 	virtual bool isValid() const { return DXTexture!=NULL; }
 
-	virtual bool createFromImage();
+	virtual bool createVideoTexture();
 	virtual bool createMipMaps( u32 level = 1 );				//自动生成mipmap			
-	virtual void releaseTexture();
+	virtual void releaseVideoTexture();
 
 	//lost reset
 	void onLost();

@@ -549,7 +549,7 @@ bool CFileM2::buildVideoResources()
 	for (u32 i=0; i<NumTextures; ++i)
 	{
 		if (Textures[i])
-			Textures[i]->createFromImage();
+			Textures[i]->createVideoTexture();
 	}
 
 	//vertex buffer

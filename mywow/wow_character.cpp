@@ -888,7 +888,7 @@ void wow_character::setReplaceTexture( ETextureTypes type, ITexture* texture )
 	ReplaceTextures[idx] = texture;
 	if (ReplaceTextures[idx])
 	{
-		ReplaceTextures[idx]->createFromImage();
+		ReplaceTextures[idx]->createVideoTexture();
 	}
 }
 

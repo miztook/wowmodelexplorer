@@ -33,13 +33,13 @@ CD3D9Texture::CD3D9Texture( IImage* image, bool mipmap )
 
 CD3D9Texture::~CD3D9Texture()
 {
-	releaseTexture();
+	releaseVideoTexture();
 
 	if (Image)
 		Image->drop();
 }
 
-bool CD3D9Texture::createFromImage()
+bool CD3D9Texture::createVideoTexture()
 {
 	if (VideoBuilt)
 		return false;
@@ -63,7 +63,7 @@ bool CD3D9Texture::createFromImage()
 	return true;
 }
 
-void CD3D9Texture::releaseTexture()
+void CD3D9Texture::releaseVideoTexture()
 {
 	SAFE_RELEASE(DepthSurface);
 	SAFE_RELEASE(RTTSurface);
@@ -276,7 +276,7 @@ void CD3D9Texture::unlock()
 void CD3D9Texture::onLost()
 {
 	if ( IsRenderTarget )
-		releaseTexture();
+		releaseVideoTexture();
 }
 
 void CD3D9Texture::onReset()

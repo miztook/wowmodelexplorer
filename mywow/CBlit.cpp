@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "CBlit.h"
+#include "CImage.h"
 
-bool CBlit::Blit( IImage* dest, const vector2di& destPos, const dimension2du& destDimension, IImage* src, const vector2di& srcPos )
+bool CBlit::Blit( CImage* dest, const vector2di& destPos, const dimension2du& destDimension, CImage* src, const vector2di& srcPos )
 {
 	if ( !dest || !src ||
 		dest->getDimension().Width < destPos.X + destDimension.Width ||
@@ -18,11 +19,11 @@ bool CBlit::Blit( IImage* dest, const vector2di& destPos, const dimension2du& de
 	job.height = destDimension.Height;
 
 	job.srcPitch = src->getPitch();
-	job.srcPixelMul = src->getBitsPerPixel();
+	job.srcPixelMul = src->getBytesPerPixel();
 	job.src = ( (u8*)src->lock() + job.srcPitch * srcPos.Y + job.srcPixelMul * srcPos.X );
 
 	job.dstPitch = dest->getPitch();
-	job.dstPixelMul = dest->getBitsPerPixel();
+	job.dstPixelMul = dest->getBytesPerPixel();
 	job.dst = ( (u8*)dest->lock() + job.dstPitch * destPos.Y + job.dstPixelMul * destPos.X );
 
 	ECOLOR_FORMAT srcFormat = src->getColorFormat();
@@ -740,5 +741,108 @@ void CBlit::convert32BitTo32Bit( const s32* in, s32* out, s32 width, s32 height,
 			out += width;
 		in += width;
 		in += linepad;
+	}
+}
+
+
+void CBlit::resizeBilinearA8R8G8B8( void* src, u32 w1, u32 h1, void* target, u32 w2, u32 h2, ECOLOR_FORMAT format )
+{
+	u32 bpp = getBytesPerPixelFromFormat(format);
+	u32* pixels = (u32*)src;
+	int w = (int)w1;
+	int h = (int)h1;
+
+	u32 a, b, c, d;
+	int x, y, index;
+	u32 gray, red, blue, green;
+	float x_ratio = ((float)(w-1))/w2 ;
+	float y_ratio = ((float)(h-1))/h2 ;
+	float x_diff, y_diff;
+	int offset = 0 ;
+	for (u32 i=0;i<h2;i++) {
+		for (u32 j=0;j<w2;j++) {
+			x = (int)(x_ratio * j) ;
+			y = (int)(y_ratio * i) ;
+			x_diff = (x_ratio * j) - x ;
+			y_diff = (y_ratio * i) - y ;
+			index = y*w+x ;
+
+			// range is 0 to 255 thus bitwise AND with 0xff
+			a = pixels[index];
+			b = pixels[index+1];
+			c = pixels[index+w];
+			d = pixels[index+w+1];
+
+			gray = (u32) (((a>>24)&0xff)*(1-x_diff)*(1-y_diff) + ((b>>24)&0xff)*(x_diff)*(1-y_diff) +
+				((c>>24)&0xff)*(y_diff)*(1-x_diff)   + ((d>>24)&0xff)*(x_diff*y_diff));
+
+			// blue element
+			// Yb = Ab(1-w)(1-h) + Bb(w)(1-h) + Cb(h)(1-w) + Db(wh)
+			blue = (u32) ((a&0xff)*(1-x_diff)*(1-y_diff) + (b&0xff)*(x_diff)*(1-y_diff) +
+				(c&0xff)*(y_diff)*(1-x_diff)   + (d&0xff)*(x_diff*y_diff));
+
+			// green element
+			// Yg = Ag(1-w)(1-h) + Bg(w)(1-h) + Cg(h)(1-w) + Dg(wh)
+			green = (u32) (((a>>8)&0xff)*(1-x_diff)*(1-y_diff) + ((b>>8)&0xff)*(x_diff)*(1-y_diff) +
+				((c>>8)&0xff)*(y_diff)*(1-x_diff)   + ((d>>8)&0xff)*(x_diff*y_diff));
+
+			// red element
+			// Yr = Ar(1-w)(1-h) + Br(w)(1-h) + Cr(h)(1-w) + Dr(wh)
+			red = (u32) (((a>>16)&0xff)*(1-x_diff)*(1-y_diff) + ((b>>16)&0xff)*(x_diff)*(1-y_diff) +
+				((c>>16)&0xff)*(y_diff)*(1-x_diff)   + ((d>>16)&0xff)*(x_diff*y_diff));
+
+			SColor color(gray, red, green, blue);
+			convert_viaFormat(&color, ECF_A8R8G8B8, 1, (u8*)target + bpp * (i * w2 + j), format);                                
+		}
+	}
+}
+
+
+void CBlit::shrinkImage( void* src, u32 w1, u32 h1, ECOLOR_FORMAT srcFormat, void* target, u32 w2, u32 h2, ECOLOR_FORMAT targetFormat )
+{
+	u32 bytesPerPixel = getBytesPerPixelFromFormat(srcFormat);
+	const u32 bpp=getBytesPerPixelFromFormat(targetFormat);
+
+	u32 srcPitch = bytesPerPixel * w1;
+	u32 targetPitch = bpp * w2;
+
+	const f32 sourceXStep = (f32)w1 / (f32)w2;
+	const f32 sourceYStep = (f32)h1 / (f32)h2;
+	s32 yval=0, syval=0;
+	f32 sy = 0.0f;
+	for (u32 y=0; y<h2; ++y)
+	{
+		f32 sx = 0.0f;
+		for (u32 x=0; x<w2; ++x)
+		{
+			convert_viaFormat((u8*)src+ syval + (s32)sx*bytesPerPixel, srcFormat, 1, ((u8*)target)+ yval + (x*bpp), targetFormat);
+			sx+=sourceXStep;
+		}
+		sy+=sourceYStep;
+		syval=(s32)sy*srcPitch;
+		yval+=targetPitch;
+	}
+}
+
+void CBlit::shrinkImage( void* src, u32 w1, u32 h1, u32 srcPitch, ECOLOR_FORMAT srcFormat, void* target, u32 w2, u32 h2, u32 targetPitch, ECOLOR_FORMAT targetFormat )
+{
+	u32 bytesPerPixel = getBytesPerPixelFromFormat(srcFormat);
+	const u32 bpp=getBytesPerPixelFromFormat(targetFormat);
+
+	const f32 sourceXStep = (f32)w1 / (f32)w2;
+	const f32 sourceYStep = (f32)h1 / (f32)h2;
+	s32 yval=0, syval=0;
+	f32 sy = 0.0f;
+	for (u32 y=0; y<h2; ++y)
+	{
+		f32 sx = 0.0f;
+		for (u32 x=0; x<w2; ++x)
+		{
+			convert_viaFormat((u8*)src+ syval + (s32)sx*bytesPerPixel, srcFormat, 1, ((u8*)target)+ yval + (x*bpp), targetFormat);
+			sx+=sourceXStep;
+		}
+		sy+=sourceYStep;
+		syval=(s32)sy*srcPitch;
+		yval+=targetPitch;
 	}
 }

@@ -44,10 +44,12 @@ public:
 	bool isInFrustum( const aabbox3df& box ) const;
 	bool isInFrustum( const vector3df& pos ) const;
 
-	inline bool operator==(const frustum& other) const { return memcmp(planes, other.planes, sizeof(plane3df)*VF_PLANE_COUNT) == 0; }
+	inline bool operator==(const frustum& other) const { return equals(other); }
 	inline bool operator!=(const frustum& other) const { return !(*this == other); }
 
 	const plane3df& getPlane(VFPLANES index) const { return planes[index]; }
+
+	bool equals(const frustum& other) const;
 
 private:
 	plane3df		planes[VF_PLANE_COUNT];
@@ -181,3 +183,12 @@ inline void frustum::makePlane( const matrix4& mat, VFPLANES side, plane3df& pla
 	plane.D *= len;
 }
 
+inline bool frustum::equals( const frustum& other ) const
+{
+	for (int i=0; i<VF_PLANE_COUNT; ++i)
+	{
+		if (planes[i] != other.planes[i])
+			return false;
+	}
+	return true;
+}

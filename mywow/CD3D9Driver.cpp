@@ -1302,6 +1302,11 @@ void CD3D9Driver::drawIndexedPrimitiveUP( void* vertices, E_VERTEX_TYPE vType, v
 	if (FAILED(hr))
 		_ASSERT(false);
 
+	//clear state
+	CurrentDeviceState.vBuffer = NULL;
+	CurrentDeviceState.iBuffer = NULL;
+	CurrentDeviceState.vOffset = 0;
+
 	++DrawCall;
 }
 
@@ -1392,6 +1397,10 @@ void CD3D9Driver::drawPrimitiveUP( void* vertices, E_VERTEX_TYPE vType, u32 vCou
 
 	if (FAILED(hr))
 		_ASSERT(false);
+
+	//clear state
+	CurrentDeviceState.vBuffer = NULL;
+	CurrentDeviceState.vOffset = 0;
 
 	++DrawCall;
 }

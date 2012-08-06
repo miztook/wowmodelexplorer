@@ -36,7 +36,7 @@ void CD3D9ManualTextureServices::loadTextures()
 	{
 		CImage* w = new CImage(ECF_A8R8G8B8, size, white, false);
 		CD3D9Texture* tex = new CD3D9Texture(w, true);
-		tex->createFromImage();
+		tex->createVideoTexture();
 
 		_ASSERT(tex->isValid());
 
@@ -48,7 +48,7 @@ void CD3D9ManualTextureServices::loadTextures()
 	{
 		CImage* w = new CImage(ECF_A8R8G8B8, size, red, false);
 		CD3D9Texture* tex = new CD3D9Texture(w, true);
-		tex->createFromImage();
+		tex->createVideoTexture();
 
 		_ASSERT(tex->isValid());
 
@@ -60,7 +60,7 @@ void CD3D9ManualTextureServices::loadTextures()
 	{
 		CImage* w = new CImage(ECF_A8R8G8B8, size, blue, false);
 		CD3D9Texture* tex = new CD3D9Texture(w, true);
-		tex->createFromImage();
+		tex->createVideoTexture();
 
 		_ASSERT(tex->isValid());
 
@@ -72,7 +72,7 @@ void CD3D9ManualTextureServices::loadTextures()
 	{
 		CImage* w = new CImage(ECF_A8R8G8B8, size, checker, false);
 		CD3D9Texture* tex = new CD3D9Texture(w, true);
-		tex->createFromImage();
+		tex->createVideoTexture();
 
 		_ASSERT(tex->isValid());
 
@@ -96,7 +96,7 @@ ITexture* CD3D9ManualTextureServices::addTexture( const c8* name , IImage* img )
 		return NULL;
 
 	CD3D9Texture* tex = new CD3D9Texture(img, true);
-	tex->createFromImage();
+	tex->createVideoTexture();
 	TextureMap[name] =  tex;
 
 	return tex;
@@ -158,7 +158,7 @@ void CD3D9ManualTextureServices::onReset()
 ITexture* CD3D9ManualTextureServices::createTextureFromImage( IImage* image, bool mipmap )
 {
 	CD3D9Texture* tex = new CD3D9Texture(image, mipmap);
-	if (tex->createFromImage())
+	if (tex->createVideoTexture())
 	{
 		_ASSERT(tex->isValid());
 		return tex;

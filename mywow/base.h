@@ -266,7 +266,6 @@ enum E_VIDEO_DRIVER_FEATURE
 enum ECOLOR_FORMAT
 {
 	//16
-//	ECF_A8 = 0,
 	ECF_A8L8 = 0,
 
 	ECF_A1R5G5B5,
@@ -278,25 +277,37 @@ enum ECOLOR_FORMAT
 	//32
 	ECF_A8R8G8B8,
 
+	//DXT
+	ECF_DXT1,
+	ECF_DXT2,
+	ECF_DXT3,
+	ECF_DXT4,
+	ECF_DXT5,
+
 	ECF_UNKNOWN,
 
 	ECF_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
 };
 
-inline u32 getBitsPerPixelFromFormat(  ECOLOR_FORMAT format )
+inline u32 getBytesPerPixelFromFormat( ECOLOR_FORMAT format)
 {
 	switch(format)
 	{
-// 	case ECF_A8:
-// 		return 8;
 	case ECF_A8L8:
 	case ECF_A1R5G5B5:
 	case ECF_R5G6B5:
-		return 16;
+		return 2;
 	case ECF_R8G8B8:
-		return 24;
+		return 3;
 	case ECF_A8R8G8B8:
-		return 32;
+		return 4;
+	case ECF_DXT1:
+		return 8;
+	case ECF_DXT2:
+	case ECF_DXT3:
+	case ECF_DXT4:
+	case ECF_DXT5:
+		return 16;
 	default:
 		return 0;
 	}

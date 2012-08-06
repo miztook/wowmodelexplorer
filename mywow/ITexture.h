@@ -8,7 +8,7 @@ class ITexture : public IReferenceCounted<ITexture>, public ILostResetCallback
 protected:
 	virtual void onRemove() 
 	{
-		releaseTexture();
+		releaseVideoTexture();
 	}
 
 public:
@@ -30,9 +30,9 @@ public:
 
 	virtual bool isValid() const = 0;
 
-	virtual bool createFromImage() = 0;
+	virtual bool createVideoTexture() = 0;
 	virtual bool createMipMaps( u32 level = 1 ) = 0;
-	virtual void releaseTexture() = 0;
+	virtual void releaseVideoTexture() = 0;
 
 protected:
 	bool VideoBuilt;

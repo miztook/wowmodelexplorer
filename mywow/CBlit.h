@@ -2,7 +2,8 @@
 
 #include "base.h"
 #include "core.h"
-#include "IImage.h"
+
+class CImage;
 
 struct SBlitJob
 {
@@ -22,7 +23,7 @@ struct SBlitJob
 class CBlit
 {
 public:
-	static bool Blit( IImage* dest, const vector2di& destPos, const dimension2du& destDimension, IImage* src, const vector2di& srcPos = vector2di(0,0) );
+	static bool Blit( CImage* dest, const vector2di& destPos, const dimension2du& destDimension, CImage* src, const vector2di& srcPos = vector2di(0,0) );
 
 	static void convert_viaFormat(const void* sP, ECOLOR_FORMAT sF, s32 sN, void* dP, ECOLOR_FORMAT dF);
 
@@ -38,6 +39,12 @@ public:
 	static void convert24BitTo24Bit(const u8* in, u8* out, s32 width, s32 height, s32 linepad=0, bool flip=false, bool bgr=false);
 
 	static void convert32BitTo32Bit(const s32* in, s32* out, s32 width, s32 height, s32 linepad, bool flip=false);
+
+	static void shrinkImage(void* src, u32 w1, u32 h1, ECOLOR_FORMAT srcFormat, void* target, u32 w2, u32 h2, ECOLOR_FORMAT targetFormat);
+	static void shrinkImage(void* src, u32 w1, u32 h1, u32 srcPitch, ECOLOR_FORMAT srcFormat,
+		void* target, u32 w2, u32 h2, u32 targetPitch, ECOLOR_FORMAT targetFormat);
+	//双线性，提高精度
+	static void resizeBilinearA8R8G8B8( void* src, u32 w1, u32 h1, void* target, u32 w2, u32 h2, ECOLOR_FORMAT format );
 
 private:
 	static void executeBlit_TextureCopy_x_to_x( const SBlitJob * job );

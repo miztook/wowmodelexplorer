@@ -112,6 +112,9 @@ public:
 
 	CMatrix4<T>& setM(const T* data);
 
+	static const CMatrix4<T>& Identity() { static CMatrix4<T> m(true); return m; }
+	static const CMatrix4<T>& Zero() { static CMatrix4<T> m(false); return m; }
+
 public:
 	union
 	{
@@ -134,7 +137,7 @@ inline void CMatrix4<T>::transpose()
 	tmp = m01;
 	m01 = m10;
 	m10 = tmp;
-	
+
 	tmp = m02;
 	m02 = m20;
 	m20 = tmp;
@@ -251,7 +254,7 @@ inline bool CMatrix4<T>::operator==(const CMatrix4<T>& other) const
 {
 	if ( this == &other ) return true;
 
-	return memcmp(M, other.M, sizeof(T)*16) == 0;
+	return equals(other);
 }
 
 template <class T>
@@ -552,29 +555,13 @@ inline bool CMatrix4<T>::equals(const CMatrix4<T>& other, const T tolerance ) co
 template <class T>
 inline bool CMatrix4<T>::isIdentity() const
 {
-	if (!equals_( M[ 0], (T)1 ) ||
-		!equals_( M[ 5], (T)1 ) ||
-		!equals_( M[10], (T)1 ) ||
-		!equals_( M[15], (T)1 ))
-		return false;
-
-	for (s32 i=0; i<4; ++i)
-		for (s32 j=0; j<4; ++j)
-			if ((j != i) && (!iszero_((*this)(i,j))))
-				return false;
-
-	return true;
+	return (*this) == Identity();
 }
 
 template <class T>
 inline bool CMatrix4<T>::isZero() const
 {
-	for ( s32 i=0; i<16; ++i )
-	{
-		if( !equals_(M[i], T(0)) )
-			return false;
-	}
-	return true;
+	return (*this) == Zero();
 }
 
 template <class T>
