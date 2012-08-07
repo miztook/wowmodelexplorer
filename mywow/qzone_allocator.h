@@ -4,6 +4,9 @@
 
 #include <stddef.h>
 #include <assert.h>
+#include <windows.h>
+
+extern CRITICAL_SECTION g_allocatorCS;
 
 template<typename T>
 class qzone_allocator {
@@ -19,7 +22,7 @@ public :
 	typedef std::ptrdiff_t difference_type;
 
 public : 
-	//    convert an qzone_allocator<T> to qzone_allocator<U>
+	//    convert an qzone_allocator<T, bool> to qzone_allocator<U, bool>
 
 	template<typename U>
 	struct rebind {
@@ -60,16 +63,20 @@ public :
 		{
 			if (m_small)
 			{
-				if (Z_AvailableSmallMemory() > 512)
+				::EnterCriticalSection(&g_allocatorCS);
+				if (Z_AvailableSmallMemory() > 4)
 					p = reinterpret_cast<pointer>(Z_TagMalloc(sizeof(T) * cnt, TAG_SMALL));
+				::LeaveCriticalSection(&g_allocatorCS);
 			}
 			else
 			{
+				::EnterCriticalSection(&g_allocatorCS);
 				if (Z_AvailableMemory() > 512)
 					p = reinterpret_cast<pointer>(Z_TagMalloc(sizeof(T) * cnt, TAG_GENERAL));
+				::LeaveCriticalSection(&g_allocatorCS);
 			}
 		}
-			
+
 		if (p)
 			return p;
 
@@ -78,7 +85,12 @@ public :
 
 	inline void deallocate(pointer p, size_type) { 
 
-		if (!Z_Free(p))
+		bool ret;
+		::EnterCriticalSection(&g_allocatorCS);
+		ret = Z_Free(p);
+		::LeaveCriticalSection(&g_allocatorCS);
+
+		if (!ret)
 			::operator delete(p); 
 	}
 

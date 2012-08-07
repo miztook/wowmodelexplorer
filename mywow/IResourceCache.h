@@ -6,6 +6,68 @@
 
 //T是缓存的类型
 
+template <class T>
+class IResourceCache;
+
+extern CRITICAL_SECTION g_refCS;
+
+template <class T>
+class IReferenceCounted
+{
+public:
+	//
+	IReferenceCounted() : ReferenceCounter(1), Cache(NULL) {}
+	virtual ~IReferenceCounted(){}
+
+	//
+	void grab()
+	{ 
+		::EnterCriticalSection(&g_refCS);
+		++ReferenceCounter;
+		::LeaveCriticalSection(&g_refCS);
+	}
+
+	bool drop()
+	{
+		s32 refCount;
+		::EnterCriticalSection(&g_refCS);
+
+		_ASSERT( ReferenceCounter>0 );
+		--ReferenceCounter;
+
+		refCount = ReferenceCounter;
+		::LeaveCriticalSection(&g_refCS);
+
+		if (refCount == 1 && Cache)
+		{
+			onRemove();
+			Cache->removeFromCache(static_cast<T*>(this));
+		}
+		else if ( 0 == refCount )
+		{
+			delete this;
+			return true;
+		}
+		return false;
+	}
+
+	//
+	s32 getReferenceCount() const { return ReferenceCounter; }
+	const c8* getFileName() const { return fileName; }
+	void setFileName(const c8* filename) { strcpy_s(fileName, MAX_PATH, filename); }
+
+	IResourceCache<T>* Cache;	
+
+protected:
+	//对于有显存资源的类(ITexture, IFileM2等)，为了优化多线程加载和节省显存，加载线程只加载内存资源，主线程负责构造显存资源
+	virtual void onRemove() = 0;
+
+	volatile s32 ReferenceCounter;
+
+private:
+	c8		fileName[MAX_PATH];
+};
+
 template <class T>			
 class IResourceCache
 {

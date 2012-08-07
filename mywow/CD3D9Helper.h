@@ -180,8 +180,6 @@ inline ECOLOR_FORMAT CD3D9Helper::getColorFormatFromD3DFormat( D3DFORMAT format 
 {
 	switch(format)
 	{
-// 	case D3DFMT_A8:
-// 		return ECF_A8;
 	case D3DFMT_A8L8:
 		return ECF_A8L8;
 	case D3DFMT_X1R5G5B5:
@@ -195,6 +193,16 @@ inline ECOLOR_FORMAT CD3D9Helper::getColorFormatFromD3DFormat( D3DFORMAT format 
 		return ECF_R5G6B5;
 	case D3DFMT_R8G8B8:
 		return ECF_R8G8B8;
+	case D3DFMT_DXT1:
+		return ECF_DXT1;
+	case D3DFMT_DXT2:
+		return ECF_DXT2;
+	case D3DFMT_DXT3:
+		return ECF_DXT3;
+	case D3DFMT_DXT4:
+		return ECF_DXT4;
+	case D3DFMT_DXT5:
+		return ECF_DXT5;
 	default:
 		return (ECOLOR_FORMAT)ECF_UNKNOWN;
 	};
@@ -214,8 +222,16 @@ inline D3DFORMAT CD3D9Helper::getD3DFormatFromColorFormat( ECOLOR_FORMAT format 
 		return D3DFMT_A8R8G8B8;
 	case ECF_A8L8:
 		return D3DFMT_A8L8;
-// 	case ECF_A8:
-// 		return D3DFMT_A8;
+	case ECF_DXT1:
+		return D3DFMT_DXT1;
+	case ECF_DXT2:
+		return D3DFMT_DXT2;
+	case ECF_DXT3:
+		return D3DFMT_DXT3;
+	case ECF_DXT4:
+		return D3DFMT_DXT4;
+	case ECF_DXT5:
+		return D3DFMT_DXT5;
 	}
 	_ASSERT(false);
 	return D3DFMT_UNKNOWN;

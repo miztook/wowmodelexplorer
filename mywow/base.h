@@ -52,57 +52,6 @@ typedef		unsigned	__int32		UTF32;
 #define PS2B	"ps_2_b"
 #define PS30	"ps_3_0"
 
-
-template <class T>
-class IResourceCache;
-
-template <class T>
-class IReferenceCounted
-{
-public:
-	//
-	IReferenceCounted() : ReferenceCounter(1), Cache(NULL) {}
-	virtual ~IReferenceCounted(){}
-
-	//
-	void grab()
-	{ 
-		++ReferenceCounter;
-	}
-	bool drop()
-	{
-		_ASSERT( ReferenceCounter>0 );
-		--ReferenceCounter;
-		if (ReferenceCounter == 1 && Cache)
-		{
-			onRemove();
-			Cache->removeFromCache(static_cast<T*>(this));
-		}
-		else
-		if ( !ReferenceCounter )
-		{
-			delete this;
-			return true;
-		}
-		return false;
-	}
-
-	//
-	s32 getReferenceCount() const { return ReferenceCounter; }
-	const c8* getFileName() const { return fileName; }
-	void setFileName(const c8* filename) { strcpy_s(fileName, MAX_PATH, filename); }
-
-	IResourceCache<T>* Cache;	
-
-protected:
-	//对于有显存资源的类(ITexture, IFileM2等)，为了优化多线程加载和节省显存，加载线程只加载内存资源，主线程负责构造显存资源
-	virtual void onRemove() = 0;
-
-private:
-	s32 ReferenceCounter;
-	c8		fileName[MAX_PATH];
-};
-
 class ILostResetCallback
 {
 public:

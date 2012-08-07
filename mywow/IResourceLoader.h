@@ -2,6 +2,9 @@
 
 #include "base.h"
 
+template <class T>
+class IReferenceCounted;
+
 class IFileM2;
 class IImage;
 class ITexture;
