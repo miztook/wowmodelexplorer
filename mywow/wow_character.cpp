@@ -121,7 +121,7 @@ ITexture* CharTexture::compose()
 	{
 		CharTexturePart* part = &TextureParts[i];
 		const CharRegionCoords coords = regions[part->Region];
-		IImage* image = g_Engine->getResourceLoader()->loadBLP(part->Name);
+		IImage* image = g_Engine->getResourceLoader()->loadBLPAsImage(part->Name);
 
 		if(image)
 		{

@@ -7,6 +7,7 @@ class IReferenceCounted;
 
 class IFileM2;
 class IImage;
+class IBLPImage;
 class ITexture;
 
 class IResourceLoader
@@ -23,7 +24,8 @@ public:
 
 public:
 	virtual IFileM2* loadM2(const c8* filename) = 0;
-	virtual IImage* loadBLP(const c8* filename) = 0;
+	virtual IImage* loadBLPAsImage(const c8* filename) = 0;
+	virtual IBLPImage* loadBLP(const c8* filename) = 0;
 	virtual ITexture* loadTexture(const c8* filename, bool mipmap = true) = 0;
 
 	//m2 async loading

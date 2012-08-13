@@ -132,30 +132,20 @@ void CD3D9MaterialRenderer_Transparent_Alpha_Test::OnSetMaterial( const SMateria
 {
 	CD3D9MaterialRenderServices* services = (CD3D9MaterialRenderServices*)g_Engine->getDriver()->getMaterialRenderServices();
 
-	if(services->isFFPipeline())
-	{
-		MaterialBlock.textureUnits[0].colorOp = ETO_MODULATE;
-		MaterialBlock.textureUnits[0].colorArg1 = ETA_TEXTURE;
-		MaterialBlock.textureUnits[0].colorArg2 = ETA_DIFFUSE;
-		MaterialBlock.textureUnits[0].alphaOp = ETO_MODULATE;
-		MaterialBlock.textureUnits[0].alphaArg1 = ETA_TEXTURE;
-		MaterialBlock.textureUnits[0].alphaArg2 = ETA_DIFFUSE;
+	MaterialBlock.textureUnits[0].colorOp = ETO_MODULATE;
+	MaterialBlock.textureUnits[0].colorArg1 = ETA_TEXTURE;
+	MaterialBlock.textureUnits[0].colorArg2 = ETA_DIFFUSE;
+	MaterialBlock.textureUnits[0].alphaOp = ETO_MODULATE;
+	MaterialBlock.textureUnits[0].alphaArg1 = ETA_TEXTURE;
+	MaterialBlock.textureUnits[0].alphaArg2 = ETA_DIFFUSE;
 
-		MaterialBlock.textureUnits[1].alphaOp = ETO_DISABLE;
-		MaterialBlock.textureUnits[1].colorOp = ETO_DISABLE;
+	MaterialBlock.textureUnits[1].alphaOp = ETO_DISABLE;
+	MaterialBlock.textureUnits[1].colorOp = ETO_DISABLE;
 
-		MaterialBlock.alphaBlendEnabled = false;
-		MaterialBlock.alphaTestEnabled = true;
-		MaterialBlock.alphaTestFunc = ECFN_GREATEREQUAL;
-		MaterialBlock.alphaTestRef = 204;
- 	}	
- 	else
- 	{
-		MaterialBlock.pixelShader = g_Engine->getDriver()->getShaderServices()->getPixelShader(EPST_ALPHATEST);
-		
-		//ps ÐèÒªµÄrender state 
-
-	}
+	MaterialBlock.alphaBlendEnabled = false;
+	MaterialBlock.alphaTestEnabled = true;
+	MaterialBlock.alphaTestFunc = ECFN_GREATEREQUAL;
+	MaterialBlock.alphaTestRef = 204;
 
 	if (material.MaterialType != lastMaterial.MaterialType || resetAllRenderStates)
 	{

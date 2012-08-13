@@ -9,9 +9,6 @@
 #include "CD3D9ResourceLoader.h"
 #include "CD3D9ManualTextureServices.h"
 
-//dx11
-#include "CD3D11Driver.h"
-
 #include "CFTFont.h"
 #include "CGeometryCreator.h"
 #include "CManualMeshServices.h"
@@ -191,11 +188,6 @@ bool Engine::initDriver( HWND hwnd, E_DRIVER_TYPE driverType, bool fullscreen, b
  		DrawServices = new CD3D9DrawServices;
  		ResourceLoader = new CD3D9ResourceLoader(multithread);
  		ManualTextureServices = new CD3D9ManualTextureServices;
-		break;
-	case EDT_DIRECT3D11:
-		Driver = new CD3D11Driver;
-		if(!static_cast<CD3D11Driver*>(Driver)->initDriver(hwnd, fullscreen, vsync, multithread, antialias, csaa))
-			return false;
 		break;
 	default:
 		_ASSERT(false);

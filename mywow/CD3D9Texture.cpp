@@ -3,37 +3,57 @@
 #include "CD3D9Helper.h"
 #include "CD3D9Driver.h"
 #include "mywow.h"
-#include "CImage.h"
 
-#define  MAX_TEXTURE_SIZE	1024
+
+ITexture* CD3D9TexLoader::loadTexture( IImage* image, bool mipmap )
+{
+	ITexture* tex = new CD3D9Texture(image, mipmap);
+	return tex;
+}
+
+ITexture* CD3D9TexLoader::loadTexture( IBLPImage* blpimage, bool mipmap )
+{
+	ITexture* tex = new CD3D9Texture(blpimage, mipmap);
+	return tex;
+}
 
 CD3D9Texture::CD3D9Texture()
 	: DXTexture(NULL), RTTSurface(NULL), DepthSurface(NULL),
-	ImageSize(0,0), TextureSize(0,0), Pitch(0), ColorFormat(ECF_UNKNOWN),
-	HasMipMaps(false), IsRenderTarget(false)
+	TextureSize(0,0), ColorFormat(ECF_UNKNOWN),
+	HasMipMaps(false), IsRenderTarget(false), IsBLP(false)
 {
-	Image = 0;
-
-	Driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
-	Device = Driver->pID3DDevice;
+	Image = NULL;
+	BlpImage = NULL;
 }
 
 CD3D9Texture::CD3D9Texture( IImage* image, bool mipmap )
 	: DXTexture(NULL), RTTSurface(NULL), DepthSurface(NULL),
-	ImageSize(0,0), TextureSize(0,0), Pitch(0), ColorFormat(ECF_UNKNOWN),
-	HasMipMaps(mipmap), IsRenderTarget(false)
+	TextureSize(0,0), ColorFormat(ECF_UNKNOWN),
+	HasMipMaps(mipmap), IsRenderTarget(false), IsBLP(false)
 {
 	Image = image;
+	BlpImage = NULL;
 
 	Image->grab();
+}
 
-	Driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
-	Device = Driver->pID3DDevice;
+CD3D9Texture::CD3D9Texture( IBLPImage* blpimage, bool mipmap )
+	: DXTexture(NULL), RTTSurface(NULL), DepthSurface(NULL),
+	TextureSize(0,0), ColorFormat(ECF_UNKNOWN),
+	HasMipMaps(mipmap), IsRenderTarget(false), IsBLP(true)
+{
+	BlpImage = blpimage;
+	Image = NULL;
+
+	BlpImage->grab();
 }
 
 CD3D9Texture::~CD3D9Texture()
 {
 	releaseVideoTexture();
+
+	if (BlpImage)
+		BlpImage->drop();
 
 	if (Image)
 		Image->drop();
@@ -42,24 +62,48 @@ CD3D9Texture::~CD3D9Texture()
 bool CD3D9Texture::createVideoTexture()
 {
 	if (VideoBuilt)
-		return false;
+		return true;
 
-	_ASSERT( g_Engine->getCurrentThreadId() == ::GetCurrentThreadId() );
+	if (IsBLP)
+	{
+		if(!BlpImage || DXTexture)
+		{
+			_ASSERT(false);
+			return false;
+		}
 
-	if(!Image || DXTexture)
-		return false;
+		if (!createTexture(BlpImage->getDimension(), BlpImage->getColorFormat(), HasMipMaps))
+		{
+			_ASSERT(false);
+			return false;
+		}
 
-	if (!createTexture(Image, MAX_TEXTURE_SIZE, HasMipMaps))
-		return false;
+		copyTexture(BlpImage);
 
-	copyTexture(Image);
+		if (HasMipMaps)
+			copyBlpMipMaps();
+	}
+	else
+	{
+		if(!Image || DXTexture)
+		{
+			_ASSERT(false);
+			return false;
+		}
 
-	if (HasMipMaps)
-		createMipMaps();				//填充mipmap
+		if (!createTexture(Image->getDimension(), Image->getColorFormat(), HasMipMaps))
+		{
+			_ASSERT(false);
+			return false;
+		}
+
+		copyTexture(Image);
+
+		if (HasMipMaps)
+			createMipMaps();				//填充mipmap
+	}
 
 	VideoBuilt = true;
-	return true;
-
 	return true;
 }
 
@@ -72,32 +116,6 @@ void CD3D9Texture::releaseVideoTexture()
 	VideoBuilt = false;
 }
 
-bool CD3D9Texture::createFromDXTexture( IDirect3DTexture9* d3d9Texture )
-{
-	if (VideoBuilt)
-		return false;
-
-	if( DXTexture || !d3d9Texture)
-		return false;
-
-	DXTexture = d3d9Texture;
-
-	IDirect3DSurface9* surf = NULL;
-	DXTexture->GetSurfaceLevel(0, &surf);
-	D3DSURFACE_DESC desc;
-	surf->GetDesc(&desc);
-	SAFE_RELEASE(surf);
-
-	TextureSize.Height = desc.Height;
-	TextureSize.Width = desc.Width;
-	ImageSize = TextureSize;
-
-	ColorFormat = CD3D9Helper::getColorFormatFromD3DFormat(desc.Format);
-	setPitch(desc.Format);
-
-	VideoBuilt = true;
-	return true;
-}
 
 bool CD3D9Texture::createEmptyTexture( dimension2du size, ECOLOR_FORMAT format, bool mipmap )
 {
@@ -111,8 +129,9 @@ bool CD3D9Texture::createEmptyTexture( dimension2du size, ECOLOR_FORMAT format, 
 
 	D3DFORMAT d3dfmt = CD3D9Helper::getD3DFormatFromColorFormat(format);
 
+	IDirect3DDevice9* device = (IDirect3DDevice9*)g_Engine->getDriver()->getD3DDevice();
 	IDirect3DTexture9* tex = NULL;
-	HRESULT hr = Device->CreateTexture(size.Width, size.Height,
+	HRESULT hr = device->CreateTexture(size.Width, size.Height,
 		mipmap ? 0 : 1,			//no mipmap
 		g_Engine->IsVista() ? D3DUSAGE_DYNAMIC : 0,		//lockable
 		d3dfmt,
@@ -136,10 +155,8 @@ bool CD3D9Texture::createEmptyTexture( dimension2du size, ECOLOR_FORMAT format, 
 
 	TextureSize.Height = desc.Height;
 	TextureSize.Width = desc.Width;
-	ImageSize = TextureSize;
 
 	ColorFormat = CD3D9Helper::getColorFormatFromD3DFormat(desc.Format);
-	setPitch(desc.Format);
 
 	VideoBuilt = true;
 	return true;
@@ -150,11 +167,12 @@ bool CD3D9Texture::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT format
 	if (VideoBuilt)
 		return false;
 
-	ImageSize = size;
-	TextureSize = size.getOptimalSize(!Driver->queryFeature(EVDF_TEXTURE_NPOT), 
-		!Driver->queryFeature(EVDF_TEXTURE_NSQUARE), 
+	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
+
+	TextureSize = size.getOptimalSize(!driver->queryFeature(EVDF_TEXTURE_NPOT), 
+		!driver->queryFeature(EVDF_TEXTURE_NSQUARE), 
 		true, 
-		Driver->Caps.MaxTextureWidth);
+		driver->Caps.MaxTextureWidth);
 
 	D3DFORMAT d3dformat;
 
@@ -167,12 +185,9 @@ bool CD3D9Texture::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT format
 		}
 		else
 		{
-			ColorFormat = CD3D9Helper::getColorFormatFromD3DFormat(Driver->BackBufferFormat);
-			d3dformat = Driver->BackBufferFormat;
+			ColorFormat = CD3D9Helper::getColorFormatFromD3DFormat(driver->BackBufferFormat);
+			d3dformat = driver->BackBufferFormat;
 		}
-
-		setPitch(d3dformat); 
-		_ASSERT(Pitch!=0);
 	}
 	else
 	{
@@ -181,8 +196,8 @@ bool CD3D9Texture::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT format
 
 	// create texture
 	HRESULT hr;
-
-	hr = Device->CreateTexture(
+	IDirect3DDevice9* device = (IDirect3DDevice9*)g_Engine->getDriver()->getD3DDevice();
+	hr = device->CreateTexture(
 		TextureSize.Width,
 		TextureSize.Height,
 		1, // mip map level count, we don't want mipmaps here
@@ -200,16 +215,16 @@ bool CD3D9Texture::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT format
 
 	//create depth buffer
 	D3DFORMAT fmt = D3DFMT_D24S8;
-	if (Driver->DepthStencilSurface)
+	if (driver->DepthStencilSurface)
 	{
 		D3DSURFACE_DESC desc;
-		Driver->DepthStencilSurface->GetDesc(&desc);
+		driver->DepthStencilSurface->GetDesc(&desc);
 		fmt = desc.Format;
 	}
 
 	D3DSURFACE_DESC desc2;
 	DXTexture->GetLevelDesc(0, &desc2);
-	hr = Device->CreateDepthStencilSurface(TextureSize.Width,
+	hr = device->CreateDepthStencilSurface(TextureSize.Width,
 		TextureSize.Height,
 		fmt,
 		desc2.MultiSampleType,
@@ -286,92 +301,107 @@ void CD3D9Texture::onReset()
 }
 
 
-bool CD3D9Texture::createTexture( IImage* image, u32 maxTextureSize, bool mipmap )
+bool CD3D9Texture::createTexture( dimension2du size, ECOLOR_FORMAT format, bool mipmap )
 {
-	ImageSize = image->getDimension();
+	TextureSize = size;
 
-	dimension2du optSize = ImageSize.getOptimalSize(
-		!Driver->queryFeature(EVDF_TEXTURE_NPOT), 
-		!Driver->queryFeature(EVDF_TEXTURE_NSQUARE), 
-		true, 
-		Driver->Caps.MaxTextureWidth);
-
-	if (optSize.Height > maxTextureSize ||
-		optSize.Width > maxTextureSize )
-	{
-		optSize.set(maxTextureSize, maxTextureSize );
-	}
-
-	D3DFORMAT format = CD3D9Helper::getD3DFormatFromColorFormat(image->getColorFormat());
+	D3DFORMAT d3dfmt = CD3D9Helper::getD3DFormatFromColorFormat(format);
 
 	DWORD usage = 0;
-
-	/*
-	// This enables hardware mip map generation.
-	if (mipmap && Driver->queryFeature(EVDF_MIP_MAP_AUTO_UPDATE))			//目前都不支持硬件自动生成mipmap
-	{
-		LPDIRECT3D9 intf = Driver->pID3D;
-		D3DDISPLAYMODE d3ddm;
-		intf->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &d3ddm);
-
-		if (D3D_OK==intf->CheckDeviceFormat(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,d3ddm.Format,D3DUSAGE_AUTOGENMIPMAP,D3DRTYPE_TEXTURE,format))
-		{
-			usage = D3DUSAGE_AUTOGENMIPMAP;
-			HardwareMipMaps = true;
-		}
-	}
-	*/
-
-	HRESULT hr = Device->CreateTexture(optSize.Width, optSize.Height,
+	IDirect3DDevice9* device = (IDirect3DDevice9*)g_Engine->getDriver()->getD3DDevice();
+	HRESULT hr = device->CreateTexture(TextureSize.Width, TextureSize.Height,
 		mipmap ? 0 : 1, // number of mipmaplevels (0 = automatic all)
 		g_Engine->IsVista() ? usage | D3DUSAGE_DYNAMIC : usage, // usage
-		format, 
+		d3dfmt, 
 		g_Engine->IsVista() ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED , 
 		&DXTexture, NULL);
 
-	TextureSize.Width = optSize.Width;
-	TextureSize.Height = optSize.Height;
-
-	ColorFormat = CD3D9Helper::getColorFormatFromD3DFormat(format);
-	setPitch(format);
+	ColorFormat = CD3D9Helper::getColorFormatFromD3DFormat(d3dfmt);
 
 	return (SUCCEEDED(hr));
+}
+
+void CD3D9Texture::copyTexture( IBLPImage* blpimage )
+{
+	_ASSERT(blpimage);
+
+	D3DLOCKED_RECT rect;
+	HRESULT hr = DXTexture->LockRect(0, &rect, 0, 0);
+	_ASSERT(SUCCEEDED(hr));
+
+	blpimage->copyMipmapData(0, rect.pBits, rect.Pitch, TextureSize.Width, TextureSize.Height);
+
+	DXTexture->UnlockRect(0);
+}
+
+bool CD3D9Texture::copyBlpMipMaps( u32 level /*= 1*/ )
+{
+	if (!HasMipMaps || !BlpImage)
+		return false;
+
+	if (level==0)
+		return true;
+
+	// manual mipmap generation
+	IDirect3DSurface9* lowerSurface = 0;
+
+	// get lower level
+	HRESULT hr = DXTexture->GetSurfaceLevel(level, &lowerSurface);
+	if (FAILED(hr) || !lowerSurface)
+	{
+		_ASSERT(false);
+		return false;
+	}
+
+	D3DSURFACE_DESC lowerDesc;
+	lowerSurface->GetDesc(&lowerDesc);
+
+	D3DLOCKED_RECT lowerlr;
+
+	// lock lower surface
+	if (FAILED(lowerSurface->LockRect(&lowerlr, NULL, 0)))
+	{
+		lowerSurface->Release();
+		return false;
+	}
+
+	BlpImage->copyMipmapData(level, lowerlr.pBits, lowerlr.Pitch, lowerDesc.Width, lowerDesc.Height);
+
+	bool result=true;
+	// unlock
+	if (FAILED(lowerSurface->UnlockRect()))
+		result=false;
+
+	// release
+	lowerSurface->Release();
+
+	if (!result || (lowerDesc.Width < 2 && lowerDesc.Height < 2))
+		return result; // stop generating levels
+
+	// generate next level
+	return copyBlpMipMaps(level+1);
 }
 
 void CD3D9Texture::copyTexture( IImage* image )
 {
 	_ASSERT(image);
 
-	D3DSURFACE_DESC desc;
-	DXTexture->GetLevelDesc(0, &desc);
-
-	TextureSize.Width = desc.Width;
-	TextureSize.Height = desc.Height;
-
 	D3DLOCKED_RECT rect;
 	HRESULT hr = DXTexture->LockRect(0, &rect, 0, 0);
 	_ASSERT(SUCCEEDED(hr));
 
-	Pitch = rect.Pitch;
-	image->copyToScaling(rect.pBits, TextureSize.Width, TextureSize.Height, ColorFormat, Pitch);
+	image->copyToScaling(rect.pBits, TextureSize.Width, TextureSize.Height, ColorFormat, rect.Pitch);
 
 	DXTexture->UnlockRect(0);
 }
 
 bool CD3D9Texture::createMipMaps( u32 level /*= 1 */ )
 {
-	if (!HasMipMaps)
+	if (!HasMipMaps || IsBLP)
 		return false;
 
 	if (level==0)
 		return true;
-
-// 	if (HardwareMipMaps && DXTexture)
-// 	{
-// 		// generate mipmaps in hardware
-// 		DXTexture->GenerateMipSubLevels();
-// 		return true;
-// 	}
 
 	// manual mipmap generation
 	IDirect3DSurface9* upperSurface = 0;
@@ -451,7 +481,7 @@ bool CD3D9Texture::createMipMaps( u32 level /*= 1 */ )
 	upperSurface->Release();
 	lowerSurface->Release();
 
-	if (!result || (upperDesc.Width <= 3 && upperDesc.Height <= 3))
+	if (!result || (lowerDesc.Width < 2 && lowerDesc.Height < 2))
 		return result; // stop generating levels
 
 	// generate next level
@@ -511,7 +541,7 @@ void CD3D9Texture::copy16BitMipMap( char* src, char* tgt, s32 width, s32 height,
 						c = SColor::A1R5G5B5toA8R8G8B8(*(u16*)(&src[(tgx*2)+(tgy*pitchsrc)]));
 					else
 						c = SColor::R5G6B5toA8R8G8B8(*(u16*)(&src[(tgx*2)+(tgy*pitchsrc)]));
-	
+
 					a += c.getAlpha();
 					r += c.getRed();
 					g += c.getGreen();
@@ -570,35 +600,5 @@ void CD3D9Texture::copy32BitMipMap( char* src, char* tgt, s32 width, s32 height,
 	}
 }
 
-void CD3D9Texture::setPitch( D3DFORMAT d3dformat )
-{
-	switch(d3dformat)
-	{
-	case D3DFMT_X1R5G5B5:
-	case D3DFMT_A1R5G5B5:
-		Pitch = TextureSize.Width * 2;
-		break;
-	case D3DFMT_A8B8G8R8:
-	case D3DFMT_A8R8G8B8:
-	case D3DFMT_X8R8G8B8:
-		Pitch = TextureSize.Width * 4;
-		break;
-	case D3DFMT_R5G6B5:
-		Pitch = TextureSize.Width * 2;
-		break;
-	case D3DFMT_R8G8B8:
-		Pitch = TextureSize.Width * 3;
-		break;
-	case D3DFMT_A8L8:
-		Pitch = TextureSize.Width * 2;
-		break;
-	case D3DFMT_A8:
-		Pitch = TextureSize.Width;
-		break;
-	default:
-		//_ASSERT(false);	//dds无效
-		Pitch = 0;
-	};
-}
 
 

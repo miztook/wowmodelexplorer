@@ -4,6 +4,7 @@
 #include "mywow.h"
 #include "CFileM2.h"
 #include "CImageLoaderBLP.h"
+#include "CBLPImage.h"
 #include "CD3D9Texture.h"
 
 
@@ -30,11 +31,13 @@ CD3D9ResourceLoader::CD3D9ResourceLoader(bool multithread)
 	M2Cache_World.setCacheLimit(5);
 	M2Cache_Default.setCacheLimit(0);
 
-	BlpImageCache.setCacheLimit(5);
-	BlpTextureCache.setCacheLimit(5);
+	ImageCache.setCacheLimit(5);
+	BlpImageCache.setCacheLimit(0);
+	BlpTextureCache.setCacheLimit(0);
 
 	M2Loader = new CM2Loader;
 	BlpLoader = new CImageLoaderBLP;
+	TexLoader = new CD3D9TexLoader;
 
 	if (MultiThread)
 	{
@@ -42,6 +45,7 @@ CD3D9ResourceLoader::CD3D9ResourceLoader(bool multithread)
 
 		m2Mutex = ::CreateMutexA(NULL, FALSE, NULL);
 		imageMutex = ::CreateMutexA(NULL, FALSE, NULL);
+		blpMutex = ::CreateMutexA(NULL, FALSE, NULL);
 		textureMutex = ::CreateMutexA(NULL, FALSE, NULL);
 		wdtMutex = ::CreateMutexA(NULL, FALSE, NULL);
 		adtMutex = ::CreateMutexA(NULL, FALSE, NULL);
@@ -72,6 +76,7 @@ CD3D9ResourceLoader::~CD3D9ResourceLoader()
 		::CloseHandle(adtMutex);
 		::CloseHandle(wdtMutex);
 		::CloseHandle(textureMutex);
+		::CloseHandle(blpMutex);
 		::CloseHandle(imageMutex);
 		::CloseHandle(m2Mutex);
 
@@ -87,6 +92,7 @@ CD3D9ResourceLoader::~CD3D9ResourceLoader()
 		::DeleteCriticalSection(&cs);	
 	}
 	
+	delete TexLoader;
 	delete BlpLoader;
 	delete M2Loader;
 
@@ -101,6 +107,7 @@ CD3D9ResourceLoader::~CD3D9ResourceLoader()
 	
 	BlpTextureCache.flushCache();
 	BlpImageCache.flushCache();
+	ImageCache.flushCache();
 
 }
 
@@ -138,13 +145,13 @@ IFileM2* CD3D9ResourceLoader::loadM2( const c8* filename )
 	return m2;
 }
 
-IImage* CD3D9ResourceLoader::loadBLP( const c8* filename)
+IImage* CD3D9ResourceLoader::loadBLPAsImage( const c8* filename)
 {	
 	if (MultiThread)
 		BEGIN_MUTEX(imageMutex);
 
 	IImage* image = NULL;
-	image = BlpImageCache.tryLoadFromCache(filename);
+	image = ImageCache.tryLoadFromCache(filename);
 	if (image)
 		return image;
 
@@ -155,7 +162,7 @@ IImage* CD3D9ResourceLoader::loadBLP( const c8* filename)
 		if (image)
 		{
 			image->setFileName(filename);
-			BlpImageCache.addToCache(filename, image);		
+			ImageCache.addToCache(filename, image);		
 		}
 	}
 
@@ -163,6 +170,44 @@ IImage* CD3D9ResourceLoader::loadBLP( const c8* filename)
 	
 	if (MultiThread)
 		END_MUTEX(imageMutex);
+
+	return image;
+}
+
+IBLPImage* CD3D9ResourceLoader::loadBLP( const c8* filename )
+{
+	if (MultiThread)
+		BEGIN_MUTEX(blpMutex);
+
+	IBLPImage* image = NULL;
+	image = BlpImageCache.tryLoadFromCache(filename);
+	if (image)
+	{
+		if (MultiThread)
+			END_MUTEX(blpMutex);
+		return image;
+	}
+
+	MPQFile* file = g_Engine->getWowEnvironment()->openFile(filename);
+	if (file && BlpLoader->isALoadableFileExtension(filename))
+	{	
+		image = new CBLPImage();
+		if (image->loadFile(file))
+		{
+			image->setFileName(filename);
+			BlpImageCache.addToCache(filename, image);		
+		}
+		else
+		{
+			delete image;
+			image = NULL;
+		}
+	}
+
+	delete file;
+
+	if (MultiThread)
+		END_MUTEX(blpMutex);
 
 	return image;
 }
@@ -175,15 +220,20 @@ ITexture* CD3D9ResourceLoader::loadTexture( const c8* filename, bool mipmap )
 	ITexture* tex = NULL;
 	tex = BlpTextureCache.tryLoadFromCache(filename);
 	if (tex)
-		return tex;
-
-	IImage* image = loadBLP(filename);
-	if (image)
 	{
-		CD3D9Texture* texd3d9 = new CD3D9Texture(image, mipmap);
-		image->drop();
+		if (MultiThread)
+			END_MUTEX(textureMutex);
 
-		tex = texd3d9;
+		return tex;
+	}
+
+	IBLPImage* blp = loadBLP(filename);
+	if (blp)
+	{
+		tex = TexLoader->loadTexture(blp, mipmap);
+		blp->drop();
+
+		_ASSERT(tex);
 		tex->setFileName(filename);
 		BlpTextureCache.addToCache(filename, tex);
 	}

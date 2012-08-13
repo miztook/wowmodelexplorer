@@ -5,6 +5,7 @@
 
 class CM2Loader;
 class CImageLoaderBLP;
+class CD3D9TexLoader;
 
 class CD3D9ResourceLoader : public IResourceLoader, public ILostResetCallback
 {
@@ -14,7 +15,8 @@ public:
 
 public:
 	virtual IFileM2* loadM2(const c8* filename);
-	virtual IImage* loadBLP(const c8* filename);
+	virtual IImage* loadBLPAsImage(const c8* filename);
+	virtual IBLPImage* loadBLP(const c8* filename);
 	virtual ITexture* loadTexture(const c8* filename, bool mipmap = true);
 
 	virtual void beginLoadM2(c8* filename);
@@ -58,6 +60,7 @@ private:
 
 	HANDLE		m2Mutex;
 	HANDLE		imageMutex;
+	HANDLE		blpMutex;
 	HANDLE		textureMutex;
 	HANDLE		wdtMutex;
 	HANDLE		adtMutex;
@@ -73,9 +76,11 @@ private:
 	IResourceCache<IFileM2>			M2Cache_World;
 	IResourceCache<IFileM2>			M2Cache_Default;			//д╛хо
 
-	IResourceCache<IImage>			BlpImageCache;
+	IResourceCache<IImage>			ImageCache;
+	IResourceCache<IBLPImage>	BlpImageCache;
 	IResourceCache<ITexture>		BlpTextureCache;
 
 	CM2Loader*			M2Loader;
 	CImageLoaderBLP*		BlpLoader;
+	CD3D9TexLoader*		TexLoader;
 };

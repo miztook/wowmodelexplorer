@@ -3,6 +3,7 @@
 #include "SColor.h"
 #include "S3DVertex.h"
 #include "IImage.h"
+#include "IBLPImage.h"
 #include "ITexture.h"
 #include "SMaterial.h"
 #include "VertexIndexBuffer.h"

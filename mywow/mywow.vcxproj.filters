@@ -54,9 +54,6 @@
     <Filter Include="implementation\video\Direct3D9\Shaders">
       <UniqueIdentifier>{e2879ed2-8202-4aef-add9-8a64413e0fe5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="implementation\video\Direct3D11">
-      <UniqueIdentifier>{5030450f-43d0-4a34-a1bf-3a372da5d469}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -398,11 +395,14 @@
     <ClInclude Include="CFTFont.h">
       <Filter>implementation\video</Filter>
     </ClInclude>
-    <ClInclude Include="CD3D11Driver.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
     <ClInclude Include="CTerrainRenderer.h">
       <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="IBLPImage.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CBLPImage.h">
+      <Filter>implementation\video</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -550,11 +550,11 @@
     <ClCompile Include="CFTFont.cpp">
       <Filter>implementation\video</Filter>
     </ClCompile>
-    <ClCompile Include="CD3D11Driver.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
     <ClCompile Include="CTerrainRenderer.cpp">
       <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CBLPImage.cpp">
+      <Filter>implementation\video</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

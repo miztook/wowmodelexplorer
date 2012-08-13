@@ -76,8 +76,8 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="base.h" />
     <ClInclude Include="CBlit.h" />
+    <ClInclude Include="CBLPImage.h" />
     <ClInclude Include="CCamera.h" />
-    <ClInclude Include="CD3D11Driver.h" />
     <ClInclude Include="CD3D9DrawServices.h" />
     <ClInclude Include="CD3D9Driver.h" />
     <ClInclude Include="CFTFont.h" />
@@ -117,6 +117,7 @@
     <ClInclude Include="dimension2d.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="frustum.h" />
+    <ClInclude Include="IBLPImage.h" />
     <ClInclude Include="ICamera.h" />
     <ClInclude Include="IM2SceneNode.h" />
     <ClInclude Include="IManualTextureServices.h" />
@@ -189,8 +190,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBlit.cpp" />
+    <ClCompile Include="CBLPImage.cpp" />
     <ClCompile Include="CCamera.cpp" />
-    <ClCompile Include="CD3D11Driver.cpp" />
     <ClCompile Include="CD3D9DrawServices.cpp" />
     <ClCompile Include="CD3D9Driver.cpp" />
     <ClCompile Include="CD3D9Effects.cpp" />
