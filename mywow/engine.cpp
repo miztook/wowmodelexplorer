@@ -21,15 +21,6 @@ Engine*		g_Engine = NULL;
 
 Engine::Engine()
 {
-	OSVERSIONINFO osvi;
-
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-
-	GetVersionEx(&osvi);
-
-	AboveVista = ( osvi.dwMajorVersion >= 6);
-
 	CurrentThreadId = ::GetCurrentThreadId();
 
 #if defined(DEBUG) | defined(_DEBUG)

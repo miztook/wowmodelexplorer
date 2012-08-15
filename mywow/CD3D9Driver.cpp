@@ -150,22 +150,10 @@ bool CD3D9Driver::initDriver( HWND hwnd, bool fullscreen, bool vsync, bool multi
 
 	HRESULT hr;
 
-	if (!g_Engine->IsVista())
-	{
-		D3DCREATETYPE d3dcreate = (D3DCREATETYPE)::GetProcAddress(HLib, "Direct3DCreate9");
-		if(!d3dcreate) { _ASSERT(false); return false; }
-		pID3D = (d3dcreate)(D3D_SDK_VERSION);
-		if (!pID3D) { _ASSERT(false); return false; }
-	}
-	else
-	{
-		IDirect3D9Ex* pID3DEx = NULL;
-		D3DCREATETYPEEX d3dcreate = (D3DCREATETYPEEX)::GetProcAddress(HLib, "Direct3DCreate9Ex");
-		if(!d3dcreate) { _ASSERT(false); return false; }
-		HRESULT hr = (d3dcreate)(D3D_SDK_VERSION, &pID3DEx);
-		if(FAILED(hr)) { _ASSERT(false); return false; }
-		pID3D = pID3DEx;
-	}
+	D3DCREATETYPE d3dcreate = (D3DCREATETYPE)::GetProcAddress(HLib, "Direct3DCreate9");
+	if(!d3dcreate) { _ASSERT(false); return false; }
+	pID3D = (d3dcreate)(D3D_SDK_VERSION);
+	if (!pID3D) { _ASSERT(false); return false; }
 
 	//device info
 	D3DADAPTER_IDENTIFIER9 identifier;
@@ -317,25 +305,11 @@ bool CD3D9Driver::initDriver( HWND hwnd, bool fullscreen, bool vsync, bool multi
 	//create device
 	DWORD creationFlag = multithread ? D3DCREATE_MULTITHREADED : 0;
 
-	if (!g_Engine->IsVista())
-	{
-		hr = pID3D->CreateDevice(Adapter, DevType, hwnd,
-			creationFlag | D3DCREATE_HARDWARE_VERTEXPROCESSING , &present, &pID3DDevice);
+	hr = pID3D->CreateDevice(Adapter, DevType, hwnd,
+		creationFlag | D3DCREATE_HARDWARE_VERTEXPROCESSING , &present, &pID3DDevice);
 
-		_ASSERT(SUCCEEDED(hr));				//强制hardware processing
-	}
-	else
-	{
-		IDirect3DDevice9Ex*	pID3DDeviceEx;
-		IDirect3D9Ex* pID3DEx = (IDirect3D9Ex*)pID3D;
-		hr = pID3DEx->CreateDeviceEx(Adapter, DevType, hwnd,
-			creationFlag | D3DCREATE_HARDWARE_VERTEXPROCESSING , &present, NULL, &pID3DDeviceEx);
-
-		_ASSERT(SUCCEEDED(hr));				//强制hardware processing
-
-		pID3DDevice = pID3DDeviceEx;
-	}
-
+	_ASSERT(SUCCEEDED(hr));				//强制hardware processing
+	
 	if (!pID3DDevice) { _ASSERT(false); return false; }
 
 	//get caps
@@ -465,11 +439,7 @@ bool CD3D9Driver::endScene()
 {
 	pID3DDevice->EndScene();
 
-	HRESULT hr;
-	if (g_Engine->IsVista())
-		hr = ((IDirect3DDevice9Ex*)pID3DDevice)->PresentEx(NULL, NULL, NULL, NULL, 0);
-	else
-		hr = pID3DDevice->Present(NULL, NULL, NULL, NULL);
+	HRESULT hr = pID3DDevice->Present(NULL, NULL, NULL, NULL);
 
 	if (SUCCEEDED(hr))
 	{
@@ -1407,12 +1377,6 @@ void CD3D9Driver::drawPrimitiveUP( void* vertices, E_VERTEX_TYPE vType, u32 vCou
 
 bool CD3D9Driver::reset()
 {
-	if (g_Engine->IsVista())
-	{
-		HRESULT hr = ((IDirect3DDevice9Ex*)pID3DDevice)->ResetEx(&present, NULL);
-		return true;
-	}
-
 	for( T_LostResetList::iterator itr=LostResetList.begin(); itr != LostResetList.end(); ++itr )
 		(*itr)->onLost();
 

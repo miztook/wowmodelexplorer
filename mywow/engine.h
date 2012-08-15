@@ -37,10 +37,7 @@ public:
 
 	void setSceneManager(ISceneManager* smgr) { SceneManager = smgr; }
 
-	bool	IsVista() const { return AboveVista; }
-
 private:
-	bool		AboveVista;
 	u32		CurrentThreadId;
 	wowDatabase*		WowDatabase;
 	wowEnvironment*		WowEnvironment;

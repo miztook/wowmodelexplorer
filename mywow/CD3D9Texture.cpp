@@ -133,9 +133,9 @@ bool CD3D9Texture::createEmptyTexture( dimension2du size, ECOLOR_FORMAT format, 
 	IDirect3DTexture9* tex = NULL;
 	HRESULT hr = device->CreateTexture(size.Width, size.Height,
 		mipmap ? 0 : 1,			//no mipmap
-		g_Engine->IsVista() ? D3DUSAGE_DYNAMIC : 0,		//lockable
+		0,		//lockable
 		d3dfmt,
-		g_Engine->IsVista() ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED,
+		D3DPOOL_MANAGED,
 		&tex,
 		NULL);
 
@@ -307,13 +307,12 @@ bool CD3D9Texture::createTexture( dimension2du size, ECOLOR_FORMAT format, bool 
 
 	D3DFORMAT d3dfmt = CD3D9Helper::getD3DFormatFromColorFormat(format);
 
-	DWORD usage = 0;
 	IDirect3DDevice9* device = (IDirect3DDevice9*)g_Engine->getDriver()->getD3DDevice();
 	HRESULT hr = device->CreateTexture(TextureSize.Width, TextureSize.Height,
 		mipmap ? 0 : 1, // number of mipmaplevels (0 = automatic all)
-		g_Engine->IsVista() ? usage | D3DUSAGE_DYNAMIC : usage, // usage
+		0, // usage
 		d3dfmt, 
-		g_Engine->IsVista() ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED , 
+		D3DPOOL_MANAGED , 
 		&DXTexture, NULL);
 
 	ColorFormat = CD3D9Helper::getColorFormatFromD3DFormat(d3dfmt);

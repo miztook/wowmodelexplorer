@@ -230,7 +230,7 @@ bool CD3D9HardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuff
 	case EMM_STATIC:
 		{
 			flags = D3DUSAGE_WRITEONLY;
-			pool =  g_Engine->IsVista() ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;
+			pool =  D3DPOOL_MANAGED;
 		}
 		break;
 	case EMM_DYNAMIC:
@@ -295,7 +295,7 @@ bool CD3D9HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbu
 	case EMM_STATIC:
 		{
 			flags = D3DUSAGE_WRITEONLY;
-			pool =  g_Engine->IsVista() ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;
+			pool =  D3DPOOL_MANAGED;
 		}
 		break;
 	case EMM_DYNAMIC:
