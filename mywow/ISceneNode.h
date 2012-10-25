@@ -6,8 +6,8 @@
 class ISceneNode
 {
 public:
-	ISceneNode(ISceneNode* parent, E_RENDERINST_TYPE renderType)
-		: Parent(parent), Generation(0), RenderInstType(renderType)
+	ISceneNode(ISceneNode* parent)
+		: Parent(parent), Generation(0), DistanceSq(0)
 	{
 		if (!Parent)
 			Generation = 0;
@@ -38,7 +38,6 @@ public:
 	virtual void render() = 0;
 	virtual aabbox3df getBoundingBox() const  = 0;
 	const aabbox3df& getWorldBoundingBox() { return WorldBoundingBox; }
-	void setRenderInstType(E_RENDERINST_TYPE renderType) { RenderInstType = renderType; }
 
 	virtual bool isNodeEligible() const { return false; }
 
@@ -51,13 +50,14 @@ public:
 	ISceneNode*			Parent;
 	SceneNodeList			ChildNodes;
 	u8	Generation;
-	
+
+	f32  DistanceSq;		//ºÍÉãÏñ»úµÄ¾àÀësquare
+
 protected:
 	bool		NeedUpdate;
 	matrix4			RelativeTransformation;
 	matrix4			AbsoluteTransformation;
 	aabbox3df		WorldBoundingBox;
-	E_RENDERINST_TYPE		RenderInstType;
 
 public:
 	bool			Visible;
@@ -68,8 +68,9 @@ inline void ISceneNode::update( bool includeChildren /*= true*/ )
 	if ( NeedUpdate )
 	{
 		if ( Parent )
-			AbsoluteTransformation = Parent->AbsoluteTransformation  *
-				getRelativeTransformation();
+		{
+			AbsoluteTransformation = Parent->AbsoluteTransformation * getRelativeTransformation();
+		}
 		else
 			AbsoluteTransformation = getRelativeTransformation();
 

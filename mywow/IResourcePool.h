@@ -13,10 +13,7 @@ public:
 	{ 
 		if (Entries)
 		{
-			if (Temp)
-				Hunk_FreeTempMemory(Entries);
-			else
-				delete[] Entries;
+			delete[] Entries;
 		}
 
 		InitializeListHead(&FreeList);
@@ -24,7 +21,7 @@ public:
 	}
 
 public:
-	void allocateAll(u32 quota, bool temp);
+	void allocateAll(u32 quota);
 
 	T* get();
 	void put(T* t);
@@ -39,7 +36,6 @@ private:
 	};
 
 private:
-	bool	Temp;
 
 	u32		Quota;
 	SEntry*		Entries;
@@ -72,18 +68,14 @@ T* IResourcePool<T>::get()
 }
 
 template<typename T>
-void IResourcePool<T>::allocateAll( u32 quota, bool temp )
+void IResourcePool<T>::allocateAll( u32 quota )
 {
 	if(Entries)
 		return;
 
 	Quota = quota;
-	Temp = temp;
 
-	if (Temp)
-		Entries = (SEntry*)Hunk_AllocateTempMemory(sizeof(SEntry)*Quota);
-	else
-		Entries = new SEntry[Quota];
+	Entries = new SEntry[Quota];
 
 	for (u32 i=0; i<Quota; ++i)
 	{

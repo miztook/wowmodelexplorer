@@ -1,6 +1,31 @@
 #include "stdafx.h"
 #include "mywow.h"
 
+void g_callbackDBC(const c8* filename, void* param)
+{
+	dbc* db = new dbc((wowEnvironment*)param, filename);
+
+	c8* buf = (c8*)Hunk_AllocateTempMemory(db->StringSize + 1);
+	memcpy_s(buf, db->StringSize+1, db->_stringStart, db->StringSize);
+	buf[db->StringSize] = '\0';
+
+	char *p=buf;
+	while (p<buf+db->StringSize) {
+
+		const c8* str = p;
+		if(strstr(str, "Durotar"))
+		{
+			MessageBoxA(NULL, str, filename, 0);
+			break;
+		}
+
+		p+=strlen(p)+1;
+	}
+	Hunk_FreeTempMemory(buf);
+
+	delete db;
+}
+
 wowDatabase::wowDatabase( wowEnvironment* env )
 {
 	AnimDB = new animDB(env);
@@ -23,11 +48,15 @@ wowDatabase::wowDatabase( wowEnvironment* env )
 	StartOutFitDB = new startOutfitDB(env);
 	WmoAreaTableDB = new wmoAreaTableDB(env);
 	WorldMapAreaDB = new worldMapAreaDB(env);
+	LightDB = new lightDB(env);
+	LightSkyboxDB = new lightSkyboxDB(env);
 
 	ItemDB = new itemDB(env);
 	MapDB = new mapDB(env);
 	SpellVisualEffectNameDB = new spellVisualEffectNameDB(env);
 
+	//
+	//env->iterateFiles("dbc", g_callbackDBC, env);
 }
 
 wowDatabase::~wowDatabase()
@@ -35,6 +64,8 @@ wowDatabase::~wowDatabase()
 	delete SpellVisualEffectNameDB;
 	delete MapDB;
 	delete ItemDB;
+	delete LightSkyboxDB;
+	delete LightDB;
 
 	delete WorldMapAreaDB;
 	delete WmoAreaTableDB;
@@ -170,14 +201,23 @@ bool wowDatabase::getNpcPath(s32 npcid, c8* path, u32 size)
 	if (!filename || strlen(filename) < 4 || strlen(filename) > 255)
 		return false;
 
-	string256 modelpath, tmppath;
+	c8 ext[10];
+	getFileExtensionA(filename, ext, 10);
+
+	string256 modelpath;
 	modelpath = filename;
-	modelpath.subString(0, modelpath.length()-4, tmppath);
-	tmppath.append(".M2");
-	if (size <= tmppath.length())
+	if (_stricmp(ext, "m2") != 0)
+	{
+		string256 tmppath;
+		modelpath.subString(0, modelpath.length()-strlen(ext), tmppath);
+		tmppath.append("M2");
+		modelpath = tmppath;
+	}
+
+	if (size <= modelpath.length())
 		return false;
 
-	strcpy_s(path, size, tmppath.c_str());
+	strcpy_s(path, size, modelpath.c_str());
 	return true;
 }
 

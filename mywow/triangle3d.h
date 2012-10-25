@@ -8,7 +8,7 @@ public:
 	triangle3d() {}
 	triangle3d(vector3d<T> v1, vector3d<T> v2, vector3d<T> v3) : pointA(v1), pointB(v2), pointC(v3) {}
 
-	inline bool operator==(const triangle3d<T>& other) const { return other.pointA==pointA && other.pointB==pointB && other.pointC==pointC; }
+	inline bool operator==(const triangle3d<T>& other) const { return equals_(pointA, other.pointA) && equals_(pointB, other.pointB) && equals_(other.pointC); }
 	inline bool operator!=(const triangle3d<T>& other) const { return !(*this==other); }
 
 	vector3d<T> getNormal() const { return (pointB - pointA).crossProduct(pointC - pointA); }

@@ -10,25 +10,6 @@ struct SAnimFile
 	u32 size;
 };
 
-template<class T>
-inline T interpolate(const float r, const T &v1, const T &v2)
-{
-	return static_cast<T>(v1*(1.0f - r) + v2*r);
-}
-
-template<class T>
-inline T interpolateHermite(const float r, const T &v1, const T &v2, const T &in, const T &out)
-{
-	// basis functions
-	float h1 = 2.0f*r*r*r - 3.0f*r*r + 1.0f;
-	float h2 = -2.0f*r*r*r + 3.0f*r*r;
-	float h3 = r*r*r - 2.0f*r*r + r;
-	float h4 = r*r*r - r*r;
-
-	// interpolation
-	return static_cast<T>(v1*h1 + v2*h2 + in*h3 + out*h4);
-}
-
 template<>
 inline quaternion interpolate<quaternion>(const float r, const quaternion &v1, const quaternion &v2)
 {
@@ -386,11 +367,10 @@ s32 SWowAnimation<T,D,Conv>::getValue( u32 anim, u32 time, T& v, s32 hint )
 			}
 		}
 		
-		u32 t1, t2;
 		if (pos != -1)
 		{
-			t1 = entry.times[pos];
-			t2 = entry.times[pos-1];
+			u32 t1 = entry.times[pos];
+			u32 t2 = entry.times[pos-1];
 			float r = (time-t2)/(float)(t1-t2);
 
 			switch (Type)

@@ -43,14 +43,14 @@ dbc::dbc( wowEnvironment* env, const c8* filename )
 
 	//check
 	if (db_type == 2) {
-		file->seekRelative(28);
+		file->seek(28, true);
 		// just some buggy check
 		unsigned int check;
 		file->read(&check, 4);
 		if (check == 6) // wrong place
-			file->seekRelative(-20);
+			file->seek(-20, true);
 		else // check == 17, right place
-			file->seekRelative(-4);
+			file->seek(-4, true);
 	}
 
 	_data = new u8[RecordSize * nRecords + StringSize];

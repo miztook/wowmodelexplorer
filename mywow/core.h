@@ -167,14 +167,15 @@ inline int		randint( int lower, int upper)
 
 struct  SDrawParam
 {
-	u32		voffset;
+	u32		voffset0;
+	u32		voffset1;
 	u32		voffset2;
+	u32		voffset3;
 	s32		baseVertIndex;
 	u32		minVertIndex;
 	u32		numVertices;
 	u32		startIndex;
 };
-
 
 struct SBoneMatrixArray
 {

@@ -5,6 +5,7 @@
 #include "IImage.h"
 #include "IBLPImage.h"
 #include "ITexture.h"
+#include "IRenderTarget.h"
 #include "SMaterial.h"
 #include "VertexIndexBuffer.h"
 #include "SLight.h"
@@ -12,6 +13,7 @@
 #include "IMaterialRenderServices.h"
 #include "IVideoDriver.h"
 #include "IDrawServices.h"
+#include "ISceneStateServices.h"
 #include "IHardwareBufferServices.h"
 #include "IShader.h"
 #include "IShaderServices.h"
@@ -19,6 +21,7 @@
 #include "IMesh.h"
 #include "IParticleSystemServices.h"
 #include "IRibbonEmitterServices.h"
+#include "ITerrainServices.h"
 
 #include "IManualMeshServices.h"
 #include "IManualTextureServices.h"

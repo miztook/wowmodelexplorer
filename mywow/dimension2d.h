@@ -12,7 +12,7 @@ public:
 	dimension2d<T>& operator=(const dimension2d<T>& other) { Width = other.Width; Height = other.Height; return *this; }
 	//
 	inline bool operator==(const dimension2d<T>& other) const { return equals_(Width, other.Width) && equals_(Height, other.Height); }
-	inline bool operator!=(const dimension2d<T>& other) const { return ! (*this == other); }
+	inline bool operator!=(const dimension2d<T>& other) const { return !(*this == other ); }
 
 	inline dimension2d<T>& operator/=(const T& scale) { Width /= scale; Height /= scale; return *this; }
 	inline dimension2d<T> operator/(const T& scale) const { return dimension2d<T>(Width/scale, Height/scale); }
@@ -77,11 +77,23 @@ inline dimension2d<T> dimension2d<T>::getOptimalSize( bool requirePowerOfTwo/*=t
 			i=j;
 	}
 
-	if ( maxValue > 0 && i > maxValue)
-		i = maxValue;
-
-	if ( maxValue > 0 && j > maxValue)
-		j = maxValue;
+	f32 f = j / (f32)i;
+	if (f > 1)
+	{
+		if (j > maxValue)
+		{
+			j = maxValue;
+			i = (u32)(maxValue / f);
+		}
+	}
+	else
+	{
+		if (i > maxValue)
+		{
+			i = maxValue;
+			j = (u32)(maxValue * f);
+		}
+	}
 
 	return dimension2d<T>((T)i,(T)j);
 }

@@ -9,8 +9,8 @@ class ITexture;
 class IMeshSceneNode : public ISceneNode
 {
 public:
-	IMeshSceneNode(ISceneNode* parent, E_RENDERINST_TYPE renderType = ERT_MESH)
-		: ISceneNode(parent, renderType), Billboard(false) {}
+	IMeshSceneNode(ISceneNode* parent)
+		: ISceneNode(parent), Billboard(false), RenderInstType(ERT_MESH) {}
 
 	virtual ~IMeshSceneNode() {}
 
@@ -19,5 +19,8 @@ public:
 	virtual void setTexture(u32 i, ITexture* texture) = 0;
 	virtual SMaterial& getMaterial() = 0;
 
+	void setRenderInstType(E_RENDERINST_TYPE renderType) { RenderInstType = renderType; }
+
+	E_RENDERINST_TYPE		RenderInstType;
 	bool		Billboard;
 };

@@ -49,10 +49,10 @@ void CD3D9ShaderServices::loadAll()
 	}
 
 	//effect
-	if (Driver->queryFeature(EVDF_VERTEX_SHADER_2_0) && Driver->queryFeature(EVDF_PIXEL_SHADER_2_0))
-	{
-		loadAllEffects();
-	}
+// 	if (Driver->queryFeature(EVDF_VERTEX_SHADER_2_0) && Driver->queryFeature(EVDF_PIXEL_SHADER_2_0))
+// 	{
+// 		loadAllEffects();
+// 	}
 }
 
 CD3D9ShaderServices::~CD3D9ShaderServices()
@@ -179,7 +179,7 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 	str8to16(absFileName.c_str(), absFileNameW, MAX_PATH);
 
 	DWORD dwShaderFlags;
-#ifdef DEBUG
+#ifdef _DEBUG
 	dwShaderFlags = D3DXSHADER_DEBUG;
 #else
 	dwShaderFlags = D3DXSHADER_OPTIMIZATION_LEVEL3;
@@ -220,7 +220,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 	str8to16(absFileName.c_str(), absFileNameW, MAX_PATH);
 
 	DWORD dwShaderFlags;
-#ifdef DEBUG
+#ifdef _DEBUG
 	dwShaderFlags = D3DXSHADER_DEBUG;
 #else
 	dwShaderFlags = D3DXSHADER_OPTIMIZATION_LEVEL3;
@@ -382,6 +382,14 @@ void CD3D9ShaderServices::getWVPMatrix( matrix4& mat ) const
 	const matrix4& v = Driver->getTransform(ETS_VIEW);
 	const matrix4& p = Driver->getTransform(ETS_PROJECTION);
 	mat = p * v * w;
+}
+
+void CD3D9ShaderServices::getVPMatrix( matrix4& mat ) const
+{
+	//注意hlsl的 column major, matrix相反乘
+	const matrix4& v = Driver->getTransform(ETS_VIEW);
+	const matrix4& p = Driver->getTransform(ETS_PROJECTION);
+	mat = p * v;
 }
 
 void CD3D9ShaderServices::setShaderConstants( IVertexShader* vs, const SMaterial& material )

@@ -4,8 +4,6 @@
 #include "CD3D9Driver.h"
 #include "CD3D9HardwareBufferServices.h"
 
-static u16 imageIndices[6] = {0,1,2, 0,2,3};
-
 CD3D9DrawServices::CD3D9DrawServices()
 {
 	Driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -15,17 +13,20 @@ CD3D9DrawServices::CD3D9DrawServices()
 	Line3DVertexLimit = MAX_3DLINE_BATCH_COUNT * 2;
 	ImageVertexLimit = MAX_IMAGE_BATCH_COUNT * 4;
 	ImageIndexLimit = MAX_IMAGE_BATCH_COUNT * 6;
+	VertexLimit = MAX_VERTEX_COUNT;
+	IndexLimit = MAX_INDEX_COUNT;
 
+	//line material
 	LineMaterial.MaterialType = EMT_ONECOLOR;
 	LineMaterial.Lighting = false;
 	LineMaterial.ZWriteEnable = false;
 	LineMaterial.ZBuffer = ECFN_ALWAYS;
-	LineMaterial.AntiAliasing = true;
+	LineMaterial.AntiAliasing = EAAM_LINE_SMOOTH;
 
-	Line2DVertices = (S3DVertexBasicColor*)Hunk_AllocateTempMemory(sizeof(S3DVertexBasicColor) *  Line2DVertexLimit);
-	Line3DVertices = (S3DVertexBasicColor*)Hunk_AllocateTempMemory(sizeof(S3DVertexBasicColor) *  Line3DVertexLimit);
-	ImageVertices = (S3DVertexBasicTex*)Hunk_AllocateTempMemory(sizeof(S3DVertexBasicTex) * ImageVertexLimit);
-	ImageIndices = (u16*)Hunk_AllocateTempMemory(sizeof(u16) * ImageIndexLimit);
+	Line2DVertices = new SGVertex_PC[Line2DVertexLimit];
+	Line3DVertices = new SGVertex_PC[Line3DVertexLimit];
+	ImageVertices = new SGTVertex_PC1T[ImageVertexLimit];
+	ImageIndices = new u16[ImageIndexLimit];
 	for (u16 i=0; i<MAX_IMAGE_BATCH_COUNT; ++i)
 	{
 		ImageIndices[i*6 + 0] = i*4 + 0;
@@ -36,20 +37,28 @@ CD3D9DrawServices::CD3D9DrawServices()
 		ImageIndices[i*6 + 4] = i*4 + 2;
 		ImageIndices[i*6 + 5] = i*4 + 3;
 	}
+	Vertices = new SGVertex_PC[VertexLimit];
+	Indices = new u16[IndexLimit];
 
-	VBLine2D = new IVertexBuffer(false);
-	VBLine2D->set(Line2DVertices, EVT_BASICCOLOR, Line2DVertexLimit, EMM_DYNAMIC);
-	VBLine3D = new IVertexBuffer(false);
-	VBLine3D->set(Line3DVertices, EVT_BASICCOLOR, Line3DVertexLimit, EMM_DYNAMIC);
-	VBImage = new IVertexBuffer(false);
-	VBImage->set(ImageVertices, EVT_BASICTEX, ImageVertexLimit, EMM_DYNAMIC);
-	IBImage = new IIndexBuffer(false);
+	VBLine2D = new IVertexBuffer();
+	VBLine2D->set(Line2DVertices, EST_G_PC, Line2DVertexLimit, EMM_DYNAMIC);
+	VBLine3D = new IVertexBuffer();
+	VBLine3D->set(Line3DVertices, EST_G_PC, Line3DVertexLimit, EMM_DYNAMIC);
+	VBImage = new IVertexBuffer();
+	VBImage->set(ImageVertices, EST_GT_PC_1T, ImageVertexLimit, EMM_DYNAMIC);
+	IBImage = new IIndexBuffer();
 	IBImage->set(ImageIndices, EIT_16BIT, ImageIndexLimit, EMM_STATIC);
+	VB3D = new IVertexBuffer();
+	VB3D->set(Vertices, EST_G_PC, VertexLimit, EMM_DYNAMIC);
+	IB3D = new IIndexBuffer();
+	IB3D->set(Indices, EIT_16BIT, IndexLimit, EMM_DYNAMIC);
 
 	Line2DVertexCount = 0;
 	Line3DVertexCount = 0;
 
 	CurrentImageCount = 0;
+	CurrentIndex3DCount = 0;
+	CurrentVertex3DCount = 0;
 
 	//hw buffer
  	HWBufferServices->createHardwareBuffer(VBLine2D);
@@ -57,24 +66,25 @@ CD3D9DrawServices::CD3D9DrawServices()
  	HWBufferServices->createHardwareBuffer(VBImage);
  	HWBufferServices->createHardwareBuffer(IBImage);
 	HWBufferServices->updateHardwareBuffer(IBImage, 0, MAX_IMAGE_BATCH_COUNT*6);
+	HWBufferServices->createHardwareBuffer(VB3D);
+	HWBufferServices->createHardwareBuffer(IB3D);
 }
 
 CD3D9DrawServices::~CD3D9DrawServices()
 {
+	HWBufferServices->destroyHardwareBuffer(IB3D);
+	HWBufferServices->destroyHardwareBuffer(VB3D);
  	HWBufferServices->destroyHardwareBuffer(IBImage);
  	HWBufferServices->destroyHardwareBuffer(VBImage);
  	HWBufferServices->destroyHardwareBuffer(VBLine3D);
 	HWBufferServices->destroyHardwareBuffer(VBLine2D);
 
+	delete IB3D;
+	delete VB3D;
 	delete IBImage;
 	delete VBImage;
 	delete VBLine3D;
 	delete VBLine2D;
-
-	Hunk_FreeTempMemory(ImageIndices);
-	Hunk_FreeTempMemory(ImageVertices);
-	Hunk_FreeTempMemory(Line3DVertices);
-	Hunk_FreeTempMemory(Line2DVertices);
 }
 
 void CD3D9DrawServices::add2DLine(line2di line, SColor color)
@@ -82,13 +92,35 @@ void CD3D9DrawServices::add2DLine(line2di line, SColor color)
 	if (Line2DVertexCount >= Line2DVertexLimit -2)
 		return;//flushAll2DLines();
 
-	S3DVertexBasicColor v0, v1;
+	SGVertex_PC v0, v1;
 	v0.Pos.set((f32)line.start.X, (f32)line.start.Y, 0);
 	v1.Pos.set((f32)line.end.X, (f32)line.end.Y, 0);
 	v0.Color = v1.Color = color;
 
 	Line2DVertices[Line2DVertexCount++] = v0;
 	Line2DVertices[Line2DVertexCount++] = v1;
+}
+
+void CD3D9DrawServices::add2DRect( const recti& rect, SColor color )
+{
+	if (Line2DVertexCount >= Line2DVertexLimit -2)
+		return;//flushAll2DLines();
+
+	SGVertex_PC v0, v1, v2, v3;
+	v0.Pos.set((f32)rect.UpperLeftCorner.X, (f32)rect.UpperLeftCorner.Y, 0);
+	v1.Pos.set((f32)rect.LowerRightCorner.X, (f32)rect.UpperLeftCorner.Y, 0);
+	v2.Pos.set((f32)rect.LowerRightCorner.X, (f32)rect.LowerRightCorner.Y, 0);
+	v3.Pos.set((f32)rect.UpperLeftCorner.X, (f32)rect.LowerRightCorner.Y, 0);
+	v0.Color = v1.Color = v2.Color = v3.Color = color;
+
+	Line2DVertices[Line2DVertexCount++] = v0;
+	Line2DVertices[Line2DVertexCount++] = v1;
+	Line2DVertices[Line2DVertexCount++] = v1;
+	Line2DVertices[Line2DVertexCount++] = v2;
+	Line2DVertices[Line2DVertexCount++] = v2;
+	Line2DVertices[Line2DVertexCount++] = v3;
+	Line2DVertices[Line2DVertexCount++] = v3;
+	Line2DVertices[Line2DVertexCount++] = v0;
 }
 
 void CD3D9DrawServices::flushAll2DLines()
@@ -98,7 +130,15 @@ void CD3D9DrawServices::flushAll2DLines()
 
 	HWBufferServices->updateHardwareBuffer(VBLine2D, 0, Line2DVertexCount);
 
-	Driver->draw2DMode(VBLine2D, EPT_LINES, Line2DVertexCount/2, 0, 0, false, false, false);
+	SBufferParam bufferParam = {0};
+	bufferParam.vType = EVT_BASICCOLOR;
+	bufferParam.vbuffer0 = VBLine2D;
+
+	SDrawParam drawParam = {0};
+	drawParam.startIndex = 0;
+	drawParam.voffset0 = 0;
+
+	Driver->draw2DMode(bufferParam, EPT_LINES, Line2DVertexCount/2, drawParam, false, false, EBF_ZERO, EBF_ZERO);
 
 	Line2DVertexCount = 0;
 }
@@ -108,7 +148,7 @@ void CD3D9DrawServices::add3DLine( line3df line, SColor color )
 	if (Line3DVertexCount >= Line3DVertexLimit -2)
 		return; //flushAll3DLines();
 
-	S3DVertexBasicColor v0, v1;
+	SGVertex_PC v0, v1;
 	v0.Pos = line.start;
 	v1.Pos = line.end;
 	v0.Color = v1.Color = color;
@@ -196,80 +236,57 @@ void CD3D9DrawServices::flushAll3DLines(ICamera* cam)
 	HWBufferServices->updateHardwareBuffer(VBLine3D, 0, Line3DVertexCount);
 
 	Driver->setTransform(ETS_WORLD, matrix4(true));
-	Driver->setTransform(ETS_VIEW, cam->getViewMatrix());
-	Driver->setTransform(ETS_PROJECTION, cam->getProjectionMatrix());
+	if (cam)
+	{
+		Driver->setTransform(ETS_VIEW, cam->getViewMatrix());
+		Driver->setTransform(ETS_PROJECTION, cam->getProjectionMatrix());
+	}
 	Driver->setMaterial(LineMaterial);
 
-	Driver->draw3DMode(VBLine3D, EPT_LINES, Line3DVertexCount/2, 0, 0);
+	SBufferParam bufferParam = {0};
+	bufferParam.vType = EVT_BASICCOLOR;
+	bufferParam.vbuffer0 = VBLine3D;
+
+	SDrawParam drawParam = {0};
+	drawParam.startIndex = 0;
+	drawParam.voffset0 = 0;
+
+	Driver->draw3DMode(bufferParam, EPT_LINES, Line3DVertexCount/2, drawParam);
 
 	Line3DVertexCount = 0;
 }
 
-void CD3D9DrawServices::draw2DImage( ITexture* texture, vector2di destPos, bool alphaChannel )
+void CD3D9DrawServices::draw2DSolid( const recti& rect, SColor color, f32 scale /*= 1.0f*/, E_BLEND_FACTOR srcBlend/*=EBF_ONE*/, E_BLEND_FACTOR destBlend/*=EBF_ONE_MINUS_SRC_ALPHA*/ )
+{
+	vector2di destPos = rect.UpperLeftCorner;
+	recti rc(0,0,rect.getWidth(), rect.getHeight());
+
+	draw2DImage(NULL, destPos, false, &rc, color, scale, srcBlend, destBlend);
+}
+
+void CD3D9DrawServices::draw2DImage( ITexture* texture, vector2di destPos, bool alphaChannel, f32 scale,E_BLEND_FACTOR srcBlend, E_BLEND_FACTOR destBlend )
 {
 	if (!texture)
 		return;
 
 	recti rc(0,0,texture->getSize().Width, texture->getSize().Height);
-	draw2DImage(texture, destPos, alphaChannel, &rc, SColor(), 1.0f);
+	draw2DImage(texture, destPos, alphaChannel, &rc, SColor(), scale, srcBlend, destBlend);
 }
 
-void CD3D9DrawServices::draw2DImage( ITexture* texture, vector2di destPos, bool useAlphaChannel, const recti* sourceRect, SColor color, f32 scale /*= 1.0f*/ )
+void CD3D9DrawServices::draw2DImage( ITexture* texture, vector2di destPos, bool useAlphaChannel, const recti* sourceRect, SColor color, f32 scale /*= 1.0f*/, E_BLEND_FACTOR srcBlend, E_BLEND_FACTOR destBlend )
 {
-	if (!texture)
-		return;
-
-	vector2di sourcePos = sourceRect->UpperLeftCorner;
-	dimension2di sourceSize(sourceRect->getSize());
-
-	rectf tcoords;
-	tcoords.UpperLeftCorner.X = ((f32)sourcePos.X) / (f32)texture->getSize().Width;
-	tcoords.UpperLeftCorner.Y = ((f32)sourcePos.Y) / (f32)texture->getSize().Height;
-	tcoords.LowerRightCorner.X = ((f32)(sourcePos.X + sourceSize.Width)) / (f32)texture->getSize().Width;
-	tcoords.LowerRightCorner.Y = ((f32)(sourcePos.Y + sourceSize.Height)) / (f32)texture->getSize().Height;
-
-	const recti poss(destPos.X, destPos.Y, destPos.X+(s32)(sourceSize.Width * scale), destPos.Y+(s32)(sourceSize.Height * scale));
-
-	SingleImageVertices[0].set(
-		vector3df((f32)poss.UpperLeftCorner.X, (f32)poss.UpperLeftCorner.Y, 0),
-		color,
-		vector2df(tcoords.UpperLeftCorner.X, tcoords.UpperLeftCorner.Y));
-
-	SingleImageVertices[1].set(
-		vector3df((f32)poss.LowerRightCorner.X, (f32)poss.UpperLeftCorner.Y, 0),
-		color,
-		vector2df(tcoords.LowerRightCorner.X, tcoords.UpperLeftCorner.Y));
-
-	SingleImageVertices[2].set(
-		vector3df((f32)poss.LowerRightCorner.X, (f32)poss.LowerRightCorner.Y, 0),
-		color,
-		vector2df(tcoords.LowerRightCorner.X, tcoords.LowerRightCorner.Y));
-
-	SingleImageVertices[3].set(
-		vector3df((f32)poss.UpperLeftCorner.X, (f32)poss.LowerRightCorner.Y, 0),
-		color,
-		vector2df(tcoords.UpperLeftCorner.X, tcoords.LowerRightCorner.Y));
-
-	Driver->setTexture(0, texture);
-	Driver->setTexture(1, NULL);
-
-	Driver->draw2DModeUP(SingleImageVertices, EVT_BASICTEX, imageIndices, EIT_16BIT, 6, 0, 4, EPT_TRIANGLES, 
-		color.getAlpha()<255, true, useAlphaChannel);
-
+	draw2DImageBatch(texture, &destPos, &sourceRect, 1, scale, color, false, srcBlend, destBlend);
 }
 
-void CD3D9DrawServices::draw2DImageBatch( ITexture* texture, const vector2di* positions, const recti** sourceRects, u32 batchCount, f32 scale /*= 1.0f*/, SColor color /*= SColor()*/, bool useAlphachannel /*= false*/ )
+void CD3D9DrawServices::draw2DImageBatch( ITexture* texture, const vector2di* positions, const recti** sourceRects, u32 batchCount, f32 scale /*= 1.0f*/, SColor color /*= SColor()*/, bool useAlphachannel /*= false*/, E_BLEND_FACTOR srcBlend/*=EBF_ONE*/, E_BLEND_FACTOR destBlend/*=EBF_ONE_MINUS_SRC_ALPHA*/ )
 {
-	if (!texture)
-		return;
-
 	if (batchCount > MAX_IMAGE_BATCH_COUNT)
 		batchCount = MAX_IMAGE_BATCH_COUNT;
 
 	if (CurrentImageCount + batchCount > MAX_IMAGE_BATCH_COUNT)
 		CurrentImageCount = 0;
 
-	S3DVertexBasicTex* vertices = &ImageVertices[CurrentImageCount * 4];
+	SGTVertex_PC1T* vertices = &ImageVertices[CurrentImageCount * 4];
 
 	for (u32 i=0; i<batchCount; ++i)
 	{
@@ -279,10 +296,20 @@ void CD3D9DrawServices::draw2DImageBatch( ITexture* texture, const vector2di* po
 		dimension2di sourceSize(sourceRects[i]->getSize());
 
 		rectf tcoords;
-		tcoords.UpperLeftCorner.X = ((f32)sourcePos.X) / (f32)texture->getSize().Width;
-		tcoords.UpperLeftCorner.Y = ((f32)sourcePos.Y) / (f32)texture->getSize().Height;
-		tcoords.LowerRightCorner.X = ((f32)(sourcePos.X + sourceSize.Width)) / (f32)texture->getSize().Width;
-		tcoords.LowerRightCorner.Y = ((f32)(sourcePos.Y + sourceSize.Height)) / (f32)texture->getSize().Height;
+		if (texture)
+		{
+			tcoords.UpperLeftCorner.X = ((f32)sourcePos.X) / (f32)texture->getSize().Width;
+			tcoords.UpperLeftCorner.Y = ((f32)sourcePos.Y) / (f32)texture->getSize().Height;
+			tcoords.LowerRightCorner.X = ((f32)(sourcePos.X + sourceSize.Width)) / (f32)texture->getSize().Width;
+			tcoords.LowerRightCorner.Y = ((f32)(sourcePos.Y + sourceSize.Height)) / (f32)texture->getSize().Height;
+		}
+		else
+		{
+			tcoords.UpperLeftCorner.X = 0.0f;
+			tcoords.UpperLeftCorner.Y = 0.0f;
+			tcoords.LowerRightCorner.X = 1.0f;
+			tcoords.LowerRightCorner.Y = 1.0f;
+		}
 
 		const recti poss(destPos.X, destPos.Y, destPos.X+(s32)(sourceSize.Width * scale), destPos.Y+(s32)(sourceSize.Height * scale));
 
@@ -312,31 +339,67 @@ void CD3D9DrawServices::draw2DImageBatch( ITexture* texture, const vector2di* po
 	Driver->setTexture(0, texture);
 	Driver->setTexture(1, NULL);
 
+	SBufferParam bufferParam = {0};
+	bufferParam.vType = EVT_BASICTEX_S;
+	bufferParam.vbuffer0 = VBImage;
+	bufferParam.ibuffer = IBImage;
+
 	SDrawParam drawParam = {0};
  	drawParam.numVertices = batchCount * 4;
  	drawParam.baseVertIndex = CurrentImageCount * 4;
 
-	Driver->draw2DMode(VBImage, IBImage, EPT_TRIANGLES,
+	Driver->draw2DMode(bufferParam, EPT_TRIANGLES,
 		 batchCount * 2, drawParam,
-		true, true, useAlphachannel);
+		true, useAlphachannel, srcBlend, destBlend);
 
 	CurrentImageCount += batchCount;
 }
 
-void CD3D9DrawServices::draw3DVerts( vector3df* verts, u32 numverts, u16* indices, u32 numindices, SColor color, const matrix4& world )
+void CD3D9DrawServices::add3DVertices( vector3df* verts, u32 numverts, u16* indices, u32 numindices, SColor color )
 {
-	S3DVertexBasicColor* v = (S3DVertexBasicColor*)Hunk_AllocateTempMemory(sizeof(S3DVertexBasicColor) * numverts);
+	if (numverts + CurrentVertex3DCount >= VertexLimit ||
+		numindices + CurrentIndex3DCount >= IndexLimit)
+		return;
 
-	for (u32 i=0; i<numverts; ++i)
+	for(u32 i=0; i<numverts; ++i)
 	{
-		v[i].Pos = verts[i];
-		v[i].Color = color;
+		Vertices[CurrentVertex3DCount + i].Pos = verts[i];
+		Vertices[CurrentVertex3DCount + i].Color = color;
 	}
 
-	Driver->setTransform(ETS_WORLD, world);
-	Driver->setMaterial(LineMaterial);
-	Driver->draw3DModeUP(v, EVT_BASICCOLOR, indices, EIT_16BIT, numindices, 0, numverts, EPT_TRIANGLES);
+	memcpy_s(&Indices[CurrentIndex3DCount], sizeof(u16)*numindices, indices, sizeof(u16)*numindices);
 
-	Hunk_FreeTempMemory(v);
+	CurrentVertex3DCount += numverts;
+	CurrentIndex3DCount += numindices;
+}
+
+void CD3D9DrawServices::flushAll3DVertices( ICamera* cam )
+{
+	if (!CurrentVertex3DCount || !CurrentIndex3DCount)
+		return;
+
+	HWBufferServices->updateHardwareBuffer(VB3D, 0, CurrentVertex3DCount);
+	HWBufferServices->updateHardwareBuffer(IB3D, 0, CurrentIndex3DCount);
+
+	Driver->setTransform(ETS_WORLD, matrix4(true));
+	if (cam)
+	{
+		Driver->setTransform(ETS_VIEW, cam->getViewMatrix());
+		Driver->setTransform(ETS_PROJECTION, cam->getProjectionMatrix());
+	}
+	Driver->setMaterial(LineMaterial);
+
+	SBufferParam bufferParam = {0};
+	bufferParam.vType = EVT_BASICCOLOR;
+	bufferParam.vbuffer0 = VB3D;
+	bufferParam.ibuffer = IB3D;
+
+	SDrawParam drawParam = {0};
+	drawParam.numVertices = CurrentVertex3DCount;
+	drawParam.baseVertIndex = 0;
+	
+	Driver->draw3DMode(bufferParam, EPT_TRIANGLES, CurrentIndex3DCount/3, drawParam);
+
+	CurrentVertex3DCount = CurrentIndex3DCount = 0;
 }
 

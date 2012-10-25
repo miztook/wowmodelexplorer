@@ -8,7 +8,7 @@
 class ITexture;
 class IFileM2;
 struct SModelBone;
-class wow_character;
+class wow_m2instance;
 
 struct Particle
 {
@@ -23,6 +23,8 @@ struct Particle
 	f32  life, maxlife;
 	u32	tile;
 	SColorf		color;
+
+	LENTRY	Link;			//live particles link
 };
 
 class ParticleSystem;
@@ -44,7 +46,7 @@ public:
 	ParticleEmitter(ParticleSystem* sys) : sys(sys) {}
 public:
 	
-	virtual void emitParticle(const wow_character* character, u32 anim, u32 time, const EmitterParam& param, Particle* p) = 0;
+	virtual void emitParticle(const wow_m2instance* character, u32 anim, u32 time, const EmitterParam& param, Particle* p) = 0;
 
 protected:
 	ParticleSystem* sys;
@@ -54,14 +56,14 @@ class PlaneParticleEmitter : public ParticleEmitter
 {
 public:
 	PlaneParticleEmitter(ParticleSystem* sys) : ParticleEmitter(sys) {}
-	virtual void emitParticle(const wow_character* character, u32 anim, u32 time, const EmitterParam& param, Particle* p);
+	virtual void emitParticle(const wow_m2instance* character, u32 anim, u32 time, const EmitterParam& param, Particle* p);
 };
 
 class SphereParticleEmitter : public ParticleEmitter
 {
 public:
 	SphereParticleEmitter(ParticleSystem* sys) : ParticleEmitter(sys) {}
-	virtual void emitParticle(const wow_character* character, u32 anim, u32 time, const EmitterParam& param, Particle* p);
+	virtual void emitParticle(const wow_m2instance* character, u32 anim, u32 time, const EmitterParam& param, Particle* p);
 };
 
 class ParticleSystem

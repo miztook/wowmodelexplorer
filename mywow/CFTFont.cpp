@@ -2,8 +2,8 @@
 #include "CFTFont.h"
 #include "mywow.h"
 
-#define		INTER_GLYPH_PAD_SPACE 0
-#define		LINE_PADDING		0
+#define		INTER_GLYPH_PAD_SPACE 2
+#define		LINE_PADDING		2
 
 CFTFont::CFTFont( const char* faceName, u32 size )
 {
@@ -203,6 +203,8 @@ void CFTFont::addChar( c16 ch )
 	MaxY = CurrentY + glyph_h;						//»»Ò³, Ôö¼ÓÎÆÀí 
 	if (MaxY > FONT_TEXTURE_SIZE)
 	{
+		ITexture* tex = DrawBatches.back().texture;
+
 		addFontTexture();
 
 		CurrentX = CurrentY = NextY = 0;
@@ -255,7 +257,7 @@ void CFTFont::addChar( c16 ch )
 
 bool CFTFont::addFontTexture()
 {
-	ITexture* fontTex = g_Engine->getManualTextureServices()->createEmptyTexture(dimension2du(FONT_TEXTURE_SIZE, FONT_TEXTURE_SIZE), ECF_A8L8, false);	   //no mipmap
+	ITexture* fontTex = g_Engine->getManualTextureServices()->createEmptyTexture(dimension2du(FONT_TEXTURE_SIZE, FONT_TEXTURE_SIZE), ECF_A8L8);	   //no mipmap
 
 	DrawBatches.push_back(SDrawBatch());
 	DrawBatches.back().texture = fontTex;

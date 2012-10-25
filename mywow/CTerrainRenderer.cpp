@@ -2,23 +2,26 @@
 #include "CTerrainRenderer.h"
 #include "mywow.h"
 
-CTerrainRenderer::CTerrainRenderer(u32 quota)
-	: ISceneRenderer(quota)
+CTerrainRenderer::CTerrainRenderer(u32 lowresQuota, u32 highresQuota)
+	: LowResQuota(lowresQuota), HighResQuota(highresQuota)
 {
-	RenderUnits = (SRenderUnit*)Hunk_AllocateTempMemory(sizeof(SRenderUnit) * Quota);
-	RenderEntries = (SEntry*)Hunk_AllocateTempMemory(sizeof(SEntry) * Quota);
+	RenderUnits = new SRenderUnit[LowResQuota + HighResQuota];
+	LowRenderEntries = new SEntry[LowResQuota];
+	HighRenderEntries = new SEntry[HighResQuota];
 	CurrentRenderCount = 0;
+	LowCount = HighCount = 0;
 }
 
 CTerrainRenderer::~CTerrainRenderer()
 {
-	Hunk_FreeTempMemory(RenderEntries);
-	Hunk_FreeTempMemory(RenderUnits);
+	delete[] HighRenderEntries;
+	delete[] LowRenderEntries;
+	delete[] RenderUnits;
 }
 
 void CTerrainRenderer::addRenderUnit( const SRenderUnit* unit )
 {
-	if (CurrentRenderCount == Quota)
+	if (CurrentRenderCount == LowResQuota + HighResQuota)
 		return;
 
 	SRenderUnit* s = &RenderUnits[CurrentRenderCount];
@@ -26,7 +29,19 @@ void CTerrainRenderer::addRenderUnit( const SRenderUnit* unit )
 
 	SEntry entry;
 	entry.Unit = s;
-	RenderEntries[CurrentRenderCount++] = entry;
+	
+	if (unit->u.lowres)
+	{
+		if (LowCount < LowResQuota)
+			LowRenderEntries[LowCount++] = entry;
+		++CurrentRenderCount;
+	}
+	else
+	{
+		if(HighCount < HighResQuota)
+			HighRenderEntries[HighCount++] = entry;
+		++CurrentRenderCount;
+	}
 }
 
 void CTerrainRenderer::render(SRenderUnit*& currentUnit, ICamera* cam)
@@ -35,50 +50,99 @@ void CTerrainRenderer::render(SRenderUnit*& currentUnit, ICamera* cam)
 		return;
 
 	IVideoDriver* driver = g_Engine->getDriver();
+	ISceneStateServices* sceneService = driver->getSceneStateServices();
+	IMaterialRenderServices* services = driver->getMaterialRenderServices();
 
-	heapsort<SEntry>(RenderEntries, CurrentRenderCount);
+	plane3df clipPlane = cam->getTerrainClipPlane();
+ 	sceneService->setClipPlane(0, clipPlane);
+ 	sceneService->enableClipPlane(0, true);
 
-	for (u32 i=0; i<CurrentRenderCount; ++i)
+	//high res
+	heapsort<SEntry>(HighRenderEntries, HighCount);
+	//services->setDepthBias( 0.000002f );
+	
+	driver->setTransform(ETS_VIEW, cam->getViewMatrix());
+	driver->setTransform(ETS_PROJECTION, cam->getProjectionMatrix());
+	for (u32 i=0; i<HighCount; ++i)
 	{
-		SRenderUnit* unit  = RenderEntries[i].Unit;
+		SRenderUnit* unit  = HighRenderEntries[i].Unit;
 		currentUnit = unit;
-
-		if (unit->sceneNode)
-			unit->sceneNode->onPreRender();			//在渲染前
 
 		if (!unit->primCount)
 			continue;
 
-		if (unit->matView)
+		driver->setTransform(ETS_WORLD, unit->matWorld ? *unit->matWorld : matrix4(true));
+
+		driver->setMaterial(unit->material);
+		if (services->isFFPipeline())		//shader里设置texture
 		{
-			driver->setTransform(ETS_VIEW, *unit->matView);
-		}
-		else
-		{
-			driver->setTransform(ETS_VIEW, cam->getViewMatrix());
+			for (u32 t=0; t<MATERIAL_MAX_TEXTURES; ++t)
+				driver->setTexture(t, unit->textures[t]);
 		}
 
-		if (unit->matProjection)				//渲染单元允许有独立的projection, 改变深度值
-		{
-			driver->setTransform(ETS_PROJECTION, *unit->matProjection);
-		}
-		else
-		{
-			driver->setTransform(ETS_PROJECTION, cam->getProjectionMatrix());
-		}
+		driver->draw3DMode(unit->bufferParam, unit->primType, unit->primCount, unit->drawParam);	
+	}
+
+	sceneService->enableClipPlane(0, false);
+
+	//low res
+	heapsort<SEntry>(LowRenderEntries, LowCount);
+
+	driver->setTransform(ETS_VIEW, cam->getViewMatrix());
+	driver->setTransform(ETS_PROJECTION, cam->getProjectionMatrix());
+	for (u32 i=0; i<LowCount; ++i)
+	{
+		SRenderUnit* unit  = LowRenderEntries[i].Unit;
+		currentUnit = unit;
+
+		if (!unit->primCount)
+			continue;
 
 		driver->setTransform(ETS_WORLD, unit->matWorld ? *unit->matWorld : matrix4(true));
 
 		driver->setMaterial(unit->material);
-		for (u32 t=0; t<MATERIAL_MAX_TEXTURES; ++t)
-			driver->setTexture(t, unit->textures[t]);
+		if (services->isFFPipeline())
+		{
+			for (u32 t=0; t<MATERIAL_MAX_TEXTURES; ++t)
+				driver->setTexture(t, unit->textures[t]);
+		}
 		
-		if(unit->ibuffer)
-			driver->draw3DMode(unit->vbuffer, unit->ibuffer, unit->vbuffer2, unit->primType, unit->primCount, unit->drawParam);
-		else
-			driver->draw3DMode(unit->vbuffer, unit->primType, unit->primCount, unit->drawParam.voffset, unit->drawParam.startIndex);
+		driver->draw3DMode(unit->bufferParam, unit->primType, unit->primCount, unit->drawParam);
 	}
 
+	//services->setDepthBias( 0.0f );
+
+	LowCount = HighCount = 0;
 	CurrentRenderCount = 0;
+}
+
+void CTerrainRenderer::begin_setupLightFog(ICamera* cam)
+{
+	ISceneStateServices* sceneService = g_Engine->getDriver()->getSceneStateServices();
+	ISceneRenderServices*	sceneRenderService = g_Engine->getSceneRenderServices();
+
+	//
+	f32 clip = sceneRenderService->getClipDistance();
+	if (cam->getClipDistance() != clip)
+		cam->setClipDistance(clip);
+
+	//fog
+	SFogParam param;
+	param.FogColor = g_Engine->getSceneEnvironment()->getFogColor();
+	param.FogStart = cam->getClipDistance() - 250;
+	param.FogEnd = cam->getClipDistance() - 100;
+	param.FogType = EFT_FOG_LINEAR;
+	param.PixelFog = true;
+	sceneService->setFog(param);
+
+	//ambient
+	sceneService->setAmbientLight(SColor(220,220,220));
+
+
+}
+
+void CTerrainRenderer::end_setupLightFog()
+{
+
 }
 

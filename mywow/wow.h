@@ -8,5 +8,8 @@
 #include "wow_particle.h"
 
 #include "IFileM2.h"
+#include "IFileWDT.h"
+#include "IFileADT.h"
+#include "IFileWMO.h"
 
-#include "wow_character.h"
+#include "wow_m2instance.h"

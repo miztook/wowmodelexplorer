@@ -22,6 +22,8 @@ public:
 	inline bool operator!=(const line2d<T>& other) const
 	{ return !(start==other.start && end==other.end) || (end==other.start && start==other.end);}
 
+	bool equals(const line2d<T>& other) const { return start.equals(other.start) && end.equals(other.end); }
+
 	//
 	inline void setLine(const T& xa, const T& ya, const T& xb, const T& yb){start.set(xa, ya); end.set(xb, yb);}
 	inline void setLine(const vector2d<T>& nstart, const vector2d<T>& nend){start.set(nstart); end.set(nend);}

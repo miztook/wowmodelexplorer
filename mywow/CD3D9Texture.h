@@ -27,34 +27,26 @@ public:
 
 public:
 	//ITexture
-	virtual bool createAsRenderTarget( dimension2du size, ECOLOR_FORMAT format );
-	virtual bool createEmptyTexture( dimension2du size, ECOLOR_FORMAT format, bool mipmap );
-	virtual void* lock(bool readOnly = false, u32 mipmapLevel=0);
+	virtual bool createEmptyTexture( dimension2du size, ECOLOR_FORMAT format );
+	virtual void* lock(bool readOnly = false);
 	virtual void unlock();
 
 	virtual dimension2du getSize() const { return TextureSize; }
 	virtual ECOLOR_FORMAT getColorFormat() const { return ColorFormat; }
 	virtual bool hasMipMaps() const { return HasMipMaps; }
-	virtual bool isRenderTarget() const { return IsRenderTarget; }
 	virtual bool isValid() const { return DXTexture!=NULL; }
-
-	virtual bool createMipMaps( u32 level = 1 );				//自动生成mipmap			
 
 	//video memory
 	virtual bool createVideoTexture();
 	virtual void releaseVideoTexture();
 
-	//lost reset
-	void onLost();
-	void onReset();
-
 	//
 	IDirect3DTexture9*  getDXTexture() const { return DXTexture; }
-	IDirect3DSurface9*	getRTTSurface() const { return RTTSurface; }
-	IDirect3DSurface9* getRTTDepthSurface() const { return DepthSurface; }
 
 private:
 	bool createTexture( dimension2du size, ECOLOR_FORMAT format, bool mipmap = true );
+	virtual bool createMipMaps( u32 level = 1 );				//自动生成mipmap	
+
 	//blp
 	void copyTexture( IBLPImage* blpimage );
 	bool copyBlpMipMaps( u32 level = 1);
@@ -70,16 +62,12 @@ private:
 
 private:
 	IDirect3DTexture9*		DXTexture;
-	IDirect3DSurface9*		RTTSurface;
-	IDirect3DSurface9*		DepthSurface;
 
 	dimension2du	TextureSize;
-	u32		MipLevelLocked;
 	ECOLOR_FORMAT	ColorFormat;
 
 	bool	HasMipMaps;
 	bool IsBLP;
-	bool	IsRenderTarget;
 
 	IImage*		Image;
 	IBLPImage*	BlpImage;

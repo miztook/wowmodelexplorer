@@ -5,9 +5,12 @@
 
 class CM2Loader;
 class CImageLoaderBLP;
+class CWDTLoader;
+class CADTLoader;
+class CWMOLoader;
 class CD3D9TexLoader;
 
-class CD3D9ResourceLoader : public IResourceLoader, public ILostResetCallback
+class CD3D9ResourceLoader : public IResourceLoader
 {
 public:
 	CD3D9ResourceLoader(bool multithread);
@@ -18,18 +21,31 @@ public:
 	virtual IImage* loadBLPAsImage(const c8* filename);
 	virtual IBLPImage* loadBLP(const c8* filename);
 	virtual ITexture* loadTexture(const c8* filename, bool mipmap = true);
+	virtual IFileWDT* loadWDT(const c8* filename, s32 mapid);
+	virtual IFileADT* loadADT(const c8* filename);
+	virtual IFileWMO* loadWMO(const c8* filename);
 
-	virtual void beginLoadM2(c8* filename);
-	virtual bool cancelLoadM2(c8* filename);
-	virtual STask getCurrentM2Task() const { return current; }
-	virtual bool m2LoadCompleted();
-	virtual void stopLoadingM2();
-	virtual void resumeLoadingM2();
-	virtual void endLoadingM2();
+	virtual const STask& getCurrentTask() const { return currentTask; }
+	virtual void clearCurrentTask();
 
-public:
-	virtual void onLost();
-	virtual void onReset();
+	//m2 async loading
+	virtual void beginLoadM2(const c8* filename, const SParamBlock& param);
+	virtual bool cancelLoadM2(const c8* filename);
+	virtual bool m2LoadCompleted() const;
+
+	//wmo async loading
+	virtual void beginLoadWMO(const c8* filename, const SParamBlock& param);
+	virtual bool cancelLoadWMO(const c8* filename);
+	virtual bool wmoLoadCompleted() const;
+
+	virtual void beginLoadADT(const c8* filename, const SParamBlock& param);
+	virtual bool cancelLoadADT(const c8* filename);
+	virtual bool adtLoadCompleted() const;
+
+	virtual void cancelAll(E_TASK_TYPE type);
+	virtual void stopLoading(); 
+	virtual void resumeLoading();
+	virtual void endLoading();
 
 private:
 	IResourceCache<IFileM2>* getM2Cache(const c8* filename);
@@ -49,14 +65,16 @@ private:
 	static DWORD WINAPI LoadingThreadFunc( LPVOID lpParam ); 
 	volatile static bool StopLoading;
 
-	CRITICAL_SECTION	cs;
 	HANDLE		hLoadingEvent;
 	HANDLE		hLoadedEvent;
+	HANDLE		hLoadingStoppedEvent;
 
 	typedef std::list<STask, qzone_allocator<STask>>		T_TaskList;
 	T_TaskList taskList;	
 
-	STask current;
+	STask currentTask;
+
+	CRITICAL_SECTION	cs;
 
 	HANDLE		m2Mutex;
 	HANDLE		imageMutex;
@@ -77,10 +95,16 @@ private:
 	IResourceCache<IFileM2>			M2Cache_Default;			//д╛хо
 
 	IResourceCache<IImage>			ImageCache;
-	IResourceCache<IBLPImage>	BlpImageCache;
-	IResourceCache<ITexture>		BlpTextureCache;
+	IResourceCache<IBLPImage>		BlpImageCache;		
+	IResourceCache<ITexture>			BlpTextureCache;
+
+	IResourceCache<IFileADT>			ADTCache;
+	IResourceCache<IFileWMO>		WMOCache;
 
 	CM2Loader*			M2Loader;
 	CImageLoaderBLP*		BlpLoader;
+	CWDTLoader*		WDTLoader;
+	CADTLoader*		ADTLoader;
+	CWMOLoader*		WMOLoader;
 	CD3D9TexLoader*		TexLoader;
 };

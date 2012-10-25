@@ -2,6 +2,7 @@
 
 #include "base.h"
 #include "ISceneManager.h"
+#include "CFPSCounter.h"
 #include <list>
 
 class IVideoDriver;
@@ -10,6 +11,9 @@ class IDrawServices;
 
 class CSceneManager : public ISceneManager
 {
+private:
+	DISALLOW_COPY_AND_ASSIGN(CSceneManager);
+
 public:
 	CSceneManager();
 	virtual ~CSceneManager();
@@ -22,6 +26,7 @@ public:
 	virtual void removeAllCameras();
 
 	virtual u32 getTimeSinceStart() const { return timeSinceStart; }
+	virtual f32 getFPS() const { return FPSCounter.getFPS(); }
 
 	virtual void setActiveCamera(ICamera* camera) { ActiveCamera = camera; }
 	virtual ICamera* getActiveCamera() { return ActiveCamera; }
@@ -49,6 +54,15 @@ protected:
 		}
 	}
 
+	u32 getTime()
+	{
+		LARGE_INTEGER time;
+		QueryPerformanceCounter(&time);
+		return (u32)(time.QuadPart * 1000 / PerfFreq.QuadPart);
+	}
+
+	void drawAreaInfo();
+
 protected:
 	ICamera*		ActiveCamera;
 	u32 timelastframe;
@@ -66,6 +80,8 @@ protected:
 
 	c8 Text[MAX_TEXT_LENGTH];
 
+	CFPSCounter		FPSCounter;
+
 	//performance
 	LARGE_INTEGER	PerfFreq;
 	LARGE_INTEGER	PerfStart;
@@ -73,5 +89,6 @@ protected:
 	u32		PerfCalcTime;
 
 	u32		Perf_GPUTime;
-	u32		Perf_registerTime, Perf_tickTime, Perf_renderTime, Perf_terrainTime, Perf_meshTime, Perf_effectTime, Perf_wireTime;
+	u32		Perf_registerTime, Perf_tickTime, Perf_renderTime;
+	u32		Perf_terrainTime, Perf_wmoTime, Perf_doodadTime, Perf_meshTime, Perf_effectTime, Perf_wireTime;
 };

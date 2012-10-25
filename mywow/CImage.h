@@ -7,10 +7,10 @@ class CImage : public IImage
 {
 public:
 	CImage( ECOLOR_FORMAT format, const dimension2du& size, void* data, bool deletaData );
+	~CImage();
 
 private:
 	CImage( ECOLOR_FORMAT format, const dimension2du& size );
-	~CImage();
 
 	friend class CImageLoaderBLP;
 

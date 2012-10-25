@@ -14,11 +14,14 @@ struct STile;
 class IMapTileSceneNode;
 class IFileWMO;
 class IWMOSceneNode;
+class IWDTSceneNode;
 
 class ISceneManager 
 {
 public:
-	ISceneManager() : BackgroundColor(64,64,64), ShowDebugBase(true) { }
+	ISceneManager() : BackgroundColor(64,64,64), ShowDebugBase(true) 
+	{ ::memset(AreaName, 0, sizeof(c16)*MAX_TEXT_LENGTH);
+	 ::memset(AreaDebug, 0, sizeof(c16)*MAX_TEXT_LENGTH); }
 
 	virtual ~ISceneManager() {}
 
@@ -30,6 +33,7 @@ public:
 	virtual void removeAllCameras() = 0;
 
 	virtual u32 getTimeSinceStart() const = 0;
+	virtual f32 getFPS() const = 0;
 
 	virtual void setActiveCamera(ICamera* camera) = 0;
 	virtual ICamera* getActiveCamera() = 0;
@@ -42,4 +46,6 @@ public:
 public:
 	SColor		BackgroundColor;
 	bool			ShowDebugBase;
+	c16	 AreaName[MAX_TEXT_LENGTH];		//current area
+	c16	 AreaDebug[MAX_TEXT_LENGTH];
 };

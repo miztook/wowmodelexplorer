@@ -3,20 +3,20 @@
 #include "mywow.h"
 
 CTransluscentRenderer::CTransluscentRenderer(u32 quota)
-	: ISceneRenderer(quota)
+	: Quota(quota)
 {
-	RenderUnits = (SRenderUnit*)Hunk_AllocateTempMemory(sizeof(SRenderUnit) * Quota);
-	RenderEntries = (SEntry*)Hunk_AllocateTempMemory(sizeof(SEntry) * Quota);
+	RenderUnits = new SRenderUnit[Quota];
+	RenderEntries = new SEntry[Quota];
 	CurrentRenderCount = 0;
 }
 
 CTransluscentRenderer::~CTransluscentRenderer()
 {
-	Hunk_FreeTempMemory(RenderEntries);
-	Hunk_FreeTempMemory(RenderUnits);
+	delete[] RenderEntries;
+	delete[] RenderUnits;
 }
 
-void CTransluscentRenderer::addRenderUnit( const SRenderUnit* unit)
+void CTransluscentRenderer::addRenderUnit( const SRenderUnit* unit )
 {
 	if ( !unit->material.isTransparent() || 
 		CurrentRenderCount == Quota)
@@ -51,22 +51,14 @@ void CTransluscentRenderer::render(SRenderUnit*& currentUnit, ICamera* cam)
 			continue;
 
 		if (unit->matView)
-		{
 			driver->setTransform(ETS_VIEW, *unit->matView);
-		}
 		else
-		{
 			driver->setTransform(ETS_VIEW, cam->getViewMatrix());
-		}
 
 		if (unit->matProjection)				//渲染单元允许有独立的projection, 改变深度值
-		{
 			driver->setTransform(ETS_PROJECTION, *unit->matProjection);
-		}
 		else
-		{
 			driver->setTransform(ETS_PROJECTION, cam->getProjectionMatrix());
-		}
 
 		driver->setTransform(ETS_WORLD, unit->matWorld ? *unit->matWorld : matrix4(true));
 
@@ -74,13 +66,26 @@ void CTransluscentRenderer::render(SRenderUnit*& currentUnit, ICamera* cam)
 		for (u32 t=0; t<MATERIAL_MAX_TEXTURES; ++t)
 			driver->setTexture(t, unit->textures[t]);
 
-		if(unit->ibuffer)
-			driver->draw3DMode(unit->vbuffer, unit->ibuffer, unit->vbuffer2, unit->primType, unit->primCount, unit->drawParam);
-		else
-			driver->draw3DMode(unit->vbuffer, unit->primType, unit->primCount, unit->drawParam.voffset, unit->drawParam.startIndex);
-
+		driver->draw3DMode(unit->bufferParam, unit->primType, unit->primCount, unit->drawParam);
 	}
 
 	CurrentRenderCount = 0;
+}
+
+void CTransluscentRenderer::begin_setupLightFog( ICamera* cam )
+{
+	ISceneStateServices* sceneService = g_Engine->getDriver()->getSceneStateServices();
+
+	//fog
+
+	//dlight
+
+	//ambient
+	sceneService->setAmbientLight(SColor(255,255,255));
+}
+
+void CTransluscentRenderer::end_setupLightFog( )
+{
+
 }
 

@@ -45,22 +45,22 @@ u32 MPQFile::read( void* dest, u32 bytes )
 	return bytes;
 }
 
-void MPQFile::seek( s32 offset )
+bool MPQFile::seek( s32 offset, bool relative )
 {
-	pointer = offset;
+	if (relative)
+		pointer += offset;
+	else
+		pointer = offset;
 	eof = (pointer >= size);
-}
-
-void MPQFile::seekRelative( s32 offset )
-{
-	pointer += offset;
-	eof = (pointer >= size);
+	return !eof;
 }
 
 void MPQFile::close()
 {
-	//delete[] buffer;
-	Hunk_FreeTempMemory(buffer);
+	if(temp)
+		Hunk_FreeTempMemory(buffer);
+	else
+		delete[] buffer;
 	buffer = NULL;
 
 	eof = true;

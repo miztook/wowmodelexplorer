@@ -27,7 +27,7 @@ namespace WMO
 	{
 		u32 flags;
 		u32 specular;
-		u32 transparent; // Blending: 0 for opaque, 1 for transparent
+		u32 alphatest; // Blending: 0 for opaque, 1 for transparent
 		s32 tex1;
 		u8 col1R;
 		u8 col1G;
@@ -129,7 +129,7 @@ namespace WMO
 		u32 unk[2];
 	};
 
-	struct wmoGroupMaterial
+	struct wmoTriangleMaterial
 	{
 		u8	flags;
 		u8	matId;

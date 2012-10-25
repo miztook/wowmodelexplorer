@@ -290,9 +290,6 @@
     <ClInclude Include="wow_dbc.h">
       <Filter>wow</Filter>
     </ClInclude>
-    <ClInclude Include="wow_character.h">
-      <Filter>wow</Filter>
-    </ClInclude>
     <ClInclude Include="IManualTextureServices.h">
       <Filter>interface\video</Filter>
     </ClInclude>
@@ -310,9 +307,6 @@
     </ClInclude>
     <ClInclude Include="CM2SceneNode.h">
       <Filter>implementation\scene\sceneNode</Filter>
-    </ClInclude>
-    <ClInclude Include="CCamera.h">
-      <Filter>implementation\scene</Filter>
     </ClInclude>
     <ClInclude Include="qzone_allocator.h">
       <Filter>interface</Filter>
@@ -350,16 +344,34 @@
     <ClInclude Include="wow_database.h">
       <Filter>wow</Filter>
     </ClInclude>
+    <ClInclude Include="IFileWDT.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileWDT.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="IFileADT.h">
+      <Filter>wow</Filter>
+    </ClInclude>
     <ClInclude Include="wow_m2_structs.h">
       <Filter>wow</Filter>
     </ClInclude>
     <ClInclude Include="wow_adt_structs.h">
       <Filter>wow</Filter>
     </ClInclude>
+    <ClInclude Include="ITerrainServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CTerrainServices.h">
+      <Filter>implementation\video</Filter>
+    </ClInclude>
+    <ClInclude Include="IFileWMO.h">
+      <Filter>wow</Filter>
+    </ClInclude>
     <ClInclude Include="wow_wmo_structs.h">
       <Filter>wow</Filter>
     </ClInclude>
-    <ClInclude Include="mpq_libmpq.h">
+    <ClInclude Include="CFileWMO.h">
       <Filter>wow</Filter>
     </ClInclude>
     <ClInclude Include="ISceneRenderServices.h">
@@ -369,9 +381,6 @@
       <Filter>implementation\renderer</Filter>
     </ClInclude>
     <ClInclude Include="renderer.h">
-      <Filter>interface\renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="ISceneRenderer.h">
       <Filter>interface\renderer</Filter>
     </ClInclude>
     <ClInclude Include="CTranslucentRenderer.h">
@@ -398,11 +407,56 @@
     <ClInclude Include="CTerrainRenderer.h">
       <Filter>implementation\renderer</Filter>
     </ClInclude>
-    <ClInclude Include="IBLPImage.h">
+    <ClInclude Include="CMapEnvironment.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="ISceneStateServices.h">
       <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9SceneStateServices.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="wow_m2instance.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="CWmoRenderer.h">
+      <Filter>implementation\renderer</Filter>
     </ClInclude>
     <ClInclude Include="CBLPImage.h">
       <Filter>implementation\video</Filter>
+    </ClInclude>
+    <ClInclude Include="IBLPImage.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="qzone_nolock_allocator.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ISceneRenderer.h">
+      <Filter>interface\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderTarget.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9RenderTarget.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CLock.h">
+      <Filter>implementation\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileADT.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneEnvironment.h">
+      <Filter>implementation\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ISceneEnvironment.h">
+      <Filter>interface\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="mpq_stormlib.h">
+      <Filter>wow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -410,9 +464,6 @@
       <Filter>implementation</Filter>
     </ClCompile>
     <ClCompile Include="engine.cpp">
-      <Filter>implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="q_memory.cpp">
       <Filter>implementation</Filter>
     </ClCompile>
     <ClCompile Include="mywow.cpp">
@@ -429,12 +480,6 @@
     </ClCompile>
     <ClCompile Include="wowEnvironment.cpp">
       <Filter>wow</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D9Driver.cpp">
-      <Filter>implementation\video\Direct3D9</Filter>
-    </ClCompile>
-    <ClCompile Include="CFPSCounter.cpp">
-      <Filter>implementation\video</Filter>
     </ClCompile>
     <ClCompile Include="CD3D9Helper.cpp">
       <Filter>implementation\video\Direct3D9</Filter>
@@ -487,9 +532,6 @@
     <ClCompile Include="wow_dbc.cpp">
       <Filter>wow</Filter>
     </ClCompile>
-    <ClCompile Include="wow_character.cpp">
-      <Filter>wow</Filter>
-    </ClCompile>
     <ClCompile Include="CManualMeshServices.cpp">
       <Filter>implementation\video</Filter>
     </ClCompile>
@@ -498,9 +540,6 @@
     </ClCompile>
     <ClCompile Include="CM2SceneNode.cpp">
       <Filter>implementation\scene\sceneNode</Filter>
-    </ClCompile>
-    <ClCompile Include="CCamera.cpp">
-      <Filter>implementation\scene</Filter>
     </ClCompile>
     <ClCompile Include="wow_particle.cpp">
       <Filter>wow</Filter>
@@ -520,8 +559,14 @@
     <ClCompile Include="wow_database.cpp">
       <Filter>wow</Filter>
     </ClCompile>
-    <ClCompile Include="mpq_libmpq.cpp">
+    <ClCompile Include="CFileWDT.cpp">
       <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileADT.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CTerrainServices.cpp">
+      <Filter>implementation\video</Filter>
     </ClCompile>
     <ClCompile Include="CSceneRenderServices.cpp">
       <Filter>implementation\renderer</Filter>
@@ -553,8 +598,44 @@
     <ClCompile Include="CTerrainRenderer.cpp">
       <Filter>implementation\renderer</Filter>
     </ClCompile>
+    <ClCompile Include="CMapEnvironment.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9Driver_base.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9Driver_draw.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9SceneStateServices.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileWMO.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2instance.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CWmoRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
     <ClCompile Include="CBLPImage.cpp">
       <Filter>implementation\video</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9RenderTarget.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="q_memory.cpp">
+      <Filter>implementation\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneEnvironment.cpp">
+      <Filter>implementation\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="mpq_stormlib.cpp">
+      <Filter>wow</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -14,8 +14,8 @@ public:
 	aabbox3d(T minx, T miny, T minz, T maxx, T maxy, T maxz): MinEdge(minx, miny, minz), MaxEdge(maxx, maxy, maxz) { }
 
 	public:		//operator
-	inline bool operator==(const aabbox3d<T>& other) const { return (MinEdge == other.MinEdge && other.MaxEdge == MaxEdge);}
-	inline bool operator!=(const aabbox3d<T>& other) const { return !(MinEdge == other.MinEdge && other.MaxEdge == MaxEdge);}
+	inline bool operator==(const aabbox3d<T>& other) const { return MinEdge == other.MinEdge && MaxEdge == other.MaxEdge; }
+	inline bool operator!=(const aabbox3d<T>& other) const { return !(*this == other ); }
 
 	public:
 
@@ -55,6 +55,8 @@ public:
 
 	bool intersectsWithLine(const vector3d<T>& linemiddle,
 		const vector3d<T>& linevect, T halflength) const;
+
+	static const aabbox3d<T>& Zero() { static aabbox3d<T> m; return m; }
 
 	public:
 	vector3d<T>	MinEdge;			//a

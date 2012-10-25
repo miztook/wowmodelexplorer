@@ -71,12 +71,12 @@ public :
 			else
 			{
 				::EnterCriticalSection(&g_allocatorCS);
-				if (Z_AvailableMemory() > 512)
+				if (Z_AvailableMainMemory() > 512)
 					p = reinterpret_cast<pointer>(Z_TagMalloc(sizeof(T) * cnt, TAG_GENERAL));
 				::LeaveCriticalSection(&g_allocatorCS);
 			}
 		}
-
+			
 		if (p)
 			return p;
 
@@ -89,7 +89,7 @@ public :
 		::EnterCriticalSection(&g_allocatorCS);
 		ret = Z_Free(p);
 		::LeaveCriticalSection(&g_allocatorCS);
-
+		
 		if (!ret)
 			::operator delete(p); 
 	}

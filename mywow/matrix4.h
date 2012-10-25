@@ -137,7 +137,7 @@ inline void CMatrix4<T>::transpose()
 	tmp = m01;
 	m01 = m10;
 	m10 = tmp;
-
+	
 	tmp = m02;
 	m02 = m20;
 	m20 = tmp;
@@ -610,8 +610,9 @@ inline void CMatrix4<T>::transformPlane( plane3df& plane ) const
 	vector3df member = plane.getMemberPoint();
 	transformVect( member );
 
-	CMatrix4<T> m;
-	m.setRotationRadians(getRotationRadians());
+	CMatrix4<T> m = *this;
+	if(m.makeInverse())
+		m.transpose();
 	vector3df normal = plane.Normal;
 	m.transformVect( normal );
 

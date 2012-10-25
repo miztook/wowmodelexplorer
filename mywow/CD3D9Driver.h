@@ -2,8 +2,8 @@
 
 #include "base.h"
 #include "IVideoDriver.h"
-#include "CFPSCounter.h"
 
+class CD3D9SceneStateServices;
 class CD3D9ShaderServices;
 class CD3D9MaterialRenderServices;
 
@@ -14,16 +14,16 @@ public:
 	virtual ~CD3D9Driver();
 
 public:
-	bool initDriver(HWND hwnd, bool fullscreen, bool vsync, bool multithread, u32 bits, u8 antialias, E_CSAA cass);
-	void createVertexDecl();
-	void releaseVertexDecl();
+	bool initDriver(HWND hwnd, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread);
 
 public:
+	//base
+	virtual u32 getAdapterCount() const { return AdapterCount; }
 	virtual void* getD3DDevice() const { return pID3DDevice; }
 
 	virtual bool beginScene();
 	virtual bool endScene();
-	virtual bool clear(bool renderTarget, bool zBuffer, SColor color, float z = 1);
+	virtual bool clear(bool renderTarget, bool zBuffer, bool stencil, SColor color);
 
 	virtual bool queryFeature(E_VIDEO_DRIVER_FEATURE feature) const;
 
@@ -32,88 +32,56 @@ public:
 
 	virtual void setMaterial(const SMaterial& material);
 	virtual const SMaterial& getMaterial() const { return Material; }
+	virtual SOverrideMaterial& getOverrideMaterial() { return OverrideMaterial; }
 
 	virtual void setTexture(u32 stage, ITexture* texture);
 	virtual ITexture* getTexture(u32 index) const;
 
-	//scene states, light & fog
-	virtual SColor getAmbientLight() const { return SceneState.AmbientLightColor; }
-	virtual void setAmbientLight( SColor color );
-	virtual void deleteAllDynamicLights();
-	virtual bool addDynamicLight( const SLight& light );
-	virtual u32 getDynamicLightCount() const  { return SceneState.LightCount; }
-	virtual const SLight& getDynamicLight(u32 index) const { return SceneState.Lights[index]; }
-	virtual void turnLightOn(u32 lightIndex, bool turnOn);
-
-	virtual void setFog(SFogParam fogParam);
-	virtual SFogParam getFog() const { return SceneState.FogParam; }
-
-	virtual bool setClipPlane( u32 index, const plane3df& plane );
-	virtual void enableClipPlane( u32 index, bool enable );
-
-	virtual bool setRenderTarget( ITexture* texture );
+	virtual bool setRenderTarget( IRenderTarget* texture );
 
 	virtual void setViewPort( recti area );
 	virtual const recti& getViewPort() const { return Viewport; }
 
-	virtual void registerLostReset( ILostResetCallback* callback );
-
+	virtual void registerLostReset( ILostResetCallback* callback ){ LostResetList.push_back(callback); }
 	virtual void setDisplayMode(const dimension2du& size);
+	virtual dimension2du getDisplayMode() const;
+	virtual bool setDriverSetting(const SDriverSetting& setting);
+	virtual const SDriverSetting& getDriverSetting() const { return DriverSetting; }
 
-	virtual bool changeDriverSettings(bool vsync, u32 antialias);
-
-	virtual void draw3DMode(IVertexBuffer* vbuffer, IIndexBuffer* ibuffer, IVertexBuffer* vbuffer2, E_PRIMITIVE_TYPE primType,
-		u32 primCount, SDrawParam drawParam);
-
-	virtual void draw3DMode(IVertexBuffer* vbuffer, E_PRIMITIVE_TYPE primType, u32 primCount, u32 voffset, u32 startIndex);
-
-	virtual void draw3DModeUP(void* vertices, E_VERTEX_TYPE vType, void* indices, E_INDEX_TYPE iType, u32 iCount, u32 vStart, u32 vCount, E_PRIMITIVE_TYPE primType);
-	virtual void draw3DModeUP(void* vertices, E_VERTEX_TYPE vType, u32 vCount, E_PRIMITIVE_TYPE primType);
-	
-	virtual void draw2DMode(IVertexBuffer* vbuffer, IIndexBuffer* ibuffer, E_PRIMITIVE_TYPE primType,
-		u32 primCount, SDrawParam drawParam,
-		bool alpha, bool texture, bool alphaChannel);
-	virtual void draw2DMode(IVertexBuffer* vbuffer, E_PRIMITIVE_TYPE primTpye, u32 primCount, u32 vOffset, u32 vStart,
-		bool alpha, bool texture, bool alphaChannel);
-
-	virtual void draw2DModeUP(void* vertices, E_VERTEX_TYPE vType, void* indices, E_INDEX_TYPE iType, u32 iCount, u32 vStart, u32 vCount, E_PRIMITIVE_TYPE primType, bool alpha, bool texture, bool alphaChannel);
-	virtual void draw2DModeUP(void* vertices, E_VERTEX_TYPE vType, u32 vCount, E_PRIMITIVE_TYPE primType, bool alpha, bool texture, bool alphaChannel);
-
-	virtual void drawIndexedPrimitive(IVertexBuffer* vbuffer, IIndexBuffer* ibuffer, IVertexBuffer* vbuffer2, E_PRIMITIVE_TYPE primType,
-		u32 primCount, SDrawParam drawParam);	
-	virtual void drawPrimitive(IVertexBuffer* vbuffer, E_PRIMITIVE_TYPE primType, u32 primCount, u32 voffset, u32 vStart);	
-	virtual void drawIndexedPrimitiveUP(void* vertices, E_VERTEX_TYPE vType, void* indices, E_INDEX_TYPE iType, u32 iCount, u32 vStart, u32 vCount, E_PRIMITIVE_TYPE primType);	
-	virtual void drawPrimitiveUP(void* vertices, E_VERTEX_TYPE vType, u32 vCount, E_PRIMITIVE_TYPE primType);
-
-	virtual void drawDebugInfo(const c8* strMsg);
-
+	virtual ISceneStateServices* getSceneStateServices() const { return (ISceneStateServices*)SceneStateServices; }
 	virtual IMaterialRenderServices* getMaterialRenderServices() const { return (IMaterialRenderServices*)MaterialRenderServices; }
 	virtual IShaderServices*	getShaderServices() const { return (IShaderServices*)ShaderServices; }
 
+	//draw
+	virtual void draw3DMode( const SBufferParam& bufferParam, 
+		E_PRIMITIVE_TYPE primType,
+		u32 primCount, 
+		const SDrawParam& drawParam);
+
+	virtual void draw2DMode( const SBufferParam& bufferParam, 
+		E_PRIMITIVE_TYPE primType,
+		u32 primCount, 
+		const SDrawParam& drawParam,
+		bool alpha, bool alphaChannel, E_BLEND_FACTOR srcBlend, E_BLEND_FACTOR destBlend);
+
+	virtual void drawIndexedPrimitive( const SBufferParam& bufferParam, 
+		E_PRIMITIVE_TYPE primType,
+		u32 primCount, 
+		const SDrawParam& drawParam);
+	virtual void drawPrimitive( const SBufferParam& bufferParam,
+		E_PRIMITIVE_TYPE primType,
+		u32 primCount,
+		const SDrawParam& drawParam);
+	virtual void drawDebugInfo(const c8* strMsg);
+
 private:
 	bool reset();
+	void createVertexDecl();
+	void releaseVertexDecl();
 	void setVertexDeclaration(E_VERTEX_TYPE type);
-	IDirect3DVertexDeclaration9* getD3DVertexDeclaration(E_VERTEX_TYPE type) { return VertexDeclarations[type]; }
+	IDirect3DVertexDeclaration9* getD3DVertexDeclaration(E_VERTEX_TYPE type);
 	void setRenderState3DMode();
-	void setRenderState2DMode( bool alpha, bool texture, bool alphaChannel );
-	f32 getFPS() const { return FPSCounter.getFPS(); }
-
- 	typedef IDirect3D9* (__stdcall *D3DCREATETYPE)(UINT);
- 	typedef HRESULT (__stdcall *D3DCREATETYPEEX)(UINT, IDirect3D9Ex**);
-
-	void resetSceneStateCache();
-	struct SSceneStateCache			//SceneState的缓存
-	{
-		DWORD		Ambient;
-		DWORD		FogColor;
-		DWORD		FogTableMode;
-		DWORD		FogVertexMode;
-		DWORD		FogStart;
-		DWORD		FogEnd;
-		DWORD		FogDensity;
-		DWORD		RangeFogEnable;
-	};
-	SSceneStateCache	SSCache;
+	void setRenderState2DMode( bool alpha, bool alphaChannel, E_BLEND_FACTOR srcBlend, E_BLEND_FACTOR destBlend );
 
 public:
 	HMODULE		HLib;
@@ -124,59 +92,52 @@ public:
 	D3DCAPS9		Caps;
 
 	//DepthStencil, backbuffer
-	IDirect3DSurface9*	DepthStencilSurface;
-	dimension2du	DepthStencilSize;
-	IDirect3DSurface9*		BackBuffer;
+	IDirect3DSurface9*		DefaultDepthBuffer;
+	IDirect3DSurface9*		DefaultBackBuffer;
 	D3DFORMAT		BackBufferFormat;
 
 	//rendertarget
-	IDirect3DSurface9*		PrevRenderTarget;			//backbuffer RT0
-	dimension2du		CurrentRenderTargetSize;
+	IRenderTarget*		CurrentRenderTarget;
 
 	//device settings
 	HWND		HWnd;
-	UINT	Adapter;
 	D3DDEVTYPE	DevType;
-	bool		VSync;
-	bool		FullScreen;
-	u8		AntiAliasing;
-	u8		Quality;
-	u32		MaxTextureUnits;
-	u32		MaxUserClipPlanes;
-	c8		VendorName[DEFAULT_SIZE];
-	u32		VendorID;
-	bool		AlphaToCoverageSupport;		//MSAA
-	bool		CSAAApplied;		//CSAA
 
-public:
+	CAdapterInfo	AdapterInfo;
+	SDriverSetting	DriverSetting;
+
+	bool		AlphaToCoverageSupport;
+
+private:
 		struct SDeviceState				//除去material以外的state，material设置时已经做了cache
 		{
 			void reset()
 			{
-				VertexType = (E_VERTEX_TYPE)-1;
-				vBuffer= vBuffer2 = NULL;
+				vType = (E_VERTEX_TYPE)-1;
+				vBuffer0= vBuffer1 = vBuffer2 = vBuffer3 = NULL;
 				iBuffer = NULL;
-				vOffset = vOffset2 = 0;
+				vOffset0 = vOffset1 = vOffset2 = vOffset3 = 0;
 				memset(matrices, 0, sizeof(matrices));
-
-				memset(enableclips, 0, sizeof(enableclips));
-				memset(clipplanes, 0, sizeof(clipplanes));
 			}
 
-			E_VERTEX_TYPE	VertexType;
-			IVertexBuffer*	vBuffer;
-			u32		vOffset;
+			E_VERTEX_TYPE 	vType;
+			IVertexBuffer*	vBuffer0;
+			IVertexBuffer	*vBuffer1;
 			IVertexBuffer*	vBuffer2;
+			IVertexBuffer*	vBuffer3;
+
+			u32		vOffset0;
+			u32		vOffset1;
 			u32		vOffset2;
+			u32		vOffset3;
+
 			IIndexBuffer*		iBuffer;
 			matrix4		matrices[ETS_COUNT];
-
-			plane3df		clipplanes[5];
-			u32		enableclips[5];
 		};
 
 private:
 	SMaterial	Material, LastMaterial;
+	SOverrideMaterial		OverrideMaterial;
 	
 	recti		Viewport;
 	dimension2du	ScreenSize;
@@ -186,28 +147,27 @@ private:
 	typedef std::list<ILostResetCallback*, qzone_allocator<ILostResetCallback*>> T_LostResetList;
 	T_LostResetList	LostResetList;
 
-	SSceneState		SceneState;
-
 	// device state cache
 	SDeviceState	CurrentDeviceState;
 	IMaterialRenderer*		MaterialRenderer;
+	CD3D9SceneStateServices*	SceneStateServices;
 	CD3D9ShaderServices*	ShaderServices;
 	CD3D9MaterialRenderServices*		MaterialRenderServices;
 
 	E_RENDER_MODE		CurrentRenderMode;
 	bool		ResetRenderStates;
 
-	char		DeviceDescription[512];
-	char		DeviceName[32];
+	u32		AdapterCount;
 
-	CFPSCounter		FPSCounter;
 	u32		PrimitivesDrawn;
 	u32		DrawCall;
 
 	//2D
 	SMaterial	InitMaterial2D;
+	SOverrideMaterial		InitOverrideMaterial2D;
 
 	IDirect3DVertexDeclaration9*		VertexDeclarations[EVT_COUNT];
 
 	c8		DebugMsg[512];
 };
+

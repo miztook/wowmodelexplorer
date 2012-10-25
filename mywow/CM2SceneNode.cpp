@@ -8,14 +8,15 @@
 CM2SceneNode::CM2SceneNode( IFileM2* mesh, ISceneNode* parent, bool npc )
 	: Mesh(mesh), IM2SceneNode(parent), IsNpc(npc),
 	CurrentAnim(-1), TimeBlend(0), AnimTimeBlend(0), Restart(true),
-	CurrentCamera(-1), AnimateColors(true), Death(false)
+	CurrentCamera(-1), AnimateColors(true), Death(false), 
+	HideHelmHair(false), HideHelmFacial1(false), HideHelmFacial2(false), HideHelmFacial3(false),
+	ModelAlpha(false), EnableFog(false)
 {
 	Mesh->grab();
-
-	Character = new wow_character(Mesh, npc);
+	
+	M2Instance = new wow_m2instance(Mesh, npc);
 
 	HelmNode = NULL;
-	OwnProjection = NULL;
 
 	for (u32 i=0; i<Mesh->NumParticleSystems; ++i)
 	{
@@ -38,7 +39,7 @@ CM2SceneNode::~CM2SceneNode()
 {
 	removeAllM2ModelEquipments();
 
-	delete Character;
+	delete M2Instance;
 
 	Mesh->drop();
 }
@@ -55,13 +56,20 @@ void CM2SceneNode::registerSceneNode(bool frustumcheck)
 
 	g_Engine->getSceneManager()->registerNodeForRendering(this);
 
-	IM2SceneNode::registerSceneNode(frustumcheck);
+	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	if(cam && !Parent)
+		DistanceSq = cam->Position.getDistanceFromSQ(AbsoluteTransformation.getTranslation());
+
+	for(SceneNodeList::iterator itr= ChildNodes.begin(); itr != ChildNodes.end(); ++itr)
+	{
+		(*itr)->registerSceneNode(frustumcheck);
+		(*itr)->DistanceSq = DistanceSq;
+	}
 }
 
 aabbox3df CM2SceneNode::getBoundingBox() const
 {
 	aabbox3df box = Mesh->getBoundingBox();
-	//Character->DynBones[1].mat.transformBox(box);
 	return box;
 }
 
@@ -71,7 +79,7 @@ void CM2SceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame )
 
 	if (HelmNode && deltaFrame < 0)
 	{
-		if (rand_() % 3 == 0)
+		if (rand_() % 5 == 0)
 			HelmNode->AnimateColors = false;
 		else 
 			HelmNode->AnimateColors = true;
@@ -93,17 +101,17 @@ void CM2SceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame )
 				blend = 0.8f * (1-AnimTimeBlend / (f32)TimeBlend);
 			}
 
-			Character->animateColors(CurrentAnim, currentFrame);
+			M2Instance->animateColors(CurrentAnim, currentFrame);
 
 			if (Mesh->ContainsBillboardBone)
 			{
 				matrix4 rot;
 				getBillboardBoneMat(rot);
-				Character->animateBones(CurrentAnim, currentFrame, lastingFrame, Restart ? blend : 1.0f, &rot);
+				M2Instance->animateBones(CurrentAnim, currentFrame, lastingFrame, Restart ? blend : 1.0f, &rot);
 			}
 			else
 			{
-				Character->animateBones(CurrentAnim, currentFrame, lastingFrame, Restart ? blend : 1.0f, NULL);
+				M2Instance->animateBones(CurrentAnim, currentFrame, lastingFrame, Restart ? blend : 1.0f, NULL);
 			}
 
 			Restart = false;
@@ -117,6 +125,9 @@ void CM2SceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame )
 				else
 					(*i)->setEmitting(true);
 			}
+
+			AnimatedWorldAABB = M2Instance->AnimatedBox;
+			AbsoluteTransformation.transformBox(AnimatedWorldAABB);
 		}
 		else
 		{
@@ -124,37 +135,28 @@ void CM2SceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame )
 			{
 				(*i)->setEmitting(false);
 			}
+			AnimatedWorldAABB = getWorldBoundingBox();
 		}
-
-//		updateAABB();
 	}
 	else		//无动画, 循环 
 	{
 		if (AnimateColors)
-			Character->animateColors(0, lastingFrame);
+			M2Instance->animateColors(0, lastingFrame);
 		else
-			Character->solidColors();
+			M2Instance->solidColors();
 
-		if (Mesh->ContainsBillboardBone)
-		{
-			matrix4 rot;
-			getBillboardBoneMat(rot);
-			Character->animateBones(&rot);
-		}
-		else
-		{
-			Character->disableBones();
-		}
+		M2Instance->disableBones();
 
 		for (T_ParticleSystemNodes::iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 		{
 			(*i)->setAnimationFrame(0, lastingFrame);
 			(*i)->setEmitting(true);
 		}
+		AnimatedWorldAABB = getWorldBoundingBox();
 	}
 
 	//anim texture
-	Character->animateTextures(0, lastingFrame);
+	M2Instance->animateTextures(0, lastingFrame);
 
 	// 更新Attachment位置
 	for(T_AttachmentEntries::iterator i=AttachmentEntries.begin(); i != AttachmentEntries.end(); ++i)
@@ -165,49 +167,56 @@ void CM2SceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame )
 
 void CM2SceneNode::render()
 {
-	CFileSkin* skin = Character->CurrentSkin;
+	CFileSkin* skin = M2Instance->CurrentSkin;
 	if (!skin)
 		return;
 
-	for (PLENTRY p = Character->VisibleGeosetList.Flink; p != &Character->VisibleGeosetList; p = p->Flink)
+	for (PLENTRY p = M2Instance->VisibleGeosetList.Flink; p != &M2Instance->VisibleGeosetList; p = p->Flink)
 	{
 		u32 c = reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link)->Index;
 
-		if (Character->DynGeosets[c].NoAlpha)
+		if (M2Instance->DynGeosets[c].NoAlpha)
 			continue;
 
 		renderGeoset(c);
 	}
 
-	//aabbox3df box = getWorldBoundingBox(); //Mesh->BoundingAABBox;
+	//aabbox3df box = getAnimatedWorldAABB(); //Mesh->BoundingAABBox;
 	//AbsoluteTransformation.transformBox(box);
 	//g_Engine->getDrawServices()->add3DBox(box, SColor(255,0,0));
 
-// 	if (Character->getType() == MT_ITEM)
-// 		g_Engine->getDrawServices()->draw2DImage(Character->ReplaceTextures[TEXTURE_ITEM], vector2di(0,0), true);
+//  	if (Mesh->getType() == MT_ITEM)
+//  		g_Engine->getDrawServices()->draw2DImage(Character->ReplaceTextures[TEXTURE_ITEM], vector2di(0,0), true);
 }
 
 void CM2SceneNode::renderGeoset( u32 index )
 {
 	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
-	CFileSkin* skin = Character->CurrentSkin;
+	CFileSkin* skin = M2Instance->CurrentSkin;
 
-	CGeoset* set = &Character->CurrentSkin->Geosets[index];
-	SDynGeoset* dset = &Character->DynGeosets[index];
+	CGeoset* set = &M2Instance->CurrentSkin->Geosets[index];
+	SDynGeoset* dset = &M2Instance->DynGeosets[index];
 	for (CGeoset::T_BoneUnitList::iterator itr =set->BoneUnits.begin(); itr != set->BoneUnits.end(); ++itr)
 	{
 		SRenderUnit unit =  {0};
 
-		if(!Character->setGeosetMaterial(index, unit.material))
+		if(!M2Instance->setGeosetMaterial(index, unit.material))
 			continue;
+		unit.material.FogEnable = EnableFog;
 
-		unit.vbuffer = skin->VertexBuffer; 
-		unit.vbuffer2 = skin->BoneBuffer;
-		unit.ibuffer = skin->IndexBuffer;
+		if (RenderInstType == ERT_MESH && ModelAlpha)
+			unit.priority = RenderPriority + (set->GeoID != 0 ? 1 : 0);	//子模型优先渲染, 身体最后渲染
+		unit.distance = DistanceSq;
+
+		unit.bufferParam.vbuffer0 = skin->GVertexBuffer; 
+		unit.bufferParam.vbuffer1 = skin->TVertexBuffer;
+		unit.bufferParam.vbuffer2 = skin->AVertexBuffer;
+		unit.bufferParam.vType = EVT_MODEL;
+		unit.bufferParam.ibuffer = skin->IndexBuffer;
 		unit.primType = EPT_TRIANGLES;
 		unit.primCount = itr->PrimCount;
 
-		unit.drawParam.voffset = 0; 
+		unit.drawParam.voffset0 = unit.drawParam.voffset1 = 0; 
 		unit.drawParam.voffset2 = itr->BoneVStart - set->VStart;		//现在位置和顶点位置的偏移
 		unit.drawParam.startIndex = itr->StartIndex;
 		unit.drawParam.numVertices = set->VCount;
@@ -230,18 +239,8 @@ void CM2SceneNode::renderGeoset( u32 index )
 			unit.matView = &CurrentView;
 			unit.matProjection = &CurrentProjection;
 		}
-		else
-		{
-			unit.matProjection = OwnProjection;
-		}
 
-		unit.textures[0] = dset->Textures[0];
-
-		//alpha
-		if (unit.material.getMaterialAlpha() < 1.0f && !unit.material.isTransparent())
-		{
-			unit.material.MaterialType = EMT_TRANSPARENT_ALPHA_BLEND;
-		}
+		unit.textures[0] = dset->Texture0;
 
 		 g_Engine->getSceneRenderServices()->addRenderUnit(&unit, RenderInstType);
 	}
@@ -249,7 +248,7 @@ void CM2SceneNode::renderGeoset( u32 index )
 
 bool CM2SceneNode::isNodeEligible()
 {
-	aabbox3df box = getWorldBoundingBox();
+	aabbox3df box = getAnimatedWorldAABB();
 	if (box.isZero())
 		return false;
 
@@ -264,9 +263,6 @@ bool CM2SceneNode::playAnimationByIndex( u32 anim, bool loop, f32 speed /*= 1.0f
 	if (Mesh->NumAnimations == 0)
 	{
 		CurrentAnim = -1;
-
-	//	Character->disableBones();
-
 		return false;
 	}
 
@@ -283,7 +279,8 @@ bool CM2SceneNode::playAnimationByIndex( u32 anim, bool loop, f32 speed /*= 1.0f
 	AnimTimeBlend = TimeBlend = timeblend;
 	Restart = restart;
 
-	Character->Blink = a->animID == 0;
+	if (M2Instance->CharacterInfo)
+		M2Instance->CharacterInfo->Blink = a->animID == 0;
 
 	Death = a->animID == 1;
 
@@ -299,23 +296,21 @@ bool CM2SceneNode::playAnimationByName( const c8* name, u32 subIndx, bool loop, 
 		return false;
 	}
 
-	CurrentAnimName = name;
-
 	return playAnimationByIndex((u32)idx, loop, speed, timeblend, restart);
 }
 
 bool CM2SceneNode::takeItem( s32 itemid, s32* itemslot )
 {
-	if (Mesh->getType() != MT_CHARACTER || IsNpc)
+	if (!M2Instance->CharacterInfo || IsNpc)
 		return false;
 
-	s32 slot = Character->getItemSlot(itemid);
+	s32 slot = M2Instance->getItemSlot(itemid);
 	if (slot == -1)
 		return false;
 
-	Character->updateEquipments(slot, itemid);
+	M2Instance->updateEquipments(slot, itemid);
 
-	if (Character->slotHasModel(slot))
+	if (M2Instance->slotHasModel(slot))
 		setM2ModelEquipment(slot, itemid);
 
 	if (itemslot)
@@ -326,25 +321,31 @@ bool CM2SceneNode::takeItem( s32 itemid, s32* itemslot )
 
 void CM2SceneNode::loadStartOutfit( s32 startid, bool deathknight )
 {
- 	Character->dressStartOutfit(startid);
+	if (!M2Instance->CharacterInfo)
+		return;
+
+ 	M2Instance->dressStartOutfit(startid);
 
 	for (u32 slot=0; slot<NUM_CHAR_SLOTS; ++slot)
 	{
-		s32 id = Character->Equipments[slot];
-		if (Character->slotHasModel(slot))
+		s32 id = M2Instance->CharacterInfo->Equipments[slot];
+		if (M2Instance->slotHasModel(slot))
 			setM2ModelEquipment(slot, id);
 	}
 
-	Character->DeathKnight = deathknight;
+	M2Instance->CharacterInfo->DeathKnight = deathknight;
 }
 
 void CM2SceneNode::loadSet( s32 setid )
 {
-	Character->dressSet(setid);
+	if (!M2Instance->CharacterInfo)
+		return;
+
+	M2Instance->dressSet(setid);
 	for (u32 slot=0; slot<NUM_CHAR_SLOTS; ++slot)
 	{
-		s32 id = Character->Equipments[slot];
-		if (Character->slotHasModel(slot))
+		s32 id = M2Instance->CharacterInfo->Equipments[slot];
+		if (M2Instance->slotHasModel(slot))
 			setM2ModelEquipment(slot, id);
 	}
 }
@@ -362,7 +363,7 @@ void CM2SceneNode::setM2ModelEquipment( s32 slot, s32 itemid )
 
 	SAttachmentEntry *entry1 = new SAttachmentEntry;
 	SAttachmentEntry* entry2 = new SAttachmentEntry;
-	Character->setM2Equipment(slot, itemid, entry1, entry2);
+	M2Instance->setM2Equipment(slot, itemid, entry1, entry2);
 
 	IFileM2* m1 = NULL;
 	if (entry1->attachIndex != -1 )
@@ -370,10 +371,10 @@ void CM2SceneNode::setM2ModelEquipment( s32 slot, s32 itemid )
 		m1 = g_Engine->getResourceLoader()->loadM2(entry1->modelpath);
 		if (m1)
 		{
-			Character->ShowAttachments[entry1->attachIndex] = true;
+			M2Instance->ShowAttachments[entry1->attachIndex] = true;
 
 			IM2SceneNode* node = g_Engine->getSceneManager()->addM2SceneNode(m1, this);
-			wow_character* c = node->getWowCharacter();
+			wow_m2instance* c = node->getM2Instance();
 			ITexture* t = g_Engine->getResourceLoader()->loadTexture(entry1->texpath);
 			c->setItemTexture(t);
 			c->buildVisibleGeosets();
@@ -385,7 +386,10 @@ void CM2SceneNode::setM2ModelEquipment( s32 slot, s32 itemid )
 			if (entry1->slot == CS_HEAD)
 			{
 				HelmNode = (CM2SceneNode*)node;
-				HideHelmHair = Character->HelmHideHair;
+				HideHelmHair = M2Instance->CharacterInfo->HelmHideHair;
+				HideHelmFacial1 = M2Instance->CharacterInfo->HelmHideFacial1;
+				HideHelmFacial2 = M2Instance->CharacterInfo->HelmHideFacial2;
+				HideHelmFacial3 = M2Instance->CharacterInfo->HelmHideFacial3;
 			}
 		}
 	}
@@ -396,13 +400,13 @@ void CM2SceneNode::setM2ModelEquipment( s32 slot, s32 itemid )
 	IFileM2* m2 = NULL;
 	if (entry2->attachIndex != -1)
 	{
-		Character->ShowAttachments[entry2->attachIndex] = true;
+		M2Instance->ShowAttachments[entry2->attachIndex] = true;
 		
 		m2 = g_Engine->getResourceLoader()->loadM2(entry2->modelpath);
 		if (m2)
 		{
 			IM2SceneNode* node = g_Engine->getSceneManager()->addM2SceneNode(m2, this);
-			wow_character* c = node->getWowCharacter();
+			wow_m2instance* c = node->getM2Instance();
 			ITexture* t = g_Engine->getResourceLoader()->loadTexture(entry2->texpath);
 			c->setItemTexture(t);
 			c->buildVisibleGeosets();
@@ -417,6 +421,9 @@ void CM2SceneNode::setM2ModelEquipment( s32 slot, s32 itemid )
 		delete entry2;
 
 	updateCloseHands();
+
+	setModelAlpha(M2Instance->EnableModelAlpha, M2Instance->ModelAlpha);
+	setModelColor(M2Instance->EnableModelColor, M2Instance->ModelColor);
 }
 
 void CM2SceneNode::removeM2ModelEquipment( s32 slot )
@@ -426,7 +433,7 @@ void CM2SceneNode::removeM2ModelEquipment( s32 slot )
 		SAttachmentEntry* entry = (*i);
 		if (entry->slot == slot)
 		{		
-			Character->ShowAttachments[(*i)->attachIndex] = false;
+			M2Instance->ShowAttachments[(*i)->attachIndex] = false;
 
 			ISceneNode* n = (ISceneNode*)entry->node;
 			removeChild(n);
@@ -436,8 +443,11 @@ void CM2SceneNode::removeM2ModelEquipment( s32 slot )
 			if (slot == CS_HEAD)
 			{
 				HelmNode = NULL;
-				Character->HelmHideHair = false;
+				M2Instance->CharacterInfo->HelmHideHair = false;
 				HideHelmHair = false;
+				HideHelmFacial1 = false;
+				HideHelmFacial2 = false;
+				HideHelmFacial3 = false;
 			}
 		}
 		else
@@ -458,19 +468,35 @@ void CM2SceneNode::removeAllM2ModelEquipments()
 
 void CM2SceneNode::showHelm( bool show )
 {
+	if (!M2Instance->CharacterInfo)
+		return;
+
 	if (HelmNode)
 	{
 		HelmNode->Visible = show;
 		if (!show)
-			Character->HelmHideHair = false;
+		{
+			M2Instance->CharacterInfo->HelmHideHair = false;
+			M2Instance->CharacterInfo->HelmHideFacial1 = false;
+			M2Instance->CharacterInfo->HelmHideFacial2 = false;
+			M2Instance->CharacterInfo->HelmHideFacial3 = false;
+		}
 		else 
-			Character->HelmHideHair = HideHelmHair;
+		{
+			M2Instance->CharacterInfo->HelmHideHair = HideHelmHair;
+			M2Instance->CharacterInfo->HelmHideFacial1 = HideHelmFacial1;
+			M2Instance->CharacterInfo->HelmHideFacial2 = HideHelmFacial2;
+			M2Instance->CharacterInfo->HelmHideFacial3 = HideHelmFacial3;
+		}
 	}
 }
 
 void CM2SceneNode::showCape(bool show)
 {
-	Character->ShowCape = show;
+	if (Mesh->getType() != MT_CHARACTER)
+		return;
+
+	M2Instance->CharacterInfo->ShowCape = show;
 }
 
 bool CM2SceneNode::isShowHelm() const
@@ -486,10 +512,10 @@ bool CM2SceneNode::isShowHelm() const
 
 bool CM2SceneNode::isShowCape() const
 {
-	if (Mesh->getType() != MT_CHARACTER)
+	if (!M2Instance->CharacterInfo)
 		return false;
 
-	return Character->ShowCape;
+	return M2Instance->CharacterInfo->ShowCape;
 }
 
 void CM2SceneNode::setParticleSpeed(float speed)
@@ -508,7 +534,7 @@ void CM2SceneNode::updateAttachmentEntry( SAttachmentEntry* entry )
 	if(bIdx == -1)
 		return;
 
-	const SDynBone& b = Character->DynBones[bIdx];
+	const SDynBone& b = M2Instance->DynBones[bIdx];
 
 	IM2SceneNode* node = (IM2SceneNode*)entry->node;
 
@@ -519,6 +545,7 @@ void CM2SceneNode::updateAttachmentEntry( SAttachmentEntry* entry )
 	m = b.mat * m;
 
 	node->setRelativeTransformation(m);
+	node->update(true);
 }
 
 void CM2SceneNode::getBillboardBoneMat(matrix4& m)
@@ -568,38 +595,37 @@ IRibbonSceneNode* CM2SceneNode::addRibbonEmitterSceneNode( RibbonEmitter* re )
 
 void CM2SceneNode::updateCharacter()
 {
-	if (Mesh->getType() == MT_CHARACTER)
+	if (M2Instance->CharacterInfo && !IsNpc)
 	{
-		if (!IsNpc)
-			Character->updateCharacter();
+		M2Instance->updateCharacter();
 	}
 }
 
 void CM2SceneNode::buildVisibleGeosets()
 {
-	Character->buildVisibleGeosets();
+	M2Instance->buildVisibleGeosets();
 }
 
 bool CM2SceneNode::updateNpc( s32 npcid )
 {
-	if (Mesh->getType() == MT_CHARACTER && IsNpc)
+	if (M2Instance->CharacterInfo && IsNpc)
 	{
-		bool success = Character->updateNpc(npcid);
+		bool success = M2Instance->updateNpc(npcid);
 		if (success)
 		{
 			for (u32 slot=0; slot<NUM_CHAR_SLOTS; ++slot)
 			{
-				s32 id = Character->Equipments[slot];
-				if (Character->slotHasModel(slot))
+				s32 id = M2Instance->CharacterInfo->Equipments[slot];
+				if (M2Instance->slotHasModel(slot))
 					setM2ModelEquipment(slot, id);
 			}
-			Character->updateCharacter();
+			M2Instance->updateCharacter();
 		}
 		return success;
 	}
 	else if(Mesh->getType() == MT_CREATRUE)
 	{
-		return Character->updateNpc(npcid);
+		return M2Instance->updateNpc(npcid);
 	}
 
 	return false;
@@ -663,6 +689,72 @@ bool CM2SceneNode::setModelCamera( s32 index )
 
 void CM2SceneNode::updateCloseHands()
 {
-	Character->CloseLHand = Character->Equipments[CS_HAND_LEFT] != 0;
-	Character->CloseRHand = Character->Equipments[CS_HAND_RIGHT] != 0;	
+	M2Instance->CharacterInfo->CloseLHand = M2Instance->CharacterInfo->Equipments[CS_HAND_LEFT] != 0;
+	M2Instance->CharacterInfo->CloseRHand = M2Instance->CharacterInfo->Equipments[CS_HAND_RIGHT] != 0;	
+}
+
+void CM2SceneNode::onUpdated()
+{
+	IM2SceneNode::onUpdated();
+
+	if (CurrentAnim != -1)
+	{
+		AnimatedWorldAABB = M2Instance->AnimatedBox;
+		AbsoluteTransformation.transformBox(AnimatedWorldAABB);
+	}
+	else
+	{
+		AnimatedWorldAABB = getWorldBoundingBox();
+	}
+}
+
+void CM2SceneNode::setModelAlpha( bool enable, f32 val )
+{
+	f32 v = clamp_(val, 0.0f, 1.0f);
+	M2Instance->EnableModelAlpha = enable;
+	M2Instance->ModelAlpha = v;
+
+	//model的alpha状态
+	ModelAlpha = enable && v < 1.0f;
+
+	for(T_AttachmentEntries::iterator i=AttachmentEntries.begin(); i != AttachmentEntries.end(); ++i)
+	{
+		CM2SceneNode* node = (CM2SceneNode*)(*i)->node;
+		node->setModelAlpha(enable, v);
+		switch((*i)->slot)
+		{
+		case CS_HEAD:
+		case CS_SHOULDER:
+			node->RenderPriority = 2;
+			break;
+		case CS_HAND_LEFT:
+		case CS_HAND_RIGHT:
+			node->RenderPriority = -2;
+			break;
+		default:
+			break;
+		}
+	}
+
+	for (T_ParticleSystemNodes::iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
+	{
+		(*i)->setWholeAlpha(enable,v);
+	}
+}
+
+void CM2SceneNode::setModelColor( bool enable, SColor color )
+{
+	M2Instance->EnableModelColor = enable;
+	M2Instance->ModelColor = color;
+
+	for(T_AttachmentEntries::iterator i=AttachmentEntries.begin(); i != AttachmentEntries.end(); ++i)
+	{
+		CM2SceneNode* node = (CM2SceneNode*)(*i)->node;
+		node->setModelColor(enable, color);
+	}
+
+	for (T_ParticleSystemNodes::iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
+	{
+		(*i)->setWholeColor(enable,color);
+	}
 }

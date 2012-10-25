@@ -73,7 +73,8 @@ public:
 	itemVisualsDB*	 getItemVisualsDB() const 	{ return ItemVisualsDB; }
 	itemVisualEffectDB*	 getItemVisualEffectDB() const { return ItemVisualEffectDB; }
 	startOutfitDB*	getStartOutfitDB() const { return	StartOutFitDB; }
-	//lightSkyboxDB*	getLightSkyboxDB() const  { return LightSkyboxDB; }
+	lightDB*	getLightDB() const { return LightDB; }
+	lightSkyboxDB*	getLightSkyboxDB() const  { return LightSkyboxDB; }
 	itemDB*		getItemDB() const	{ return ItemDB; }
 	mapDB*		getMapDB() const	{ return MapDB; }
 	spellVisualEffectNameDB*	 getSpellVisualEffectNameDB() const { return SpellVisualEffectNameDB; }
@@ -99,7 +100,8 @@ private:
 	itemVisualsDB*						ItemVisualsDB;
 	itemVisualEffectDB*			ItemVisualEffectDB;
 	startOutfitDB*					StartOutFitDB;
-	//lightSkyboxDB*				LightSkyboxDB;
+	lightDB*				LightDB;
+	lightSkyboxDB*				LightSkyboxDB;
 	itemDB*									ItemDB;
 	mapDB*									MapDB;
 	spellVisualEffectNameDB*					SpellVisualEffectNameDB;

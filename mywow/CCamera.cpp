@@ -11,6 +11,8 @@ CCamera::CCamera( const vector3df& position, const vector3df& lookat, const vect
 	FarValue = farValue;
 	FOV = fov;
 
+	ClipDistance = FarValue * 0.75f;
+
 	recalculateAll();
 }
 
@@ -21,7 +23,7 @@ void CCamera::recalculateAll()
 	AspectRatio = (f32)viewport.getWidth() / (f32)viewport.getHeight();
 
 	recalculateViewMatrix();
-	recalculateProjectionMatrix(IsOrthogonal);
+	recalculateProjectionMatrix();
 	recalculateFrustum();
 }
 
@@ -32,17 +34,21 @@ void CCamera::recalculateViewMatrix()
 	ViewMatrix.getInverse(InverseViewMatrix);
 }
 
-void CCamera::recalculateProjectionMatrix( bool orthogonal )
+void CCamera::recalculateProjectionMatrix()
 {
-	if (orthogonal)
+	if (IsOrthogonal)
 		ProjectionMatrix.buildProjectionMatrixOrthoFovLH( FOV, AspectRatio, NearValue, FarValue );
 	else
 		ProjectionMatrix.buildProjectionMatrixPerspectiveFovLH( FOV, AspectRatio, NearValue, FarValue );
+
+	ClipProjectionMatrix.buildProjectionMatrixPerspectiveFovLH( FOV, AspectRatio, NearValue, NearValue + ClipDistance );
 }
 
 void CCamera::recalculateFrustum()
 {
 	ViewFrustum.setFrom( ProjectionMatrix * ViewMatrix );
+
+	frustum::makePlane(ClipProjectionMatrix * ViewMatrix, VF_FAR_PLANE, ClipPlane);
 }
 
 void CCamera::onKeyMove( f32 speed, SKeyControl keycontrol )
@@ -116,13 +122,19 @@ void CCamera::pitch_yaw_FPS( f32 pitchDegree, f32 yawDegree )
 	recalculateFrustum();
 }
 
-/*
+void CCamera::setClipDistance( f32 distance )
+{
+	ClipDistance = min_(FarValue, distance);
+	recalculateAll();
+}
+
+
 void CCamera::makeClipPlane( const plane3df& plane, plane3df& clip )
 {
 	clip = plane;
 
-	matrix4 mat ;
-	ViewMatrix.getInverse(mat);
+	matrix4 mat = ViewMatrix;
+	mat.getInverse(mat);
 	mat.transpose();
 	mat.transformPlane(clip);
 
@@ -130,4 +142,3 @@ void CCamera::makeClipPlane( const plane3df& plane, plane3df& clip )
 	mat.transpose();
 	mat.transformPlane(clip);
 }
-*/

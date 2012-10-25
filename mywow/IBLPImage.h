@@ -19,5 +19,5 @@ public:
 	virtual ECOLOR_FORMAT getColorFormat() const = 0;
 	virtual dimension2du getDimension() const = 0;
 	virtual void* getMipmapData(u32 level) const = 0;  
-	virtual void copyMipmapData(u32 level, void* dest, u32 pitch, u32 width, u32 height) = 0;
+	virtual bool copyMipmapData(u32 level, void* dest, u32 pitch, u32 width, u32 height) = 0;
 };

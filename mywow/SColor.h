@@ -87,6 +87,7 @@ struct SColorf
 public:
 	SColorf() : r(1.0f), g(1.0f), b(1.0f), a(1.0f) { }
 
+	SColorf(vector3df v) : r(v.X), g(v.Y), b(v.Z), a(1.0f) {}
 	SColorf(f32 r,f32 g, f32 b, f32 a=1.0f) : r(r), g(g), b(b), a(a) { }
 
 	SColorf(SColor c)

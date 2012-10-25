@@ -2,38 +2,38 @@
 #include "CMesh.h"
 #include "mywow.h"
 
-CMesh::CMesh( IVertexBuffer* vbuffer, IIndexBuffer* ibuffer, E_PRIMITIVE_TYPE primType, u32 primCount, const aabbox3df& box )
+CMesh::CMesh(const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, u32 primCount, const aabbox3df& box )
 {
-	VertexBuffer = vbuffer;
-	IndexBuffer = ibuffer;
+	BufferParam = bufferParam;
 	PrimType = primType;
 	PrimCount = primCount,
 	Box = box;
 
-	_ASSERT(VertexBuffer);
-	g_Engine->getHardwareBufferServices()->createHardwareBuffer(VertexBuffer);
+	g_Engine->getHardwareBufferServices()->createHardwareBuffers(BufferParam);
 
-	if (IndexBuffer)
-		g_Engine->getHardwareBufferServices()->createHardwareBuffer(IndexBuffer);
-
-	update();
+	updateVertexBuffer(0);
+	updateVertexBuffer(1);
+	updateVertexBuffer(2);
+	updateVertexBuffer(3);
+	updateIndexBuffer();
 }
 
 CMesh::~CMesh()
 {
-	if (IndexBuffer)
-		g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(IndexBuffer);
+	g_Engine->getHardwareBufferServices()->destroyHardwareBuffers(BufferParam);
 
-	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(VertexBuffer);
-
-	delete IndexBuffer;
-	delete VertexBuffer;
+	BufferParam.destroy();
 }
 
-void CMesh::update()
+void CMesh::updateVertexBuffer(u32 index)
 {
-	g_Engine->getHardwareBufferServices()->updateHardwareBuffer(VertexBuffer, 0, VertexBuffer->Size);
+	IVertexBuffer* vbuffer = BufferParam.getVBuffer(index);
+	if(vbuffer)
+		g_Engine->getHardwareBufferServices()->updateHardwareBuffer(vbuffer, 0, vbuffer->Size);
+}
 
-	if (IndexBuffer)
-		g_Engine->getHardwareBufferServices()->updateHardwareBuffer(IndexBuffer, 0, IndexBuffer->Size);
+void CMesh::updateIndexBuffer()
+{
+	if (BufferParam.ibuffer)
+		g_Engine->getHardwareBufferServices()->updateHardwareBuffer(BufferParam.ibuffer, 0, BufferParam.ibuffer->Size);
 }

@@ -1,24 +1,28 @@
 #include "stdafx.h"
 #include "wowEnvironment.h"
-#include "mpq_libmpq.h"
+#include "mpq_stormlib.h"
 #include "mywow.h"
 
 const c8* baseupdatefiles[] =
 {
-	"wow-update-base-15211.mpq",
-	"wow-update-base-15079.mpq",
-	"wow-update-base-15005.mpq",
-	"wow-update-base-14769.mpq",
-	"wow-update-base-14656.mpq",
+	"wow-update-base-16016.mpq",
+	"wow-update-base-16048.mpq",
+	"wow-update-base-16057.mpq",
 };
 
 const c8* basempqfiles[] = 
 {
-	"art.mpq",
+	"model.mpq",
+	"itemtexture.mpq",
+	"texture.mpq",
+	"interface.mpq",
 	"expansion1.mpq",
 	"expansion2.mpq",
 	"expansion3.mpq",
-//	"world.mpq"
+	"expansion4.mpq",
+	"sound.mpq",
+	"world.mpq",
+	"misc.mpq",
 };
 
 const c8* localempqfiles[] =
@@ -27,7 +31,6 @@ const c8* localempqfiles[] =
 // 	"expansion1-locale",
 // 	"expansion2-locale",
 // 	"expansion3-locale"
-
 };
 
 const c8* localeupdatefiles[] =
@@ -56,18 +59,9 @@ bool wowEnvironment::loadWowArchives(IFileSystem* fs, E_LANG_ID langid)
 {
 	const c8* langString = getLangString(langid);
 
-	//upate file
-// 	for (u32 i=0; i<5; ++i)
-// 	{
-// 		string256 path = fs->getBaseDirectory();
-// 		path.append(baseupdatefiles[i]);
-// 
-// 		MPQArchive* ar = new MPQArchive(path.c_str());
-// 		MpqArchives.push_back(ar);
-// 	}
-
 	//main file
-	for (u32 i=0; i<4; ++i)
+	u32 basempqnum = sizeof(basempqfiles) / sizeof(c8*);
+	for (u32 i=0; i<basempqnum; ++i)
 	{
 		string256 path = fs->getBaseDirectory();
 		path.append(basempqfiles[i]);
@@ -75,13 +69,16 @@ bool wowEnvironment::loadWowArchives(IFileSystem* fs, E_LANG_ID langid)
 		if (_access_s(path.c_str(), 0) != 0)
 		{
 			c8 tmp[512];
-			sprintf_s(tmp, 512, "%s doesn't exist，make sure it exists!", path.c_str());
+			sprintf_s(tmp, 512, "%s doesn't exist，make sure it's existed!", path.c_str());
 			MessageBox(NULL, tmp, "", MB_ICONEXCLAMATION);
 			::ExitProcess(-1);
 		}
 
 		MPQArchive* ar = new MPQArchive(path.c_str());
 		ar->isLocale = false;
+		//apply patch
+		ar->applyPatch(baseupdatefiles, sizeof(baseupdatefiles) / sizeof(c8*));
+
 		MpqArchives.push_back(ar);
 	}
 	
@@ -99,8 +96,11 @@ bool wowEnvironment::loadWowArchives(IFileSystem* fs, E_LANG_ID langid)
 // 		MpqArchives.push_back(ar);
 // 	}
 
+
+
 	//main file
-	for (u32 i=0; i<1; ++i)
+	u32 localmpqnum = sizeof(localempqfiles) / sizeof(c8*);
+	for (u32 i=0; i<localmpqnum; ++i)
 	{
 		string256 path = LocalePath;
 		path.append(localempqfiles[i]);
@@ -118,6 +118,7 @@ bool wowEnvironment::loadWowArchives(IFileSystem* fs, E_LANG_ID langid)
 
 		MPQArchive* ar = new MPQArchive(path.c_str());
 		ar->isLocale = true;
+		
 		MpqArchives.push_back(ar);
 	}
 
@@ -133,30 +134,33 @@ void wowEnvironment::unloadWowArchives()
 }
 
 //读取文件使用临时内存，在打开后需要尽快释放
-MPQFile* wowEnvironment::openFile( const c8* filename )
+MPQFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 {
 	int size = 0;
 	unsigned char* buffer = 0;
 
 	for (T_MpqArchives::iterator itr = MpqArchives.begin(); itr != MpqArchives.end(); ++itr)
 	{
-		mpq_archive& mpq_a = (*itr)->mpq_ar;
-		int fileno = libmpq_file_number(&mpq_a, filename);
-		if (fileno == LIBMPQ_EFILE_NOT_FOUND)
+		HANDLE& mpq_a = (*itr)->mpq_a;
+		HANDLE fh;
+		if( !SFileOpenFileEx( mpq_a, filename, SFILE_OPEN_FROM_MPQ, &fh ) )
 			continue;
 
 		// Found!
-		size = libmpq_file_info(&mpq_a, LIBMPQ_FILE_UNCOMPRESSED_SIZE, fileno);
+		size = SFileGetFileSize( fh, NULL );
 
 		// HACK: in patch.mpq some files don't want to open and give 1 for filesize
 		if (size<=1) {
 			return NULL;
 		}
+		if (tempfile)
+			buffer = (unsigned char*)Hunk_AllocateTempMemory(size);
+		else
+			buffer = new unsigned char[size];
 
-		//buffer = new unsigned char[size];
-		buffer = (unsigned char*)Hunk_AllocateTempMemory(size);
-		libmpq_file_getdata(&mpq_a, fileno, buffer);
-		return new MPQFile(buffer, size, filename);
+		SFileReadFile(fh, buffer, (DWORD)size, NULL, NULL);
+		SFileCloseFile(fh);
+		return new MPQFile(buffer, size, filename, tempfile);
 	}
 
 	return NULL;
@@ -166,9 +170,8 @@ bool wowEnvironment::exists( const c8* filename )
 {
 	for (T_MpqArchives::iterator itr = MpqArchives.begin(); itr != MpqArchives.end(); ++itr)
 	{
-		mpq_archive& mpq_a = (*itr)->mpq_ar;
-		int fileno = libmpq_file_number(&mpq_a, filename);
-		if (fileno != LIBMPQ_EFILE_NOT_FOUND) 
+		HANDLE& mpq_a = (*itr)->mpq_a;
+		if( SFileHasFile( mpq_a, filename) )
 			return true;
 	}
 
@@ -179,10 +182,14 @@ s32 wowEnvironment::getSize( const c8* filename )
 {
 	for (T_MpqArchives::iterator itr = MpqArchives.begin(); itr != MpqArchives.end(); ++itr)
 	{
-		mpq_archive& mpq_a = (*itr)->mpq_ar;
-		int fileno = libmpq_file_number(&mpq_a, filename);
-		if (fileno != LIBMPQ_EFILE_NOT_FOUND)
-			return libmpq_file_info(&mpq_a, LIBMPQ_FILE_UNCOMPRESSED_SIZE, fileno);
+		HANDLE& mpq_a = (*itr)->mpq_a;
+		HANDLE fh;
+		if( !SFileOpenFileEx( mpq_a, filename, SFILE_OPEN_FROM_MPQ, &fh ) )
+			continue;
+
+		DWORD filesize = SFileGetFileSize( fh, NULL );
+		SFileCloseFile( fh );
+		return (s32)filesize;
 	}
 
 	return 0;
@@ -195,44 +202,44 @@ void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void*
 		if (!(*itr)->isLocale)
 			continue;
 
-		mpq_archive& mpq_a = (*itr)->mpq_ar;
-		int fileno = libmpq_file_number(&mpq_a, "(listfile)");
+		HANDLE& mpq_a = (*itr)->mpq_a;
+		HANDLE fh;
+		if( !SFileOpenFileEx( mpq_a, "(listfile)", SFILE_OPEN_FROM_MPQ, &fh ) )
+			continue;
 
-		if (fileno != LIBMPQ_EFILE_NOT_FOUND)
+		size_t size = SFileGetFileSize( fh, NULL );
+
+		if (size > 0)
 		{
-			size_t size = libmpq_file_info(&mpq_a, LIBMPQ_FILE_UNCOMPRESSED_SIZE, fileno);
+			u8* buffer = (u8*)Hunk_AllocateTempMemory(size);
+			SFileReadFile(fh, buffer, (DWORD)size, NULL, NULL);
+			u8* p = buffer;
+			u8* end = buffer + size;
 
-			if (size > 0)
+			while (p <= end)
 			{
-				u8* buffer = (u8*)Hunk_AllocateTempMemory(size);
-				libmpq_file_getdata(&mpq_a, fileno, buffer);
-				u8* p = buffer;
-				u8* end = buffer + size;
-
-				while (p <= end)
+				u8* q = p;
+				do 
 				{
-					u8* q = p;
-					do 
-					{
-						if (*q == '\r')
-							break;
-					} while (q++ <= end);
-
-					string256 filename((const c8*)p, q-p);
-					if (filename.length() == 0)
+					if (*q == '\r')
 						break;
+				} while (q++ <= end);
 
-					p = q + 2;			//\r\n
+				string256 filename((const c8*)p, q-p);
+				if (filename.length() == 0)
+					break;
 
-					if (hasFileExtensionA(filename.c_str(), ext))
-					{
-						callback(filename.c_str(), param);
-					}
-				}	
+				p = q + 2;			//\r\n
 
-				Hunk_FreeTempMemory(buffer);
-			}
+				if (hasFileExtensionA(filename.c_str(), ext))
+				{
+					callback(filename.c_str(), param);
+				}
+			}	
+
+			Hunk_FreeTempMemory(buffer);
 		}
+		SFileCloseFile( fh );
 	}
 }
 

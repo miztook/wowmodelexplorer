@@ -13,34 +13,34 @@ CWriteFile::~CWriteFile()
 		fclose(File);
 }
 
-s32 CWriteFile::write( const void* buffer, u32 sizeToWrite )
+u32 CWriteFile::write( const void* buffer, u32 sizeToWrite )
 {
 	if (!isOpen())
 		return 0;
 
-	return (s32)fwrite(buffer, 1, sizeToWrite, File);
+	return fwrite(buffer, 1, sizeToWrite, File);
 }
 
-s32 CWriteFile::writeLine( const c8* buffer, u32 len /*= MAX_WRITE_NUM */ )
+u32 CWriteFile::writeLine( const c8* buffer, u32 len /*= MAX_WRITE_NUM */ )
 {
 	if (!isOpen() || buffer==NULL )
-		return EOF;
+		return 0;
 
 	if(strlen(buffer) > len)
 	{
 		_ASSERT(false);
-		return EOF;
+		return 0;
 	}
 
 	s32 w1 = fputs(buffer, File);
 	if (w1 == EOF)
-		return EOF;
+		return 0;
 
 	s32 w2 = fputc('\n', File);
 	if (w2 == EOF)
-		return EOF;
+		return 0;
 
-	return w1+w2;
+	return (u32)(w1+w2);
 }
 
 bool CWriteFile::seek( long finalPos, bool relativeMovement /*= false*/ )
@@ -71,7 +71,8 @@ void CWriteFile::openFile( bool binary, bool append )
 	if (fopen_s(&File, FileName, mode) == 0)
 	{
 		fseek( File, 0, SEEK_END );
-		FileSize = ftell( File );
+		long size = ftell(File);
+		FileSize = size > 0 ? (u32)size : 0;
 		fseek( File, 0, SEEK_SET );
 	}
 	else

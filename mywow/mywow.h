@@ -1,10 +1,10 @@
 #pragma once
 
-#pragma comment(lib, "bzip2.lib")
-#pragma comment(lib, "zlib.lib")
-#pragma comment(lib, "libmpq.lib")
+#pragma comment(lib, "stormlib.lib")
 #pragma comment(lib, "freetype.lib")
 #pragma comment(lib, "d3d9.lib")
+#pragma comment(lib, "dinput8.lib")
+#pragma comment(lib, "dxguid.lib")
 
 #include "q_memory.h"
 #include "core.h"

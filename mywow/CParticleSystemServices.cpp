@@ -5,7 +5,7 @@
 CParticleSystemServices::CParticleSystemServices( u32 poolQuota, u32 bufferQuota, float density)
 	: PoolQuota(poolQuota), BufferQuota(bufferQuota)
 {
-	ParticlePool.allocateAll(PoolQuota, true);
+	ParticlePool.allocateAll(PoolQuota);
 
 	setParticleDensity(density);
 
@@ -14,11 +14,8 @@ CParticleSystemServices::CParticleSystemServices( u32 poolQuota, u32 bufferQuota
 
 CParticleSystemServices::~CParticleSystemServices()
 {
-	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(IndexBuffer);
-	delete IndexBuffer;
-
-	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(VertexBuffer);
-	delete VertexBuffer;
+	g_Engine->getHardwareBufferServices()->destroyHardwareBuffers(BufferParam);
+	BufferParam.destroy();
 }
 
 void CParticleSystemServices::createBuffer()
@@ -27,10 +24,16 @@ void CParticleSystemServices::createBuffer()
 	u32 isize = BufferQuota * 6;
 
 	//vertex buffer
-	Vertices = new S3DVertexBasicTex[vsize];
-	VertexBuffer = new IVertexBuffer;
-	VertexBuffer->set(Vertices, EVT_BASICTEX, vsize, EMM_DYNAMIC);
-	g_Engine->getHardwareBufferServices()->createHardwareBuffer(VertexBuffer);
+	GVertices = new SGVertex_PC[vsize];
+	TVertices = new STVertex_1T[vsize];
+	BufferParam.vbuffer0 = new IVertexBuffer;
+	BufferParam.vbuffer1 = new IVertexBuffer;
+
+	BufferParam.vbuffer0->set(GVertices, EST_G_PC, vsize, EMM_DYNAMIC);
+	BufferParam.vbuffer1->set(TVertices, EST_T_1T, vsize, EMM_DYNAMIC);
+
+	g_Engine->getHardwareBufferServices()->createHardwareBuffer(BufferParam.vbuffer0);
+	g_Engine->getHardwareBufferServices()->createHardwareBuffer(BufferParam.vbuffer1);
 
 	//index buffer
 	u16* indices = (u16*)Hunk_AllocateTempMemory(sizeof(u16) * BufferQuota * 6);
@@ -49,30 +52,32 @@ void CParticleSystemServices::createBuffer()
 		firstIndex += 6;
 	}
 
-	IndexBuffer = new IIndexBuffer(false);
-	IndexBuffer->set(indices, EIT_16BIT, isize, EMM_STATIC);
-	g_Engine->getHardwareBufferServices()->createHardwareBuffer(IndexBuffer);
-	g_Engine->getHardwareBufferServices()->updateHardwareBuffer(IndexBuffer, 0, isize);
+	BufferParam.ibuffer = new IIndexBuffer(false);
+	BufferParam.ibuffer->set(indices, EIT_16BIT, isize, EMM_STATIC);
+
+	g_Engine->getHardwareBufferServices()->createHardwareBuffer(BufferParam.ibuffer);
+
+	g_Engine->getHardwareBufferServices()->updateHardwareBuffer(BufferParam.ibuffer, 0, isize);
 	Hunk_FreeTempMemory(indices);
 }
 
 void CParticleSystemServices::updateVertices(u32 numVertices, s32& baseVertIndex)
 {
 	if (!numVertices)
-	{
 		return;
-	}
 
-	if (numVertices + CurrentOffset > VertexBuffer->Size)
+	if (numVertices + CurrentOffset > BufferParam.vbuffer0->Size)
 	{
 		baseVertIndex = 0;
-		g_Engine->getHardwareBufferServices()->updateHardwareBuffer(VertexBuffer, 0, numVertices);
+		g_Engine->getHardwareBufferServices()->updateHardwareBuffer(BufferParam.vbuffer0, 0, numVertices);
+		g_Engine->getHardwareBufferServices()->updateHardwareBuffer(BufferParam.vbuffer1, 0, numVertices);
 		CurrentOffset = 0;	
 	}
 	else
 	{
 		baseVertIndex = CurrentOffset;
-		g_Engine->getHardwareBufferServices()->updateHardwareBuffer(VertexBuffer, CurrentOffset, numVertices);
+		g_Engine->getHardwareBufferServices()->updateHardwareBuffer(BufferParam.vbuffer0, CurrentOffset, numVertices);
+		g_Engine->getHardwareBufferServices()->updateHardwareBuffer(BufferParam.vbuffer1, CurrentOffset, numVertices);
 		CurrentOffset += numVertices;	
 	}
 }

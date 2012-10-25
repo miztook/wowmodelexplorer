@@ -3,10 +3,10 @@
 #include "mywow.h"
 #include "CImage.h"
 #include "CD3D9Texture.h"
+#include "CD3D9RenderTarget.h"
 
 CD3D9ManualTextureServices::CD3D9ManualTextureServices()
 {
-	loadTextures();
 	g_Engine->getDriver()->registerLostReset(this);
 }
 
@@ -15,69 +15,14 @@ CD3D9ManualTextureServices::~CD3D9ManualTextureServices()
 	for (T_TextureMap::iterator itr = TextureMap.begin(); itr != TextureMap.end(); ++itr)
 	{
 		if ((*itr).second)
+		{
 			(*itr).second->drop();
+		}
 	}
 
 	for (T_RTList::iterator itr = RenderTargets.begin(); itr != RenderTargets.end(); ++itr)
 	{
-		(*itr)->drop();
-	}
-}
-
-void CD3D9ManualTextureServices::loadTextures()
-{
-	dimension2du size(2,2);
-	u32 white[4] =  { 0xFFFFFFFF, 0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF };
-	u32 red[4] = { 0xFFFF0000, 0xFFFF0000,0xFFFF0000,0xFFFF0000 };
-	u32 blue[4] = { 0xFF0000FF, 0xFF0000FF,0xFF0000FF,0xFF0000FF };
-	u32 checker[4] = { 0xFFFFFFFF, 0xFF000000,0xFF000000,0xFFFFFFFF };
-
-	//white
-	{
-		CImage* w = new CImage(ECF_A8R8G8B8, size, white, false);
-		CD3D9Texture* tex = new CD3D9Texture(w, true);
-		tex->createVideoTexture();
-
-		_ASSERT(tex->isValid());
-
-		TextureMap["$whiteimage"] = tex;
-		w->drop();
-	}
-
-	//red
-	{
-		CImage* w = new CImage(ECF_A8R8G8B8, size, red, false);
-		CD3D9Texture* tex = new CD3D9Texture(w, true);
-		tex->createVideoTexture();
-
-		_ASSERT(tex->isValid());
-
-		TextureMap["$redimage"] = tex;
-		w->drop();
-	}
-
-	//blue
-	{
-		CImage* w = new CImage(ECF_A8R8G8B8, size, blue, false);
-		CD3D9Texture* tex = new CD3D9Texture(w, true);
-		tex->createVideoTexture();
-
-		_ASSERT(tex->isValid());
-
-		TextureMap["$blueimage"] = tex;
-		w->drop();
-	}
-
-	//checker
-	{
-		CImage* w = new CImage(ECF_A8R8G8B8, size, checker, false);
-		CD3D9Texture* tex = new CD3D9Texture(w, true);
-		tex->createVideoTexture();
-
-		_ASSERT(tex->isValid());
-
-		TextureMap["$checkerimage"] = tex;
-		w->drop();
+		delete (*itr);
 	}
 }
 
@@ -115,10 +60,9 @@ void CD3D9ManualTextureServices::removeTexture(const c8* name)
 	TextureMap.erase(itr);
 }
 
-ITexture* CD3D9ManualTextureServices::addRenderTarget( dimension2du size, ECOLOR_FORMAT format )
+IRenderTarget* CD3D9ManualTextureServices::addRenderTarget( dimension2du size, ECOLOR_FORMAT format )
 {
-	CD3D9Texture* tex = new CD3D9Texture;
-	tex->createAsRenderTarget(size, format);
+	CD3D9RenderTarget* tex = new CD3D9RenderTarget(size, format);
 	_ASSERT(tex->isValid());
 
 	RenderTargets.push_back(tex);
@@ -126,14 +70,14 @@ ITexture* CD3D9ManualTextureServices::addRenderTarget( dimension2du size, ECOLOR
 	return tex;
 }
 
-void CD3D9ManualTextureServices::removeRenderTarget( ITexture* texture )
+void CD3D9ManualTextureServices::removeRenderTarget( IRenderTarget* texture )
 {
 	for (T_RTList::iterator itr = RenderTargets.begin(); itr != RenderTargets.end(); ++itr)
 	{
 		if ((*itr) == texture)
 		{
 			RenderTargets.erase(itr);
-			(*itr)->drop();
+			delete (*itr);
 			break;
 		}
 	}
@@ -155,6 +99,16 @@ void CD3D9ManualTextureServices::onReset()
 	}
 }
 
+ITexture* CD3D9ManualTextureServices::createTextureFromData( dimension2du size, ECOLOR_FORMAT format, void* data, bool mipmap )
+{
+	CImage* image = new CImage(format, size, data, false);
+	CD3D9Texture* tex = new CD3D9Texture(image, mipmap);
+	if (!tex->createVideoTexture())
+		tex->drop();
+	image->drop();
+	return tex;
+}
+
 ITexture* CD3D9ManualTextureServices::createTextureFromImage( IImage* image, bool mipmap )
 {
 	CD3D9Texture* tex = new CD3D9Texture(image, mipmap);
@@ -168,10 +122,10 @@ ITexture* CD3D9ManualTextureServices::createTextureFromImage( IImage* image, boo
 	return NULL;
 }
 
-ITexture* CD3D9ManualTextureServices::createEmptyTexture( dimension2du size, ECOLOR_FORMAT format, bool mipmap )
+ITexture* CD3D9ManualTextureServices::createEmptyTexture( dimension2du size, ECOLOR_FORMAT format )
 {
 	CD3D9Texture* tex = new CD3D9Texture;
-	if (tex->createEmptyTexture(size, format, mipmap))
+	if (tex->createEmptyTexture(size, format))
 	{
 		_ASSERT(tex->isValid());
 		return tex;
@@ -179,3 +133,4 @@ ITexture* CD3D9ManualTextureServices::createEmptyTexture( dimension2du size, ECO
 	tex->drop();
 	return NULL;
 }
+

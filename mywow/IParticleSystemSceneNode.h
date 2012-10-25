@@ -6,8 +6,8 @@
 class IParticleSystemSceneNode : public ISceneNode
 {
 public:
-	IParticleSystemSceneNode(IM2SceneNode* parent, E_RENDERINST_TYPE renderType = ERT_EFFECT)
-		: ISceneNode(parent, renderType) {}
+	IParticleSystemSceneNode(IM2SceneNode* parent)
+		: ISceneNode(parent) {}
 
 	virtual ~IParticleSystemSceneNode() {}
 
@@ -18,4 +18,7 @@ public:
 
 	virtual void setOwnView(matrix4* view) = 0;
 	virtual void setOwnProjection(matrix4* projection) = 0;
+
+	virtual void setWholeAlpha(bool enable, f32 val) = 0;
+	virtual void setWholeColor(bool enable, SColor color) = 0;
 };

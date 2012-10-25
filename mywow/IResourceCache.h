@@ -72,8 +72,8 @@ template <class T>
 class IResourceCache
 {
 public:
-	IResourceCache() : CacheLimit(10) { }
-	virtual ~IResourceCache() {}
+	IResourceCache() : CacheLimit(10) { ::InitializeCriticalSection(&cs); }
+	virtual ~IResourceCache() { ::DeleteCriticalSection(&cs); }
 
 public:
 	T* tryLoadFromCache( const char* filename );
@@ -90,15 +90,21 @@ protected:
 
 	typedef std::map<string<MAX_PATH>, T*, std::less<string<MAX_PATH>>, qzone_allocator<std::pair<string<MAX_PATH>, T*>>>	T_UseMap;
 	T_UseMap UseMap;
+
+	CRITICAL_SECTION cs;
 };
 
 template <class T>
 T* IResourceCache<T>::tryLoadFromCache( const char* filename )
 {
+	::EnterCriticalSection(&cs);
+
 	T_UseMap::iterator itr = UseMap.find(filename);
 	if (itr != UseMap.end())
 	{
 		itr->second->grab();
+
+		::LeaveCriticalSection(&cs);
 		return itr->second;
 	}
 
@@ -112,47 +118,71 @@ T* IResourceCache<T>::tryLoadFromCache( const char* filename )
 			t->grab();
 			UseMap[filename] = t;
 			FreeList.erase(itr);		
+
+			::LeaveCriticalSection(&cs);
 			return t;
 		}
 	}
+
+	::LeaveCriticalSection(&cs);
 	return NULL;
 }
 
 template <class T>
 void IResourceCache<T>::addToCache( const char* filename, T* item)
 {
+	::EnterCriticalSection(&cs);
+
 	UseMap[filename] = item;
 	item->grab();		
 	item->Cache = this;
+
+	::LeaveCriticalSection(&cs);
 }
 
 template <class T>
 void IResourceCache<T>::removeFromCache( T* item )
 {
+	::EnterCriticalSection(&cs);
+
 	const c8* filename = item->getFileName();
 	T_UseMap::iterator itr = UseMap.find(filename);
 	_ASSERT(itr != UseMap.end());
 	if (itr != UseMap.end())
 		UseMap.erase(itr);
 
-	while( FreeList.size() > CacheLimit )
+	if (!CacheLimit)			//²»»áÒÆµ½freelist
 	{
-		_ASSERT(FreeList.back()->getReferenceCount() == 1);
-		FreeList.back()->drop();
-		FreeList.pop_back();
+		item->drop();
 	}
-	FreeList.push_front(item);
+	else
+	{
+		while( FreeList.size() >= CacheLimit )
+		{
+			_ASSERT(FreeList.back()->getReferenceCount() == 1);
+			FreeList.back()->drop();
+			FreeList.pop_back();
+		}
+		FreeList.push_front(item);
+	}
+	
+	::LeaveCriticalSection(&cs);
 }
 
 template <class T>
 void IResourceCache<T>::flushCache()
 {
-	for(T_UseMap::iterator itr = UseMap.begin(); itr != UseMap.end();)
+	::EnterCriticalSection(&cs);
+
+	for(T_UseMap::iterator itr = UseMap.begin(); itr != UseMap.end(); ++itr)
 	{
 		T* t = itr->second;
 		_ASSERT(t->getReferenceCount() == 1);
+		if (t->getReferenceCount() == 2)
+		{
+			MessageBoxA(NULL, "Error!", "", 0);
+		}
 		t->drop();
-		itr = UseMap.erase(itr);
 	}
 
 	while( FreeList.size() > 0 )
@@ -161,4 +191,6 @@ void IResourceCache<T>::flushCache()
 		FreeList.back()->drop();
 		FreeList.pop_back();
 	}
+
+	::LeaveCriticalSection(&cs);
 }

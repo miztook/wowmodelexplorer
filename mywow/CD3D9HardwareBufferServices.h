@@ -6,14 +6,18 @@
 
 class CD3D9HardwareBufferServices : public IHardwareBufferServices, public ILostResetCallback
 {
+private:
+	DISALLOW_COPY_AND_ASSIGN(CD3D9HardwareBufferServices);
+
 public:
 	CD3D9HardwareBufferServices();
 	~CD3D9HardwareBufferServices();
 
 public:
+	virtual bool createHardwareBuffers(const SBufferParam& bufferParam);
 	virtual bool createHardwareBuffer(IVertexBuffer* vbuffer);
 	virtual bool createHardwareBuffer(IIndexBuffer* ibuffer);
-
+	virtual void destroyHardwareBuffers(const SBufferParam& bufferParam);
 	virtual void destroyHardwareBuffer(IVertexBuffer* vbuffer);
 	virtual void destroyHardwareBuffer(IIndexBuffer* ibuffer);
 	virtual bool updateHardwareBuffer(IVertexBuffer* vbuffer, u32 offset, u32 size);

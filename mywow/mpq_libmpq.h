@@ -9,15 +9,18 @@ public:
 	MPQArchive(const c8* filename);
 	~MPQArchive();
 	void close();
-	mpq_archive		mpq_ar;
+	HANDLE	mpq_a;
 	bool isPatch;
 	bool isLocale;
 };
 
 class MPQFile
 {
+private:
+	DISALLOW_COPY_AND_ASSIGN(MPQFile);
+
 public:
-	MPQFile( u8* buf, u32 size, const c8* fname) : buffer(buf), size(size), pointer(0), eof(false)
+	MPQFile( u8* buf, u32 size, const c8* fname, bool tmp) : buffer(buf), size(size), pointer(0), eof(false), temp(tmp)
 	{
 		strcpy_s(filename, MAX_PATH, fname);
 	}
@@ -32,8 +35,7 @@ public:
 	u8*		getBuffer() { return buffer; }
 	u8*		getPointer() { return buffer + pointer; }
 	bool		isEof() { return eof; }
-	void		seek(s32 offset);
-	void		seekRelative(s32 offset);
+	bool		seek(s32 offset, bool relative=false);
 	void		close();
 	void		save(const c8* filename);
 	const c8*	getFileName() const { return filename; }			
@@ -43,6 +45,7 @@ private:
 	u8* buffer;
 	u32 pointer, size;
 	c8	filename[MAX_PATH];
+	bool temp;
 };
 
 inline void flipcc(char *fcc)

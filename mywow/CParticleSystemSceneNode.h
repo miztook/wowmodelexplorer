@@ -31,6 +31,12 @@ public:
 	virtual void setOwnView(matrix4* view) { CurrentView = view; }
 	virtual void setOwnProjection(matrix4* projection) { CurrentProjection = projection; }
 
+	virtual void setWholeAlpha(bool enable, f32 val);
+	virtual void setWholeColor(bool enable, SColor color);
+
+protected:
+	void setMaterial(SMaterial& material);
+
 private:
 	struct SHint
 	{
@@ -54,7 +60,7 @@ private:
 	
 	aabbox3df	Box;
 
-	typedef std::list<Particle*, qzone_allocator<Particle*>>	T_LiveParticles;
+	typedef std::list<Particle*, qzone_nolock_allocator<Particle*>>	T_LiveParticles;
 	T_LiveParticles		LiveParticles;
 	f32		Rem;
 
@@ -68,6 +74,11 @@ private:
 	u32		LastTime;
 	bool		Emitting;
 	SHint	Hint;
+
+	f32		ModelAlpha;
+	bool		EnableModelAlpha;
+	SColor	ModelColor;
+	bool		EnableModelColor;
 
 	matrix4*		CurrentProjection;
 	matrix4*		CurrentView;

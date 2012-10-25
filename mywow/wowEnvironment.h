@@ -15,7 +15,7 @@ public:
 	~wowEnvironment();
 
 public:
-	MPQFile* openFile(const c8* filename);
+	MPQFile* openFile(const c8* filename, bool tempfile = true);
 
 	bool exists(const c8* filename);
 	s32 getSize(const c8* filename);

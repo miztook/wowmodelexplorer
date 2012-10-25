@@ -19,6 +19,8 @@ public:
 	inline bool operator==(const line3d<T>& other) const { return (start==other.start && end==other.end) || (end==other.start && start==other.end);}
 	inline bool operator!=(const line3d<T>& other) const { return !(start==other.start && end==other.end) || (end==other.start && start==other.end);}
 
+	bool equals(const line3d& other) const { return start.equals(other.start) && end.equals(other.end); }
+
 	//
 	inline void setLine(const T& xa, const T& ya, const T& za, const T& xb, const T& yb, const T& zb) {start.set(xa, ya, za); end.set(xb, yb, zb);}
 	inline void setLine(const vector3d<T>& nstart, const vector3d<T>& nend) {start.set(nstart); end.set(nend);}

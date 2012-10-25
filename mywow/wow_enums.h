@@ -148,6 +148,8 @@ enum ERaces
 	RACE_ICE_TROLL          = 21,
 	RACE_WORGEN             = 22,
 
+	RACE_PANDAREN		= 24,
+
 	RACE_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
 };
 
@@ -165,9 +167,11 @@ enum ECharGeosets {
 	CG_PANTS2,
 	CG_TARBARD,
 	CG_TROUSERS,
+	CG_DECORATES,			//pandaren tarbard like
 	CG_CAPE = 15, // 15						//ºó±³
 	CG_EYEGLOW = 17,
 	CG_BELT,
+	CG_TAIL,			//pandaren female tail
 
 	NUM_GEOSETS,
 
@@ -213,6 +217,21 @@ const CharRegionCoords regions[NUM_REGIONS] =
 	{0, 64*REGION_FAC, 128*REGION_FAC, 64*REGION_FAC},	// arm lower
 	{0, 128*REGION_FAC, 128*REGION_FAC, 32*REGION_FAC},	// hand
 	{0, 160*REGION_FAC, 128*REGION_FAC, 32*REGION_FAC},	// face upper
+	{0, 192*REGION_FAC, 128*REGION_FAC, 64*REGION_FAC},	// face lower
+	{128*REGION_FAC, 0, 128*REGION_FAC, 64*REGION_FAC},	// torso upper
+	{128*REGION_FAC, 64*REGION_FAC, 128*REGION_FAC, 32*REGION_FAC},	// torso lower
+	{128*REGION_FAC, 96*REGION_FAC, 128*REGION_FAC, 64*REGION_FAC}, // pelvis upper
+	{128*REGION_FAC, 160*REGION_FAC, 128*REGION_FAC, 64*REGION_FAC},// pelvis lower
+	{128*REGION_FAC, 224*REGION_FAC, 128*REGION_FAC, 32*REGION_FAC}	// foot
+};
+
+const CharRegionCoords pandaren_regions[NUM_REGIONS] =
+{
+	{0, 0, 256*REGION_FAC*2, 256*REGION_FAC},	// base
+	{0, 0, 128*REGION_FAC, 64*REGION_FAC},	// arm upper
+	{0, 64*REGION_FAC, 128*REGION_FAC, 64*REGION_FAC},	// arm lower
+	{0, 128*REGION_FAC, 128*REGION_FAC, 32*REGION_FAC},	// hand
+	{128*REGION_FAC*2, 0, 256*REGION_FAC, 256*REGION_FAC},	// face upper
 	{0, 192*REGION_FAC, 128*REGION_FAC, 64*REGION_FAC},	// face lower
 	{128*REGION_FAC, 0, 128*REGION_FAC, 64*REGION_FAC},	// torso upper
 	{128*REGION_FAC, 64*REGION_FAC, 128*REGION_FAC, 32*REGION_FAC},	// torso lower

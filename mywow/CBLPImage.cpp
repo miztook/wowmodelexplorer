@@ -75,14 +75,17 @@ void* CBLPImage::getMipmapData( u32 level ) const
 	return NULL;
 }
 
-void CBLPImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32 height )
+bool CBLPImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32 height )
 {
+	u8* src = (u8*)getMipmapData(level);
+	if (!src)
+		return false;
+
 	if (Format != ECF_A8R8G8B8)
 	{
 		u32 xblock = (width + 3) / 4;
 		u32 yblock = (height + 3) / 4;
 
-		u8* src = (u8*)getMipmapData(level);
 		u8* target = (u8*)dest;
 		u32 blocksize = getBytesPerPixelFromFormat(Format);
 		for (u32 i = 0; i < yblock; ++i)
@@ -94,7 +97,6 @@ void CBLPImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32
 	}
 	else
 	{
-		u8* src = (u8*)getMipmapData(level);
 		u32* target = (u32*)dest;
 		u32* palette = (u32*)(FileData + sizeof(SBLPHeader));
 		u32	size = width * height;
@@ -142,4 +144,5 @@ void CBLPImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32
 		}
 	}
 
+	return true;
 }

@@ -11,6 +11,9 @@ class CD3D9Texture;
 
 class CD3D9ShaderServices : public IShaderServices, public ILostResetCallback
 {
+private:
+	DISALLOW_COPY_AND_ASSIGN(CD3D9ShaderServices);
+
 public:
 	CD3D9ShaderServices();
 	~CD3D9ShaderServices();
@@ -39,6 +42,7 @@ public:
 	virtual void setShaderConstants(IEffect* effect, const SMaterial& material);
 
 	virtual void getWVPMatrix(matrix4& mat) const;
+	virtual void getVPMatrix(matrix4& mat) const;
 
 public:
 	virtual IVertexShader* getVertexShader(E_VS_TYPE type);

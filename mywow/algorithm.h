@@ -1,6 +1,25 @@
 #pragma once
 
 template<class T>
+inline T interpolate(const float r, const T &v1, const T &v2)
+{
+	return static_cast<T>(v1*(1.0f - r) + v2*r);
+}
+
+template<class T>
+inline T interpolateHermite(const float r, const T &v1, const T &v2, const T &in, const T &out)
+{
+	// basis functions
+	float h1 = 2.0f*r*r*r - 3.0f*r*r + 1.0f;
+	float h2 = -2.0f*r*r*r + 3.0f*r*r;
+	float h3 = r*r*r - 2.0f*r*r + r;
+	float h4 = r*r*r - r*r;
+
+	// interpolation
+	return static_cast<T>(v1*h1 + v2*h2 + in*h3 + out*h4);
+}
+
+template<class T>
 inline void heapsink(T* array, s32 element, s32 max)
 {
 	while ((element<<1) < max) // there is a left child
@@ -68,37 +87,4 @@ static long generateHashValue( const c8 *fname, const int size ) {
 	hash = (hash ^ (hash >> 10) ^ (hash >> 20));
 	hash &= (size-1);
 	return hash;
-}
-
-static void resizeBilinearGray(const u8* pixels, int w, int h, u8* dest, int w2, int h2) 
-{
-	u16 A, B, C, D;
-	int x, y, index, gray;
-	float x_ratio = ((float)(w-1))/w2 ;
-	float y_ratio = ((float)(h-1))/h2 ;
-	float x_diff, y_diff;
-	int offset = 0 ;
-	for (int i=0;i<h2;i++) {
-		for (int j=0;j<w2;j++) {
-			x = (int)(x_ratio * j) ;
-			y = (int)(y_ratio * i) ;
-			x_diff = (x_ratio * j) - x ;
-			y_diff = (y_ratio * i) - y ;
-			index = y*w+x ;
-
-			// range is 0 to 255 thus bitwise AND with 0xff
-			A = pixels[index];
-			B = pixels[index+1];
-			C = pixels[index+w];
-			D = pixels[index+w+1];
-
-			// Y = A(1-w)(1-h) + B(w)(1-h) + C(h)(1-w) + Dwh
-			gray = (u8)(
-				A*(1-x_diff)*(1-y_diff) +  B*(x_diff)*(1-y_diff) +
-				C*(y_diff)*(1-x_diff)   +  D*(x_diff*y_diff)
-				) ;
-
-			dest[w2 * i + j] = gray ;                                   
-		}
-	}
 }

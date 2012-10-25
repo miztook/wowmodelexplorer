@@ -9,19 +9,23 @@
 #include "CD3D9ResourceLoader.h"
 #include "CD3D9ManualTextureServices.h"
 
+
 #include "CFTFont.h"
 #include "CGeometryCreator.h"
 #include "CManualMeshServices.h"
 #include "CParticleSystemServices.h"
 #include "CRibbonEmitterServices.h"
+#include "CTerrainServices.h"
 #include "CSceneRenderServices.h"
 #include "CSceneManager.h"
+#include "CSceneEnvironment.h"
 
 Engine*		g_Engine = NULL;
+u32		g_MainThreadId = 0;
 
 Engine::Engine()
 {
-	CurrentThreadId = ::GetCurrentThreadId();
+	g_MainThreadId = ::GetCurrentThreadId();
 
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
@@ -29,7 +33,7 @@ Engine::Engine()
 
 	_CrtMemCheckpoint(&oldState);
 
-	QMem_Init(8, 30, 30);		//30m
+	QMem_Init(10, 30, 1, 30, 30);		//
 
 	FileSystem = new CFileSystem;
 	WowEnvironment = new wowEnvironment(FileSystem, ELI_ZH_CN);
@@ -38,26 +42,32 @@ Engine::Engine()
 	Driver = NULL;
 	HardwareBufferServices = NULL;
 	DrawServices = NULL;
-	Font = NULL;
 	ResourceLoader = NULL;
 	GeometryCreator = NULL;
 	ManualMeshServices = NULL;
+	Font = NULL;
 	ManualTextureServices = NULL;
 	ParticleSystemServices = NULL;
 	RibbonEmitterServices = NULL;
+	TerrainServices = NULL;
 
 	SceneRenderServices = NULL;
+	SceneEnvironment = NULL;
 	SceneManager = NULL;
+
 }
 
 Engine::~Engine()
 {
 	if(ResourceLoader)
-		ResourceLoader->endLoadingM2();
-
+		ResourceLoader->endLoading();
+	
 	delete SceneManager;
+
+	delete SceneEnvironment;
 	delete SceneRenderServices;
 
+	delete TerrainServices;
 	delete RibbonEmitterServices;
 	delete ParticleSystemServices;
 	delete ManualMeshServices;
@@ -162,18 +172,13 @@ HWND Engine::createWindow( const char* caption, WNDPROC proc, dimension2du &wind
 	return hwnd;
 }
 
-bool Engine::initDriver( HWND hwnd, E_DRIVER_TYPE driverType, bool fullscreen, bool vsync, bool multithread, u32 bits, u8 antialias, E_CSAA csaa )
+bool Engine::initDriver( HWND hwnd, E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread )
 {
-	if (bits != 32 && bits != 16)
-	{
-		bits = 32;
-	}
-
 	switch (driverType)
 	{
 	case EDT_DIRECT3D9:
 		Driver = new CD3D9Driver;
-		if(!static_cast<CD3D9Driver*>(Driver)->initDriver(hwnd, fullscreen, vsync, multithread, bits, antialias, csaa))
+		if(!static_cast<CD3D9Driver*>(Driver)->initDriver(hwnd, adapter, fullscreen, vsync, antialias, multithread))
 			return false;
  		HardwareBufferServices = new CD3D9HardwareBufferServices;
  		DrawServices = new CD3D9DrawServices;
@@ -187,10 +192,12 @@ bool Engine::initDriver( HWND hwnd, E_DRIVER_TYPE driverType, bool fullscreen, b
 	Font = new CFTFont("ARIALUNI.ttf", 10);
  	GeometryCreator = new CGeometryCreator;
  	ManualMeshServices = new CManualMeshServices;
- 	ParticleSystemServices = new CParticleSystemServices(2000, 1000, 0.5f);
- 	RibbonEmitterServices = new CRibbonEmitterServices(2000, 1000);
+ 	ParticleSystemServices = new CParticleSystemServices(5000, 1000, 0.5f);
+ 	RibbonEmitterServices = new CRibbonEmitterServices(5000, 1000);
+	TerrainServices = new CTerrainServices();
  
  	SceneRenderServices = new CSceneRenderServices;
+	SceneEnvironment = new CSceneEnvironment;
 
 	return true;
 }

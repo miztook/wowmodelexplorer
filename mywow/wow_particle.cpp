@@ -2,7 +2,7 @@
 #include "wow_particle.h"
 #include "mywow.h"
 
-void PlaneParticleEmitter::emitParticle( const wow_character* character, u32 anim, u32 time, const EmitterParam& param, Particle* p)
+void PlaneParticleEmitter::emitParticle( const wow_m2instance* character, u32 anim, u32 time, const EmitterParam& param, Particle* p)
 {
 	memset(p, 0, sizeof(Particle));
 
@@ -44,7 +44,7 @@ void PlaneParticleEmitter::emitParticle( const wow_character* character, u32 ani
 	p->tile = sys->cols - 1;
 }
 
-void SphereParticleEmitter::emitParticle( const wow_character* character, u32 anim, u32 time, const EmitterParam& param, Particle* p )
+void SphereParticleEmitter::emitParticle( const wow_m2instance* character, u32 anim, u32 time, const EmitterParam& param, Particle* p )
 {
 	memset(p, 0, sizeof(Particle));
 

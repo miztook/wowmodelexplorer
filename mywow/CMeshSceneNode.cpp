@@ -44,7 +44,7 @@ void CMeshSceneNode::registerSceneNode(bool frustumcheck)
 aabbox3df CMeshSceneNode::getBoundingBox() const
 {
 	if (!Mesh)
-		return aabbox3df(vector3df(0,0,0));
+		return aabbox3df::Zero();
 
 	return Mesh->getBoundingBox();
 }
@@ -53,10 +53,9 @@ void CMeshSceneNode::render()
 {
 	SRenderUnit unit = {0};
 
-	unit.vbuffer = Mesh->VertexBuffer;
-	unit.ibuffer = Mesh->IndexBuffer;
+	unit.bufferParam = Mesh->BufferParam;
 	unit.primType = Mesh->PrimType;
-	unit.drawParam.numVertices = Mesh->VertexBuffer->Size;
+	unit.drawParam.numVertices = Mesh->BufferParam.vbuffer0->Size;
 	unit.primCount = Mesh->PrimCount;
 	unit.sceneNode = this;
 	unit.material = Material;

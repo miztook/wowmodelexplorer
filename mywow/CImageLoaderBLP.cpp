@@ -29,6 +29,8 @@ IImage* CImageLoaderBLP::loadImage( MPQFile* file )
 
 	u8* src = buffer + header->_mipmapOfs[0];
 
+	dimension2du dim(width, height);
+
 	u32* decompressed = new u32[size];
 	if (header->_compress == 2)				//compressed
 	{
@@ -46,7 +48,7 @@ IImage* CImageLoaderBLP::loadImage( MPQFile* file )
 		}
 		else
 		{
-			DDSDecompressDXT1(src, width, height, (u8*)decompressed, false);
+			_ASSERT(false);
 		}
 	}
 	else
@@ -90,8 +92,6 @@ IImage* CImageLoaderBLP::loadImage( MPQFile* file )
 		}
 	}
 
-	dimension2du dim(width, height);
 	CImage* image = new CImage(ECF_A8R8G8B8, dim, decompressed, true);
 	return image;
 }
-

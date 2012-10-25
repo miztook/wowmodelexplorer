@@ -1,16 +1,21 @@
 #include "stdafx.h"
 #include "CFileM2.h"
-#include "mpq_libmpq.h"
 #include "mywow.h"
+#include "mpq_libmpq.h"
+#include "CLock.h"
+
+extern CRITICAL_SECTION g_m2CS;
 
 IFileM2* CM2Loader::loadM2( MPQFile* file )
 {
 	CFileM2* m2File = new CFileM2;
+
 	if (!m2File->loadFile(file))
 	{
-		m2File->drop();
+		m2File->drop();	
 		return NULL;
 	}
+
 	return m2File;
 }
 
@@ -64,8 +69,9 @@ void CFileM2::clear()
 	delete[] BoundTris;
 	delete[] Bounds;
 
-	delete[] VBones;
-	delete[] Vertices;
+	delete[] AVertices;
+	delete[] TVertices;
+	delete[] GVertices;
 }
 
 
@@ -147,7 +153,9 @@ bool CFileM2::loadFile( MPQFile* file )
 	loadModelCameras();
 
 	if(!loadSkin(0))
+	{
 		return false;
+	}
 
 	return true;
 }
@@ -158,27 +166,26 @@ void CFileM2::loadVertices()
 		return;
 
 	M2::vertex* v = (M2::vertex*)(&FileData[m2Header->_ofsVertices]);
-	Vertices = new S3DVertexModel[NumVertices];
-	VBones = new S3DVertexBone[NumVertices];
-	memset(VBones, 0, sizeof(VBones));
+	GVertices = new SGVertex_PN[NumVertices];
+	TVertices = new STVertex_1T[NumVertices];
+	AVertices = new SAVertex[NumVertices];
 
 	for (u32 i=0; i<NumVertices; ++i)
 	{
-		Vertices[i].Pos = fixCoordinate(v[i]._Position);
-		Vertices[i].Normal = fixCoordinate(v[i]._Normal);
-		Vertices[i].TCoords.X = v[i]._TextureCoords.X;
-		Vertices[i].TCoords.Y = v[i]._TextureCoords.Y;
+		GVertices[i].Pos = fixCoordinate(v[i]._Position);
+		GVertices[i].Normal = fixCoordinate(v[i]._Normal);
+		TVertices[i].TCoords = v[i]._TextureCoords;
 
 		for (u32 j=0; j<4; ++j)
 		{
-			Vertices[i].Weights[j] = v[i]._BoneWeight[j] / 255.0f;
-			VBones[i].BoneIndices[j] = v[i]._BoneIndices[j];
+			AVertices[i].Weights[j] = v[i]._BoneWeight[j] / 255.0f;
+			AVertices[i].BoneIndices[j] = v[i]._BoneIndices[j];
 		}
 
 		if (i == 0)
-			BoundingBox.reset(Vertices[i].Pos);
+			BoundingBox.reset(GVertices[i].Pos);
 		else
-			BoundingBox.addInternalPoint(Vertices[i].Pos);
+			BoundingBox.addInternalPoint(GVertices[i].Pos);
 	}
 }
 
@@ -410,8 +417,6 @@ void CFileM2::loadBones()
 	Hunk_FreeTempMemory(animFiles);
 	Hunk_FreeTempMemory(animMpqs);
 
-
-
 }
 
 void CFileM2::loadRenderFlags()
@@ -515,7 +520,11 @@ bool CFileM2::loadSkin(u32 idx)
 
 s16 CFileM2::getAnimationIndex( const c8* name, u32 subIdx /*= 0*/ )
 {
-	s16 next = AnimationNameLookup[name];
+	T_AnimationLookup::iterator itr = AnimationNameLookup.find(name);
+	if (itr == AnimationNameLookup.end())
+		return -1;
+
+	s16 next = itr->second;
 	while (next != -1)
 	{
 		if (Animations[next].animSubID == subIdx)
@@ -527,7 +536,11 @@ s16 CFileM2::getAnimationIndex( const c8* name, u32 subIdx /*= 0*/ )
 
 u32 CFileM2::getAnimationCount( const c8* name )
 {
-	s16 next = AnimationNameLookup[name];
+	T_AnimationLookup::iterator itr = AnimationNameLookup.find(name);
+	if (itr == AnimationNameLookup.end())
+		return 0;
+
+	s16 next = itr->second;
 	u32 count = 0;
 	while (next != -1)
 	{
@@ -539,8 +552,10 @@ u32 CFileM2::getAnimationCount( const c8* name )
 
 bool CFileM2::buildVideoResources()
 {
+	CLock lock(&g_m2CS);
+
 	if (VideoBuilt)
-		return false;
+		return true;
 
 	if (!Skin || Skin->NumGeosets == 0)
 		return true;
@@ -552,15 +567,21 @@ bool CFileM2::buildVideoResources()
 			Textures[i]->createVideoTexture();
 	}
 
-	//vertex buffer
-	Skin->VertexBuffer->set(Vertices, EVT_MODEL, NumVertices, EMM_STATIC);
-	g_Engine->getHardwareBufferServices()->createHardwareBuffer(Skin->VertexBuffer);
-	g_Engine->getHardwareBufferServices()->updateHardwareBuffer(Skin->VertexBuffer,0, NumVertices);
+	//gvertex buffer
+	Skin->GVertexBuffer->set(GVertices, EST_G_PN, NumVertices, EMM_STATIC);
+	g_Engine->getHardwareBufferServices()->createHardwareBuffer(Skin->GVertexBuffer);
+	g_Engine->getHardwareBufferServices()->updateHardwareBuffer(Skin->GVertexBuffer,0, NumVertices);
+
+	//tvertex buffer
+	Skin->TVertexBuffer->set(TVertices, EST_T_1T, NumVertices, EMM_STATIC);
+	g_Engine->getHardwareBufferServices()->createHardwareBuffer(Skin->TVertexBuffer);
+	g_Engine->getHardwareBufferServices()->updateHardwareBuffer(Skin->TVertexBuffer,0, NumVertices);
+
 
 	//bone buffer
-	Skin->BoneBuffer->set(Skin->BoneVertices, EVT_BONEINDICES, Skin->NumBoneVertices, EMM_STATIC);
-	g_Engine->getHardwareBufferServices()->createHardwareBuffer(Skin->BoneBuffer);
-	g_Engine->getHardwareBufferServices()->updateHardwareBuffer(Skin->BoneBuffer, 0, Skin->NumBoneVertices);
+	Skin->AVertexBuffer->set(Skin->AVertices, EST_A, Skin->NumBoneVertices, EMM_STATIC);
+	g_Engine->getHardwareBufferServices()->createHardwareBuffer(Skin->AVertexBuffer);
+	g_Engine->getHardwareBufferServices()->updateHardwareBuffer(Skin->AVertexBuffer, 0, Skin->NumBoneVertices);
 
 	//index buffer
 	Skin->IndexBuffer->set(Skin->Indices, EIT_16BIT, Skin->NumIndices, EMM_STATIC);
@@ -574,22 +595,35 @@ bool CFileM2::buildVideoResources()
 
 void CFileM2::releaseVideoResources()
 {
+	CLock lock(&g_m2CS);
+
 	if (!Skin || Skin->NumGeosets == 0)
 		return;
+
+	for (u32 i=0; i<NumTextures; ++i)
+	{
+		if (Textures[i] && Textures[i]->getReferenceCount()==2)		//refcount==2说明此时纹理只被当前m2文件使用，可以release
+			Textures[i]->releaseVideoTexture();
+	}
 
 	if (Skin->IndexBuffer)
 	{
 		g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(Skin->IndexBuffer);
 	}
 
-	if (Skin->BoneBuffer)
+	if (Skin->AVertexBuffer)
 	{
-		g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(Skin->BoneBuffer);
+		g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(Skin->AVertexBuffer);
 	}
 
-	if (Skin->VertexBuffer)
+	if (Skin->TVertexBuffer)
 	{
-		g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(Skin->VertexBuffer);
+		g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(Skin->TVertexBuffer);
+	}
+
+	if (Skin->GVertexBuffer)
+	{
+		g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(Skin->GVertexBuffer);
 	}
 
 	VideoBuilt = false;
@@ -646,28 +680,29 @@ void CFileM2::setBoneType( s16 boneIdx )
 	Bones[boneIdx].bonetype = EBT_NONE;
 }
 
-
 CFileSkin::CFileSkin()
-	: Geosets(NULL), Indices(NULL), BoneVertices(NULL), 
-	NumGeosets(0), NumTexUnit(0), VertexBuffer(NULL), BoneBuffer(NULL), IndexBuffer(NULL)
+	: Geosets(NULL), Indices(NULL), AVertices(NULL), 
+	NumGeosets(0), NumTexUnit(0), GVertexBuffer(NULL), AVertexBuffer(NULL), IndexBuffer(NULL)
 { 
-	VertexBuffer = new IVertexBuffer(false);
-	BoneBuffer = new IVertexBuffer(false);
+	GVertexBuffer = new IVertexBuffer(false);
+	TVertexBuffer = new IVertexBuffer(false);
+	AVertexBuffer = new IVertexBuffer(false);
 	IndexBuffer = new IIndexBuffer(false);
 }
 
 CFileSkin::~CFileSkin()
 {
 	delete[] Indices;
-	delete[] BoneVertices;
+	delete[] AVertices;
 	delete[] Geosets;
 
 	delete IndexBuffer;
-	delete BoneBuffer;
-	delete VertexBuffer;
+	delete AVertexBuffer;
+	delete TVertexBuffer;
+	delete GVertexBuffer;
 }
 
-bool CFileSkin::loadFile( MPQFile* file, IFileM2* m2)
+bool CFileSkin::loadFile( MPQFile* file, CFileM2* m2)
 {
 // 	bool nightelfmale = false;			//暗夜精灵男第一个geoset最后12个index为眼睛glow，先去掉，显示默认眼睛
 // 	u32 race, gender;
@@ -758,7 +793,7 @@ bool CFileSkin::loadFile( MPQFile* file, IFileM2* m2)
 		for (u16 k=0; k<set->ICount; ++k)
 		{
 			u32 index = Indices[m[i]._startTriangle + k];
-			S3DVertexBone* b = &m2->VBones[index];
+			SAVertex* b = &m2->AVertices[index];
 
 			if (k%3 == 0 && currentBoneUnit->BoneIndices.size() > 54)		//54+4 == 58 每个三角形最多受4个顶点影响
 			{
@@ -784,7 +819,7 @@ bool CFileSkin::loadFile( MPQFile* file, IFileM2* m2)
 				//分配临时内存
 				SBoneVertEntry entry;
 				entry.num = set->VCount;
-				entry.vertices = (S3DVertexBone*)Hunk_AllocateTempMemory(sizeof(S3DVertexBone*) * set->VCount);
+				entry.aVertices = (SAVertex*)Hunk_AllocateTempMemory(sizeof(SAVertex) * set->VCount);
 				boneVertList.push_back(entry);
 
 				currentBoneUnit->BoneVStart = boneVerticesOffset;
@@ -792,11 +827,12 @@ bool CFileSkin::loadFile( MPQFile* file, IFileM2* m2)
 
 				for (u32 m=0; m<set->VCount; ++m)
 				{
-					S3DVertexBone* v = &m2->VBones[set->VStart + m];
+					SAVertex* v = &m2->AVertices[set->VStart + m];		
 					for (u32 n=0; n<4; ++n)
 					{
-						entry.vertices[m].BoneIndices[n] = global2localMap[v->BoneIndices[n]];
-						_ASSERT(entry.vertices[m].BoneIndices[n] < currentBoneUnit->BoneCount);
+						entry.aVertices[m].Weights[n] = v->Weights[n];
+						entry.aVertices[m].BoneIndices[n] = global2localMap[v->BoneIndices[n]];
+						_ASSERT(entry.aVertices[m].BoneIndices[n] < currentBoneUnit->BoneCount);
 					}
 				}
 
@@ -839,18 +875,19 @@ bool CFileSkin::loadFile( MPQFile* file, IFileM2* m2)
 			//分配临时内存
 			SBoneVertEntry entry;
 			entry.num = set->VCount;
-			entry.vertices = (S3DVertexBone*)Hunk_AllocateTempMemory(sizeof(S3DVertexBone*) * set->VCount);
+			entry.aVertices = (SAVertex*)Hunk_AllocateTempMemory(sizeof(SAVertex) * set->VCount);
 			boneVertList.push_back(entry);
 
 			currentBoneUnit->BoneVStart = boneVerticesOffset;
 			boneVerticesOffset += set->VCount;
 			for (u32 m=0; m<set->VCount; ++m)
 			{
-				S3DVertexBone* v = &m2->VBones[set->VStart + m];
+				SAVertex* v = &m2->AVertices[set->VStart + m];
 				for (u32 n=0; n<4; ++n)
 				{
-					entry.vertices[m].BoneIndices[n] = global2localMap[v->BoneIndices[n]];
-					_ASSERT(entry.vertices[m].BoneIndices[n] < currentBoneUnit->BoneCount);
+					entry.aVertices[m].Weights[n] = v->Weights[n];
+					entry.aVertices[m].BoneIndices[n] = global2localMap[v->BoneIndices[n]];
+					_ASSERT(entry.aVertices[m].BoneIndices[n] < currentBoneUnit->BoneCount);
 				}
 			}
 		}
@@ -860,7 +897,7 @@ bool CFileSkin::loadFile( MPQFile* file, IFileM2* m2)
 
 	NumBoneVertices = boneVerticesCount;
 
-	BoneVertices = new S3DVertexBone[NumBoneVertices];
+	AVertices = new SAVertex[NumBoneVertices];
 	
 	//每个boneunit顶点复制到总boneVertices
 	u32 nCount = 0;
@@ -868,7 +905,7 @@ bool CFileSkin::loadFile( MPQFile* file, IFileM2* m2)
 	{
 		SBoneVertEntry entry = (*itr);
 
-		memcpy_s(&BoneVertices[nCount], entry.num * sizeof(S3DVertexBone), entry.vertices, entry.num * sizeof(S3DVertexBone));
+		memcpy_s(&AVertices[nCount], entry.num * sizeof(SAVertex), entry.aVertices, entry.num * sizeof(SAVertex));
 		nCount += entry.num;
 	}
 
@@ -876,7 +913,7 @@ bool CFileSkin::loadFile( MPQFile* file, IFileM2* m2)
 	while (!boneVertList.empty())
 	{
 		SBoneVertEntry entry = boneVertList.back();
-		Hunk_FreeTempMemory(entry.vertices);
+		Hunk_FreeTempMemory(entry.aVertices);
 		boneVertList.pop_back();
 	}
 

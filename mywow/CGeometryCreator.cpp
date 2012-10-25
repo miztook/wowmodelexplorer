@@ -8,7 +8,7 @@ void CGeometryCreator::getCubeMeshVICount( u32& vcount, u32& icount )
 	icount = 12;
 }
 
-bool CGeometryCreator::fillCubeMeshVI( S3DVertexBasicTex* vertices, u32 vcount, u16* indices, u32 icount, const vector3df& size, SColor color /*= SColor()*/ )
+bool CGeometryCreator::fillCubeMeshVI( SGTVertex_PC1T* vertices, u32 vcount, u16* indices, u32 icount, const vector3df& size, SColor color /*= SColor()*/ )
 {
 	u32 vLimit, iLimit;
 	getCubeMeshVICount(vLimit, iLimit);
@@ -61,7 +61,7 @@ void CGeometryCreator::getSphereMeshVICount( u32& vcount, u32& icount, u32 polyC
 	icount = (polyCountX * polyCountY) * 6;
 }
 
-bool CGeometryCreator::fillSphereMeshVI( S3DVertexBasicTex* vertices, u32 vcount, u16* indices, u32 icount, f32 radius /*= 5.f*/, u32 polyCountX /*= 16*/, u32 polyCountY /*= 16*/, SColor color /*= SColor()*/ )
+bool CGeometryCreator::fillSphereMeshVI( SGTVertex_PC1T* vertices, u32 vcount, u16* indices, u32 icount, f32 radius /*= 5.f*/, u32 polyCountX /*= 16*/, u32 polyCountY /*= 16*/, SColor color /*= SColor()*/ )
 {
 	u32 vLimit, iLimit;
 	if (polyCountX < 2)
@@ -213,7 +213,7 @@ void CGeometryCreator::getSkyDomeMeshVICount( u32& vcount, u32& icount, u32 hori
 	icount = 3 * (2*vertRes -1) * horiRes;
 }
 
-bool CGeometryCreator::fillSkyDomeMeshVI( S3DVertexBasicTex* vertices, u32 vcount, u16* indices, u32 icount, u32 horiRes, u32 vertRes, f32 texturePercentage, f32 spherePercentage, f32 radius, SColor color /*= SColor()*/ )
+bool CGeometryCreator::fillSkyDomeMeshVI( SGTVertex_PC1T* vertices, u32 vcount, u16* indices, u32 icount, u32 horiRes, u32 vertRes, f32 texturePercentage, f32 spherePercentage, f32 radius, SColor color /*= SColor()*/ )
 {
 	u32 vLimit = (horiRes + 1) * (vertRes + 1);
 	u32 iLimit = 3 * (2*vertRes -1) * horiRes;
@@ -280,7 +280,109 @@ bool CGeometryCreator::fillSkyDomeMeshVI( S3DVertexBasicTex* vertices, u32 vcoun
 	return true;
 }
 
-bool CGeometryCreator::fillGridLineMeshV( S3DVertexBasicColor* vertices, u32 vcount, u32 xzCount, f32 gridSize, SColor color )
+bool CGeometryCreator::fillSkyDomeMeshVI( SGVertex_PC* vertices, u32 vcount, u16* indices, u32 icount, u32 horiRes, u32 vertRes, f32 spherePercentage, f32 radius, SColor color/*=SColor()*/ )
+{
+	u32 vLimit = (horiRes + 1) * (vertRes + 1);
+	u32 iLimit = 3 * (2*vertRes -1) * horiRes;
+
+	if (vcount < vLimit || icount < iLimit)
+		return false;
+
+	//
+	vcount = 0;
+	icount = 0;
+
+	f32 azimuth;
+	u32 k;
+
+	const f32 azimuth_step = (PI * 2.f) / horiRes;
+	if (spherePercentage < 0.f)
+		spherePercentage = -spherePercentage;
+	if (spherePercentage > 2.f)
+		spherePercentage = 2.f;
+	const f32 elevation_step = spherePercentage * PI * 0.5f / (f32)vertRes;
+
+	for (k = 0, azimuth = 0; k <= horiRes; ++k)
+	{
+		f32 elevation = PI/2;
+		const f32 tcU = (f32)k / (f32)horiRes;
+		const f32 sinA = sinf(azimuth);
+		const f32 cosA = cosf(azimuth);
+		for (u32 j = 0; j <= vertRes; ++j)
+		{
+			const f32 cosEr = radius * cosf(elevation);
+			vertices[vcount].Pos.set(cosEr*sinA, radius*sinf(elevation), cosEr*cosA);
+			vertices[vcount].Color = color;
+
+			++vcount;
+
+			elevation -= elevation_step;
+		}
+		azimuth += azimuth_step;
+	}
+
+	for (k = 0; k < horiRes; ++k)
+	{
+		indices[icount++] = (u16)(vertRes + 2 + (vertRes + 1)*k);
+		indices[icount++] = (u16)(1 + (vertRes + 1)*k);
+		indices[icount++] = (u16)(0 + (vertRes + 1)*k);
+
+		for (u32 j = 1; j < vertRes; ++j)
+		{
+			indices[icount++] = (u16)(vertRes + 2 + (vertRes + 1)*k + j);
+			indices[icount++] = (u16)(1 + (vertRes + 1)*k + j);
+			indices[icount++] = (u16)(0 + (vertRes + 1)*k + j);
+
+			indices[icount++] = (u16)(vertRes + 1 + (vertRes + 1)*k + j);
+			indices[icount++] = (u16)(vertRes + 2 + (vertRes + 1)*k + j);
+			indices[icount++] = (u16)(0 + (vertRes + 1)*k + j);
+		}
+	}
+
+	_ASSERT( vcount == (horiRes + 1) * (vertRes + 1));
+	_ASSERT( icount == 3 * (2*vertRes -1) * horiRes);
+
+	return true;
+}
+
+aabbox3df CGeometryCreator::getSkyDomeMeshAABBox( u32 horiRes, u32 vertRes, f32 spherePercentage, f32 radius )
+{
+	u32 vLimit = (horiRes + 1) * (vertRes + 1);
+
+	//
+	aabbox3df box;
+
+	f32 azimuth;
+	u32 k;
+
+	const f32 azimuth_step = (PI * 2.f) / horiRes;
+	if (spherePercentage < 0.f)
+		spherePercentage = -spherePercentage;
+	if (spherePercentage > 2.f)
+		spherePercentage = 2.f;
+	const f32 elevation_step = spherePercentage * PI * 0.5f / (f32)vertRes;
+
+	for (k = 0, azimuth = 0; k <= horiRes; ++k)
+	{
+		f32 elevation = PI/2;
+		const f32 tcU = (f32)k / (f32)horiRes;
+		const f32 sinA = sinf(azimuth);
+		const f32 cosA = cosf(azimuth);
+		for (u32 j = 0; j <= vertRes; ++j)
+		{
+			const f32 cosEr = radius * cosf(elevation);
+			box.addInternalPoint(vector3df(cosEr*sinA, radius*sinf(elevation), cosEr*cosA));
+
+			elevation -= elevation_step;
+		}
+		azimuth += azimuth_step;
+	}
+
+	return box;
+}
+
+
+bool CGeometryCreator::fillGridLineMeshV( SGVertex_PC* vertices, u32 vcount, u32 xzCount, f32 gridSize, SColor color )
 {
 	u32 vLimit = (2*xzCount+1) * 4;
 	if (vcount < vLimit)
@@ -321,3 +423,4 @@ bool CGeometryCreator::fillGridLineMeshV( S3DVertexBasicColor* vertices, u32 vco
 
 	return true;
 }
+

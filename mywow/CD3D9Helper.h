@@ -7,10 +7,6 @@
 #include <d3dx9.h>
 #include <DxErr.h>
 
-#ifndef SAFE_RELEASE
-#define SAFE_RELEASE(p)      { if (p) { (p)->Release(); (p)=NULL; } }
-#endif
-
 //imports
 
 typedef HRESULT (WINAPI *D3DXASSEMBLESHADERFROMFILEA)(

@@ -3,6 +3,11 @@
 #include <crtdbg.h>
 
 #include "qzone_allocator.h"
+#include "qzone_nolock_allocator.h"
+
+#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
+TypeName(const TypeName&);               \
+void operator=(const TypeName&)
 
 typedef		unsigned __int8		u8;
 typedef		__int8		s8;
@@ -34,9 +39,12 @@ typedef		unsigned	__int32		UTF32;
 #define LOBYTE(w)           ((BYTE)(((DWORD_PTR)(w)) & 0xff))
 #define HIBYTE(w)           ((BYTE)((((DWORD_PTR)(w)) >> 8) & 0xff))
 
+#define F32_AS_DWORD(f)		(*((DWORD*)&(f)))
+#define DWORD_AS_F32(d)		(*((f32*)&(d)))
+
 #define		DEFAULT_SIZE	64
 #define		MAX_TEXT_LENGTH	512
-#define		FONT_TEXTURE_SIZE	512
+#define		FONT_TEXTURE_SIZE	256
 
 #define VS11	"vs_1_1"
 #define VS20	"vs_2_0"
@@ -52,12 +60,32 @@ typedef		unsigned	__int32		UTF32;
 #define PS2B	"ps_2_b"
 #define PS30	"ps_3_0"
 
+//terrain
+#define TILESIZE (533.33333f)
+#define CHUNKSIZE ((TILESIZE) / 16.0f)
+#define UNITSIZE (CHUNKSIZE / 8.0f)
+#define ZEROPOINT (32.0f * (TILESIZE))
+
+#define	CHUNKS_IN_TILE	16				//每个tile包括 16 X 16 个chunk
+
 class ILostResetCallback
 {
 public:
 	virtual void onLost() = 0;
 	virtual void onReset() = 0;
 };
+
+#ifndef SAFE_RELEASE
+#define SAFE_RELEASE(p)      { if (p) { (p)->Release(); (p)=NULL; } }
+#endif
+
+#ifndef RELEASE_ALL
+#define RELEASE_ALL(x)			\
+	ULONG rest = x->Release();	\
+	while( rest > 0 )			\
+	rest = x->Release();	\
+	x = 0;
+#endif
 
 //list
 
@@ -151,17 +179,6 @@ enum E_DRIVER_TYPE
 	EDT_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
 };
 
-enum E_CSAA
-{
-	ECSAA_NONE = 0,
-	ECSAA_8x,
-	ECSAA_8xQ,
-	ECSAA_16x,
-	ECSAA_16xQ,
-
-	ECSAA_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
-};
-
 enum E_TRANSFORMATION_STATE
 {
 	ETS_VIEW = 0,
@@ -183,21 +200,13 @@ enum E_VIDEO_DRIVER_FEATURE
 	EVDF_TEXTURE_ADDRESS,
 	EVDF_SEPARATE_UVWRAP,
 	EVDF_MIP_MAP,
-	EVDF_MIP_MAP_AUTO_UPDATE,
 	EVDF_STENCIL_BUFFER,
 	EVDF_VERTEX_SHADER_1_1,
 	EVDF_VERTEX_SHADER_2_0,
 	EVDF_VERTEX_SHADER_3_0,
-	EVDF_VERTEX_SHADER_4_0,
-	EVDF_VERTEX_SHADER_5_0,
 	EVDF_PIXEL_SHADER_1_1,
 	EVDF_PIXEL_SHADER_2_0,
 	EVDF_PIXEL_SHADER_3_0,
-	EVDF_PIXEL_SHADER_4_0,
-	EVDF_PIXEL_SHADER_5_0,
-	EVDF_GEOMETRY_SHADER_4_0,
-	EVDF_GEOMETRY_SHADER_5_0,
-	EVDF_HULL_SHADER_5_0,
 	EVDF_TEXTURE_NSQUARE,
 	EVDF_TEXTURE_NPOT,
 	EVDF_COLOR_MASK,
@@ -207,6 +216,32 @@ enum E_VIDEO_DRIVER_FEATURE
 	EVDF_MRT_BLEND,
 	EVDF_STREAM_OFFSET,
 	EVDF_W_BUFFER,
+	EVDF_ALPHA_TO_COVERAGE,
+
+	//! Supports Shader model 4
+	EVDF_VERTEX_SHADER_4_0,
+	EVDF_PIXEL_SHADER_4_0,
+	EVDF_GEOMETRY_SHADER_4_0,
+	EVDF_STREAM_OUTPUT_4_0,
+	EVDF_COMPUTING_SHADER_4_0,
+
+	//! Supports Shader model 4.1
+	EVDF_VERTEX_SHADER_4_1,
+	EVDF_PIXEL_SHADER_4_1,
+	EVDF_GEOMETRY_SHADER_4_1,
+	EVDF_STREAM_OUTPUT_4_1,
+	EVDF_COMPUTING_SHADER_4_1,
+
+	//! Supports Shader model 5.0
+	EVDF_VERTEX_SHADER_5_0,
+	EVDF_PIXEL_SHADER_5_0,
+	EVDF_GEOMETRY_SHADER_5_0,
+	EVDF_STREAM_OUTPUT_5_0,
+	EVDF_TESSELATION_SHADER_5_0,
+	EVDF_COMPUTING_SHADER_5_0,
+
+	//! Supports texture multisampling
+	EVDF_TEXTURE_MULTISAMPLING,
 	EVDF_COUNT,
 
 	EVDF_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
@@ -291,13 +326,28 @@ enum E_SHADER_VERSION
 	ESV_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
 };
 
+enum E_STREAM_TYPE
+{
+	EST_G_PC = 0,
+	EST_G_PN,
+	EST_G_PNC,
+	EST_T_1T,
+	EST_T_2T,
+	EST_T_TTB,
+	EST_A,
+
+	EST_GT_PC_1T
+};
+
 enum E_VERTEX_TYPE
 {
-	EVT_BASICCOLOR = 0,			//for bounding box
-	EVT_BASICTEX,
+	EVT_BASICCOLOR= 0,			//for bounding box
+	EVT_BASICTEX_S,
+	EVT_BASICTEX_M,
 	EVT_STANDARD,
+	EVT_2TCOORDS,
+	EVT_TANGENTS,
 	EVT_MODEL,						//fvf
-	EVT_BONEINDICES,
 	EVT_COUNT,
 
 	EVT_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
@@ -328,7 +378,6 @@ enum E_PRIMITIVE_TYPE
 	EPT_LINE_STRIP,
 	EPT_LINES,
 	EPT_TRIANGLE_STRIP,
-	EPT_TRIANGLE_FAN,
 	EPT_TRIANGLES,
 	EPT_COUNT,
 
@@ -351,10 +400,6 @@ inline u32 getPrimitiveCount(E_PRIMITIVE_TYPE primType, u32 count)
 	case EPT_LINE_STRIP:
 		_ASSERT(count>=2);
 		p = count - 1;
-		break;
-	case EPT_TRIANGLE_FAN:
-		_ASSERT(count>=3);
-		p = count - 2;
 		break;
 	case EPT_TRIANGLE_STRIP:
 		_ASSERT(count>=3);
@@ -384,10 +429,12 @@ enum E_MATERIAL_TYPE
 	EMT_LIGHTMAP_LIGHTING_M2,
 	EMT_LIGHTMAP_LIGHTING_M4,
 	EMT_DETAIL_MAP,
+	EMT_TERRAIN_MULTIPASS,
 
 	EMT_ALPHA_TEST,
-	EMT_TRANSPARENT_ADD_ALPHA,	
 	EMT_TRANSPARENT_ALPHA_BLEND,
+	EMT_TRANSAPRENT_ALPHA_BLEND_TEST,
+	EMT_TRANSPARENT_ADD_ALPHA,	
 	EMT_TRANSPARENT_ADD_COLOR,
 	
 	EMT_COUNT,
@@ -478,6 +525,7 @@ enum E_TEXTURE_FILTER
 	ETF_ANISOTROPIC_X2,
 	ETF_ANISOTROPIC_X4,
 	ETF_ANISOTROPIC_X8,
+	ETF_ANISOTROPIC_X16,
 
 
 	ETF_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
@@ -495,13 +543,15 @@ inline u8 getAnisotropic(E_TEXTURE_FILTER filter)
 		return 4;
 	case ETF_ANISOTROPIC_X8:
 		return 8;
+	case ETF_ANISOTROPIC_X16:
+		return 16;
 	default:
 		return 0;
 	}
 }
 
 
-#define  MATERIAL_MAX_TEXTURES		2
+#define  MATERIAL_MAX_TEXTURES		6
 
 enum E_LIGHT_TYPE
 {
@@ -513,10 +563,29 @@ enum E_LIGHT_TYPE
 	ELT_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
 };
 
+enum E_CULL_MODE
+{
+	ECM_NONE = 0,
+	ECM_FRONT,
+	ECM_BACK,
+
+	ECM_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
+};
+
+enum E_ANTI_ALIASING_MODE
+{
+	EAAM_OFF = 0,
+	EAAM_SIMPLE,
+	EAAM_LINE_SMOOTH,
+
+	EAAM_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
+};
+
 //雾
 enum E_FOG_TYPE
 {
-	EFT_FOG_EXP=0,
+	EFT_FOG_NONE=0,
+	EFT_FOG_EXP,
 	EFT_FOG_LINEAR,
 	EFT_FOG_EXP2,
 
@@ -571,6 +640,8 @@ enum E_PS_TYPE
 {
 	EPST_GENERIC = 0,
 
+	EPST_TERRAIN,
+
 	EPST_COUNT,
 
 	EPST_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
@@ -589,13 +660,27 @@ enum E_EFFECT_TYPE
 enum E_RENDERINST_TYPE
 {
 	ERT_NONE = 0,
-	ERT_STATIC_MESH = 1,		//地形mesh
-	ERT_TERRAIN = 2,			//地形
-	ERT_MESH = 4,					//动态模型
-	ERT_EFFECT = 8,					//特效
-	ERT_WIRE = 16,						//编辑
+	ERT_SKY,
+	ERT_TERRAIN,			//低精度地形
+	ERT_WMO,					//建筑
+	ERT_DOODAD,		//地形小物件
+	ERT_MESH,					//角色模型,m2
+	ERT_EFFECT,					//特效
+	ERT_WIRE,						//编辑
 
 	ERT_COUNT,
 
 	ERT_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
+};
+
+enum E_LEVEL
+{
+	EL_ZERO = 0,
+	EL_ONE,
+	EL_TWO,
+	EL_THREE,
+	EL_FOUR,
+	EL_FIVE,
+
+	EL_FORCE_32_BIT_DO_NOT_USE = 0x7fffffff
 };

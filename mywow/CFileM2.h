@@ -4,6 +4,7 @@
 #include <list>
 
 class IVertexBuffer;
+class CFileM2;
 
 class CM2Loader
 {
@@ -19,7 +20,7 @@ public:
 	CFileSkin();
 	~CFileSkin();
 
-	bool loadFile(MPQFile* file, IFileM2* m2);
+	bool loadFile(MPQFile* file, CFileM2* m2);
 
 	u32 NumGeosets;
 	u32 NumTexUnit;
@@ -27,18 +28,19 @@ public:
 
 	u16*	Indices;
 	u32		NumIndices;
-	S3DVertexBone*	BoneVertices;
+	SAVertex*		AVertices;
 	u32		NumBoneVertices;
 
 	//vm
+	IVertexBuffer*		GVertexBuffer;
+	IVertexBuffer*		TVertexBuffer;
+	IVertexBuffer*		AVertexBuffer;
 	IIndexBuffer*		IndexBuffer;
-	IVertexBuffer*		BoneBuffer;
-	IVertexBuffer*		VertexBuffer;
 
 	//ËÑ¼¯¹Ç÷À¶¥µã
 	struct SBoneVertEntry
 	{
-		S3DVertexBone*	vertices;
+		SAVertex*		aVertices;
 		u32		num;
 	};
 	typedef std::list<SBoneVertEntry, qzone_allocator<SBoneVertEntry>>		T_BoneVerticesList;
@@ -46,12 +48,14 @@ public:
 
 class CFileM2 : public IFileM2
 {
-public:
+private:
 	CFileM2();
 	~CFileM2();
+
+	friend class CM2Loader;
+
 public:
 	virtual bool loadFile(MPQFile* file);
-	virtual u8* getFileData() const { return FileData; }
 	virtual M2Type getType() const { return Type; }
 	virtual const aabbox3df& getBoundingBox() const { return BoundingBox; }
 	virtual s16 getAnimationIndex(const c8* name, u32 subIdx = 0);
@@ -59,6 +63,8 @@ public:
 
 	virtual bool buildVideoResources();
 	virtual void releaseVideoResources();
+
+	virtual u8* getFileData() const { return FileData; }
 
 private:
 	void clear();

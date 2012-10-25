@@ -25,7 +25,7 @@ private:
 	ISceneManager*		SceneManager;
 	IRibbonEmitterServices*		RibbonEmitterServices;
 
-	wow_character*		Character;
+	wow_m2instance*		Character;
 	typedef std::list<RibbonSegment*, qzone_allocator<RibbonSegment*>>	T_LiveSegments;
 	T_LiveSegments		LiveSegments;
 

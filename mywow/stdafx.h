@@ -36,17 +36,19 @@
 	#define D3D_DEBUG_INFO
 #endif
 
+#include <dinput.h>
+
 #include <d3d9.h>
 #include <d3dx9.h>
 
-#include <d3d11.h>
+//audio
+#include <mmreg.h>
 
 //freetype
-#include <ft2build.h>
-
+#include "ft2build.h"
 #include FT_FREETYPE_H
-
 #include FT_GLYPH_H
 
-//libmpq
-#include "mpq.h"			
+//stormlib
+#include "stormlib.h"			
+

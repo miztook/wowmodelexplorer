@@ -5,6 +5,9 @@
 
 class CFileSystem : public IFileSystem
 {
+private:
+	DISALLOW_COPY_AND_ASSIGN(CFileSystem);
+
 public:
 	CFileSystem();
 	~CFileSystem();

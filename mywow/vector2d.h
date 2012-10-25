@@ -30,14 +30,15 @@ public:
 	inline vector2d<T> operator/(const T v) const { return vector2d<T>(X / v, Y / v); }
 	inline vector2d<T>& operator/=(const T v) { X/=v; Y/=v; return *this; }
 
-	inline bool operator==(const vector2d<T>& other) const { return equals_(other); }
-	inline bool operator!=(const vector2d<T>& other) const { return !equals_(other); }
+	inline bool operator==(const vector2d<T>& other) const { return equals(other); }
+	inline bool operator!=(const vector2d<T>& other) const { return !(*this == other ); }
 
 	//
 	bool equals(const vector2d<T>& other) const { return equals_(X, other.X) && equals_(Y, other.Y); }
 
 	void set(T nx, T ny) {X=nx; Y=ny;}
 	void set(const vector2d<T>& p) { X=p.X; Y=p.Y; }
+	void clear() { memset(&X,0,sizeof(T)*2); }
 
 	T getLength() const { return squareroot_( X*X + Y*Y ); }
 	T getLengthSQ() const { return X*X + Y*Y; }

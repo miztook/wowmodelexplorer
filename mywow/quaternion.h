@@ -11,7 +11,7 @@ public:
 	quaternion(f32 angle, const vector3df& axis) { fromAngleAxis( angle, axis ); }
 
 	//
-	inline bool operator==(const quaternion& other) const { return ((X == other.X) && (Y == other.Y) && (Z == other.Z) && (W == other.W)); }
+	inline bool operator==(const quaternion& other) const { return equals_(X, other.X) && equals_(Y, other.Y) && equals_(Z, other.Z) && equals_(W, other.W);}
 	inline bool operator!=(const quaternion& other) const { return !(*this == other ); }
 	inline quaternion& operator=(const quaternion& other) { X = other.X; Y = other.Y; Z = other.Z; W = other.W; return *this; }
 	inline quaternion operator+(const quaternion& other) const { return quaternion(X+other.X, Y+other.Y, Z+other.Z, W+other.W); }

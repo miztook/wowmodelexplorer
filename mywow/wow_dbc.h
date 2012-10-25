@@ -22,6 +22,8 @@ public:
 
 	static const size_t ID = 0;
 
+	friend void g_callbackDBC(const c8* filename, void* param);
+
 public:
 	class record
 	{
@@ -272,6 +274,8 @@ class itemSubClassDB;					//			ItemSubClass.dbc
 class itemVisualsDB;						//			ItemVisuals.dbc
 class itemVisualEffectDB;			//			ItemVisualEffects.dbc	
 class startOutfitDB;					//			CharStartOutfit.dbc
+class lightDB;								//			Light.dbc
+class lightIntBandDB;					//		LightIntBand.dbc
 class lightSkyboxDB;						//		LightSkybox.dbc
 class itemVisualsDB;					//		ItemVisuals.dbc
 class itemDB;									//		Item.dbc
@@ -299,7 +303,7 @@ public:
 	static const size_t MapID = 1;
 	static const size_t ParentAreaTableID = 2;
 	static const size_t ExplorationLevel = 10;
-	static const size_t Name = 11;
+	static const size_t Name = 13;
 
 };
 
@@ -338,7 +342,7 @@ public:
 	static const size_t Race = 1;				// uint
 	static const size_t Gender = 2;				// uint, 0 = Male, 1 = Female
 	static const size_t Section = 3;			// uint, ID unique between race, and gender.
-	static const size_t Geoset = 4;				// uint, Defines hairstyle, each number should be unique for that race / gender combo.
+	static const size_t Geoset = 5;				// uint, Defines hairstyle, each number should be unique for that race / gender combo.
 
 	dbc::record getByParams(unsigned int race, unsigned int gender, unsigned int section);
 	size_t getGeosetsFor(unsigned int race, unsigned int gender);
@@ -451,7 +455,6 @@ public:
 	static const size_t Facial1Flags = 2;		// int Beard or Tusks
 	static const size_t Facial2Flags = 3;		// int Earring
 	static const size_t Facial3Flags = 4;		// int, See ChrRaces, column 24 to 26 for information on what is what.
-	static const size_t EarsFlags = 5;		// int Ears
 };
 
 class itemDisplayDB : public dbc
@@ -526,6 +529,30 @@ public:
 	static const size_t ItemIDBase = 2; // 24 * uint
 };
 
+class lightDB : public dbc
+{
+public:
+	lightDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Light.dbc") {}
+
+	static const size_t Map = 1;			// uint
+	static const size_t PositionX = 2;		// float
+	static const size_t PositionY = 3;		// float
+	static const size_t PositionZ = 4;		// float
+	static const size_t RadiusInner = 5;	// float
+	static const size_t RadiusOuter = 6;	// float
+	static const size_t DataIDs = 7;		// uint[8]
+};
+
+class lightIntBandDB : public dbc
+{
+public:
+	lightIntBandDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\LightIntBand.dbc") {}
+
+	static const size_t Entries = 1;		// uint
+	static const size_t Times = 2;			// uint
+	static const size_t Values = 18;		// uint
+};
+
 class lightSkyboxDB : public dbc
 {
 public:
@@ -573,7 +600,7 @@ public:
 	static const size_t InternalName = 1;		// string
 	static const size_t AreaType = 2;		// int
 	static const size_t AreaTableID = 4;			// int
-	static const size_t Name = 6;
+	static const size_t Name = 5;
 };
 
 class spellVisualEffectNameDB : public dbc

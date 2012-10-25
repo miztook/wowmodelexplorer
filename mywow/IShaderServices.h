@@ -37,4 +37,5 @@ public:
 	virtual void setShaderConstants(IEffect* effect, const SMaterial& material) = 0;
 
 	virtual void getWVPMatrix(matrix4& mat) const = 0;
+	virtual void getVPMatrix(matrix4& mat) const = 0;
 };

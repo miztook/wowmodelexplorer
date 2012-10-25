@@ -2,35 +2,40 @@
 #include "CSceneRenderServices.h"
 #include "mywow.h"
 #include "CTerrainRenderer.h"
+#include "CWmoRenderer.h"
 #include "CMeshRenderer.h"
 #include "CTranslucentRenderer.h"
 
 CSceneRenderServices::CSceneRenderServices()
 	: CurrentUnit(NULL)
 {
-	StaticMesh_Solid_Renderer = new CMeshRenderer(10000);
-	StaticMesh_Transprent_Renderer = new CTransluscentRenderer(10000);
-	Terrain_Renderer = new CTerrainRenderer(256 * 5);
-	DynMesh_Solid_Renderer = new CMeshRenderer(2000);
-	DynMesh_Transparent_Renderer = new CTransluscentRenderer(2000);
-	Effect_Renderer = new CTransluscentRenderer(2000);
+	Sky_Renderer = new CMeshRenderer(5);
+	Terrain_Renderer = new CTerrainRenderer(256 * 5, 256 * 5);
+	Wmo_Renderer = new CWmoRenderer(2000);
+	Doodad_Solid_Renderer = new CMeshRenderer(20000);
+	Mesh_Solid_Renderer = new CMeshRenderer(20000);
+	Transparent_Renderer = new CTransluscentRenderer(20000);
 	Wire_Renderer = new CMeshRenderer(1000);
 
-	SceneNodes = (SEntry*)Hunk_AllocateTempMemory(sizeof(SEntry) * 2000);
+	SceneNodes = new SEntry[2000];
 	SceneNodeCount = 0;
+
+	ModelLodBias = 0;
+	TerrainLodBias = 0;
+	ObjectVisibleDistance = 24;
 }
 
 CSceneRenderServices::~CSceneRenderServices()
 {
-	Hunk_FreeTempMemory(SceneNodes);
+	delete[] SceneNodes;
 
 	delete Wire_Renderer;
-	delete Effect_Renderer;
-	delete DynMesh_Transparent_Renderer;
-	delete DynMesh_Solid_Renderer;
+	delete Transparent_Renderer;
+	delete Mesh_Solid_Renderer;
+	delete Doodad_Solid_Renderer;
+	delete Wmo_Renderer;
 	delete Terrain_Renderer;
-	delete StaticMesh_Transprent_Renderer;
-	delete StaticMesh_Solid_Renderer;
+	delete Sky_Renderer;
 }
 
 void CSceneRenderServices::addSceneNode( ISceneNode* node )
@@ -64,19 +69,25 @@ void CSceneRenderServices::addRenderUnit( const SRenderUnit* unit, E_RENDERINST_
 {
 	switch(type)
 	{
-	case ERT_STATIC_MESH:
-		StaticMesh_Solid_Renderer->addRenderUnit(unit);
-		StaticMesh_Transprent_Renderer->addRenderUnit(unit);
+	case ERT_SKY:
+		Sky_Renderer->addRenderUnit(unit);
 		break;
 	case ERT_TERRAIN:
 		Terrain_Renderer->addRenderUnit(unit);
 		break;
-	case ERT_MESH:
-		DynMesh_Solid_Renderer->addRenderUnit(unit);
-		DynMesh_Transparent_Renderer->addRenderUnit(unit);
+	case ERT_WMO:
+		Wmo_Renderer->addRenderUnit(unit);
 		break;
-	case ERT_EFFECT:
-		Effect_Renderer->addRenderUnit(unit);
+	case ERT_DOODAD:
+		Doodad_Solid_Renderer->addRenderUnit(unit);
+		Transparent_Renderer->addRenderUnit(unit);
+		break;
+	case ERT_MESH:
+		Mesh_Solid_Renderer->addRenderUnit(unit);
+		Transparent_Renderer->addRenderUnit(unit);
+		break;
+	case ERT_EFFECT:	
+		Transparent_Renderer->addRenderUnit(unit);
 		break;
 	case ERT_WIRE:
 		Wire_Renderer->addRenderUnit(unit);
@@ -88,25 +99,41 @@ void CSceneRenderServices::addRenderUnit( const SRenderUnit* unit, E_RENDERINST_
 
 void CSceneRenderServices::renderAll(E_RENDERINST_TYPE type, ICamera* cam)
 {
+	ISceneRenderer* sceneRenderer = getSceneRenderer(type);
+	sceneRenderer->render(CurrentUnit, cam);
+}
+
+void CSceneRenderServices::begin_setupLightFog( E_RENDERINST_TYPE type, ICamera* cam )
+{
+	ISceneRenderer* sceneRenderer = getSceneRenderer(type);
+	sceneRenderer->begin_setupLightFog(cam);
+}
+
+void CSceneRenderServices::end_setupLightFog( E_RENDERINST_TYPE type )
+{
+	ISceneRenderer* sceneRenderer = getSceneRenderer(type);
+	sceneRenderer->end_setupLightFog();
+}
+
+ISceneRenderer* CSceneRenderServices::getSceneRenderer( E_RENDERINST_TYPE type )
+{
 	switch(type)
 	{
-	case ERT_STATIC_MESH:
-		StaticMesh_Solid_Renderer->render(CurrentUnit, cam);
-		StaticMesh_Transprent_Renderer->render(CurrentUnit, cam);
-		break;
+	case ERT_SKY:
+		return Sky_Renderer;
 	case ERT_TERRAIN:
-		Terrain_Renderer->render(CurrentUnit, cam);
-		break;
+		return Terrain_Renderer;
+	case ERT_WMO:
+		return Wmo_Renderer;
+	case ERT_DOODAD:
+		return Doodad_Solid_Renderer;
 	case ERT_MESH:
-		DynMesh_Solid_Renderer->render(CurrentUnit, cam);
-		DynMesh_Transparent_Renderer->render(CurrentUnit, cam);
-		break;
+		return Mesh_Solid_Renderer;
 	case ERT_EFFECT:
-		Effect_Renderer->render(CurrentUnit, cam);
-		break;
+		return Transparent_Renderer;
 	case ERT_WIRE:
-		Wire_Renderer->render(CurrentUnit, cam);
-		break;
+		return Wire_Renderer;
 	}
-
+	_ASSERT(false);
+	return NULL;
 }

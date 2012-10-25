@@ -214,7 +214,7 @@ class CFileSkin;
 //对应m2文件，静态数据，加载m2同时也加载对应的skin和anim文件
 class IFileM2 : public IReferenceCounted<IFileM2>
 {
-protected:
+private:
 	virtual void onRemove() 
 	{
 		releaseVideoResources(); 
@@ -225,8 +225,9 @@ public:
 		: VideoBuilt(false), ContainsBillboardBone(false)
 	{
 		m2Header = NULL;
-		Vertices = NULL;
-		VBones = NULL;
+		GVertices = NULL;
+		TVertices = NULL;
+		AVertices = NULL;
 		Bounds = NULL;
 		BoundTris = NULL;
 		TextureFlags = NULL;
@@ -255,7 +256,6 @@ public:
 
 public:
 	virtual bool loadFile(MPQFile* file) = 0;
-	virtual u8* getFileData() const = 0;
 	virtual M2Type getType() const = 0;
 	virtual const aabbox3df& getBoundingBox() const = 0;
 	virtual s16 getAnimationIndex(const c8* name, u32 subIdx = 0)= 0;
@@ -273,8 +273,10 @@ public:
 	M2::header*		m2Header;
 
 	//verts
-	S3DVertexModel*		Vertices;
-	S3DVertexBone*			VBones;
+	SGVertex_PN*		GVertices;
+	STVertex_1T*	TVertices;
+	SAVertex*			AVertices;
+
 	u32			NumVertices;
 
 	//bounds

@@ -9,7 +9,7 @@ struct HWSkinning_CB
 	SColorf 		MaterialAmbient;
 	SColorf			AmbientColor;
 	SColorf			EmissiveColor;
-	float				Params[4];
+	float				Params[4];		//0: numBones, 1: animTexture
 	matrix4			mTexture;
 };
 
@@ -36,19 +36,22 @@ void HwSkinning_setShaderConst( IVertexShader* vs, const SMaterial& material )
 	_ASSERT(boneMats);
 	_ASSERT(boneMats->count <= 58);
 
-	// param
+	// para
 	HWSkinning_CB cbuffer;
+
+	driver->getShaderServices()->getWVPMatrix(cbuffer.mWorldViewProjection);
+	cbuffer.Params[0] = unit->u.useBoneMatrix ? (float)boneMats->maxWeights : 0.0f;
+
 	bool useAnimTex = material.TextureLayer[0].UseTextureMatrix;
 	cbuffer.Params[1] =  useAnimTex ? 1.0f : 0.0f;
 	if (useAnimTex)
 	{
 		cbuffer.mTexture = *material.TextureLayer[0].TextureMatrix;
 	}
-	cbuffer.AmbientColor =  SColorf(driver->getAmbientLight());
+
+	cbuffer.AmbientColor =  SColorf(driver->getSceneStateServices()->getAmbientLight());
 	cbuffer.MaterialAmbient = material.Lighting ? SColorf(material.AmbientColor) : SColorf(0);
 	cbuffer.EmissiveColor = material.Lighting ? SColor(0) : SColorf(material.EmissiveColor);
-	driver->getShaderServices()->getWVPMatrix(cbuffer.mWorldViewProjection);
-	cbuffer.Params[0] = unit->u.useBoneMatrix ? (float)boneMats->maxWeights : 0.0f;
 
 	// set update buffer
 	u32 size = useAnimTex ? sizeof(HWSkinning_CB) / 16 : (sizeof(HWSkinning_CB) - sizeof(matrix4)) / 16;

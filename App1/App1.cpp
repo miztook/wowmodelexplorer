@@ -165,7 +165,7 @@ int main()
 //	g_Engine->getWowDatabase()->buildMaps();
 
  	g_hWnd = Engine::createWindow("App1", WndProc, dimension2du(800,600));
-	bool success = g_Engine->initDriver(g_hWnd, EDT_DIRECT3D9, false, true, true, 32, 1);
+	bool success = g_Engine->initDriver(g_hWnd, EDT_DIRECT3D9, 0, false, true, 1, true);
 	bExit = !success;
 
 	g_Engine->initSceneManager();
@@ -223,10 +223,11 @@ void processResource()
 	IResourceLoader* loader = g_Engine->getResourceLoader();
 	if(loader->m2LoadCompleted())
 	{
-		IResourceLoader::STask task = loader->getCurrentM2Task();
+		IResourceLoader::STask task = loader->getCurrentTask();
 		IFileM2* filem2 = (IFileM2*)task.file;
 
-		loader->resumeLoadingM2();
+		loader->clearCurrentTask();
+		loader->resumeLoading();
 
 		IM2SceneNode*  node = g_Engine->getSceneManager()->addM2SceneNode(filem2, NULL);
 		if (node)
@@ -247,9 +248,10 @@ void createScene()
 	//add static mesh
 	g_Engine->getManualMeshServices()->addGridLineMesh("$grid10", 10, 1,SColor(128,128,128) );
 
-
-	g_Engine->getResourceLoader()->beginLoadM2("Interface\\Glues\\Models\\UI_MainMenu_Cataclysm\\UI_MainMenu_CataClysm.m2");
-	
+	/*
+	IResourceLoader::SParamBlock block;
+	g_Engine->getResourceLoader()->beginLoadM2("Interface\\Glues\\Models\\UI_MainMenu_Cataclysm\\UI_MainMenu_CataClysm.m2", block);
+	*/
 /*
 	{	
 	
@@ -268,16 +270,16 @@ void createScene()
 	*/
 
 	//add scene node
-//	IMeshSceneNode* gridNode = g_Engine->getSceneManager()->addMeshSceneNode("$grid10", NULL);
+	IMeshSceneNode* gridNode = g_Engine->getSceneManager()->addMeshSceneNode("$grid10", NULL);
 
 	string64 act = "Stand";
 
-/*
+
 	//alliance
 	{
-		IFileM2* m2Human = g_Engine->getResourceLoader()->loadM2("Character\\HUMAN\\MALE\\HumanMale.m2");
+		IFileM2* m2Human = g_Engine->getResourceLoader()->loadM2("Character\\PANDAREN\\MALE\\PandarenMale.m2");
 		IM2SceneNode*  humanNode = g_Engine->getSceneManager()->addM2SceneNode(m2Human, NULL);	
-	//	humanNode->loadSet(679);		//631
+		humanNode->loadSet(679);		//631
 	//	humanNode->loadStartOutfit(352, true);
 		humanNode->updateCharacter();
 		matrix4 mat;
@@ -287,9 +289,9 @@ void createScene()
 		humanNode->playAnimationByName(act.c_str(), 0, true);
 		//humanNode->setModelCamera(1);
 		
-		humanNode->takeItem(48695, NULL);
+	//	humanNode->takeItem(48695, NULL);
 	}
-
+/*
 	{
 		IFileM2* m2Human = g_Engine->getResourceLoader()->loadM2("Character\\HUMAN\\MALE\\HumanMale.m2");
 		IM2SceneNode*  humanNode = g_Engine->getSceneManager()->addM2SceneNode(m2Human, NULL);	

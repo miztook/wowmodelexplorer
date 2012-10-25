@@ -2,6 +2,9 @@
 #include "CD3D9HardwareBufferServices.h"
 #include "mywow.h"
 #include "CD3D9Helper.h"
+#include "CLock.h"
+
+extern CRITICAL_SECTION g_hwbufferCS;
 
 CD3D9HardwareBufferServices::CD3D9HardwareBufferServices()
 {
@@ -18,7 +21,7 @@ CD3D9HardwareBufferServices::~CD3D9HardwareBufferServices()
 
 bool CD3D9HardwareBufferServices::createHardwareBuffer( IVertexBuffer* vbuffer )
 {
-	_ASSERT( g_Engine->getCurrentThreadId() == ::GetCurrentThreadId() );
+	CLock lock(&g_hwbufferCS);
 
 	bool success = internalCreateVertexBuffer(vbuffer);
 
@@ -32,7 +35,7 @@ bool CD3D9HardwareBufferServices::createHardwareBuffer( IVertexBuffer* vbuffer )
 
 bool CD3D9HardwareBufferServices::createHardwareBuffer( IIndexBuffer* ibuffer )
 {
-	_ASSERT( g_Engine->getCurrentThreadId() == ::GetCurrentThreadId() );
+	CLock lock(&g_hwbufferCS);
 
 	bool success = internalCreateIndexBuffer(ibuffer);
 
@@ -44,9 +47,42 @@ bool CD3D9HardwareBufferServices::createHardwareBuffer( IIndexBuffer* ibuffer )
 	return success;
 }
 
+bool CD3D9HardwareBufferServices::createHardwareBuffers( const SBufferParam& bufferParam )
+{
+	if (!createHardwareBuffer(bufferParam.vbuffer0))
+	{
+		_ASSERT(false);
+		return false;
+	}
+	if (bufferParam.vbuffer1 && !createHardwareBuffer(bufferParam.vbuffer1))
+	{
+		_ASSERT(false);
+		return false;
+	}
+	if (bufferParam.vbuffer2 && !createHardwareBuffer(bufferParam.vbuffer2))
+	{
+		_ASSERT(false);
+		return false;
+	}
+	if (bufferParam.vbuffer3 && !createHardwareBuffer(bufferParam.vbuffer3))
+	{
+		_ASSERT(false);
+		return false;
+	}
+
+	//index buffer
+	if (bufferParam.ibuffer && !createHardwareBuffer(bufferParam.ibuffer))
+	{
+		_ASSERT(false);
+		return false;
+	}
+
+	return true;
+}
+
 void CD3D9HardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffer )
 {
-	_ASSERT( g_Engine->getCurrentThreadId() == ::GetCurrentThreadId() );
+	CLock lock(&g_hwbufferCS);
 
 	if(!vbuffer->HWLink)
 		return;
@@ -67,7 +103,7 @@ void CD3D9HardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffer 
 
 void CD3D9HardwareBufferServices::destroyHardwareBuffer( IIndexBuffer* ibuffer )
 {
-	_ASSERT( g_Engine->getCurrentThreadId() == ::GetCurrentThreadId() );
+	CLock lock(&g_hwbufferCS);
 
 	if(!ibuffer->HWLink)
 		return;
@@ -86,14 +122,29 @@ void CD3D9HardwareBufferServices::destroyHardwareBuffer( IIndexBuffer* ibuffer )
 	}		
 }
 
+void CD3D9HardwareBufferServices::destroyHardwareBuffers( const SBufferParam& bufferParam )
+{
+	if (bufferParam.ibuffer)
+		destroyHardwareBuffer(bufferParam.ibuffer);
+	destroyHardwareBuffer(bufferParam.vbuffer0);
+	if (bufferParam.vbuffer1)
+		destroyHardwareBuffer(bufferParam.vbuffer1);
+	if (bufferParam.vbuffer2)
+		destroyHardwareBuffer(bufferParam.vbuffer2);
+	if (bufferParam.vbuffer3)
+		destroyHardwareBuffer(bufferParam.vbuffer3);
+}
+
 bool CD3D9HardwareBufferServices::updateHardwareBuffer( IVertexBuffer* vbuffer, u32 offset, u32 size )
 {
+	CLock lock(&g_hwbufferCS);
+
 	_ASSERT(offset + size <= vbuffer->Size);
 
 	if (!size)
 		return true;
 
-	u32 vertexSize = getVertexPitchFromType(vbuffer->Type);
+	u32 vertexSize = getStreamPitchFromType(vbuffer->Type);
 	void* pLockedBuffer = 0;
 
 	u32 sizeToLock = size * vertexSize;
@@ -130,6 +181,8 @@ bool CD3D9HardwareBufferServices::updateHardwareBuffer( IVertexBuffer* vbuffer, 
 
 bool CD3D9HardwareBufferServices::updateHardwareBuffer( IIndexBuffer* ibuffer, u32 offset, u32 size )
 {
+	CLock lock(&g_hwbufferCS);
+
 	u32 indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
 	
 	_ASSERT(offset + size <= ibuffer->Size);			
@@ -295,7 +348,7 @@ bool CD3D9HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbu
 	case EMM_STATIC:
 		{
 			flags = D3DUSAGE_WRITEONLY;
-			pool =  D3DPOOL_MANAGED;
+			pool = D3DPOOL_MANAGED;
 		}
 		break;
 	case EMM_DYNAMIC:
@@ -318,7 +371,7 @@ bool CD3D9HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbu
 	if (vbuffer->Size)
 	{
 		DWORD FVF = 0;
-		u32 vertexSize = getVertexPitchFromType(vbuffer->Type);
+		u32 vertexSize = getStreamPitchFromType(vbuffer->Type);
 		if( FAILED(pID3DDevice->CreateVertexBuffer( vbuffer->Size * vertexSize, flags, FVF, pool, (IDirect3DVertexBuffer9**)&vbuffer->HWLink, NULL) ) )
 		{
 			_ASSERT(false);

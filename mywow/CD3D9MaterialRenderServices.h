@@ -17,16 +17,27 @@ public:
 		const SMaterial& lastMaterial,
 		bool resetAllRenderstates );
 
+	virtual void setOverrideRenderStates( const SOverrideMaterial& overrideMaterial,
+		bool resetAllRenderStates );
+
 	virtual bool isFFPipeline() const { return !PPipeline; }
 
 	virtual IMaterialRenderer* getMaterialRenderer( E_MATERIAL_TYPE type ) { return MaterialRenderersMap[type]; }
 
-	virtual void set2DRenderStates( bool alpha, bool texture, bool alphaChannel, bool resetAllRenderStates);
+	virtual void set2DRenderStates( bool alpha, bool alphaChannel, E_BLEND_FACTOR srcBlend, E_BLEND_FACTOR destBlend, bool resetAllRenderStates);
 
 	virtual void applyMaterialBlock( const SRenderStateBlock& block, bool resetAllRenderStates );
 
 	virtual ITexture* getSampler_Texture(u32 st) const { return RsCache.TextureUnits[st].texture; }
 	virtual void setSampler_Texture(u32 st, ITexture* tex);
+
+	//render states
+	virtual bool getZWriteEnable() const;
+	virtual void setZWriteEnable(bool enable);
+	virtual void setTextureWrap(u32 st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap);
+	virtual E_TEXTURE_CLAMP getTextureWrap(u32 st, E_TEXTURE_ADDRESS address) const;
+	virtual void setDepthBias(f32 depthbias);
+	virtual f32 getDepthBias() const;
 
 private:
 	void ResetRSCache();
@@ -61,6 +72,7 @@ private:
 			DWORD		magFilter;
 			DWORD		minFilter;
 			DWORD		mipFilter;
+			DWORD		mipLodBias;
 		};
 
 		DWORD	 Lighting;
@@ -74,15 +86,17 @@ private:
 		DWORD	 CullMode;
 		DWORD	 FogEnable;
 		DWORD	 MultiSampleAntiAlias;
-	//	DWORD	 AntiAliasedLineEnable;
+		DWORD	 AntiAliasedLineEnable;
+		DWORD	 SlopeScaleDepthBias;
+		DWORD	 DepthBias;
 		DWORD	 AlphaBlendEnable;
 		DWORD	 SrcBlend;
 		DWORD	 DestBlend;
 		DWORD	 AlphaTestEnable;
 		DWORD	 AlphaFunc;
 		DWORD	 AlphaRef;
-	//	DWORD	 AdaptivetessY;
-	//	DWORD	 PointSize;
+		DWORD	 AdaptivetessY;
+		DWORD	 PointSize;
 
 		STextureUnit	TextureUnits[MATERIAL_MAX_TEXTURES];
 	};
@@ -90,4 +104,6 @@ private:
 	SRenderStateCache	RsCache;
 
 	SRenderStateBlock		LastMaterialBlock;					//»º´æmaterial block
+
+	SOverrideMaterial		LastOverrideMaterial;
 };

@@ -13,14 +13,14 @@ CReadFile::~CReadFile()
 		fclose(File);
 }
 
-s32 CReadFile::read( void* buffer, u32 sizeToRead )
+u32 CReadFile::read( void* buffer, u32 sizeToRead )
 {
 	if( !isOpen() )
 		return 0;
-	return (s32)fread(buffer, 1, sizeToRead, File );
+	return fread(buffer, 1, sizeToRead, File );
 }
 
-s32 CReadFile::readLine( c8* buffer, u32 len /*= MAX_READ_NUM */ )
+u32 CReadFile::readLine( c8* buffer, u32 len /*= MAX_READ_NUM */ )
 {
 	if ( !isOpen() )
 		return 0;
@@ -29,11 +29,12 @@ s32 CReadFile::readLine( c8* buffer, u32 len /*= MAX_READ_NUM */ )
 	return c ? strlen(c) : 0;
 }
 
-bool CReadFile::seek( long finalPos, bool relativeMovement /*= false*/ )
+bool CReadFile::seek( s32 finalPos, bool relativePos/* = false*/ )
 {
 	if( !isOpen() )
 		return false;
-	return fseek( File, finalPos, relativeMovement ? SEEK_CUR : SEEK_SET ) == 0;
+
+	return fseek( File, finalPos, relativePos ? SEEK_CUR : SEEK_SET ) == 0;
 }
 
 s32 CReadFile::getPos() const
@@ -46,7 +47,8 @@ void CReadFile::openFile( bool binary )
 	if (fopen_s(&File, FileName, binary ? "rb": "rt") == 0)
 	{
 		fseek( File, 0, SEEK_END );
-		FileSize = ftell( File );
+		long size = ftell(File);
+		FileSize = size > 0 ? (u32)size : 0;
 		fseek( File, 0, SEEK_SET );
 	}
 	else
@@ -54,4 +56,9 @@ void CReadFile::openFile( bool binary )
 		File = NULL;
 		FileSize = 0;
 	}
+}
+
+bool CReadFile::isEof() const
+{
+	return getPos() == FileSize;
 }

@@ -33,7 +33,7 @@ public:
 
 	inline bool operator==(const vector3d<T>& other) const { return equals(other); }
 
-	inline bool operator!=(const vector3d<T>& other) const { return !equals(other);	}
+	inline bool operator!=(const vector3d<T>& other) const { return !(*this == other );	}
 
 	//
 	bool equals(const vector3d<T>& other, const T tolerance = (T)ROUNDING_ERROR_f32 ) const
@@ -55,6 +55,10 @@ public:
 
 	T getDistanceFrom(const vector3d<T>& other) const { return vector3d<T>(X - other.X, Y - other.Y, Z - other.Z).getLength(); }
 	T getDistanceFromSQ(const vector3d<T>& other) const { return vector3d<T>(X - other.X, Y - other.Y, Z - other.Z).getLengthSQ(); }
+
+	bool isZero() const { return (*this) == Zero(); }
+
+	static const vector3d<T>& Zero() { static vector3d<T> m(0); return m; }
 
 	vector3d<T>& normalize()
 	{

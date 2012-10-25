@@ -1,5 +1,8 @@
 #include "stdafx.h"
+#include "base.h"
 #include "q_memory.h"
+
+extern u32 g_MainThreadId;
 
 typedef unsigned char 		byte;
 
@@ -46,10 +49,11 @@ typedef struct {
 } memzone_t;
 
 // main zone for all "dynamic" memory allocation
-memzone_t	*mainzone;
+memzone_t*		mainzone;
 // we also have a small zone for small allocations that would only
 // fragment the main zone (think of cvar and cmd strings)
-memzone_t	*smallzone;
+memzone_t*		smallzone;
+memzone_t*		renderzone;		//for rendering use, no lock
 
 void Z_CheckHeap( void );
 
@@ -126,7 +130,6 @@ typedef struct {
 
 typedef struct {
 	int		mark;
-	int		permanent;
 	int		temp;
 	int		tempHighwater;
 } hunkUsed_t;
@@ -140,17 +143,25 @@ typedef struct hunkblock_s {
 	int line;
 } hunkblock_t;
 
-static	hunkblock_t *hunkblocks;
+//main thread
+static	hunkUsed_t	hunk_high;
+static	hunkUsed_t* hunk_temp;
 
-static	hunkUsed_t	hunk_low, hunk_high;
-static	hunkUsed_t	*hunk_permanent, *hunk_temp;
+//other thread
+static hunkUsed_t		hunk_high_other;
+static hunkUsed_t*	hunk_temp_other;
 
 static	byte*	s_hunkData = NULL;
 static	byte*	s_hunkMem = NULL;
 static	int		s_hunkTotal;
 
+static	byte*	s_hunkData_other = NULL;
+static	byte*	s_hunkMem_other = NULL;
+static	int		s_hunkTotal_other;
+
 static	int		s_zoneTotal;
 static	int		s_smallZoneTotal;
+static	int		s_renderZoneTotal;
 
 /*
 =================
@@ -161,23 +172,14 @@ void QMem_Info( void ) {
 	memblock_t	*block;
 	int			zoneBytes, zoneBlocks;
 	int			smallZoneBytes, smallZoneBlocks;
-	int			botlibBytes, rendererBytes;
-	int			unused;
 
 	zoneBytes = 0;
-	botlibBytes = 0;
-	rendererBytes = 0;
 	zoneBlocks = 0;
 	for (block = mainzone->blocklist.next ; ; block = block->next) {
 	
 		if ( block->tag ) {
 			zoneBytes += block->size;
 			zoneBlocks++;
-			if ( block->tag == TAG_BOTLIB ) {
-				botlibBytes += block->size;
-			} else if ( block->tag == TAG_RENDERER ) {
-				rendererBytes += block->size;
-			}
 		}
 
 		if (block->next == &mainzone->blocklist) {
@@ -210,34 +212,11 @@ void QMem_Info( void ) {
 	printf( "%8i bytes total hunk\n", s_hunkTotal );
 	printf( "%8i bytes total zone\n", s_zoneTotal );
 	printf( "\n" );
-	printf( "%8i low mark\n", hunk_low.mark );
-	printf( "%8i low permanent\n", hunk_low.permanent );
-	if ( hunk_low.temp != hunk_low.permanent ) {
-		printf( "%8i low temp\n", hunk_low.temp );
-	}
-	printf( "%8i low tempHighwater\n", hunk_low.tempHighwater );
-	printf( "\n" );
 	printf( "%8i high mark\n", hunk_high.mark );
-	printf( "%8i high permanent\n", hunk_high.permanent );
-	if ( hunk_high.temp != hunk_high.permanent ) {
-		printf( "%8i high temp\n", hunk_high.temp );
-	}
 	printf( "%8i high tempHighwater\n", hunk_high.tempHighwater );
 	printf( "\n" );
-	printf( "%8i total hunk in use\n", hunk_low.permanent + hunk_high.permanent );
-	unused = 0;
-	if ( hunk_low.tempHighwater > hunk_low.permanent ) {
-		unused += hunk_low.tempHighwater - hunk_low.permanent;
-	}
-	if ( hunk_high.tempHighwater > hunk_high.permanent ) {
-		unused += hunk_high.tempHighwater - hunk_high.permanent;
-	}
-	printf( "%8i unused highwater\n", unused );
-	printf( "\n" );
 	printf( "%8i bytes in %i zone blocks\n", zoneBytes, zoneBlocks	);
-	printf( "        %8i bytes in dynamic botlib\n", botlibBytes );
-	printf( "        %8i bytes in dynamic renderer\n", rendererBytes );
-	printf( "        %8i bytes in dynamic other\n", zoneBytes - ( botlibBytes + rendererBytes ) );
+	printf( "        %8i bytes in dynamic other\n", zoneBytes );
 	printf( "        %8i bytes in small Zone memory\n", smallZoneBytes );
 }
 
@@ -287,7 +266,7 @@ void Com_InitSmallZoneMemory( int cv ) {
 	return;
 }
 
-void Com_InitZoneMemory( int cv ) {
+void Com_InitMainZoneMemory( int cv ) {
 
 	// allocate the random block zone
  	if ( cv < 16 ) {
@@ -305,6 +284,18 @@ void Com_InitZoneMemory( int cv ) {
 	Z_ClearZone( mainzone, s_zoneTotal );
 }
 
+void Com_InitRenderZoneMemory( int cv )
+{
+		s_renderZoneTotal = 1024 * 1024 * cv;
+
+		renderzone = (memzone_t*)calloc( s_renderZoneTotal, 1);
+		if ( !renderzone )
+		{
+			_ASSERT(false);
+		}
+		Z_ClearZone( renderzone, s_renderZoneTotal );
+}
+
 /*
 =================
 Com_ReleaseZoneMemory
@@ -315,11 +306,15 @@ void Com_ReleaseSmallZoneMemory( void )
 	free(smallzone);
 }
  
-void Com_ReleaseZoneMemory( void )
+void Com_ReleaseMainZoneMemory( void )
 {
 	free(mainzone);
 }
 
+void Com_ReleaseRenderZoneMemory(void)
+{
+	free(renderzone);
+}
 
 /*
 ================
@@ -342,6 +337,9 @@ void *Z_TagMalloc( int size, int tag ) {
 	if ( tag == TAG_SMALL ) {
 		zone = smallzone;
 	}
+	else if( tag == TAG_RENDERER ) {
+		zone = renderzone;
+	}
 	else {
 		zone = mainzone;
 	}
@@ -360,9 +358,6 @@ void *Z_TagMalloc( int size, int tag ) {
 	
 	do {
 		if (rover == start)	{
-#ifdef ZONE_DEBUG
-			Z_LogHeap();
-#endif
 			// scaned all the way around the list
 // 			Com_Error( ERR_FATAL, "Z_Malloc: failed on allocation of %i bytes from the %s zone",
 // 								size, zone == smallzone ? "small" : "main");
@@ -426,12 +421,13 @@ void *Z_Malloc( int size ) {
 	void	*buf;
 	
   //Z_CheckHeap ();	// DEBUG
-
+	
 #ifdef ZONE_DEBUG
 	buf = Z_TagMallocDebug( size, TAG_GENERAL, label, file, line );
 #else
 	buf = Z_TagMalloc( size, TAG_GENERAL );
 #endif
+
 	memset( buf, 0, size );
 
 	return buf;
@@ -458,33 +454,31 @@ bool Z_Free( void *ptr ) {
 	
 	if (!ptr) {
 		//Com_Error( ERR_DROP, "Z_Free: NULL pointer" );
-		//_ASSERT(false);
+		_ASSERT(false);
 		return true;
 	}
 
 	block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
 	if (block->id != ZONEID) {
 		//Com_Error( ERR_FATAL, "Z_Free: freed a pointer without ZONEID" );
-		//_ASSERT(false);
+		_ASSERT(false);
 		return false;
 	}
 	if (block->tag == 0) {
 		//Com_Error( ERR_FATAL, "Z_Free: freed a freed pointer" );
 		_ASSERT(false);
 	}
-	// if static memory
-	if (block->tag == TAG_STATIC) {
-		return true;
-	}
 
 	// check the memory trash tester
-	if ( *(int *)((byte *)block + block->size - 4 ) != ZONEID ) {
+	if (  *(int *)((byte *)block + block->size - 4 ) != ZONEID ) {
 		//Com_Error( ERR_FATAL, "Z_Free: memory block wrote past end" );
 		_ASSERT(false);
 	}
 
 	if (block->tag == TAG_SMALL) {
 		zone = smallzone;
+	} else if (block->tag == TAG_RENDERER) {
+		zone = renderzone;
 	}
 	else {
 		zone = mainzone;
@@ -526,35 +520,6 @@ bool Z_Free( void *ptr ) {
 }
 
 /*
-================
-Z_FreeTags
-================
-*/
-void Z_FreeTags( int tag ) {
-	int			count;
-	memzone_t	*zone;
-
-	if ( tag == TAG_SMALL ) {
-		zone = smallzone;
-	}
-	else {
-		zone = mainzone;
-	}
-	count = 0;
-	// use the rover as our pointer, because
-	// Z_Free automatically adjusts it
-	zone->rover = zone->blocklist.next;
-	do {
-		if ( zone->rover->tag == tag ) {
-			count++;
-			Z_Free( (void *)(zone->rover + 1) );
-			continue;
-		}
-		zone->rover = zone->rover->next;
-	} while ( zone->rover != &zone->blocklist );
-}
-
-/*
 ========================
 Z_AvailableZoneMemory
 ========================
@@ -568,7 +533,7 @@ int Z_AvailableZoneMemory( memzone_t *zone ) {
 Z_AvailableMemory
 ========================
 */
-int Z_AvailableMemory( void ) {
+int Z_AvailableMainMemory( void ) {
 	return Z_AvailableZoneMemory( mainzone );
 }
 
@@ -576,21 +541,18 @@ int Z_AvailableSmallMemory( void ){
 	return Z_AvailableZoneMemory( smallzone );
 }
 
-float Z_AvailableMemoryPercent(){
+int Z_AvailableRenderMemory( void ) {
+	return Z_AvailableZoneMemory( renderzone );
+}
+
+float Z_AvailableMainMemoryPercent(){
 	return (mainzone->size - mainzone->used) / (float)mainzone->size;
 }
 float Z_AvailableSmallMemoryPercent(){
 	return (smallzone->size - smallzone->used) / (float)smallzone->size;
 }
-
-/*
-========================
-Z_LogHeap
-========================
-*/
-void Z_LogHeap( void )
-{
-
+float Z_AvailableRenderMemoryPercent(){
+	return (renderzone->size - renderzone->used) / (float)renderzone->size;
 }
 
 /*
@@ -598,18 +560,9 @@ void Z_LogHeap( void )
 Com_InitHunkMemory
 =================
 */
-void Com_InitHunkMemory( int cv ) {
-	int nMinAlloc;
-	char *pMsg = NULL;
-
-	nMinAlloc = 56;
-
-	if ( cv < nMinAlloc ) {
-		s_hunkTotal = 1024 * 1024 * nMinAlloc;
-	} else {
-		s_hunkTotal = cv * 1024 * 1024;
-	}
-
+void Com_InitHunkMemory( int cv, int cv_other) {
+	s_hunkTotal = 1024 * 1024 * cv;
+	s_hunkTotal_other = 1024 * 1024 * cv_other;
 
 	// bk001205 - was malloc
 	s_hunkMem = (byte*)calloc( s_hunkTotal + 31, 1 );
@@ -618,6 +571,14 @@ void Com_InitHunkMemory( int cv ) {
 	}
 	// cacheline align
 	s_hunkData = (byte *) ( ( (int)s_hunkMem + 31 ) & ~31 );
+
+	s_hunkMem_other = (byte*)calloc( s_hunkTotal_other + 31, 1 );
+	if ( !s_hunkMem_other ) {
+		_ASSERT(false);
+	}
+	// cacheline align
+	s_hunkData_other = (byte *) ( ( (int)s_hunkMem_other + 31 ) & ~31 );
+
 	Hunk_Clear();
 }
 
@@ -628,6 +589,7 @@ Com_ReleaseHunkMemory
 */
 void Com_ReleaseHunkMemory()
 {
+	free(s_hunkMem_other);
 	free(s_hunkMem);
 }
 
@@ -639,167 +601,17 @@ Hunk_Clear
 =================
 */
 void Hunk_Clear( void ) {
-	hunk_low.mark = 0;
-	hunk_low.permanent = 0;
-	hunk_low.temp = 0;
-	hunk_low.tempHighwater = 0;
-
 	hunk_high.mark = 0;
-	hunk_high.permanent = 0;
 	hunk_high.temp = 0;
 	hunk_high.tempHighwater = 0;
 
-	hunk_permanent = &hunk_low;
 	hunk_temp = &hunk_high;
 
-#ifdef HUNK_DEBUG
-	hunkblocks = NULL;
-#endif
-}
+	hunk_high_other.mark = 0;
+	hunk_high_other.temp = 0;
+	hunk_high_other.tempHighwater = 0;
 
-static void Hunk_SwapBanks( void ) {
-	hunkUsed_t	*swap;
-
-	// can't swap banks if there is any temp already allocated
-	if ( hunk_temp->temp != hunk_temp->permanent ) {
-		return;
-	}
-
-	// if we have a larger highwater mark on this side, start making
-	// our permanent allocations here and use the other side for temp
-	if ( hunk_temp->tempHighwater - hunk_temp->permanent >
-		hunk_permanent->tempHighwater - hunk_permanent->permanent ) {
-			swap = hunk_temp;
-			hunk_temp = hunk_permanent;
-			hunk_permanent = swap;
-	}
-}
-
-/*
-=================
-Hunk_Alloc
-
-Allocate permanent (until the hunk is cleared) memory
-=================
-*/
-#ifdef HUNK_DEBUG
-void *Hunk_AllocDebug( int size, ha_pref preference, char *label, char *file, int line ) {
-#else
-void *Hunk_Alloc( int size, ha_pref preference ) {
-#endif
-	void	*buf;
-
-	if ( s_hunkData == NULL)
-	{
-		//Com_Error( ERR_FATAL, "Hunk_Alloc: Hunk memory system not initialized" );
-		_ASSERT(false);
-	}
-
-	// can't do preference if there is any temp allocated
-	if (preference == h_dontcare || hunk_temp->temp != hunk_temp->permanent) {
-		Hunk_SwapBanks();
-	} else {
-		if (preference == h_low && hunk_permanent != &hunk_low) {
-			Hunk_SwapBanks();
-		} else if (preference == h_high && hunk_permanent != &hunk_high) {
-			Hunk_SwapBanks();
-		}
-	}
-
-#ifdef HUNK_DEBUG
-	size += sizeof(hunkblock_t);
-#endif
-
-	// round to cacheline
-	size = (size+31)&~31;
-
-	if ( hunk_low.temp + hunk_high.temp + size > s_hunkTotal ) {
-#ifdef HUNK_DEBUG
-// 		Hunk_Log();
-// 		Hunk_SmallLog();
-#endif
-		//Com_Error( ERR_DROP, "Hunk_Alloc failed on %i", size );
-		_ASSERT(false);
-	}
-
-	if ( hunk_permanent == &hunk_low ) {
-		buf = (void *)(s_hunkData + hunk_permanent->permanent);
-		hunk_permanent->permanent += size;
-	} else {
-		hunk_permanent->permanent += size;
-		buf = (void *)(s_hunkData + s_hunkTotal - hunk_permanent->permanent );
-	}
-
-	hunk_permanent->temp = hunk_permanent->permanent;
-
-	memset( buf, 0, size );
-
-#ifdef HUNK_DEBUG
-	{
-		hunkblock_t *block;
-
-		block = (hunkblock_t *) buf;
-		block->size = size - sizeof(hunkblock_t);
-		block->file = file;
-		block->label = label;
-		block->line = line;
-		block->next = hunkblocks;
-		hunkblocks = block;
-		buf = ((byte *) buf) + sizeof(hunkblock_t);
-	}
-#endif
-	return buf;
-}
-
-/*
-=================
-Hunk_ClearToMark
-
-The client calls this before starting a vid_restart or snd_restart
-=================
-*/
-void Hunk_ClearToMark( void ) {
-	hunk_low.permanent = hunk_low.temp = hunk_low.mark;
-	hunk_high.permanent = hunk_high.temp = hunk_high.mark;
-}
-
-/*
-===================
-Hunk_SetMark
-
-The server calls this after the level and game VM have been loaded
-===================
-*/
-void Hunk_SetMark( void ) {
-	hunk_low.mark = hunk_low.permanent;
-	hunk_high.mark = hunk_high.permanent;
-}
-
-/*
-=================
-Hunk_CheckMark
-=================
-*/
-bool Hunk_CheckMark( void ) {
-	if( hunk_low.mark || hunk_high.mark ) {
-		return true;
-	}
-	return false;
-}
-
-/*
-=================
-Hunk_ClearTempMemory
-
-The temp space is no longer needed.  If we have left more
-touched but unused memory on this side, have future
-permanent allocs use this side.
-=================
-*/
-void Hunk_ClearTempMemory( void ) {
-	if ( s_hunkData != NULL ) {
-		hunk_temp->temp = hunk_temp->permanent;
-	}
+	hunk_temp_other = &hunk_high_other;
 }
 
 /*
@@ -812,6 +624,54 @@ When the files-in-use count reaches zero, all temp memory will be deleted
 =================
 */
 void *Hunk_AllocateTempMemory( int size ) {
+	if( g_MainThreadId == ::GetCurrentThreadId() )
+		return Hunk_AllocateTempMemory_Main(size);
+	else
+		return Hunk_AllocateTempMemory_Other(size);
+}
+
+/*
+==================
+Hunk_FreeTempMemory
+==================
+*/
+void Hunk_FreeTempMemory( void *buf ) {
+	if( g_MainThreadId == ::GetCurrentThreadId() )
+		Hunk_FreeTempMemory_Main(buf);
+	else
+		Hunk_FreeTempMemory_Other(buf);	
+}
+
+/*
+====================
+Hunk_MemoryRemaining
+====================
+*/
+int	Hunk_MemoryRemaining( void ) {
+	if( g_MainThreadId == ::GetCurrentThreadId() )
+		return Hunk_MemoryRemaining_Main();
+	else
+		return Hunk_MemoryRemaining_Other();
+}
+
+void QMem_Init(size_t smallZoneM, size_t generalZoneM, size_t renderZoneM, size_t hunkSizeM, size_t hunkSizeOtherM)
+{
+	Com_InitSmallZoneMemory(smallZoneM);		//
+	Com_InitMainZoneMemory(generalZoneM);			//
+	Com_InitRenderZoneMemory(renderZoneM);
+	Com_InitHunkMemory(hunkSizeM, hunkSizeOtherM);			//
+}
+
+void QMem_End()
+{
+	Com_ReleaseHunkMemory();
+	Com_ReleaseRenderZoneMemory();
+	Com_ReleaseMainZoneMemory();
+	Com_ReleaseSmallZoneMemory();
+}
+
+void* Hunk_AllocateTempMemory_Main( int size )
+{
 	void		*buf;
 	hunkHeader_t	*hdr;
 
@@ -821,25 +681,19 @@ void *Hunk_AllocateTempMemory( int size ) {
 	// memory systems
 	if ( s_hunkData == NULL )
 	{
-		return Z_Malloc(size);
+		void* ret = Z_Malloc(size);
+		return ret;
 	}
-
-	Hunk_SwapBanks();
 
 	size = ( (size+3)&~3 ) + sizeof( hunkHeader_t );
 
-	if ( hunk_temp->temp + hunk_permanent->permanent + size > s_hunkTotal ) {
+	if ( hunk_temp->temp + size > s_hunkTotal ) {
 		//Com_Error( ERR_DROP, "Hunk_AllocateTempMemory: failed on %i", size );
 		_ASSERT(false);
 	}
 
-	if ( hunk_temp == &hunk_low ) {
-		buf = (void *)(s_hunkData + hunk_temp->temp);
-		hunk_temp->temp += size;
-	} else {
-		hunk_temp->temp += size;
-		buf = (void *)(s_hunkData + s_hunkTotal - hunk_temp->temp );
-	}
+	hunk_temp->temp += size;
+	buf = (void *)(s_hunkData + s_hunkTotal - hunk_temp->temp );
 
 	if ( hunk_temp->temp > hunk_temp->tempHighwater ) {
 		hunk_temp->tempHighwater = hunk_temp->temp;
@@ -855,18 +709,14 @@ void *Hunk_AllocateTempMemory( int size ) {
 	return buf;
 }
 
-/*
-==================
-Hunk_FreeTempMemory
-==================
-*/
-void Hunk_FreeTempMemory( void *buf ) {
+void Hunk_FreeTempMemory_Main( void* buf )
+{
 	hunkHeader_t	*hdr;
 
-	  // free with Z_Free if the hunk has not been initialized
-	  // this allows the config and product id files ( journal files too ) to be loaded
-	  // by the file system without redunant routines in the file system utilizing different 
-	  // memory systems
+	// free with Z_Free if the hunk has not been initialized
+	// this allows the config and product id files ( journal files too ) to be loaded
+	// by the file system without redunant routines in the file system utilizing different 
+	// memory systems
 	if ( s_hunkData == NULL )
 	{
 		Z_Free(buf);
@@ -884,87 +734,103 @@ void Hunk_FreeTempMemory( void *buf ) {
 
 	// this only works if the files are freed in stack order,
 	// otherwise the memory will stay around until Hunk_ClearTempMemory
-	if ( hunk_temp == &hunk_low ) {
-		if ( hdr == (void *)(s_hunkData + hunk_temp->temp - hdr->size ) ) {
-			hunk_temp->temp -= hdr->size;
-		} else {
-			//Com_Printf( "Hunk_FreeTempMemory: not the final block\n" );
-			_ASSERT(false);
-		}
+	if ( hdr == (void *)(s_hunkData + s_hunkTotal - hunk_temp->temp ) ) {
+		hunk_temp->temp -= hdr->size;
 	} else {
-		if ( hdr == (void *)(s_hunkData + s_hunkTotal - hunk_temp->temp ) ) {
-			hunk_temp->temp -= hdr->size;
-		} else {
-			//Com_Printf( "Hunk_FreeTempMemory: not the final block\n" );
-			_ASSERT(false);
-		}
+		//Com_Printf( "Hunk_FreeTempMemory: not the final block\n" );
+		_ASSERT(false);
 	}
 }
 
-/*
-====================
-Hunk_MemoryRemaining
-====================
-*/
-int	Hunk_MemoryRemaining( void ) {
+int Hunk_MemoryRemaining_Main( void )
+{
 	int		low, high;
 
-	low = hunk_low.permanent > hunk_low.temp ? hunk_low.permanent : hunk_low.temp;
-	high = hunk_high.permanent > hunk_high.temp ? hunk_high.permanent : hunk_high.temp;
+	low = 0;
+	high = hunk_high.temp;
 
 	return s_hunkTotal - ( low + high );
 }
 
-void QMem_Init(size_t smallZoneM, size_t GeneralZoneM, size_t hunkSizeM)
+void* Hunk_AllocateTempMemory_Other( int size )
 {
-	Com_InitSmallZoneMemory(smallZoneM);		//
-	Com_InitZoneMemory(GeneralZoneM);			//
-	Com_InitHunkMemory(hunkSizeM);			//
-}
+	void		*buf;
+	hunkHeader_t	*hdr;
 
-void QMem_End()
-{
-	Com_ReleaseSmallZoneMemory();
-	Com_ReleaseZoneMemory();
-	Com_ReleaseHunkMemory();
-}
-
-void QMem_Touch( void ) {
-	int		i, j;
-	int		sum;
-	memblock_t	*block;
-
-	Z_CheckHeap();
-
-	sum = 0;
-
-	j = hunk_low.permanent >> 2;
-	for ( i = 0 ; i < j ; i+=64 ) {			// only need to touch each page
-		sum += ((int *)s_hunkData)[i];
+	// return a Z_Malloc'd block if the hunk has not been initialized
+	// this allows the config and product id files ( journal files too ) to be loaded
+	// by the file system without redunant routines in the file system utilizing different 
+	// memory systems
+	if ( s_hunkData_other == NULL )
+	{
+		void* ret = Z_Malloc(size);
+		return ret;
 	}
 
-	i = ( s_hunkTotal - hunk_high.permanent ) >> 2;
-	j = hunk_high.permanent >> 2;
-	for (  ; i < j ; i+=64 ) {			// only need to touch each page
-		sum += ((int *)s_hunkData)[i];
+	size = ( (size+3)&~3 ) + sizeof( hunkHeader_t );
+
+	if ( hunk_temp_other->temp + size > s_hunkTotal_other ) {
+		//Com_Error( ERR_DROP, "Hunk_AllocateTempMemory: failed on %i", size );
+		_ASSERT(false);
 	}
 
-	for (block = mainzone->blocklist.next ; ; block = block->next) {
-		if ( block->tag ) {
-			j = block->size >> 2;
-			for ( i = 0 ; i < j ; i+=64 ) {				// only need to touch each page
-				sum += ((int *)block)[i];
-			}
-		}
-		if ( block->next == &mainzone->blocklist ) {
-			break;			// all blocks have been hit	
-		}
+	hunk_temp_other->temp += size;
+	buf = (void *)(s_hunkData_other + s_hunkTotal_other - hunk_temp_other->temp );
+
+	if ( hunk_temp_other->temp > hunk_temp_other->tempHighwater ) {
+		hunk_temp_other->tempHighwater = hunk_temp_other->temp;
 	}
 
+	hdr = (hunkHeader_t *)buf;
+	buf = (void *)(hdr+1);
+
+	hdr->magic = HUNK_MAGIC;
+	hdr->size = size;
+
+	// don't bother clearing, because we are going to load a file over it
+	return buf;
 }
 
-void QMem_TempInfo( int& low, int& high )
+void Hunk_FreeTempMemory_Other( void* buf )
 {
-	low = hunk_low.tempHighwater;
-	high = hunk_high.tempHighwater;
+	hunkHeader_t	*hdr;
+
+	// free with Z_Free if the hunk has not been initialized
+	// this allows the config and product id files ( journal files too ) to be loaded
+	// by the file system without redunant routines in the file system utilizing different 
+	// memory systems
+	if ( s_hunkData_other == NULL )
+	{
+		Z_Free(buf);
+		return;
+	}
+
+
+	hdr = ( (hunkHeader_t *)buf ) - 1;
+	if ( hdr->magic != HUNK_MAGIC ) {
+		//Com_Error( ERR_FATAL, "Hunk_FreeTempMemory: bad magic" );
+		_ASSERT(false);
+	}
+
+	hdr->magic = HUNK_FREE_MAGIC;
+
+	// this only works if the files are freed in stack order,
+	// otherwise the memory will stay around until Hunk_ClearTempMemory
+	if ( hdr == (void *)(s_hunkData_other + s_hunkTotal_other - hunk_temp_other->temp ) ) {
+		hunk_temp_other->temp -= hdr->size;
+	} else {
+		//Com_Printf( "Hunk_FreeTempMemory: not the final block\n" );
+		_ASSERT(false);
+	}
 }
+
+int Hunk_MemoryRemaining_Other( void )
+{
+	int		low, high;
+
+	low = 0;
+	high = hunk_high_other.temp;
+
+	return s_hunkTotal_other - ( low + high );
+}
+

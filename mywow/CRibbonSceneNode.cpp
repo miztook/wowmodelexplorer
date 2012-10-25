@@ -8,7 +8,7 @@ CRibbonSceneNode::CRibbonSceneNode( RibbonEmitter* re, IM2SceneNode* parent )
 	SceneManager = g_Engine->getSceneManager();
 	RibbonEmitterServices = g_Engine->getRibbonEmitterServices();
 
-	Character = parent->getWowCharacter();
+	Character = parent->getM2Instance();
 
 	Material.Lighting = false;
 	Material.ZWriteEnable = false;
@@ -129,24 +129,30 @@ void CRibbonSceneNode::render()
 
 	SRenderUnit unit = {0};
 
-	unit.vbuffer = RibbonEmitterServices->VertexBuffer;
-	unit.ibuffer = NULL;
+	unit.bufferParam= RibbonEmitterServices->BufferParam;
 	unit.primType = EPT_TRIANGLE_STRIP;
 	unit.sceneNode = this;
 	unit.material = Material;
 	unit.textures[0] = Texture;
 	unit.matWorld = NULL;			//unit
 
-	g_Engine->getSceneRenderServices()->addRenderUnit(&unit, RenderInstType);
+	g_Engine->getSceneRenderServices()->addRenderUnit(&unit, ERT_EFFECT);
 }
 
 void CRibbonSceneNode::onPreRender()
 {
-	S3DVertexBasicTex* vertices;
-	if (RibbonEmitterServices->CurrentOffset + 2 * (1+LiveSegments.size()) > RibbonEmitterServices->VertexBuffer->Size)
-		vertices = (S3DVertexBasicTex*)RibbonEmitterServices->Vertices;
+	SGVertex_PC*	gVertices;
+	STVertex_1T*	tVertices;
+	if (RibbonEmitterServices->CurrentOffset + 2 * (1+LiveSegments.size()) > RibbonEmitterServices->BufferParam.vbuffer0->Size)
+	{
+		gVertices = (SGVertex_PC*)RibbonEmitterServices->GVertices;
+		tVertices = (STVertex_1T*)RibbonEmitterServices->TVertices;
+	}
 	else
-		vertices = (S3DVertexBasicTex*)&RibbonEmitterServices->Vertices[RibbonEmitterServices->CurrentOffset];
+	{
+		gVertices = (SGVertex_PC*)&RibbonEmitterServices->GVertices[RibbonEmitterServices->CurrentOffset];
+		tVertices = (STVertex_1T*)&RibbonEmitterServices->TVertices[RibbonEmitterServices->CurrentOffset];
+	}
 
 	u32 vCount = 0;
 	float len = 0;
@@ -159,13 +165,13 @@ void CRibbonSceneNode::onPreRender()
 		RibbonSegment* s = (*i);
 
 		float u = count / (float)LiveSegments.size();
-		vertices[vCount].Color = tcolor.toSColor();
-		vertices[vCount].TCoords.set(u, 0);
-		vertices[vCount].Pos.set(s->pos + s->up * above);
+		gVertices[vCount].Color = tcolor.toSColor();
+		gVertices[vCount].Pos.set(s->pos + s->up * above);
+		tVertices[vCount].TCoords.set(u, 0);
 
-		vertices[vCount+1].Color = tcolor.toSColor();
-		vertices[vCount+1].TCoords.set(u, 1);
-		vertices[vCount+1].Pos.set(s->pos - s->up * below);
+		gVertices[vCount+1].Color = tcolor.toSColor();
+		gVertices[vCount+1].Pos.set(s->pos - s->up * below);
+		tVertices[vCount+1].TCoords.set(u, 1);
 
 		vCount += 2;
 
@@ -175,13 +181,13 @@ void CRibbonSceneNode::onPreRender()
 		//last segment
 		if (count == LiveSegments.size())
 		{
-			vertices[vCount].Color = tcolor.toSColor();
-			vertices[vCount].TCoords.set(1, 0);
-			vertices[vCount].Pos.set(vertices[vCount-2].Pos +  s->back * (s->len / s->len0));
+			gVertices[vCount].Color = tcolor.toSColor();
+			gVertices[vCount].Pos.set(gVertices[vCount-2].Pos +  s->back * (s->len / s->len0));
+			tVertices[vCount].TCoords.set(1, 0);
 
-			vertices[vCount+1].Color = tcolor.toSColor();
-			vertices[vCount+1].TCoords.set(1, 1);
-			vertices[vCount+1].Pos.set(vertices[vCount-1].Pos + s->back * (s->len / s->len0));
+			gVertices[vCount+1].Color = tcolor.toSColor();
+			gVertices[vCount+1].Pos.set(gVertices[vCount-1].Pos + s->back * (s->len / s->len0));
+			tVertices[vCount+1].TCoords.set(1, 1);
 
 			vCount += 2;
 		}

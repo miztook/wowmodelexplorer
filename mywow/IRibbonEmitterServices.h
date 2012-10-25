@@ -3,15 +3,13 @@
 #include "base.h"
 #include "wow_particle.h"
 #include "S3DVertex.h"
-
-class IVertexBuffer;
-class IIndexBuffer;
+#include "VertexIndexBuffer.h"
 
 //给ribbon提供segment池和硬件缓存
 class IRibbonEmitterServices
 {
 public:
-	IRibbonEmitterServices() : Vertices(NULL), CurrentOffset(0) {}
+	IRibbonEmitterServices() : CurrentOffset(0) { BufferParam.clear(); BufferParam.vType = EVT_BASICTEX_M; }
 	virtual ~IRibbonEmitterServices() {}
 
 	virtual void updateVertices(u32 numVertices, s32& baseVertIndex) = 0;
@@ -21,8 +19,9 @@ public:
 	virtual u32 getActiveSegmentsCount() const = 0;
 
 public:
-	IVertexBuffer*		VertexBuffer;						//strip, 不用index buffer
+	SBufferParam	BufferParam;
 
-	S3DVertexBasicTex*		Vertices;
+	SGVertex_PC*		GVertices;
+	STVertex_1T*	TVertices;
 	u32		CurrentOffset;
 };

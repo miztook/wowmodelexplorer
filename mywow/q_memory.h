@@ -1,12 +1,10 @@
 #pragma once
 
 typedef enum {
-	TAG_FREE,
+	TAG_FREE = 0,
 	TAG_GENERAL,
-	TAG_BOTLIB,
 	TAG_RENDERER,
-	TAG_SMALL,
-	TAG_STATIC
+	TAG_SMALL
 } memtag_t;
 
 typedef enum {
@@ -14,6 +12,7 @@ typedef enum {
 	h_low,
 	h_dontcare
 } ha_pref;
+
 
 /*
 
@@ -52,33 +51,27 @@ void *Z_Malloc( int size );			// returns 0 filled memory
 void *S_Malloc( int size );			// NOT 0 filled memory only for small allocations
 #endif
 bool Z_Free( void *ptr );
-void Z_FreeTags( int tag );
-int Z_AvailableMemory( void );
+int Z_AvailableMainMemory( void );
 int Z_AvailableSmallMemory( void );
-float Z_AvailableMemoryPercent();
+int Z_AvailableRenderMemory( void );
+float Z_AvailableMainMemoryPercent();
 float Z_AvailableSmallMemoryPercent();
-void Z_LogHeap( void );
-
-#ifdef HUNK_DEBUG
-#define Hunk_Alloc( size, preference )				Hunk_AllocDebug(size, preference, #size, __FILE__, __LINE__)
-void *Hunk_AllocDebug( int size, ha_pref preference, char *label, char *file, int line );
-#else
-void *Hunk_Alloc( int size, ha_pref preference );
-#endif
+float Z_AvailableRenderMemoryPercent();
 
 void Hunk_Clear( void );
-void Hunk_ClearToMark( void );
-void Hunk_SetMark( void );
-bool Hunk_CheckMark( void );
-void Hunk_ClearTempMemory( void );
-void *Hunk_AllocateTempMemory( int size );
+void* Hunk_AllocateTempMemory( int size );
 void Hunk_FreeTempMemory( void *buf );
 int	Hunk_MemoryRemaining( void );
 
+void* Hunk_AllocateTempMemory_Main( int size );
+void Hunk_FreeTempMemory_Main( void* buf );
+int  Hunk_MemoryRemaining_Main( void );
 
-void QMem_Init(size_t smallZoneM, size_t GeneralZoneM, size_t hunkSizeM);
-void QMem_Touch(void);
+void* Hunk_AllocateTempMemory_Other( int size );
+void Hunk_FreeTempMemory_Other( void* buf );
+int  Hunk_MemoryRemaining_Other( void );
+
+void QMem_Init(size_t smallZoneM, size_t generalZoneM, size_t renderZoneM, size_t hunkSizeM, size_t hunkSizeOtherM);
 void QMem_End(void);
 
 void QMem_Info( void );
-void QMem_TempInfo(int& low, int& high);

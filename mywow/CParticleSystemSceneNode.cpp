@@ -13,7 +13,7 @@ CParticleSystemSceneNode::CParticleSystemSceneNode( ParticleSystem* ps, IM2Scene
 
 	Material.Lighting = false;
 	Material.ZWriteEnable = false;
-	Material.BackfaceCulling = true;
+	Material.Cull = ECM_BACK;
 
 	switch(Ps->blend)
 	{
@@ -35,6 +35,11 @@ CParticleSystemSceneNode::CParticleSystemSceneNode( ParticleSystem* ps, IM2Scene
 	Emitting = false;
 
 	CurrentProjection = CurrentView = NULL;
+
+	//color, alpha
+	EnableModelColor = false;
+	EnableModelAlpha = false;
+	ModelAlpha = 1.0f;
 }
 
 CParticleSystemSceneNode::~CParticleSystemSceneNode()
@@ -43,12 +48,11 @@ CParticleSystemSceneNode::~CParticleSystemSceneNode()
 	{
 		ParticleSystemServices->putParticle((*itr));
 	}
-	LiveParticles.clear();
 }
 
 void CParticleSystemSceneNode::registerSceneNode(bool frustumcheck)
 {
-	update(true);
+	update(false);
 
 	if (!Visible)
 		return;
@@ -145,7 +149,7 @@ void CParticleSystemSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame 
 					Particle* p = ParticleSystemServices->getParticle();
 					if (!p)
 						break;
-					Ps->emitter->emitParticle(ParentM2Node->getWowCharacter(), anim, time, param, p);
+					Ps->emitter->emitParticle(ParentM2Node->getM2Instance(), anim, time, param, p);
 					LiveParticles.push_back(p);
 				}
 			}
@@ -203,17 +207,19 @@ void CParticleSystemSceneNode::render()
 
 	SRenderUnit unit = {0};
 
-	unit.vbuffer = ParticleSystemServices->VertexBuffer;
-	unit.ibuffer = ParticleSystemServices->IndexBuffer;
+	unit.priority = ParentM2Node->RenderPriority;
+	unit.distance = DistanceSq;
+	unit.bufferParam = ParticleSystemServices->BufferParam;
 	unit.primType = EPT_TRIANGLES;
 	unit.sceneNode = this;
 	unit.material = Material;
+	setMaterial(unit.material);
 	unit.textures[0] = Ps->texture;
 	unit.matWorld = Ps->billboard ? NULL : &AbsoluteTransformation;			//unit
 	unit.matView = CurrentView;
 	unit.matProjection = CurrentProjection;
 
-	g_Engine->getSceneRenderServices()->addRenderUnit(&unit, RenderInstType);
+	g_Engine->getSceneRenderServices()->addRenderUnit(&unit, ERT_EFFECT);
 }
 
 void CParticleSystemSceneNode::onPreRender()
@@ -230,11 +236,18 @@ void CParticleSystemSceneNode::onPreRender()
 	right.normalize();
 	up.normalize();
 
-	S3DVertexBasicTex* vertices;
-	if (ParticleSystemServices->CurrentOffset + 4 * LiveParticles.size() > ParticleSystemServices->VertexBuffer->Size)
-		vertices = (S3DVertexBasicTex*)ParticleSystemServices->Vertices;
+	SGVertex_PC* gVertices;
+	STVertex_1T* tVertices;
+	if (ParticleSystemServices->CurrentOffset + 4 * LiveParticles.size() > ParticleSystemServices->BufferParam.vbuffer0->Size)
+	{
+		gVertices = (SGVertex_PC*)ParticleSystemServices->GVertices;
+		tVertices = (STVertex_1T*)ParticleSystemServices->TVertices;
+	}
 	else
-		vertices = (S3DVertexBasicTex*)&ParticleSystemServices->Vertices[ParticleSystemServices->CurrentOffset];
+	{
+		gVertices = (SGVertex_PC*)&ParticleSystemServices->GVertices[ParticleSystemServices->CurrentOffset];
+		tVertices = (STVertex_1T*)&ParticleSystemServices->TVertices[ParticleSystemServices->CurrentOffset];
+	}
 
 	u32 vCount = 0;
 
@@ -247,7 +260,7 @@ void CParticleSystemSceneNode::onPreRender()
 			{
 				Particle* p = (*i);
 
-				if (p->tile >= Ps->NumTiles || vCount + 4 > ParticleSystemServices->VertexBuffer->Size)
+				if (p->tile >= Ps->NumTiles || vCount + 4 > ParticleSystemServices->BufferParam.vbuffer0->Size)
 					break;
 
 				vector3df worldpos = p->pos;
@@ -256,16 +269,21 @@ void CParticleSystemSceneNode::onPreRender()
 				vector3df w = right * p->size.X * Scale;
 				vector3df h = up * p->size.Y * Scale;
 
-				vertices[vCount + 0].Pos = worldpos - w + h;
-				vertices[vCount + 0].TCoords = Ps->Tiles[p->tile].tc[0];
-				vertices[vCount + 1].Pos = worldpos + w + h;
-				vertices[vCount + 1].TCoords = Ps->Tiles[p->tile].tc[1];
-				vertices[vCount + 2].Pos = worldpos + w - h;
-				vertices[vCount + 2].TCoords = Ps->Tiles[p->tile].tc[2];
-				vertices[vCount + 3].Pos = worldpos - w - h;
-				vertices[vCount + 3].TCoords = Ps->Tiles[p->tile].tc[3];
+				gVertices[vCount + 0].Pos = worldpos - w + h;
+				gVertices[vCount + 1].Pos = worldpos + w + h;
+				gVertices[vCount + 2].Pos = worldpos + w - h;
+				gVertices[vCount + 3].Pos = worldpos - w - h;
+				tVertices[vCount + 0].TCoords = Ps->Tiles[p->tile].tc[0];
+				tVertices[vCount + 1].TCoords = Ps->Tiles[p->tile].tc[1];
+				tVertices[vCount + 2].TCoords = Ps->Tiles[p->tile].tc[2];
+				tVertices[vCount + 3].TCoords = Ps->Tiles[p->tile].tc[3];
 
-				vertices[vCount + 0].Color = vertices[vCount + 1].Color = vertices[vCount + 2].Color = vertices[vCount + 3].Color = p->color.toSColor();
+				if (EnableModelAlpha)
+					p->color.setAlpha(p->color.getAlpha() * ModelAlpha);
+				gVertices[vCount + 0].Color = 
+					gVertices[vCount + 1].Color = 
+					gVertices[vCount + 2].Color = 
+					gVertices[vCount + 3].Color = p->color.toSColor();
 
 				vCount += 4;
 			}
@@ -276,21 +294,27 @@ void CParticleSystemSceneNode::onPreRender()
 			{
 				Particle* p = (*i);
 
-				if (p->tile >= Ps->NumTiles || vCount + 4 > ParticleSystemServices->VertexBuffer->Size)
+				if (p->tile >= Ps->NumTiles || vCount + 4 > ParticleSystemServices->BufferParam.vbuffer0->Size)
 					break;
 
 				f32 w = p->size.X * Scale;		f32 h = p->size.Y * Scale;
 
-				vertices[vCount + 0].Pos = p->pos + vector3df(p->corners[0].X * w, 0, p->corners[0].Z * h);
-				vertices[vCount + 0].TCoords = Ps->Tiles[p->tile].tc[0];
-				vertices[vCount + 1].Pos = p->pos + vector3df(p->corners[1].X * w, 0, p->corners[1].Z * h);
-				vertices[vCount + 1].TCoords = Ps->Tiles[p->tile].tc[1];
-				vertices[vCount + 2].Pos = p->pos + vector3df(p->corners[2].X * w, 0, p->corners[2].Z * h);
-				vertices[vCount + 2].TCoords = Ps->Tiles[p->tile].tc[2];
-				vertices[vCount + 3].Pos = p->pos + vector3df(p->corners[3].X * w, 0, p->corners[3].Z * h);
-				vertices[vCount + 3].TCoords = Ps->Tiles[p->tile].tc[3];
+				gVertices[vCount + 0].Pos = p->pos + vector3df(p->corners[0].X * w, 0, p->corners[0].Z * h);			
+				gVertices[vCount + 1].Pos = p->pos + vector3df(p->corners[1].X * w, 0, p->corners[1].Z * h);		
+				gVertices[vCount + 2].Pos = p->pos + vector3df(p->corners[2].X * w, 0, p->corners[2].Z * h);
+				gVertices[vCount + 3].Pos = p->pos + vector3df(p->corners[3].X * w, 0, p->corners[3].Z * h);
+				
+				tVertices[vCount + 0].TCoords = Ps->Tiles[p->tile].tc[0];
+				tVertices[vCount + 1].TCoords = Ps->Tiles[p->tile].tc[1];
+				tVertices[vCount + 2].TCoords = Ps->Tiles[p->tile].tc[2];
+				tVertices[vCount + 3].TCoords = Ps->Tiles[p->tile].tc[3];
 
-				vertices[vCount + 0].Color = vertices[vCount + 1].Color = vertices[vCount + 2].Color = vertices[vCount + 3].Color = p->color.toSColor();
+				if (EnableModelAlpha)
+					p->color.setAlpha(p->color.getAlpha() * ModelAlpha);
+				gVertices[vCount + 0].Color = 
+				gVertices[vCount + 1].Color = 
+				gVertices[vCount + 2].Color = 
+				gVertices[vCount + 3].Color = p->color.toSColor();
 
 				vCount += 4;
 			}
@@ -307,21 +331,27 @@ void CParticleSystemSceneNode::onPreRender()
 		{
 			Particle* p = (*i);
 
-			if (p->tile >= Ps->NumTiles || vCount + 4 > ParticleSystemServices->VertexBuffer->Size)
+			if (p->tile >= Ps->NumTiles || vCount + 4 > ParticleSystemServices->BufferParam.vbuffer0->Size)
 				break;
 
 			f32 w = p->size.X * Scale;		f32 h = p->size.Y * Scale;
 
-			vertices[vCount + 0].Pos = p->pos + vector3df( bv0.X * w, bv0.Y * h, 0);
-			vertices[vCount + 0].TCoords = Ps->Tiles[p->tile].tc[0];
-			vertices[vCount + 1].Pos = p->pos + vector3df( bv1.X * w, bv1.Y * h, 0);
-			vertices[vCount + 1].TCoords = Ps->Tiles[p->tile].tc[1];
-			vertices[vCount + 2].Pos = p->pos + vector3df( bv2.X * w, bv2.Y * h, 0);
-			vertices[vCount + 2].TCoords = Ps->Tiles[p->tile].tc[2];
-			vertices[vCount + 3].Pos = p->pos - vector3df( bv3.X * w, bv3.Y * h, 0);
-			vertices[vCount + 3].TCoords = Ps->Tiles[p->tile].tc[3];
+			gVertices[vCount + 0].Pos = p->pos + vector3df( bv0.X * w, bv0.Y * h, 0);	
+			gVertices[vCount + 1].Pos = p->pos + vector3df( bv1.X * w, bv1.Y * h, 0);		
+			gVertices[vCount + 2].Pos = p->pos + vector3df( bv2.X * w, bv2.Y * h, 0);
+			gVertices[vCount + 3].Pos = p->pos - vector3df( bv3.X * w, bv3.Y * h, 0);
 
-			vertices[vCount + 0].Color = vertices[vCount + 1].Color = vertices[vCount + 2].Color = vertices[vCount + 3].Color = p->color.toSColor();
+			tVertices[vCount + 0].TCoords = Ps->Tiles[p->tile].tc[0];
+			tVertices[vCount + 1].TCoords = Ps->Tiles[p->tile].tc[1];
+			tVertices[vCount + 2].TCoords = Ps->Tiles[p->tile].tc[2];
+			tVertices[vCount + 3].TCoords = Ps->Tiles[p->tile].tc[3];
+
+			if (EnableModelAlpha)
+				p->color.setAlpha(p->color.getAlpha() * ModelAlpha);
+			gVertices[vCount + 0].Color = 
+				gVertices[vCount + 1].Color = 
+				gVertices[vCount + 2].Color = 
+				gVertices[vCount + 3].Color = p->color.toSColor();
 
 			vCount += 4;
 		}
@@ -340,4 +370,40 @@ void CParticleSystemSceneNode::onPreRender()
 void CParticleSystemSceneNode::onUpdated()
 {
 	Scale = AbsoluteTransformation.getScale().X;
+}
+
+void CParticleSystemSceneNode::setMaterial( SMaterial& material )
+{
+	if(EnableModelColor)
+		material.setMaterialColor(ModelColor);
+
+	if (EnableModelAlpha)
+	{
+		material.setMaterialAlpha(ModelAlpha);
+		if (ModelAlpha < 1.0f)
+		{
+			switch(material.MaterialType)
+			{
+			case EMT_SOLID:
+				material.MaterialType = EMT_TRANSPARENT_ALPHA_BLEND;
+				break;
+			case EMT_ALPHA_TEST:
+				material.MaterialType = EMT_TRANSAPRENT_ALPHA_BLEND_TEST;
+				break;
+			}
+		}
+	}
+}
+
+void CParticleSystemSceneNode::setWholeAlpha( bool enable, f32 val )
+{
+	f32 v = clamp_(val, 0.0f, 1.0f);
+	EnableModelAlpha = enable;
+	ModelAlpha = v;
+}
+
+void CParticleSystemSceneNode::setWholeColor( bool enable, SColor color )
+{
+	EnableModelColor = enable;
+	ModelColor = color;
 }

@@ -45,7 +45,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\libmpq;..\freetype\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\stormlib;..\freetype\include;..\libvorbis;..\libogg;..\libmad</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -60,7 +60,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\libmpq;..\freetype\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\stormlib;..\freetype\include;..\libvorbis;..\libogg;..\libmad</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -75,11 +75,15 @@
     <ClInclude Include="algorithm.h" />
     <ClInclude Include="animation.h" />
     <ClInclude Include="base.h" />
-    <ClInclude Include="CBlit.h" />
+    <ClInclude Include="CD3D9RenderTarget.h" />
     <ClInclude Include="CBLPImage.h" />
+    <ClInclude Include="CLock.h" />
+    <ClInclude Include="CSceneEnvironment.h" />
+    <ClInclude Include="CBlit.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CD3D9DrawServices.h" />
     <ClInclude Include="CD3D9Driver.h" />
+    <ClInclude Include="CD3D9SceneStateServices.h" />
     <ClInclude Include="CFTFont.h" />
     <ClInclude Include="CD3D9HardwareBufferServices.h" />
     <ClInclude Include="CD3D9Helper.h" />
@@ -90,14 +94,18 @@
     <ClInclude Include="CD3D9Shader.h" />
     <ClInclude Include="CD3D9ShaderServices.h" />
     <ClInclude Include="CD3D9Texture.h" />
+    <ClInclude Include="CFileADT.h" />
     <ClInclude Include="CFileM2.h" />
     <ClInclude Include="CFileSystem.h" />
+    <ClInclude Include="CFileWDT.h" />
+    <ClInclude Include="CFileWMO.h" />
     <ClInclude Include="CFPSCounter.h" />
     <ClInclude Include="CGeometryCreator.h" />
     <ClInclude Include="CImage.h" />
     <ClInclude Include="CImageLoaderBLP.h" />
     <ClInclude Include="CM2SceneNode.h" />
     <ClInclude Include="CManualMeshServices.h" />
+    <ClInclude Include="CMapEnvironment.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshRenderer.h" />
     <ClInclude Include="CMeshSceneNode.h" />
@@ -111,27 +119,38 @@
     <ClInclude Include="CRibbonSceneNode.h" />
     <ClInclude Include="CSceneManager.h" />
     <ClInclude Include="CSceneRenderServices.h" />
+    <ClInclude Include="CTerrainServices.h" />
     <ClInclude Include="CTranslucentRenderer.h" />
+    <ClInclude Include="CWmoRenderer.h" />
     <ClInclude Include="CWriteFile.h" />
     <ClInclude Include="ddslib.h" />
     <ClInclude Include="dimension2d.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="frustum.h" />
-    <ClInclude Include="IBLPImage.h" />
     <ClInclude Include="ICamera.h" />
+    <ClInclude Include="IBLPImage.h" />
+    <ClInclude Include="IFileADT.h" />
+    <ClInclude Include="IFileWDT.h" />
+    <ClInclude Include="IFileWMO.h" />
     <ClInclude Include="IM2SceneNode.h" />
     <ClInclude Include="IManualTextureServices.h" />
     <ClInclude Include="IMaterialRenderServices.h" />
     <ClInclude Include="IParticleSystemSceneNode.h" />
     <ClInclude Include="IParticleSystemServices.h" />
+    <ClInclude Include="IRenderTarget.h" />
     <ClInclude Include="IRibbonEmitterServices.h" />
     <ClInclude Include="IRibbonSceneNode.h" />
+    <ClInclude Include="ISceneEnvironment.h" />
     <ClInclude Include="ISceneRenderer.h" />
+    <ClInclude Include="ISceneStateServices.h" />
+    <ClInclude Include="ITerrainServices.h" />
+    <ClInclude Include="mpq_stormlib.h" />
     <ClInclude Include="qzone_allocator.h" />
+    <ClInclude Include="qzone_nolock_allocator.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="tracktexture.h" />
     <ClInclude Include="wow_adt_structs.h" />
-    <ClInclude Include="wow_character.h" />
+    <ClInclude Include="wow_m2instance.h" />
     <ClInclude Include="IDrawServices.h" />
     <ClInclude Include="IFileM2.h" />
     <ClInclude Include="IFileSystem.h" />
@@ -160,7 +179,6 @@
     <ClInclude Include="line2d.h" />
     <ClInclude Include="line3d.h" />
     <ClInclude Include="matrix4.h" />
-    <ClInclude Include="mpq_libmpq.h" />
     <ClInclude Include="mywow.h" />
     <ClInclude Include="plane3d.h" />
     <ClInclude Include="quaternion.h" />
@@ -189,12 +207,16 @@
     <ClInclude Include="wow_wmo_structs.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CBlit.cpp" />
+    <ClCompile Include="CD3D9RenderTarget.cpp" />
     <ClCompile Include="CBLPImage.cpp" />
+    <ClCompile Include="CSceneEnvironment.cpp" />
+    <ClCompile Include="CBlit.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CD3D9DrawServices.cpp" />
-    <ClCompile Include="CD3D9Driver.cpp" />
+    <ClCompile Include="CD3D9Driver_base.cpp" />
+    <ClCompile Include="CD3D9Driver_draw.cpp" />
     <ClCompile Include="CD3D9Effects.cpp" />
+    <ClCompile Include="CD3D9SceneStateServices.cpp" />
     <ClCompile Include="CFTFont.cpp" />
     <ClCompile Include="CD3D9HardwareBufferServices.cpp" />
     <ClCompile Include="CD3D9Helper.cpp" />
@@ -207,14 +229,17 @@
     <ClCompile Include="CD3D9ShaderServices.cpp" />
     <ClCompile Include="CD3D9Texture.cpp" />
     <ClCompile Include="CD3D9VertexShaders.cpp" />
+    <ClCompile Include="CFileADT.cpp" />
     <ClCompile Include="CFileM2.cpp" />
     <ClCompile Include="CFileSystem.cpp" />
-    <ClCompile Include="CFPSCounter.cpp" />
+    <ClCompile Include="CFileWDT.cpp" />
+    <ClCompile Include="CFileWMO.cpp" />
     <ClCompile Include="CGeometryCreator.cpp" />
     <ClCompile Include="CImage.cpp" />
     <ClCompile Include="CImageLoaderBLP.cpp" />
     <ClCompile Include="CM2SceneNode.cpp" />
     <ClCompile Include="CManualMeshServices.cpp" />
+    <ClCompile Include="CMapEnvironment.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshRenderer.cpp" />
     <ClCompile Include="CMeshSceneNode.cpp" />
@@ -226,11 +251,13 @@
     <ClCompile Include="CRibbonSceneNode.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
     <ClCompile Include="CSceneRenderServices.cpp" />
+    <ClCompile Include="CTerrainServices.cpp" />
     <ClCompile Include="CTranslucentRenderer.cpp" />
+    <ClCompile Include="CWmoRenderer.cpp" />
     <ClCompile Include="CWriteFile.cpp" />
     <ClCompile Include="ddslib.cpp" />
     <ClCompile Include="engine.cpp" />
-    <ClCompile Include="mpq_libmpq.cpp" />
+    <ClCompile Include="mpq_stormlib.cpp" />
     <ClCompile Include="mywow.cpp" />
     <ClCompile Include="q_memory.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -238,7 +265,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="wowEnvironment.cpp" />
-    <ClCompile Include="wow_character.cpp" />
+    <ClCompile Include="wow_m2instance.cpp" />
     <ClCompile Include="wow_database.cpp" />
     <ClCompile Include="wow_dbc.cpp" />
     <ClCompile Include="wow_particle.cpp" />

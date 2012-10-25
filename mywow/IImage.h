@@ -6,7 +6,7 @@
 
 class IImage : public IReferenceCounted<IImage>
 {
-protected:
+private:
 	virtual void onRemove() {}
 
 public:

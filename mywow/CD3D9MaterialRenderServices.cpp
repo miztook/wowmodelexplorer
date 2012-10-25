@@ -7,15 +7,16 @@
 #include "CD3D9ShaderServices.h"
 #include "CD3D9Texture.h"
 
-#define  DEVICE_SET_RENDER_STATE(prop, d3drs, v)	if (RsCache.##prop != v)		\
+
+#define  DEVICE_SET_RENDER_STATE(prop, d3drs, v)	if (RsCache.##prop != (v))		\
 		{	pID3DDevice->SetRenderState(d3drs, v);				\
 		RsCache.##prop = v;	}													
 														
-#define  DEVICE_SET_SAMPLER_STATE(st, prop, d3dss, v)	if(RsCache.TextureUnits[st].##prop != v)		\
+#define  DEVICE_SET_SAMPLER_STATE(st, prop, d3dss, v)	if(RsCache.TextureUnits[st].##prop != (v))		\
 			{	pID3DDevice->SetSamplerState (st, d3dss, v);		\
 			RsCache.TextureUnits[st].##prop = v;	}
 
-#define  DEVICE_SET_TEXTURE_STAGE_STATE(st, prop, d3dtss, v)		if(RsCache.TextureUnits[st].##prop != v)		\
+#define  DEVICE_SET_TEXTURE_STAGE_STATE(st, prop, d3dtss, v)		if(RsCache.TextureUnits[st].##prop != (v))		\
 			{	pID3DDevice->SetTextureStageState (st, d3dtss, v);			\
 			RsCache.TextureUnits[st].##prop = v;	}
 
@@ -26,6 +27,7 @@ CD3D9MaterialRenderer_LightMap		g_MaterialRenderer_LightMap;
 CD3D9MaterialRenderer_DetailMap		g_MaterialRenderer_DetailMap;
 CD3D9MaterialRenderer_Transparent_Alpha_Blend		g_MaterialRenderer_Transparent_Alpha_Blend;
 CD3D9MaterialRenderer_Transparent_Alpha_Test		g_MaterialRenderer_Transparent_Alpha_Test;
+CD3D9MaterialRenderer_Terrain_MultiPass		g_MaterialRenderer_Terrain_MultiPass;
 
 CD3D9MaterialRenderServices::CD3D9MaterialRenderServices(bool ppipeline)
 	: PPipeline(ppipeline)
@@ -46,8 +48,11 @@ CD3D9MaterialRenderServices::CD3D9MaterialRenderServices(bool ppipeline)
 		MaterialRenderersMap[EMT_LIGHTMAP_LIGHTING_M4] = &g_MaterialRenderer_LightMap;
 	MaterialRenderersMap[EMT_DETAIL_MAP] = &g_MaterialRenderer_DetailMap;
 
-	MaterialRenderersMap[EMT_TRANSPARENT_ADD_ALPHA] =
-		MaterialRenderersMap[EMT_TRANSPARENT_ALPHA_BLEND] =
+	MaterialRenderersMap[EMT_TERRAIN_MULTIPASS] = &g_MaterialRenderer_Terrain_MultiPass;
+
+	MaterialRenderersMap[EMT_TRANSPARENT_ALPHA_BLEND] =
+		MaterialRenderersMap[EMT_TRANSAPRENT_ALPHA_BLEND_TEST] =
+		MaterialRenderersMap[EMT_TRANSPARENT_ADD_ALPHA] =
 		MaterialRenderersMap[EMT_TRANSPARENT_ADD_COLOR] = &g_MaterialRenderer_Transparent_Alpha_Blend;
 	MaterialRenderersMap[EMT_ALPHA_TEST] = &g_MaterialRenderer_Transparent_Alpha_Test;
 
@@ -169,10 +174,22 @@ void CD3D9MaterialRenderServices::setBasicRenderStates( const SMaterial& materia
 	}
 
 	// backface culling
-	if (resetAllRenderstates || (lastMaterial.FrontfaceCulling != material.FrontfaceCulling) || (lastMaterial.BackfaceCulling != material.BackfaceCulling))
+	if (resetAllRenderstates || (lastMaterial.Cull != material.Cull))
 	{
-		DWORD cullmode = material.FrontfaceCulling ? D3DCULL_CW : ( material.BackfaceCulling ? D3DCULL_CCW : D3DCULL_NONE );
-		
+		DWORD cullmode;
+		switch(material.Cull)
+		{
+		case ECM_FRONT:
+			cullmode = D3DCULL_CW;
+			break;
+		case ECM_BACK:
+			cullmode = D3DCULL_CCW;
+			break;
+		case ECM_NONE:
+		default:
+			cullmode = D3DCULL_NONE;
+		}
+
 		DEVICE_SET_RENDER_STATE(CullMode, D3DRS_CULLMODE, cullmode);
 	}
 
@@ -184,36 +201,29 @@ void CD3D9MaterialRenderServices::setBasicRenderStates( const SMaterial& materia
 		DEVICE_SET_RENDER_STATE(FogEnable, D3DRS_FOGENABLE, fog);
 	}
 
-	/*
-	//alpha to coverage
-	if (resetAllRenderstates || material.AlphaToCoverage != lastMaterial.AlphaToCoverage)
-	{
-		if (Driver->AlphaToCoverageSupport)
-		{
-			if (Driver->VendorID == 0x10DE)			//nvidia
-			{
-				DWORD v = material.AlphaToCoverage ? MAKEFOURCC('A','T','O','C') : D3DFMT_UNKNOWN;
-
-				DEVICE_SET_RENDER_STATE(AdaptivetessY, D3DRS_ADAPTIVETESS_Y, v);
-			}
-			else if(Driver->VendorID == 0x1002)		//ati
-			{
-				DWORD v = material.AlphaToCoverage ? MAKEFOURCC('A','2','M','1') : MAKEFOURCC('A','2','M','0');
-
-				DEVICE_SET_RENDER_STATE(PointSize, D3DRS_POINTSIZE, v);
-			}
-		}
-	}
-	*/
-
 	// anti aliasing
-	if (Driver->AntiAliasing)
+	if (Driver->DriverSetting.antialias)
 	{
 		if (resetAllRenderstates || material.AntiAliasing != lastMaterial.AntiAliasing)
 		{
-			DWORD v = material.AntiAliasing ? TRUE : FALSE;
-
-			DEVICE_SET_RENDER_STATE(MultiSampleAntiAlias, D3DRS_MULTISAMPLEANTIALIAS, v);
+			bool multisample = false;
+			bool antialiasline = false;
+			switch(material.AntiAliasing)
+			{
+			case EAAM_SIMPLE:
+				multisample = true;
+				break;
+			case EAAM_LINE_SMOOTH:
+				multisample = true;
+				antialiasline = true;
+				break;
+			case EAAM_OFF:
+			default:
+				break;
+			}
+			
+			DEVICE_SET_RENDER_STATE(MultiSampleAntiAlias, D3DRS_MULTISAMPLEANTIALIAS, multisample ? TRUE : FALSE);
+			DEVICE_SET_RENDER_STATE(AntiAliasedLineEnable, D3DRS_ANTIALIASEDLINEENABLE, antialiasline ? TRUE : FALSE);
 		}
 	}
 
@@ -224,51 +234,11 @@ void CD3D9MaterialRenderServices::setBasicRenderStates( const SMaterial& materia
 			material.TextureLayer[st].TextureWrapU != lastMaterial.TextureLayer[st].TextureWrapU ||
 			material.TextureLayer[st].TextureWrapV != lastMaterial.TextureLayer[st].TextureWrapV)
 		{
-			DWORD addressU = 0;
-			DWORD addressV = 0;
-
-			addressU = CD3D9Helper::getD3DTextureAddress(material.TextureLayer[st].TextureWrapU);
-			addressV = CD3D9Helper::getD3DTextureAddress(material.TextureLayer[st].TextureWrapV);
+			DWORD addressU = CD3D9Helper::getD3DTextureAddress(material.TextureLayer[st].TextureWrapU);
+			DWORD addressV = CD3D9Helper::getD3DTextureAddress(material.TextureLayer[st].TextureWrapV);
 
 			DEVICE_SET_SAMPLER_STATE(st, addressU, D3DSAMP_ADDRESSU, addressU);
 			DEVICE_SET_SAMPLER_STATE(st, addressV, D3DSAMP_ADDRESSV, addressV);
-		}
-
-		if (resetAllRenderstates || material.TextureLayer[st].TextureFilter != lastMaterial.TextureLayer[st].TextureFilter)
-		{
-			D3DTEXTUREFILTERTYPE tftMag, tftMin, tftMip;
-
-			// Bilinear, trilinear, and anisotropic filter	
-			if (material.TextureLayer[st].TextureFilter != ETF_NONE)
-			{
-				u8 anisotropic = getAnisotropic(material.TextureLayer[st].TextureFilter);
-				tftMag = ((Driver->Caps.TextureFilterCaps & D3DPTFILTERCAPS_MAGFANISOTROPIC) &&
-					anisotropic) ? D3DTEXF_ANISOTROPIC : D3DTEXF_LINEAR;
-				tftMin = ((Driver->Caps.TextureFilterCaps & D3DPTFILTERCAPS_MINFANISOTROPIC) &&
-					anisotropic) ? D3DTEXF_ANISOTROPIC : D3DTEXF_LINEAR;
-				tftMip = material.TextureLayer[st].TextureFilter > ETF_BILINEAR ? D3DTEXF_LINEAR : D3DTEXF_POINT;
-
-				if (tftMag==D3DTEXF_ANISOTROPIC || tftMin == D3DTEXF_ANISOTROPIC)
-				{
-					u32 v = min_((DWORD)anisotropic, Driver->Caps.MaxAnisotropy);
-
-					for (u32 st=0; st<MATERIAL_MAX_TEXTURES; ++st)
-					{
-						DEVICE_SET_SAMPLER_STATE(st, maxAniso, D3DSAMP_MAXANISOTROPY, v);
-					}
-				}
-			}
-			else
-			{
-				tftMag = D3DTEXF_POINT;
-				tftMin = D3DTEXF_POINT;
-				tftMip = D3DTEXF_NONE;
-			}
-
-			DEVICE_SET_SAMPLER_STATE(st, magFilter, D3DSAMP_MAGFILTER, tftMag);
-			DEVICE_SET_SAMPLER_STATE(st, minFilter, D3DSAMP_MINFILTER, tftMin);
-			DEVICE_SET_SAMPLER_STATE(st, mipFilter, D3DSAMP_MIPFILTER, tftMip);
-
 		}
 
 		//transform
@@ -305,11 +275,55 @@ void CD3D9MaterialRenderServices::setBasicRenderStates( const SMaterial& materia
 	}
 }
 
-void CD3D9MaterialRenderServices::set2DRenderStates( bool alpha, bool texture, bool alphaChannel, bool resetAllRenderStates)
+void CD3D9MaterialRenderServices::setOverrideRenderStates( const SOverrideMaterial& overrideMaterial,
+	bool resetAllRenderStates )
 {
-	if (!texture)
-		return;
+	for (u32 st=0; st<MATERIAL_MAX_TEXTURES; ++st)
+	{
+		if (resetAllRenderStates || overrideMaterial.TextureFilters[st] != LastOverrideMaterial.TextureFilters[st])
+		{
+			D3DTEXTUREFILTERTYPE tftMag, tftMin, tftMip;
 
+			// Bilinear, trilinear, and anisotropic filter	
+			if (overrideMaterial.TextureFilters[st] != ETF_NONE)
+			{
+				u8 anisotropic = getAnisotropic(overrideMaterial.TextureFilters[st]);
+				tftMag = ((Driver->Caps.TextureFilterCaps & D3DPTFILTERCAPS_MAGFANISOTROPIC) &&
+					anisotropic) ? D3DTEXF_ANISOTROPIC : D3DTEXF_LINEAR;
+				tftMin = ((Driver->Caps.TextureFilterCaps & D3DPTFILTERCAPS_MINFANISOTROPIC) &&
+					anisotropic) ? D3DTEXF_ANISOTROPIC : D3DTEXF_LINEAR;
+				tftMip = overrideMaterial.TextureFilters[st] > ETF_BILINEAR ? D3DTEXF_LINEAR : D3DTEXF_POINT;
+
+				if (tftMag==D3DTEXF_ANISOTROPIC || tftMin == D3DTEXF_ANISOTROPIC)
+				{
+					u32 v = min_((DWORD)anisotropic, Driver->Caps.MaxAnisotropy);
+
+					DEVICE_SET_SAMPLER_STATE(st, maxAniso, D3DSAMP_MAXANISOTROPY, v);
+				}
+			}
+			else
+			{
+				tftMag = D3DTEXF_POINT;
+				tftMin = D3DTEXF_POINT;
+				tftMip = D3DTEXF_NONE;
+			}
+
+			DEVICE_SET_SAMPLER_STATE(st, magFilter, D3DSAMP_MAGFILTER, tftMag);
+			DEVICE_SET_SAMPLER_STATE(st, minFilter, D3DSAMP_MINFILTER, tftMin);
+			DEVICE_SET_SAMPLER_STATE(st, mipFilter, D3DSAMP_MIPFILTER, tftMip);
+		}
+
+		if (resetAllRenderStates || overrideMaterial.MipMapLodBias[st] != LastOverrideMaterial.MipMapLodBias[st])
+		{
+			DWORD v = overrideMaterial.MipMapLodBias[st];
+			DEVICE_SET_SAMPLER_STATE(st, mipLodBias, D3DSAMP_MIPMAPLODBIAS, v);
+		}
+	}
+	LastOverrideMaterial = overrideMaterial;
+}
+
+void CD3D9MaterialRenderServices::set2DRenderStates( bool alpha, bool alphaChannel, E_BLEND_FACTOR srcBlend, E_BLEND_FACTOR destBlend, bool resetAllRenderStates)
+{
 	SRenderStateBlock block;
 
 	if (alphaChannel)
@@ -330,8 +344,8 @@ void CD3D9MaterialRenderServices::set2DRenderStates( bool alpha, bool texture, b
 		}
 
 		block.alphaBlendEnabled = true;
-		block.srcBlend = EBF_ONE;
-		block.destBlend = EBF_ONE_MINUS_SRC_ALPHA;
+		block.srcBlend = srcBlend;
+		block.destBlend = destBlend;
 	} 
 	else	//no alpha channel
 	{
@@ -345,8 +359,8 @@ void CD3D9MaterialRenderServices::set2DRenderStates( bool alpha, bool texture, b
 		{
 			block.textureUnits[0].alphaOp = ETO_ARG2;
 			block.alphaBlendEnabled = true;
-			block.srcBlend = EBF_ONE;
-			block.destBlend = EBF_ONE_MINUS_SRC_ALPHA;
+			block.srcBlend = srcBlend;
+			block.destBlend = destBlend;
 		}
 		else
 		{
@@ -459,6 +473,25 @@ void CD3D9MaterialRenderServices::applyMaterialBlock( const SRenderStateBlock& b
 		DEVICE_SET_RENDER_STATE(AlphaRef, D3DRS_ALPHAREF, v);
 	}
 
+	if (resetAllRenderStates || block.alphaToCoverage != LastMaterialBlock.alphaToCoverage)
+	{
+		if (Driver->AlphaToCoverageSupport)
+		{
+			if (Driver->AdapterInfo.vendorID == 0x10DE)			//nvidia
+			{
+				DWORD v = block.alphaToCoverage ? MAKEFOURCC('A','T','O','C') : D3DFMT_UNKNOWN;
+
+				DEVICE_SET_RENDER_STATE(AdaptivetessY, D3DRS_ADAPTIVETESS_Y, v);
+			}
+			else if(Driver->AdapterInfo.vendorID == 0x1002)		//ati
+			{
+				DWORD v = block.alphaToCoverage ? MAKEFOURCC('A','2','M','1') : MAKEFOURCC('A','2','M','0');
+
+				DEVICE_SET_RENDER_STATE(PointSize, D3DRS_POINTSIZE, v);
+			}
+		}
+	}
+
 	if (resetAllRenderStates|| block.pixelShader != LastMaterialBlock.pixelShader)
 	{
 		Driver->getShaderServices()->usePixelShader(block.pixelShader);
@@ -491,15 +524,17 @@ void CD3D9MaterialRenderServices::ResetRSCache()
 	pID3DDevice->GetRenderState(D3DRS_CULLMODE, &RsCache.CullMode);
 	pID3DDevice->GetRenderState(D3DRS_FOGENABLE, &RsCache.FogEnable);
 	pID3DDevice->GetRenderState(D3DRS_MULTISAMPLEANTIALIAS, &RsCache.MultiSampleAntiAlias);
-//	pID3DDevice->GetRenderState(D3DRS_ANTIALIASEDLINEENABLE, &RsCache.AntiAliasedLineEnable);
+	pID3DDevice->GetRenderState(D3DRS_ANTIALIASEDLINEENABLE, &RsCache.AntiAliasedLineEnable);
+	pID3DDevice->GetRenderState(D3DRS_SLOPESCALEDEPTHBIAS, &RsCache.SlopeScaleDepthBias);
+	pID3DDevice->GetRenderState(D3DRS_DEPTHBIAS, &RsCache.DepthBias);
 	pID3DDevice->GetRenderState(D3DRS_ALPHABLENDENABLE, &RsCache.AlphaBlendEnable);
 	pID3DDevice->GetRenderState(D3DRS_SRCBLEND, &RsCache.SrcBlend);
 	pID3DDevice->GetRenderState(D3DRS_DESTBLEND, &RsCache.DestBlend);
 	pID3DDevice->GetRenderState(D3DRS_ALPHATESTENABLE, &RsCache.AlphaTestEnable);
 	pID3DDevice->GetRenderState(D3DRS_ALPHAFUNC, &RsCache.AlphaFunc);
 	pID3DDevice->GetRenderState(D3DRS_ALPHAREF, &RsCache.AlphaRef);
-//	pID3DDevice->GetRenderState(D3DRS_ADAPTIVETESS_Y, &RsCache.AdaptivetessY);
-//	pID3DDevice->GetRenderState(D3DRS_POINTSIZE, &RsCache.PointSize);
+	pID3DDevice->GetRenderState(D3DRS_ADAPTIVETESS_Y, &RsCache.AdaptivetessY);
+	pID3DDevice->GetRenderState(D3DRS_POINTSIZE, &RsCache.PointSize);
 
 	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
@@ -521,8 +556,77 @@ void CD3D9MaterialRenderServices::ResetRSCache()
 		pID3DDevice->GetSamplerState(i, D3DSAMP_MAGFILTER, &RsCache.TextureUnits[i].magFilter);
 		pID3DDevice->GetSamplerState(i, D3DSAMP_MINFILTER, &RsCache.TextureUnits[i].minFilter);
 		pID3DDevice->GetSamplerState(i, D3DSAMP_MIPFILTER, &RsCache.TextureUnits[i].mipFilter);
+		pID3DDevice->GetSamplerState(i, D3DSAMP_MIPMAPLODBIAS, &RsCache.TextureUnits[i].mipLodBias);
 	}
 
 }
 
+void CD3D9MaterialRenderServices::setZWriteEnable( bool enable )
+{
+	DWORD zwrite = enable ? TRUE : FALSE;
 
+	DEVICE_SET_RENDER_STATE(ZWriteEnable, D3DRS_ZWRITEENABLE, zwrite);
+}
+
+bool CD3D9MaterialRenderServices::getZWriteEnable() const
+{
+	DWORD v;
+	pID3DDevice->GetRenderState(D3DRS_ZWRITEENABLE, &v);
+	return v != 0;
+}
+
+void CD3D9MaterialRenderServices::setTextureWrap( u32 st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap )
+{
+	D3DTEXTUREADDRESS v = CD3D9Helper::getD3DTextureAddress(wrap);
+	switch (address)
+	{
+	case ETA_U:
+		DEVICE_SET_SAMPLER_STATE(st, addressU, D3DSAMP_ADDRESSU, v);
+		break;
+	case ETA_V:
+		DEVICE_SET_SAMPLER_STATE(st, addressV, D3DSAMP_ADDRESSV, v);
+		break;
+	case ETA_W:
+		DEVICE_SET_SAMPLER_STATE(st, addressW, D3DSAMP_ADDRESSW, v);
+		break;
+	default:
+		_ASSERT(false);
+	}
+}
+
+E_TEXTURE_CLAMP CD3D9MaterialRenderServices::getTextureWrap( u32 st, E_TEXTURE_ADDRESS address ) const
+{
+	DWORD v;
+	switch (address)
+	{
+	case ETA_U:
+		pID3DDevice->GetSamplerState(st, D3DSAMP_ADDRESSU, &v);
+		break;
+	case ETA_V:
+		pID3DDevice->GetSamplerState(st, D3DSAMP_ADDRESSV, &v);
+		break;
+	case ETA_W:
+		pID3DDevice->GetSamplerState(st, D3DSAMP_ADDRESSW, &v);
+		break;
+	default:
+		_ASSERT(false);
+	}
+
+	return CD3D9Helper::getTextureWrapMode((D3DTEXTUREADDRESS)v);
+}
+
+void CD3D9MaterialRenderServices::setDepthBias( f32 depthbias )
+{
+	bool enable =  depthbias != 0.0f;
+	static f32 fSlope = 0.1f;
+	DWORD v1 = enable ? F32_AS_DWORD(fSlope) : 0;
+	DWORD v2 = enable ? F32_AS_DWORD(depthbias) : 0;
+
+	DEVICE_SET_RENDER_STATE(SlopeScaleDepthBias, D3DRS_SLOPESCALEDEPTHBIAS, v1);
+	DEVICE_SET_RENDER_STATE(DepthBias, D3DRS_DEPTHBIAS, v2);
+}
+
+f32 CD3D9MaterialRenderServices::getDepthBias() const
+{
+	return DWORD_AS_F32(RsCache.DepthBias);
+}

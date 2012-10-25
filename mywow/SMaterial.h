@@ -13,14 +13,12 @@ struct SMaterialLayer
 {
 	E_TEXTURE_CLAMP TextureWrapU;
 	E_TEXTURE_CLAMP TextureWrapV;
-	E_TEXTURE_FILTER	TextureFilter;
 	bool	UseTextureMatrix : 1;
 	matrix4* TextureMatrix;
 
 	SMaterialLayer()
 		: TextureWrapU(ETC_CLAMP),
 		TextureWrapV(ETC_CLAMP),
-		TextureFilter(ETF_BILINEAR),
 		UseTextureMatrix(false),
 		TextureMatrix(NULL)
 	{
@@ -41,7 +39,6 @@ struct SMaterialLayer
 				return b.TextureMatrix ||
 					TextureWrapU != b.TextureWrapU ||
 					TextureWrapV != b.TextureWrapV ||
-					TextureFilter != b.TextureFilter ||
 					UseTextureMatrix != b.UseTextureMatrix;
 			}
 			else
@@ -49,7 +46,6 @@ struct SMaterialLayer
 				return !b.TextureMatrix ||
 					TextureWrapU != b.TextureWrapU ||
 					TextureWrapV != b.TextureWrapV ||
-					TextureFilter != b.TextureFilter ||
 					UseTextureMatrix != b.UseTextureMatrix ||
 					memcmp(TextureMatrix, b.TextureMatrix, sizeof(matrix4)) != 0;
 			}
@@ -64,25 +60,35 @@ struct SMaterialLayer
 //texture, render state
 struct SMaterial
 {
-	SMaterialLayer		TextureLayer[MATERIAL_MAX_TEXTURES];
-	E_MATERIAL_TYPE	MaterialType;
+	//basic
 	SColor	AmbientColor;
 	SColor	DiffuseColor;
 	SColor	EmissiveColor;
 	SColor	SpecularColor;
-	f32			Shininess;
-	u8			ZBuffer;
-	bool		Wireframe : 1;
+	f32		Shininess;
+
+	//vs
 	bool		GouraudShading : 1;
 	bool		Lighting : 1;
-	bool		ZWriteEnable : 1;
-	bool		StencilEnable : 1;
-	bool		BackfaceCulling : 1;
-	bool		FrontfaceCulling : 1;
 	bool		FogEnable : 1;
-	bool		AntiAliasing : 1;
 	IVertexShader*		VertexShader;
 	IEffect*		Effect;
+
+	//rasterize
+	bool		Wireframe : 1;
+	E_CULL_MODE		Cull;
+	E_ANTI_ALIASING_MODE		AntiAliasing;
+
+	//sampler state
+	SMaterialLayer		TextureLayer[MATERIAL_MAX_TEXTURES];
+
+	//depth stencil
+	u8		ZBuffer;
+	bool		ZWriteEnable : 1;
+	bool		StencilEnable : 1;
+
+	//ps, blend
+	E_MATERIAL_TYPE	MaterialType;
 
 	SMaterial()
 		: MaterialType((E_MATERIAL_TYPE)-1),
@@ -96,9 +102,9 @@ struct SMaterial
 		GouraudShading(true), Lighting(true),
 		ZWriteEnable(true),
 		StencilEnable(false),
-		BackfaceCulling(false),FrontfaceCulling(false),
+		Cull(ECM_NONE),
 		FogEnable(false),
-		AntiAliasing(true),
+		AntiAliasing(EAAM_SIMPLE),
 		VertexShader(NULL),
 		Effect(NULL)
 	{
@@ -127,6 +133,8 @@ struct SMaterial
 			AmbientColor.setAlpha((u32)(AmbientColor.getAlpha() * alpha));
 		else
 			EmissiveColor.setAlpha((u32)(EmissiveColor.getAlpha() * alpha));
+
+		//DiffuseColor.setAlpha((u32)(DiffuseColor.getAlpha() * alpha));
 	}
 
 	void setMaterialColor(SColor color)
@@ -161,12 +169,13 @@ struct SMaterial
 
 };
 
+//blend state
 struct  SRenderStateBlock
 {
 	struct STextureStageBlock
 	{
 		STextureStageBlock() :
-		colorOp(ETO_MODULATE), colorArg1(ETA_TEXTURE), colorArg2(ETA_DIFFUSE),
+		colorOp(ETO_DISABLE), colorArg1(ETA_TEXTURE), colorArg2(ETA_DIFFUSE),
 		alphaOp(ETO_DISABLE), alphaArg1(ETA_TEXTURE), alphaArg2(ETA_DIFFUSE) { }
 
 		E_TEXTURE_OP		colorOp;
@@ -184,6 +193,7 @@ struct  SRenderStateBlock
 		alphaTestEnabled(false),
 		alphaTestFunc(ECFN_GREATEREQUAL),
 		alphaTestRef(0),
+		alphaToCoverage(false),
 		pixelShader(NULL)
 	{
 		for (u8 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
@@ -199,6 +209,7 @@ struct  SRenderStateBlock
 	bool  alphaTestEnabled;
 	E_COMPARISON_FUNC	alphaTestFunc;
 	u8	alphaTestRef;
+	bool		alphaToCoverage;
 
 	IPixelShader*		pixelShader;
 
@@ -208,5 +219,29 @@ struct  SRenderStateBlock
 	}
 
 	inline bool operator==(const SRenderStateBlock& b) const
+	{ return !(b!=*this); }
+};
+
+//global 
+struct SOverrideMaterial
+{
+	SOverrideMaterial() 
+	{
+		for(u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+		{	
+			TextureFilters[i] = ETF_BILINEAR;
+			MipMapLodBias[i] = 0;
+		}
+	}
+
+	E_TEXTURE_FILTER	TextureFilters[MATERIAL_MAX_TEXTURES];
+	s32		MipMapLodBias[MATERIAL_MAX_TEXTURES];
+
+	inline bool operator!=(const SOverrideMaterial& b) const
+	{
+		return memcmp(this, &b, sizeof(SOverrideMaterial)) != 0;
+	}
+
+	inline bool operator==(const SOverrideMaterial& b) const
 	{ return !(b!=*this); }
 };
