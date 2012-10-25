@@ -446,9 +446,6 @@
     <ClInclude Include="CCamera.h">
       <Filter>implementation\scene\sceneNode</Filter>
     </ClInclude>
-    <ClInclude Include="CFileADT.h">
-      <Filter>implementation\scene\sceneNode</Filter>
-    </ClInclude>
     <ClInclude Include="CSceneEnvironment.h">
       <Filter>implementation\scene</Filter>
     </ClInclude>
@@ -456,6 +453,9 @@
       <Filter>interface\scene</Filter>
     </ClInclude>
     <ClInclude Include="mpq_stormlib.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileADT.h">
       <Filter>wow</Filter>
     </ClInclude>
   </ItemGroup>
