@@ -1,5 +1,5 @@
 ==========================================================================
-wow explorer
+wow model explorer (mists of pandaria)
 ==========================================================================
 
   Welcome wow explorer
@@ -38,14 +38,14 @@ wow explorer
 ==========================================================================
 2. How to start
 ==========================================================================
-
+	bin\WowModelExplorer.exe
 ==========================================================================
 3. Requirements
 ==========================================================================
 For development:
 VS 2010
 DirectX SDK, for D3D9 support
-wow data files(mpqs)
+wow data files(mists of pandaria mpqs)
 
 For application:
 .Net framework 4 redistributable
