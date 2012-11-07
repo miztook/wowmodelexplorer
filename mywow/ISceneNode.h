@@ -69,7 +69,7 @@ inline void ISceneNode::update( bool includeChildren /*= true*/ )
 	{
 		if ( Parent )
 		{
-			AbsoluteTransformation = Parent->AbsoluteTransformation * getRelativeTransformation();
+			AbsoluteTransformation =  getRelativeTransformation() * Parent->AbsoluteTransformation;
 		}
 		else
 			AbsoluteTransformation = getRelativeTransformation();

@@ -377,19 +377,17 @@ IEffect* CD3D9ShaderServices::getEffect( E_EFFECT_TYPE type )
 
 void CD3D9ShaderServices::getWVPMatrix( matrix4& mat ) const
 {
-	//注意hlsl的 column major, matrix相反乘
 	const matrix4& w = Driver->getTransform(ETS_WORLD);
 	const matrix4& v = Driver->getTransform(ETS_VIEW);
 	const matrix4& p = Driver->getTransform(ETS_PROJECTION);
-	mat = p * v * w;
+	mat = w * v * p;
 }
 
 void CD3D9ShaderServices::getVPMatrix( matrix4& mat ) const
 {
-	//注意hlsl的 column major, matrix相反乘
 	const matrix4& v = Driver->getTransform(ETS_VIEW);
 	const matrix4& p = Driver->getTransform(ETS_PROJECTION);
-	mat = p * v;
+	mat = v * p;
 }
 
 void CD3D9ShaderServices::setShaderConstants( IVertexShader* vs, const SMaterial& material )

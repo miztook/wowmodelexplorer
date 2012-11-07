@@ -48,6 +48,32 @@ public:
 		recalculateD(point1);
 	}
 
+	void normalize()
+	{
+		T lensq = Normal.getLengthSQ();
+		if (equals_(lensq, 1.0f))
+			return;
+
+		f32 len ;
+		if (equals_(lensq, 0.0f))			//avoid div by 0
+		{
+			s32 f = 1;
+			do
+			{
+				f *= 100;
+				lensq *= f;
+			} while(equals_(lensq, 0.0f));
+			len = squareroot_((f32)f) * squareroot_(lensq);
+		}
+		else
+		{
+			len = squareroot_(lensq);
+		}
+
+		Normal = Normal * len;
+		D = D * len;
+	}
+
 	EIntersectionRelation3D classifyPointRelation(const vector3d<T>& point) const
 	{
 		const T d = Normal.dotProduct(point) + D;

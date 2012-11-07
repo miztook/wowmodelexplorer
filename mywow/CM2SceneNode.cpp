@@ -542,7 +542,7 @@ void CM2SceneNode::updateAttachmentEntry( SAttachmentEntry* entry )
 	if (entry->scale != 1.0f)
 		m.setScale(entry->scale);
 	m.setTranslation(attachment.position);
-	m = b.mat * m;
+	m = m * b.mat;
 
 	node->setRelativeTransformation(m);
 	node->update(true);

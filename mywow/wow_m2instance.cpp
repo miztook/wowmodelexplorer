@@ -526,13 +526,13 @@ void wow_m2instance::calcBone( u8 i, u32 anim, u32 time, f32 blend, bool enableS
 			m.setScale(s);		
 	}
 
-	m = global * m * inverseGlobal;		//pivot
+	m = inverseGlobal * m * global;		//pivot
 
 	if (b->parent != -1)
 	{
 		calcBone((u8)b->parent, anim, time, blend, enableScale, NULL, animatedBox);
 		
-		DynBones[i].mat = DynBones[b->parent].mat * m;
+		DynBones[i].mat = m * DynBones[b->parent].mat;
 	}
 	else
 	{

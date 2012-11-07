@@ -46,9 +46,9 @@ void CCamera::recalculateProjectionMatrix()
 
 void CCamera::recalculateFrustum()
 {
-	ViewFrustum.setFrom( ProjectionMatrix * ViewMatrix );
+	ViewFrustum.setFrom( ViewMatrix * ProjectionMatrix);
 
-	frustum::makePlane(ClipProjectionMatrix * ViewMatrix, VF_FAR_PLANE, ClipPlane);
+	frustum::makePlane(ViewMatrix * ProjectionMatrix, VF_FAR_PLANE, ClipPlane);
 }
 
 void CCamera::onKeyMove( f32 speed, SKeyControl keycontrol )
@@ -133,12 +133,8 @@ void CCamera::makeClipPlane( const plane3df& plane, plane3df& clip )
 {
 	clip = plane;
 
-	matrix4 mat = ViewMatrix;
+	matrix4 mat = ViewMatrix * ProjectionMatrix;
 	mat.getInverse(mat);
-	mat.transpose();
-	mat.transformPlane(clip);
-
-	ProjectionMatrix.getInverse(mat);
 	mat.transpose();
 	mat.transformPlane(clip);
 }

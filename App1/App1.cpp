@@ -279,7 +279,7 @@ void createScene()
 	{
 		IFileM2* m2Human = g_Engine->getResourceLoader()->loadM2("Character\\PANDAREN\\MALE\\PandarenMale.m2");
 		IM2SceneNode*  humanNode = g_Engine->getSceneManager()->addM2SceneNode(m2Human, NULL);	
-		humanNode->loadSet(679);		//631
+		humanNode->loadSet(631);		//631
 	//	humanNode->loadStartOutfit(352, true);
 		humanNode->updateCharacter();
 		matrix4 mat;
