@@ -574,16 +574,18 @@ void CD3D9Driver::setTransform( E_TRANSFORMATION_STATE state, const matrix4& mat
 		}	
 		break;
 	default:		//texture
-		if ( state - ETS_TEXTURE_0 < MATERIAL_MAX_TEXTURES )
 		{
-			if (CurrentDeviceState.matrices[state - ETS_TEXTURE_0] != mat)
+			s32 tex = state - ETS_TEXTURE_0;
+			if (  tex >= 0  && tex < MATERIAL_MAX_TEXTURES )
 			{
-				pID3DDevice->SetTransform((D3DTRANSFORMSTATETYPE)(D3DTS_TEXTURE0+ ( state - ETS_TEXTURE_0 )),
-					(D3DMATRIX*)((void*)mat.pointer()));
+				if (CurrentDeviceState.matrices[state] != mat)
+				{
+					pID3DDevice->SetTransform((D3DTRANSFORMSTATETYPE)(D3DTS_TEXTURE0+ tex), (D3DMATRIX*)((void*)mat.pointer()));
 
-				CurrentDeviceState.matrices[state - ETS_TEXTURE_0] = mat;
+					CurrentDeviceState.matrices[state] = mat;
+				}
 			}
-		}
+		} 
 		break;
 	}
 }

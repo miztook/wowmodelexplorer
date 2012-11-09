@@ -908,6 +908,7 @@ bool CFileSkin::loadFile( MPQFile* file, CFileM2* m2)
 		memcpy_s(&AVertices[nCount], entry.num * sizeof(SAVertex), entry.aVertices, entry.num * sizeof(SAVertex));
 		nCount += entry.num;
 	}
+	_ASSERT(nCount == NumBoneVertices);
 
 	// Õ∑≈¡Ÿ ±ª∫¥Ê
 	while (!boneVertList.empty())
