@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A3D714EB193DE1A0000E0712 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D714EA193DE1A0000E0712 /* UIKit.framework */; };
+		A3D714ED193DE1A0000E0712 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D714EC193DE1A0000E0712 /* Foundation.framework */; };
+		A3D714EF193DE1A0000E0712 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D714EE193DE1A0000E0712 /* CoreGraphics.framework */; };
+		A3D714F5193DE1A0000E0712 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A3D714F3193DE1A0000E0712 /* InfoPlist.strings */; };
+		A3D714F7193DE1A0000E0712 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D714F6193DE1A0000E0712 /* main.m */; };
+		A3D714FB193DE1A0000E0712 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D714FA193DE1A0000E0712 /* AppDelegate.m */; };
+		A3D714FD193DE1A0000E0712 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = A3D714FC193DE1A0000E0712 /* Default.png */; };
+		A3D714FF193DE1A0000E0712 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A3D714FE193DE1A0000E0712 /* Default@2x.png */; };
+		A3D71501193DE1A0000E0712 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A3D71500193DE1A0000E0712 /* Default-568h@2x.png */; };
+		A3D71504193DE1A0000E0712 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3D71502193DE1A0000E0712 /* MainStoryboard_iPhone.storyboard */; };
+		A3D71507193DE1A0000E0712 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3D71505193DE1A0000E0712 /* MainStoryboard_iPad.storyboard */; };
+		A3D7150A193DE1A0000E0712 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D71509193DE1A0000E0712 /* ViewController.m */; };
+		A3D71512193DE1F1000E0712 /* lua_tinker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3D71510193DE1F1000E0712 /* lua_tinker.cpp */; };
+		A3D71514193DE2F9000E0712 /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D71513193DE2F9000E0712 /* liblua.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A3D714E7193DE1A0000E0712 /* luatest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = luatest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3D714EA193DE1A0000E0712 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		A3D714EC193DE1A0000E0712 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		A3D714EE193DE1A0000E0712 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A3D714F2193DE1A0000E0712 /* luatest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "luatest-Info.plist"; sourceTree = "<group>"; };
+		A3D714F4193DE1A0000E0712 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A3D714F6193DE1A0000E0712 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A3D714F8193DE1A0000E0712 /* luatest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "luatest-Prefix.pch"; sourceTree = "<group>"; };
+		A3D714F9193DE1A0000E0712 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		A3D714FA193DE1A0000E0712 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A3D714FC193DE1A0000E0712 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		A3D714FE193DE1A0000E0712 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		A3D71500193DE1A0000E0712 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		A3D71503193DE1A0000E0712 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		A3D71506193DE1A0000E0712 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		A3D71508193DE1A0000E0712 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		A3D71509193DE1A0000E0712 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		A3D71510193DE1F1000E0712 /* lua_tinker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_tinker.cpp; sourceTree = "<group>"; };
+		A3D71511193DE1F1000E0712 /* lua_tinker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lua_tinker.h; sourceTree = "<group>"; };
+		A3D71513193DE2F9000E0712 /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = "../../../../../Library/Developer/Xcode/DerivedData/dependency-aqqvkydhlijroucqvehzcitlkhdn/Build/Products/Debug-iphoneos/liblua.a"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A3D714E4193DE1A0000E0712 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3D71514193DE2F9000E0712 /* liblua.a in Frameworks */,
+				A3D714EB193DE1A0000E0712 /* UIKit.framework in Frameworks */,
+				A3D714ED193DE1A0000E0712 /* Foundation.framework in Frameworks */,
+				A3D714EF193DE1A0000E0712 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A3D714DE193DE1A0000E0712 = {
+			isa = PBXGroup;
+			children = (
+				A3D71510193DE1F1000E0712 /* lua_tinker.cpp */,
+				A3D71511193DE1F1000E0712 /* lua_tinker.h */,
+				A3D714F0193DE1A0000E0712 /* luatest */,
+				A3D714E9193DE1A0000E0712 /* Frameworks */,
+				A3D714E8193DE1A0000E0712 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A3D714E8193DE1A0000E0712 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A3D714E7193DE1A0000E0712 /* luatest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A3D714E9193DE1A0000E0712 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A3D71513193DE2F9000E0712 /* liblua.a */,
+				A3D714EA193DE1A0000E0712 /* UIKit.framework */,
+				A3D714EC193DE1A0000E0712 /* Foundation.framework */,
+				A3D714EE193DE1A0000E0712 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A3D714F0193DE1A0000E0712 /* luatest */ = {
+			isa = PBXGroup;
+			children = (
+				A3D714F9193DE1A0000E0712 /* AppDelegate.h */,
+				A3D714FA193DE1A0000E0712 /* AppDelegate.m */,
+				A3D71502193DE1A0000E0712 /* MainStoryboard_iPhone.storyboard */,
+				A3D71505193DE1A0000E0712 /* MainStoryboard_iPad.storyboard */,
+				A3D71508193DE1A0000E0712 /* ViewController.h */,
+				A3D71509193DE1A0000E0712 /* ViewController.m */,
+				A3D714F1193DE1A0000E0712 /* Supporting Files */,
+			);
+			path = luatest;
+			sourceTree = "<group>";
+		};
+		A3D714F1193DE1A0000E0712 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A3D714F2193DE1A0000E0712 /* luatest-Info.plist */,
+				A3D714F3193DE1A0000E0712 /* InfoPlist.strings */,
+				A3D714F6193DE1A0000E0712 /* main.m */,
+				A3D714F8193DE1A0000E0712 /* luatest-Prefix.pch */,
+				A3D714FC193DE1A0000E0712 /* Default.png */,
+				A3D714FE193DE1A0000E0712 /* Default@2x.png */,
+				A3D71500193DE1A0000E0712 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A3D714E6193DE1A0000E0712 /* luatest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A3D7150D193DE1A0000E0712 /* Build configuration list for PBXNativeTarget "luatest" */;
+			buildPhases = (
+				A3D714E3193DE1A0000E0712 /* Sources */,
+				A3D714E4193DE1A0000E0712 /* Frameworks */,
+				A3D714E5193DE1A0000E0712 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = luatest;
+			productName = luatest;
+			productReference = A3D714E7193DE1A0000E0712 /* luatest.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A3D714DF193DE1A0000E0712 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "miao yu";
+			};
+			buildConfigurationList = A3D714E2193DE1A0000E0712 /* Build configuration list for PBXProject "luatest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A3D714DE193DE1A0000E0712;
+			productRefGroup = A3D714E8193DE1A0000E0712 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A3D714E6193DE1A0000E0712 /* luatest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A3D714E5193DE1A0000E0712 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3D714F5193DE1A0000E0712 /* InfoPlist.strings in Resources */,
+				A3D714FD193DE1A0000E0712 /* Default.png in Resources */,
+				A3D714FF193DE1A0000E0712 /* Default@2x.png in Resources */,
+				A3D71501193DE1A0000E0712 /* Default-568h@2x.png in Resources */,
+				A3D71504193DE1A0000E0712 /* MainStoryboard_iPhone.storyboard in Resources */,
+				A3D71507193DE1A0000E0712 /* MainStoryboard_iPad.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A3D714E3193DE1A0000E0712 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3D714F7193DE1A0000E0712 /* main.m in Sources */,
+				A3D714FB193DE1A0000E0712 /* AppDelegate.m in Sources */,
+				A3D7150A193DE1A0000E0712 /* ViewController.m in Sources */,
+				A3D71512193DE1F1000E0712 /* lua_tinker.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A3D714F3193DE1A0000E0712 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A3D714F4193DE1A0000E0712 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A3D71502193DE1A0000E0712 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A3D71503193DE1A0000E0712 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		A3D71505193DE1A0000E0712 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A3D71506193DE1A0000E0712 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A3D7150B193DE1A0000E0712 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../lua/include;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A3D7150C193DE1A0000E0712 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../lua/include;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A3D7150E193DE1A0000E0712 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "luatest/luatest-Prefix.pch";
+				INFOPLIST_FILE = "luatest/luatest-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/dependency-aqqvkydhlijroucqvehzcitlkhdn/Build/Products/Debug-iphoneos\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		A3D7150F193DE1A0000E0712 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "luatest/luatest-Prefix.pch";
+				INFOPLIST_FILE = "luatest/luatest-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/dependency-aqqvkydhlijroucqvehzcitlkhdn/Build/Products/Debug-iphoneos\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A3D714E2193DE1A0000E0712 /* Build configuration list for PBXProject "luatest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3D7150B193DE1A0000E0712 /* Debug */,
+				A3D7150C193DE1A0000E0712 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A3D7150D193DE1A0000E0712 /* Build configuration list for PBXNativeTarget "luatest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3D7150E193DE1A0000E0712 /* Debug */,
+				A3D7150F193DE1A0000E0712 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A3D714DF193DE1A0000E0712 /* Project object */;
+}
