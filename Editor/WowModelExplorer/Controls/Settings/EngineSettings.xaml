@@ -1,0 +1,58 @@
+﻿<Window x:Class="WowModelExplorer.Controls.Settings.EngineSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:s="clr-namespace:WowModelExplorer.Controls.Settings"
+        Title="{DynamicResource engineSettingTitle}"
+        Width="500"
+        Height="400"
+        MinWidth="640"
+        MinHeight="480"
+        Background="{StaticResource WindowBackgroundBrush}"
+        FontFamily="{DynamicResource WindowFontFamily}"
+        FontStyle="{DynamicResource WindowFontStyle}"
+        FontWeight="{DynamicResource WindowFontWeight}"
+        ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="ToolWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
+            <TabControl>
+                <TabItem Height="24" Header="{DynamicResource video}">
+                    <s:VideoSetting x:Name="_videoSetting" />
+                </TabItem>
+                <TabItem Height="24" Header="{DynamicResource advanced}">
+                    <s:AdvancedSetting x:Name="_advancedSetting" />
+                </TabItem>
+                <TabItem Height="24" Header="{DynamicResource audio}" />
+            </TabControl>
+        </DockPanel>
+        <StackPanel Grid.Row="1"
+                    Margin="0,0,20,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button Name="btOk"
+                    Width="75"
+                    Height="23"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="btOk_Click"
+                    Content="{DynamicResource ok}" />
+            <Button Name="btCancel"
+                    Grid.Row="1"
+                    Width="75"
+                    Height="23"
+                    Margin="8,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="{DynamicResource cancel}"
+                    IsCancel="True" />
+        </StackPanel>
+
+    </Grid>
+</Window>

@@ -1,0 +1,80 @@
+﻿<Window x:Class="WowModelExplorer.Controls.M2ArmoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:control="clr-namespace:WowModelExplorer.Controls.Common"
+        Title="{DynamicResource armoryWindow}"
+        Width="400"
+        Height="350"
+        MinWidth="300"
+        MinHeight="200"
+        Background="{StaticResource WindowBackgroundBrush}"
+        FontFamily="{DynamicResource WindowFontFamily}"
+        FontStyle="{DynamicResource WindowFontStyle}"
+        FontWeight="{DynamicResource WindowFontWeight}">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type control:LabelEntry}">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="Margin" Value="0,1,0,1" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.6*" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label HorizontalContentAlignment="Left" Margin="20,0,0,0"  VerticalContentAlignment="Center">URL:</Label>
+            <TextBox Name="tbUrlAddress"
+                     Grid.Column="1"
+                     Margin="0,5,20,5"
+                     TextWrapping="Wrap" />
+        </Grid>
+
+        <Button Grid.Row="1"
+                Width="75"
+                Height="23"
+                Margin="0,0,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Click="btParse_Click"
+                Content="{DynamicResource parse}" />
+
+        <StackPanel Grid.Row="2"
+                    Margin="20, 5, 20, 5"
+                    Background="{StaticResource DarkBackBrush}">
+            <control:LabelEntry x:Name="_lblName" Description="{DynamicResource name}" />
+            <control:LabelEntry x:Name="_lblRace" Description="{DynamicResource race}" />
+            <control:LabelEntry x:Name="_lblGender" Description="{DynamicResource gender}" />
+            <control:LabelEntry x:Name="_lblClass" Description="{DynamicResource class}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="3"
+                    Margin="0,0,20,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button Width="100"
+                    Height="23"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="btLoad_Click"
+                    Content="{DynamicResource loadCharacter}" />
+            <Button Grid.Row="1"
+                    Width="75"
+                    Height="23"
+                    Margin="4,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="btCancel_Click"
+                    Content="{DynamicResource cancel}" />
+        </StackPanel>
+    </Grid>
+</Window>

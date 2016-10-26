@@ -1,0 +1,17 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+
+    <ResourceDictionary Source="/WpfPropertyGrid;component/Themes/EditorResources.xaml"/>
+        <ResourceDictionary Source="/WpfPropertyGrid;component/Themes/SearchTextBox.xaml"/>
+
+        <ResourceDictionary Source="/WpfPropertyGrid;component/Themes/DoubleEditor.xaml"/>
+        <ResourceDictionary Source="/WpfPropertyGrid;component/Themes/PropertyGrid.xaml"/>
+
+        <ResourceDictionary Source="/WpfPropertyGrid;component/Design/AlphabeticalLayout.xaml"/>
+        <ResourceDictionary Source="/WpfPropertyGrid;component/Design/CategorizedLayout.xaml"/>
+        <ResourceDictionary Source="/WpfPropertyGrid;component/Design/TabbedLayout.xaml"/>
+
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

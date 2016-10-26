@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="interface">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="implementation">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="wow">
+      <UniqueIdentifier>{6cf582f1-a403-4978-9b4b-d432425c80ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wow\m2">
+      <UniqueIdentifier>{66f11b39-904e-4920-bc66-d4142f4319c6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="wow_m2Logic.h">
+      <Filter>wow\m2</Filter>
+    </ClInclude>
+    <ClInclude Include="wow_m2TargetCamera.h">
+      <Filter>wow\m2</Filter>
+    </ClInclude>
+    <ClInclude Include="wow_m2States.h">
+      <Filter>wow\m2</Filter>
+    </ClInclude>
+    <ClInclude Include="wow_m2Actions.h">
+      <Filter>wow\m2</Filter>
+    </ClInclude>
+    <ClInclude Include="IPlayer.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="mywowclient.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IWorld.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="CWorld.h">
+      <Filter>implementation</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2Logic.cpp">
+      <Filter>wow\m2</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2TargetCamera.cpp">
+      <Filter>wow\m2</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2States.cpp">
+      <Filter>wow\m2</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2Actions.cpp">
+      <Filter>wow\m2</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="mywowclient.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="CWorld.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,1556 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="interface">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="implementation">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="interface\core">
+      <UniqueIdentifier>{23b4ddb9-256a-4534-9693-76ac9c55e5ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\scene">
+      <UniqueIdentifier>{52d590b8-9e13-4eca-9f6e-478755b6ce9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\video">
+      <UniqueIdentifier>{86806d03-6bea-4dc0-99c9-3644e1548682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\scene">
+      <UniqueIdentifier>{0614b73f-b838-49d2-a792-5db73f0a5c7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\video">
+      <UniqueIdentifier>{f5379941-21df-40c5-805b-4898ad786933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wow">
+      <UniqueIdentifier>{3977902f-8ba7-4088-bd7f-d755c3c30748}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\video\Direct3D9">
+      <UniqueIdentifier>{33682c1e-f25f-4ed1-ac36-fde1e6547ab5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\scene\sceneNode">
+      <UniqueIdentifier>{8a2db30b-6d73-48e5-8859-c74f20bf09a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\scene\sceneNode">
+      <UniqueIdentifier>{e8952ddf-ca12-480d-8048-becba0ec3666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\renderer">
+      <UniqueIdentifier>{42ba0cea-9b20-4517-8f0d-bed10a7ae937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\renderer">
+      <UniqueIdentifier>{4d097839-3c6a-4769-b149-c8ae0498f762}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\video\Direct3D9\Shaders">
+      <UniqueIdentifier>{e2879ed2-8202-4aef-add9-8a64413e0fe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\input">
+      <UniqueIdentifier>{2d661332-2288-48c3-bb5d-3400328c5c41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\input">
+      <UniqueIdentifier>{f275d72e-7696-421e-a52e-2b1912bc3aec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\audio">
+      <UniqueIdentifier>{83714bc6-73b6-47ea-816e-494db867ff84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\audio">
+      <UniqueIdentifier>{a428d538-c33d-43d9-b942-5c2249e54061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\video\Direct3D11">
+      <UniqueIdentifier>{c4f87801-983c-44fa-a6ec-31ea4d20a222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\video\Direct3D11\Shaders">
+      <UniqueIdentifier>{049277a0-d39e-40eb-812c-da7d70c9a409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\external">
+      <UniqueIdentifier>{c4a53ce4-8df9-40ae-9c55-8bcbb328da42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\external\freetype">
+      <UniqueIdentifier>{0014df1c-29a0-4328-b5e4-e3c9beefba5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\collision">
+      <UniqueIdentifier>{b59bcb25-67ff-4f06-973f-f0480f6b0f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\external\stormlib">
+      <UniqueIdentifier>{24cf9895-940a-4c7b-9376-d2b968809528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\ai">
+      <UniqueIdentifier>{7fc6ba0b-c514-4b7e-b1b5-616595c8894c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wow\m2">
+      <UniqueIdentifier>{cb1a32c1-9ccb-4e9e-a5a6-e00d5feeea01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\video\OpenGL">
+      <UniqueIdentifier>{8c739a95-5779-4315-8736-b148f38d0462}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wow\wmo">
+      <UniqueIdentifier>{e3b0b155-1de2-4e0a-9f7b-ceac7c8b1f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wow\wdt">
+      <UniqueIdentifier>{d8fb926b-b675-48e1-8c86-1baabc3c55ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wow\tile">
+      <UniqueIdentifier>{7154fca1-25a9-45f3-be9e-3c7d778ca869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wow\loader">
+      <UniqueIdentifier>{2a4eb1d8-bb3f-4a74-bc06-a57042a4bf9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\video\OpenGL\GL">
+      <UniqueIdentifier>{4c68fc3f-6ae0-4021-b66b-5b76f9d3c162}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\system">
+      <UniqueIdentifier>{be79f581-1d4c-4e8a-a41e-03fe9bc6fda1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\system">
+      <UniqueIdentifier>{89dac5e1-33db-4968-8445-6f0b5b3c52e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\video\OpenGL\Shaders">
+      <UniqueIdentifier>{784c2364-bd4e-49ed-b70b-c04311e592b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\iosys">
+      <UniqueIdentifier>{806c5173-40f1-4c22-ad3d-402f4d1321d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\iosys">
+      <UniqueIdentifier>{c72dad5a-55a4-49eb-998e-658c29ccb904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\input\gesture">
+      <UniqueIdentifier>{51df72de-951f-4b11-8241-d8311b444eef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\font">
+      <UniqueIdentifier>{0b094f71-a9ce-40a7-b5df-1734dd8ad91e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\font">
+      <UniqueIdentifier>{c98686c7-e330-479b-ba0c-bfe1ca8ac050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\image">
+      <UniqueIdentifier>{fa090814-dce7-440f-9fdf-8c4007a11890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\image\loader">
+      <UniqueIdentifier>{4ca504e5-3f1c-4666-b8dc-51ee8e725699}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\image\writer">
+      <UniqueIdentifier>{34c1373d-f148-463d-a530-b35f69a06561}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\external\casclib">
+      <UniqueIdentifier>{556705ee-603a-4e8d-a1b1-c23ce6d2ee4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\platform">
+      <UniqueIdentifier>{6a338599-4912-42aa-9dfc-2f455d6ec2c4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CFileSystem.h">
+      <Filter>implementation\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="CReadFile.h">
+      <Filter>implementation\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="CWriteFile.h">
+      <Filter>implementation\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9Driver.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9Helper.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9HardwareBufferServices.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9Shader.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9MaterialRenderer.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9ShaderServices.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9Texture.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlit.h">
+      <Filter>implementation\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneManager.h">
+      <Filter>implementation\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CGeometryCreator.h">
+      <Filter>implementation\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshSceneNode.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CMesh.h">
+      <Filter>implementation\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9ResourceLoader.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileM2.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="CManualMeshServices.h">
+      <Filter>implementation\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9ManualTextureServices.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CM2SceneNode.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticleSystemSceneNode.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CRibbonSceneNode.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticleSystemServices.h">
+      <Filter>implementation\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CRibbonEmitterServices.h">
+      <Filter>implementation\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileWDT.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="CMapTileSceneNode.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CTerrainServices.h">
+      <Filter>implementation\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileWMO.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="CWMOSceneNode.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneRenderServices.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9MaterialRenderServices.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CWDTSceneNode.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CTerrainRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CMapEnvironment.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9SceneStateServices.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CWavInput.h">
+      <Filter>implementation\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="CDSAudioPlayer.h">
+      <Filter>implementation\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="CDSSound.h">
+      <Filter>implementation\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="CVorbisInput.h">
+      <Filter>implementation\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="CMP3Input.h">
+      <Filter>implementation\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="CWmoRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9RenderTarget.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkySceneNode.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneEnvironment.h">
+      <Filter>implementation\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11Driver.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="mpq_stormlib.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileADT.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11Texture.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11HardwareBufferServices.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11Helper.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11ManualTextureServices.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11MaterialRenderer.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11MaterialRenderServices.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11RenderTarget.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11ResourceLoader.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11SceneStateServices.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11Shader.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11ShaderServices.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CResourceLoader.h">
+      <Filter>implementation\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9VertexDeclaration.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11VertexDeclaration.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11Structs.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollisionServices.h">
+      <Filter>implementation\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoordSceneNode.h">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9_VS20.h">
+      <Filter>implementation\video\Direct3D9\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9_PS20.h">
+      <Filter>implementation\video\Direct3D9\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9_VS30.h">
+      <Filter>implementation\video\Direct3D9\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9_PS30.h">
+      <Filter>implementation\video\Direct3D9\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11_VS40.h">
+      <Filter>implementation\video\Direct3D11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11_PS40.h">
+      <Filter>implementation\video\Direct3D11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11_PS50.h">
+      <Filter>implementation\video\Direct3D11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11_VS50.h">
+      <Filter>implementation\video\Direct3D11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>implementation\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9TextureWriteServices.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11TextureWriteServices.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLDriver.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpecialTextureServices.h">
+      <Filter>implementation\video</Filter>
+    </ClInclude>
+    <ClInclude Include="CDxInputReader.h">
+      <Filter>implementation\input</Filter>
+    </ClInclude>
+    <ClInclude Include="CX2AudioPlayer.h">
+      <Filter>implementation\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="CX2Sound.h">
+      <Filter>implementation\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLHelper.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileM2Loader.h">
+      <Filter>wow\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileADTLoader.h">
+      <Filter>wow\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileWMOLoader.h">
+      <Filter>wow\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileWDTLoader.h">
+      <Filter>wow\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="CConfigs.h">
+      <Filter>implementation\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\glcorearb.h">
+      <Filter>implementation\video\OpenGL\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\glext.h">
+      <Filter>implementation\video\OpenGL\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\wglext.h">
+      <Filter>implementation\video\OpenGL\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticleRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CRibbonRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLSceneStateServices.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLMaterialRenderServices.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLMaterialRenderer.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLShader.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLShaderServices.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLHardwareBufferServices.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLManualTextureServices.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLRenderTarget.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLResourceLoader.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLTexture.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLTextureWriteServices.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLExtension.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLVertexDeclaration.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGL_VS12.h">
+      <Filter>implementation\video\OpenGL\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGL_PS12.h">
+      <Filter>implementation\video\OpenGL\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGL_PS15.h">
+      <Filter>implementation\video\OpenGL\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGL_VS15.h">
+      <Filter>implementation\video\OpenGL\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshDecalServices.h">
+      <Filter>implementation\video</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenGLDrawServices.h">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D9DrawServices.h">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3D11DrawServices.h">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ai.h">
+      <Filter>interface\ai</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IM2Entity.h">
+      <Filter>interface\ai</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\base.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\engine.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\qzone_allocator.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\enginesetting.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\temp_memory.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\mywow.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\q_memory.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\core.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\CSysUtility.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\CTimer.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\system.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\CLock.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ddslib.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\CMemDbg.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\CMiniDump.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\aabbox3d.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\algorithm.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\animation.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\audio.h">
+      <Filter>interface\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\dimension2d.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\fixstring.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\frustum.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IAudioInput.h">
+      <Filter>interface\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IAudioPlayer.h">
+      <Filter>interface\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\line2d.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\line3d.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\linklist.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\matrix4.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\plane3d.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\quaternion.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\rect.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\triangle3d.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\vector2d.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\vector3d.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\tracktexture.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IConfigs.h">
+      <Filter>interface\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ICamera.h">
+      <Filter>interface\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IBLPImage.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ICoordSceneNode.h">
+      <Filter>interface\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IDrawServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IFileSystem.h">
+      <Filter>interface\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IGeometryCreator.h">
+      <Filter>interface\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IHardwareBufferServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IImage.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IInputReader.h">
+      <Filter>interface\input</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ILostResetCallback.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IM2SceneNode.h">
+      <Filter>interface\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IManualMeshServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IManualTextureServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IMapTileSceneNode.h">
+      <Filter>interface\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IMaterialRenderer.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IMaterialRenderServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IMesh.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IMeshDecalServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IMeshSceneNode.h">
+      <Filter>interface\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IParticleSystemSceneNode.h">
+      <Filter>interface\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IParticleSystemServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\input.h">
+      <Filter>interface\input</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\iosys.h">
+      <Filter>interface\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IReadFile.h">
+      <Filter>interface\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IRenderTarget.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IResourceCache.h">
+      <Filter>interface\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IResourceLoadCallback.h">
+      <Filter>interface\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IResourceLoader.h">
+      <Filter>interface\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IResourcePool.h">
+      <Filter>interface\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IRibbonSceneNode.h">
+      <Filter>interface\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ISceneEnvironment.h">
+      <Filter>interface\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ISceneManager.h">
+      <Filter>interface\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ISceneNode.h">
+      <Filter>interface\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ISceneNodeAddCallback.h">
+      <Filter>interface\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\scene.h">
+      <Filter>interface\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IRibbonEmitterServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ISceneRenderer.h">
+      <Filter>interface\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ISceneRenderServices.h">
+      <Filter>interface\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\renderer.h">
+      <Filter>interface\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ISceneStateServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IShader.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IShaderServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ISpecialTextureServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ITerrainServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ITexture.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ITextureWriteServices.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IVideoDriver.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\S3DVertex.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\SColor.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\SLight.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\SMaterial.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\VertexIndexBuffer.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\video.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_wmoScene.h">
+      <Filter>wow\wmo</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_m2_structs.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_wmo_structs.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ISkySceneNode.h">
+      <Filter>interface\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IWDTSceneNode.h">
+      <Filter>interface\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IWMOSceneNode.h">
+      <Filter>interface\scene\sceneNode</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ISound.h">
+      <Filter>interface\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IWriteFile.h">
+      <Filter>interface\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IFileADT.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wowEnvironment.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IFileM2.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IFileWDT.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IFileWMO.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_adt_structs.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_animation.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_database.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_dbc.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_enums.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_m2State.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_particle.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_wdtScene.h">
+      <Filter>wow\wdt</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_m2Action.h">
+      <Filter>wow\m2</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_m2appearance.h">
+      <Filter>wow\m2</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_m2FSM.h">
+      <Filter>wow\m2</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_m2instance.h">
+      <Filter>wow\m2</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_m2Move.h">
+      <Filter>wow\m2</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_m2spell.h">
+      <Filter>wow\m2</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_tileScene.h">
+      <Filter>wow\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\compileconfig.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IMemFile.h">
+      <Filter>interface\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="CMemFile.h">
+      <Filter>implementation\iosys</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\CFPSCounter.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IPVRImage.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IKTXImage.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\pvrlib.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshDecalRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CTransluscentDecalRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CTransluscentRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\CSysSync.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\CSysGlobal.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\CSysThread.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\function.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\COSInfo.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\SWindowInfo.h">
+      <Filter>interface\system</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IInputListener.h">
+      <Filter>interface\input</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IGestureReader.h">
+      <Filter>interface\input</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\GestureDef.h">
+      <Filter>interface\input</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IGestureRecognizer.h">
+      <Filter>interface\input</Filter>
+    </ClInclude>
+    <ClInclude Include="CInputReader.h">
+      <Filter>implementation\input</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\wow_def.h">
+      <Filter>wow</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureReader.h">
+      <Filter>implementation\input</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureRecognizerBase.h">
+      <Filter>implementation\input\gesture</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureRecognizer_Joystick.h">
+      <Filter>implementation\input\gesture</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureRecognizer_Tap1.h">
+      <Filter>implementation\input\gesture</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureRecognizer_Tap2.h">
+      <Filter>implementation\input\gesture</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureRecognizer_Pinch.h">
+      <Filter>implementation\input\gesture</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureRecognizer_Pan1.h">
+      <Filter>implementation\input\gesture</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureRecognizer_Pan2.h">
+      <Filter>implementation\input\gesture</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureRecognizer_Longpress.h">
+      <Filter>implementation\input\gesture</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureRecognizer_Swipe.h">
+      <Filter>implementation\input\gesture</Filter>
+    </ClInclude>
+    <ClInclude Include="CGestureRecognizer_Circle.h">
+      <Filter>implementation\input\gesture</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IFTFont.h">
+      <Filter>interface\font</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\font.h">
+      <Filter>interface\font</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\IFontServices.h">
+      <Filter>interface\font</Filter>
+    </ClInclude>
+    <ClInclude Include="CFTFont.h">
+      <Filter>implementation\font</Filter>
+    </ClInclude>
+    <ClInclude Include="CFontServices.h">
+      <Filter>implementation\font</Filter>
+    </ClInclude>
+    <ClInclude Include="CAlphaTestMeshRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CAlphaTestDecalRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CAlphaTestWmoRenderer.h">
+      <Filter>implementation\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageLoaderPVR.h">
+      <Filter>implementation\image\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageLoaderBLP.h">
+      <Filter>implementation\image\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageLoaderJPG.h">
+      <Filter>implementation\image\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="CKTXImage.h">
+      <Filter>implementation\image</Filter>
+    </ClInclude>
+    <ClInclude Include="CImage.h">
+      <Filter>implementation\image</Filter>
+    </ClInclude>
+    <ClInclude Include="CBLPImage.h">
+      <Filter>implementation\image</Filter>
+    </ClInclude>
+    <ClInclude Include="CPVRImage.h">
+      <Filter>implementation\image</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageLoaderKTX.h">
+      <Filter>implementation\image\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\encoding.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\strutil.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\fontDef.h">
+      <Filter>interface\font</Filter>
+    </ClInclude>
+    <ClInclude Include="CFTGlyphCache.h">
+      <Filter>implementation\font</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\obbox.h">
+      <Filter>interface\core</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageLoaderPNG.h">
+      <Filter>implementation\image\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="TGAImageWriter.h">
+      <Filter>implementation\image\writer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="engine.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="mywow.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileSystem.cpp">
+      <Filter>implementation\iosys</Filter>
+    </ClCompile>
+    <ClCompile Include="CReadFile.cpp">
+      <Filter>implementation\iosys</Filter>
+    </ClCompile>
+    <ClCompile Include="CWriteFile.cpp">
+      <Filter>implementation\iosys</Filter>
+    </ClCompile>
+    <ClCompile Include="wowEnvironment.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9Helper.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9HardwareBufferServices.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9MaterialRenderer.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9ShaderServices.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9Texture.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlit.cpp">
+      <Filter>implementation\video</Filter>
+    </ClCompile>
+    <ClCompile Include="ddslib.cpp">
+      <Filter>implementation\system</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneManager.cpp">
+      <Filter>implementation\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CGeometryCreator.cpp">
+      <Filter>implementation\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshSceneNode.cpp">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="CMesh.cpp">
+      <Filter>implementation\video</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9ResourceLoader.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileM2.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_dbc.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CManualMeshServices.cpp">
+      <Filter>implementation\video</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9ManualTextureServices.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CM2SceneNode.cpp">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_particle.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleSystemSceneNode.cpp">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="CRibbonSceneNode.cpp">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleSystemServices.cpp">
+      <Filter>implementation\video</Filter>
+    </ClCompile>
+    <ClCompile Include="CRibbonEmitterServices.cpp">
+      <Filter>implementation\video</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_database.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileWDT.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileADT.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CMapTileSceneNode.cpp">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="CTerrainServices.cpp">
+      <Filter>implementation\video</Filter>
+    </ClCompile>
+    <ClCompile Include="CWMOSceneNode.cpp">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneRenderServices.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9Shader.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9MaterialRenderServices.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CWDTSceneNode.cpp">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="CTerrainRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CMapEnvironment.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9Driver_base.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9Driver_draw.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9SceneStateServices.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileWMO.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="CWavInput.cpp">
+      <Filter>implementation\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CDSAudioPlayer.cpp">
+      <Filter>implementation\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CDSSound.cpp">
+      <Filter>implementation\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CVorbisInput.cpp">
+      <Filter>implementation\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CMP3Input.cpp">
+      <Filter>implementation\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CWmoRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9RenderTarget.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkySceneNode.cpp">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneEnvironment.cpp">
+      <Filter>implementation\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11Driver_base.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11Driver_draw.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="mpq_stormlib.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="enginesetting.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11Texture.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11HardwareBufferServices.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11Helper.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11ManualTextureServices.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11MaterialRenderer.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11MaterialRenderServices.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11RenderTarget.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11ResourceLoader.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11SceneStateServices.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11Shader.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11ShaderServices.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CResourceLoader.cpp">
+      <Filter>implementation\iosys</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9VertexDeclaration.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11VertexDeclaration.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="ftsystem_mpq.cpp">
+      <Filter>implementation\external\freetype</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionServices.cpp">
+      <Filter>implementation\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoordSceneNode.cpp">
+      <Filter>implementation\scene\sceneNode</Filter>
+    </ClCompile>
+    <ClCompile Include="stormlib_memory.cpp">
+      <Filter>implementation\external\stormlib</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9_VS20.cpp">
+      <Filter>implementation\video\Direct3D9\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9_PS20.cpp">
+      <Filter>implementation\video\Direct3D9\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9_VS30.cpp">
+      <Filter>implementation\video\Direct3D9\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9_PS30.cpp">
+      <Filter>implementation\video\Direct3D9\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11_VS40.cpp">
+      <Filter>implementation\video\Direct3D11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11_PS40.cpp">
+      <Filter>implementation\video\Direct3D11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11_PS50.cpp">
+      <Filter>implementation\video\Direct3D11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11_VS50.cpp">
+      <Filter>implementation\video\Direct3D11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2appearance.cpp">
+      <Filter>wow\m2</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2instance.cpp">
+      <Filter>wow\m2</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>implementation\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9TextureWriteServices.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11TextureWriteServices.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLDriver_base.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLDriver_draw.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2FSM.cpp">
+      <Filter>wow\m2</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2Action.cpp">
+      <Filter>wow\m2</Filter>
+    </ClCompile>
+    <ClCompile Include="CMiniDump.cpp">
+      <Filter>implementation\system</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimer.cpp">
+      <Filter>implementation\system</Filter>
+    </ClCompile>
+    <ClCompile Include="q_memory.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_wmoScene.cpp">
+      <Filter>wow\wmo</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_wdtScene.cpp">
+      <Filter>wow\wdt</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpecialTextureServices.cpp">
+      <Filter>implementation\video</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2Move.cpp">
+      <Filter>wow\m2</Filter>
+    </ClCompile>
+    <ClCompile Include="CMemDbg.cpp">
+      <Filter>implementation\system</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_tileScene.cpp">
+      <Filter>wow\tile</Filter>
+    </ClCompile>
+    <ClCompile Include="CDxInputReader.cpp">
+      <Filter>implementation\input</Filter>
+    </ClCompile>
+    <ClCompile Include="CX2AudioPlayer.cpp">
+      <Filter>implementation\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CX2Sound.cpp">
+      <Filter>implementation\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLHelper.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileM2Loader.cpp">
+      <Filter>wow\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileADTLoader.cpp">
+      <Filter>wow\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileWMOLoader.cpp">
+      <Filter>wow\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileWDTLoader.cpp">
+      <Filter>wow\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="ftsystem_memory.cpp">
+      <Filter>implementation\external\freetype</Filter>
+    </ClCompile>
+    <ClCompile Include="CConfigs.cpp">
+      <Filter>implementation\iosys</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CRibbonRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLSceneStateServices.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLMaterialRenderServices.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLMaterialRenderer.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLShader.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLShaderServices.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLHardwareBufferServices.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLManualTextureServices.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLRenderTarget.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLResourceLoader.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLTexture.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLTextureWriteServices.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLExtension.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLVertexDeclaration.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGL_VS12.cpp">
+      <Filter>implementation\video\OpenGL\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGL_PS12.cpp">
+      <Filter>implementation\video\OpenGL\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGL_PS15.cpp">
+      <Filter>implementation\video\OpenGL\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGL_VS15.cpp">
+      <Filter>implementation\video\OpenGL\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshDecalServices.cpp">
+      <Filter>implementation\video</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_m2spell.cpp">
+      <Filter>wow\m2</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLDrawServices.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9DrawServices.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11DrawServices.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="CMemFile.cpp">
+      <Filter>implementation\iosys</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D9Driver_Renderer.cpp">
+      <Filter>implementation\video\Direct3D9</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3D11Driver_Renderer.cpp">
+      <Filter>implementation\video\Direct3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="COpenGLDriver_Renderer.cpp">
+      <Filter>implementation\video\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="pvrlib.cpp">
+      <Filter>implementation\system</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshDecalRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransluscentDecalRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransluscentRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CSysThread.cpp">
+      <Filter>implementation\system</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureReader.cpp">
+      <Filter>implementation\input</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureRecognizerBase.cpp">
+      <Filter>implementation\input\gesture</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureRecognizer_Joystick.cpp">
+      <Filter>implementation\input\gesture</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureRecognizer_Tap1.cpp">
+      <Filter>implementation\input\gesture</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureRecognizer_Tap2.cpp">
+      <Filter>implementation\input\gesture</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureRecognizer_Pinch.cpp">
+      <Filter>implementation\input\gesture</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureRecognizer_Pan1.cpp">
+      <Filter>implementation\input\gesture</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureRecognizer_Pan2.cpp">
+      <Filter>implementation\input\gesture</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureRecognizer_Longpress.cpp">
+      <Filter>implementation\input\gesture</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureRecognizer_Swipe.cpp">
+      <Filter>implementation\input\gesture</Filter>
+    </ClCompile>
+    <ClCompile Include="CGestureRecognizer_Circle.cpp">
+      <Filter>implementation\input\gesture</Filter>
+    </ClCompile>
+    <ClCompile Include="CFTFont.cpp">
+      <Filter>implementation\font</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontServices.cpp">
+      <Filter>implementation\font</Filter>
+    </ClCompile>
+    <ClCompile Include="CAlphaTestMeshRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CAlphaTestDecalRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CAlphaTestWmoRenderer.cpp">
+      <Filter>implementation\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageLoaderBLP.cpp">
+      <Filter>implementation\image\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageLoaderPVR.cpp">
+      <Filter>implementation\image\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageLoaderJPG.cpp">
+      <Filter>implementation\image\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="CKTXImage.cpp">
+      <Filter>implementation\image</Filter>
+    </ClCompile>
+    <ClCompile Include="CImage.cpp">
+      <Filter>implementation\image</Filter>
+    </ClCompile>
+    <ClCompile Include="CBLPImage.cpp">
+      <Filter>implementation\image</Filter>
+    </ClCompile>
+    <ClCompile Include="CPVRImage.cpp">
+      <Filter>implementation\image</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageLoaderKTX.cpp">
+      <Filter>implementation\image\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="casclib_memory.cpp">
+      <Filter>implementation\external\casclib</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\windows\CGestureReader_Win.cpp">
+      <Filter>implementation\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\windows\CGLES2Platform_Win.cpp">
+      <Filter>implementation\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\windows\CInputReader_Win.cpp">
+      <Filter>implementation\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\windows\COSInfo_Win.cpp">
+      <Filter>implementation\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="platform\windows\CSysUtility_Win.cpp">
+      <Filter>implementation\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="CFTGlyphCache.cpp">
+      <Filter>implementation\font</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageLoaderPNG.cpp">
+      <Filter>implementation\image\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="TGAImageWriter.cpp">
+      <Filter>implementation\image\writer</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

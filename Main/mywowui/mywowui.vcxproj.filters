@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="interface">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="implementation">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="implementation\parser">
+      <UniqueIdentifier>{341e264e-9d61-42af-be6b-a5a2ee208bf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\control">
+      <UniqueIdentifier>{3ab607f9-7a1f-402a-819e-c5d2026fa4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\parser">
+      <UniqueIdentifier>{21cfc150-cadc-4d1b-b003-306f3a03a858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface\control">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="interface\property">
+      <UniqueIdentifier>{3d37fe3c-7778-4068-acde-f1477243faf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="implementation\property">
+      <UniqueIdentifier>{edd51d52-e715-4d1e-8a27-cb74a79c7931}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="mywowui.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="uibase.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="uiControl.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiLayoutFrame.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiFrame.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiButton.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiLayeredLayoutFrame.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiFontString.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiTexture.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiUi.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiFont.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiStructs.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiLayer.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiScriptContainer.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiLoader.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="uiCheckButton.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiColorSelect.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiCooldown.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiModel.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiEditBox.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiStatusBar.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiSlider.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiScrollFrame.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiMessageFrame.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiScrollingMessageFrame.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiSimpleHTML.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiPlayerModel.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiTabardModel.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiWorldFrame.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiParser_Struct.h">
+      <Filter>interface\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="uiInheritableObject.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiFrameXmlDirectory.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="CPropertyBag.h">
+      <Filter>interface\property</Filter>
+    </ClInclude>
+    <ClInclude Include="uiDressUpModel.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiGameTooltip.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiMinimap.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiModelFFX.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiMovieFrame.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiTaxiRouteFrame.h">
+      <Filter>interface\control</Filter>
+    </ClInclude>
+    <ClInclude Include="uiSceneManager.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="mywowui.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="uiLoader.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="uiParser_Struct.cpp">
+      <Filter>implementation\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="uiButton.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiCheckbutton.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiColorSelect.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiControl.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiCooldown.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiEditBox.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiFont.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiFontString.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiFrame.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiLayer.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiLayeredLayoutFrame.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiLayoutFrame.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiMessageFrame.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiModel.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiPlayerModel.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiScriptContainer.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiScrollFrame.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiScrollingMessageFrame.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiSimpleHTML.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiSlider.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiStatusBar.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiTabardModel.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiTexture.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiUi.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiWorldFrame.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiInheritableObject.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiFrameXmlDirectory.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="CPropertyBag.cpp">
+      <Filter>implementation\property</Filter>
+    </ClCompile>
+    <ClCompile Include="uiDressUpModel.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiGameTooltip.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiMinimap.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiModelFFX.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiMovieFrame.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiTaxiRouteFrame.cpp">
+      <Filter>implementation\control</Filter>
+    </ClCompile>
+    <ClCompile Include="uiSceneManager.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

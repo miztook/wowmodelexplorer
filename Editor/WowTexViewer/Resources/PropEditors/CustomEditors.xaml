@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:pg="http://schemas.denisvuyka.wordpress.com/wpfpropertygrid"
+                    xmlns:propEditors="clr-namespace:WowModelExplorer.PropEditors">
+                    
+    <DataTemplate x:Key="{x:Static propEditors:EditorKeys.TextureCollectionKey}">
+        <Grid>
+            <Expander Header="Texture Collections">
+                <ListBox ItemsSource="{Binding Value}"/>
+            </Expander>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

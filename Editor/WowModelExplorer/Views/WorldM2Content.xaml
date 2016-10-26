@@ -1,0 +1,27 @@
+﻿<ad:DockableContent x:Class="WowModelExplorer.Views.WorldM2Content"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+                    xmlns:control="clr-namespace:WowModelExplorer.Controls"
+                                 d:DesignHeight="500"
+                    d:DesignWidth="300"
+                     Title="{DynamicResource worldM2ContentTitle}"
+                    DockableStyle="DockableButNotAutoHidden"
+                    FocusManager.IsFocusScope="True"
+                    FontFamily="{DynamicResource WindowFontFamily}"
+                    FontStyle="{DynamicResource WindowFontStyle}"
+                    FontWeight="{DynamicResource WindowFontWeight}"
+                    mc:Ignorable="d">
+    <Border BorderBrush="{DynamicResource EdgeBorderBrush}" BorderThickness="1">
+        <DockPanel>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource worldModelList}">
+                <control:WorldM2Select x:Name="_worldM2Select" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource worldModelTreeView}">
+                <control:WorldM2TreeViewSelect x:Name="_worldM2TreeViewSelect"/>
+            </Expander>
+        </DockPanel>
+    </Border>
+</ad:DockableContent>

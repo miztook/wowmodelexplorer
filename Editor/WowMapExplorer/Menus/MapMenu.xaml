@@ -1,0 +1,153 @@
+﻿<UserControl x:Class="WowMapExplorer.Menus.MapMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cmd="clr-namespace:WowMapExplorer.Commands"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:w="clr-namespace:WowMapExplorer"
+             xmlns:wow="clr-namespace:mywowNet;assembly=mywowNet"
+             d:DesignHeight="30"
+             d:DesignWidth="600"
+             mc:Ignorable="d">
+    <Menu FontFamily="{DynamicResource WindowFontFamily}"
+          FontStyle="{DynamicResource WindowFontStyle}"
+          FontWeight="{DynamicResource WindowFontWeight}"
+          UseLayoutRounding="True">
+
+        <MenuItem Header="{DynamicResource menuFile}">
+            <MenuItem Command="cmd:FileCommands.NewFile" Header="{DynamicResource newFile}" />
+            <MenuItem Command="cmd:FileCommands.Exit" Header="{DynamicResource exit}" />
+        </MenuItem>
+        <MenuItem Header="{DynamicResource view}" SubmenuOpened="menuView_SubmenuOpened">
+            <MenuItem Name="menuViewMap"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:MapViewTypes.Map}"
+                      Header="{DynamicResource viewMap}" />
+        </MenuItem>
+        <MenuItem Name="menuOption" Header="{DynamicResource editorOption}">
+            <MenuItem Header="{DynamicResource editorBkgroundColor}">
+                <MenuItem Command="cmd:OptionCommands.BackgroundColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.BackgroundColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorEdgeBorderColor}">
+                <MenuItem Command="cmd:OptionCommands.EdgeBorderColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.EdgeBorderColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorFont}">
+                <MenuItem Command="cmd:OptionCommands.EditorFont"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.EditorFont"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorFontColor}">
+                <MenuItem Command="cmd:OptionCommands.EditorFontColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.EditorFontColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorShowHide}" SubmenuOpened="menuOptionShowHide_SubmenuOpened">
+                <MenuItem Name="menuOptionShowBaseInfo"
+                          Command="cmd:OptionCommands.ShowOption"
+                          CommandParameter="{x:Static w:EditorShowOptions.DebugText}"
+                          Header="{DynamicResource editorBasicInfo}" />
+                <MenuItem Name="menuOptionShowCoord"
+                          Command="cmd:OptionCommands.ShowOption"
+                          CommandParameter="{x:Static w:EditorShowOptions.Coord}"
+                          Header="{DynamicResource editorCoord}" />
+            </MenuItem>
+        </MenuItem>
+        <MenuItem Header="{DynamicResource engineOption}" SubmenuOpened="menuEngineOption_SubmenuOpened">
+            <MenuItem Command="cmd:SettingCommands.EngineSetting" Header="{DynamicResource engineSetting}" />
+            <MenuItem Header="{DynamicResource cameraPosition}">
+                <MenuItem Command="cmd:SettingCommands.CameraPosition"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource cameraSpeed}" SubmenuOpened="menuSettingCameraSpeed_SubmenuOpened">
+                <MenuItem Name="menuSettingCameraSpeedLowest"
+                          Command="cmd:SettingCommands.CameraSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Lowest}"
+                          Header="{DynamicResource speedLowest}" />
+                <MenuItem Name="menuSettingCameraSpeedLow"
+                          Command="cmd:SettingCommands.CameraSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Low}"
+                          Header="{DynamicResource speedLow}" />
+                <MenuItem Name="menuSettingCameraSpeedMedium"
+                          Command="cmd:SettingCommands.CameraSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Medium}"
+                          Header="{DynamicResource speedMedium}" />
+                <MenuItem Name="menuSettingCameraSpeedHigh"
+                          Command="cmd:SettingCommands.CameraSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.High}"
+                          Header="{DynamicResource speedHigh}" />
+                <MenuItem Name="menuSettingCameraSpeedHighest"
+                          Command="cmd:SettingCommands.CameraSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Highest}"
+                          Header="{DynamicResource speedHighest}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource cameraMode}" SubmenuOpened="menuSettingCameraModes_SubmenuOpened">
+                <MenuItem Name="menuSettingCameraModesFPS"
+                          Command="cmd:SettingCommands.CameraMode"
+                          CommandParameter="{x:Static w:CameraModes.FPS}"
+                          Header="{DynamicResource cameraFPS}" />
+                <MenuItem Name="menuSettingCameraModesMaya"
+                          Command="cmd:SettingCommands.CameraMode"
+                          CommandParameter="{x:Static w:CameraModes.Maya}"
+                          Header="{DynamicResource cameraMaya}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource wheelSpeed}" SubmenuOpened="menuSettingWheelSpeed_SubmenuOpened">
+                <MenuItem Name="menuSettingWheelSpeedOff"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Off}"
+                          Header="{DynamicResource off}" />
+                <MenuItem Name="menuSettingWheelSpeedLowest"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Lowest}"
+                          Header="{DynamicResource speedLowest}" />
+                <MenuItem Name="menuSettingWheelSpeedLow"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Low}"
+                          Header="{DynamicResource speedLow}" />
+                <MenuItem Name="menuSettingWheelSpeedMedium"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Medium}"
+                          Header="{DynamicResource speedMedium}" />
+                <MenuItem Name="menuSettingWheelSpeedHigh"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.High}"
+                          Header="{DynamicResource speedHigh}" />
+                <MenuItem Name="menuSettingWheelSpeedHighest"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Highest}"
+                          Header="{DynamicResource speedHighest}" />
+            </MenuItem>
+            <MenuItem Name="menuSettingGameMode"
+                      Command="cmd:SettingCommands.GameMode"
+                      Header="{DynamicResource gameMode}" />
+        </MenuItem>
+
+        <MenuItem Header="{DynamicResource languages}" SubmenuOpened="menuLanguages_SubmenuOpend">
+            <MenuItem Name="menuLanguagesChinese"
+                      Command="cmd:LanguageCommands.SetLanguage"
+                      CommandParameter="{x:Static w:Languages.Chinese}"
+                      Header="{DynamicResource chinese}" />
+            <MenuItem Name="menuLanguagesEnglish"
+                      Command="cmd:LanguageCommands.SetLanguage"
+                      CommandParameter="{x:Static w:Languages.English}"
+                      Header="{DynamicResource english}" />
+        </MenuItem>
+
+    </Menu>
+</UserControl>

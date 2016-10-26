@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="WowModelExplorer.Controls.StateSelect"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:data="clr-namespace:mywowNet.Data;assembly=mywowNet"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <Grid Name="_mainGrid">
+        <Grid.Resources>
+            <data:M2StateCollection x:Key="_states" />
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Border>
+                <TextBox Name="filter"
+                         Margin="1,1,1,1"
+                         TextChanged="filter_TextChanged" />
+            </Border>
+        </Grid>
+
+        <ListView Name="_listView"
+                  Grid.Row="1"
+                  ItemsSource="{Binding Source={StaticResource _states},
+                                        Mode=OneTime}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="150" DisplayMemberBinding="{Binding Path=Name}">
+                        <GridViewColumnHeader Click="GridViewColumnHeader_Click"
+                                              Content="{DynamicResource stateNames}"
+                                              Tag="Name" />
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

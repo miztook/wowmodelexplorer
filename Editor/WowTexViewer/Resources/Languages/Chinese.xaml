@@ -1,0 +1,89 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!--  main window  -->
+    <system:String x:Key="stage1">第1/3步: 初始化引擎...</system:String>
+    <system:String x:Key="stage2">第2/3步: 读取数据...</system:String>
+    <system:String x:Key="stage3">第3/3步: 准备界面...</system:String>
+    
+    <system:String x:Key="none">无</system:String>
+
+    <system:String x:Key="type">分类</system:String>
+
+    <system:String x:Key="index">序号</system:String>
+    <system:String x:Key="id">ID</system:String>
+
+    <!--  Dialog Common  -->
+    <system:String x:Key="ok">确定</system:String>
+    <system:String x:Key="cancel">取消</system:String>
+    <system:String x:Key="apply">应用</system:String>
+    <system:String x:Key="import">导入</system:String>
+    <system:String x:Key="export">导出</system:String>
+
+    <!--  context menu  -->
+    <system:String x:Key="allSelect">全选</system:String>
+    <system:String x:Key="noneSelect">全不选</system:String>
+    
+    <!--  menu  -->
+    <system:String x:Key="menuFile">文件</system:String>
+    <system:String x:Key="newFile">新建</system:String>
+    <system:String x:Key="exit">退出</system:String>
+
+    <system:String x:Key="view">界面视图</system:String>
+    <system:String x:Key="viewAllTex">所有纹理</system:String>
+    <system:String x:Key="viewMapTex">地图纹理</system:String>
+    <system:String x:Key="viewMapTexName">地图纹理名称</system:String>
+    
+    <system:String x:Key="textureOperation">纹理</system:String>
+    <system:String x:Key="textureOpaque">不显示Alpha通道</system:String>
+    <system:String x:Key="textureScale">缩放</system:String>
+    <system:String x:Key="textureProp">属性</system:String>
+    <system:String x:Key="textureExportTga">导出Tga...</system:String>
+    <system:String x:Key="textureExportTgaNoAlpha">导出Tga(无Alpha)...</system:String>
+  
+    <system:String x:Key="languages">语言</system:String>
+    <system:String x:Key="chinese">中文</system:String>
+    <system:String x:Key="english">English</system:String>
+
+    <!--  TextureSelect  -->
+    <system:String x:Key="textureNames">贴图文件名</system:String>
+    
+    <!-- MapTexNames-->
+    <system:String x:Key="mapAllTex">地图的所有纹理</system:String>
+    
+    <!--  MapTexSelect  -->
+    <system:String x:Key="mapNames">地图名</system:String>
+    <system:String x:Key="internalMapNames">内部地图名</system:String>
+    <system:String x:Key="mapArea">地图区域</system:String>
+    
+    <!--  AllTextureContent  -->
+    <system:String x:Key="textureContentTitle">所有纹理</system:String>
+
+    <!--  MapTexContent  -->
+    <system:String x:Key="mapTexContentTitle">地图纹理</system:String>
+    
+    <!-- MapTexNames-->
+    <system:String x:Key="mapTexNameContentTitle">地图纹理名称</system:String>
+    
+    <!-- textureSelect -->
+    <system:String x:Key="textureList">纹理(列表)</system:String>
+    
+    <!-- textureTreeViewSelect -->
+    <system:String x:Key="textureTreeView">纹理(目录)</system:String>
+
+    <system:String x:Key="editorOption">编辑器选项</system:String>
+    <system:String x:Key="editorSettings">编辑设置</system:String>
+    <system:String x:Key="editorBkgroundImage">背景图片</system:String>
+    <system:String x:Key="editorBkgroundColor">背景颜色</system:String>
+    <system:String x:Key="editorSet">设置</system:String>
+    <system:String x:Key="editorNone">无</system:String>
+    <system:String x:Key="editorDefault">默认</system:String>
+    <system:String x:Key="editorEdgeBorderColor">界面边框颜色</system:String>
+    <system:String x:Key="editorFont">字体</system:String>
+    <system:String x:Key="editorFontColor">字体颜色</system:String>
+    <system:String x:Key="editorShowHide">显示/隐藏</system:String>
+    <system:String x:Key="editorBasicInfo">基本信息</system:String>
+    <system:String x:Key="editorPlane">默认平面</system:String>
+
+</ResourceDictionary>

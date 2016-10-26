@@ -1,0 +1,89 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!--  main window  -->
+    <system:String x:Key="stage1">Stage 1/3: Initialize Engine...</system:String>
+    <system:String x:Key="stage2">Stage 2/3: Reading Data...</system:String>
+    <system:String x:Key="stage3">Stage 3/3: Preparing User Interface...</system:String>
+    
+    <system:String x:Key="none">None</system:String>
+
+    <system:String x:Key="type">Type</system:String>
+
+    <system:String x:Key="index">Index</system:String>
+    <system:String x:Key="id">ID</system:String>
+
+    <!--  Dialog Common  -->
+    <system:String x:Key="ok">OK</system:String>
+    <system:String x:Key="cancel">Cancel</system:String>
+    <system:String x:Key="apply">Apply</system:String>
+    <system:String x:Key="import">Import</system:String>
+    <system:String x:Key="export">Export</system:String>
+    
+    <!--  context menu  -->
+    <system:String x:Key="allSelect">Select All</system:String>
+    <system:String x:Key="noneSelect">Select None</system:String>
+    
+    <!--  menu  -->
+    <system:String x:Key="menuFile">File</system:String>
+    <system:String x:Key="newFile">New</system:String>
+    <system:String x:Key="exit">Exit</system:String>
+
+    <system:String x:Key="view">View</system:String>
+    <system:String x:Key="viewAllTex">All Textures</system:String>
+    <system:String x:Key="viewMapTex">Map Textures</system:String>
+    <system:String x:Key="viewMapTexName">Map Texture Names</system:String>
+
+    <system:String x:Key="textureOperation">Texture</system:String>
+    <system:String x:Key="textureOpaque">No Alpha Channel</system:String>
+    <system:String x:Key="textureScale">Scale</system:String>
+    <system:String x:Key="textureProp">Property</system:String>
+    <system:String x:Key="textureExportTga">Export As Tga...</system:String>
+    <system:String x:Key="textureExportTgaNoAlpha">Export As Tga(No Alpha)...</system:String>
+  
+    <system:String x:Key="languages">Language</system:String>
+    <system:String x:Key="chinese">中文</system:String>
+    <system:String x:Key="english">English</system:String>
+
+    <!--  TextureSelect  -->
+    <system:String x:Key="textureNames">Texture Name</system:String>
+
+    <!-- MapTexNames-->
+    <system:String x:Key="mapAllTex">Map's All Textures</system:String>
+
+    <!--  MapTexSelect  -->
+    <system:String x:Key="mapNames">Map Name</system:String>
+    <system:String x:Key="internalMapNames">Internal Map Name</system:String>
+    <system:String x:Key="mapArea">Map Area</system:String>
+
+    <!--  AllTextureContent  -->
+    <system:String x:Key="textureContentTitle">All Textures</system:String>
+
+    <!--  MapTexContent  -->
+    <system:String x:Key="mapTexContentTitle">Map Textures</system:String>
+
+    <!-- MapTexNames-->
+    <system:String x:Key="mapTexNameContentTitle">Map Texture Names</system:String>
+
+    <!-- textureSelect -->
+    <system:String x:Key="textureList">Textures(List)</system:String>
+
+    <!-- textureTreeViewSelect -->
+    <system:String x:Key="textureTreeView">Textures(Directory)</system:String>
+
+    <system:String x:Key="editorOption">Editor Option</system:String>
+    <system:String x:Key="editorSettings">Settings</system:String>
+    <system:String x:Key="editorBkgroundImage">Background Image</system:String>
+    <system:String x:Key="editorBkgroundColor">Background Color</system:String>
+    <system:String x:Key="editorSet">Set</system:String>
+    <system:String x:Key="editorNone">None</system:String>
+    <system:String x:Key="editorDefault">Default</system:String>
+    <system:String x:Key="editorEdgeBorderColor">Edge Border Color</system:String>
+    <system:String x:Key="editorFont">Font</system:String>
+    <system:String x:Key="editorFontColor">Font Color</system:String>
+    <system:String x:Key="editorShowHide">Show/Hide</system:String>
+    <system:String x:Key="editorBasicInfo">Basic Info</system:String>
+    <system:String x:Key="editorPlane">Default Plane</system:String>
+
+</ResourceDictionary>

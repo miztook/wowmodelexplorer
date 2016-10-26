@@ -1,0 +1,816 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{78E02E93-A81A-43CC-B3F9-CEF78C39581E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WowModelExplorer</RootNamespace>
+    <AssemblyName>WowModelExplorer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Windows\Win32\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Windows\Win32\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Images\Wow.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\Windows\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisLogFile>..\..\Debug\WowModelExplorer.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\..\Windows\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisLogFile>..\..\Release\WowModelExplorer.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Commands\AnimationCommands.cs" />
+    <Compile Include="Commands\LanguageCommands.cs" />
+    <Compile Include="Commands\ModelEditViewCommands.cs" />
+    <Compile Include="Commands\FileCommands.cs" />
+    <Compile Include="Commands\ModelOperationCommands.cs" />
+    <Compile Include="Commands\OptionCommands.cs" />
+    <Compile Include="Commands\SettingCommands.cs" />
+    <Compile Include="Commands\ViewCommands.cs" />
+    <Compile Include="Commands\WmoEditViewCommands.cs" />
+    <Compile Include="Commands\WmoOperationCommands.cs" />
+    <Compile Include="Controls\AccelerateWindow.xaml.cs">
+      <DependentUpon>AccelerateWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AnimationConfigWindow.xaml.cs">
+      <DependentUpon>AnimationConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Animation\AnimationEntry.xaml.cs">
+      <DependentUpon>AnimationEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Animation\AnimationHeader.xaml.cs">
+      <DependentUpon>AnimationHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Animation\AnimationToolbar.xaml.cs">
+      <DependentUpon>AnimationToolbar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Animation\AnimationView.xaml.cs">
+      <DependentUpon>AnimationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CharacterSelect.xaml.cs">
+      <DependentUpon>CharacterSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPickerControls\Chips\ColorChip.xaml.cs">
+      <DependentUpon>ColorChip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPickerControls\Chips\ForegroundBackgroundChip.xaml.cs">
+      <DependentUpon>ForegroundBackgroundChip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPickerControls\Dialogs\ColorPickerFullDialog.xaml.cs">
+      <DependentUpon>ColorPickerFullDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPickerControls\Dialogs\ColorPickerFullWithAlphaDialog.xaml.cs">
+      <DependentUpon>ColorPickerFullWithAlphaDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPickerControls\Dialogs\ColorPickerStandardDialog.xaml.cs">
+      <DependentUpon>ColorPickerStandardDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPickerControls\Dialogs\ColorPickerStandardWithAlphaDialog.xaml.cs">
+      <DependentUpon>ColorPickerStandardWithAlphaDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPickerControls\Dialogs\EColorDialog.cs" />
+    <Compile Include="Controls\ColorPickerControls\Dialogs\IColorDialog.cs" />
+    <Compile Include="Controls\ColorPickerControls\Pickers\ColorPickerFull.xaml.cs">
+      <DependentUpon>ColorPickerFull.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPickerControls\Pickers\ColorPickerFullWithAlpha.xaml.cs">
+      <DependentUpon>ColorPickerFullWithAlpha.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPickerControls\Pickers\ColorPickerStandard.xaml.cs">
+      <DependentUpon>ColorPickerStandard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPickerControls\Pickers\ColorPickerStandardWithAlpha.xaml.cs">
+      <DependentUpon>ColorPickerStandardWithAlpha.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPicker\AlphaDisplay.xaml.cs">
+      <DependentUpon>AlphaDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPicker\ColorDisplay.xaml.cs">
+      <DependentUpon>ColorDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPicker\ColorModels\CMYK\Black.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\CMYK\CMYKDisplay.xaml.cs">
+      <DependentUpon>CMYKDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPicker\ColorModels\CMYK\CMYKModel.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\CMYK\Cyan.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\CMYK\Magenta.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\CMYK\Yellow.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\CMY\CMYDisplay.xaml.cs">
+      <DependentUpon>CMYDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPicker\ColorModels\CMY\CMYModel.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\CMY\Cyan.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\CMY\Magenta.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\ColorComponent.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\ColorModel.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\HSB\Brightness.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\HSB\HsbDisplay.xaml.cs">
+      <DependentUpon>HsbDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPicker\ColorModels\HSB\HSBModel.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\HSB\Hue.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\HSB\Saturation.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\HSB\Yellow.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\Lab\A.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\Lab\B.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\Lab\LabDisplay.xaml.cs">
+      <DependentUpon>LabDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPicker\ColorModels\Lab\LabModel.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\Lab\Lightness.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\NormalComponent.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\RGB\Blue.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\RGB\Green.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\RGB\Red.cs" />
+    <Compile Include="Controls\ColorPicker\ColorModels\RGB\RgbDisplay.xaml.cs">
+      <DependentUpon>RgbDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPicker\ColorModels\RGB\RGBModel.cs" />
+    <Compile Include="Controls\ColorPicker\ColorSelector.xaml.cs">
+      <DependentUpon>ColorSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPicker\EventArgs.cs" />
+    <Compile Include="Controls\ColorPicker\ExtensionMethods\ByteExtensionMethods.cs" />
+    <Compile Include="Controls\ColorPicker\ExtensionMethods\ColorExtensionMethods.cs" />
+    <Compile Include="Controls\ColorPicker\ExtensionMethods\DoubleExtensionMethods.cs" />
+    <Compile Include="Controls\ColorPicker\HexDisplay.xaml.cs">
+      <DependentUpon>HexDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ColorPicker\NewCurrent.xaml.cs">
+      <DependentUpon>NewCurrent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FolderBrowserDialog\FolderBrowserDialog.cs" />
+    <Compile Include="Controls\FontDialog\FontConverter.cs" />
+    <Compile Include="Controls\FontDialog\FontDialogBox.xaml.cs">
+      <DependentUpon>FontDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FontDialog\FontPropertyLists.cs" />
+    <Compile Include="Controls\Common\LabelEntry.xaml.cs">
+      <DependentUpon>LabelEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\M2ItemSelect.xaml.cs">
+      <DependentUpon>M2ItemSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\M2ArmoryWindow.xaml.cs">
+      <DependentUpon>M2ArmoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\M2AttachmentsWindow.xaml.cs">
+      <DependentUpon>M2AttachmentsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\M2CharacterInfoWindow.xaml.cs">
+      <DependentUpon>M2CharacterInfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\M2EquipmentSelectWindow.xaml.cs">
+      <DependentUpon>M2EquipmentSelectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\M2GeosetsWindow.xaml.cs">
+      <DependentUpon>M2GeosetsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemSelect.xaml.cs">
+      <DependentUpon>ItemSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MapModelSelect.xaml.cs">
+      <DependentUpon>MapModelSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\M2EquipmentsWindow.xaml.cs">
+      <DependentUpon>M2EquipmentsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NpcPathSelect.xaml.cs">
+      <DependentUpon>NpcPathSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NpcTreeViewSelect.xaml.cs">
+      <DependentUpon>NpcTreeViewSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RidableSelect.xaml.cs">
+      <DependentUpon>RidableSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Settings\AdvancedSetting.xaml.cs">
+      <DependentUpon>AdvancedSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Settings\SettingData.cs" />
+    <Compile Include="Controls\Settings\VideoSetting.xaml.cs">
+      <DependentUpon>VideoSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SpellVisualEffectTreeViewSelect.xaml.cs">
+      <DependentUpon>SpellVisualEffectTreeViewSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StateSelect.xaml.cs">
+      <DependentUpon>StateSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WMOGroupsWindow.xaml.cs">
+      <DependentUpon>WMOGroupsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WMOPortalsWindow.xaml.cs">
+      <DependentUpon>WMOPortalsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WmoSelect.xaml.cs">
+      <DependentUpon>WmoSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WmoTreeViewSelect.xaml.cs">
+      <DependentUpon>WmoTreeViewSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WorldM2Select.xaml.cs">
+      <DependentUpon>WorldM2Select.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WorldM2TreeViewSelect.xaml.cs">
+      <DependentUpon>WorldM2TreeViewSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\DoubleToStringConverter.cs" />
+    <Compile Include="Controls\MapModelNames.xaml.cs">
+      <DependentUpon>MapModelNames.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Data\TreeViewEntry.cs" />
+    <Compile Include="Menus\ModelMenu.xaml.cs">
+      <DependentUpon>ModelMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NpcSelect.xaml.cs">
+      <DependentUpon>NpcSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SetSelect.xaml.cs">
+      <DependentUpon>SetSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Settings\EngineSettings.xaml.cs">
+      <DependentUpon>EngineSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Common\SliderSelector.xaml.cs">
+      <DependentUpon>SliderSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SpellVisualEffectSelect.xaml.cs">
+      <DependentUpon>SpellVisualEffectSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TreeListView.cs" />
+    <Compile Include="Converters\LevelToIndentConverter.cs" />
+    <Compile Include="Data\DataExtension.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="PropEditors\TextureCollectionEditor.cs" />
+    <Compile Include="Props\CharacterProperty.cs" />
+    <Compile Include="PropEditors\EditorKeys.cs" />
+    <Compile Include="Props\NpcProperty.cs" />
+    <Compile Include="Props\NormalM2Property.cs" />
+    <Compile Include="Props\WmoProperty.cs" />
+    <Compile Include="Services\ModelEditorService.cs" />
+    <Compile Include="Services\EngineService.cs" />
+    <Compile Include="Services\ModelSceneService.cs" />
+    <Compile Include="Services\ShellService.cs" />
+    <Compile Include="Utility\EngineExtension.cs" />
+    <Compile Include="Utility\NativeConstants.cs" />
+    <Compile Include="Utility\NativeMethods.cs" />
+    <Compile Include="Views\AnimationContent.xaml.cs">
+      <DependentUpon>AnimationContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CharacterContent.xaml.cs">
+      <DependentUpon>CharacterContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ClothesContent.xaml.cs">
+      <DependentUpon>ClothesContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\M2StateContent.xaml.cs">
+      <DependentUpon>M2StateContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MapModelNameContent.xaml.cs">
+      <DependentUpon>MapModelNameContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MapModelContent.xaml.cs">
+      <DependentUpon>MapModelContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NpcContent.xaml.cs">
+      <DependentUpon>NpcContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PropertyContent.xaml.cs">
+      <DependentUpon>PropertyContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RidableContent.xaml.cs">
+      <DependentUpon>RidableContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SetContent.xaml.cs">
+      <DependentUpon>SetContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SpellVisualEffectContent.xaml.cs">
+      <DependentUpon>SpellVisualEffectContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WeaponContent.xaml.cs">
+      <DependentUpon>WeaponContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WmoContent.xaml.cs">
+      <DependentUpon>WmoContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WorldM2Content.xaml.cs">
+      <DependentUpon>WorldM2Content.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\AccelerateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AnimationConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Animation\AnimationEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Animation\AnimationHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Animation\AnimationToolbar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Animation\AnimationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CharacterSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ColorPickerControls\Chips\ColorChip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPickerControls\Chips\ForegroundBackgroundChip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPickerControls\Dialogs\ColorPickerFullDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPickerControls\Dialogs\ColorPickerFullWithAlphaDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPickerControls\Dialogs\ColorPickerStandardDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPickerControls\Dialogs\ColorPickerStandardWithAlphaDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPickerControls\Pickers\ColorPickerFull.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPickerControls\Pickers\ColorPickerFullWithAlpha.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPickerControls\Pickers\ColorPickerStandard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPickerControls\Pickers\ColorPickerStandardWithAlpha.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\AlphaDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\CheckerBoardBrush.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\ColorDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\ColorModels\CMYK\CMYKDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\ColorModels\CMY\CMYDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\ColorModels\HSB\HsbDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\ColorModels\Lab\LabDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\ColorModels\RGB\RgbDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\ColorSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\HexDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\NewCurrent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker\SliderResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FontDialog\FontDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Common\LabelEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\M2ItemSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\M2ArmoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\M2AttachmentsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\M2CharacterInfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\M2EquipmentSelectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\M2GeosetsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ItemSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MapModelSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\M2EquipmentsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NpcPathSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NpcTreeViewSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\RidableSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\AdvancedSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\VideoSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MapModelNames.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SpellVisualEffectTreeViewSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StateSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WMOGroupsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WMOPortalsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WmoSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WmoTreeViewSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WorldM2Select.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WorldM2TreeViewSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Languages\Chinese.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Languages\English.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Menus\ModelMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NpcSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SetSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\EngineSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Common\SliderSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SpellVisualEffectSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Splash\SplashWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\Splash\DispatcherHelper.cs" />
+    <Compile Include="Controls\Splash\MessageListener.cs" />
+    <Compile Include="Controls\Splash\SplashWindow.xaml.cs">
+      <DependentUpon>SplashWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WindowHost.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Resources\ApplicationResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\PropEditors\CustomEditors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Themes\ExpressionDark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AnimationContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CharacterContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ClothesContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\M2StateContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MapModelNameContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MapModelContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NpcContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PropertyContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RidableContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SetContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SpellVisualEffectContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WeaponContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WmoContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorldM2Content.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\wallpaper.jpg" />
+    <Resource Include="Resources\Images\Wow.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AvalonDock\AvalonDock.csproj">
+      <Project>{87E61430-4243-45F2-B74E-0A4C096CEBF3}</Project>
+      <Name>AvalonDock</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mywowNet\mywowNet.csproj">
+      <Project>{33199A67-2419-4FCC-9DFE-9DDDC9237C86}</Project>
+      <Name>mywowNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WpfPropertyGrid\WpfPropertyGrid.csproj">
+      <Project>{5A48B67F-1E7E-4ED6-A201-F6CC8E7E6788}</Project>
+      <Name>WpfPropertyGrid</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\File.png" />
+    <Resource Include="Resources\Images\Folder.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,148 @@
+﻿<UserControl x:Class="WowMapExplorer.Controls.Settings.AdvancedSetting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:st="clr-namespace:WowMapExplorer.Controls.Settings"
+             d:DesignHeight="300"
+             d:DesignWidth="400"
+             mc:Ignorable="d">
+    <Grid Name="_mainGrid">
+        <Grid.Resources >
+            <st:OptionBools x:Key="_tripleBuffers" />
+            <st:OptionBools x:Key="_inputDelays" />
+            <st:OptionBools x:Key="_hardwarePointers" />
+            <st:GraphicsInterfaces x:Key="_graphicsInterfaces"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*" />
+            <RowDefinition Height="0.8*" />
+            <RowDefinition Height="0.1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    Orientation="Vertical">
+            <Label Margin="5,0,0,0" Content="{DynamicResource advanced}" />
+            <Separator />
+        </StackPanel>
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24" />
+                <RowDefinition Height="24" />
+                <RowDefinition Height="24" />
+                <RowDefinition Height="24" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.8*" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0"
+                   Margin="0,0,5,0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Content="{DynamicResource tripleBuffers}" />
+            <ComboBox Name="_cbTripleBuffers"
+                      Grid.Row="0"
+                      Grid.Column="1"
+                      Margin="0,2,10,2"
+                      HorizontalContentAlignment="Right"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding Source={StaticResource _tripleBuffers}}">
+                <ComboBox.ToolTip>
+                    <StackPanel Width="150">
+                        <TextBlock Text="{DynamicResource tripleBuffers}" TextWrapping="Wrap" />
+                        <TextBlock Text="{DynamicResource tripleBuffersDescription}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </ComboBox.ToolTip>
+            </ComboBox>
+            <Label Grid.Row="1"
+                   Margin="0,0,5,0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Content="{DynamicResource reduceInputLag}" />
+            <ComboBox Name="_cbInputDelay"
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      Margin="0,2,10,2"
+                      HorizontalContentAlignment="Right"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding Source={StaticResource _inputDelays}}">
+                <ComboBox.ToolTip>
+                    <StackPanel Width="150">
+                        <TextBlock Text="{DynamicResource reduceInputLag}" TextWrapping="Wrap" />
+                        <TextBlock Text="{DynamicResource reduceInputLagDescription}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </ComboBox.ToolTip>
+            </ComboBox>
+            <Label Grid.Row="2"
+                   Margin="0,0,5,0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Content="{DynamicResource hardwareCursor}" />
+            <ComboBox Name="_cbHardwarePointer"
+                      Grid.Row="2"
+                      Grid.Column="1"
+                      Margin="0,2,10,2"
+                      HorizontalContentAlignment="Right"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding Source={StaticResource _hardwarePointers}}">
+                <ComboBox.ToolTip>
+                    <StackPanel Width="150">
+                        <TextBlock Text="{DynamicResource hardwareCursor}" TextWrapping="Wrap" />
+                        <TextBlock Text="{DynamicResource hardwareCursorDescription}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </ComboBox.ToolTip>
+            </ComboBox>
+            <Label Grid.Row="3"
+                   Margin="0,0,5,0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Content="{DynamicResource graphicsInterface}" />
+            <ComboBox Name="_cbGraphicsInterface"
+                      Grid.Row="3"
+                      Grid.Column="1"
+                      Margin="0,2,10,2"
+                      HorizontalContentAlignment="Right"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding Source={StaticResource _graphicsInterfaces}}">
+                <ComboBox.ToolTip>
+                    <StackPanel Width="150">
+                        <TextBlock Text="{DynamicResource graphicsInterface}" TextWrapping="Wrap" />
+                        <TextBlock Text="{DynamicResource graphicsInterfaceDescription}" TextWrapping="Wrap" />
+                        <TextBlock Text="{DynamicResource requireReboot}" Foreground="Red" TextWrapping="Wrap" />
+                    </StackPanel>
+                </ComboBox.ToolTip>
+            </ComboBox>
+        </Grid>
+        
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+        </Grid>
+        
+        <StackPanel Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="0,0,20,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button Name="_btApply"
+                    Width="75"
+                    Height="23"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="{DynamicResource apply}"
+                    IsEnabled="False" />
+        </StackPanel>
+    </Grid>
+</UserControl>

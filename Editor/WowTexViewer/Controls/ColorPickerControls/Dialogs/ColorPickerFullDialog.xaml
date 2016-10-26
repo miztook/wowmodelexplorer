@@ -1,0 +1,44 @@
+﻿<Window x:Class="ColorPickerControls.Dialogs.ColorPickerFullDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Pickers="clr-namespace:ColorPickerControls.Pickers"
+        Title="{DynamicResource colorDialogTitle}"
+        Width="532"
+        Height="334"
+        ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow"
+        Background="{StaticResource WindowBackgroundBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="270" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Pickers:ColorPickerFull x:Name="colorPickerFull"
+                                 Margin="4,0,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top" />
+        <StackPanel Grid.Row="1"
+                    Margin="0,0,20,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button Name="btOk"
+                    Width="75"
+                    Height="23"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="btOk_Click"
+                    Content="{DynamicResource ok}" />
+            <Button Name="btCancel"
+                    Grid.Row="1"
+                    Width="75"
+                    Height="23"
+                    Margin="8,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="btCancel_Click"
+                    Content="{DynamicResource cancel}" />
+        </StackPanel>
+    </Grid>
+</Window>

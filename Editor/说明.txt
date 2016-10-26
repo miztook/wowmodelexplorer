@@ -1,0 +1,13 @@
+AvalonDock
+
+mywow_dll
+
+mywowNet
+
+WowMapExplorer
+
+WowModelExplorer
+
+WowTexViewer
+
+WpfPropertyGrid

@@ -1,0 +1,38 @@
+﻿<Window x:Class="WowTexViewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+        xmlns:cmd="clr-namespace:WowTexViewer.Commands"
+        xmlns:menu="clr-namespace:WowTexViewer.Menus"
+        xmlns:v="clr-namespace:WowTexViewer.Views"
+        xmlns:w="clr-namespace:WowTexViewer"
+        Title="WowTexViewer"
+        Width="1024"
+        Height="768"
+        Icon="{StaticResource WowIcon}">
+    <DockPanel LastChildFill="true">
+        <!--  menu  -->
+        <menu:MainMenu x:Name="_modelMenu" DockPanel.Dock="Top" />
+
+        <!--  docking manager  -->
+        <ad:DockingManager x:Name="_dockManager" IsAnimationEnabled="True">
+            <ad:ResizingPanel FocusManager.IsFocusScope="True" Orientation="Horizontal">
+                <ad:DockablePane x:Name="_leftDockablePane" ad:ResizingPanel.ResizeWidth="0">
+                    <v:AllTextureContent x:Name="_allTextureContent" />
+                    <v:MapTexContent x:Name="_mapTexContent" />
+                </ad:DockablePane>
+
+                <!--  Main Content  -->
+                <ad:DocumentPane Name="_documentPane" ShowHeader="False">
+                    <ad:DocumentContent IsCloseable="false">
+                        <Border Name="_controlHostElement" />
+                    </ad:DocumentContent>
+                </ad:DocumentPane>
+
+                <ad:DockablePane x:Name="_rightDockablePane" ad:ResizingPanel.ResizeWidth="0" >
+                    <v:MapTexNameContent x:Name="_mapTexNameContent" />
+                </ad:DockablePane>
+            </ad:ResizingPanel>
+        </ad:DockingManager>
+    </DockPanel>
+</Window>

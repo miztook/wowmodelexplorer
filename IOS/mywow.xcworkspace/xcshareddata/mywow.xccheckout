@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>137373F1-8E7B-4B1E-9B09-741C0B7FF386</string>
+	<key>IDESourceControlProjectName</key>
+	<string>mywow</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>82158F04-791E-4D54-B838-90FC0A7CFBC9</key>
+		<string>svn+ssh://svn.code.sf.net/p/myeditor/code</string>
+		<key>8912f3d9-ece6-4556-8697-aeb16b1fb3d3</key>
+		<string>svn+ssh://svn.code.sf.net/p/myeditor/code</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>IOS/mywow.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>82158F04-791E-4D54-B838-90FC0A7CFBC9</key>
+		<string>../../../code</string>
+		<key>8912f3d9-ece6-4556-8697-aeb16b1fb3d3</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>8912f3d9-ece6-4556-8697-aeb16b1fb3d3</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>82158F04-791E-4D54-B838-90FC0A7CFBC9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>code</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8912f3d9-ece6-4556-8697-aeb16b1fb3d3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>myeditor</string>
+		</dict>
+	</array>
+</dict>
+</plist>

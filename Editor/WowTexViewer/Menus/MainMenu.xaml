@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="WowTexViewer.Menus.MainMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cmd="clr-namespace:WowTexViewer.Commands"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:w="clr-namespace:WowTexViewer"
+             xmlns:wow="clr-namespace:mywowNet;assembly=mywowNet"
+             d:DesignHeight="30"
+             d:DesignWidth="600"
+             mc:Ignorable="d">
+    <Menu FontFamily="{DynamicResource WindowFontFamily}"
+          FontStyle="{DynamicResource WindowFontStyle}"
+          FontWeight="{DynamicResource WindowFontWeight}"
+          UseLayoutRounding="True">
+        <MenuItem Header="{DynamicResource menuFile}">
+            <MenuItem Command="cmd:FileCommands.NewFile" Header="{DynamicResource newFile}" />
+            <MenuItem Command="cmd:FileCommands.Exit" Header="{DynamicResource exit}" />
+        </MenuItem>
+        <MenuItem Header="{DynamicResource view}" SubmenuOpened="menuView_SubmenuOpened">
+            <MenuItem Name="menuViewAllTexture"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.AllTexture}"
+                      Header="{DynamicResource viewAllTex}" />
+            <MenuItem Name="menuViewMapTexture"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.MapTexture}"
+                      Header="{DynamicResource viewMapTex}" />
+            <MenuItem Name="menuViewMapTextureName"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.MapTextureName}"
+                      Header="{DynamicResource viewMapTexName}" />
+        </MenuItem>
+        <MenuItem Header="{DynamicResource textureOperation}" SubmenuOpened="menuTexture_SubmenuOpened">
+
+            <MenuItem Name="menuTextureOpaque"
+                      Command="cmd:TextureCommands.TextureOpaque"
+                      Header="{DynamicResource textureOpaque}" />
+            <Separator/>
+            <MenuItem Name="menuTextureExport"
+                      Command="cmd:TextureCommands.ExportAsTga"
+                      Header="{DynamicResource textureExportTga}" />
+            <MenuItem Name="menuTextureExportNoAlpha"
+                      Command="cmd:TextureCommands.ExportAsTgaNoAlpha"
+                      Header="{DynamicResource textureExportTgaNoAlpha}" />
+        </MenuItem>
+        <MenuItem
+                  Header="{DynamicResource editorOption}"
+                  SubmenuOpened="menuEditorOption_SubmenuOpened" >
+            <MenuItem Header="{DynamicResource editorBkgroundColor}">
+                <MenuItem Command="cmd:OptionCommands.BackgroundColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.BackgroundColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorEdgeBorderColor}">
+                <MenuItem Command="cmd:OptionCommands.EdgeBorderColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.EdgeBorderColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorFont}">
+                <MenuItem Command="cmd:OptionCommands.EditorFont"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.EditorFont"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorFontColor}">
+                <MenuItem Command="cmd:OptionCommands.EditorFontColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.EditorFontColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorShowHide}" SubmenuOpened="menuOptionShowHide_SubmenuOpened">
+                <MenuItem Name="menuOptionShowBaseInfo"
+                          Command="cmd:OptionCommands.ShowOption"
+                          CommandParameter="{x:Static w:EditorShowOptions.DebugText}"
+                          Header="{DynamicResource editorBasicInfo}" />
+                <MenuItem Name="menuOptionShowPlane"
+                          Command="cmd:OptionCommands.ShowOption"
+                          CommandParameter="{x:Static w:EditorShowOptions.Plane}"
+                          Header="{DynamicResource editorPlane}" />
+            </MenuItem>
+        </MenuItem>
+        <MenuItem Header="{DynamicResource languages}" SubmenuOpened="menuLanguages_SubmenuOpend">
+            <MenuItem Name="menuLanguagesChinese"
+                      Command="cmd:LanguageCommands.SetLanguage"
+                      CommandParameter="{x:Static w:Languages.Chinese}"
+                      Header="{DynamicResource chinese}" />
+            <MenuItem Name="menuLanguagesEnglish"
+                      Command="cmd:LanguageCommands.SetLanguage"
+                      CommandParameter="{x:Static w:Languages.English}"
+                      Header="{DynamicResource english}" />
+        </MenuItem>
+    </Menu>
+</UserControl>

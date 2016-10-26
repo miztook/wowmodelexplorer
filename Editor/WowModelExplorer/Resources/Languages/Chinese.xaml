@@ -1,0 +1,418 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!--  main window  -->
+    <system:String x:Key="stage1">第1/3步: 初始化引擎...</system:String>
+    <system:String x:Key="stage2">第2/3步: 读取数据...</system:String>
+    <system:String x:Key="stage3">第3/3步: 准备界面...</system:String>
+
+    <system:String x:Key="none">无</system:String>
+
+    <!--  menu  -->
+    <system:String x:Key="menuFile">文件</system:String>
+    <system:String x:Key="newFile">新建</system:String>
+    <system:String x:Key="loginScreen">登录界面</system:String>
+    <system:String x:Key="exit">退出</system:String>
+
+    <system:String x:Key="view">界面视图</system:String>
+    <system:String x:Key="viewCharacter">角色</system:String>
+    <system:String x:Key="viewNpc">NPC</system:String>
+    <system:String x:Key="viewSpellVisualEffect">技能特效</system:String>
+    <system:String x:Key="viewMap">地图</system:String>
+    <system:String x:Key="viewWmo">WMO</system:String>
+    <system:String x:Key="viewWorldM2">场景M2</system:String>
+    <system:String x:Key="viewClothes">装备栏</system:String>
+    <system:String x:Key="viewWeapon">武器栏</system:String>
+    <system:String x:Key="viewSet">套装栏</system:String>
+    <system:String x:Key="viewRidable">坐骑栏</system:String>
+    <system:String x:Key="viewMapModel">地图模型</system:String>
+    <system:String x:Key="viewAnimation">动画栏</system:String>
+    <system:String x:Key="viewProperty">属性栏</system:String>
+    <system:String x:Key="viewM2State">模型状态</system:String>
+
+    <system:String x:Key="modelOperation">模型操作</system:String>
+    <system:String x:Key="modelResetClothes">重置装备</system:String>
+    <system:String x:Key="clothesAll">所有</system:String>
+    <system:String x:Key="clothesHead">头部</system:String>
+    <system:String x:Key="clothesShoulder">肩部</system:String>
+    <system:String x:Key="clothesShirt">衬衣</system:String>
+    <system:String x:Key="clothesChest">胸部/法袍</system:String>
+    <system:String x:Key="clothesBelt">腰带</system:String>
+    <system:String x:Key="clothesPants">裤子</system:String>
+    <system:String x:Key="clothesBoots">鞋子</system:String>
+    <system:String x:Key="clothesBracers">手腕</system:String>
+    <system:String x:Key="clothesGloves">手套</system:String>
+    <system:String x:Key="clothesCape">披风</system:String>
+    <system:String x:Key="clothesTabard">战袍</system:String>
+    <system:String x:Key="modelResetWeapon">重置武器</system:String>
+    <system:String x:Key="weaponAll">所有</system:String>
+    <system:String x:Key="weaponLeft">左手</system:String>
+    <system:String x:Key="weaponRight">右手</system:String>
+    <system:String x:Key="modelSheathWeapon">收起武器</system:String>
+    <system:String x:Key="scale">比例</system:String>
+    <system:String x:Key="opacity">透明度</system:String>
+    <system:String x:Key="modelColor">模型颜色</system:String>
+    <system:String x:Key="modelRide">坐骑...</system:String>
+    <system:String x:Key="m2ExportObj">导出为OBJ...</system:String>
+    <system:String x:Key="m2ExportFbx">导出为FBX...</system:String>
+
+    <system:String x:Key="modelView">模型显示</system:String>
+    <system:String x:Key="showModel">主模型</system:String>
+    <system:String x:Key="showOtherModel">其他模型</system:String>
+    <system:String x:Key="showParticles">粒子</system:String>
+    <system:String x:Key="showBoundingBox">包围盒</system:String>
+    <system:String x:Key="showBones">骨骼</system:String>
+    <system:String x:Key="showBoundingAABox">静态包围盒</system:String>
+    <system:String x:Key="showCollisionAABox">碰撞包围盒</system:String>
+    <system:String x:Key="wireframeMode">线框模式</system:String>
+    <system:String x:Key="wireframeNone">无</system:String>
+    <system:String x:Key="wireframeOnly">普通线框</system:String>
+    <system:String x:Key="wireframeSolid">不透明线框</system:String>
+    <system:String x:Key="wireframeOneColor">单色线框</system:String>
+    <system:String x:Key="modelGeosets">子模型窗口...</system:String>
+    <system:String x:Key="modelAttachments">挂点窗口...</system:String>
+    <system:String x:Key="modelEquipments">模型装备...</system:String>
+    <system:String x:Key="modelEquipmentSelect">模型装备选择...</system:String>
+    <system:String x:Key="characterInfo">角色信息...</system:String>
+    <system:String x:Key="modelArmory">英雄榜...</system:String>
+    <system:String x:Key="stateMode">动画状态模式</system:String>
+
+    <system:String x:Key="wmoOperation">WMO操作</system:String>
+    <system:String x:Key="wmoView">WMO显示</system:String>
+    <system:String x:Key="showWMO">WMO</system:String>
+    <system:String x:Key="wmoGroups">WMO组窗口...</system:String>
+    <system:String x:Key="wmoPortals">WMOPortal窗口...</system:String>
+    <system:String x:Key="wmoExportObj">导出为OBJ...</system:String>
+    <system:String x:Key="wmoExportFbx">导出为FBX...</system:String>
+    <system:String x:Key="wmoSpecularStrength">镜面光强度</system:String>
+
+    <system:String x:Key="editorOption">编辑器选项</system:String>
+    <system:String x:Key="editorSettings">编辑设置</system:String>
+    <system:String x:Key="editorLineZTest">线条可被遮挡</system:String>
+    <system:String x:Key="editorBkgroundImage">背景图片</system:String>
+    <system:String x:Key="editorBkgroundColor">背景颜色</system:String>
+    <system:String x:Key="editorSet">设置</system:String>
+    <system:String x:Key="editorNone">无</system:String>
+    <system:String x:Key="editorDefault">默认</system:String>
+    <system:String x:Key="editorEdgeBorderColor">界面边框颜色</system:String>
+    <system:String x:Key="editorFont">字体</system:String>
+    <system:String x:Key="editorFontColor">字体颜色</system:String>
+    <system:String x:Key="editorShowHide">显示/隐藏</system:String>
+    <system:String x:Key="editorBasicInfo">基本信息</system:String>
+    <system:String x:Key="editorGeosets">子模型信息</system:String>
+    <system:String x:Key="editorPlane">默认平面</system:String>
+    <system:String x:Key="editorCoord">默认坐标</system:String>
+    <system:String x:Key="editorLightCoord">光照方向</system:String>
+    <system:String x:Key="editorBackMusic">背景音乐</system:String>
+    <system:String x:Key="editorBGMNone">无</system:String>
+    <system:String x:Key="editorBGMTheme">主题音乐</system:String>
+    <system:String x:Key="editorBGMMainTitle">魔兽世界主题曲</system:String>
+    <system:String x:Key="editorBGMWotLK">巫妖王之怒</system:String>
+    <system:String x:Key="editorBGMCTM">大地的裂变</system:String>
+    <system:String x:Key="editorBGMMOP">熊猫人之谜</system:String>
+    <system:String x:Key="editorBGMWOD">德拉诺之王</system:String>
+    <system:String x:Key="editorBGMHighBorne">上层精灵的挽歌</system:String>
+    <system:String x:Key="editorBGMGarrosh">小地狱咆哮主题</system:String>
+    <system:String x:Key="editorBGMCity">城市音乐</system:String>
+    <system:String x:Key="editorBGMStormwind">暴风城</system:String>
+    <system:String x:Key="editorBGMDarnassus">达纳苏斯</system:String>
+    <system:String x:Key="editorBGMIronforge">铁炉堡</system:String>
+    <system:String x:Key="editorBGMOrgrimmar">奥格瑞玛</system:String>
+    <system:String x:Key="editorBGMThunderbluff">雷霆崖</system:String>
+    <system:String x:Key="editorBGMUndercity">幽暗城</system:String>
+    <system:String x:Key="editorBGMSilvermoon">银月城</system:String>
+
+    <system:String x:Key="engineOption">引擎选项</system:String>
+    <system:String x:Key="engineSetting">选项...</system:String>
+    <system:String x:Key="cameraPosition">摄像机位置</system:String>
+    <system:String x:Key="cameraSpeed">摄像机速度</system:String>
+    <system:String x:Key="speedLowest">极慢</system:String>
+    <system:String x:Key="speedLow">慢</system:String>
+    <system:String x:Key="speedMedium">中</system:String>
+    <system:String x:Key="speedHigh">快</system:String>
+    <system:String x:Key="speedHighest">极快</system:String>
+    <system:String x:Key="cameraMode">摄像机模式</system:String>
+    <system:String x:Key="cameraFPS">FPS模式</system:String>
+    <system:String x:Key="cameraMaya">Maya模式</system:String>
+    <system:String x:Key="wheelSpeed">鼠标滚轮速度</system:String>
+    <system:String x:Key="gameMode">游戏模式</system:String>
+
+    <system:String x:Key="languages">语言</system:String>
+    <system:String x:Key="chinese">中文</system:String>
+    <system:String x:Key="english">English</system:String>
+
+    <!--  Acceleration Window  -->
+    <system:String x:Key="acclerateWindow">快捷键</system:String>
+
+    <!--  Animation Bar  -->
+    <system:String x:Key="play">播放</system:String>
+    <system:String x:Key="step">单步</system:String>
+    <system:String x:Key="pause">暂停</system:String>
+    <system:String x:Key="stop">停止</system:String>
+    <system:String x:Key="loop">循环</system:String>
+    <system:String x:Key="set">设置</system:String>
+
+    <!--  Dialog Common  -->
+    <system:String x:Key="ok">确定</system:String>
+    <system:String x:Key="cancel">取消</system:String>
+    <system:String x:Key="apply">应用</system:String>
+    <system:String x:Key="import">导入</system:String>
+    <system:String x:Key="export">导出</system:String>
+    <system:String x:Key="parse">解析</system:String>
+    <system:String x:Key="loadCharacter">加载角色</system:String>
+
+    <!--  Color Dialog  -->
+    <system:String x:Key="colorDialogTitle">颜色选择</system:String>
+    <system:String x:Key="newColor">新颜色</system:String>
+    <system:String x:Key="currentColor">当前颜色</system:String>
+
+    <!--  Font Dialog  -->
+    <system:String x:Key="fontDialogTitle">字体选择</system:String>
+    <system:String x:Key="fontFamily">字体</system:String>
+    <system:String x:Key="fontStyle">样式</system:String>
+    <system:String x:Key="fontWeight">粗细</system:String>
+    <system:String x:Key="fontPreview">预览</system:String>
+
+    <!--  CharacterSelect  -->
+    <system:String x:Key="alliance">联盟</system:String>
+    <system:String x:Key="horde">部落</system:String>
+    <system:String x:Key="version">版本</system:String>
+    <system:String x:Key="classic">经典</system:String>
+    <system:String x:Key="new60">新6.0</system:String>
+    <system:String x:Key="gender">性别</system:String>
+    <system:String x:Key="male">男</system:String>
+    <system:String x:Key="female">女</system:String>
+    <system:String x:Key="class">职业</system:String>
+    <system:String x:Key="feature">角色特点</system:String>
+    <system:String x:Key="skinColor">肤色</system:String>
+    <system:String x:Key="faceType">脸型</system:String>
+    <system:String x:Key="hairType">发型</system:String>
+    <system:String x:Key="facialHair">面部</system:String>
+    <system:String x:Key="hairColor">发色</system:String>
+
+    <!--  M2GeosetsWindow  -->
+    <system:String x:Key="geosetsWindow">子模型窗口</system:String>
+    <system:String x:Key="index">序号</system:String>
+    <system:String x:Key="id">ID</system:String>
+    <system:String x:Key="vertexNum">顶点数</system:String>
+    <system:String x:Key="indexNum">索引数</system:String>
+    <system:String x:Key="visible">可见</system:String>
+
+    <!--  AttachmentsWindow  -->
+    <system:String x:Key="attachmentsWindow">挂点窗口</system:String>
+
+    <!--  ModelEquipments  -->
+    <system:String x:Key="equipmentsWindow">模型装备</system:String>
+    <system:String x:Key="slotName">装备栏</system:String>
+
+    <!--  ModelEquipmentSelect  -->
+    <system:String x:Key="equipmentsSelect">模型装备选择</system:String>
+
+    <!--  M2CharacterInfo  -->
+    <system:String x:Key="characterInfoWindow">角色信息</system:String>
+    <system:String x:Key="race">种族</system:String>
+
+    <!--  M2Armory  -->
+    <system:String x:Key="armoryWindow">英雄榜</system:String>
+
+    <!--  M2Ridables  -->
+    <system:String x:Key="ridableNames">坐骑名</system:String>
+
+    <!--  WMOGroupsWindow  -->
+    <system:String x:Key="groupsWindow">WMO组窗口</system:String>
+    <system:String x:Key="name">名称</system:String>
+    <system:String x:Key="indoor">室内</system:String>
+    <system:String x:Key="boxVisible">包围盒可见</system:String>
+
+    <!--  WMOPortalsWindow  -->
+    <system:String x:Key="portalsWindow">WMOPortal窗口</system:String>
+    <system:String x:Key="frontGroupIndex">前组索引</system:String>
+    <system:String x:Key="backGroupIndex">后组索引</system:String>
+    <system:String x:Key="groupBoxVisible">组包围盒可见</system:String>
+
+    <!--  ItemSelect  -->
+    <system:String x:Key="itemName">物品名</system:String>
+    <system:String x:Key="type">分类</system:String>
+    <system:String x:Key="modelId">模型ID</system:String>
+    <system:String x:Key="itemId">物品ID</system:String>
+    <system:String x:Key="modelPath">模型路径</system:String>
+    <system:String x:Key="texturePath">贴图路径</system:String>
+
+    <!--  MapModelNames  -->
+    <system:String x:Key="m2Names">m2文件名</system:String>
+    <system:String x:Key="m2DoodadNames">m2文件名(WMO中小物件)</system:String>
+    <system:String x:Key="wmoNames">wmo文件名</system:String>
+
+    <!--  MapModelSelect  -->
+    <system:String x:Key="mapNames">地图名</system:String>
+    <system:String x:Key="internalMapNames">内部地图名</system:String>
+    <system:String x:Key="mapArea">地图区域</system:String>
+
+    <!--  NpcSelect  -->
+    <system:String x:Key="npcPaths">NPC路径</system:String>
+    <system:String x:Key="npcNames">NPC名</system:String>
+    <system:String x:Key="modelDisplayId">模型显示ID</system:String>
+
+    <!--  SetSelect  -->
+    <system:String x:Key="setNames">套装名</system:String>
+
+    <!--  SpellVisualEffectSelect  -->
+    <system:String x:Key="spellVisualEffectNames">技能特效名</system:String>
+
+    <!--  StateSelect  -->
+    <system:String x:Key="stateNames">状态名</system:String>
+
+    <!--  AnimationContent  -->
+    <system:String x:Key="animationContentTitle">动画</system:String>
+
+    <!--  ChacterContent  -->
+    <system:String x:Key="characterContentTitile">角色</system:String>
+
+    <!--  ClothesContent  -->
+    <system:String x:Key="clothesContentTitle">装备</system:String>
+
+    <!--  MapModelContent  -->
+    <system:String x:Key="mapModelContentTitle">地图</system:String>
+
+    <!--  MapModelNameContent  -->
+    <system:String x:Key="mapModelNameContentTitle">地图模型</system:String>
+
+    <!--  NpcContent  -->
+    <system:String x:Key="npcContentTitle">NPC</system:String>
+    <system:String x:Key="npcPathContent">NPC(按路径)</system:String>
+    <system:String x:Key="npcNameContent">NPC(按名称)</system:String>
+    <system:String x:Key="npcDirectoryContent">NPC(按目录)</system:String>
+
+    <!--  RidableContent  -->
+    <system:String x:Key="ridableContentTitle">坐骑</system:String>
+
+    <!--  WmoContent  -->
+    <system:String x:Key="wmoContentTitle">WMO</system:String>
+
+    <!--  WorldM2Content  -->
+    <system:String x:Key="worldM2ContentTitle">场景M2</system:String>
+
+    <!--  SetContent  -->
+    <system:String x:Key="setContentTitle">套装</system:String>
+
+    <!--  StateContent  -->
+    <system:String x:Key="stateContentTitle">状态</system:String>
+
+    <!--  SpellVisualEffectContent  -->
+    <system:String x:Key="spellVisualEffectContentTitle">特效</system:String>
+
+    <!--  WeaponContent  -->
+    <system:String x:Key="weaponContentTitle">武器</system:String>
+    <system:String x:Key="weaponDagger">单手</system:String>
+    <system:String x:Key="weaponShield">盾牌</system:String>
+    <system:String x:Key="weaponBow">弓</system:String>
+    <system:String x:Key="weapon2Hand">双手</system:String>
+    <system:String x:Key="weaponLeftHand">单手左手</system:String>
+    <system:String x:Key="weaponRightHand">单手右手</system:String>
+    <system:String x:Key="weaponOther">其他</system:String>
+    <system:String x:Key="weaponGun">枪械/魔杖</system:String>
+
+    <!--  Property Content  -->
+    <system:String x:Key="propertyContentTitle">属性</system:String>
+
+    <!--  Animation Set  -->
+    <system:String x:Key="titleAnimationSet">动画栏配置</system:String>
+
+    <!--  EngineSetting  -->
+    <system:String x:Key="engineSettingTitle">引擎选项</system:String>
+    <system:String x:Key="video">视频</system:String>
+    <system:String x:Key="advanced">高级</system:String>
+    <system:String x:Key="audio">音频</system:String>
+
+    <!--  VideoSetting  -->
+    <system:String x:Key="display">显示</system:String>
+    <system:String x:Key="displayMode">显示模式</system:String>
+    <system:String x:Key="displayModeDescription">使你可以更改游戏的主要显示模式。</system:String>
+    <system:String x:Key="resolution">分辨率</system:String>
+    <system:String x:Key="resolutionDescription">高分辨率能够使显示更加清晰，但会极大的影响游戏运行速度。选择一个宽高比适合你的显示器的分辨率。</system:String>
+    <system:String x:Key="refreshRate">刷新率</system:String>
+    <system:String x:Key="refreshRateDescription">显示器上图形的刷新次数。如果刷新率太低，有些玩家会感觉到画面闪烁。</system:String>
+    <system:String x:Key="monitor">显示器</system:String>
+    <system:String x:Key="monitorDescription">使你可以更改游戏显示使用的主要显示器</system:String>
+    <system:String x:Key="multisample">多重采样</system:String>
+    <system:String x:Key="multisampleDescription">提高多重采样级别可以使模型边缘变得更平滑，但是会明显降低游戏运行速度。</system:String>
+    <system:String x:Key="vsync">垂直同步</system:String>
+    <system:String x:Key="vsyncDescription">将你的画面帧数与显示器刷新率进行同步。如果你看到游戏画面紊乱，请启用此项。</system:String>
+    <system:String x:Key="graphics">图形</system:String>
+    <system:String x:Key="texture">材质</system:String>
+    <system:String x:Key="textureResolution">材质分辨率</system:String>
+    <system:String x:Key="textureResolutionDescription">调节所有材质的细节等级。降低此项可以略微提高运行速度。</system:String>
+    <system:String x:Key="textureFilter">材质过滤</system:String>
+    <system:String x:Key="textureFilterDescription">提高材质的锐度，尤其是以倾斜视角观察的材质。降低此项可以提高运行速度。</system:String>
+    <system:String x:Key="textureProjection">材质投射</system:String>
+    <system:String x:Key="textureProjectionDescription">启用将贴图材质投射到环境中的功能。禁用此项可以明显提高游戏运行速度。</system:String>
+    <system:String x:Key="environment">环境</system:String>
+    <system:String x:Key="viewDistance">视野距离</system:String>
+    <system:String x:Key="viewDistanceDescription">视野距离控制了你能看得有多远。更远的视野距离需要更多的内存容量和更快的处理器。</system:String>
+    <system:String x:Key="environmentDetail">环境细节</system:String>
+    <system:String x:Key="environmentDetailDescription">调节你能看到远处物体的距离。降低此项可以提高运行速度。</system:String>
+    <system:String x:Key="groundClutter">地面景观</system:String>
+    <system:String x:Key="groundClutterDescription">控制地表景观物体（如地表植被及植物枝叶）的显示密度和距离。降低此选项可以提高游戏运行速度。</system:String>
+    <system:String x:Key="effect">效果</system:String>
+    <system:String x:Key="shadowQuality">阴影质量</system:String>
+    <system:String x:Key="shadowQualityDescription">控制游戏角色和环境的阴影渲染质量。降低此项可以提高游戏运行速度。</system:String>
+    <system:String x:Key="liquidDetail">液体细节</system:String>
+    <system:String x:Key="liquidDetailDescription">控制液体的渲染质量。降低此项可以提高游戏运行性能。</system:String>
+    <system:String x:Key="sunShafts">阳光效果</system:String>
+    <system:String x:Key="sunShaftsDescription">控制体积光及眩光效果的渲染方式和质量。关闭该选项可以提高游戏运行速度。</system:String>
+    <system:String x:Key="particleDensity">粒子密度</system:String>
+    <system:String x:Key="particleDensityDescription">控制法术，火焰等效果中使用的粒子数量。降低此项可以提高游戏运行速度。</system:String>
+    <system:String x:Key="ssao">SSAO</system:String>
+    <system:String x:Key="ssaoDescription">控制环境光遮蔽图形效果的渲染质量。降低该选项能够极大提升游戏性能。</system:String>
+
+    <system:String x:Key="on">开启</system:String>
+    <system:String x:Key="off">关闭</system:String>
+    <system:String x:Key="level1">低</system:String>
+    <system:String x:Key="level2">普通</system:String>
+    <system:String x:Key="level3">优良</system:String>
+    <system:String x:Key="level4">高</system:String>
+    <system:String x:Key="level5">极佳</system:String>
+    <system:String x:Key="windowMode">窗口模式</system:String>
+    <system:String x:Key="fullscreenMode">全屏模式</system:String>
+    <system:String x:Key="mainMonitor">主显示器</system:String>
+    <system:String x:Key="bilinear">双线性</system:String>
+    <system:String x:Key="trilinear">三线性</system:String>
+    <system:String x:Key="anisotropicX2">2X各向异性</system:String>
+    <system:String x:Key="anisotropicX4">4X各向异性</system:String>
+    <system:String x:Key="anisotropicX8">8X各向异性</system:String>
+    <system:String x:Key="anisotropicX16">16X各向异性</system:String>
+
+    <!--  AdvancedSetting  -->
+    <system:String x:Key="tripleBuffers">三倍缓冲</system:String>
+    <system:String x:Key="tripleBuffersDescription">在启用垂直同步时打开三倍缓冲。启用此项可以是画面帧数平均化，但也可能造成轻微的输入延迟。</system:String>
+    <system:String x:Key="reduceInputLag">降低输入延迟</system:String>
+    <system:String x:Key="reduceInputLagDescription">启用此项可以降低用户界面延迟，但是也有可能明显减低画面帧数。</system:String>
+    <system:String x:Key="hardwareCursor">硬件指针</system:String>
+    <system:String x:Key="hardwareCursorDescription">启用此项以获得更灵敏的鼠标反应速度，除非你的鼠标指针出现问题。</system:String>
+    <system:String x:Key="graphicsInterface">图形接口</system:String>
+    <system:String x:Key="graphicsInterfaceDescription">选择图形接口</system:String>
+    <system:String x:Key="requireReboot">更改此选项需要重新启动客户端</system:String>
+
+    <!--  context menu  -->
+    <system:String x:Key="allSelect">全选</system:String>
+    <system:String x:Key="noneSelect">全不选</system:String>
+
+    <!--  animation config  -->
+    <system:String x:Key="gridRange">每格帧数</system:String>
+
+    <!--  accelerate  -->
+    <system:String x:Key="jump_gameMode">跳跃(游戏模式)</system:String>
+    <system:String x:Key="roll_gameMode">翻滚(游戏模式)</system:String>
+    <system:String x:Key="torpedo_gameMode">鱼雷冲击(游戏模式)</system:String>
+    <system:String x:Key="spinningKick_gameMode">旋风腿(游戏模式)</system:String>
+
+    <system:String x:Key="wmoList">Wmo(列表)</system:String>
+    <system:String x:Key="wmoTreeView">Wmo(目录)</system:String>
+
+    <system:String x:Key="spellList">技能特效(列表)</system:String>
+    <system:String x:Key="spellTreeView">技能特效(目录)</system:String>
+
+    <system:String x:Key="worldModelList">场景m2(列表)</system:String>
+    <system:String x:Key="worldModelTreeView">场景m2(目录)</system:String>
+
+</ResourceDictionary>

@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="WowModelExplorer.Controls.NpcPathSelect"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:data="clr-namespace:mywowNet.Data;assembly=mywowNet"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="500"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <Grid Name="_mainGrid">
+        <Grid.Resources>
+            <data:NpcCollection x:Key="_npcs" />
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Border>
+                <TextBox Name="filter"
+                         Margin="1,1,1,1"
+                         TextChanged="filter_TextChanged" />
+            </Border>
+        </Grid>
+
+
+        <ListView Name="_listView"
+                  Grid.Row="1"
+                  ItemsSource="{Binding Source={StaticResource _npcs},
+                                        Mode=OneTime}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="200" DisplayMemberBinding="{Binding Path=Path}">
+                        <GridViewColumnHeader Click="GridViewColumnHeader_Click"
+                                              Content="{DynamicResource npcPaths}"
+                                              Tag="Path" />
+                    </GridViewColumn>
+                    <GridViewColumn Width="80" DisplayMemberBinding="{Binding Path=ModelDisplayId}">
+                        <GridViewColumnHeader Click="GridViewColumnHeader_Click"
+                                              Content="{DynamicResource modelDisplayId}"
+                                              Tag="ModelDisplayId" />
+                    </GridViewColumn>
+                    <GridViewColumn Width="80" DisplayMemberBinding="{Binding Path=ModelId}">
+                        <GridViewColumnHeader Click="GridViewColumnHeader_Click"
+                                              Content="{DynamicResource modelId}"
+                                              Tag="ModelId" />
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>
+

@@ -1,0 +1,74 @@
+﻿<Window x:Class="WowModelExplorer.Controls.WMOPortalsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:data="clr-namespace:mywowNet.Data;assembly=mywowNet"
+        Title="{DynamicResource portalsWindow}"
+        Width="400"
+        Height="500"
+        FontFamily="{DynamicResource WindowFontFamily}"
+        FontStyle="{DynamicResource WindowFontStyle}"
+        FontWeight="{DynamicResource WindowFontWeight}">
+    <Grid Name="_mainGrid">
+        <Grid.Resources>
+            <data:WmoPortalCollection x:Key="_portals" />
+
+            <DataTemplate x:Key="CheckCellVisible">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding Path=Visible, Mode=TwoWay}" />
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate x:Key="CheckCellGroupsVisible">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding Path=GroupsVisible, Mode=TwoWay}" />
+                </StackPanel>
+            </DataTemplate>
+
+        </Grid.Resources>
+
+        <ListView Name="_listView" ItemsSource="{Binding Source={StaticResource _portals}, Mode=OneTime}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="60" DisplayMemberBinding="{Binding Path=Index}">
+                        <GridViewColumnHeader Click="GridViewColumnHeader_Click"
+                                              Content="{DynamicResource index}"
+                                              Tag="Index" />
+                    </GridViewColumn>
+                    <GridViewColumn Width="60" DisplayMemberBinding="{Binding Path=FrontGroupIndex}">
+                        <GridViewColumnHeader Click="GridViewColumnHeader_Click"
+                                              Content="{DynamicResource frontGroupIndex}"
+                                              Tag="FrontGroupIndex" />
+                    </GridViewColumn>
+                    <GridViewColumn Width="60" DisplayMemberBinding="{Binding Path=BackGroupIndex}">
+                        <GridViewColumnHeader Click="GridViewColumnHeader_Click"
+                                              Content="{DynamicResource backGroupIndex}"
+                                              Tag="BackGroupIndex" />
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="50" CellTemplate="{StaticResource CheckCellVisible}">
+                        <GridViewColumnHeader Content="{DynamicResource visible}">
+                            <GridViewColumnHeader.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Click="VisibleAllSelect_Click" Header="{DynamicResource allSelect}" />
+                                    <MenuItem Click="VisibleNoneSelect_Click" Header="{DynamicResource noneSelect}" />
+                                </ContextMenu>
+                            </GridViewColumnHeader.ContextMenu>
+                        </GridViewColumnHeader>
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="80" CellTemplate="{StaticResource CheckCellGroupsVisible}">
+                        <GridViewColumnHeader Content="{DynamicResource groupBoxVisible}">
+                            <GridViewColumnHeader.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Click="GroupsVisibleAllSelect_Click" Header="{DynamicResource allSelect}" />
+                                    <MenuItem Click="GroupsVisibleNoneSelect_Click" Header="{DynamicResource noneSelect}" />
+                                </ContextMenu>
+                            </GridViewColumnHeader.ContextMenu>
+                        </GridViewColumnHeader>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>

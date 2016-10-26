@@ -1,0 +1,54 @@
+﻿<ad:DockableContent x:Class="WowModelExplorer.Views.ClothesContent"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+                    xmlns:control="clr-namespace:WowModelExplorer.Controls"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    Title="{DynamicResource clothesContentTitle}"
+                    d:DesignHeight="500"
+                    d:DesignWidth="300"
+                    DockableStyle="DockableButNotAutoHidden"
+                    FocusManager.IsFocusScope="True"
+                    FontFamily="{DynamicResource WindowFontFamily}"
+                    FontStyle="{DynamicResource WindowFontStyle}"
+                    FontWeight="{DynamicResource WindowFontWeight}"
+                    mc:Ignorable="d">
+    <Border BorderBrush="{DynamicResource EdgeBorderBrush}" BorderThickness="1">
+        <DockPanel>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesHead}">
+                <control:M2ItemSelect x:Name="_itemsHead" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesShoulder}">
+                <control:M2ItemSelect x:Name="_itemsShoulder" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesShirt}">
+                <control:ItemSelect x:Name="_itemsShirt" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesChest}">
+                <control:ItemSelect x:Name="_itemsChest" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesBelt}">
+                <control:ItemSelect x:Name="_itemsBelt" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesPants}">
+                <control:ItemSelect x:Name="_itemsPants" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesBoots}">
+                <control:ItemSelect x:Name="_itemsBoots" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesBracers}">
+                <control:ItemSelect x:Name="_itemsBracers" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesGloves}">
+                <control:ItemSelect x:Name="_itemsGloves" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesCape}">
+                <control:ItemSelect x:Name="_itemsCapes" />
+            </Expander>
+            <Expander DockPanel.Dock="Top" Header="{DynamicResource clothesTabard}">
+                <control:ItemSelect x:Name="_itemsTabards" />
+            </Expander>
+        </DockPanel>
+    </Border>
+</ad:DockableContent>

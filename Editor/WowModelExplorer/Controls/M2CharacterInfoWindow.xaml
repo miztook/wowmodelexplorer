@@ -1,0 +1,72 @@
+﻿<Window x:Class="WowModelExplorer.Controls.M2CharacterInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:control="clr-namespace:WowModelExplorer.Controls.Common"
+        Title="{DynamicResource characterInfoWindow}"
+        Width="400"
+        Height="350"
+        Background="{StaticResource WindowBackgroundBrush}"
+        FontFamily="{DynamicResource WindowFontFamily}"
+        FontStyle="{DynamicResource WindowFontStyle}"
+        FontWeight="{DynamicResource WindowFontWeight}">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type control:LabelEntry}">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="Margin" Value="0,1,0,1" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Margin="30, 30, 30, 10"
+                    Background="{StaticResource DarkBackBrush}">
+            <control:LabelEntry x:Name="_lblRace" Description="{DynamicResource race}" />
+            <control:LabelEntry x:Name="_lblGender" Description="{DynamicResource gender}" />
+            <control:LabelEntry x:Name="_lblClass" Description="{DynamicResource class}" />
+            <control:LabelEntry x:Name="_lblSkinColor" Description="{DynamicResource skinColor}" />
+            <control:LabelEntry x:Name="_lblFaceType" Description="{DynamicResource faceType}" />
+            <control:LabelEntry x:Name="_lblHairType" Description="{DynamicResource hairType}" />
+            <control:LabelEntry x:Name="_lblFacialHair" Description="{DynamicResource facialHair}" />
+            <control:LabelEntry x:Name="_lblHairColor" Description="{DynamicResource hairColor}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button Name="btImport"
+                    Width="75"
+                    Height="23"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="btImport_Click"
+                    Content="{DynamicResource import}" />
+            <Button Name="btExport"
+                    Width="75"
+                    Height="23"
+                    Margin="4,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="btExport_Click"
+                    Content="{DynamicResource export}" />
+            <Button Name="btClose"
+                    Width="75"
+                    Height="23"
+                    Margin="4,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="btCancel_Click"
+                    Content="{DynamicResource cancel}" />
+        </StackPanel>
+    </Grid>
+
+
+
+</Window>

@@ -1,0 +1,660 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AAFFDC95-3AE7-4753-9130-F9EC084B2559}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>mywowengine</RootNamespace>
+    <ProjectName>mywow</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FPM_64BIT;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <Optimization>MaxSpeed</Optimization>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <SubSystem>
+      </SubSystem>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FPM_64BIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <Optimization>MaxSpeed</Optimization>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <SubSystem>
+      </SubSystem>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="CAlphaTestDecalRenderer.h" />
+    <ClInclude Include="CAlphaTestMeshRenderer.h" />
+    <ClInclude Include="CAlphaTestWmoRenderer.h" />
+    <ClInclude Include="CFontServices.h" />
+    <ClInclude Include="CFTGlyphCache.h" />
+    <ClInclude Include="CGestureReader.h" />
+    <ClInclude Include="CGestureRecognizerBase.h" />
+    <ClInclude Include="CGestureRecognizer_Circle.h" />
+    <ClInclude Include="CGestureRecognizer_Joystick.h" />
+    <ClInclude Include="CGestureRecognizer_Longpress.h" />
+    <ClInclude Include="CGestureRecognizer_Pan1.h" />
+    <ClInclude Include="CGestureRecognizer_Pan2.h" />
+    <ClInclude Include="CGestureRecognizer_Pinch.h" />
+    <ClInclude Include="CGestureRecognizer_Swipe.h" />
+    <ClInclude Include="CGestureRecognizer_Tap1.h" />
+    <ClInclude Include="CGestureRecognizer_Tap2.h" />
+    <ClInclude Include="CImageLoaderJPG.h" />
+    <ClInclude Include="CImageLoaderKTX.h" />
+    <ClInclude Include="CImageLoaderPNG.h" />
+    <ClInclude Include="CImageLoaderPVR.h" />
+    <ClInclude Include="CInputReader.h" />
+    <ClInclude Include="CKTXImage.h" />
+    <ClInclude Include="CMemFile.h" />
+    <ClInclude Include="CMeshDecalRenderer.h" />
+    <ClInclude Include="CPVRImage.h" />
+    <ClInclude Include="CTransluscentDecalRenderer.h" />
+    <ClInclude Include="interface\aabbox3d.h" />
+    <ClInclude Include="interface\algorithm.h" />
+    <ClInclude Include="interface\animation.h" />
+    <ClInclude Include="interface\audio.h" />
+    <ClInclude Include="interface\base.h" />
+    <ClInclude Include="CCollisionServices.h" />
+    <ClInclude Include="CConfigs.h" />
+    <ClInclude Include="CCoordSceneNode.h" />
+    <ClInclude Include="CD3D11DrawServices.h" />
+    <ClInclude Include="CD3D11Driver.h" />
+    <ClInclude Include="CD3D11HardwareBufferServices.h" />
+    <ClInclude Include="CD3D11Helper.h" />
+    <ClInclude Include="CD3D11ManualTextureServices.h" />
+    <ClInclude Include="CD3D11MaterialRenderer.h" />
+    <ClInclude Include="CD3D11MaterialRenderServices.h" />
+    <ClInclude Include="CD3D11RenderTarget.h" />
+    <ClInclude Include="CD3D11ResourceLoader.h" />
+    <ClInclude Include="CD3D11SceneStateServices.h" />
+    <ClInclude Include="CD3D11Shader.h" />
+    <ClInclude Include="CD3D11ShaderServices.h" />
+    <ClInclude Include="CD3D11Structs.h" />
+    <ClInclude Include="CD3D11Texture.h" />
+    <ClInclude Include="CD3D11TextureWriteServices.h" />
+    <ClInclude Include="CD3D11VertexDeclaration.h" />
+    <ClInclude Include="CD3D11_PS40.h" />
+    <ClInclude Include="CD3D11_PS50.h" />
+    <ClInclude Include="CD3D11_VS40.h" />
+    <ClInclude Include="CD3D11_VS50.h" />
+    <ClInclude Include="CD3D9DrawServices.h" />
+    <ClInclude Include="CD3D9TextureWriteServices.h" />
+    <ClInclude Include="CD3D9_PS20.h" />
+    <ClInclude Include="CD3D9_PS30.h" />
+    <ClInclude Include="CD3D9RenderTarget.h" />
+    <ClInclude Include="CD3D9VertexDeclaration.h" />
+    <ClInclude Include="CD3D9_VS20.h" />
+    <ClInclude Include="CD3D9_VS30.h" />
+    <ClInclude Include="CDSAudioPlayer.h" />
+    <ClInclude Include="CDSSound.h" />
+    <ClInclude Include="CBLPImage.h" />
+    <ClInclude Include="CFileADTLoader.h" />
+    <ClInclude Include="CFileM2Loader.h" />
+    <ClInclude Include="CFileWDTLoader.h" />
+    <ClInclude Include="CFileWMOLoader.h" />
+    <ClInclude Include="CMeshDecalServices.h" />
+    <ClInclude Include="CMP3Input.h" />
+    <ClInclude Include="COpenGLDrawServices.h" />
+    <ClInclude Include="COpenGLDriver.h" />
+    <ClInclude Include="COpenGLExtension.h" />
+    <ClInclude Include="COpenGLHardwareBufferServices.h" />
+    <ClInclude Include="COpenGLHelper.h" />
+    <ClInclude Include="COpenGLManualTextureServices.h" />
+    <ClInclude Include="COpenGLMaterialRenderer.h" />
+    <ClInclude Include="COpenGLMaterialRenderServices.h" />
+    <ClInclude Include="COpenGLRenderTarget.h" />
+    <ClInclude Include="COpenGLResourceLoader.h" />
+    <ClInclude Include="COpenGLSceneStateServices.h" />
+    <ClInclude Include="COpenGLShader.h" />
+    <ClInclude Include="COpenGLShaderServices.h" />
+    <ClInclude Include="COpenGLTexture.h" />
+    <ClInclude Include="COpenGLTextureWriteServices.h" />
+    <ClInclude Include="COpenGLVertexDeclaration.h" />
+    <ClInclude Include="COpenGL_PS12.h" />
+    <ClInclude Include="COpenGL_PS15.h" />
+    <ClInclude Include="COpenGL_VS12.h" />
+    <ClInclude Include="COpenGL_VS15.h" />
+    <ClInclude Include="CResourceLoader.h" />
+    <ClInclude Include="CRibbonRenderer.h" />
+    <ClInclude Include="CSceneEnvironment.h" />
+    <ClInclude Include="CSkySceneNode.h" />
+    <ClInclude Include="CSpecialTextureServices.h" />
+    <ClInclude Include="CParticleRenderer.h" />
+    <ClInclude Include="CVorbisInput.h" />
+    <ClInclude Include="CWavInput.h" />
+    <ClInclude Include="CBlit.h" />
+    <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CD3D9Driver.h" />
+    <ClInclude Include="CD3D9SceneStateServices.h" />
+    <ClInclude Include="CFTFont.h" />
+    <ClInclude Include="CD3D9HardwareBufferServices.h" />
+    <ClInclude Include="CD3D9Helper.h" />
+    <ClInclude Include="CD3D9ManualTextureServices.h" />
+    <ClInclude Include="CD3D9MaterialRenderer.h" />
+    <ClInclude Include="CD3D9MaterialRenderServices.h" />
+    <ClInclude Include="CD3D9ResourceLoader.h" />
+    <ClInclude Include="CD3D9Shader.h" />
+    <ClInclude Include="CD3D9ShaderServices.h" />
+    <ClInclude Include="CD3D9Texture.h" />
+    <ClInclude Include="CFileADT.h" />
+    <ClInclude Include="CFileM2.h" />
+    <ClInclude Include="CFileSystem.h" />
+    <ClInclude Include="CFileWDT.h" />
+    <ClInclude Include="CFileWMO.h" />
+    <ClInclude Include="CGeometryCreator.h" />
+    <ClInclude Include="CImage.h" />
+    <ClInclude Include="CImageLoaderBLP.h" />
+    <ClInclude Include="CDxInputReader.h" />
+    <ClInclude Include="CM2SceneNode.h" />
+    <ClInclude Include="CManualMeshServices.h" />
+    <ClInclude Include="CMapEnvironment.h" />
+    <ClInclude Include="CMapTileSceneNode.h" />
+    <ClInclude Include="CMesh.h" />
+    <ClInclude Include="CMeshRenderer.h" />
+    <ClInclude Include="CMeshSceneNode.h" />
+    <ClInclude Include="CTerrainRenderer.h" />
+    <ClInclude Include="CParticleSystemSceneNode.h" />
+    <ClInclude Include="CParticleSystemServices.h" />
+    <ClInclude Include="CReadFile.h" />
+    <ClInclude Include="CRibbonEmitterServices.h" />
+    <ClInclude Include="CRibbonSceneNode.h" />
+    <ClInclude Include="CSceneManager.h" />
+    <ClInclude Include="CSceneRenderServices.h" />
+    <ClInclude Include="CTerrainServices.h" />
+    <ClInclude Include="CTransluscentRenderer.h" />
+    <ClInclude Include="CWDTSceneNode.h" />
+    <ClInclude Include="CWmoRenderer.h" />
+    <ClInclude Include="CWMOSceneNode.h" />
+    <ClInclude Include="CWriteFile.h" />
+    <ClInclude Include="CX2AudioPlayer.h" />
+    <ClInclude Include="CX2Sound.h" />
+    <ClInclude Include="interface\CFPSCounter.h" />
+    <ClInclude Include="interface\CLock.h" />
+    <ClInclude Include="interface\CMemDbg.h" />
+    <ClInclude Include="interface\CMiniDump.h" />
+    <ClInclude Include="interface\compileconfig.h" />
+    <ClInclude Include="interface\core.h" />
+    <ClInclude Include="interface\COSInfo.h" />
+    <ClInclude Include="interface\CSysGlobal.h" />
+    <ClInclude Include="interface\CSysSync.h" />
+    <ClInclude Include="interface\CSysThread.h" />
+    <ClInclude Include="interface\CSysUtility.h" />
+    <ClInclude Include="interface\CTimer.h" />
+    <ClInclude Include="interface\encoding.h" />
+    <ClInclude Include="interface\font.h" />
+    <ClInclude Include="interface\fontDef.h" />
+    <ClInclude Include="interface\GestureDef.h" />
+    <ClInclude Include="interface\IFontServices.h" />
+    <ClInclude Include="interface\IGestureReader.h" />
+    <ClInclude Include="interface\IGestureRecognizer.h" />
+    <ClInclude Include="interface\IInputListener.h" />
+    <ClInclude Include="interface\strutil.h" />
+    <ClInclude Include="interface\SWindowInfo.h" />
+    <ClInclude Include="interface\ddslib.h" />
+    <ClInclude Include="interface\dimension2d.h" />
+    <ClInclude Include="interface\engine.h" />
+    <ClInclude Include="interface\frustum.h" />
+    <ClInclude Include="GL\glcorearb.h" />
+    <ClInclude Include="GL\glext.h" />
+    <ClInclude Include="GL\wglext.h" />
+    <ClInclude Include="interface\function.h" />
+    <ClInclude Include="interface\IAudioPlayer.h" />
+    <ClInclude Include="interface\ICamera.h" />
+    <ClInclude Include="interface\IBLPImage.h" />
+    <ClInclude Include="interface\IConfigs.h" />
+    <ClInclude Include="interface\ICoordSceneNode.h" />
+    <ClInclude Include="interface\IKTXImage.h" />
+    <ClInclude Include="interface\IMemFile.h" />
+    <ClInclude Include="interface\IMeshDecalServices.h" />
+    <ClInclude Include="interface\IFileADT.h" />
+    <ClInclude Include="interface\IFileWDT.h" />
+    <ClInclude Include="interface\IFileWMO.h" />
+    <ClInclude Include="interface\IInputReader.h" />
+    <ClInclude Include="interface\ILostResetCallback.h" />
+    <ClInclude Include="interface\IM2SceneNode.h" />
+    <ClInclude Include="interface\IManualTextureServices.h" />
+    <ClInclude Include="interface\IMapTileSceneNode.h" />
+    <ClInclude Include="interface\IMaterialRenderServices.h" />
+    <ClInclude Include="interface\input.h" />
+    <ClInclude Include="interface\ai.h" />
+    <ClInclude Include="interface\IM2Entity.h" />
+    <ClInclude Include="interface\IParticleSystemSceneNode.h" />
+    <ClInclude Include="interface\IParticleSystemServices.h" />
+    <ClInclude Include="interface\IPVRImage.h" />
+    <ClInclude Include="interface\IRenderTarget.h" />
+    <ClInclude Include="interface\IResourceLoadCallback.h" />
+    <ClInclude Include="interface\IRibbonEmitterServices.h" />
+    <ClInclude Include="interface\IRibbonSceneNode.h" />
+    <ClInclude Include="interface\ISceneEnvironment.h" />
+    <ClInclude Include="interface\ISceneNodeAddCallback.h" />
+    <ClInclude Include="interface\ISceneRenderer.h" />
+    <ClInclude Include="interface\ISceneStateServices.h" />
+    <ClInclude Include="interface\IAudioInput.h" />
+    <ClInclude Include="interface\ISkySceneNode.h" />
+    <ClInclude Include="interface\ISound.h" />
+    <ClInclude Include="interface\ISpecialTextureServices.h" />
+    <ClInclude Include="interface\ITerrainServices.h" />
+    <ClInclude Include="interface\ITextureWriteServices.h" />
+    <ClInclude Include="interface\IWDTSceneNode.h" />
+    <ClInclude Include="interface\IWMOSceneNode.h" />
+    <ClInclude Include="interface\linklist.h" />
+    <ClInclude Include="interface\pvrlib.h" />
+    <ClInclude Include="interface\wow_def.h" />
+    <ClInclude Include="interface\obbox.h" />
+    <ClInclude Include="mpq_stormlib.h" />
+    <ClInclude Include="interface\qzone_allocator.h" />
+    <ClInclude Include="interface\renderer.h" />
+    <ClInclude Include="interface\enginesetting.h" />
+    <ClInclude Include="interface\system.h" />
+    <ClInclude Include="interface\temp_memory.h" />
+    <ClInclude Include="interface\tracktexture.h" />
+    <ClInclude Include="interface\wow_adt_structs.h" />
+    <ClInclude Include="interface\wow_m2Action.h" />
+    <ClInclude Include="interface\wow_m2FSM.h" />
+    <ClInclude Include="interface\wow_m2appearance.h" />
+    <ClInclude Include="interface\wow_m2instance.h" />
+    <ClInclude Include="interface\IDrawServices.h" />
+    <ClInclude Include="interface\IFileM2.h" />
+    <ClInclude Include="interface\IFileSystem.h" />
+    <ClInclude Include="interface\IFTFont.h" />
+    <ClInclude Include="interface\IGeometryCreator.h" />
+    <ClInclude Include="interface\IHardwareBufferServices.h" />
+    <ClInclude Include="interface\IImage.h" />
+    <ClInclude Include="interface\VertexIndexBuffer.h" />
+    <ClInclude Include="interface\IManualMeshServices.h" />
+    <ClInclude Include="interface\IMaterialRenderer.h" />
+    <ClInclude Include="interface\IMesh.h" />
+    <ClInclude Include="interface\IMeshSceneNode.h" />
+    <ClInclude Include="interface\iosys.h" />
+    <ClInclude Include="interface\IReadFile.h" />
+    <ClInclude Include="interface\IResourceCache.h" />
+    <ClInclude Include="interface\IResourceLoader.h" />
+    <ClInclude Include="interface\IResourcePool.h" />
+    <ClInclude Include="interface\ISceneManager.h" />
+    <ClInclude Include="interface\ISceneNode.h" />
+    <ClInclude Include="interface\ISceneRenderServices.h" />
+    <ClInclude Include="interface\IShader.h" />
+    <ClInclude Include="interface\IShaderServices.h" />
+    <ClInclude Include="interface\ITexture.h" />
+    <ClInclude Include="interface\IVideoDriver.h" />
+    <ClInclude Include="interface\IWriteFile.h" />
+    <ClInclude Include="interface\line2d.h" />
+    <ClInclude Include="interface\line3d.h" />
+    <ClInclude Include="interface\matrix4.h" />
+    <ClInclude Include="interface\mywow.h" />
+    <ClInclude Include="interface\plane3d.h" />
+    <ClInclude Include="interface\quaternion.h" />
+    <ClInclude Include="interface\q_memory.h" />
+    <ClInclude Include="interface\rect.h" />
+    <ClInclude Include="interface\S3DVertex.h" />
+    <ClInclude Include="interface\scene.h" />
+    <ClInclude Include="interface\SColor.h" />
+    <ClInclude Include="interface\SLight.h" />
+    <ClInclude Include="interface\SMaterial.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="interface\fixstring.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="interface\triangle3d.h" />
+    <ClInclude Include="interface\vector2d.h" />
+    <ClInclude Include="interface\vector3d.h" />
+    <ClInclude Include="interface\video.h" />
+    <ClInclude Include="interface\wow.h" />
+    <ClInclude Include="interface\wowEnvironment.h" />
+    <ClInclude Include="interface\wow_animation.h" />
+    <ClInclude Include="interface\wow_database.h" />
+    <ClInclude Include="interface\wow_dbc.h" />
+    <ClInclude Include="interface\wow_enums.h" />
+    <ClInclude Include="interface\wow_m2Move.h" />
+    <ClInclude Include="interface\wow_m2spell.h" />
+    <ClInclude Include="interface\wow_m2State.h" />
+    <ClInclude Include="interface\wow_particle.h" />
+    <ClInclude Include="interface\wow_m2_structs.h" />
+    <ClInclude Include="interface\wow_tileScene.h" />
+    <ClInclude Include="interface\wow_wdtScene.h" />
+    <ClInclude Include="interface\wow_wmoScene.h" />
+    <ClInclude Include="interface\wow_wmo_structs.h" />
+    <ClInclude Include="TGAImageWriter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CAlphaTestDecalRenderer.cpp" />
+    <ClCompile Include="CAlphaTestMeshRenderer.cpp" />
+    <ClCompile Include="CAlphaTestWmoRenderer.cpp" />
+    <ClCompile Include="casclib_memory.cpp" />
+    <ClCompile Include="CCollisionServices.cpp" />
+    <ClCompile Include="CConfigs.cpp" />
+    <ClCompile Include="CCoordSceneNode.cpp" />
+    <ClCompile Include="CD3D11DrawServices.cpp" />
+    <ClCompile Include="CD3D11Driver_base.cpp" />
+    <ClCompile Include="CD3D11Driver_draw.cpp" />
+    <ClCompile Include="CD3D11Driver_Renderer.cpp" />
+    <ClCompile Include="CD3D11HardwareBufferServices.cpp" />
+    <ClCompile Include="CD3D11Helper.cpp" />
+    <ClCompile Include="CD3D11ManualTextureServices.cpp" />
+    <ClCompile Include="CD3D11MaterialRenderer.cpp" />
+    <ClCompile Include="CD3D11MaterialRenderServices.cpp" />
+    <ClCompile Include="CD3D11RenderTarget.cpp" />
+    <ClCompile Include="CD3D11ResourceLoader.cpp" />
+    <ClCompile Include="CD3D11SceneStateServices.cpp" />
+    <ClCompile Include="CD3D11Shader.cpp" />
+    <ClCompile Include="CD3D11ShaderServices.cpp" />
+    <ClCompile Include="CD3D11Texture.cpp" />
+    <ClCompile Include="CD3D11TextureWriteServices.cpp" />
+    <ClCompile Include="CD3D11VertexDeclaration.cpp" />
+    <ClCompile Include="CD3D11_PS40.cpp" />
+    <ClCompile Include="CD3D11_PS50.cpp" />
+    <ClCompile Include="CD3D11_VS40.cpp" />
+    <ClCompile Include="CD3D11_VS50.cpp" />
+    <ClCompile Include="CD3D9DrawServices.cpp" />
+    <ClCompile Include="CD3D9Driver_Renderer.cpp" />
+    <ClCompile Include="CD3D9TextureWriteServices.cpp" />
+    <ClCompile Include="CD3D9_PS30.cpp" />
+    <ClCompile Include="CD3D9RenderTarget.cpp" />
+    <ClCompile Include="CD3D9VertexDeclaration.cpp" />
+    <ClCompile Include="CD3D9_VS30.cpp" />
+    <ClCompile Include="CDSAudioPlayer.cpp" />
+    <ClCompile Include="CDSSound.cpp" />
+    <ClCompile Include="CBLPImage.cpp" />
+    <ClCompile Include="CFileADTLoader.cpp" />
+    <ClCompile Include="CFileM2Loader.cpp" />
+    <ClCompile Include="CFileWDTLoader.cpp" />
+    <ClCompile Include="CFileWMOLoader.cpp" />
+    <ClCompile Include="CFontServices.cpp" />
+    <ClCompile Include="CFTGlyphCache.cpp" />
+    <ClCompile Include="CGestureReader.cpp" />
+    <ClCompile Include="CGestureRecognizerBase.cpp" />
+    <ClCompile Include="CGestureRecognizer_Circle.cpp" />
+    <ClCompile Include="CGestureRecognizer_Joystick.cpp" />
+    <ClCompile Include="CGestureRecognizer_Longpress.cpp" />
+    <ClCompile Include="CGestureRecognizer_Pan1.cpp" />
+    <ClCompile Include="CGestureRecognizer_Pan2.cpp" />
+    <ClCompile Include="CGestureRecognizer_Pinch.cpp" />
+    <ClCompile Include="CGestureRecognizer_Swipe.cpp" />
+    <ClCompile Include="CGestureRecognizer_Tap1.cpp" />
+    <ClCompile Include="CGestureRecognizer_Tap2.cpp" />
+    <ClCompile Include="CImageLoaderJPG.cpp" />
+    <ClCompile Include="CImageLoaderKTX.cpp" />
+    <ClCompile Include="CImageLoaderPNG.cpp" />
+    <ClCompile Include="CImageLoaderPVR.cpp" />
+    <ClCompile Include="CKTXImage.cpp" />
+    <ClCompile Include="CMemDbg.cpp" />
+    <ClCompile Include="CMemFile.cpp" />
+    <ClCompile Include="CMeshDecalRenderer.cpp" />
+    <ClCompile Include="CMeshDecalServices.cpp" />
+    <ClCompile Include="CMiniDump.cpp" />
+    <ClCompile Include="CMP3Input.cpp" />
+    <ClCompile Include="COpenGLDrawServices.cpp" />
+    <ClCompile Include="COpenGLDriver_base.cpp" />
+    <ClCompile Include="COpenGLDriver_draw.cpp" />
+    <ClCompile Include="COpenGLDriver_Renderer.cpp" />
+    <ClCompile Include="COpenGLExtension.cpp" />
+    <ClCompile Include="COpenGLHardwareBufferServices.cpp" />
+    <ClCompile Include="COpenGLHelper.cpp" />
+    <ClCompile Include="COpenGLManualTextureServices.cpp" />
+    <ClCompile Include="COpenGLMaterialRenderer.cpp" />
+    <ClCompile Include="COpenGLMaterialRenderServices.cpp" />
+    <ClCompile Include="COpenGLRenderTarget.cpp" />
+    <ClCompile Include="COpenGLResourceLoader.cpp" />
+    <ClCompile Include="COpenGLSceneStateServices.cpp" />
+    <ClCompile Include="COpenGLShader.cpp" />
+    <ClCompile Include="COpenGLShaderServices.cpp" />
+    <ClCompile Include="COpenGLTexture.cpp" />
+    <ClCompile Include="COpenGLTextureWriteServices.cpp" />
+    <ClCompile Include="COpenGLVertexDeclaration.cpp" />
+    <ClCompile Include="COpenGL_PS12.cpp" />
+    <ClCompile Include="COpenGL_PS15.cpp" />
+    <ClCompile Include="COpenGL_VS12.cpp" />
+    <ClCompile Include="COpenGL_VS15.cpp" />
+    <ClCompile Include="CPVRImage.cpp" />
+    <ClCompile Include="CResourceLoader.cpp" />
+    <ClCompile Include="CRibbonRenderer.cpp" />
+    <ClCompile Include="CSceneEnvironment.cpp" />
+    <ClCompile Include="CSkySceneNode.cpp" />
+    <ClCompile Include="CSpecialTextureServices.cpp" />
+    <ClCompile Include="CSysThread.cpp" />
+    <ClCompile Include="CTimer.cpp" />
+    <ClCompile Include="CParticleRenderer.cpp" />
+    <ClCompile Include="CTransluscentDecalRenderer.cpp" />
+    <ClCompile Include="CVorbisInput.cpp" />
+    <ClCompile Include="CWavInput.cpp" />
+    <ClCompile Include="CBlit.cpp" />
+    <ClCompile Include="CCamera.cpp" />
+    <ClCompile Include="CD3D9Driver_base.cpp" />
+    <ClCompile Include="CD3D9Driver_draw.cpp" />
+    <ClCompile Include="CD3D9SceneStateServices.cpp" />
+    <ClCompile Include="CFTFont.cpp" />
+    <ClCompile Include="CD3D9HardwareBufferServices.cpp" />
+    <ClCompile Include="CD3D9Helper.cpp" />
+    <ClCompile Include="CD3D9ManualTextureServices.cpp" />
+    <ClCompile Include="CD3D9MaterialRenderer.cpp" />
+    <ClCompile Include="CD3D9MaterialRenderServices.cpp" />
+    <ClCompile Include="CD3D9_PS20.cpp" />
+    <ClCompile Include="CD3D9ResourceLoader.cpp" />
+    <ClCompile Include="CD3D9Shader.cpp" />
+    <ClCompile Include="CD3D9ShaderServices.cpp" />
+    <ClCompile Include="CD3D9Texture.cpp" />
+    <ClCompile Include="CD3D9_VS20.cpp" />
+    <ClCompile Include="CFileADT.cpp" />
+    <ClCompile Include="CFileM2.cpp" />
+    <ClCompile Include="CFileSystem.cpp" />
+    <ClCompile Include="CFileWDT.cpp" />
+    <ClCompile Include="CFileWMO.cpp" />
+    <ClCompile Include="CGeometryCreator.cpp" />
+    <ClCompile Include="CImage.cpp" />
+    <ClCompile Include="CImageLoaderBLP.cpp" />
+    <ClCompile Include="CDxInputReader.cpp" />
+    <ClCompile Include="CM2SceneNode.cpp" />
+    <ClCompile Include="CManualMeshServices.cpp" />
+    <ClCompile Include="CMapEnvironment.cpp" />
+    <ClCompile Include="CMapTileSceneNode.cpp" />
+    <ClCompile Include="CMesh.cpp" />
+    <ClCompile Include="CMeshRenderer.cpp" />
+    <ClCompile Include="CMeshSceneNode.cpp" />
+    <ClCompile Include="CTerrainRenderer.cpp" />
+    <ClCompile Include="CParticleSystemSceneNode.cpp" />
+    <ClCompile Include="CParticleSystemServices.cpp" />
+    <ClCompile Include="CReadFile.cpp" />
+    <ClCompile Include="CRibbonEmitterServices.cpp" />
+    <ClCompile Include="CRibbonSceneNode.cpp" />
+    <ClCompile Include="CSceneManager.cpp" />
+    <ClCompile Include="CSceneRenderServices.cpp" />
+    <ClCompile Include="CTerrainServices.cpp" />
+    <ClCompile Include="CTransluscentRenderer.cpp" />
+    <ClCompile Include="CWDTSceneNode.cpp" />
+    <ClCompile Include="CWmoRenderer.cpp" />
+    <ClCompile Include="CWMOSceneNode.cpp" />
+    <ClCompile Include="CWriteFile.cpp" />
+    <ClCompile Include="CX2AudioPlayer.cpp" />
+    <ClCompile Include="CX2Sound.cpp" />
+    <ClCompile Include="ddslib.cpp" />
+    <ClCompile Include="engine.cpp" />
+    <ClCompile Include="enginesetting.cpp" />
+    <ClCompile Include="ftsystem_memory.cpp" />
+    <ClCompile Include="ftsystem_mpq.cpp" />
+    <ClCompile Include="mpq_stormlib.cpp" />
+    <ClCompile Include="mywow.cpp" />
+    <ClCompile Include="platform\windows\CGestureReader_Win.cpp" />
+    <ClCompile Include="platform\windows\CGLES2Platform_Win.cpp" />
+    <ClCompile Include="platform\windows\CInputReader_Win.cpp" />
+    <ClCompile Include="platform\windows\COSInfo_Win.cpp" />
+    <ClCompile Include="platform\windows\CSysUtility_Win.cpp" />
+    <ClCompile Include="pvrlib.cpp" />
+    <ClCompile Include="q_memory.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="stormlib_memory.cpp" />
+    <ClCompile Include="TGAImageWriter.cpp" />
+    <ClCompile Include="wowEnvironment.cpp" />
+    <ClCompile Include="wow_m2Action.cpp" />
+    <ClCompile Include="wow_m2FSM.cpp" />
+    <ClCompile Include="wow_m2appearance.cpp" />
+    <ClCompile Include="wow_m2instance.cpp" />
+    <ClCompile Include="wow_database.cpp" />
+    <ClCompile Include="wow_dbc.cpp" />
+    <ClCompile Include="wow_m2Move.cpp" />
+    <ClCompile Include="wow_m2spell.cpp" />
+    <ClCompile Include="wow_particle.cpp" />
+    <ClCompile Include="wow_tileScene.cpp" />
+    <ClCompile Include="wow_wdtScene.cpp" />
+    <ClCompile Include="wow_wmoScene.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

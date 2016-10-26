@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="implementation">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="interface">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="wow">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="wow\armory">
+      <UniqueIdentifier>{2b01528d-9505-424f-8654-9bd5d8361bd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wow\exporter">
+      <UniqueIdentifier>{6224f395-8d68-478b-ab8d-5d03ad128c25}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="mywowtool.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_armory.cpp">
+      <Filter>wow\armory</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_fbxExporter.cpp">
+      <Filter>wow\exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="fbxCommon.cpp">
+      <Filter>wow\exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_objExporter.cpp">
+      <Filter>wow\exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_exportUtility.cpp">
+      <Filter>wow\exporter</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mywowtool.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="wow_armory.h">
+      <Filter>wow\armory</Filter>
+    </ClInclude>
+    <ClInclude Include="wow_fbxExporter.h">
+      <Filter>wow\exporter</Filter>
+    </ClInclude>
+    <ClInclude Include="IModelExporter.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="fbxCommon.h">
+      <Filter>wow\exporter</Filter>
+    </ClInclude>
+    <ClInclude Include="wow_objExporter.h">
+      <Filter>wow\exporter</Filter>
+    </ClInclude>
+    <ClInclude Include="wow_exportUtility.h">
+      <Filter>wow\exporter</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

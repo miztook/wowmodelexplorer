@@ -1,0 +1,54 @@
+﻿<Window x:Class="WowModelExplorer.Controls.AccelerateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:control="clr-namespace:WowModelExplorer.Controls.Common"
+        Title="{DynamicResource acclerateWindow}"
+        Width="400"
+        Height="350"
+        Background="{StaticResource WindowBackgroundBrush}"
+        FontFamily="{DynamicResource WindowFontFamily}"
+        FontStyle="{DynamicResource WindowFontStyle}"
+        FontWeight="{DynamicResource WindowFontWeight}">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type control:LabelEntry}">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="Margin" Value="0,1,0,1" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"
+                    Margin="30, 30, 30, 10"
+                    Background="{StaticResource DarkBackBrush}">
+
+            <control:LabelEntry Description="{DynamicResource play}" Text="F1" />
+            <control:LabelEntry Description="{DynamicResource step}" Text="F2" />
+            <control:LabelEntry Description="{DynamicResource pause}" Text="F3" />
+            <control:LabelEntry Description="{DynamicResource stop}" Text="F4" />
+            <control:LabelEntry Description="{DynamicResource modelSheathWeapon}" Text="F5" />
+            <control:LabelEntry Description="{DynamicResource jump_gameMode}" Text="Space" />
+            <control:LabelEntry Description="{DynamicResource roll_gameMode}" Text="1" />
+            <control:LabelEntry Description="{DynamicResource torpedo_gameMode}" Text="2" />
+            <control:LabelEntry Description="{DynamicResource spinningKick_gameMode}" Text="3" />
+        </StackPanel>
+        <StackPanel Grid.Row="1"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button Name="btClose"
+                    Grid.Row="1"
+                    Width="75"
+                    Height="23"
+                    Margin="4,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="btOk_Click"
+                    Content="{DynamicResource ok}" />
+        </StackPanel>
+    </Grid>
+</Window>

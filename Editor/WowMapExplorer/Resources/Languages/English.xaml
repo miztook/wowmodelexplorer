@@ -1,0 +1,334 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!--main window-->
+    <system:String x:Key="stage1">Stage 1/3: Initialize Engine...</system:String>
+    <system:String x:Key="stage2">Stage 2/3: Reading Data...</system:String>
+    <system:String x:Key="stage3">Stage 3/3: Preparing User Interface...</system:String>
+	
+    <!--menu-->
+    <system:String x:Key="menuFile">File</system:String>
+    <system:String x:Key="newFile">New</system:String>
+    <system:String x:Key="loginScreen">Login Screen</system:String>
+    <system:String x:Key="exit">Exit</system:String>
+
+    <system:String x:Key="view">View</system:String>
+    <system:String x:Key="viewMap">Map</system:String>
+ 
+    <system:String x:Key="modelOperation">Model Operation</system:String>
+    <system:String x:Key="modelResetClothes">Reset Clothes</system:String>
+    <system:String x:Key="clothesAll">All</system:String>
+    <system:String x:Key="clothesHead">Head</system:String>
+    <system:String x:Key="clothesShoulder">Shoulder</system:String>
+    <system:String x:Key="clothesShirt">Shirt</system:String>
+    <system:String x:Key="clothesChest">Chest/Robe</system:String>
+    <system:String x:Key="clothesBelt">Belt</system:String>
+    <system:String x:Key="clothesPants">Pants</system:String>
+    <system:String x:Key="clothesBoots">Boots</system:String>
+    <system:String x:Key="clothesBracers">Bracers</system:String>
+    <system:String x:Key="clothesGloves">Gloves</system:String>
+    <system:String x:Key="clothesCape">Cape</system:String>
+    <system:String x:Key="clothesTabard">Tabard</system:String>
+    <system:String x:Key="modelResetWeapon">Reset Weapons</system:String>
+    <system:String x:Key="weaponAll">All</system:String>
+    <system:String x:Key="weaponLeft">Left Hand</system:String>
+    <system:String x:Key="weaponRight">Right Hand</system:String>
+    <system:String x:Key="scale">Scale</system:String>
+    <system:String x:Key="opacity">Opacity</system:String>
+    <system:String x:Key="modelColor">Model Color</system:String>
+
+    <system:String x:Key="modelView">Model View</system:String>
+    <system:String x:Key="showModel">Main Model</system:String>
+    <system:String x:Key="showOtherModel">Other Models</system:String>
+    <system:String x:Key="showParticles">Particles</system:String>
+    <system:String x:Key="showBoundingBox">Bounding Box</system:String>
+    <system:String x:Key="showBones">Bones</system:String>
+    <system:String x:Key="showAttachment">Attachments</system:String>
+    <system:String x:Key="wireframeMode">Wireframe Mode</system:String>
+    <system:String x:Key="wireframeNone">None</system:String>
+    <system:String x:Key="wireframeOnly">Normal</system:String>
+    <system:String x:Key="wireframeSolid">Opaque</system:String>
+    <system:String x:Key="wireframeOneColor">Only Color</system:String>
+    <system:String x:Key="modelGeosets">Geosets Window...</system:String>
+    <system:String x:Key="modelEquipments">Model Equipments...</system:String>
+    <system:String x:Key="stateMode">Animation State Mode</system:String>
+    
+    <system:String x:Key="wmoOperation">WMO Operation</system:String>
+    <system:String x:Key="wmoView">WMO View</system:String>
+    <system:String x:Key="showWMO">WMO</system:String>
+    <system:String x:Key="wmoGroups">Groups Window...</system:String>
+    <system:String x:Key="wmoPortals">Portals Window...</system:String>
+    <system:String x:Key="wmoSpecularStrength">Vertex Lighting Strength</system:String>
+    
+    <system:String x:Key="editorOption">Editor Option</system:String>
+    <system:String x:Key="editorSettings">Settings</system:String>
+    <system:String x:Key="editorLineZTest">Editor Line ZTest</system:String>
+    <system:String x:Key="editorBkgroundColor">Background Color</system:String>
+    <system:String x:Key="editorSet">Set</system:String>
+    <system:String x:Key="editorDefault">Default</system:String>
+    <system:String x:Key="editorEdgeBorderColor">Edge Border Color</system:String>
+    <system:String x:Key="editorFont">Font</system:String>
+    <system:String x:Key="editorFontColor">Font Color</system:String>
+    <system:String x:Key="editorShowHide">Show/Hide</system:String>
+    <system:String x:Key="editorBasicInfo">Basic Info</system:String>
+    <system:String x:Key="editorGeosets">Geosets Info</system:String>
+    <system:String x:Key="editorPlane">Default Plane</system:String>
+    <system:String x:Key="editorCoord">Coordinate</system:String>
+    <system:String x:Key="editorBackMusic">Background Music</system:String>
+    <system:String x:Key="editorBGMNone">None</system:String>
+    <system:String x:Key="editorBGMTheme">Theme Music</system:String>
+    <system:String x:Key="editorBGMMainTitle">Wow Main Title</system:String>
+    <system:String x:Key="editorBGMWotLK">Wrath of the Lich King</system:String>
+    <system:String x:Key="editorBGMCTM">Cataclysm</system:String>
+    <system:String x:Key="editorBGMMOP">Mists of Pandaria</system:String>
+    <system:String x:Key="editorBGMHighBorne">Lament of  the Highborne</system:String>
+    <system:String x:Key="editorBGMCity">City Music</system:String>
+    <system:String x:Key="editorBGMStormwind">Stormwind</system:String>
+    <system:String x:Key="editorBGMDarnassus">Darnassus</system:String>
+    <system:String x:Key="editorBGMIronforge">Ironforge</system:String>
+    <system:String x:Key="editorBGMOrgrimmar">Orgrimmar</system:String>
+    <system:String x:Key="editorBGMThunderbluff">Thunderbluff</system:String>
+    <system:String x:Key="editorBGMUndercity">Undercity</system:String>
+    
+    <system:String x:Key="engineOption">Engine Option</system:String>
+    <system:String x:Key="engineSetting">Options...</system:String>
+    <system:String x:Key="cameraPosition">Camera Position</system:String>
+    <system:String x:Key="cameraSpeed">Camera Speed</system:String>
+    <system:String x:Key="speedLowest">Lowset</system:String>
+    <system:String x:Key="speedLow">Low</system:String>
+    <system:String x:Key="speedMedium">Medium</system:String>
+    <system:String x:Key="speedHigh">High</system:String>
+    <system:String x:Key="speedHighest">Highest</system:String>
+    <system:String x:Key="cameraMode">Camera Mode</system:String>
+    <system:String x:Key="cameraFPS">FPS Mode</system:String>
+    <system:String x:Key="cameraMaya">Maya Mode</system:String>
+    <system:String x:Key="wheelSpeed">Mouse Wheel Speed</system:String>
+    <system:String x:Key="gameMode">Game Mode</system:String>
+    
+    <system:String x:Key="languages">Language</system:String>
+    <system:String x:Key="chinese">中文</system:String>
+    <system:String x:Key="english">English</system:String>
+
+    <!--Animation Bar-->
+    <system:String x:Key="play">Play</system:String>
+    <system:String x:Key="step">Step</system:String>
+    <system:String x:Key="pause">Pause</system:String>
+    <system:String x:Key="stop">Stop</system:String>
+    <system:String x:Key="loop">Loop</system:String>
+    <system:String x:Key="set">Set</system:String>
+    
+    <!--Dialog Common-->
+    <system:String x:Key="ok">OK</system:String>
+    <system:String x:Key="cancel">Cancel</system:String>
+    <system:String x:Key="apply">Apply</system:String>
+    <system:String x:Key="import">Import</system:String>
+    <system:String x:Key="export">Export</system:String>
+
+    <!--Color Dialog-->
+    <system:String x:Key="colorDialogTitle">Color Select</system:String>
+    <system:String x:Key="newColor">New Color</system:String>
+    <system:String x:Key="currentColor">Current Color</system:String>
+
+    <!--Font Dialog-->
+    <system:String x:Key="fontDialogTitle">Font Select</system:String>
+    <system:String x:Key="fontFamily">Font Family</system:String>
+    <system:String x:Key="fontStyle">Font Style</system:String>
+    <system:String x:Key="fontWeight">Font Weight</system:String>
+    <system:String x:Key="fontPreview">Preview</system:String>
+
+    <!--CharacterSelect-->
+    <system:String x:Key="alliance">Alliance</system:String>
+    <system:String x:Key="horde">Horde</system:String>
+    <system:String x:Key="gender">Gender</system:String>
+    <system:String x:Key="male">Male</system:String>
+    <system:String x:Key="female">Female</system:String>
+    <system:String x:Key="class">Class</system:String>
+    <system:String x:Key="feature">Feature</system:String>
+    <system:String x:Key="skinColor">Skin Color</system:String>
+    <system:String x:Key="faceType">Face Type</system:String>
+    <system:String x:Key="hairType">Hair Style</system:String>
+    <system:String x:Key="facialHair">Facail Hair</system:String>
+    <system:String x:Key="hairColor">Hair Color</system:String>
+
+    <!--GeosetsWindow-->
+    <system:String x:Key="geosetsWindow">Geosets Window</system:String>
+    <system:String x:Key="index">Index</system:String>
+    <system:String x:Key="id">ID</system:String>
+    <system:String x:Key="vertexNum">Vertex Num</system:String>
+    <system:String x:Key="indexNum">Index Num</system:String>
+    <system:String x:Key="visible">Visible</system:String>
+    
+    <!--ModelEquipments-->
+    <system:String x:Key="equipmentsWindow">Model Equipments</system:String>
+    <system:String x:Key="slotName">Slot Name</system:String>
+    
+    <!--WMOGroupsWindow-->
+    <system:String x:Key="groupsWindow">Groups Window</system:String>
+    <system:String x:Key="name">Name</system:String>
+    <system:String x:Key="indoor">Indoor</system:String>
+    <system:String x:Key="boxVisible">Box Visible</system:String>
+    
+    <!--WMOPortalsWindow-->
+    <system:String x:Key="portalsWindow">Portals Window</system:String>
+    <system:String x:Key="frontGroupIndex">Front Group Index</system:String>
+    <system:String x:Key="backGroupIndex">Back Group Index</system:String>
+    <system:String x:Key="groupVisible">Group Box Visible</system:String>
+    
+    <!--ItemSelect-->
+    <system:String x:Key="itemName">Item Name</system:String>
+    <system:String x:Key="type">Type</system:String>
+    <system:String x:Key="modelId">Model ID</system:String>
+    <system:String x:Key="itemId">Item ID</system:String>
+
+    <!--MapModelNames-->
+    <system:String x:Key="m2Names">m2 Names</system:String>
+    <system:String x:Key="wmoNames">wmo Names</system:String>
+
+    <!--MapModelSelect-->
+    <system:String x:Key="mapNames">Map Name</system:String>
+    <system:String x:Key="internalMapNames">Internal Map Name</system:String>
+    <system:String x:Key="mapArea">Map Area</system:String>
+
+    <!--NpcSelect-->
+    <system:String x:Key="npcNames">NPC Name</system:String>
+    <system:String x:Key="modelDisplayId">Model Display ID</system:String>
+
+    <!--SetSelect-->
+    <system:String x:Key="setNames">Set Name</system:String>
+
+    <!--SpellVisualEffectSelect-->
+    <system:String x:Key="spellVisualEffectNames">Effect Name</system:String>
+
+    <!--StateSelect-->
+    <system:String x:Key="stateNames">State Name</system:String>
+    
+    <!--AnimationContent-->
+    <system:String x:Key="animationContentTitle">Animation</system:String>
+
+    <!--ChacterContent-->
+    <system:String x:Key="characterContentTitile">Character</system:String>
+
+    <!--ClothesContent-->
+    <system:String x:Key="clothesContentTitle">Clothes</system:String>
+
+    <!--MapModelContent-->
+    <system:String x:Key="mapContentTitle">Map</system:String>
+
+    <!--MapModelNameContent-->
+    <system:String x:Key="mapModelNameContentTitle">Map Model</system:String>
+
+    <!--NpcContent-->
+    <system:String x:Key="npcContentTitle">NPC</system:String>
+
+    <!--WmoContent-->
+    <system:String x:Key="wmoContentTitle">WMO</system:String>
+    
+    <!--SetContent-->
+    <system:String x:Key="setContentTitle">Set</system:String>
+    
+    <!--StateContent-->
+    <system:String x:Key="stateContentTitle">State</system:String>
+    
+    <!--SpellVisualEffectContent-->
+    <system:String x:Key="spellVisualEffectContentTitle">SpellVisualEffect</system:String>
+
+    <!--WeaponContent-->
+    <system:String x:Key="weaponContentTitle">Weapon</system:String>
+    <system:String x:Key="weaponDagger">Dagger</system:String>
+    <system:String x:Key="weaponShield">Shield</system:String>
+    <system:String x:Key="weaponBow">Bow</system:String>
+    <system:String x:Key="weapon2Hand">2Hands</system:String>
+    <system:String x:Key="weaponLeftHand">Left Hand</system:String>
+    <system:String x:Key="weaponRightHand">Right Hand</system:String>
+    <system:String x:Key="weaponOther">Other</system:String>
+    <system:String x:Key="weaponGun">Gun/Wand</system:String>
+
+    <!--Property Content-->
+    <system:String x:Key="propertyContentTitle">Property</system:String>
+
+    <!--Animation Set-->
+    <system:String x:Key="titleAnimationSet">Animation Configuration</system:String>
+    
+    <!--EngineSetting-->
+    <system:String x:Key="engineSettingTitle">Engine Setting</system:String>
+    <system:String x:Key="video">Video</system:String>
+    <system:String x:Key="advanced">Advanced</system:String>
+    <system:String x:Key="audio">Audio</system:String>
+
+    <!--  VideoSetting  -->
+    <system:String x:Key="display">Display</system:String>
+    <system:String x:Key="displayMode">Display Mode</system:String>
+    <system:String x:Key="displayModeDescription">Allows you to change the primary display mode of the game to FullScreen, Windowed, or Windowed(Fullscreen). Windowed modes may cause a drop in performance</system:String>
+    <system:String x:Key="resolution">Resolution</system:String>
+    <system:String x:Key="resolutionDescription">Higher resolution will result in increased clarity, but this greatly affects performance. Choose a resolution that matches the aspect ratio of your monitor.</system:String>
+    <system:String x:Key="refreshRate">Refresh Rate</system:String>
+    <system:String x:Key="refreshRateDescription">Refers to the number of times the image is drawn to the monitor. Some players may see a flicker if the refresh rate is too low.</system:String>
+    <system:String x:Key="monitor">Monitor</system:String>
+    <system:String x:Key="monitorDescription">Allows you to change the primary monitor used by the display.</system:String>
+    <system:String x:Key="multisample">Multisampling</system:String>
+    <system:String x:Key="multisampleDescription">Increase multisampling to smooth out model edges. Increasing multisampling can severely reduce performance.</system:String>
+    <system:String x:Key="vsync">Vertical Sync</system:String>
+    <system:String x:Key="vsyncDescription">Synchronizes you framerate to some fraction of your monitor's refresh rate. Enable this if you see excessive screen tearing in game.</system:String>
+    <system:String x:Key="graphics">Graphics</system:String>
+    <system:String x:Key="texture">Textures</system:String>
+    <system:String x:Key="textureResolution">Texture Resolution</system:String>
+    <system:String x:Key="textureResolutionDescription">Controls the level of all texture detail. Decreasing the may slightly improve performance.</system:String>
+    <system:String x:Key="textureFilter">Texture Filtering</system:String>
+    <system:String x:Key="textureFilterDescription">Increases texture sharpness, particularly for textures viewed at an angle. Decrease to improve performance.</system:String>
+    <system:String x:Key="textureProjection">Projected Textures</system:String>
+    <system:String x:Key="textureProjectionDescription">Enables the projecting of textures to the environment. Disabling this may greatly improve performance.</system:String>
+    <system:String x:Key="environment">Environment</system:String>
+    <system:String x:Key="viewDistance">View Distance</system:String>
+    <system:String x:Key="viewDistanceDescription">View distance controls how far you can see. Larger view distances require more memory and a faster processor.</system:String>
+    <system:String x:Key="environmentDetail">Environment Detail</system:String>
+    <system:String x:Key="environmentDetailDescription">Controls how far you can see objects. Decrease to improve performance.</system:String>
+    <system:String x:Key="groundClutter">Ground Clutter</system:String>
+    <system:String x:Key="groundClutterDescription">Controls the density and the distance at which ground clutter items, like grass and foliage, are placed. Decrease to improve performance.</system:String>
+    <system:String x:Key="effect">Effects</system:String>
+    <system:String x:Key="shadowQuality">Shadow Quality</system:String>
+    <system:String x:Key="shadowQualityDescription">Controls both the method and quality of shadows. Decreasing this may greatly improve performance.</system:String>
+    <system:String x:Key="liquidDetail">Liquid Detail</system:String>
+    <system:String x:Key="liquidDetailDescription">Controls the rendering quality of liquid. Decreasing this may improve performance.</system:String>
+    <system:String x:Key="sunShafts">Sunshafts</system:String>
+    <system:String x:Key="sunShaftsDescription">Controls the method and quality used to display sunshaft and glare effects. Disabling this setting may improve performance.</system:String>
+    <system:String x:Key="particleDensity">Particle Density</system:String>
+    <system:String x:Key="particleDensityDescription">Controls the number of particles used in effects caused by spells, fires, etc. Decrease to improve performance.</system:String>
+    <system:String x:Key="ssao">SSAO</system:String>
+    <system:String x:Key="ssaoDescription">Controls the rendering quality of the ambient occlusion efect. Decreasing this may greatly improve performance.</system:String>
+
+    <system:String x:Key="on">On</system:String>
+    <system:String x:Key="off">Off</system:String>
+    <system:String x:Key="level1">Low</system:String>
+    <system:String x:Key="level2">Normal</system:String>
+    <system:String x:Key="level3">Good</system:String>
+    <system:String x:Key="level4">High</system:String>
+    <system:String x:Key="level5">Perfect</system:String>
+    <system:String x:Key="windowMode">Window</system:String>
+    <system:String x:Key="fullscreenMode">FullScreen</system:String>
+    <system:String x:Key="mainMonitor">Main Monitor</system:String>
+    <system:String x:Key="bilinear">Bilinear</system:String>
+    <system:String x:Key="trilinear">Trilinear</system:String>
+    <system:String x:Key="anisotropicX2">2XAnisotropic</system:String>
+    <system:String x:Key="anisotropicX4">4XAnisotropic</system:String>
+    <system:String x:Key="anisotropicX8">8XAnisotropic</system:String>
+    <system:String x:Key="anisotropicX16">16XAnisotropic</system:String>
+
+    <!--  AdvancedSetting  -->
+    <system:String x:Key="tripleBuffers">Triple Buffering</system:String>
+    <system:String x:Key="tripleBuffersDescription">Enable triple buffering of frames when vertical sync is enabled. Selecting triple buffering may even out frame rate spikes, but may also causes slight input lag.</system:String>
+    <system:String x:Key="reduceInputLag">Reduce Input Lag</system:String>
+    <system:String x:Key="reduceInputLagDescription">Enabling this reduces user interface lag, but may drastically reduce frame rates.</system:String>
+    <system:String x:Key="hardwareCursor">Hardware Cursor</system:String>
+    <system:String x:Key="hardwareCursorDescription">Enable this option for a more responsive cursor unless you have cursor problems.</system:String>
+    <system:String x:Key="graphicsInterface">Graphics API</system:String>
+    <system:String x:Key="graphicsInterfaceDescription">Selecting graphics API</system:String>
+    <system:String x:Key="requireReboot">Changing this option requires a client restart.</system:String>
+
+    <!--context menu-->
+    <system:String x:Key="allSelect">Select All</system:String>
+    <system:String x:Key="noneSelect">Select None</system:String>
+
+    <!--animation config-->
+    <system:String x:Key="gridRange">Frames Per Grid</system:String>
+
+</ResourceDictionary>

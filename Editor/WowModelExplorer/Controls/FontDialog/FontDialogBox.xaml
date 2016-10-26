@@ -1,0 +1,86 @@
+﻿<Window 
+    x:Class="FontDialog.FontDialogBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:FontDialog.Converters"
+    Title="{DynamicResource fontDialogTitle}"
+    Height="400"
+    Width="540"
+    MinHeight="300"
+    MinWidth="500"
+    WindowStyle="ToolWindow"
+    ResizeMode="CanResizeWithGrip"
+    WindowStartupLocation="CenterOwner" 
+    FocusManager.FocusedElement="{Binding ElementName=textBox}"
+    Background="{StaticResource WindowBackgroundBrush}">
+  
+<Grid>
+        <Grid.Resources>
+            <converters:FontFamilyConverter x:Key="familyConverter" />
+            <converters:FontStyleConverter x:Key="styleConverter" />
+            <converters:FontWeightConverter x:Key="weightConverter" />
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="10" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="10" />
+            <RowDefinition />
+            <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
+
+        <!-- Font Family -->
+        <Label Grid.Column="1" Grid.Row="1" Content="{DynamicResource fontFamily}"/>
+        <TextBox Name="fontFamilyTextBox" Grid.Column="1" Grid.Row="2" Text="{Binding ElementName=fontFamilyListBox,Path=SelectedItem}" TextChanged="fontFamilyTextBox_TextChanged" />
+        <ListBox Name="fontFamilyListBox" Grid.Column="1" Grid.Row="3" SelectedIndex="0"/>
+
+        <!-- Font Style -->
+        <Label Grid.Column="3" Grid.Row="1" Content="{DynamicResource fontStyle}"/>
+        <TextBox Name="fontStyleTextBox" Grid.Column="3" Grid.Row="2" Text="{Binding ElementName=fontStyleListBox,Path=SelectedItem}" TextChanged="fontStyleTextBox_TextChanged" />
+        <ListBox Name="fontStyleListBox" Grid.Column="3" Grid.Row="3" Padding="0,0,5,0" SelectedIndex="0" />
+
+        <!-- Font Weight -->
+        <Label Grid.Column="5" Grid.Row="1" Content="{DynamicResource fontWeight}"/>
+        <TextBox Name="fontWeightTextBox" Grid.Column="5" Grid.Row="2" Text="{Binding ElementName=fontWeightListBox,Path=SelectedItem}" TextChanged="fontWeightTextBox_TextChanged" />
+        <ListBox Name="fontWeightListBox" Grid.Column="5" Grid.Row="3" Padding="0,0,5,0" SelectedIndex="0" />
+
+        <!-- Preview -->
+    <GroupBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="5" Header="{DynamicResource fontPreview}">
+            <TextBlock VerticalAlignment="Center"
+                       FontFamily="{Binding ElementName=fontFamilyListBox,
+                                            Path=SelectedItem,
+                                            Converter={StaticResource familyConverter}}"
+                       FontStyle="{Binding ElementName=fontStyleListBox,
+                                           Path=SelectedItem,
+                                           Converter={StaticResource styleConverter}}"
+                       FontWeight="{Binding ElementName=fontWeightListBox,
+                                            Path=SelectedItem,
+                                            Converter={StaticResource weightConverter}}"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap">
+                The quick brown fox jumped over the lazy old brown dog.
+            </TextBlock>
+        </GroupBox>
+
+    <!-- Accept or Cancel -->
+    <StackPanel Grid.Column="7" Grid.Row="2" Grid.RowSpan="3">
+      <Button Height="25" Width="70" Name="okButton" Click="okButton_Click" Margin="0,0,0,5" IsDefault="True" Content="{DynamicResource ok}"/>
+      <Button Height="25" Width="70" Name="cancelButton" IsCancel="True" Content="{DynamicResource cancel}"/>
+    </StackPanel>
+
+  </Grid >
+
+</Window>

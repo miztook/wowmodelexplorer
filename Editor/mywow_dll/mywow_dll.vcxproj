@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6F8B5CAC-562E-44CE-A3D9-AACFCC306D10}</ProjectGuid>
+    <RootNamespace>mywow_dll</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\Main\mywow\interface;..\..\Main\mywow;..\..\Main\mywowclient;..\..\Main\mywowtool</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;AUTOMATIC_LINK;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x86\debug</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\Main\mywow\interface;..\..\Main\mywow;..\..\Main\mywowclient;..\..\Main\mywowtool</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN64;AUTOMATIC_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x64\debug</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\Main\mywow\interface;..\..\Main\mywow;..\..\Main\mywowclient;..\..\Main\mywowtool</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;AUTOMATIC_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x86\release</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\Main\mywow\interface;..\..\Main\mywow;..\..\Main\mywowclient;..\..\Main\mywowtool</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN64;AUTOMATIC_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x64\release</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="CEditM2SceneNode.h" />
+    <ClInclude Include="CEditMapTileSceneNode.h" />
+    <ClInclude Include="CEditSceneManager.h" />
+    <ClInclude Include="CEditWDTSceneNode.h" />
+    <ClInclude Include="CEditWMOSceneNode.h" />
+    <ClInclude Include="editor_AudioPlayer.h" />
+    <ClInclude Include="editor_Camera.h" />
+    <ClInclude Include="editor_Client.h" />
+    <ClInclude Include="editor_CoordSceneNode.h" />
+    <ClInclude Include="editor_DrawServices.h" />
+    <ClInclude Include="editor_Driver.h" />
+    <ClInclude Include="editor_engine.h" />
+    <ClInclude Include="editor_FileADT.h" />
+    <ClInclude Include="editor_fileWDT.h" />
+    <ClInclude Include="editor_FontServices.h" />
+    <ClInclude Include="editor_Function.h" />
+    <ClInclude Include="editor_m2Appearance.h" />
+    <ClInclude Include="editor_m2Fsm.h" />
+    <ClInclude Include="editor_m2Instance.h" />
+    <ClInclude Include="editor_m2Move.h" />
+    <ClInclude Include="editor_M2SceneNode.h" />
+    <ClInclude Include="editor_ManualMeshServices.h" />
+    <ClInclude Include="editor_MapTileSceneNode.h" />
+    <ClInclude Include="editor_mwTool.h" />
+    <ClInclude Include="editor_player.h" />
+    <ClInclude Include="editor_ResourceLoader.h" />
+    <ClInclude Include="editor_SceneEnvironment.h" />
+    <ClInclude Include="editor_SceneManager.h" />
+    <ClInclude Include="editor_SceneNode.h" />
+    <ClInclude Include="editor_structs.h" />
+    <ClInclude Include="editor_WDTSceneNode.h" />
+    <ClInclude Include="editor_WMOSceneNode.h" />
+    <ClInclude Include="editor_World.h" />
+    <ClInclude Include="editor_WowDatabase.h" />
+    <ClInclude Include="editor_base.h" />
+    <ClInclude Include="editor_WowEnvironment.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CEditM2SceneNode.cpp" />
+    <ClCompile Include="CEditMapTileSceneNode.cpp" />
+    <ClCompile Include="CEditSceneManager.cpp" />
+    <ClCompile Include="CEditWDTSceneNode.cpp" />
+    <ClCompile Include="CEditWMOSceneNode.cpp" />
+    <ClCompile Include="editor_AudioPlayer.cpp" />
+    <ClCompile Include="editor_Camera.cpp" />
+    <ClCompile Include="editor_Client.cpp" />
+    <ClCompile Include="editor_CoordSceneNode.cpp" />
+    <ClCompile Include="editor_DrawServices.cpp" />
+    <ClCompile Include="editor_Driver.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="editor_engine.cpp" />
+    <ClCompile Include="editor_FileADT.cpp" />
+    <ClCompile Include="editor_fileWDT.cpp" />
+    <ClCompile Include="editor_FontServices.cpp" />
+    <ClCompile Include="editor_Function.cpp" />
+    <ClCompile Include="editor_m2Appearance.cpp" />
+    <ClCompile Include="editor_m2Fsm.cpp" />
+    <ClCompile Include="editor_m2Instance.cpp" />
+    <ClCompile Include="editor_m2Move.cpp" />
+    <ClCompile Include="editor_ManualMeshServices.cpp" />
+    <ClCompile Include="editor_MapTileSceneNode.cpp" />
+    <ClCompile Include="editor_mwTool.cpp" />
+    <ClCompile Include="editor_player.cpp" />
+    <ClCompile Include="editor_ResourceLoader.cpp" />
+    <ClCompile Include="editor_SceneEnvironment.cpp" />
+    <ClCompile Include="editor_SceneManager.cpp" />
+    <ClCompile Include="editor_SceneNode.cpp" />
+    <ClCompile Include="editor_WDTSceneNode.cpp" />
+    <ClCompile Include="editor_WMOSceneNode.cpp" />
+    <ClCompile Include="editor_World.cpp" />
+    <ClCompile Include="editor_WowDatabase.cpp" />
+    <ClCompile Include="editor_M2SceneNode.cpp" />
+    <ClCompile Include="editor_WowEnvironment.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

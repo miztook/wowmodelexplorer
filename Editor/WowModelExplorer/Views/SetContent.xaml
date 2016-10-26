@@ -1,0 +1,20 @@
+﻿<ad:DockableContent x:Class="WowModelExplorer.Views.SetContent"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+                    xmlns:control="clr-namespace:WowModelExplorer.Controls"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    Title="{DynamicResource setContentTitle}"
+                    d:DesignHeight="500"
+                    d:DesignWidth="300"
+                    DockableStyle="DockableButNotAutoHidden"
+                    FocusManager.IsFocusScope="True"
+                    FontFamily="{DynamicResource WindowFontFamily}"
+                    FontStyle="{DynamicResource WindowFontStyle}"
+                    FontWeight="{DynamicResource WindowFontWeight}"
+                    mc:Ignorable="d">
+    <Border BorderBrush="{DynamicResource EdgeBorderBrush}" BorderThickness="1">
+        <control:SetSelect x:Name="_setSelect" />
+    </Border>
+</ad:DockableContent>

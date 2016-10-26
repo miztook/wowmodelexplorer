@@ -1,0 +1,583 @@
+﻿<UserControl x:Class="WowModelExplorer.Menus.ModelMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cmd="clr-namespace:WowModelExplorer.Commands"
+             xmlns:converters="clr-namespace:WowModelExplorer.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:w="clr-namespace:WowModelExplorer"
+             xmlns:wow="clr-namespace:mywowNet;assembly=mywowNet"
+             d:DesignHeight="30"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:DoubleToStringConverter x:Key="doubleToStringConverter" />
+    </UserControl.Resources>
+    <Menu FontFamily="{DynamicResource WindowFontFamily}"
+          FontStyle="{DynamicResource WindowFontStyle}"
+          FontWeight="{DynamicResource WindowFontWeight}"
+          UseLayoutRounding="True">
+        <MenuItem Header="{DynamicResource menuFile}">
+            <MenuItem Command="cmd:FileCommands.NewFile" Header="{DynamicResource newFile}" />
+            <MenuItem Command="cmd:FileCommands.OpenFile"
+                      CommandParameter="{x:Static w:OpenTypes.LoginScreen}"
+                      Header="{DynamicResource loginScreen}" />
+            <MenuItem Command="cmd:FileCommands.Exit" Header="{DynamicResource exit}" />
+        </MenuItem>
+        <MenuItem Header="{DynamicResource view}" SubmenuOpened="menuView_SubmenuOpened">
+            <MenuItem Name="menuViewCharacter"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.Character}"
+                      Header="{DynamicResource viewCharacter}" />
+            <MenuItem Name="menuViewNpc"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.Npc}"
+                      Header="{DynamicResource viewNpc}" />
+            <MenuItem Name="menuViewSpellVisualEffect"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.SpellVisualEffect}"
+                      Header="{DynamicResource viewSpellVisualEffect}" />
+            <!--
+                <MenuItem Name="menuViewMapModel"
+                Command="cmd:ViewCommands.View"
+                CommandParameter="{x:Static w:ModelViewTypes.MapModel}"
+                Header="{DynamicResource viewMap}" />
+            -->
+            <MenuItem Name="menuViewWmo"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.Wmo}"
+                      Header="{DynamicResource viewWmo}" />
+
+            <MenuItem Name="menuViewWorldM2"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.WorldM2}"
+                      Header="{DynamicResource viewWorldM2}" />
+            <Separator />
+            <MenuItem Name="menuViewClothes"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.Clothes}"
+                      Header="{DynamicResource viewClothes}" />
+            <MenuItem Name="menuViewWeapon"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.Weapon}"
+                      Header="{DynamicResource viewWeapon}" />
+            <MenuItem Name="menuViewSet"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.Set}"
+                      Header="{DynamicResource viewSet}" />
+            <MenuItem Name="menuViewRidable"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.Ridable}"
+                      Header="{DynamicResource viewRidable}" />
+            <!--
+                <MenuItem Name="menuViewMapModelName"
+                Command="cmd:ViewCommands.View"
+                CommandParameter="{x:Static w:ModelViewTypes.MapModelName}"
+                Header="{DynamicResource viewMapModel}" />
+            -->
+            <Separator />
+            <MenuItem Name="menuViewProperty"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.Property}"
+                      Header="{DynamicResource viewProperty}" />
+            <Separator />
+            <MenuItem Name="menuViewAnimation"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.Animation}"
+                      Header="{DynamicResource viewAnimation}" />
+            <MenuItem Name="menuViewM2State"
+                      Command="cmd:ViewCommands.View"
+                      CommandParameter="{x:Static w:ModelViewTypes.M2State}"
+                      Header="{DynamicResource viewM2State}" />
+        </MenuItem>
+        <MenuItem Header="{DynamicResource modelOperation}" SubmenuOpened="MenuOperation_SubmenuOpened">
+            <MenuItem Name="menuResetClothes" Header="{DynamicResource modelResetClothes}">
+                <MenuItem Name="menuResetClothes_All"
+                          Command="cmd:ModelOperationCommands.ResetClothesAll"
+                          Header="{DynamicResource clothesAll}" />
+                <MenuItem Name="menuResetClothes_Head"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_HEAD}"
+                          Header="{DynamicResource clothesHead}" />
+                <MenuItem Name="menuResetClothes_Shoulder"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_SHOULDER}"
+                          Header="{DynamicResource clothesShoulder}" />
+                <MenuItem Name="menuResetClothes_Shirt"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_SHIRT}"
+                          Header="{DynamicResource clothesShirt}" />
+                <MenuItem Name="menuResetClothes_Chest"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_CHEST}"
+                          Header="{DynamicResource clothesChest}" />
+                <MenuItem Name="menuResetClothes_Belt"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_BELT}"
+                          Header="{DynamicResource clothesBelt}" />
+                <MenuItem Name="menuResetClothes_Pants"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_PANTS}"
+                          Header="{DynamicResource clothesPants}" />
+                <MenuItem Name="menuResetClothes_Boots"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_BOOTS}"
+                          Header="{DynamicResource clothesBoots}" />
+                <MenuItem Name="menuResetClothes_Bracers"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_BRACERS}"
+                          Header="{DynamicResource clothesBracers}" />
+                <MenuItem Name="menuResetClothes_Gloves"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_GLOVES}"
+                          Header="{DynamicResource clothesGloves}" />
+                <MenuItem Name="menuResetClothes_Cape"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_CAPE}"
+                          Header="{DynamicResource clothesCape}" />
+                <MenuItem Name="menuResetClothes_Tabard"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_TABARD}"
+                          Header="{DynamicResource clothesTabard}" />
+            </MenuItem>
+            <MenuItem Name="menuResetWeapon" Header="{DynamicResource modelResetWeapon}">
+                <MenuItem Name="menuResetWeapon_All"
+                          Command="cmd:ModelOperationCommands.ResetWeaponAll"
+                          Header="{DynamicResource weaponAll}" />
+                <MenuItem Name="menuResetWeapon_Left"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_HAND_LEFT}"
+                          Header="{DynamicResource weaponLeft}" />
+                <MenuItem Name="menuResetWeapon_Right"
+                          Command="cmd:ModelOperationCommands.ResetSlot"
+                          CommandParameter="{x:Static wow:E_CHAR_SLOTS.CS_HAND_RIGHT}"
+                          Header="{DynamicResource weaponRight}" />
+            </MenuItem>
+            <MenuItem Name="menuModelScale" Header="{DynamicResource scale}">
+                <MenuItem Header="{DynamicResource editorSet}" SubmenuOpened="menuModelScale_SubmenuOpened">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="30" Text="{Binding ElementName=m2SliderScale, Path=Value, Converter={StaticResource doubleToStringConverter}}" />
+                        <Slider Name="m2SliderScale"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="0.5"
+                                Maximum="5"
+                                Minimum="0.1"
+                                Orientation="Horizontal"
+                                SmallChange="0.1"
+                                TickFrequency="0.1"
+                                Value="1" />
+                    </StackPanel>
+                </MenuItem>
+                <MenuItem Click="M2ScaleDefault_Click" Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Name="menuModelOpacity" Header="{DynamicResource opacity}">
+                <MenuItem Header="{DynamicResource editorSet}" SubmenuOpened="menuModelOpacity_SubmenuOpened">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="30" Text="{Binding ElementName=m2SliderOpacity, Path=Value, Converter={StaticResource doubleToStringConverter}}" />
+                        <Slider Name="m2SliderOpacity"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="0.1"
+                                Maximum="1"
+                                Minimum="0"
+                                Orientation="Horizontal"
+                                SmallChange="0.05"
+                                TickFrequency="0.05"
+                                Value="1" />
+                    </StackPanel>
+                </MenuItem>
+                <MenuItem Click="M2OpacityDefault_Click" Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Name="menuModelColor" Header="{DynamicResource modelColor}">
+                <MenuItem Command="cmd:ModelOperationCommands.ModelColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:ModelOperationCommands.ModelColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Name="menuOperationGeosets"
+                      Command="cmd:ModelOperationCommands.GeosetsWindow"
+                      Header="{DynamicResource modelGeosets}" />
+            <MenuItem Name="menuOperationAttachments"
+                      Command="cmd:ModelOperationCommands.AttachmentsWindow"
+                      Header="{DynamicResource modelAttachments}" />
+            <MenuItem Name="menuOperationEquipments"
+                      Command="cmd:ModelOperationCommands.ModelEquipments"
+                      Header="{DynamicResource modelEquipments}" />
+            <!-- <MenuItem Name="menuOperationEquipmentSelect" -->
+                      <!--                       Command="cmd:ModelOperationCommands.ModelEquipmentSelect" -->
+                      <!--                       Header="{DynamicResource modelEquipmentSelect}" / -->
+            <MenuItem Name="menuOperationCharacterInfo"
+                      Command="cmd:ModelOperationCommands.CharacterInfo"
+                      Header="{DynamicResource characterInfo}" />
+            <!--
+                <MenuItem Name="menuOperationArmory"
+                Command="cmd:ModelOperationCommands.ModelArmory"
+                Header="{DynamicResource modelArmory}" />
+            -->
+            <Separator />
+            <MenuItem Name="menuM2ExportObj"
+                      Command="cmd:ModelOperationCommands.ExportObj"
+                      Header="{DynamicResource m2ExportObj}" />
+        </MenuItem>
+        <MenuItem Name="menuEditView"
+                  Header="{DynamicResource modelView}"
+                  SubmenuOpened="menuEditView_SubmenuOpened">
+            <MenuItem Name="menuShowModel"
+                      Command="cmd:ModelEditViewCommands.ShowEditPart"
+                      CommandParameter="{x:Static wow:E_MODEL_EDIT_PART.EEP_MODEL}"
+                      Header="{DynamicResource showModel}" />
+            <MenuItem Header="{DynamicResource showOtherModel}" SubmenuOpened="ShowOtherModel_SubmenuOpened">
+                <MenuItem Name="menuShowHelm"
+                          Command="cmd:ModelEditViewCommands.ShowModelPart"
+                          CommandParameter="{x:Static wow:E_MODEL_PART.EMP_HEAD}"
+                          Header="{DynamicResource clothesHead}" />
+                <MenuItem Name="menuShowCape"
+                          Command="cmd:ModelEditViewCommands.ShowModelPart"
+                          CommandParameter="{x:Static wow:E_MODEL_PART.EMP_CAPE}"
+                          Header="{DynamicResource clothesCape}" />
+                <MenuItem Name="menuShowShoulder"
+                          Command="cmd:ModelEditViewCommands.ShowModelPart"
+                          CommandParameter="{x:Static wow:E_MODEL_PART.EMP_SHOULDER}"
+                          Header="{DynamicResource clothesShoulder}" />
+                <MenuItem Name="menuShowLeftHand"
+                          Command="cmd:ModelEditViewCommands.ShowModelPart"
+                          CommandParameter="{x:Static wow:E_MODEL_PART.EMP_LEFTHAND}"
+                          Header="{DynamicResource weaponLeft}" />
+                <MenuItem Name="menuShowRightHand"
+                          Command="cmd:ModelEditViewCommands.ShowModelPart"
+                          CommandParameter="{x:Static wow:E_MODEL_PART.EMP_RIGHTHAND}"
+                          Header="{DynamicResource weaponRight}" />
+            </MenuItem>
+            <MenuItem Name="menuShowParticles"
+                      Command="cmd:ModelEditViewCommands.ShowEditPart"
+                      CommandParameter="{x:Static wow:E_MODEL_EDIT_PART.EEP_PARTICLES}"
+                      Header="{DynamicResource showParticles}" />
+            <MenuItem Name="menuShowBoundingBox"
+                      Command="cmd:ModelEditViewCommands.ShowEditPart"
+                      CommandParameter="{x:Static wow:E_MODEL_EDIT_PART.EEP_BOUNDINGBOX}"
+                      Header="{DynamicResource showBoundingBox}" />
+            <MenuItem Name="menuShowBones"
+                      Command="cmd:ModelEditViewCommands.ShowEditPart"
+                      CommandParameter="{x:Static wow:E_MODEL_EDIT_PART.EEP_BONES}"
+                      Header="{DynamicResource showBones}" />
+            <MenuItem Name="menuShowBoundingAABox"
+                      Command="cmd:ModelEditViewCommands.ShowEditPart"
+                      CommandParameter="{x:Static wow:E_MODEL_EDIT_PART.EEP_BOUNDINGAABOX}"
+                      Header="{DynamicResource showBoundingAABox}" />
+            <MenuItem Name="menuShowCollisionAABox"
+                      Command="cmd:ModelEditViewCommands.ShowEditPart"
+                      CommandParameter="{x:Static wow:E_MODEL_EDIT_PART.EEP_COLLISIONAABOX}"
+                      Header="{DynamicResource showCollisionAABox}" />
+            <MenuItem Header="{DynamicResource wireframeMode}" SubmenuOpened="menuModelWireframe_SubmenuOpened">
+                <MenuItem Name="menuModelWireFrameNone"
+                          Command="cmd:ModelEditViewCommands.WireFrame"
+                          CommandParameter="{x:Static wow:E_OVERRIDE_WIREFRAME.EOW_NONE}"
+                          Header="{DynamicResource wireframeNone}" />
+                <MenuItem Name="menuModelWireFrameOnly"
+                          Command="cmd:ModelEditViewCommands.WireFrame"
+                          CommandParameter="{x:Static wow:E_OVERRIDE_WIREFRAME.EOW_WIREFRAME}"
+                          Header="{DynamicResource wireframeOnly}" />
+                <MenuItem Name="menuModelWireFrameSolid"
+                          Command="cmd:ModelEditViewCommands.WireFrame"
+                          CommandParameter="{x:Static wow:E_OVERRIDE_WIREFRAME.EOW_WIREFRAME_SOLID}"
+                          Header="{DynamicResource wireframeSolid}" />
+                <MenuItem Name="menuModelWireFrameOneColor"
+                          Command="cmd:ModelEditViewCommands.WireFrame"
+                          CommandParameter="{x:Static wow:E_OVERRIDE_WIREFRAME.EOW_WIREFRAME_ONECOLOR}"
+                          Header="{DynamicResource wireframeOneColor}" />
+            </MenuItem>
+            <MenuItem Name="menuModelSheathWeapon"
+                      Command="cmd:ModelEditViewCommands.SheathWeapon"
+                      Header="{DynamicResource modelSheathWeapon}" />
+            <MenuItem Name="menuModelStateMode"
+                      Command="cmd:ModelEditViewCommands.StateMode"
+                      Header="{DynamicResource stateMode}" />
+
+        </MenuItem>
+        <MenuItem Name="menuWmoOperation"
+                  Header="{DynamicResource wmoOperation}"
+                  SubmenuOpened="menuWmoOperation_SubmenuOpened">
+            <MenuItem Name="menuWmoScale" Header="{DynamicResource scale}">
+                <MenuItem Header="{DynamicResource editorSet}" SubmenuOpened="menuWmoScale_SubmenuOpened">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="30" Text="{Binding ElementName=wmoSliderScale, Path=Value, Converter={StaticResource doubleToStringConverter}}" />
+                        <Slider Name="wmoSliderScale"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                IsSnapToTickEnabled="True"
+                                LargeChange="0.5"
+                                Maximum="5"
+                                Minimum="0.1"
+                                Orientation="Horizontal"
+                                SmallChange="0.1"
+                                TickFrequency="0.1"
+                                Value="1" />
+                    </StackPanel>
+                </MenuItem>
+                <MenuItem Click="WmoScaleDefault_Click" Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Name="menuWmoGroups"
+                      Command="cmd:WmoOperationCommands.GroupsWindow"
+                      Header="{DynamicResource wmoGroups}" />
+            <MenuItem Name="menuWmoPortals"
+                      Command="cmd:WmoOperationCommands.PortalsWindow"
+                      Header="{DynamicResource wmoPortals}" />
+            <Separator />
+            <MenuItem Name="menuWmoExportObj"
+                      Command="cmd:WmoOperationCommands.ExportObj"
+                      Header="{DynamicResource wmoExportObj}" />
+        </MenuItem>
+        <MenuItem Name="menuWmoView"
+                  Header="{DynamicResource wmoView}"
+                  SubmenuOpened="menuWmoView_SubmenuOpened">
+            <MenuItem Name="menuWmoShowWMO"
+                      Command="cmd:WmoEditViewCommands.ShowEditPart"
+                      CommandParameter="{x:Static wow:E_WMO_EDIT_PART.EEP_WMO}"
+                      Header="{DynamicResource showWMO}" />
+            <MenuItem Header="{DynamicResource wireframeMode}" SubmenuOpened="menuWmoWireframe_SubmenuOpened">
+                <MenuItem Name="menuWmoWireFrameNone"
+                          Command="cmd:WmoEditViewCommands.WireFrame"
+                          CommandParameter="{x:Static wow:E_OVERRIDE_WIREFRAME.EOW_NONE}"
+                          Header="{DynamicResource wireframeNone}" />
+                <MenuItem Name="menuWmoWireFrameOnly"
+                          Command="cmd:WmoEditViewCommands.WireFrame"
+                          CommandParameter="{x:Static wow:E_OVERRIDE_WIREFRAME.EOW_WIREFRAME}"
+                          Header="{DynamicResource wireframeOnly}" />
+                <MenuItem Name="menuWmoWireFrameSolid"
+                          Command="cmd:WmoEditViewCommands.WireFrame"
+                          CommandParameter="{x:Static wow:E_OVERRIDE_WIREFRAME.EOW_WIREFRAME_SOLID}"
+                          Header="{DynamicResource wireframeSolid}" />
+                <MenuItem Name="menuWmoWireFrameOneColor"
+                          Command="cmd:WmoEditViewCommands.WireFrame"
+                          CommandParameter="{x:Static wow:E_OVERRIDE_WIREFRAME.EOW_WIREFRAME_ONECOLOR}"
+                          Header="{DynamicResource wireframeOneColor}" />
+            </MenuItem>
+        </MenuItem>
+        <MenuItem Name="menuOption"
+                  Header="{DynamicResource editorOption}"
+                  SubmenuOpened="menuEditorOption_SubmenuOpened">
+            <MenuItem Header="{DynamicResource editorSettings}" SubmenuOpened="menuOptionSettings_SubmenuOpened">
+                <MenuItem Name="menuOptionLineZTest"
+                          Command="cmd:OptionCommands.Settings"
+                          CommandParameter="{x:Static w:EditorSettings.LineZTest}"
+                          Header="{DynamicResource editorLineZTest}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorBkgroundImage}">
+                <MenuItem Command="cmd:OptionCommands.BackgroundImage"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.BackgroundImage"
+                          CommandParameter="{x:Static w:EditorSetOptions.None}"
+                          Header="{DynamicResource editorNone}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorBkgroundColor}">
+                <MenuItem Command="cmd:OptionCommands.BackgroundColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.BackgroundColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorEdgeBorderColor}">
+                <MenuItem Command="cmd:OptionCommands.EdgeBorderColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.EdgeBorderColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorFont}">
+                <MenuItem Command="cmd:OptionCommands.EditorFont"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.EditorFont"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorFontColor}">
+                <MenuItem Command="cmd:OptionCommands.EditorFontColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Set}"
+                          Header="{DynamicResource editorSet}" />
+                <MenuItem Command="cmd:OptionCommands.EditorFontColor"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorShowHide}" SubmenuOpened="menuOptionShowHide_SubmenuOpened">
+                <MenuItem Name="menuOptionShowBaseInfo"
+                          Command="cmd:OptionCommands.ShowOption"
+                          CommandParameter="{x:Static w:EditorShowOptions.DebugText}"
+                          Header="{DynamicResource editorBasicInfo}" />
+                <MenuItem Name="menuOptionShowGeosets"
+                          Command="cmd:OptionCommands.ShowOption"
+                          CommandParameter="{x:Static w:EditorShowOptions.DebugGeosets}"
+                          Header="{DynamicResource editorGeosets}" />
+                <MenuItem Name="menuOptionShowPlane"
+                          Command="cmd:OptionCommands.ShowOption"
+                          CommandParameter="{x:Static w:EditorShowOptions.Plane}"
+                          Header="{DynamicResource editorPlane}" />
+                <MenuItem Name="menuOptionShowCoord"
+                          Command="cmd:OptionCommands.ShowOption"
+                          CommandParameter="{x:Static w:EditorShowOptions.Coord}"
+                          Header="{DynamicResource editorCoord}" />
+                <MenuItem Name="menuOptionShowLightCoord"
+                          Command="cmd:OptionCommands.ShowOption"
+                          CommandParameter="{x:Static w:EditorShowOptions.LightCoord}"
+                          Header="{DynamicResource editorLightCoord}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource editorBackMusic}" SubmenuOpened="menuOptionBackMusic_SubmenuOpened">
+                <MenuItem Name="menuOptionBackMusicNone"
+                          Command="cmd:OptionCommands.BackMusic"
+                          CommandParameter="{x:Static w:BackMusicFiles.None}"
+                          Header="{DynamicResource editorBGMNone}" />
+                <MenuItem Header="{DynamicResource editorBGMTheme}" SubmenuOpened="menuThemeMusic_SubmenuOpened">
+                    <MenuItem Name="menuOptionBackMusicMainTiltle"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.MainTitle}"
+                              Header="{DynamicResource editorBGMMainTitle}" />
+                    <MenuItem Name="menuOptionBackMusicWotLK"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.WotLK}"
+                              Header="{DynamicResource editorBGMWotLK}" />
+                    <MenuItem Name="menuOptionBackMusicCataclysm"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Cataclysm}"
+                              Header="{DynamicResource editorBGMCTM}" />
+                    <MenuItem Name="menuOptionBackMusicPandaria"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Pandaria}"
+                              Header="{DynamicResource editorBGMMOP}" />
+                    <MenuItem Name="menuOptionBackMusicDraenor"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Draenor}"
+                              Header="{DynamicResource editorBGMWOD}" />
+                    <MenuItem Name="menuOptionBackMusicHighBorne"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.HighBorne}"
+                              Header="{DynamicResource editorBGMHighBorne}" />
+                    <MenuItem Name="menuOptionBackMusicGarrosh"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Garrosh}"
+                              Header="{DynamicResource editorBGMGarrosh}" />
+                </MenuItem>
+                <MenuItem Header="{DynamicResource editorBGMCity}" SubmenuOpened="menuCityMusic_SubmenuOpened">
+                    <MenuItem Name="menuOptionBackMusicStormwind"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Stormwind}"
+                              Header="{DynamicResource editorBGMStormwind}" />
+                    <MenuItem Name="menuOptionBackMusicDarnassus"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Darnassus}"
+                              Header="{DynamicResource editorBGMDarnassus}" />
+                    <MenuItem Name="menuOptionBackMusicIronforge"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Ironforge}"
+                              Header="{DynamicResource editorBGMIronforge}" />
+                    <MenuItem Name="menuOptionBackMusicOrgrimmar"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Orgrimmar}"
+                              Header="{DynamicResource editorBGMOrgrimmar}" />
+                    <MenuItem Name="menuOptionBackMusicUndercity"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Undercity}"
+                              Header="{DynamicResource editorBGMUndercity}" />
+                    <MenuItem Name="menuOptionBackMusicThunderbluff"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Thunderbluff}"
+                              Header="{DynamicResource editorBGMThunderbluff}" />
+                    <MenuItem Name="menuOptionBackMusicSilvermoon"
+                              Command="cmd:OptionCommands.BackMusic"
+                              CommandParameter="{x:Static w:BackMusicFiles.Silvermoon}"
+                              Header="{DynamicResource editorBGMSilvermoon}" />
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Name="menuOptionAccelerate"
+                      Command="cmd:OptionCommands.Accelerate"
+                      Header="{DynamicResource acclerateWindow}" />
+        </MenuItem>
+        <MenuItem Header="{DynamicResource engineOption}" SubmenuOpened="menuEngineOption_SubmenuOpened">
+            <MenuItem Command="cmd:SettingCommands.EngineSetting" Header="{DynamicResource engineSetting}" />
+            <MenuItem Header="{DynamicResource cameraPosition}">
+                <MenuItem Command="cmd:SettingCommands.CameraPosition"
+                          CommandParameter="{x:Static w:EditorSetOptions.Default}"
+                          Header="{DynamicResource editorDefault}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource cameraSpeed}" SubmenuOpened="menuSettingCameraSpeed_SubmenuOpened">
+                <MenuItem Name="menuSettingCameraSpeedLowest"
+                          Command="cmd:SettingCommands.CameraSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Lowest}"
+                          Header="{DynamicResource speedLowest}" />
+                <MenuItem Name="menuSettingCameraSpeedLow"
+                          Command="cmd:SettingCommands.CameraSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Low}"
+                          Header="{DynamicResource speedLow}" />
+                <MenuItem Name="menuSettingCameraSpeedMedium"
+                          Command="cmd:SettingCommands.CameraSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Medium}"
+                          Header="{DynamicResource speedMedium}" />
+                <MenuItem Name="menuSettingCameraSpeedHigh"
+                          Command="cmd:SettingCommands.CameraSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.High}"
+                          Header="{DynamicResource speedHigh}" />
+                <MenuItem Name="menuSettingCameraSpeedHighest"
+                          Command="cmd:SettingCommands.CameraSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Highest}"
+                          Header="{DynamicResource speedHighest}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource cameraMode}" SubmenuOpened="menuSettingCameraModes_SubmenuOpened">
+                <MenuItem Name="menuSettingCameraModesFPS"
+                          Command="cmd:SettingCommands.CameraMode"
+                          CommandParameter="{x:Static w:CameraModes.FPS}"
+                          Header="{DynamicResource cameraFPS}" />
+                <MenuItem Name="menuSettingCameraModesMaya"
+                          Command="cmd:SettingCommands.CameraMode"
+                          CommandParameter="{x:Static w:CameraModes.Maya}"
+                          Header="{DynamicResource cameraMaya}" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource wheelSpeed}" SubmenuOpened="menuSettingWheelSpeed_SubmenuOpened">
+                <MenuItem Name="menuSettingWheelSpeedOff"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Off}"
+                          Header="{DynamicResource off}" />
+                <MenuItem Name="menuSettingWheelSpeedLowest"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Lowest}"
+                          Header="{DynamicResource speedLowest}" />
+                <MenuItem Name="menuSettingWheelSpeedLow"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Low}"
+                          Header="{DynamicResource speedLow}" />
+                <MenuItem Name="menuSettingWheelSpeedMedium"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Medium}"
+                          Header="{DynamicResource speedMedium}" />
+                <MenuItem Name="menuSettingWheelSpeedHigh"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.High}"
+                          Header="{DynamicResource speedHigh}" />
+                <MenuItem Name="menuSettingWheelSpeedHighest"
+                          Command="cmd:SettingCommands.WheelSpeed"
+                          CommandParameter="{x:Static w:NumSetOptions.Highest}"
+                          Header="{DynamicResource speedHighest}" />
+            </MenuItem>
+            <MenuItem Name="menuSettingGameMode"
+                      Command="cmd:SettingCommands.GameMode"
+                      Header="{DynamicResource gameMode}" />
+        </MenuItem>
+        <MenuItem Header="{DynamicResource languages}" SubmenuOpened="menuLanguages_SubmenuOpend">
+            <MenuItem Name="menuLanguagesChinese"
+                      Command="cmd:LanguageCommands.SetLanguage"
+                      CommandParameter="{x:Static w:Languages.Chinese}"
+                      Header="{DynamicResource chinese}" />
+            <MenuItem Name="menuLanguagesEnglish"
+                      Command="cmd:LanguageCommands.SetLanguage"
+                      CommandParameter="{x:Static w:Languages.English}"
+                      Header="{DynamicResource english}" />
+        </MenuItem>
+    </Menu>
+
+</UserControl>

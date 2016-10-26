@@ -1,0 +1,74 @@
+﻿<Window x:Class="WowModelExplorer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+        xmlns:cmd="clr-namespace:WowModelExplorer.Commands"
+        xmlns:menu="clr-namespace:WowModelExplorer.Menus"
+        xmlns:v="clr-namespace:WowModelExplorer.Views"
+        xmlns:w="clr-namespace:WowModelExplorer"
+        Title="WowModelExplorer (wow version 6.2)"
+        Width="1024"
+        Height="768"
+        Icon="{StaticResource WowIcon}">
+    <Window.InputBindings>
+        <KeyBinding Key="F1" Command="cmd:AnimationCommands.Play" />
+        <KeyBinding Key="F2" Command="cmd:AnimationCommands.Step" />
+        <KeyBinding Key="F3" Command="cmd:AnimationCommands.Pause" />
+        <KeyBinding Key="F4" Command="cmd:AnimationCommands.Stop" />
+
+        <KeyBinding Key="F5" Command="cmd:ModelEditViewCommands.SheathWeapon" />
+    </Window.InputBindings>
+
+    <DockPanel LastChildFill="true">
+        <!--  menu  -->
+        <menu:ModelMenu x:Name="_modelMenu" DockPanel.Dock="Top" />
+
+        <!--  docking manager  -->
+        <ad:DockingManager x:Name="_dockManager" IsAnimationEnabled="True">
+            <ad:ResizingPanel FocusManager.IsFocusScope="True" Orientation="Horizontal">
+                <ad:DockablePane x:Name="_leftDockablePane" ad:ResizingPanel.ResizeWidth="0">
+                    <v:SpellVisualEffectContent x:Name="_spellVisualEffectContent" />
+                    <v:NpcContent x:Name="_npcContent" />
+                    <v:CharacterContent x:Name="_characterContent" />
+                    <v:MapModelContent x:Name="_mapModelContent" />
+                    <v:WmoContent x:Name="_wmoContent" />
+                    <v:WorldM2Content x:Name="_worldM2Content" />
+                </ad:DockablePane>
+
+                <ad:ResizingPanel FocusManager.IsFocusScope="True" Orientation="Vertical">
+                    <!--  Main Content  -->
+                    <ad:DocumentPane Name="_documentPane" ShowHeader="False">
+                        <ad:DocumentContent IsCloseable="false">
+                            <Border Name="_controlHostElement" />
+                        </ad:DocumentContent>
+                    </ad:DocumentPane>
+
+                    <ad:ResizingPanel x:Name="_bottomPanel"
+                                      ad:ResizingPanel.ResizeHeight="0"
+                                      FocusManager.IsFocusScope="True"
+                                      Orientation="Horizontal">
+                        <ad:DockablePane x:Name="_bottomDockablePane">
+                            <v:AnimationContent x:Name="_animationContent" />
+                        </ad:DockablePane>
+                        <ad:DockablePane x:Name="_bottom2DockablePane">
+                            <v:M2StateContent x:Name="_m2StateContent" />
+                        </ad:DockablePane>
+                    </ad:ResizingPanel>
+
+                </ad:ResizingPanel>
+
+                <ad:DockablePane x:Name="_right2DockablePane" ad:ResizingPanel.ResizeWidth="0">
+                    <v:PropertyContent x:Name="_propertyContent" />
+                </ad:DockablePane>
+                <ad:DockablePane x:Name="_rightDockablePane" ad:ResizingPanel.ResizeWidth="0">
+                    <v:MapModelNameContent x:Name="_mapModelNameContent" />
+                    <v:ClothesContent x:Name="_clothesContent" />
+                    <v:WeaponContent x:Name="_weaponContent" />
+                    <v:SetContent x:Name="_setContent" />
+                    <v:RidableContent x:Name="_ridableContent" />
+                </ad:DockablePane>
+            </ad:ResizingPanel>
+
+        </ad:DockingManager>
+    </DockPanel>
+</Window>

@@ -1,0 +1,49 @@
+﻿<Window x:Class="WowModelExplorer.Controls.M2AttachmentsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:data="clr-namespace:mywowNet.Data;assembly=mywowNet"
+        Title="{DynamicResource attachmentsWindow}"
+        Width="350"
+        Height="500"
+        FontFamily="{DynamicResource WindowFontFamily}"
+        FontStyle="{DynamicResource WindowFontStyle}"
+        FontWeight="{DynamicResource WindowFontWeight}">
+    <Grid Name="_mainGrid">
+        <Grid.Resources>
+            <data:M2AttachmentCollection x:Key="_attachments" />
+
+            <DataTemplate x:Key="CheckCell">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding Path=Visible, Mode=TwoWay}" />
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
+
+        <ListView Name="_listView"
+                  Grid.Row="1"
+                  ItemsSource="{Binding Source={StaticResource _attachments},
+                                        Mode=OneTime}" >
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding Path=Index}">
+                        <GridViewColumnHeader Click="GridViewColumnHeader_Click"
+                                              Content="{DynamicResource index}"
+                                              Tag="Index" />
+                    </GridViewColumn>
+                 
+                    <GridViewColumn Width="100" CellTemplate="{StaticResource CheckCell}">
+                        <GridViewColumnHeader Content="{DynamicResource visible}">
+                            <GridViewColumnHeader.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Click="VisibleAllSelect_Click" Header="{DynamicResource allSelect}" />
+                                    <MenuItem Click="VisibleNoneSelect_Click" Header="{DynamicResource noneSelect}" />
+                                </ContextMenu>
+                            </GridViewColumnHeader.ContextMenu>
+                        </GridViewColumnHeader>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>

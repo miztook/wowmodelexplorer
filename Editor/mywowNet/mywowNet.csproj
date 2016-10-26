@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{33199A67-2419-4FCC-9DFE-9DDDC9237C86}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>mywowNet</RootNamespace>
+    <AssemblyName>mywowNet</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\Windows\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisLogFile>..\..\Debug\mywowNet.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\..\Windows\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisLogFile>..\..\Release\mywowNet.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\Windows\Win32\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>..\..\Debug\mywowNet.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\Windows\Win32\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>..\..\Release\mywowNet.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AudioPlayer.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="CoordSceneNode.cs" />
+    <Compile Include="Data\Adt.cs" />
+    <Compile Include="Data\CharFeature.cs" />
+    <Compile Include="Data\Entry.cs" />
+    <Compile Include="Data\Item.cs" />
+    <Compile Include="Data\M2Attachment.cs" />
+    <Compile Include="Data\M2Geoset.cs" />
+    <Compile Include="Data\M2Item.cs" />
+    <Compile Include="Data\M2State.cs" />
+    <Compile Include="Data\Map.cs" />
+    <Compile Include="Data\Npc.cs" />
+    <Compile Include="Data\RaceInfo.cs" />
+    <Compile Include="Data\Ridable.cs" />
+    <Compile Include="Data\Set.cs" />
+    <Compile Include="Data\SlotItem.cs" />
+    <Compile Include="Data\SpellVisualEffect.cs" />
+    <Compile Include="Data\StartOutfitClass.cs" />
+    <Compile Include="Data\WmoGroup.cs" />
+    <Compile Include="Data\WmoPortal.cs" />
+    <Compile Include="DrawServices.cs" />
+    <Compile Include="Driver.cs" />
+    <Compile Include="Engine.cs" />
+    <Compile Include="Extension.cs" />
+    <Compile Include="FileADT.cs" />
+    <Compile Include="FileWDT.cs" />
+    <Compile Include="FontServices.cs" />
+    <Compile Include="Function.cs" />
+    <Compile Include="IAnimationPlayer.cs" />
+    <Compile Include="INative.cs" />
+    <Compile Include="M2Appearance.cs" />
+    <Compile Include="M2Fsm.cs" />
+    <Compile Include="M2Instance.cs" />
+    <Compile Include="M2Move.cs" />
+    <Compile Include="M2SceneNode.cs" />
+    <Compile Include="ManualMeshServices.cs" />
+    <Compile Include="MapTileSceneNode.cs" />
+    <Compile Include="matrix4.cs" />
+    <Compile Include="MeshSceneNode.cs" />
+    <Compile Include="mwTool.cs" />
+    <Compile Include="NewMath.cs" />
+    <Compile Include="PInvokes\AudioPlayer_Native.cs" />
+    <Compile Include="PInvokes\Camera_Native.cs" />
+    <Compile Include="PInvokes\Client_Native.cs" />
+    <Compile Include="PInvokes\CoordSceneNode_Native.cs" />
+    <Compile Include="PInvokes\DrawServices_Native.cs" />
+    <Compile Include="PInvokes\Driver_Native.cs" />
+    <Compile Include="PInvokes\Engine_Native.cs" />
+    <Compile Include="PInvokes\FileADT_Native.cs" />
+    <Compile Include="PInvokes\FileWDT_Native.cs" />
+    <Compile Include="PInvokes\FontServices_Native.cs" />
+    <Compile Include="PInvokes\Function_Native.cs" />
+    <Compile Include="PInvokes\M2Appearance_Native.cs" />
+    <Compile Include="PInvokes\M2Fsm_Native.cs" />
+    <Compile Include="PInvokes\M2Instance_Native.cs" />
+    <Compile Include="PInvokes\M2Move_Native.cs" />
+    <Compile Include="PInvokes\M2SceneNode_Native.cs" />
+    <Compile Include="PInvokes\ManualMeshServices_Native.cs" />
+    <Compile Include="PInvokes\MapTileSceneNode_Native.cs" />
+    <Compile Include="PInvokes\myTool_Native.cs" />
+    <Compile Include="PInvokes\Player_Native.cs" />
+    <Compile Include="PInvokes\ResourceLoader_Native.cs" />
+    <Compile Include="PInvokes\SceneEnvironment_Native.cs" />
+    <Compile Include="PInvokes\SceneManager_Native.cs" />
+    <Compile Include="PInvokes\SceneNode_Native.cs" />
+    <Compile Include="PInvokes\WDTSceneNode_Native.cs" />
+    <Compile Include="PInvokes\WMOSceneNode_Native.cs" />
+    <Compile Include="PInvokes\World_Native.cs" />
+    <Compile Include="PInvokes\WowDatabase_Native.cs" />
+    <Compile Include="PInvokes\WowEnvironment_Native.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="ResourceLoader.cs" />
+    <Compile Include="SceneEnvironment.cs" />
+    <Compile Include="SceneManager.cs" />
+    <Compile Include="SceneNode.cs" />
+    <Compile Include="Structs.cs" />
+    <Compile Include="TreeFile.cs" />
+    <Compile Include="vector3df.cs" />
+    <Compile Include="WDTSceneNode.cs" />
+    <Compile Include="WMOSceneNode.cs" />
+    <Compile Include="World.cs" />
+    <Compile Include="WowDatabase.cs" />
+    <Compile Include="WowEnvironment.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

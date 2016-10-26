@@ -1,0 +1,31 @@
+﻿<ad:DockableContent x:Class="WowModelExplorer.Views.PropertyContent"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:pg="http://schemas.denisvuyka.wordpress.com/wpfpropertygrid"
+                    xmlns:prop="clr-namespace:WowModelExplorer.Props"
+                    d:DesignHeight="400"
+                    d:DesignWidth="300"
+                    Title="{DynamicResource propertyContentTitle}"
+                    DockableStyle="DockableButNotAutoHidden"
+                    FocusManager.IsFocusScope="True"
+                    FontFamily="{DynamicResource WindowFontFamily}"
+                    FontStyle="{DynamicResource WindowFontStyle}"
+                    FontWeight="{DynamicResource WindowFontWeight}"
+                    mc:Ignorable="d">
+    <Grid Name="_mainGrid">        
+        <Border BorderBrush="{DynamicResource EdgeBorderBrush}" BorderThickness="1">
+            <pg:PropertyGrid x:Name="_propertyGrid"
+                             ItemsBackground="{StaticResource DarkBackBrush}"
+                             Background="{StaticResource NormalBrush}"
+                             PropertyDisplayMode="Native"
+                             ShowReadOnlyProperties="True">
+                <pg:PropertyGrid.Layout>
+                    <pg:CategorizedLayout/>
+                </pg:PropertyGrid.Layout>
+            </pg:PropertyGrid>
+        </Border>
+    </Grid>
+</ad:DockableContent>
