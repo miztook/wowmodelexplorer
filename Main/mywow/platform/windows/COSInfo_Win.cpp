@@ -14,11 +14,12 @@ COSInfo::COSInfo(float version)
 
 	OSName = "Windows";
 
-#ifdef MW_PLATFORM_64BIT
-	OSName.append(" 64bit");
-#else
-	OSName.append(" 32bit");
-#endif
+	if (sizeof(void*) == 8)
+		OSName.append(" 64bit");
+	else if (sizeof(void*) == 4)
+		OSName.append(" 32bit");
+	else
+		OSName.append(" unknown bit");
 
 	OSVERSIONINFO osvi;
 

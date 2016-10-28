@@ -8,9 +8,9 @@
 //编辑器模式
 //#define MW_EDITOR
 
-//#define WOW60
+#define WOW60
 
-#define WOW70
+//#define WOW70
 
 //#define MW_USE_MPQ
 
@@ -24,9 +24,6 @@
 
 //#define MW_USE_FRAME_RT
 
-//2D以像素为单位随着窗口大小变化
-//#define MW_2D_SCALABLE		
-
 //#define MW_PLATFORM_WINDOWS
 
 //#define MW_PLATFORM_LINUX
@@ -35,38 +32,24 @@
 
 //#define MW_PLATFORM_ANDROID
 
-//#define MW_PLATFORM_64BIT
-
 //platform
-#if defined(WIN32) || defined(_WIN32)
-	#define MW_PLATFORM_WINDOWS
+#if defined(_MSC_VER)
+
+#define MW_PLATFORM_WINDOWS 1
+
+#elif defined(__ANDROID__)
+//Attention: "__linux__" is also defined on Android platform.
+#define MW_PLATFORM_ANDROID 1
+
+#elif defined(__APPLE__)
+
+#define MW_PLATFORM_XOS 1
+
+#elif defined(__linux__)
+
+#define MW_PLATFORM_LINUX 1
+
 #endif
-
-#if defined(WIN64) || defined(_WIN64)
-	#define MW_PLATFORM_WINDOWS
-	#define MW_PLATFORM_64BIT
-#endif
-
-#ifdef linux
-
-#ifdef __ANDROID__
-	#define MW_PLATFORM_ANDROID
-#else
-	#define MW_PLATFORM_LINUX
-#endif
-
-	#if defined(__x86_64__) || defined(__ppc64__) || defined(__arm64__) || defined(__LP64__)
-		#define MW_PLATFORM_64BIT
-	#endif
-#endif
-
-#ifdef __APPLE__
-	#define MW_PLATFORM_IOS
-
-	#if defined(__x86_64__) || defined(__ppc64__) || defined(__arm64__) || defined(__LP64__)
-		#define MW_PLATFORM_64BIT
-	#endif
-#endif 
 
 //定义平台相关的宏
 //#define MW_COMPILE_WITH_DIRECT3D9

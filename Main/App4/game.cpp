@@ -87,6 +87,7 @@ void createScene()
 	//	decalSceneNode->TextLine1 = tmp;
 	}
 
+	/*
 	int filedataid = 1 * 256 * 256 + 200 * 256 + 186;
 	char tmp[20];
 	sprintf(tmp, "File%08X.unk", filedataid);
@@ -94,6 +95,7 @@ void createScene()
 	IMemFile* pFile = g_Engine->getWowEnvironment()->openFile(tmp);
 	pFile->read(tmp, 20);
 	delete pFile;
+	*/
 
 	/*
 	{
