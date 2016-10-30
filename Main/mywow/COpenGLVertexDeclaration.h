@@ -98,13 +98,18 @@ private:
 	void setDecl_PNCT2(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0);
 	void setDecl_PNT2W(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0, IVertexBuffer* vbuffer1, u32 offset1);
 
+#ifdef USE_QALLOCATOR
+	typedef std::map<SVAOParam, GLuint, std::less<SVAOParam>, qzone_allocator<std::pair<SVAOParam, GLuint>>>	T_VaoMap;
+#else
+	typedef std::unordered_map<SVAOParam, GLuint, SVAOParam_hash>	T_VaoMap;
+#endif
+
 private:
 	E_VERTEX_TYPE		VertexType;
 	COpenGLMaterialRenderServices*		MaterialRenderServices;
 	COpenGLShaderServices*		ShaderServices;
 	COpenGLExtension*		Extension;
 
-	typedef std::unordered_map<SVAOParam, GLuint, SVAOParam_hash>	T_VaoMap;
 	T_VaoMap		VaoMap;
 };
 

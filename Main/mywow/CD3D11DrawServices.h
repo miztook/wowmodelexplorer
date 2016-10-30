@@ -8,6 +8,7 @@
 #include "S3DVertex.h"
 #include "core.h"
 #include <unordered_map>
+#include <map>
 
 class IVertexBuffer;
 class IIndexBuffer;
@@ -153,7 +154,11 @@ private:
 		}
 	};
 
+#ifdef USE_QALLOCATOR
+	typedef std::map<SQuadDrawBatchKey, SQuadBatchDraw, std::less<SQuadDrawBatchKey>, qzone_allocator<std::pair<SQuadDrawBatchKey, SQuadBatchDraw>>> T_2DQuadDrawMap;
+#else
 	typedef std::unordered_map<SQuadDrawBatchKey, SQuadBatchDraw, SQuadDrawBatchKey_hash> T_2DQuadDrawMap;
+#endif
 
 private:
 	SVertex_PC*		Line2DVertices;		//line

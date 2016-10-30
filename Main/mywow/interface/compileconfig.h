@@ -66,6 +66,8 @@
 
 //#define USE_KTX			//use ktx resources
 
+//#define USE_QALLOCATOR
+
 //#define MW_VIDEO_MULTITHREAD			//显存资源多线程，dx9,dx11下开启, gl不支持
 
 #ifdef MW_PLATFORM_WINDOWS
@@ -77,6 +79,8 @@
 	#define MW_USE_CASC
 
 	#define MW_USE_AUDIO
+
+	#define USE_QALLOCATOR
 
 	//#define MW_USE_DIRECTINPUT
 

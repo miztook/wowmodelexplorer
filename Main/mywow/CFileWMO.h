@@ -2,6 +2,7 @@
 
 #include "IFileWMO.h"
 #include <unordered_map>
+#include <map>
 
 struct SWMOBatch
 {
@@ -149,7 +150,11 @@ private:
 		u32 count;
 	};
 
+#ifdef USE_QALLOCATOR
+	typedef std::map<s16, SGroupRef, std::less<s16>, qzone_allocator<std::pair<s16, SGroupRef>>> T_GroupRefMap;
+#else
 	typedef std::unordered_map<s16, SGroupRef> T_GroupRefMap;
+#endif
 
 	T_GroupRefMap	FrontGroupRefMap;
 	T_GroupRefMap	BackGroupRefMap;

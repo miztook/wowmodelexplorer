@@ -65,7 +65,11 @@ public:
 	virtual bool createDefaultFonts() = 0;
 
 protected:
+#ifdef USE_QALLOCATOR
+	typedef std::map<SFontKey, IFTFont*, std::less<SFontKey>, qzone_allocator<std::pair<SFontKey, IFTFont*>>>	T_FontMap;
+#else
 	typedef std::unordered_map<SFontKey, IFTFont*, SFontKey_hash>	T_FontMap;
+#endif
 
 	T_FontMap		FontMap;
 	u32		DefaultFontSize;

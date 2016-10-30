@@ -6,6 +6,7 @@
 
 #include "IShaderServices.h"
 #include <unordered_map>
+#include <map>
 #include <vector>
 #include "gl/glext.h"
 #include "COpenGL_VS12.h"
@@ -38,7 +39,12 @@ struct SGLProgram
 	//uniform info
 	std::vector<SGLUniformInfo>	uniforms;
 
+#ifdef USE_QALLOCATOR
+	typedef std::map<string_cs32, u32, std::less<string_cs32>, qzone_allocator<std::pair<string_cs32, u32>>> T_UniformMap;
+#else
 	typedef std::unordered_map<string_cs32, u32, string_cs32::string_cs_hash> T_UniformMap;
+#endif
+
 	T_UniformMap	uniformMap;
 
 };
@@ -119,7 +125,12 @@ private:
 	void removeGlProgram(SGLProgram* p);
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<u32, SGLProgram, std::less<u32>, qzone_allocator<std::pair<u32, SGLProgram>>> T_ProgramMap;
+#else
 	typedef std::unordered_map<u32, SGLProgram> T_ProgramMap;
+#endif
+
 	T_ProgramMap		ProgramMap;
 
 	COpenGLExtension*		Extension;

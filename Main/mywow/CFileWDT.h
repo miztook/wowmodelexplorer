@@ -2,6 +2,7 @@
 
 #include "IFileWDT.h"
 #include <unordered_map>
+#include <map>
 #include <vector>
 #include "fixstring.h"
 
@@ -43,7 +44,14 @@ private:
 	void loadWDL();
 	void loadTEX();
 
+
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<u16, u32, std::less<u16>, qzone_allocator<std::pair<u16, u32>>> T_TileLookup;
+#else
+	typedef std::unordered_map<u16, u32> T_TileLookup;
+#endif
+	
 	u8*			FileData;
 	CMapEnvironment*		MapEnvironment;
 
@@ -57,7 +65,6 @@ private:
 	c8		Name[QMAX_PATH];
 
 	//hibyte: row, lowbyte: col
-	typedef std::unordered_map<u16, u32> T_TileLookup;
 	T_TileLookup		TileLookup;
 
 };

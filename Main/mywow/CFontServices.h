@@ -3,6 +3,7 @@
 #include "IFontServices.h"
 #include "fixstring.h"
 #include <unordered_map>
+#include <map>
 #include "fontDef.h"
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -111,8 +112,12 @@ public:
 		FaceID_Node(My_FaceID faceId, int refCount): faceId(faceId), refCount(refCount) {}
 	};
 
+#ifdef USE_QALLOCATOR
+	typedef std::map<FaceID_Key, FaceID_Node, std::less<FaceID_Key>, qzone_allocator<std::pair<FaceID_Key, FaceID_Node>>>	T_FaceIDMap;
+#else
 	typedef std::unordered_map<FaceID_Key, FaceID_Node, FaceID_Key_hash>	T_FaceIDMap;
-
+#endif
+	
 private:
 	u32		WidestChar;
 

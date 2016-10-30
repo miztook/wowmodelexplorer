@@ -49,7 +49,12 @@ public:
 	virtual bool removeTextureWriter(ITexture* texture);
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<ITexture*, ITextureWriter*, std::less<ITexture*>, qzone_allocator<std::pair<ITexture*, ITextureWriter*>>>	T_TextureWriterMap;
+#else
 	typedef std::unordered_map<ITexture*, ITextureWriter*>	T_TextureWriterMap;
+#endif
+
 	T_TextureWriterMap		TextureWriterMap;
 	CD3D9TextureWriter*		SelfTextureWriter;
 };

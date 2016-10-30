@@ -3,6 +3,7 @@
 #include "IFileM2.h"
 #include <list>
 #include <unordered_map>
+#include <map>
 
 class IVertexBuffer;
 class CFileM2;
@@ -115,13 +116,20 @@ private:
 	u32 getSkinIndex(u32 race, u32 gender, bool isHD);
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<string64, s16, std::less<string64>, qzone_allocator<std::pair<string64, s16>>> T_AnimationLookup;
+	typedef std::map<string64, wow_m2Action*, std::less<string64>, qzone_allocator<std::pair<string64, wow_m2Action*>>> T_ActionMap;
+#else
+	typedef std::unordered_map<string64, s16, string64::string_hash> T_AnimationLookup;
+	typedef std::unordered_map<string64, wow_m2Action*, string64::string_hash> T_ActionMap;
+#endif
+
+private:
 	u8*			FileData;
 
-	typedef std::unordered_map<string64, s16, string64::string_hash> T_AnimationLookup;
 	T_AnimationLookup	AnimationNameLookup;
 
 	//actions
-	typedef std::unordered_map<string64, wow_m2Action*, string64::string_hash> T_ActionMap;
 	T_ActionMap	ActionMap;
 
 	aabbox3df		BoundingBox;

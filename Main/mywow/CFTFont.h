@@ -4,6 +4,7 @@
 #include "S3DVertex.h"
 #include <vector>
 #include <unordered_map>
+#include <map>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -18,10 +19,6 @@ class CFTFont : public IFTFont
 public:
 	CFTFont(const char* faceName, int faceIndex, u32 size, int fontStyle, int outlineWidth);
 	~CFTFont();
-
-public:
-	const static int INTER_GLYPH_PAD_SPACE = 1;
-	const static int INTER_LINE_PADDING = 1;
 
 public:
 	virtual void drawA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = NULL_PTR);
@@ -73,7 +70,12 @@ private:
 	void drawTextVertical(const SDrawText& d, const c16* txt, float fInv, const S2DBlendParam& blendParam);
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<c16, SCharInfo, std::less<c16>, qzone_allocator<std::pair<c16, SCharInfo>>>	T_CharacterMap;
+#else
 	typedef std::unordered_map<c16, SCharInfo>	T_CharacterMap;
+#endif
+
 	T_CharacterMap		CharacterMap;
 
 private:

@@ -69,7 +69,7 @@ Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : Mess
 	WindowInfo = wndInfo;
 
 #ifdef MW_PLATFORM_WINDOWS
-	QMem_Init(1, 4, 30);	
+	QMem_Init(4, 50, 30);	
 #else
 	QMem_Init(1, 4, 1);
 #endif

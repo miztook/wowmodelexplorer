@@ -209,23 +209,6 @@ void CSceneManager::renderRT()
 	vector2di lowerRight((s32)FrameRT->getSize().Width, (s32)FrameRT->getSize().Height);
 	recti rc = recti(upperLeft, lowerRight);
 
-	//rc.LowerRightCorner = rc.UpperLeftCorner + vector2di(rc.getWidth()/2, rc.getHeight()/2);
-
-// 	recti rcDest[4];
-// 	rcDest[0].UpperLeftCorner = rc.UpperLeftCorner;
-// 	rcDest[0].LowerRightCorner = rcDest[0].UpperLeftCorner + vector2di(rc.getWidth()/2, rc.getHeight()/2);
-// 	rcDest[1].UpperLeftCorner = rc.UpperLeftCorner + vector2di(rc.getWidth()/2, 0);
-// 	rcDest[1].LowerRightCorner = rcDest[1].UpperLeftCorner + vector2di(rc.getWidth()/2, rc.getHeight()/2);
-// 	rcDest[2].UpperLeftCorner = rc.UpperLeftCorner + vector2di(0, rc.getHeight()/2);
-// 	rcDest[2].LowerRightCorner = rcDest[2].UpperLeftCorner + vector2di(rc.getWidth()/2, rc.getHeight()/2);
-// 	rcDest[3].UpperLeftCorner = rc.UpperLeftCorner + vector2di(rc.getWidth()/2, rc.getHeight()/2);
-// 	rcDest[3].LowerRightCorner = rcDest[3].UpperLeftCorner + vector2di(rc.getWidth()/2, rc.getHeight()/2);
-// 
-// 	const recti* rcDestArray[] = {&rcDest[0], &rcDest[1], &rcDest[2], &rcDest[3] };
-// 
-// 	g_Engine->getDrawServices()->draw2DImageRectBatch(RenderTarget->getRTTexture(), rcDestArray, NULL_PTR, 4);
-	
-
 	E_DRIVER_TYPE dType = Driver->getDriverType();
 	if(dType == EDT_OPENGL || dType == EDT_GLES2)
 		g_Engine->getDrawServices()->draw2DImageRect(FrameRT->getRTTexture(), &rc, NULL_PTR, SColor(), ERU_01_10);
@@ -302,7 +285,7 @@ void CSceneManager::doRender()
 
 	//drawDebutText();
 
-	//drawSceneInfo();
+	drawSceneInfo();
 	//drawDebugTexture();
 }
 

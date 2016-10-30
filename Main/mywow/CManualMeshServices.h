@@ -25,6 +25,11 @@ public:
 	virtual bool addSkyDome(const c8* name, u32 horiRes, u32 vertRes, f32 spherePercentage, f32 radius, SColor color);
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<string64, IMesh*, std::less<string64>, qzone_allocator<std::pair<string64, IMesh*>>> TMeshMap;
+#else
 	typedef std::unordered_map<string64, IMesh*, string64::string_hash> TMeshMap;
+#endif
+
 	TMeshMap		MeshMap;
 };

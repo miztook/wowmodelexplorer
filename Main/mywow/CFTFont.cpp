@@ -301,22 +301,22 @@ const IFTFont::SCharInfo* CFTFont::addChar( c16 ch )
 	int offsetX, offsetY, chW, chH, bmpW, bmpH;
 
 	bitmapGlyph = getCharExtent(ch, offsetX, offsetY, chW, chH, bmpW, bmpH);
-	if(!bitmapGlyph)
+	if (!bitmapGlyph)
 	{
 		ASSERT(false);
-		return NULL_PTR;
+		return NULL;
 	}
 
-	NextX = CurrentX + bmpW + (int)INTER_GLYPH_PAD_SPACE;
+	NextX = CurrentX + m_iFontWidth;
 
 	if (NextX > FONT_TEXTURE_SIZE)				//换行
 	{
 		CurrentX = 0;
-		NextX = CurrentX + bmpW + (int)INTER_GLYPH_PAD_SPACE;
+		NextX = CurrentX + m_iFontWidth;
 		CurrentY = NextY;
 	}
 
-	MaxY = CurrentY + (m_iFontHeight + (int)INTER_LINE_PADDING);						//换页, 增加纹理 
+	MaxY = CurrentY + m_iFontHeight;						//换页, 增加纹理
 	if (MaxY > FONT_TEXTURE_SIZE)
 	{
 		addFontTexture();
@@ -331,7 +331,7 @@ const IFTFont::SCharInfo* CFTFont::addChar( c16 ch )
 	int charposx = CurrentX;
 	int charposy = CurrentY;
 
-	recti rc(charposx, charposy, charposx + bmpW, charposy + bmpH);
+	recti rc(charposx, charposy, charposx + m_iFontWidth, charposy + m_iFontHeight);
 
 	if (!rc.isEmpty())			//如空格字符的rect为空，不需要绘制
 	{
@@ -346,43 +346,67 @@ const IFTFont::SCharInfo* CFTFont::addChar( c16 ch )
 		//写纹理 A8L8
 		if (tex->getColorFormat() == ECF_A8L8)
 		{
-			u8* p = data + (charposy * pitch) + sizeof(u16) * charposx;  
+			u8* p = data + (charposy * pitch) + sizeof(u16) * charposx; 
 
-			for (unsigned int i = 0; i < bitmapGlyph->bitmap.rows; ++i)  
-			{  
-				u8 *src = bitmapGlyph->bitmap.buffer + (i * bitmapGlyph->bitmap.pitch);       
-				u8 *dst = reinterpret_cast<u8*>(p);   
-				for (unsigned int j = 0; j < bitmapGlyph->bitmap.width; ++j)  
-				{  
-					u8 alpha = *src++;
+			for (int i = 0; i < m_iFontHeight; ++i)
+			{
+				const u8 *src = bitmapGlyph->bitmap.buffer + (i * bitmapGlyph->bitmap.pitch);       
+				u8 *dst = reinterpret_cast<u8*>(p);
+				for (int j = 0; j < m_iFontWidth; ++j)
+				{
+					bool bEdge = (j >= bmpW || i >= bmpH);
+					if (bEdge)
+					{
+						u8 alpha = 0;
 
-					*dst++ = alpha; 	//color
+						*dst++ = 0;		//color
+						*dst++ = 0;		//alpha
+					}
+					else
+					{
+						u8 alpha = *src++;
 
-					*dst++ = alpha;		//alpha
-				}  
+						*dst++ = alpha; 	//color
+						*dst++ = alpha;		//alpha
+					}
+				}
 				p += pitch;
-			}  
+			}
 		}
 		else if (tex->getColorFormat() == ECF_A8R8G8B8)			//dx11 format
 		{
-			u8* p = data + (charposy * pitch) + sizeof(u32) * charposx;  
+			u8* p = data + (charposy * pitch) + sizeof(u32) * charposx;
 
-			for (unsigned int i = 0; i < bitmapGlyph->bitmap.rows; ++i)  
-			{  
-				u8 *src = bitmapGlyph->bitmap.buffer + (i * bitmapGlyph->bitmap.pitch);       
-				u8 *dst = reinterpret_cast<u8*>(p);   
-				for (unsigned int j = 0; j < bitmapGlyph->bitmap.width; ++j)  
-				{  
-					u8 alpha = *src++;
+			for (int i = 0; i < m_iFontHeight; ++i)
+			{
+				const u8 *src = bitmapGlyph->bitmap.buffer + (i * bitmapGlyph->bitmap.pitch);       
+				u8 *dst = reinterpret_cast<u8*>(p);  
+				for (int j = 0; j < m_iFontWidth; ++j)
+				{
+					bool bEdge = (j >= bmpW || i >= bmpH);
+					if (bEdge)
+					{
+						u8 alpha = 0;
 
-					*dst++ = alpha; 	//b
-					*dst++ = alpha; 	//g
-					*dst++ = alpha; 	//r
+						*dst++ = alpha; 	//b
+						*dst++ = alpha; 	//g
+						*dst++ = alpha; 	//r
 
-					*dst++ = alpha;		//alpha
-				}  
-				p += pitch;  
-			}  
+						*dst++ = alpha;		//alpha
+					}
+					else
+					{
+						u8 alpha = *src++;
+
+						*dst++ = alpha; 	//b
+						*dst++ = alpha; 	//g
+						*dst++ = alpha; 	//r
+
+						*dst++ = alpha;		//alpha
+					}
+				}
+				p += pitch;
+			}
 		}
 		else
 		{

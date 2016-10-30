@@ -50,7 +50,11 @@ private:
 	void getCascLocale();
 
 private:	
+#ifdef USE_QALLOCATOR
+	typedef std::map<string_cs256, int, std::less<string_cs256>, qzone_allocator<std::pair<string_cs256, int>>> T_DirIndexMap;
+#else
 	typedef std::unordered_map<string_cs256, int, string_cs256::string_cs_hash> T_DirIndexMap;
+#endif
 
 	LENTRY	LocaleMpqArchiveList;
 	LENTRY	MainMpqArchiveList;

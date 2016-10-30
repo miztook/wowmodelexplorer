@@ -3,6 +3,7 @@
 #include "core.h"
 #include <list>
 #include <unordered_map>
+#include <map>
 #include "CSysGlobal.h"
 #include "CSysSync.h"
 #include "CSysUtility.h"
@@ -111,7 +112,12 @@ protected:
 	typedef std::list<T*, qzone_allocator<T*>  > T_FreeList;
 	T_FreeList FreeList;			//不在使用中，可以删除
 	
+#ifdef USE_QALLOCATOR
+	typedef std::map<string256, T*, std::less<string256>, qzone_allocator<std::pair<string256, T*>>>	T_UseMap;
+#else
 	typedef std::unordered_map<string256, T*, string256::string_hash>	T_UseMap;
+#endif
+
 	T_UseMap UseMap;
 
 	volatile u32 CacheLimit;		//空闲列表大小

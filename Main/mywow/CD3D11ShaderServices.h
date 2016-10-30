@@ -6,6 +6,7 @@
 
 #include "IShaderServices.h"
 #include <unordered_map>
+#include <map>
 #include <list>
 #include "CD3D11_VS40.h"
 #include "CD3D11_VS50.h"
@@ -100,7 +101,12 @@ private:
 	ID3D11Device*		Device;
 	CD3D11Driver*		Driver;
 
+#ifdef USE_QALLOCATOR
+	typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>>		T_SizeMap;
+#else
 	typedef std::unordered_map<u32, u32>		T_SizeMap;
+#endif
+
 
 	T_ConstanBufferList	CBufferList;
 	T_ConstanBufferList	TBufferList;

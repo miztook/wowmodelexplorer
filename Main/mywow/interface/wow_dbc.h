@@ -3,6 +3,7 @@
 #include "base.h"
 #include "fixstring.h"
 #include <unordered_map>
+#include <map>
 #include <vector>
 
 class wowEnvironment;
@@ -253,11 +254,16 @@ protected:
 
 	u32		minorVersion;
 
+#ifdef USE_QALLOCATOR
+	typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_RecordLookup32;
+	typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_RecordSparseLookup32;
+#else
 	typedef std::unordered_map<u32, u32> T_RecordLookup32;
-	T_RecordLookup32		RecordLookup32;
-
-protected:		//WDB2
 	typedef std::unordered_map<u32, u32> T_RecordSparseLookup32;
+#endif
+
+	T_RecordLookup32		RecordLookup32;
+protected:		//WDB2
 	T_RecordSparseLookup32			RecordSparseLookup32;
 	bool	IsSparse;
 
@@ -890,8 +896,7 @@ public:
 class itemModifiedAppearanceDB : public dbc
 {
 public:
-	itemModifiedAppearanceDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemModifiedAppearance.dbc", true),
-		ItemLookup32(256)
+	itemModifiedAppearanceDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemModifiedAppearance.dbc", true)
 	{
 		buildItemLookup();
 	}
@@ -908,7 +913,12 @@ private:
 	void buildItemLookup();
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_ItemLookup32;
+#else
 	typedef std::unordered_map<u32, u32> T_ItemLookup32;
+#endif
+	
 	T_ItemLookup32 ItemLookup32;
 
 public:
@@ -957,7 +967,12 @@ private:
 	void buildItemLookup();
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_ItemLookup32;
+#else
 	typedef std::unordered_map<u32, u32> T_ItemLookup32;
+#endif
+
 	T_ItemLookup32 ItemLookup32;
 
 public:
@@ -1077,12 +1092,16 @@ struct SItemRecord
 class ItemCollections
 {
 public:
-	std::vector<SItemRecord>	items;
-
-	typedef std::unordered_map<s32, s32>		T_itemLookup;
-	T_itemLookup		itemLookup;				//item id µ½ index
-
+#ifdef USE_QALLOCATOR
+	typedef std::map<s32, s32, std::less<s32>, qzone_allocator<std::pair<s32, s32>>>		T_itemLookup;
+#else
 	ItemCollections() : itemLookup(1024) {}
+	typedef std::unordered_map<s32, s32>		T_itemLookup;
+#endif
+
+public:
+	std::vector<SItemRecord>	items;
+	T_itemLookup		itemLookup;				//item id µ½ index
 
 	void build(itemDB* itemDb,  itemSparseDB* itemSparseDb);
 
@@ -1115,12 +1134,15 @@ struct SNPCRecord
 class NPCCollections
 {
 public:
+#ifdef USE_QALLOCATOR
+	typedef std::map<s32, s32, std::less<s32>, qzone_allocator<std::pair<s32, s32>>>		T_npcLookup;
+#else
 	NPCCollections() : npcLookup(1024) { }
-
+	typedef std::unordered_map<s32, s32>		T_npcLookup;
+#endif
+	
 public:
 	std::vector<SNPCRecord>	npcs;
-
-	typedef std::unordered_map<s32, s32>		T_npcLookup;
 	T_npcLookup		npcLookup;				//npc model id µ½ index
 
 	bool open(const c8* filename);
@@ -1175,13 +1197,19 @@ struct SMapRecord
 class MapCollections
 {
 public:
+#ifdef USE_QALLOCATOR
+	typedef std::map<s32, s32, std::less<s32>, qzone_allocator<std::pair<s32, s32>>>		T_mapLookup;
+	typedef std::map<s32, s32, std::less<s32>, qzone_allocator<std::pair<s32, s32>>>		T_areaLookup;
+#else
+	typedef std::unordered_map<s32, s32>		T_mapLookup;
+	typedef std::unordered_map<s32, s32>		T_areaLookup;
+#endif
+
+public:
 	std::vector<SMapRecord>	maps;
 	std::vector<SArea>		areas;
 
-	typedef std::unordered_map<s32, s32>		T_mapLookup;
 	T_mapLookup		mapLookup;
-
-	typedef std::unordered_map<s32, s32>		T_areaLookup;
 	T_areaLookup		areaLookup;
 
 	const SMapRecord* getMapById(s32 id) const;

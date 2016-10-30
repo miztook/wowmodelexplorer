@@ -3,6 +3,7 @@
 #include "fontDef.h"
 #include "linklist.h"
 #include <unordered_map>
+#include <map>
 
 #include <ft2build.h>
 #include FT_GLYPH_H
@@ -46,7 +47,11 @@ private:
 	void AddNode(CFTGlyphCacheNode* pNode);
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<int, CFTGlyphCacheNode*, std::less<int>, qzone_allocator<std::pair<int, CFTGlyphCacheNode*>>>	T_GlyphCacheMap;
+#else
 	typedef std::unordered_map<int, CFTGlyphCacheNode*>	T_GlyphCacheMap;
+#endif
 
 	T_GlyphCacheMap		m_GlyphCacheMap;
 	LENTRY	m_GlyphNodeList;

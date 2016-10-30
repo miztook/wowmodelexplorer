@@ -3,6 +3,7 @@
 #include "core.h"
 #include "IFileWDT.h"
 #include <unordered_map>
+#include <map>
 
 class CWDTSceneNode;
 class CMapChunk;
@@ -39,11 +40,17 @@ public:
 	u32 getNumBlocks() const;
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<STile*, bool, std::less<STile*>, qzone_allocator<std::pair<STile*, bool>>>		T_TileMap;
+#else
+	typedef std::unordered_map<STile*, bool>		T_TileMap;
+#endif
+
+private:
 	CWDTSceneNode* WdtSceneNode;
 	CFileWDT*	FileWDT;
 
 	//已加载和加载中的tile, false为加载中，true为已加载
-	typedef std::unordered_map<STile*, bool>		T_TileMap;
 	T_TileMap		TilesMap;
 
 	CMapChunk*			CamChunk;

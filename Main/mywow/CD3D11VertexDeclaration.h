@@ -30,7 +30,12 @@ public:
 	ID3D11InputLayout* getInputLayout(IVertexShader* shader);
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<const void*, ID3D11InputLayout*, std::less<const void*>, qzone_allocator<std::pair<const void*, ID3D11InputLayout*>>> T_LayoutMap;
+#else
 	typedef std::unordered_map<const void*, ID3D11InputLayout*> T_LayoutMap;
+#endif
+
 	T_LayoutMap LayoutMap;
 
 	D3D11_INPUT_ELEMENT_DESC* IAElements;

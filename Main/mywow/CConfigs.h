@@ -3,6 +3,7 @@
 #include "IConfigs.h"
 #include "core.h"
 #include <unordered_map>
+#include <map>
 
 class CConfigs : public IConfigs
 {
@@ -26,7 +27,11 @@ private:
 	bool writeSetting(IFileSystem* fs, const c8* path, E_CONFIG_TYPE type);
 
 private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<string32, string256, std::less<string32>, qzone_allocator<std::pair<string32, string256>>>	T_SettingMap;
+#else
 	typedef std::unordered_map<string32, string256, string32::string_hash>	T_SettingMap;
+#endif
 
 	T_SettingMap SettingMaps[ECT_COUNT];
 };
