@@ -99,7 +99,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Main\gles2lib\PowerVR3.2\x86_32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Main\gles2lib\PowerVR3.2\x86_32;..\..\Dependency\DirectxSdk-June2010\Lib\x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -135,7 +135,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Main\gles2lib\PowerVR3.2\x86_32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Main\gles2lib\PowerVR3.2\x86_32;..\..\Dependency\DirectxSdk-June2010\Lib\x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

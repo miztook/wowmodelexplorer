@@ -264,15 +264,11 @@ void g_callbackDB2(const c8* filename, void* param)
 			u16 fs = db->getFieldSize(k);
 
 			c8 tmp[32] = {0};
-			if(fs == sizeof(int))
-				sprintf_s(tmp, 32, "\t%d", r.getInt(k));
-			else if(fs == sizeof(u16))
-				sprintf_s(tmp, 32, "\t%d", r.getShort(k));
-			else if(fs == sizeof(u8))
-				sprintf_s(tmp, 32, "\t%d", r.getByte(k));
+			if(fs == sizeof(int) || fs == sizeof(u16) || fs == sizeof(u8))
+				sprintf_s(tmp, 32, "\t%d", r.getUInt(k));
 			else
 			{
-				const char* str = (const char*)r.getRawPointer(k);
+				const char* str = (const char*)r.getRawPointer<char>(k);
 				strncpy(tmp, str, fs);
 			}
 			strcat_s(txt, 1024, tmp);
