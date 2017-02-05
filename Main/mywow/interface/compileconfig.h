@@ -10,7 +10,15 @@
 
 #define WOW60
 
-//#define WOW70
+#if !defined(WOW30) && !defined(WOW40) && !defined(WOW50) && !defined(WOW60)
+	#define WOW70
+#endif
+
+#if defined(WOW60) || defined(WOW70)
+	#define MW_USE_CASC
+#else
+	#define MW_USE_MPQ
+#endif
 
 //#define MW_USE_MPQ
 
@@ -25,8 +33,6 @@
 //#define MW_USE_FRAME_RT
 
 //#define MW_PLATFORM_WINDOWS
-
-//#define MW_PLATFORM_LINUX
 
 //#define MW_PLATFORM_IOS
 
@@ -70,15 +76,11 @@
 
 //#define MW_VIDEO_MULTITHREAD			//显存资源多线程，dx9,dx11下开启, gl不支持
 
-#ifdef MW_PLATFORM_WINDOWS
+#if defined(MW_PLATFORM_WINDOWS)
 
 	#define MW_EDITOR
 
-	//#define MW_USE_MPQ
-
-	#define MW_USE_CASC
-
-	#define MW_USE_AUDIO
+	//#define MW_USE_AUDIO
 
 	#define USE_QALLOCATOR
 

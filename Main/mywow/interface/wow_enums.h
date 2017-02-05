@@ -154,7 +154,7 @@ enum ERaces : int32_t
 
 enum ECharGeosets : int32_t
 {
-	CG_HAIRSTYLE,
+	CG_HAIRSTYLE = 0,
 	CG_GEOSET100,
 	CG_GEOSET200,
 	CG_GEOSET300,
@@ -167,12 +167,15 @@ enum ECharGeosets : int32_t
 	CG_PANTS2,
 	CG_TABARD,
 	CG_TROUSERS,
-	CG_DECORATES,			//pandaren tarbard like
+	CG_TABARD2,			//pandaren tarbard like
 	CG_CAPE = 15, // 15						//ºó±³
 	CG_EYEGLOW = 17,
 	CG_BELT,
 	CG_TAIL,			//pandaren female tail
 	CG_FEET,			//new in 6.0
+	CG_HANDS = 23,
+	CG_DH_HORNS,
+	CG_DH_BLINDFOLDS,
 
 	NUM_GEOSETS,
 };

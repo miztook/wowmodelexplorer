@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "CGLES2Platform.h"
-#include "mywow.h"
 
 #include "compileconfig.h"
 
 #ifdef MW_COMPILE_WITH_GLES2
 
+#include "CGLES2Platform.h"
+#include "mywow.h"
 #include "CGLES2Extension.h"
 
 #ifdef MW_PLATFORM_WINDOWS

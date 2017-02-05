@@ -40,6 +40,7 @@ public:
 
 	void getFiles(const c8* baseDir, const c8* ext, std::vector<string_cs256>& files, bool useOwn);
 	void getDirectories(const c8* baseDir, std::vector<string_cs256>& dirs, bool useOwn);
+	const char* getFileNameByFileDataId(int filedataId);
 
 private:
 	bool loadRoot();
@@ -64,6 +65,7 @@ private:
 	IFileSystem*		FileSystem;
 	IWriteFile*		RecordFile;
 
+	std::map<int, int, std::less<int>, qzone_allocator<std::pair<int, int> > >	FileIdMap;		
 	std::vector<string_cs256>		CascListFiles;
 	T_DirIndexMap		DirIndexMap;
 	std::set<string_cs256, std::less<string_cs256>, qzone_allocator<string_cs256> > OwnCascSet;				//ÓÐÐò

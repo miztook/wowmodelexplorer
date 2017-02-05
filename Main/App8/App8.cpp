@@ -1,11 +1,9 @@
 #include "mywow.h"
 #include "CMiniDump.h"
 #include "CMemDbg.h"
-#include "mywowui.h"
 #include "game.h"
 
 #pragma comment(lib, "mywow.lib")
-#pragma comment(lib, "mywowui.lib")
 #pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 
 int main()
@@ -34,8 +32,6 @@ int main()
 	g_Engine->setMessageHandler(&handler);
 
 	g_Engine->initSceneManager();
-
-	createUISystem();
 
 	//g_Engine->getWowDatabase()->buildNpcs("npcs.csv");
 	//g_Engine->getWowDatabase()->buildItems();
@@ -78,8 +74,6 @@ int main()
 	destroyInput();
 
 	destroyScene();
-
-	destroyUISystem();
 
 	destroyEngine();
 

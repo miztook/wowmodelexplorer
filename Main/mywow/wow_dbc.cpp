@@ -191,11 +191,6 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 	StringSize = header._stringsize;
 	nActualRecords = nRecords;
 
-// 	if(header.firstrow != 0 && header.lastrow != 0)
-// 	{
-// 		nActualRecords = header.lastrow - header.firstrow + 1;
-// 	}
-
 	HasDataOffsetBlock = (header.fileflags & WDB5_FLAG_DATAOFFSET) != 0;
 	HasUnknownStuff = (header.fileflags & WDB5_FLAG_UNKNOWN) != 0;
 	HasIndex = (header.fileflags & WDB5_FLAG_INDEX) != 0;
@@ -210,6 +205,7 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 
 		Fields[i].size = (32 - size) / 8;
 		Fields[i].position = offset;
+
 	}
 
 	//TOOD file count
@@ -290,9 +286,10 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 	if (header.refdatasize > 0)
 	{
 		ASSERT(header.refdatasize % sizeof(SCopyTableEntry) == 0);
-		int nCount = header.refdatasize / sizeof(SCopyTableEntry);
-		CopyTables = new SCopyTableEntry[nCount];
-		file->read(CopyTables, header.refdatasize);
+		//int nCount = header.refdatasize / sizeof(SCopyTableEntry);
+		//CopyTables = new SCopyTableEntry[nCount];
+		//file->read(CopyTables, header.refdatasize);
+		file->seek(header.refdatasize, true);
 	}
 
 	ASSERT(file->getPos() == file->getSize());
@@ -442,15 +439,6 @@ void itemModifiedAppearanceDB::buildItemLookup()
 	}
 }
 
-void textureFileDataDB::buildItemLookup()
-{
-	for (u32 i=0; i<nActualRecords; ++i)
-	{
-		u32 itemid = getRecord(i).getUInt(textureFileDataDB::TextureId);
-		ItemLookup32[itemid] = i;
-	}
-}
-
 const SItemRecord* ItemCollections::getById( s32 id ) const
 {
 	T_itemLookup::const_iterator itr = itemLookup.find(id);
@@ -465,6 +453,7 @@ const SItemRecord* ItemCollections::getById( s32 id ) const
 void ItemCollections::build( itemDB* itemDb, itemSparseDB* itemSparseDb)
 {
 	u32 numRecords = itemSparseDb->getNumActualRecords();
+	items.clear();
 	items.reserve(numRecords);
 
 	for (u32 i=0; i<numRecords; ++i)
@@ -474,7 +463,11 @@ void ItemCollections::build( itemDB* itemDb, itemSparseDB* itemSparseDb)
 			continue;
 
 		SItemRecord rec;
+#ifdef WOW70
+		rec.id = rs.getID();
+#else
 		rec.id = itemSparseDb->getRecordSparseRow(i);
+#endif
 		if (rec.id == -1)
 			continue;
 
@@ -487,8 +480,12 @@ void ItemCollections::build( itemDB* itemDb, itemSparseDB* itemSparseDb)
 		rec.subclass = r.getInt(itemDB::Subclass);
 		rec.type = r.getInt(itemDB::InventorySlot);
 
+#ifdef WOW70
+		Q_sprintf(rec.name, DEFAULT_SIZE * 2, "Item-%d", rec.id);
+#else
 		const c8* str = rs.getString(itemSparseDb->getItemNameField());
 		Q_strcpy(rec.name, DEFAULT_SIZE * 2, str);
+#endif
 		
 		items.emplace_back(rec);
 		itemLookup[rec.id] = (s32)(items.size() -1);
@@ -761,4 +758,28 @@ void fileDataDB::saveListFile(const char* szPath)
 	}
 
 	fclose(file);
+}
+
+dbc::record itemDisplayInfoMaterialResDB::getByItemDisplayInfoIDAndSlot(u32 itemDisplayId, u32 slot) const
+{
+	for (u32 i=0; i<nRecords; ++i)
+	{
+		dbc::record r = getRecord(i);
+		if(r.getUInt(itemDisplayInfoMaterialResDB::ItemDisplayInfoID) == itemDisplayId &&
+			r.getUInt(itemDisplayInfoMaterialResDB::TextureSlot) == slot)
+			return r;
+	}
+	return dbc::record::EMPTY();
+}
+
+void itemDisplayInfoMaterialResDB::getTexturePath(u32 itemDisplayId, u32 slot, c8* path, u32 size) const
+{
+	dbc::record r = getByItemDisplayInfoIDAndSlot(itemDisplayId, slot);
+	if (!r.isValid())
+	{
+		memset(path, 0, size);
+		return;
+	}
+	int texId = r.getInt(itemDisplayInfoMaterialResDB::TextureFileDataID);
+	g_Engine->getWowDatabase()->getTextureFilePath(texId, path, size);
 }

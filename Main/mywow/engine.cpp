@@ -32,15 +32,6 @@
 #include "COpenGLManualTextureServices.h"
 #include "COpenGLHelper.h"
 
-//gles
-#include "CGLES2Driver.h"
-#include "CGLES2HardwareBufferServices.h"
-#include "CGLES2DrawServices.h"
-#include "CGLES2ResourceLoader.h"
-#include "CGLES2TextureWriteServices.h"
-#include "CGLES2ManualTextureServices.h"
-#include "CGLES2Helper.h"
-
 #ifdef MW_PLATFORM_WINDOWS
 #include "CDSAudioPlayer.h"
 #include "CX2AudioPlayer.h"
@@ -57,7 +48,6 @@
 #include "CRibbonEmitterServices.h"
 #include "CMeshDecalServices.h"
 #include "CTerrainServices.h"
-#include "CCollisionServices.h"
 #include "CSceneRenderServices.h"
 #include "CSceneManager.h"
 #include "CSceneEnvironment.h"
@@ -69,7 +59,7 @@ Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : Mess
 	WindowInfo = wndInfo;
 
 #ifdef MW_PLATFORM_WINDOWS
-	QMem_Init(4, 50, 30);	
+	QMem_Init(2, 50, 10);	
 #else
 	QMem_Init(1, 4, 1);
 #endif
@@ -109,7 +99,6 @@ Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : Mess
 	MeshDecalServices = NULL_PTR;
 	TerrainServices = NULL_PTR;
 
-	CollisionServices = NULL_PTR;
 	SceneRenderServices = NULL_PTR;
 	SceneEnvironment = NULL_PTR;
 	SceneManager = NULL_PTR;
@@ -126,7 +115,6 @@ Engine::~Engine()
 
 	delete SceneEnvironment;
 	delete SceneRenderServices;
-	delete CollisionServices;
 
 	delete TerrainServices;
 	delete MeshDecalServices;
@@ -318,7 +306,6 @@ bool Engine::initDriver( E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen,
 	RibbonEmitterServices = new CRibbonEmitterServices(5000, 512);
 	MeshDecalServices = new CMeshDecalServices(512);
 	TerrainServices = new CTerrainServices;
-	CollisionServices = new CCollisionServices;
  	SceneRenderServices = new CSceneRenderServices;
 	SceneEnvironment = new CSceneEnvironment;
 
@@ -336,7 +323,6 @@ fail:
 
 	SAFE_DELETE(SceneEnvironment);
 	SAFE_DELETE(SceneRenderServices);
-	SAFE_DELETE(CollisionServices);
 	SAFE_DELETE(TerrainServices);
 	SAFE_DELETE(RibbonEmitterServices);
 	SAFE_DELETE(ParticleSystemServices);

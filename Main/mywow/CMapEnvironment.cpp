@@ -90,6 +90,7 @@ CMapEnvironment::~CMapEnvironment()
 
 void CMapEnvironment::initSkyLights()
 {
+	/*
 	const lightDB* db = g_Engine->getWowDatabase()->getLightDB();
 
 	for (u32 i=0; i<db->getNumRecords(); ++i)
@@ -117,13 +118,13 @@ void CMapEnvironment::initSkyLights()
 			light->colorNums[k] = (u32)entries;
 
 			light->colorRows[k] = new SSkyColor[entries];
-			/*
+			
 			for (s32 n=0; n<entries; ++n)
 			{
 				u32 t = 0; //r.getUInt(lightIntBandDB::Times + n);
 				u32 c = 0xff000000; //r.getUInt(lightIntBandDB::Values + n);
 				light->colorRows[k][n].set(t, c);
-			}*/
+			}
 		}
 		light->colorRows[SKY_COLOR_0][0].set(0, SColor(10,10,10).color);
 		light->colorRows[SKY_COLOR_1][0].set(0, SColor(20,20,20).color);
@@ -137,8 +138,18 @@ void CMapEnvironment::initSkyLights()
 		else
 			LocalSkyLights.emplace_back(SSkyLightEntry(light));
 	}
+	*/
 
-	std::sort(LocalSkyLights.begin(), LocalSkyLights.end());
+	SSkyLight* light = new SSkyLight;
+	light->colorRows[SKY_COLOR_0][0].set(0, SColor(10,10,10).color);
+	light->colorRows[SKY_COLOR_1][0].set(0, SColor(20,20,20).color);
+	light->colorRows[SKY_COLOR_2][0].set(0, SColor(30,30,30).color);
+	light->colorRows[SKY_COLOR_3][0].set(0, SColor(40,40,40).color);
+	light->colorRows[SKY_COLOR_4][0].set(0, SColor(50,50,50).color);
+	light->colorRows[FOG_COLOR][0].set(0, SColor(64,64,64).color);
+	GlobalLight = light;
+
+	//std::sort(LocalSkyLights.begin(), LocalSkyLights.end());
 }
 
 bool CMapEnvironment::findSkyWeights(vector3df pos)

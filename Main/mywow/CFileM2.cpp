@@ -931,7 +931,7 @@ bool CFileSkin::loadFile( IMemFile* file, CFileM2* m2)
 		set->VCount = sm[i]._nVertices;
 		set->IStart = sm[i]._startTriangle;
 		set->ICount = nInds;
-		set->GeoID = sm[i]._ID;	
+		set->GeoID = (sm[i]._ID & 0xffff);	
 		set->MaxWeights = 0;
 		set->BillBoard = true;
 

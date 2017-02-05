@@ -114,7 +114,6 @@ struct SCharacterInfo
 		HelmHideHair = false;
 
 		::memset(Equipments, 0, sizeof(Equipments));
-		::memset(EquipMaterials, 0, sizeof(EquipMaterials));
 		::memset(Geosets, 0, sizeof(Geosets));
 #ifdef MW_EDITOR
 		::memset(BodyTextureFileNames, 0, sizeof(BodyTextureFileNames));
@@ -132,7 +131,6 @@ struct SCharacterInfo
 	u32		Gender;
 
 	s32		Equipments[NUM_CHAR_SLOTS];
-	s32		EquipMaterials[NUM_CHAR_SLOTS];
 	s32		Geosets[NUM_GEOSETS];
 
 	bool		DeathKnight;
@@ -207,8 +205,6 @@ public:
 	bool setGeosetMaterial(u32 subset, SMaterial& material);
 
 	void buildVisibleGeosets();
-
-	s32 getGeosetMaterialId(s32 geosetId) const;
 
 public:
 	SCharacterInfo*		CharacterInfo;

@@ -1,5 +1,4 @@
 #include "game.h"
-#include "mywowui.h"
 
 bool g_bExit = false;
 bool g_bBackMode = false;
@@ -36,10 +35,6 @@ void MyMessageHandler::onSize(window_type hwnd, int width, int height)
 
 void createScene()
 {	
-	uiLoader* loader = g_UISystem->getUiLoader();
-
-	g_UISystem->getUiSceneManager()->addUi("Interface\\FrameXML\\ActionBarFrame.xml");
-
 	g_Engine->getManualMeshServices()->addGridLineMesh("$grid20", 20, 1,SColor(128,128,128) );
 
 	IMeshSceneNode* gridNode = g_Engine->getSceneManager()->addMeshSceneNode("$grid20", NULL);

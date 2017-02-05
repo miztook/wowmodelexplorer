@@ -7,6 +7,7 @@
 #include "base.h"
 #include "gl/GL.h"
 #include "function.h"
+#include <map>
 #include <unordered_map>
 
 class COpenGLMaterialRenderServices;

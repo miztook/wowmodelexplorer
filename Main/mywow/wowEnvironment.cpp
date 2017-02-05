@@ -5,7 +5,12 @@
 #include "CMemFile.h"
 
 #define MPQFILES	"mpqfiles/"
+
+#ifdef WOW60
+#define LISTFILE	"listfile60.txt"
+#else
 #define LISTFILE	"listfile.txt"
+#endif
 
 const c8* basempqfiles[] = 
 {
@@ -166,20 +171,33 @@ void wowEnvironment::loadCascListFiles()
 			} while (q++ <= end);
 
 			string_cs256 filename((const c8*)p, (u32)(q-p));
+			
 			if (filename.length() == 0)
 				break;
 			filename.normalize();
 			filename.make_lower();
 
+			CascListFiles.push_back(filename.c_str());
+
 			p = q;
 			while(*p == '\r' || *p == '\n') ++p;
-
-			CascListFiles.push_back(filename.c_str());
 		}	
 
 		Z_FreeTempMemory(buffer);
 
 		std::sort(CascListFiles.begin(), CascListFiles.end());
+#ifdef WOW70
+		for (int i = 0; i < (int)CascListFiles.size(); ++i)		
+		{
+			char realfilename[256];
+			int filedataId;
+			if(2 == sscanf(CascListFiles[i].c_str(), "%s %d", realfilename, &filedataId))	//make map
+			{
+				FileIdMap[filedataId] = i;
+				CascListFiles[i] = realfilename;
+			}
+		}
+#endif
 	}
 	delete rfile;
 
@@ -523,7 +541,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 			u32 size = SFileGetFileSize( fh, NULL_PTR );
 
 			// HACK: in patch.mpq some files don't want to open and give 1 for filesize
-			if (size<=1) {
+			if (size<=1 || size == 0xffffffff) {
 				SFileCloseFile(fh);
 				return NULL_PTR;
 			}
@@ -560,7 +578,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 			IReadFile* rfile = FileSystem->createAndOpenFile(path.c_str(), true);
 			u32 size = rfile->getSize();
 
-			if (size <= 1)
+			if (size <= 1 || size == 0xffffffff)
 			{
 				delete rfile;
 				return NULL_PTR;
@@ -591,7 +609,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 		u32 size = CascGetFileSize(hFile, &dwHigh);
 
 		// HACK: in patch.mpq some files don't want to open and give 1 for filesize
-		if (size<=1) {
+		if (size<=1 || size == 0xffffffff) {
 			CascCloseFile(hFile);
 			return NULL_PTR;
 		}
@@ -931,7 +949,7 @@ void wowEnvironment::addOwnCascFile(const c8* filename)
 void wowEnvironment::finishOwnCascFiles()
 {
 	OwnCascFiles.clear();
-	for (std::set<string_cs256, std::less<string_cs256>, qzone_allocator<string_cs256> >::iterator itr = OwnCascSet.begin(); itr != OwnCascSet.end(); ++itr)
+	for (auto itr = OwnCascSet.begin(); itr != OwnCascSet.end(); ++itr)
 	{
 		OwnCascFiles.push_back(*itr);	
 	}
@@ -1115,8 +1133,17 @@ void wowEnvironment::getDirectories(const c8* baseDir, std::vector<string_cs256>
 		}
 	}
 
-	for (std::set<string_cs256, std::less<string_cs256>, qzone_allocator<string_cs256> >::iterator itr = dirSet.begin(); itr != dirSet.end(); ++itr)
+	for (auto itr = dirSet.begin(); itr != dirSet.end(); ++itr)
 	{
 		outdirs.push_back(*itr);
 	}
+}
+
+const char* wowEnvironment::getFileNameByFileDataId(int filedataId)
+{
+	auto itr = FileIdMap.find(filedataId);
+	if (itr == FileIdMap.end())
+		return "";
+	int index = itr->second;
+	return CascListFiles[index].c_str();
 }

@@ -8,7 +8,7 @@
 #pragma comment(lib, "CascLib.lib")
 #pragma comment(lib, "freetype.lib")
 //#pragma comment(lib, "dinput8.lib")
-#pragma comment(lib, "dxguid.lib")
+//#pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "libmad.lib")
 #pragma comment(lib, "libogg.lib")
 #pragma comment(lib, "libvorbis.lib")

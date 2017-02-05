@@ -25,7 +25,6 @@ class IParticleSystemServices;
 class IRibbonEmitterServices;
 class IMeshDecalServices;
 class ITerrainServices;
-class ICollisionServices;
 class IInputReader;
 class IGestureReader;
 class IAudioPlayer;
@@ -102,7 +101,6 @@ public:
 	IRibbonEmitterServices*		getRibbonEmitterServices() const { return RibbonEmitterServices; }
 	IMeshDecalServices*			getMeshDecalServices() const { return MeshDecalServices; }
 	ITerrainServices*	getTerrainServices() const { return TerrainServices; }
-	ICollisionServices* getCollisioniServices() const { return CollisionServices; }
 	IInputReader*	getInputReader() const { return InputReader; }
 	IGestureReader*		getGestureReader() const { return GestureReader; }
 	IAudioPlayer*   getAudioPlayer() const { return AudioPlayer; }
@@ -135,7 +133,6 @@ private:
 	IRibbonEmitterServices*		RibbonEmitterServices;
 	IMeshDecalServices*			MeshDecalServices;
 	ITerrainServices*		TerrainServices;
-	ICollisionServices*		CollisionServices;
 	IAudioPlayer*		AudioPlayer;
 	engineSetting*		EngineSetting;
 	CTimer*			Timer;

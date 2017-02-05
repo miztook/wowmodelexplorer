@@ -9,9 +9,7 @@
 #include <map>
 #include <vector>
 #include "gl/glext.h"
-#include "COpenGL_VS12.h"
 #include "COpenGL_VS15.h"
-#include "COpenGL_PS12.h"
 #include "COpenGL_PS15.h"
 
 #include "COpenGLExtension.h"
@@ -141,13 +139,10 @@ private:
 	SShaderState	ShaderState;
 	SShaderState	LastShaderState;
 
-	COpenGL_VS12	vs12Loader;
 	COpenGL_VS15	vs15Loader;
-	COpenGL_PS12	ps12Loader;
 	COpenGL_PS15	ps15Loader;	
 	
 	bool ResetShaders;
-	u8	Padding[3];
 };
 
 inline const SGLUniformInfo* COpenGLShaderServices::getUniformInfo( const SGLProgram* p, const c8* name ) const

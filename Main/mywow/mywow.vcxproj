@@ -70,18 +70,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>..\..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>..\..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>..\..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IntDir>..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>..\..\Build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -207,7 +207,6 @@
     <ClInclude Include="interface\animation.h" />
     <ClInclude Include="interface\audio.h" />
     <ClInclude Include="interface\base.h" />
-    <ClInclude Include="CCollisionServices.h" />
     <ClInclude Include="CConfigs.h" />
     <ClInclude Include="CCoordSceneNode.h" />
     <ClInclude Include="CD3D11DrawServices.h" />
@@ -263,9 +262,7 @@
     <ClInclude Include="COpenGLTexture.h" />
     <ClInclude Include="COpenGLTextureWriteServices.h" />
     <ClInclude Include="COpenGLVertexDeclaration.h" />
-    <ClInclude Include="COpenGL_PS12.h" />
     <ClInclude Include="COpenGL_PS15.h" />
-    <ClInclude Include="COpenGL_VS12.h" />
     <ClInclude Include="COpenGL_VS15.h" />
     <ClInclude Include="CResourceLoader.h" />
     <ClInclude Include="CRibbonRenderer.h" />
@@ -473,7 +470,6 @@
     <ClCompile Include="CAlphaTestMeshRenderer.cpp" />
     <ClCompile Include="CAlphaTestWmoRenderer.cpp" />
     <ClCompile Include="casclib_memory.cpp" />
-    <ClCompile Include="CCollisionServices.cpp" />
     <ClCompile Include="CConfigs.cpp" />
     <ClCompile Include="CCoordSceneNode.cpp" />
     <ClCompile Include="CD3D11DrawServices.cpp" />
@@ -553,9 +549,7 @@
     <ClCompile Include="COpenGLTexture.cpp" />
     <ClCompile Include="COpenGLTextureWriteServices.cpp" />
     <ClCompile Include="COpenGLVertexDeclaration.cpp" />
-    <ClCompile Include="COpenGL_PS12.cpp" />
     <ClCompile Include="COpenGL_PS15.cpp" />
-    <ClCompile Include="COpenGL_VS12.cpp" />
     <ClCompile Include="COpenGL_VS15.cpp" />
     <ClCompile Include="CPVRImage.cpp" />
     <ClCompile Include="CResourceLoader.cpp" />

@@ -69,11 +69,6 @@ void COpenGLShaderServices::loadAll()
 		profile = "vs_1_5";
 		vs15Loader.loadAll(this);
 	}
-	else if (Extension->ShaderLanguageVersion >= 102)
-	{
-		profile = "vs_1_2";
-		vs12Loader.loadAll(this);
-	}
 	else 
 	{
 		ASSERT(false);
@@ -89,11 +84,6 @@ void COpenGLShaderServices::loadAll()
 	{
 		profile = "ps_1_5";
 		ps15Loader.loadAll(this);
-	}
-	else if (Extension->ShaderLanguageVersion >= 102)
-	{
-		profile = "ps_1_2";
-		ps12Loader.loadAll(this);
 	}
 	else
 	{
@@ -112,11 +102,6 @@ IPixelShader* COpenGLShaderServices::getPixelShader( E_PS_TYPE type, E_PS_MACRO 
 		if (Extension->ShaderLanguageVersion >= 303)
 		{
 			bool success = ps15Loader.loadPShaderHLSL(this, type, macro);
-			ASSERT(success);
-		}
-		else if (Extension->ShaderLanguageVersion >= 102)
-		{
-			bool success = ps12Loader.loadPShaderHLSL(this, type, macro);
 			ASSERT(success);
 		}
 		else

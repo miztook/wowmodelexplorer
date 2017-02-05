@@ -1119,8 +1119,8 @@ inline bool hasFileExtensionA( const c8* filename, const c8* ext )
 	if (*ext == '*')
 		return true;
 
-	c8 extension[10];
-	getFileExtensionA(filename, extension, 10);
+	c8 extension[32];
+	getFileExtensionA(filename, extension, 32);
 
 	if (  Q_stricmp(extension, ext) != 0 )
 		return false;

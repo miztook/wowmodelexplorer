@@ -47,10 +47,12 @@ public:			//Êý¾Ý²éÑ¯
 	const SMapRecord* getMap(u32 idx) const;
 	const SMapRecord* getMapById(s32 id) const { return mapCollections.getMapById(id); }
 	s32 getItemDisplayId(s32 itemid) const;
-	void getFilePath(s32 fileId, string256& path);
-	void getFilePath(s32 fileId, c8* path, u32 size);
-	void getTextureFilePath(s32 texId, string256& path);
-	void getTextureFilePath(s32 texId, c8* path, u32 size);
+	void getFilePath(s32 fileId, string256& path) const;
+	void getFilePath(s32 fileId, c8* path, u32 size) const;
+	void getTextureFilePath(s32 texId, string256& path) const;
+	void getTextureFilePath(s32 texId, c8* path, u32 size) const;
+	void getModelFilePath(s32 modelId, string256& path) const;
+	void getModelFilePath(s32 modelId, c8* path, u32 size) const;
 
 	bool isRaceHasHD(u32 race);
 
@@ -93,8 +95,10 @@ public:
 	const creatureModelDB*		getCreatureModelDB() const { return CreatureModelDB; }
 	const creatureDisplayInfoDB*		getCreatureDisplayInfoDB() const { return CreatureDisplayInfoDB; }
 	const creatureDisplayInfoExtraDB*		getCreatureDisplayInfoExtraDB() const { return CreatureDisplayInfoExtraDB; }
+	const npcModelItemSlotDisplayInfoDB*	getNpcModelItemSlotDisplayInfoDB() const { return NpcModelItemSlotDisplayInfoDB; }
 	const helmGeosetDB*	getHelmGeosetDB() const { return HelmGeosetDB; }
 	const itemDisplayDB*	getItemDisplayDB() const { return ItemDisplayDB; }
+	const itemDisplayInfoMaterialResDB*  getItemDisplayInfoMaterialResDB() const { return ItemDisplayInfoMaterialResDB; }
 	const itemSetDB*	getItemSetDB() const { return ItemSetDB; }
 	const itemSubClassDB*	 getItemSubClassDB() const { return ItemSubClassDB; }
 	const itemVisualsDB*	 getItemVisualsDB() const 	{ return ItemVisualsDB; }
@@ -106,14 +110,15 @@ public:
 	const itemModifiedAppearanceDB*		getItemModifiedAppearanceDB() const { return ItemModifiedAppearanceDB; }
 	const itemAppearanceDB* getItemAppearanceDB() const { return ItemAppearanceDB; }
 	const textureFileDataDB* getTextureFileDataDB() const { return TextureFileDataDB; }
+	const modelFileDataDB*  getModelFileDataDB() const { return ModelFileDataDB; }
 	const fileDataDB* getFileDataDB() const { return FileDataDB; }
 	const mapDB*		getMapDB() const	{ return MapDB; }
 	const spellVisualEffectNameDB*	 getSpellVisualEffectNameDB() const { return SpellVisualEffectNameDB; }
-	const spellVisualDB*		getSpellVisualDB() const { return SpellVisualDB; }
-	const spellVisualKitDB*		getSpellVisualKitDB() const { return SpellVisualKitDB; }
-	const spellDB*	getSpellDB() const { return SpellDB; }
-	const wmoAreaTableDB*		getWmoAreaTableDB() const { return WmoAreaTableDB; }
-	const worldMapAreaDB*		getWorldMapAreaDB() const { return WorldMapAreaDB; }
+ 	const spellVisualDB*		getSpellVisualDB() const { return SpellVisualDB; }
+ 	const spellVisualKitDB*		getSpellVisualKitDB() const { return SpellVisualKitDB; }
+ 	const spellDB*	getSpellDB() const { return SpellDB; }
+ 	const wmoAreaTableDB*		getWmoAreaTableDB() const { return WmoAreaTableDB; }
+ 	const worldMapAreaDB*		getWorldMapAreaDB() const { return WorldMapAreaDB; }
 
 private:
 	wowEnvironment*		Environment;
@@ -129,8 +134,10 @@ private:
 	creatureModelDB*				CreatureModelDB;
 	creatureDisplayInfoDB*				CreatureDisplayInfoDB;
 	creatureDisplayInfoExtraDB*		CreatureDisplayInfoExtraDB;
+	npcModelItemSlotDisplayInfoDB*	NpcModelItemSlotDisplayInfoDB;
 	helmGeosetDB*					HelmGeosetDB;
 	itemDisplayDB*			ItemDisplayDB;
+	itemDisplayInfoMaterialResDB*	ItemDisplayInfoMaterialResDB;
 	itemSetDB*					ItemSetDB;
 	itemSubClassDB*					ItemSubClassDB;
 	itemVisualsDB*						ItemVisualsDB;
@@ -142,12 +149,13 @@ private:
 	itemModifiedAppearanceDB*		ItemModifiedAppearanceDB;
 	itemAppearanceDB*			ItemAppearanceDB;
 	textureFileDataDB*			TextureFileDataDB;
+	modelFileDataDB*			ModelFileDataDB;
 	fileDataDB*			FileDataDB;
 	mapDB*									MapDB;
-	spellVisualEffectNameDB*					SpellVisualEffectNameDB;
-	spellVisualKitDB*			SpellVisualKitDB;
-	spellVisualDB*		SpellVisualDB;
-	spellDB*			SpellDB;
+ 	spellVisualEffectNameDB*					SpellVisualEffectNameDB;
+ 	spellVisualKitDB*			SpellVisualKitDB;
+ 	spellVisualDB*		SpellVisualDB;
+ 	spellDB*			SpellDB;
 	wmoAreaTableDB*			WmoAreaTableDB;
 	worldMapAreaDB*			WorldMapAreaDB;
 

@@ -69,9 +69,6 @@
     <Filter Include="implementation\external\freetype">
       <UniqueIdentifier>{0014df1c-29a0-4328-b5e4-e3c9beefba5f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="implementation\collision">
-      <UniqueIdentifier>{b59bcb25-67ff-4f06-973f-f0480f6b0f0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="implementation\external\stormlib">
       <UniqueIdentifier>{24cf9895-940a-4c7b-9376-d2b968809528}</UniqueIdentifier>
     </Filter>
@@ -329,9 +326,6 @@
     <ClInclude Include="CD3D11Structs.h">
       <Filter>implementation\video\Direct3D11</Filter>
     </ClInclude>
-    <ClInclude Include="CCollisionServices.h">
-      <Filter>implementation\collision</Filter>
-    </ClInclude>
     <ClInclude Include="CCoordSceneNode.h">
       <Filter>implementation\scene\sceneNode</Filter>
     </ClInclude>
@@ -454,12 +448,6 @@
     </ClInclude>
     <ClInclude Include="COpenGLVertexDeclaration.h">
       <Filter>implementation\video\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="COpenGL_VS12.h">
-      <Filter>implementation\video\OpenGL\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="COpenGL_PS12.h">
-      <Filter>implementation\video\OpenGL\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="COpenGL_PS15.h">
       <Filter>implementation\video\OpenGL\Shaders</Filter>
@@ -1237,9 +1225,6 @@
     <ClCompile Include="ftsystem_mpq.cpp">
       <Filter>implementation\external\freetype</Filter>
     </ClCompile>
-    <ClCompile Include="CCollisionServices.cpp">
-      <Filter>implementation\collision</Filter>
-    </ClCompile>
     <ClCompile Include="CCoordSceneNode.cpp">
       <Filter>implementation\scene\sceneNode</Filter>
     </ClCompile>
@@ -1398,12 +1383,6 @@
     </ClCompile>
     <ClCompile Include="COpenGLVertexDeclaration.cpp">
       <Filter>implementation\video\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="COpenGL_VS12.cpp">
-      <Filter>implementation\video\OpenGL\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="COpenGL_PS12.cpp">
-      <Filter>implementation\video\OpenGL\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="COpenGL_PS15.cpp">
       <Filter>implementation\video\OpenGL\Shaders</Filter>

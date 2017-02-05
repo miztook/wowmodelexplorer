@@ -121,6 +121,24 @@ public:
 			return ret;
 		}
 
+		s32 getByte3(u32 idx) const
+		{
+			ASSERT(_dbc->Fields); 
+			ASSERT(_dbc->Fields[idx].size == 3);
+
+			u8* bytes = getRawPointer<u8>(idx);
+			return (s32)((u32)bytes[0] + ((u32)bytes[1] << 8) + ((u32)bytes[2] << 16));
+		}
+
+		s32 getByte3InArray(u32 idx, u32 arrayIndex) const
+		{
+			ASSERT(_dbc->Fields); 
+
+			u8* bytes = getRawPointer<u8>(idx);
+			bytes += arrayIndex * 3;
+			return (s32)((u32)bytes[0] + ((u32)bytes[1] << 8) + ((u32)bytes[2] << 16));
+		}
+
 		s32 getInt(u32 idx) const 
 		{ 
 			ASSERT(idx < _dbc->getNumFields());
@@ -141,45 +159,40 @@ public:
 			return ret;
 		}
 
-		u16 getShort(u32 idx) const
-		{
-			ASSERT(idx < _dbc->getNumFields());
-
-			if(!_dbc->Fields)
-				return *reinterpret_cast<u16*>(_ofs+idx*2); 
-
-			ASSERT(idx < _dbc->getNumFields());
-			u16 ret = 0;
-			if (_dbc->Fields[idx].size == sizeof(u16))
-				ret = *reinterpret_cast<u16*>(_ofs + _dbc->Fields[idx].position); 
-			else if (_dbc->Fields[idx].size == sizeof(u8))
-				ret = *reinterpret_cast<u8*>(_ofs + _dbc->Fields[idx].position);
-			else
-				ASSERT(false);
-			return ret;
-		}
-
 		u8 getByte(u32 idx) const
 		{
 			ASSERT(idx < _dbc->getNumFields());
 
 			if(!_dbc->Fields)
-				return *reinterpret_cast<u8*>(_ofs+idx); 
+				return *reinterpret_cast<u8*>(_ofs+ idx); 
 
 			ASSERT(idx < _dbc->getNumFields());
 			ASSERT(_dbc->Fields[idx].size == sizeof(u8));
 			return *reinterpret_cast<u8*>(_ofs + _dbc->Fields[idx].position);
 		}
 
-		u8* getRawPointer(u32 idx) const
+		template<class T>
+		T* getRawPointer(u32 idx) const
 		{
 			ASSERT(idx < _dbc->getNumFields());
 
 			if(!_dbc->Fields)
-				return static_cast<u8*>(_ofs+idx); 
+				return reinterpret_cast<T*>(_ofs + idx * sizeof(T)); 
 
 			ASSERT(idx < _dbc->getNumFields());
-			return reinterpret_cast<u8*>(_ofs + _dbc->Fields[idx].position);
+			return reinterpret_cast<T*>(_ofs + _dbc->Fields[idx].position);
+		}
+
+		template<class T>
+		T getInArray(u32 idx, u32 arrayIndex) const
+		{
+			ASSERT(idx < _dbc->getNumFields());
+
+			if(!_dbc->Fields)
+				return (reinterpret_cast<T*>(_ofs + idx * sizeof(T)))[arrayIndex]; 
+
+			ASSERT(idx < _dbc->getNumFields());
+			return (reinterpret_cast<T*>(_ofs + _dbc->Fields[idx].position))[arrayIndex];
 		}
 
 		const c8* getString(u32 idx) const
@@ -190,6 +203,7 @@ public:
 			ASSERT(offset < _dbc->getStringSize());
 			return reinterpret_cast<c8*>(_dbc->_stringStart + offset);
 		}
+
 	public:
 		record(const dbc* d, u32 index, u8* ofs, u16 size) : _ofs(ofs), _index(index), _size(size), _dbc(d)  {}
 	private:
@@ -475,14 +489,18 @@ class areaTableDB;					//			AreaTable.dbc
 class charClassesDB;					//			ChrClasses.dbc
 class charFacialHairDB;					//			CharacterFacialHairStyles.dbc
 class charHairGeosetsDB;				//			CharHairGeosets.dbc
+class charComponentTextureLayoutsDB;		//		CharComponentTextureLayouts.dbc
+class charComponentTextureSectionsDB;		//		CharComponentTextureSections.dbc
 class charRacesDB;						//			ChrRaces.dbc
 class charSectionsDB;					//			CharSections.dbc
 class creatureTypeDB;					//			CreatureType.dbc
 class creatureModelDB;				//			CreatureModelData.dbc
 class creatureDisplayInfoDB;					//			CreatureDisplayInfo.dbc
 class creatureDisplayInfoExtraDB;			//			CreatureDisplayInfoExtra.dbc
+class npcModelItemSlotDisplayInfoDB;			//		NpcModelItemSlotDisplayInfo.dbc
 class helmGeosetDB;					//			HelmetGeosetVisData.dbc
 class itemDisplayDB;				//			ItemDisplayInfo.dbc
+class itemDisplayInfoMaterialResDB;		//		ItemDisplayInfoMaterialRes.dbc
 class itemSetDB;					//			ItemSet.dbc
 class itemSubClassDB;					//			ItemSubClass.dbc
 class itemVisualsDB;						//			ItemVisuals.dbc
@@ -497,6 +515,7 @@ class itemSparseDB;							//		Item-Sparse.db2
 class itemModifiedAppearanceDB;			//ItemModifiedAppearance.db2
 class itemAppearanceDB;			//ItemAppearance.db2
 class textureFileDataDB;			//TextureFieldData.db2
+class modelFileDataDB;				//ModelFileData
 class fileDataDB;				//FileData.dbc
 class mapDB;									//		Map.dbc
 class spellVisualEffectNameDB;					//		SpellVisualEffectName.dbc
@@ -534,12 +553,11 @@ class charClassesDB: public dbc
 public:
 	charClassesDB(wowEnvironment* env): dbc(env, "DBFilesClient\\ChrClasses.dbc") {}
 
-	/// Fields
-	static const u32 NameV400 = 3;	// string, localization - english name
-
 #ifdef WOW70
+	static const u32 NameV400 = 3;		//string
 	static const u32 ShortName = 4;
 #else
+	static const u32 NameV400 = 3;
 	static const u32 ShortName = 6;
 #endif
 };
@@ -552,20 +570,22 @@ public:
 	dbc::record getByParams(unsigned int race, unsigned int gender, unsigned int style) const;
 	u32 getStylesFor(unsigned int race, unsigned int gender) const;
 
+
+
 #ifdef WOW70
-	static const u32 RaceV400 = 1;				// uint
-	static const u32 GenderV400 = 2;				// uint
-	static const u32 StyleV400 = 3;				// uint
-	static const u32 Geoset100V400 = 0;			// uint
-	static const u32 Geoset300V400 = 0;			// uint
-	static const u32 Geoset200V400 = 0;			// uint
+	static const u32 RaceV400 = 1;				// byte
+	static const u32 GenderV400 = 2;				// byte
+	static const u32 StyleV400 = 3;				// byte
+	static const u32 Geoset100V400 = 0;			// uint array
+	static const u32 Geoset300V400 = 1;			// uint
+	static const u32 Geoset200V400 = 2;			// uint
 #else
 	static const u32 RaceV400 = 1;				// uint
 	static const u32 GenderV400 = 2;				// uint
 	static const u32 StyleV400 = 3;				// uint
-	static const u32 Geoset100V400 = 4;			// uint
-	static const u32 Geoset300V400 = 5;			// uint
-	static const u32 Geoset200V400 = 6;			// uint
+	static const u32 Geoset100V400 = 4;			// uint array
+	static const u32 Geoset300V400 = 1;			// uint
+	static const u32 Geoset200V400 = 2;			// uint
 #endif
 };
 
@@ -574,14 +594,59 @@ class charHairGeosetsDB : public dbc
 public:
 	charHairGeosetsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharHairGeosets.dbc") {}
 
-	/// Fields
+#ifdef WOW70
+	static const u32 Race = 1;				// byte
+	static const u32 Gender = 2;				// byte
+	static const u32 Section = 3;			// byte
+	static const u32 Geoset = 5;				// byte
+	static const u32 ShowScalp = 7;			// byte
+#else
 	static const u32 Race = 1;				// uint
 	static const u32 Gender = 2;				// uint, 0 = Male, 1 = Female
 	static const u32 Section = 3;			// uint, ID unique between race, and gender.
 	static const u32 Geoset = 5;				// uint, Defines hairstyle, each number should be unique for that race / gender combo.
+	static const u32 ShowScalp = 7;			// uint
+#endif
 
 	dbc::record getByParams(unsigned int race, unsigned int gender, unsigned int section) const;
 	u32 getGeosetsFor(unsigned int race, unsigned int gender) const;
+};
+
+class charComponentTextureLayoutsDB : public dbc
+{
+public:
+	charComponentTextureLayoutsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharComponentTextureLayouts.dbc") {}
+
+#ifdef WOW70
+	static const u32 Width = 0;
+	static const u32 Height = 1;
+#else
+	static const u32 Width = 1;
+	static const u32 Height = 2;
+#endif
+};
+
+class charComponentTextureSectionsDB : public dbc
+{
+public:
+	charComponentTextureSectionsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharComponentTextureSections.dbc") {}
+
+#ifdef WOW70
+	static const u32 LayoutID = 4;
+	static const u32 Section = 5;
+	static const u32 X = 0;
+	static const u32 Y = 1;
+	static const u32 Width = 2;
+	static const u32 Height = 3;
+#else
+	static const u32 LayoutID = 1;
+	static const u32 Section = 2;
+	static const u32 X = 3;
+	static const u32 Y = 4;
+	static const u32 Width = 5;
+	static const u32 Height = 6;
+#endif
+
 };
 
 class charRacesDB : public dbc
@@ -592,12 +657,18 @@ public:
 #ifdef WOW70
 	static const u32 ShortName = 1;		// string, Name, represented by only 2 chars
 	static const u32 Name = 2;			// string, Model name, 10048 to 11
-	static const u32 LocaleName = 3;	// string
+	static const u32 maleModelID = 15;
+	static const u32 femaleModelID = 16;
+	static const u32 CharComponentTexLayoutID = 27;		//byte
+	static const u32 maleHDModelID = 32;
+	static const u32 femaleHDModelID = 33;
+	static const u32 CharComponentHDTexLayoutID = 31;		//byte
 #else
-	static const u32 maleModeID = 4;		// unit
-	static const u32 femaleModeID = 5;	// unit
+	static const u32 maleModelID = 4;		// unit
+	static const u32 femaleModelID = 5;	// unit
 	static const u32 ShortName = 6;		// string, Name, represented by only 2 chars
 	static const u32 Name = 11;			// string, Model name, 10048 to 11
+	static const u32 CharComponentTexLayoutID = 24;
 #endif
 
 	dbc::record getByName(const c8* name);
@@ -608,16 +679,27 @@ class charSectionsDB : public dbc
 public:
 	charSectionsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharSections.dbc") {}
 	
+#ifdef WOW70
+	static const u32 Race = 2;		// byte
+	static const u32 Gender = 3;		// byte
+	static const u32 Type = 4;		// byte
+
+	static const u32 Tex1 = 0;		// uint array 3
+
+	static const u32 IsNPC = 1;		// Flags, u16, IsNPC = 0x1 ?, IsDeathKnight?
+	static const u32 Section = 5;	// byte
+	static const u32 Color = 6;		// byte
+#else
 	static const u32 Race = 1;		// uint
 	static const u32 Gender = 2;		// uint
 	static const u32 Type = 3;		// uint
 
-	static const u32 Tex1 = 4;		// string
-	static const u32 Tex2 = 5;		// string
-	static const u32 Tex3 = 6;		// string
+	static const u32 Tex1 = 4;		// string array 3
+
 	static const u32 IsNPC = 7;		// Flags, uint, IsNPC = 0x1 ?, IsDeathKnight?
 	static const u32 Section = 8;	// uint
 	static const u32 Color = 9;		// uint
+#endif
 
 	/// Types
 	static const u32 SkinType = 0;
@@ -641,7 +723,11 @@ class creatureTypeDB : public dbc
 public:
 	creatureTypeDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureType.dbc") {}
 
+#ifdef WOW70
+	static const u32 Name = 0;		// string
+#else
 	static const u32 Name = 1;		// string
+#endif
 };
 
 class creatureModelDB : public dbc
@@ -650,12 +736,12 @@ public:
 	creatureModelDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureModelData.dbc") {}
 
 	/// Fields
-	static const u32 Type = 1;			// uint
+	//static const u32 Type = 1;			// uint
 
-#if defined(WOW60) || defined(WOW70)
-	static const u32 FileNameID = 2;		// uint FileData
+#ifdef WOW70
+	static const u32 FileNameID = 19;		// uint fileDataId
 #else
-	static const u32 Filename = 2;		// string
+	static const u32 FileNameID = 2;		// uint FileData
 #endif
 };
 
@@ -664,12 +750,22 @@ class creatureDisplayInfoDB : public dbc
 public:
 	creatureDisplayInfoDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureDisplayInfo.dbc") {}
 
+#if defined(WOW70)
+	/// Fields
+	static const u32 ModelID = 9;		// uint
+	static const u32 NPCExtraID = 0;			// uint CreatureDisplayInfoExtraID
+	static const u32 Scale = 1;		//float 
+	static const u32 Alpha = 2;		//uint
+	static const u32 Texture1 = 3;			// uint array 3
+#else
 	/// Fields
 	static const u32 ModelID = 1;		// uint
-	static const u32 NPCID = 3;			// uint CreatureDisplayInfoExtraID
+	static const u32 NPCExtraID = 3;			// uint CreatureDisplayInfoExtraID
 	static const u32 Scale = 4;		//float 
 	static const u32 Alpha = 5;		//uint
-	static const u32 Skin = 7;			// string
+	static const u32 Texture1 = 7;			// string array 3
+#endif
+	
 };
 
 class creatureDisplayInfoExtraDB : public dbc
@@ -677,7 +773,26 @@ class creatureDisplayInfoExtraDB : public dbc
 public:
 	creatureDisplayInfoExtraDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureDisplayInfoExtra.dbc") {}
 
-	/// Fields
+#ifdef WOW70
+	static const u32 SkinColor = 5;		// byte
+	static const u32 Face = 6;			// byte
+	static const u32 HairStyle = 7;		// byte
+	static const u32 HairColor = 8;		// byte
+	static const u32 FacialHair = 9;		// byte
+
+	static const u32 HelmID = 0;			// uint, Slot1
+	static const u32 ShoulderID = 1;		// uint, Slot3
+	static const u32 ShirtID = 2;		// uint, Slot4
+	static const u32 ChestID = 3;		// uint, Slot5
+	static const u32 BeltID = 4;		// uint, Slot6
+	static const u32 PantsID = 5;		// uint, Slot7
+	static const u32 BootsID = 6;		// uint, Slot8
+	static const u32 BracersID = 7;		// uint, Slot9
+	static const u32 GlovesID = 8;		// uint, Slot10
+	static const u32 TabardID = 9;		// uint, Slot19
+	static const u32 CapeID = 10;		// uint, Slot16
+
+#else
 	static const u32 RaceID = 1;			// uint
 	static const u32 Gender = 2;			// bool
 	static const u32 SkinColor = 3;		// uint
@@ -685,6 +800,7 @@ public:
 	static const u32 HairStyle = 5;		// uint
 	static const u32 HairColor = 6;		// uint
 	static const u32 FacialHair = 7;		// uint
+
 	static const u32 HelmID = 8;			// uint, Slot1
 	static const u32 ShoulderID = 9;		// uint, Slot3
 	static const u32 ShirtID = 10;		// uint, Slot4
@@ -696,9 +812,9 @@ public:
 	static const u32 GlovesID = 16;		// uint, Slot10
 	static const u32 TabardID = 17;		// uint, Slot19
 	static const u32 CapeID = 18;		// uint, Slot16
-	//static const u32 CanEquip = 19;		// bool
+#endif
 
-#if defined(WOW60) || defined(WOW70)
+#if defined(WOW60)
 	static const u32 FileNameID = 20;
 	static const u32 HDFileNameID = 21;
 #else
@@ -706,15 +822,26 @@ public:
 #endif
 };
 
+class npcModelItemSlotDisplayInfoDB : public dbc
+{
+public:
+	npcModelItemSlotDisplayInfoDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\NpcModelItemSlotDisplayInfo.dbc") {}
+
+	static const u32 NPCExtraID = 0;
+	static const u32 ItemDisplayInfoID = 1;
+	static const u32 ItemType = 2;
+};
+
 class helmGeosetDB : public dbc
 {
 public:
 	helmGeosetDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\HelmetGeosetVisData.dbc") {}
 
-	static const u32 Hair = 1;		// int Hair, 0 = show, anything else = don't show? eg: a value of 1020 won't hide night elf ears, but 999999 or -1 will.
-	static const u32 Facial1Flags = 2;		// int Beard or Tusks
-	static const u32 Facial2Flags = 3;		// int Earring
-	static const u32 Facial3Flags = 4;		// int, See ChrRaces, column 24 to 26 for information on what is what.
+#ifdef WOW70
+	static const u32 HideHair = 0;		//int array
+#else
+	static const u32 HideHair = 1;		//int array
+#endif
 };
 
 class itemDisplayDB : public dbc
@@ -722,18 +849,19 @@ class itemDisplayDB : public dbc
 public:
 	itemDisplayDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemDisplayInfo.dbc") { }
 
-	static const u32 Model = 1;			// string, modelleft
-	static const u32 Model2 = 2;			// string, modelright
-	static const u32 Skin = 3;			// string, textureleft
-	static const u32 Skin2 = 4;			// string, textureright
+#if defined(WOW70)
+	static const u32 Model = 0;			// u16 array, modelleft, modelright
+	static const u32 Skin = 1;			// byte3 array, textureleft, textureright
+#else
+	static const u32 Model = 1;			// string array, modelleft, modelright
+	static const u32 Skin = 3;			// string array, textureleft, textureright
+#endif
 
 #if defined(WOW60) || defined(WOW70)
-	static const u32 GloveGeosetFlags = 5;		// uint, (0,1,2,3,4,5)
-	static const u32 BracerGeosetFlags = 6;		// uint, (0,1,2,3)
-	static const u32 RobeGeosetFlags = 7;		// uint, (0,1)
-	static const u32 BootsGeosetFlags = 8;		// uint, (0,1,2,4,6)
-	static const u32 GeosetVisID1 = 10;	// uint, HelmetGeosetVisData.dbc
-	static const u32 GeosetVisID2 = 11;	// uint, HelmetGeosetVisData.dbc
+	static const u32 GeosetGroup = 5;		// uint array 3, (0,1,2,3,4,5)
+	//static const u32 BracerGeosetFlags = 6;		// uint, (0,1,2,3)
+	//static const u32 RobeGeosetFlags = 7;		// uint, (0,1)
+	static const u32 GeosetVisID = 10;	// uint array 2, HelmetGeosetVisData.dbc
 	static const u32 TexArmUpper = 12;	// uint TextureFieldData.db2
 	static const u32 TexArmLower = 13;	// uint TextureFieldData.db2
 	static const u32 TexHands = 14;		// uint TextureFieldData.db2
@@ -769,6 +897,29 @@ public:
 
 };
 
+class itemDisplayInfoMaterialResDB : public dbc
+{
+public:
+	itemDisplayInfoMaterialResDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemDisplayInfoMaterialRes.dbc") {}
+
+	static const u32 ItemDisplayInfoID = 0;		//uint
+	static const u32 TextureFileDataID = 1;
+	static const u32 TextureSlot = 2;
+
+	//slot definition
+	static const u32 UpperArm = 0;
+	static const u32 LowerArm = 1;
+	static const u32 Hands = 2;
+	static const u32 UpperTorso = 3;
+	static const u32 LowerTorso = 4;
+	static const u32 UpperLeg = 5;
+	static const u32 LowerLeg = 6;
+	static const u32 Foot = 7;
+
+	dbc::record getByItemDisplayInfoIDAndSlot(u32 itemDisplayId, u32 slot) const;
+	void getTexturePath(u32 itemDisplayId, u32 slot, c8* path, u32 size) const;
+};
+
 class itemSetDB : public dbc
 {
 public:
@@ -776,9 +927,16 @@ public:
 
 	static const u32 NumItems = 17;
 
+#if defined(WOW70)
+	/// Fields
+	static const u32 Name = 0;	// string, Localization
+	static const u32 ItemIDBaseV400 = 1; // int array 17
+#else
 	/// Fields
 	static const u32 Name = 1;	// string, Localization
 	static const u32 ItemIDBaseV400 = 2; // 10 * uint
+#endif
+
 };
 
 class itemSubClassDB : public dbc
@@ -786,10 +944,17 @@ class itemSubClassDB : public dbc
 public:
 	itemSubClassDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemSubClass.dbc") {}
 
+#if defined(WOW70)
+	static const u32 ClassIDV400 = 3;	// byte
+	static const u32 SubClassIDV400 = 4;	// byte
+	static const u32 NameV400 = 0;		// string
+	static const u32 VerboseNameV400 = 1;		// string
+#else
 	static const u32 ClassIDV400 = 1;	// int
 	static const u32 SubClassIDV400 = 2;	// int
 	static const u32 NameV400 = 11;		// string
-	static const u32 VerboseNameV400 = 11;		// string
+	static const u32 VerboseNameV400 = 12;		// string
+#endif
 
 	dbc::record getById(int id, int subid);
 };
@@ -801,8 +966,12 @@ public:
 
 	static const u32 NumItems = 24;
 
-	/// Fields
-#if defined(WOW60) || defined(WOW70)
+#if defined(WOW70)
+	static const u32 Race = 2;	// byte offset
+	static const u32 Class = 3;		// byte offset
+	static const u32 Gender = 4;	// byte offset
+	static const u32 ItemIDBase = 0; // uint array, 24
+#elif defined(WOW60)
 	static const u32 Race = 4;	// byte offset
 	static const u32 Class = 5;		// byte offset
 	static const u32 Gender = 6;	// byte offset
@@ -857,16 +1026,19 @@ class itemDB : public dbc
 public:
 	itemDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Item.dbc") { }
 
-	// Fields
+#if defined(WOW70)
+	static const u32 Itemclass = 1;	// byte
+	static const u32 Subclass = 2;	// byte
+	static const u32 InventorySlot = 5;	// byte
+	static const u32 Sheath = 6;		// byte
+#elif defined(WOW60) 
 	static const u32 Itemclass = 1;	// unit
 	static const u32 Subclass = 2;	// unit
-	static const u32 MaterialId = 4;	// uint
-
-#if defined(WOW60) || defined(WOW70)
 	static const u32 InventorySlot = 5;	// unit
 	static const u32 Sheath = 6;		// unit
-	static const u32 Icon = 7;		// unit
 #else
+	static const u32 Itemclass = 1;	// unit
+	static const u32 Subclass = 2;	// unit
 	static const u32 ItemDisplayInfo = 5;	// unit
 	static const u32 InventorySlot = 6;	// unit
 	static const u32 Sheath = 7;	// unit
@@ -878,9 +1050,17 @@ class itemSparseDB : public dbc
 public:
 	itemSparseDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Item-Sparse.dbc") { }
 
+#if defined(WOW70)
+	static const u32 Quality = 42;
+#elif defined(WOW60)
+	static const u32 Quality = 1;
+#endif
+
 	u32 getItemNameField() const
 	{
-#if defined(WOW60) || defined(WOW70)
+#if defined(WOW70)
+		return 13;
+#elif defined(WOW60)
 		return 70;
 #else
 		if (minorVersion >= 19000)
@@ -957,14 +1137,21 @@ public:
 
 #ifdef WOW70
 	static const u32 TextureId = 0;
-	static const u32 Path = 2;		//uint filedata
+	static const u32 Path = 2;		//byte3 fileid
 #else	
 	static const u32 TextureId = 1;
 	static const u32 Path = 4;		//uint filedata
 #endif
 
 private:
-	void buildItemLookup();
+	void buildItemLookup()
+	{
+		for (u32 i=0; i<nActualRecords; ++i)
+		{
+			u32 itemid = getRecord(i).getUInt(textureFileDataDB::TextureId);
+			ItemLookup32[itemid] = i;
+		}
+	}
 
 private:
 #ifdef USE_QALLOCATOR
@@ -987,6 +1174,49 @@ public:
 	}
 };
 
+class modelFileDataDB : public dbc
+{
+public:
+	modelFileDataDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ModelFileData.dbc", true)
+	{
+		buildItemLookup();
+	}
+
+	static const u32 Path = 1;		//byte3 fileid	
+	static const u32 ModelId = 2;
+
+private:
+	void buildItemLookup()
+	{
+		for (u32 i=0; i<nActualRecords; ++i)
+		{
+			u32 itemid = getRecord(i).getUInt(modelFileDataDB::ModelId);
+			ItemLookup32[itemid] = i;
+		}
+	}
+
+private:
+#ifdef USE_QALLOCATOR
+	typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_ItemLookup32;
+#else
+	typedef std::unordered_map<u32, u32> T_ItemLookup32;
+#endif
+
+	T_ItemLookup32 ItemLookup32;
+
+public:
+	dbc::record getByModelId(u32 modelId) const
+	{
+		T_ItemLookup32::const_iterator itr = ItemLookup32.find(modelId);
+		if ( itr == ItemLookup32.end())
+			return record::EMPTY();
+
+		u32 i = itr->second;
+		return getRecord(i);
+	}
+};
+
+
 class fileDataDB : public dbc
 {
 public:
@@ -997,6 +1227,7 @@ public:
 	static const u32 FileName = 1;
 	static const u32 FilePath = 2;
 };
+
 
 class mapDB : public dbc
 {
@@ -1017,7 +1248,11 @@ class spellVisualEffectNameDB : public dbc
 public:
 	spellVisualEffectNameDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\SpellVisualEffectName.dbc") {}
 
+#ifdef WOW70
+	static const u32 Model = 0;		// string
+#else
 	static const u32 Model = 1;		// string
+#endif
 };
 
 class spellVisualKitDB : public dbc

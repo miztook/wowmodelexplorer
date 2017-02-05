@@ -69,9 +69,9 @@ void createScene()
 		pandarenMaleNode->getM2Instance()->CharacterInfo->FacialHair = 0;	
 		//pandarenMaleNode->getM2Instance()->CharacterInfo->HairColor = 4;
 		//pandarenMaleNode->getM2Appearance()->loadStartOutfit(448, false, true);
-		//pandarenMaleNode->getM2Appearance()->loadSet(1254, true);
-		//pandarenMaleNode->getM2Appearance()->takeItem(120394, false);
-		//pandarenMaleNode->getM2Appearance()->takeItem(119865, false);
+		pandarenMaleNode->getM2Appearance()->loadSet(1254, true);
+		pandarenMaleNode->getM2Appearance()->takeItem(120394, false);
+		pandarenMaleNode->getM2Appearance()->takeItem(119865, false);
 		//pandarenMaleNode->getM2Appearance()->takeItem(116800, false);
 		//pandarenMaleNode->getM2Appearance()->takeItem(867, false);
 		//pandarenMaleNode->getM2Appearance()->showHelm(false);
