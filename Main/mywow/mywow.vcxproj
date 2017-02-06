@@ -88,7 +88,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -105,7 +105,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FPM_64BIT;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FPM_64BIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>

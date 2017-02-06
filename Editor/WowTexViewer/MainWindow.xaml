@@ -29,7 +29,7 @@
                     </ad:DocumentContent>
                 </ad:DocumentPane>
 
-                <ad:DockablePane x:Name="_rightDockablePane" ad:ResizingPanel.ResizeWidth="0" >
+                <ad:DockablePane x:Name="_rightDockablePane" ad:ResizingPanel.ResizeWidth="0">
                     <v:MapTexNameContent x:Name="_mapTexNameContent" />
                 </ad:DockablePane>
             </ad:ResizingPanel>

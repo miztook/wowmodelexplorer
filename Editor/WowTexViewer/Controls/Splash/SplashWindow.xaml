@@ -13,7 +13,12 @@
         <ImageBrush x:Name="_backGroundImage" TileMode="FlipXY" />
     </Window.Background>
     <Grid>
-        <Label Height="28" Margin="19,0,19,5" Name="label2" VerticalAlignment="Bottom"
-               Content="{Binding Source={x:Static local:MessageListener.Instance},Path=Message}" Foreground="White"></Label>
+        <Label Name="label2"
+               Height="28"
+               Margin="19,0,19,5"
+               VerticalAlignment="Bottom"
+               Content="{Binding Source={x:Static local:MessageListener.Instance},
+                                 Path=Message}"
+               Foreground="White" />
     </Grid>
 </Window>

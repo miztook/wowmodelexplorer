@@ -5,9 +5,9 @@
     <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FF595959" />
     <SolidColorBrush x:Key="EdgeBorderBrush" Color="Gray" />
 
-    <FontFamily x:Key="WindowFontFamily"/>
+    <FontFamily x:Key="WindowFontFamily" />
     <FontStyle x:Key="WindowFontStyle" />
-    <FontWeight x:Key="WindowFontWeight"/>
+    <FontWeight x:Key="WindowFontWeight" />
 
     <BitmapSource x:Key="WowIcon">Images/Wow.ico</BitmapSource>
     <BitmapSource x:Key="WallPaper50">Images/wallpaper50.jpg</BitmapSource>

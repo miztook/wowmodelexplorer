@@ -205,9 +205,9 @@
             <MenuItem Name="menuOperationEquipments"
                       Command="cmd:ModelOperationCommands.ModelEquipments"
                       Header="{DynamicResource modelEquipments}" />
-            <!-- <MenuItem Name="menuOperationEquipmentSelect" -->
-                      <!--                       Command="cmd:ModelOperationCommands.ModelEquipmentSelect" -->
-                      <!--                       Header="{DynamicResource modelEquipmentSelect}" / -->
+            <!--  <MenuItem Name="menuOperationEquipmentSelect"  -->
+            <!--  Command="cmd:ModelOperationCommands.ModelEquipmentSelect"  -->
+            <!--  Header="{DynamicResource modelEquipmentSelect}" /  -->
             <MenuItem Name="menuOperationCharacterInfo"
                       Command="cmd:ModelOperationCommands.CharacterInfo"
                       Header="{DynamicResource characterInfo}" />
