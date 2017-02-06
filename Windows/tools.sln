@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DbcDumper", "..\Tool\DbcDumper\DbcDumper.vcxproj", "{B6AE0210-61EA-4BD8-86A9-06BBC57B3A9F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLES2ShaderBuilder", "..\Tool\GLES2ShaderBuilder\GLES2ShaderBuilder.vcxproj", "{28351AF3-7AD2-4938-8DCA-E41DF5AE924E}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXShaderBuilder", "..\Tool\DXShaderBuilder\DXShaderBuilder.vcxproj", "{F5102275-8C0E-41CD-B993-302A91A9CDA5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLShaderBuilder", "..\Tool\OpenGLShaderBuilder\OpenGLShaderBuilder.vcxproj", "{99E1BE90-365D-4B81-9571-244AD39EC16C}"
@@ -33,14 +31,6 @@ Global
 		{B6AE0210-61EA-4BD8-86A9-06BBC57B3A9F}.Release|Win32.Build.0 = Release|Win32
 		{B6AE0210-61EA-4BD8-86A9-06BBC57B3A9F}.Release|x64.ActiveCfg = Release|x64
 		{B6AE0210-61EA-4BD8-86A9-06BBC57B3A9F}.Release|x64.Build.0 = Release|x64
-		{28351AF3-7AD2-4938-8DCA-E41DF5AE924E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{28351AF3-7AD2-4938-8DCA-E41DF5AE924E}.Debug|Win32.Build.0 = Debug|Win32
-		{28351AF3-7AD2-4938-8DCA-E41DF5AE924E}.Debug|x64.ActiveCfg = Debug|x64
-		{28351AF3-7AD2-4938-8DCA-E41DF5AE924E}.Debug|x64.Build.0 = Debug|x64
-		{28351AF3-7AD2-4938-8DCA-E41DF5AE924E}.Release|Win32.ActiveCfg = Release|Win32
-		{28351AF3-7AD2-4938-8DCA-E41DF5AE924E}.Release|Win32.Build.0 = Release|Win32
-		{28351AF3-7AD2-4938-8DCA-E41DF5AE924E}.Release|x64.ActiveCfg = Release|x64
-		{28351AF3-7AD2-4938-8DCA-E41DF5AE924E}.Release|x64.Build.0 = Release|x64
 		{F5102275-8C0E-41CD-B993-302A91A9CDA5}.Debug|Win32.ActiveCfg = Debug|Win32
 		{F5102275-8C0E-41CD-B993-302A91A9CDA5}.Debug|Win32.Build.0 = Debug|Win32
 		{F5102275-8C0E-41CD-B993-302A91A9CDA5}.Debug|x64.ActiveCfg = Debug|x64

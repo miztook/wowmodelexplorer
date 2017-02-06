@@ -5,6 +5,8 @@
 #include "DX11ShaderBuild.h"
 
 #pragma comment(lib, "mywow.lib")
+#pragma comment(lib, "d3dx11.lib")
+#pragma comment(lib, "d3dcompiler.lib")
 
 IFileSystem* g_fs = NULL;
 

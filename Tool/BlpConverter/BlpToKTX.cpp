@@ -155,7 +155,7 @@ bool CBlpToKTX::processPvrTexture( pvrtexture::CPVRTexture* pTexture, IBLPImage*
 	}
 
 	//convert to a8r8g8b8
-	if (blpImage->getColorFormat() != ECF_A8B8G8R8)
+	if (blpImage->getColorFormat() != ECF_A8R8G8B8)
 	{
 		if(!Transcode(*pTexture, PixelType('r','g','b','a',8,8,8,8), ePVRTVarTypeUnsignedByteNorm, ePVRTCSpacelRGB, eQuality))
 		{
