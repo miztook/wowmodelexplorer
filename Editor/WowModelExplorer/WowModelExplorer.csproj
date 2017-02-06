@@ -784,7 +784,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\wallpaper.jpg" />
+    <Resource Include="Resources\Images\wallpaper70.jpg" />
     <Resource Include="Resources\Images\Wow.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -804,6 +804,12 @@
   <ItemGroup>
     <Resource Include="Resources\Images\File.png" />
     <Resource Include="Resources\Images\Folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\wallpaper60.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\wallpaper50.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

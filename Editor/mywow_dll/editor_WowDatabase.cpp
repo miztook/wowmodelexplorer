@@ -188,7 +188,7 @@ bool  WowDatabase_getMap( u32 i, editor::SMap* map )
 	if (!r.isValid())
 		return false;
 
-	map->id = r.getInt(mapDB::ID);
+	map->id = r.getID();
 	map->type = r.getInt(mapDB::AreaType);
 	utf8to16(r.getString(mapDB::Name), map->name, DEFAULT_SIZE);
 	return true;
@@ -263,7 +263,7 @@ bool  WowDatabase_getSpellVisualEffectId( u32 i, int* id )
 	if (!r.isValid())
 		return false;
 
-	*id = r.getInt(spellVisualEffectNameDB::ID);
+	*id = r.getID();
 	return true;
 }
 

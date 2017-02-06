@@ -10,8 +10,7 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None">
     <Window.Background>
-        <ImageBrush TileMode="FlipXY" ImageSource="{StaticResource WallPaper}">
-        </ImageBrush>
+        <ImageBrush x:Name="_backGroundImage" TileMode="FlipXY" />
     </Window.Background>
     <Grid>
         <Label Height="28" Margin="19,0,19,5" Name="label2" VerticalAlignment="Bottom"

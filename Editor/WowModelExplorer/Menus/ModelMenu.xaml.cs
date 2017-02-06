@@ -115,6 +115,7 @@ namespace WowModelExplorer.Menus
             menuWmoWireFrameOneColor.IsChecked = ModelEditorService.Instance.WmoWireFrame == E_OVERRIDE_WIREFRAME.EOW_WIREFRAME_ONECOLOR;
         }
 
+        /*
         private void menuOptionBackMusic_SubmenuOpened(object sender, RoutedEventArgs e)
         {
             menuOptionBackMusicNone.IsChecked = ModelEditorService.Instance.BackMusic == BackMusicFiles.None;
@@ -140,6 +141,7 @@ namespace WowModelExplorer.Menus
             menuOptionBackMusicUndercity.IsChecked = ModelEditorService.Instance.BackMusic == BackMusicFiles.Undercity;
             menuOptionBackMusicThunderbluff.IsChecked = ModelEditorService.Instance.BackMusic == BackMusicFiles.Thunderbluff;
         }
+         */
 
         private void menuSettingCameraSpeed_SubmenuOpened(object sender, RoutedEventArgs e)
         {

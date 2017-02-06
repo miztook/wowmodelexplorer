@@ -266,7 +266,7 @@ void CEditSceneManager::renderRT()
 
 
 	E_DRIVER_TYPE dType = Driver->getDriverType();
-	if(dType == EDT_OPENGL || dType == EDT_GLES2)
+	if(dType == EDT_OPENGL)
 		g_Engine->getDrawServices()->draw2DImageRect(FrameRT->getRTTexture(), &rc, NULL, SColor(), ERU_01_10);
 	else
 		g_Engine->getDrawServices()->draw2DImageRect(FrameRT->getRTTexture(), &rc);

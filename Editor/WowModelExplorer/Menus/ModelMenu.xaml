@@ -19,9 +19,6 @@
           UseLayoutRounding="True">
         <MenuItem Header="{DynamicResource menuFile}">
             <MenuItem Command="cmd:FileCommands.NewFile" Header="{DynamicResource newFile}" />
-            <MenuItem Command="cmd:FileCommands.OpenFile"
-                      CommandParameter="{x:Static w:OpenTypes.LoginScreen}"
-                      Header="{DynamicResource loginScreen}" />
             <MenuItem Command="cmd:FileCommands.Exit" Header="{DynamicResource exit}" />
         </MenuItem>
         <MenuItem Header="{DynamicResource view}" SubmenuOpened="menuView_SubmenuOpened">
@@ -428,72 +425,6 @@
                           Command="cmd:OptionCommands.ShowOption"
                           CommandParameter="{x:Static w:EditorShowOptions.LightCoord}"
                           Header="{DynamicResource editorLightCoord}" />
-            </MenuItem>
-            <MenuItem Header="{DynamicResource editorBackMusic}" SubmenuOpened="menuOptionBackMusic_SubmenuOpened">
-                <MenuItem Name="menuOptionBackMusicNone"
-                          Command="cmd:OptionCommands.BackMusic"
-                          CommandParameter="{x:Static w:BackMusicFiles.None}"
-                          Header="{DynamicResource editorBGMNone}" />
-                <MenuItem Header="{DynamicResource editorBGMTheme}" SubmenuOpened="menuThemeMusic_SubmenuOpened">
-                    <MenuItem Name="menuOptionBackMusicMainTiltle"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.MainTitle}"
-                              Header="{DynamicResource editorBGMMainTitle}" />
-                    <MenuItem Name="menuOptionBackMusicWotLK"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.WotLK}"
-                              Header="{DynamicResource editorBGMWotLK}" />
-                    <MenuItem Name="menuOptionBackMusicCataclysm"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Cataclysm}"
-                              Header="{DynamicResource editorBGMCTM}" />
-                    <MenuItem Name="menuOptionBackMusicPandaria"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Pandaria}"
-                              Header="{DynamicResource editorBGMMOP}" />
-                    <MenuItem Name="menuOptionBackMusicDraenor"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Draenor}"
-                              Header="{DynamicResource editorBGMWOD}" />
-                    <MenuItem Name="menuOptionBackMusicHighBorne"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.HighBorne}"
-                              Header="{DynamicResource editorBGMHighBorne}" />
-                    <MenuItem Name="menuOptionBackMusicGarrosh"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Garrosh}"
-                              Header="{DynamicResource editorBGMGarrosh}" />
-                </MenuItem>
-                <MenuItem Header="{DynamicResource editorBGMCity}" SubmenuOpened="menuCityMusic_SubmenuOpened">
-                    <MenuItem Name="menuOptionBackMusicStormwind"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Stormwind}"
-                              Header="{DynamicResource editorBGMStormwind}" />
-                    <MenuItem Name="menuOptionBackMusicDarnassus"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Darnassus}"
-                              Header="{DynamicResource editorBGMDarnassus}" />
-                    <MenuItem Name="menuOptionBackMusicIronforge"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Ironforge}"
-                              Header="{DynamicResource editorBGMIronforge}" />
-                    <MenuItem Name="menuOptionBackMusicOrgrimmar"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Orgrimmar}"
-                              Header="{DynamicResource editorBGMOrgrimmar}" />
-                    <MenuItem Name="menuOptionBackMusicUndercity"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Undercity}"
-                              Header="{DynamicResource editorBGMUndercity}" />
-                    <MenuItem Name="menuOptionBackMusicThunderbluff"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Thunderbluff}"
-                              Header="{DynamicResource editorBGMThunderbluff}" />
-                    <MenuItem Name="menuOptionBackMusicSilvermoon"
-                              Command="cmd:OptionCommands.BackMusic"
-                              CommandParameter="{x:Static w:BackMusicFiles.Silvermoon}"
-                              Header="{DynamicResource editorBGMSilvermoon}" />
-                </MenuItem>
             </MenuItem>
             <MenuItem Name="menuOptionAccelerate"
                       Command="cmd:OptionCommands.Accelerate"

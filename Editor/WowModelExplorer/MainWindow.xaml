@@ -6,7 +6,7 @@
         xmlns:menu="clr-namespace:WowModelExplorer.Menus"
         xmlns:v="clr-namespace:WowModelExplorer.Views"
         xmlns:w="clr-namespace:WowModelExplorer"
-        Title="WowModelExplorer (wow version 6.2)"
+        Title="WowModelExplorer (wow version 6.x)"
         Width="1024"
         Height="768"
         Icon="{StaticResource WowIcon}">
