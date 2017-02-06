@@ -236,26 +236,6 @@ bool Engine::initDriver( E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen,
 #endif
 		break;
 
-	case EDT_GLES2:
-
-#ifdef MW_COMPILE_WITH_GLES2
-		if (!CGLES2Helper::init())
-		{
-			goto fail;
-		}
-		Driver = new CGLES2Driver;
-		if (!static_cast<CGLES2Driver*>(Driver)->initDriver(WindowInfo, adapter, fullscreen, vsync, antialias, multithread))
-		{
-			goto fail;
-		}
-		HardwareBufferServices = new CGLES2HardwareBufferServices;
-		DrawServices = new CGLES2DrawServices;
-		ResourceLoader = new CGLES2ResourceLoader;
-		TextureWriteServices = new CGLES2TextureWriteServices;
-		ManualTextureServices = new CGLES2ManualTextureServices;
-
-#endif
-		break;
 	default:
 		ASSERT(false);
 		goto fail;

@@ -210,7 +210,7 @@ void CSceneManager::renderRT()
 	recti rc = recti(upperLeft, lowerRight);
 
 	E_DRIVER_TYPE dType = Driver->getDriverType();
-	if(dType == EDT_OPENGL || dType == EDT_GLES2)
+	if(dType == EDT_OPENGL)
 		g_Engine->getDrawServices()->draw2DImageRect(FrameRT->getRTTexture(), &rc, NULL_PTR, SColor(), ERU_01_10);
 	else
 		g_Engine->getDrawServices()->draw2DImageRect(FrameRT->getRTTexture(), &rc);

@@ -443,7 +443,7 @@ bool CFTFont::addFontTexture()
 	E_DRIVER_TYPE type = g_Engine->getDriver()->getDriverType();
 	ECOLOR_FORMAT format;
 
-	if (type == EDT_DIRECT3D9 || type == EDT_OPENGL || type == EDT_GLES2)
+	if (type == EDT_DIRECT3D9 || type == EDT_OPENGL)
 	{
 		format = ECF_A8L8;
 	}
