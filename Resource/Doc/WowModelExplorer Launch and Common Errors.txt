@@ -1,0 +1,40 @@
+Application initializes as the following way: (6.0.3)
+
+1. basic file system init
+
+2. find root directory in file setting.cfg, reading casc infos
+
+3. log info in logs\resource.log
+
+4. read dbc and db2 (wow databases) as needed
+
+5. log db info in logs\resource.log
+
+6. initialize video deivce (directx9, directx11)
+
+7. video init info is logged in logs\gx.log
+
+8. other engine initialization (engine, audio, input)
+
+9. explorer data and UI init
+
+
+Common Errors (which result in launch failure):
+
+1. .Net Framework 4 not installed. If so you can test App1.exe to see its lauch.
+
+2. DirectX9 not installed. Information be kept in logs (step 5 above is right)
+
+3. cannot find wow data(casc). Engine will seatch local directory for mpqs if path in setting.cfg is not valid.
+
+4. data content error. This often results in dbc reading error. See logs (step 5 above to see which dbc fails).
+
+5. video init error. Please check video card is right configured to run 3D application.
+
+
+Please contact me if you have any trouble to run it or any good suggestions.
+
+Email: miaoyu1984@hotmail.com
+
+	Thanks, miaoyu
+

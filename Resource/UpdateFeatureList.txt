@@ -1,0 +1,22 @@
+Update Feature List
+
+version 4.7
+	1. Add Item Path View in Item Tab
+	2. Last Stable Version for 6.2
+
+version 4.6
+	1. Add Npc TreeView tab. when npc path selected, list of all npcs of that path shows. 
+	2. Add viewing Doodads of Wmo feature. when you select a wmo which contains doodad m2, list of doodads shows.
+	3. WowTexExplorer can export BLP to TGA now, either with Alpha Channel or without Alpha Channel.
+	4. (TEST) World M2 can now be export to OBJ files, with textures in TGA format. (only M2 of World)
+	5. (TEST) WMO can now be export to OBJ files, with textures in TGA format. (every group a OBJ file)
+
+	NOTICE!!! Blizzard has copyrights of All textures, models of WOW. Please don't use them inproperly. 
+
+version 4.5
+	1. Add WowTexExplorer, for exploring all blp textures
+	2. Add World M2 tab, for exploring all m2 in "world" directory.
+	3. Add TreeView tab option in Effect, Wmo, World M2 viewing.
+	4. Remove Map Model, (replaces with World M2, Wmo)
+	5. Remove Wow Armory, for Battlenet does not support http fetching anymore.
+	6. Backgroud Image now supports JPG and PNG.

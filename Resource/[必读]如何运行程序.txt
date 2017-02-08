@@ -1,0 +1,7 @@
+注意：请编辑文件"setting.cfg"来设置正确的locale. 
+要运行程序，你需要编辑文件"setting.cfg"来设置wow目录(如: wowdir = D:\World of Warcraft)
+
+32位程序请运行 bin\x86\WowModelExplorer.exe
+64位程序请运行 bin\x64\WowModelExplorer-64.exe
+
+更多说明请见Doc文件夹下的文件

@@ -1,0 +1,22 @@
+功能列表
+
+版本4.7
+	1. 在物品栏增加物品路径
+	2. 导出M2和WMO，贴图等不再受限
+
+版本4.6
+	1. 增加NPC按目录树浏览，当选择npc时，所有那个路径的npc都会列表出现
+	2. 增加了查看Wmo小物件的功能，当选择wmo时，wmo包含的所有m2小物件会列表显示
+	3. WowTexExplorer可以导出blp为tga，可选有无alpha
+	4. (测试) 场景M2可以导出为OBJ格式，贴图导出为TGA (只限 world/azeroth 下)
+	5. (测试) WMO可以导出为OBJ格式，贴图导出为TGA (只限 world/wmo/blacktemple 和 world/wmo/darkmoonfaire 下)
+	
+	注意: 所有魔兽世界的贴图和模型版权归暴雪所有，请勿用于非法用途.
+
+版本4.5
+	1. 增加了WowTexExplorer, 用来浏览所有blp贴图 
+	2. 增加场景M2浏览，浏览所有在 World 目录下的m2
+	3. 增加了Wmo, 特效，场景m2的目录树浏览
+	4. 取消地图模型浏览(场景m2和wmo可以代替)
+	5. 取消英雄榜功能(战网不再支持http取数据)
+	6. 背景图现在支持JPG和PNG格式

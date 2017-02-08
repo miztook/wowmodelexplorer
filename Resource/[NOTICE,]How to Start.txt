@@ -1,0 +1,7 @@
+notes: Please edit the "setting.cfg" to set the corrent locale. 
+In order to run the application, you need to edit the "setting.cfg" to set wowdir (for example: wowdir = D:\World of Warcraft). 
+
+32bit: please run bin\x86\WowModelExplorer.exe
+64bit: please run bin\x64\WowModelExplorer-64.exe
+
+More information please read files in \Doc

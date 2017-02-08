@@ -1,0 +1,13 @@
+F1	Play Animation
+F2 	Step Animation
+F3	Pause Animation
+F4	Stop Animation
+F5	Sheath/Unsheath Weapons
+
+In Game Mode (Open in Engine Option)
+
+WSAD	Front, Back, Left, Right
+Space	Jump
+1	Roll
+2	Torpedo
+3	SpinninKick
