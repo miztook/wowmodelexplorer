@@ -55,7 +55,7 @@ int main(int argc, const char* argvs[])
 	deleteGlobal();
 
 	printf("compile completed. %d Succeed, %d Failed\n", nSucceed, nFailed);
-	getchar();
+	//getchar();
 	return 0;
 }
 
