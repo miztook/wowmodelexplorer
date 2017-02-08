@@ -46,7 +46,7 @@ HRESULT CD3D9ShaderInclude::Close(LPCVOID Data)
 
 void buildShaders_20( bool vs, bool ps )
 {
-	const c8* basedir = g_fs->getShaderBaseDirectory();
+	const c8* basedir = g_BaseDir.c_str();
 
 	printf("2_0.................................................................\n\n");
 
@@ -69,7 +69,7 @@ void buildShaders_20( bool vs, bool ps )
 
 void buildShaders_30( bool vs, bool ps )
 {
-	const c8* basedir = g_fs->getShaderBaseDirectory();
+	const c8* basedir = g_BaseDir.c_str();
 
 	printf("3_0.................................................................\n\n");
 
