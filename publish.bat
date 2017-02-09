@@ -31,6 +31,7 @@ Xcopy ".\Windows\Win32\Release\mywowNet.dll" 	".\Output\bin\x86\" /E /R /Y /Q
 Xcopy ".\Windows\Win32\Release\WowModelExplorer.exe" 	".\Output\bin\x86\" /E /R /Y /Q
 Xcopy ".\Windows\Win32\Release\WowTexViewer.exe" 	".\Output\bin\x86\" /E /R /Y /Q
 Xcopy ".\Windows\Win32\Release\WpfPropertyGrid.dll" 	".\Output\bin\x86\" /E /R /Y /Q
+Xcopy ".\Windows\Win32\Release\*.pdb" 	".\Output\symbols\x86\" /E /R /Y /Q
 
 Xcopy ".\Windows\x64\Release\AvalonDock.dll" 	".\Output\bin\x64\" /E /R /Y /Q
 Xcopy ".\Windows\x64\Release\mywow_dll.dll" 	".\Output\bin\x64\" /E /R /Y /Q
@@ -38,6 +39,7 @@ Xcopy ".\Windows\x64\Release\mywowNet.dll" 	".\Output\bin\x64\" /E /R /Y /Q
 Xcopy ".\Windows\x64\Release\WowModelExplorer-64.exe" 	".\Output\bin\x64\" /E /R /Y /Q
 Xcopy ".\Windows\x64\Release\WowTexViewer-64.exe" 	".\Output\bin\x64\" /E /R /Y /Q
 Xcopy ".\Windows\x64\Release\WpfPropertyGrid.dll" 	".\Output\bin\x64\" /E /R /Y /Q
+Xcopy ".\Windows\x64\Release\*.pdb" 	".\Output\symbols\x64\" /E /R /Y /Q
 
 Xcopy ".\Resource\*.*" 	".\Output\" /E /R /Y /Q
 
