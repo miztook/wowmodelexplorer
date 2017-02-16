@@ -171,7 +171,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\gles2lib\x86_32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\DirectxSdk-June2010\Lib\x86;..\..\Windows\Dependency\$(Platform)\Debug\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -183,7 +183,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;AUTOMATIC_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;AUTOMATIC_LINK;WOW60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\mywow\interface</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -192,7 +192,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\gles2lib\x86_32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\DirectxSdk-June2010\Lib\x86;..\..\Windows\Dependency\$(Platform)\Debug\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -213,7 +213,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\gles2lib\x86_64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\DirectxSdk-June2010\Lib\x64;..\..\Windows\Dependency\$(Platform)\Debug\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -225,7 +225,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;AUTOMATIC_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;AUTOMATIC_LINK;WOW60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\mywow\interface</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -234,7 +234,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\gles2lib\x86_64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\DirectxSdk-June2010\Lib\x64;..\..\Windows\Dependency\$(Platform)\Debug\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -257,7 +257,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\gles2lib\x86_32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\DirectxSdk-June2010\Lib\x86;..\..\Windows\Dependency\$(Platform)\Release\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <Profile>true</Profile>
@@ -271,7 +271,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;AUTOMATIC_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;AUTOMATIC_LINK;WOW60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\mywow\interface</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
@@ -280,7 +280,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\gles2lib\x86_32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\DirectxSdk-June2010\Lib\x86;..\..\Windows\Dependency\$(Platform)\Release\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <Profile>true</Profile>
@@ -303,7 +303,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\gles2lib\x86_64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\DirectxSdk-June2010\Lib\x64;..\..\Windows\Dependency\$(Platform)\Release\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <Profile>true</Profile>
@@ -317,7 +317,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;AUTOMATIC_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;AUTOMATIC_LINK;WOW60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\mywow\interface</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
@@ -326,7 +326,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\gles2lib\x86_64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\DirectxSdk-June2010\Lib\x64;..\..\Windows\Dependency\$(Platform)\Release\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <Profile>true</Profile>

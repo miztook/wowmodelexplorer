@@ -56,6 +56,14 @@ namespace WowModelExplorer
             timer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
             timer.Interval = new System.TimeSpan(0, 0, 0, 0, 1);
             timer.Tick += new EventHandler(timer_Tick);
+
+#if WOW50
+            this.Title = "WowModelExplorer (wow version 5.x)";
+#elif WOW60
+            this.Title = "WowModelExplorer (wow version 6.x)";
+#else
+            this.Title = "WowModelExplorer (wow version 7.x)";
+#endif
         }
 
         public bool IsKeyFocus 

@@ -6,7 +6,7 @@
         xmlns:menu="clr-namespace:WowTexViewer.Menus"
         xmlns:v="clr-namespace:WowTexViewer.Views"
         xmlns:w="clr-namespace:WowTexViewer"
-        Title="WowTexViewer (wow version 6.x)"
+        Title="WowTexViewer"
         Width="1024"
         Height="768"
         Icon="{StaticResource WowIcon}">
