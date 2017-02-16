@@ -43,6 +43,8 @@ Xcopy ".\Windows\x64\Release\*.pdb" 	".\OutputSymbols\x64\" /E /R /Y /Q
 
 Xcopy ".\Resource\*.*" 	".\Output\" /E /R /Y /Q
 
+del ".\Output60\Data\listfile60.txt"
+
 @echo "Publish Success:)"
 @pause
 
