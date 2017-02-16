@@ -8,7 +8,7 @@
 //编辑器模式
 //#define MW_EDITOR
 
-#define WOW60
+//#define WOW60
 
 #if !defined(WOW30) && !defined(WOW40) && !defined(WOW50) && !defined(WOW60)
 	#define WOW70
