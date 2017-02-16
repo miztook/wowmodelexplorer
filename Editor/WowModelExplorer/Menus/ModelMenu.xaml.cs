@@ -28,6 +28,26 @@ namespace WowModelExplorer.Menus
 
         private void menuView_SubmenuOpened(object sender, RoutedEventArgs e)
         {
+#if !WOW60 && !WOW50 && !WOW40 && !WOW30
+            MenuItem[] menuItems = new MenuItem[]
+            {
+                menuViewCharacter,
+                menuViewClothes,
+                menuViewWeapon,
+                menuViewSet,
+                menuViewRidable,
+
+                menuOperationAttachments,
+                menuOperationEquipments,
+                menuOperationCharacterInfo,
+            };
+
+            foreach(var item in menuItems)
+            {
+                item.IsEnabled = false;
+            }
+#else
+
             menuViewCharacter.IsChecked = ShellService.Instance.CharacterContent.State != DockableContentState.Hidden;
             menuViewNpc.IsChecked = ShellService.Instance.NpcContent.State != DockableContentState.Hidden;
             menuViewSpellVisualEffect.IsChecked = ShellService.Instance.SpellVisualEffectContent.State != DockableContentState.Hidden;
@@ -42,6 +62,7 @@ namespace WowModelExplorer.Menus
             menuViewProperty.IsChecked = ShellService.Instance.PropertyContent.State != DockableContentState.Hidden;
             menuViewAnimation.IsChecked = ShellService.Instance.AnimationContent.State != DockableContentState.Hidden;
             menuViewM2State.IsChecked = ShellService.Instance.M2StateContent.State != DockableContentState.Hidden;
+#endif
         }
 
         private void MenuOperation_SubmenuOpened(object sender, RoutedEventArgs e)

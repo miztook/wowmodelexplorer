@@ -40,6 +40,9 @@ namespace WowTexViewer.Data
            FileDirIInfo[] allDir = env.GetDirectoriesInDir(path, false);
            for (int d = 0; d < allDir.Length; d++)
            {
+               if (allDir[d].Name == "")
+                   continue;
+
                TreeNodeEntry folderNode = new TreeNodeEntry();
                folderNode.Name = allDir[d].Name;
                folderNode.Icon = folderImage;

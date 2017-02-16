@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using WowModelExplorer;
 using WowModelExplorer.Views;
 using WowModelExplorer.Commands;
@@ -33,6 +34,40 @@ namespace WowModelExplorer.Services
         }
         private static ShellService instance = null;
         public static ShellService Instance { get { return instance; } }
+
+        public void DisableDialogsForWow70()
+        {
+            AvalonDock.DockableContent[] contents = new AvalonDock.DockableContent[]
+            {
+                CharacterContent,
+                RidableContent,
+                ClothesContent,
+                WeaponContent,
+                SetContent,
+            };
+            
+            foreach(var item in contents)
+            {
+                item.IsEnabled = false;
+                item.Hide();
+            }
+
+            //dialogs
+            Window[] dialogs = new Window[]
+            {
+                AttachmentsWindow,
+                EquipmentsWindow,
+                EquipmentSelectWindow,
+                CharacterInfoWindow,
+                ArmoryWindow,
+            };
+
+            foreach (var item in dialogs)
+            {
+                item.IsEnabled = false;
+                item.Hide();
+            }
+        }
 
         public MainWindow MainWindow { get { return mainWindow; } }
 

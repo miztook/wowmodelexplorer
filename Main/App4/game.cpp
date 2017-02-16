@@ -44,7 +44,7 @@ void createScene()
 	IMeshSceneNode* gridNode = g_Engine->getSceneManager()->addMeshSceneNode("$grid20", NULL);
 
 //	IMeshSceneNode* decalNode = g_Engine->getSceneManager()->addMeshSceneNode("$decal", NULL);
-	/*
+	
 	for (int i = -1; i < 1; i+=4)
 	{
 	 	for (int k = -1; k < 1; k+=4)
@@ -61,7 +61,8 @@ void createScene()
 			//lichNode->setModelAlpha(true, 0.5f);
 		}
 	}
-		*/
+	
+	/*
 	{
 		IFileM2* m2PandarenMale = g_Engine->getResourceLoader()->loadM2("Character\\SCOURGE\\MALE\\ScourgeMale_HD.m2");
 		IM2SceneNode*  pandarenMaleNode = g_Engine->getSceneManager()->addM2SceneNode(m2PandarenMale, NULL);	
@@ -86,7 +87,7 @@ void createScene()
 	//	cpptext_to_utf8("ÎÒ", tmp, 512);
 	//	decalSceneNode->TextLine1 = tmp;
 	}
-
+	*/
 	/*
 	int filedataid = 1 * 256 * 256 + 200 * 256 + 186;
 	char tmp[20];

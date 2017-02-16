@@ -239,6 +239,10 @@ namespace WowModelExplorer
             ModelSceneService.Instance.CoordSceneNode.Visible = ModelEditorService.Instance.IsShow(EditorShowOptions.Coord);
             ModelSceneService.Instance.LightCoordSceneNode.Visible = ModelEditorService.Instance.IsShow(EditorShowOptions.LightCoord);
 
+#if !WOW60 && !WOW50 && !WOW40 && !WOW30
+            ShellService.Instance.DisableDialogsForWow70();
+#endif
+
             timer.Start();
 
             ((DispatcherFrame)frame).Continue = false;

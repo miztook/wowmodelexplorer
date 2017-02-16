@@ -142,13 +142,20 @@ namespace WowModelExplorer.Services
 
         public void RetrieveWowData()
         {
+
+#if !WOW60 && !WOW50 && !WOW40 && !WOW30
+
+#else
             Engine.Instance.WowDatabase.BuildItems();
-            Engine.Instance.WowDatabase.BuildNpcs("npcs.csv");
             Engine.Instance.WowDatabase.BuildStartOutfit();
+            Engine.Instance.WowDatabase.BuildRidables("ridables.csv");
+#endif
+            
+            Engine.Instance.WowDatabase.BuildNpcs("npcs.csv");
+            
             //Engine.Instance.WowDatabase.BuildMaps();
             Engine.Instance.WowDatabase.BuildWmos();
-            Engine.Instance.WowDatabase.BuildWorldModels();
-            Engine.Instance.WowDatabase.BuildRidables("ridables.csv");
+            Engine.Instance.WowDatabase.BuildWorldModels(); 
         }
 
         public void Tick()

@@ -296,7 +296,14 @@ void  WowDatabase_getMaxCharFeature( u32 race, bool female, bool isHD, SCharFeat
 
 bool  WowDatabase_getNpcPath( s32 npcid, bool isHD, c8* path, u32 size )
 {
-	return g_Engine->getWowDatabase()->getNpcPath(npcid, isHD, path, size);
+	bool ret = g_Engine->getWowDatabase()->getNpcPath(npcid, isHD, path, size);
+
+#if defined(WOW70)
+	if (getM2Type(path) == MT_CHARACTER)
+		return false;
+#endif
+
+	return ret;
 }
 
 bool  WowDatabase_getItemVisualPath( s32 visualId, c8* path, u32 size )

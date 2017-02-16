@@ -55,7 +55,7 @@ namespace mywowNet
             _wowDatabase = new WowDatabase(engine_getWowDatabase());
             _wowEnvironment = new WowEnvironment(engine_getWowEnvironment());
             _manualMeshServices = new ManualMeshServices(engine_getManualMeshServices());
-            _audioPlayer = new AudioPlayer(engine_getAudioPlayer());
+            _audioPlayer = null; // new AudioPlayer(engine_getAudioPlayer());
             _resourceLoader = new ResourceLoader(engine_getResourceLoader());
             _sceneEnvironment = new SceneEnvironment(engine_getSceneEnvironment());
             _drawServices = new DrawServices(engine_getDrawServices());

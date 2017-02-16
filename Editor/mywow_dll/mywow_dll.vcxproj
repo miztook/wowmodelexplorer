@@ -166,7 +166,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x86\debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x86\debug;..\..\Windows\Dependency\$(Platform)\debug\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -204,7 +204,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x64\debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x64\debug;..\..\Windows\Dependency\$(Platform)\debug\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -244,7 +244,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x86\release</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x86\release;..\..\Windows\Dependency\$(Platform)\Release\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -288,7 +288,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
-      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x64\release</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Windows\$(Platform)\$(Configuration)\;..\..\Dependency\FbxSDk\lib\x64\release;..\..\Windows\Dependency\$(Platform)\Release\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>

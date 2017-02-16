@@ -155,6 +155,9 @@ namespace WowModelExplorer.Data
                     if (includePath)
                     {
                         string path = _wowDatabase.GetNpcPath(r.Value.modelDisplayId, isHD);
+                        if (path == "")
+                            continue;
+                        
                         if (!Engine.Instance.WowEnvironment.IsFileExist(path) && isHD)
                             path = _wowDatabase.GetNpcPath(r.Value.modelDisplayId, false);
 
