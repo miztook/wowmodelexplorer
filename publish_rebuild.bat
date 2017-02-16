@@ -5,6 +5,11 @@
 @rd /s /q %SELF_PATH%Output
 @md %SELF_PATH%Output
 
+@echo "Removing...[OutputSymbols]"
+@cd %SELF_PATH%
+@rd /s /q %SELF_PATH%OutputSymbols
+@md %SELF_PATH%OutputSymbols
+
 @echo "MSBUILD Solutions..."
 @cd %SELF_PATH%Windows\MSBUILD
 @call Rebuild_Dependency.bat
