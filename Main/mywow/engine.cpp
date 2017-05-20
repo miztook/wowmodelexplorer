@@ -59,7 +59,7 @@ Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : Mess
 	WindowInfo = wndInfo;
 
 #ifdef MW_PLATFORM_WINDOWS
-	QMem_Init(2, 100, 10);	
+	QMem_Init(2, 100, 10);
 #else
 	QMem_Init(1, 4, 1);
 #endif
@@ -102,15 +102,15 @@ Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : Mess
 	SceneRenderServices = NULL_PTR;
 	SceneEnvironment = NULL_PTR;
 	SceneManager = NULL_PTR;
-		
+
 	m_IsDXFamily = false;
 }
 
 Engine::~Engine()
 {
-	if(ResourceLoader)
+	if (ResourceLoader)
 		ResourceLoader->endLoading();
-	
+
 	delete SceneManager;
 
 	delete SceneEnvironment;
@@ -153,12 +153,12 @@ Engine::~Engine()
 	*/
 }
 
-SWindowInfo Engine::createWindow( const char* caption, const dimension2du& windowSize, f32 scale, bool fullscreen, bool hide )
+SWindowInfo Engine::createWindow(const char* caption, const dimension2du& windowSize, f32 scale, bool fullscreen, bool hide)
 {
 	return CSysUtility::createWindow(caption, windowSize, scale, fullscreen, hide);
 }
 
-bool Engine::initDriver( E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread )
+bool Engine::initDriver(E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread)
 {
 	if (WindowInfo.width == 0 || WindowInfo.height == 0)
 	{
@@ -177,16 +177,16 @@ bool Engine::initDriver( E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen,
 		}
 
 		Driver = new CD3D9Driver;
-		if(!static_cast<CD3D9Driver*>(Driver)->initDriver(WindowInfo, adapter, fullscreen, vsync, antialias, multithread))
+		if (!static_cast<CD3D9Driver*>(Driver)->initDriver(WindowInfo, adapter, fullscreen, vsync, antialias, multithread))
 		{
 			goto fail;
 		}
 
 		HardwareBufferServices = new CD3D9HardwareBufferServices;
- 		DrawServices = new CD3D9DrawServices;
- 		ResourceLoader = new CD3D9ResourceLoader;
+		DrawServices = new CD3D9DrawServices;
+		ResourceLoader = new CD3D9ResourceLoader;
 		TextureWriteServices = new CD3D9TextureWriteServices;
- 		ManualTextureServices = new CD3D9ManualTextureServices;
+		ManualTextureServices = new CD3D9ManualTextureServices;
 
 #endif
 		m_IsDXFamily = true;
@@ -200,13 +200,13 @@ bool Engine::initDriver( E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen,
 			goto fail;
 		}
 
- 		Driver = new CD3D11Driver;
-  		if(!static_cast<CD3D11Driver*>(Driver)->initDriver(WindowInfo, adapter, fullscreen, vsync, antialias, multithread))
+		Driver = new CD3D11Driver;
+		if (!static_cast<CD3D11Driver*>(Driver)->initDriver(WindowInfo, adapter, fullscreen, vsync, antialias, multithread))
 		{
 			goto fail;
 		}
 		HardwareBufferServices = new CD3D11HardwareBufferServices;
- 		DrawServices = new CD3D11DrawServices;
+		DrawServices = new CD3D11DrawServices;
 		ResourceLoader = new CD3D11ResourceLoader;
 		TextureWriteServices = new CD3D11TextureWriteServices;
 		ManualTextureServices = new CD3D11ManualTextureServices;
@@ -222,11 +222,11 @@ bool Engine::initDriver( E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen,
 		{
 			goto fail;
 		}
- 		Driver = new COpenGLDriver;
- 		if (!static_cast<COpenGLDriver*>(Driver)->initDriver(WindowInfo, adapter, fullscreen, vsync, antialias, multithread))
+		Driver = new COpenGLDriver;
+		if (!static_cast<COpenGLDriver*>(Driver)->initDriver(WindowInfo, adapter, fullscreen, vsync, antialias, multithread))
 		{
- 			goto fail;
- 		}
+			goto fail;
+		}
 		HardwareBufferServices = new COpenGLHardwareBufferServices;
 		DrawServices = new COpenGLDrawServices;
 		ResourceLoader = new COpenGLResourceLoader;
@@ -252,16 +252,16 @@ bool Engine::initDriver( E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen,
 #ifdef MW_PLATFORM_WINDOWS
 
 #ifdef MW_USE_AUDIO
-//		InputReader = new CDxInputReader;
-// 	if(!static_cast<CDxInputReader*>(InputReader)->initDevice(WindowInfo.hwnd))
-// 	{
-// 		FileSystem->writeLog(ELOG_GX, "InputReader initDevice Failed!");
-// 		ASSERT(false);
-// 		goto fail;
-// 	}
+	//		InputReader = new CDxInputReader;
+	// 	if(!static_cast<CDxInputReader*>(InputReader)->initDevice(WindowInfo.hwnd))
+	// 	{
+	// 		FileSystem->writeLog(ELOG_GX, "InputReader initDevice Failed!");
+	// 		ASSERT(false);
+	// 		goto fail;
+	// 	}
 
 	AudioPlayer = new CDSAudioPlayer;
-	if(!static_cast<CDSAudioPlayer*>(AudioPlayer)->initDevice(WindowInfo.hwnd, 2, 22050, 16))
+	if (!static_cast<CDSAudioPlayer*>(AudioPlayer)->initDevice(WindowInfo.hwnd, 2, 22050, 16))
 	{
 		ASSERT(false);
 	}
@@ -270,23 +270,23 @@ bool Engine::initDriver( E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen,
 
 #endif
 
-// 	AudioPlayer = new CX2AudioPlayer;
-// 	if(!static_cast<CX2AudioPlayer*>(AudioPlayer)->initDevice(2, 22050))
-// 	{
-// 		ASSERT(false);
-// 	}
-	
+	// 	AudioPlayer = new CX2AudioPlayer;
+	// 	if(!static_cast<CX2AudioPlayer*>(AudioPlayer)->initDevice(2, 22050))
+	// 	{
+	// 		ASSERT(false);
+	// 	}
+
 	FontServices = new CFontServices(0, 0, 0, 12);
 	FontServices->createDefaultFonts();
 
 	GeometryCreator = new CGeometryCreator;
- 	ManualMeshServices = new CManualMeshServices;
+	ManualMeshServices = new CManualMeshServices;
 	SpecialTextureServices = new CSpecialTextureServices;
- 	ParticleSystemServices = new CParticleSystemServices(5000, 512, 0.5f);
+	ParticleSystemServices = new CParticleSystemServices(5000, 512, 0.5f);
 	RibbonEmitterServices = new CRibbonEmitterServices(5000, 512);
 	MeshDecalServices = new CMeshDecalServices(512);
 	TerrainServices = new CTerrainServices;
- 	SceneRenderServices = new CSceneRenderServices;
+	SceneRenderServices = new CSceneRenderServices;
 	SceneEnvironment = new CSceneEnvironment;
 
 	if (multithread && ResourceLoader)
@@ -294,8 +294,8 @@ bool Engine::initDriver( E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen,
 		ResourceLoader->beginLoading();
 	}
 
-    FileSystem->writeLog(ELOG_GX, "Engine init successfully :)");
-    
+	FileSystem->writeLog(ELOG_GX, "Engine init successfully :)");
+
 	return true;
 
 fail:
@@ -319,7 +319,7 @@ fail:
 	SAFE_DELETE(DrawServices);
 	SAFE_DELETE(HardwareBufferServices);
 	SAFE_DELETE(Driver);
-	
+
 	return false;
 }
 
@@ -334,8 +334,7 @@ IFTFont* Engine::getDefaultFont()
 	return FontServices->getDefaultFont();
 }
 
-
-IFTFont* Engine::getFont( u32 fontSize, int fontStyle, int outlineWidth )
+IFTFont* Engine::getFont(u32 fontSize, int fontStyle, int outlineWidth)
 {
 	return FontServices->getFont(fontSize, fontStyle, outlineWidth);
 }

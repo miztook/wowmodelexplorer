@@ -11,7 +11,7 @@ public:
 
 public:
 	virtual u32 read(void* buffer, u32 sizeToRead);
-	virtual u32 readText(c8* buffer, u32 len = MAX_READ_NUM );
+	virtual u32 readText(c8* buffer, u32 len = MAX_READ_NUM);
 	virtual u32 readLine(c8* buffer, u32 len = MAX_READ_NUM);
 	virtual u32 readLineSkipSpace(c8* buffer, u32 len = MAX_READ_NUM);
 	virtual bool seek(s32 finalPos, bool relativePos = false);
@@ -24,7 +24,7 @@ public:
 
 private:
 	void openFile(bool binary);
-	bool isWhiteSpace( const c8 symbol ) const
+	bool isWhiteSpace(const c8 symbol) const
 	{
 		return symbol == ' ' || symbol == '\t' || symbol == '\r';
 	}

@@ -2,8 +2,8 @@
 #include "CWriteFile.h"
 #include "core.h"
 
-CWriteFile::CWriteFile( const c8* filename, bool binary, bool append /*= false*/ )
-	: IsBinary(binary)
+CWriteFile::CWriteFile(const c8* filename, bool binary, bool append /*= false*/)
+: IsBinary(binary)
 {
 	Q_strcpy(FileName, QMAX_PATH, filename);
 	normalizeFileName(FileName);
@@ -12,26 +12,26 @@ CWriteFile::CWriteFile( const c8* filename, bool binary, bool append /*= false*/
 
 CWriteFile::~CWriteFile()
 {
-	if(File)
+	if (File)
 		fclose(File);
 }
 
-u32 CWriteFile::write( const void* buffer, u32 sizeToWrite )
+u32 CWriteFile::write(const void* buffer, u32 sizeToWrite)
 {
-	if (!isOpen() || buffer==NULL_PTR)
+	if (!isOpen() || buffer == NULL_PTR)
 		return 0;
 
 	return (u32)fwrite(buffer, 1, sizeToWrite, File);
 }
 
-u32 CWriteFile::writeText( const c8* buffer, u32 len /*= MAX_WRITE_NUM */ )
+u32 CWriteFile::writeText(const c8* buffer, u32 len /*= MAX_WRITE_NUM */)
 {
-	if (!isOpen() || buffer==NULL_PTR )
+	if (!isOpen() || buffer == NULL_PTR)
 		return 0;
 
 	ASSERT(!IsBinary);
 
-	if(strlen(buffer) > len)
+	if (strlen(buffer) > len)
 	{
 		ASSERT(false);
 		return 0;
@@ -46,7 +46,7 @@ u32 CWriteFile::writeText( const c8* buffer, u32 len /*= MAX_WRITE_NUM */ )
 
 u32 CWriteFile::writeLine(const c8* text)
 {
-	if (!isOpen() || text==NULL_PTR )
+	if (!isOpen() || text == NULL_PTR)
 		return 0;
 
 	ASSERT(!IsBinary);
@@ -67,7 +67,7 @@ bool CWriteFile::flush()
 	return false;
 }
 
-bool CWriteFile::seek( s32 finalPos, bool relativeMovement /*= false*/ )
+bool CWriteFile::seek(s32 finalPos, bool relativeMovement /*= false*/)
 {
 	if (!isOpen())
 		return false;
@@ -80,12 +80,12 @@ s32 CWriteFile::getPos() const
 	return (s32)ftell(File);
 }
 
-void CWriteFile::openFile( bool binary, bool append )
+void CWriteFile::openFile(bool binary, bool append)
 {
 	const char* mode;
 	if (append)
 	{
-		mode = binary ? "ab" : "at"; 
+		mode = binary ? "ab" : "at";
 	}
 	else
 	{
@@ -96,14 +96,13 @@ void CWriteFile::openFile( bool binary, bool append )
 
 	if (File)
 	{
-		fseek( File, 0, SEEK_END );
+		fseek(File, 0, SEEK_END);
 		long size = ftell(File);
 		FileSize = size > 0 ? (u32)size : 0;
-		fseek( File, 0, SEEK_SET );
+		fseek(File, 0, SEEK_SET);
 	}
 	else
 	{
 		FileSize = 0;
 	}
 }
-
