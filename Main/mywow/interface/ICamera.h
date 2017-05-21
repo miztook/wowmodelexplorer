@@ -76,7 +76,7 @@ protected:
 	matrix4		InverseViewProjectionMatrix;
 	matrix4		InverseViewMatrix;
 	matrix4		ClipProjectionMatrix;
-	frustum	ViewFrustum;
+	frustum		ViewFrustum;
 	plane3df	ClipPlane;
 
 	vector3df		Position;
