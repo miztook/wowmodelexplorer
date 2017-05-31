@@ -19,6 +19,7 @@ dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 	OffsetMaps = NULL_PTR;
 	IDs = NULL_PTR;
 	CopyTables = NULL_PTR;
+	CommonColumns = NULL_PTR;
 
 	HasDataOffsetBlock = false;
 	HasIndex = false;
@@ -54,6 +55,8 @@ dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 		db_type = 2;
 	else if (strncmp(magic, "WDB5", 4) == 0)
 		db_type = 5;
+	else if (strncmp(magic, "WDB6", 4) == 0)
+		db_type = 6;
 	else
 		ASSERT(false);
 
@@ -61,14 +64,17 @@ dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 		readWDBC(env, file, tmp);
 	else if(db_type == 2)		//db2
 		readWDB2(env, file, tmp);
-	else if(db_type == 5)		//db5
+	else if (db_type == 5)		//db5
 		readWDB5(env, file, tmp);
+	else if (db_type == 6)	//db6
+		readWDB6(env, file, tmp);
 
 	delete file;
 }
 
 dbc::~dbc()
 {
+	delete[] CommonColumns;
 	delete[] CopyTables;
 	delete[] IDs;
 	delete[] OffsetMaps;
@@ -307,7 +313,178 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
 }
 
-dbc::record charFacialHairDB::getByParams( unsigned int race, unsigned int gender, unsigned int style ) const
+void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
+{
+	IFileSystem* fs = env->getFileSystem();
+
+	db6Header header;
+	file->read(&header, sizeof(header));
+
+	nRecords = header._nRecords;
+	nFields = header._nFields;
+	RecordSize = header._recordSize;
+	StringSize = header._stringsize;
+	nActualRecords = nRecords;
+
+	HasDataOffsetBlock = (header.fileflags & WDB5_FLAG_DATAOFFSET) != 0;
+	HasUnknownStuff = (header.fileflags & WDB5_FLAG_UNKNOWN) != 0;
+	HasIndex = (header.fileflags & WDB5_FLAG_INDEX) != 0;
+
+	Fields = new SField[nFields];
+	for (u32 i = 0; i < nFields; ++i)
+	{
+		s16 size;
+		file->read(&size, (u32)sizeof(s16));
+		u16 offset;
+		file->read(&offset, (u32)sizeof(u16));
+
+		Fields[i].size = (32 - size) / 8;
+		Fields[i].position = offset;
+
+	}
+
+	//TOOD file count
+
+	if (HasDataOffsetBlock)
+	{
+		u32 curPos = file->getPos();
+		file->seek(header._stringsize);
+
+		std::map<u32, u16, std::less<u32>, qzone_allocator<std::pair<u32, u16> > > dataOffsetMap;
+		u32 nTotalSize = 0;
+		while ((u32)dataOffsetMap.size() < header._nRecords)
+		{
+			u32 offset;
+			u16 length;
+			file->read(&offset, sizeof(u32));
+			file->read(&length, sizeof(u16));
+			if (offset > 0 && dataOffsetMap.find(offset) == dataOffsetMap.end())
+			{
+				ASSERT(offset >= curPos);
+				dataOffsetMap[offset] = length;
+				nTotalSize += length;
+			}
+
+			if (file->isEof())
+			{
+				fs->writeLog(ELOG_RES, "dataoffset load error: %s", file->getFileName());
+				return;
+			}
+		}
+
+		u32 indexDataStart = file->getPos();
+
+		int x = 0;
+		OffsetMaps = new SOffsetMapEntry[header._nRecords];
+		_recordStart = new u8[nTotalSize];
+		u32 curOffset = 0;
+		int count = 0;
+		for (auto itr = dataOffsetMap.begin(); itr != dataOffsetMap.end(); ++itr)
+		{
+			u32 off = itr->first;
+			u16 len = itr->second;
+
+			file->seek(off);
+			file->read(&_recordStart[curOffset], len);
+
+			OffsetMaps[count].offset = curOffset;
+			OffsetMaps[count].length = len;
+
+			curOffset += len;
+			++count;
+		}
+		_stringStart = NULL;
+
+		file->seek(indexDataStart);
+	}
+	else
+	{
+		u32 current = file->getPos();
+		_recordStart = new u8[RecordSize * nRecords];
+		_stringStart = new u8[StringSize];
+
+		file->read(_recordStart, RecordSize * nRecords);			//records
+		file->seek(current + RecordSize * nRecords);
+		file->read(_stringStart, StringSize);		//string
+	}
+
+	s32 indexDataSize = nRecords * sizeof(s32);
+	if (HasUnknownStuff)
+		file->seek(indexDataSize, true);
+
+	if (HasIndex)
+	{
+		IDs = new u32[nRecords];
+		file->read(IDs, sizeof(u32) * nRecords);
+	}
+
+	if (header.refdatasize > 0)
+	{
+		ASSERT(header.refdatasize % sizeof(SCopyTableEntry) == 0);
+		//int nCount = header.refdatasize / sizeof(SCopyTableEntry);
+		//CopyTables = new SCopyTableEntry[nCount];
+		//file->read(CopyTables, header.refdatasize);
+		file->seek(header.refdatasize, true);
+	}
+
+	if (header.nonzero_column_table_size > 0)
+	{
+		u32 ncolumns;
+		file->read(&ncolumns, sizeof(ncolumns));
+
+		CommonColumns = new SCommonColumn[ncolumns];
+		for (u32 c = 0; c < ncolumns; ++c)
+		{
+			u32 nrecs;
+			file->read(&nrecs, sizeof(nrecs));
+
+			u8 type;
+			file->read(&type, sizeof(type));
+
+			if (nrecs == 0)
+				continue;
+
+			u32 size = 4;
+			if (type == 1)
+				size = 2;
+			else if (type == 2)
+				size = 1;
+
+			std::map < u32, u32> recmap;
+			for (u32 i = 0; i < nrecs; ++i)
+			{
+				u32 id;
+				file->read(&id, sizeof(id));
+
+				u32 val;
+				file->read(&val, size);
+
+				recmap[id] = val;
+			}
+
+			SCommonColumn commonColumn;
+			commonColumn.recordmap = std::move(recmap);
+			commonColumn.type = type;
+			CommonColumns[c] = std::move(commonColumn);
+		}
+	}
+
+	ASSERT(file->getPos() == file->getSize());
+
+	//build map
+	if (!tmp && HasIndex)		//临时文件不写map
+	{
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			u32 id = IDs[i];
+			RecordLookup32[id] = i;
+		}
+	}
+
+	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
+}
+
+dbc::record charFacialHairDB::getByParams(unsigned int race, unsigned int gender, unsigned int style) const
 {
 	for (u32 i=0; i<nRecords; ++i)
 	{

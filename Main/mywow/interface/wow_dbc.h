@@ -57,6 +57,26 @@ struct db5Header
 	u16 idindex;
 };
 
+struct db6Header
+{
+	/*0x00*/    char      _magic[4];	// "WDB6"
+	/*0x04*/    u32  _nRecords;        // 	  
+	/*0x08*/    u32  _nFields;      	// 
+	/*0x0C*/    u32  _recordSize;      // 
+	/*0x10*/    u32  _stringsize;
+
+	u32 tablehash;
+	u32 layouthash;
+	u32 firstrow;
+	u32 lastrow;
+	s32 localecode;
+	u32 refdatasize;
+	u16 fileflags;
+	u16 idindex;
+	u32	total_field_count;
+	u32 nonzero_column_table_size;
+};
+
 #	pragma pack ()
 
 class dbc 
@@ -72,6 +92,7 @@ protected:
 	void readWDBC(wowEnvironment* env, IMemFile* file, bool tmp);
 	void readWDB2(wowEnvironment* env, IMemFile* file, bool tmp);
 	void readWDB5(wowEnvironment* env, IMemFile* file, bool tmp);
+	void readWDB6(wowEnvironment* env, IMemFile* file, bool tmp);
 
 public:
 	class record
@@ -308,6 +329,17 @@ protected:	//WDB5
 	SOffsetMapEntry*	OffsetMaps;  //if (flags & 0x01 != 0) [header.max_id - header.min_id + 1];
 	u32* IDs;		//if (flags & 0x04 != 0) [header.record_count]
 	SCopyTableEntry* CopyTables;		//if (header.refdatasize > 0)
+
+protected:	//WDB6
+
+	struct SCommonColumn
+	{
+		std::map<u32, u32> recordmap;
+		u8 type;
+	};
+
+	SCommonColumn*   CommonColumns;
+
 };
 
 /*
