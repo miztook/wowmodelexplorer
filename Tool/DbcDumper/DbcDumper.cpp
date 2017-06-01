@@ -28,9 +28,9 @@ int main()
 
 	/*Q_iterateFiles("C:\\Users\\miaoyu\\Desktop\\Work\\unknown", "*.*", g_callbackFile, NULL, "C:\\Users\\miaoyu\\Desktop\\Work\\unknown");*/
 
-	//g_wowEnv->iterateFiles("dbc", g_callbackDBC, g_wowEnv);
+	g_wowEnv->iterateFiles("dbc", g_callbackDBC, g_wowEnv);
 
-	g_wowEnv->iterateFiles("db2", g_callbackDB2, g_wowEnv);
+	//g_wowEnv->iterateFiles("db2", g_callbackDB2, g_wowEnv);
 
 // 	g_callbackDB2("DBFilesClient\\SpellVisualEffectName.db2", g_wowEnv);
 // 	g_callbackDB2("DBFilesClient\\SpellVisualKit.db2", g_wowEnv);
@@ -129,6 +129,7 @@ void g_callbackDBC(const c8* filename, void* param)
 
 	printf("reading: %s\n", filename);
 	
+	/*
 	string256 path = g_fs->getBaseDirectory();
 	path.append("dbc\\");
 
@@ -208,6 +209,7 @@ void g_callbackDBC(const c8* filename, void* param)
 	delete db;
 
 	delete file;
+	*/
 }
 
 void g_callbackDB2(const c8* filename, void* param)
@@ -222,6 +224,7 @@ void g_callbackDB2(const c8* filename, void* param)
 
 	printf("reading: %s\n", filename);
 
+	/*
 	string256 path = g_fs->getBaseDirectory();
 	path.append("db2\\");
 
@@ -313,4 +316,6 @@ void g_callbackDB2(const c8* filename, void* param)
 	delete db;
 
 	delete file;
+
+	*/
 }
