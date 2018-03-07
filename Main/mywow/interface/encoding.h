@@ -120,7 +120,7 @@ inline E_UniMode determineEncoding(const u8* buf, u32 bufLen)
 		return uniUTF8;
 	}
 	// try to detect UTF-16 little-endian without BOM
-// 	else if (m_nLen > 1 && m_pBuf[0] != NULL_PTR && m_pBuf[1] == NULL_PTR && IsTextUnicode(m_pBuf, m_nLen, &uniTest))
+// 	else if (m_nLen > 1 && m_pBuf[0] != nullptr && m_pBuf[1] == nullptr && IsTextUnicode(m_pBuf, m_nLen, &uniTest))
 // 	{
 // 		return uni16LE_NoBOM;
 // 	}

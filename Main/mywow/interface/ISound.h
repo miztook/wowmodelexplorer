@@ -20,7 +20,7 @@ public:
 public:
 	virtual bool load(const c8* filename) = 0;
 	virtual void unload() = 0;
-	virtual bool play(bool loop, FN_SOUND_CALLBACK callback = NULL_PTR) = 0;
+	virtual bool play(bool loop, FN_SOUND_CALLBACK callback = nullptr) = 0;
 	virtual void stop() = 0;
 	virtual void reset() = 0;
 	virtual bool isPlaying() const = 0;

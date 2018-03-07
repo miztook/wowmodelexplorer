@@ -391,108 +391,108 @@ COpenGLExtension::COpenGLExtension()
 	DimAliasedPoint[1]=1.f;
 
 	// get multitexturing function pointers
-	pGlActiveTextureARB = NULL_PTR;
-	pGlClientActiveTextureARB = NULL_PTR;
-	pGlCompressedTexImage2D = NULL_PTR;
-	pGlCompressedTexSubImage2D = NULL_PTR;
+	pGlActiveTextureARB = nullptr;
+	pGlClientActiveTextureARB = nullptr;
+	pGlCompressedTexImage2D = nullptr;
+	pGlCompressedTexSubImage2D = nullptr;
 
 	// get fragment and vertex program function pointers
-	pGlGenProgramsARB = NULL_PTR;
-	pGlGenProgramsNV = NULL_PTR;
-	pGlBindProgramARB = NULL_PTR;
-	pGlBindProgramNV = NULL_PTR;
-	pGlProgramStringARB = NULL_PTR;
-	pGlLoadProgramNV = NULL_PTR;
-	pGlDeleteProgramsARB = NULL_PTR;
-	pGlDeleteProgramsNV = NULL_PTR;
-	pGlProgramLocalParameter4fvARB =NULL_PTR;
-	pGlCreateShaderObjectARB = NULL_PTR;
-	pGlShaderSourceARB = NULL_PTR;
-	pGlCompileShaderARB = NULL_PTR;
-	pGlCreateProgramObjectARB = NULL_PTR;
-	pGlBindFragDataLocation = NULL_PTR;
-	pGlAttachObjectARB = NULL_PTR;
-	pGlLinkProgramARB = NULL_PTR;
-	pGlUseProgramObjectARB = NULL_PTR;
-	pGlDeleteObjectARB = NULL_PTR;
-	pGlGetAttachedObjectsARB = NULL_PTR;
-	pGlGetInfoLogARB = NULL_PTR;
-	pGlGetObjectParameterivARB = NULL_PTR;
-	pGlGetUniformLocationARB = NULL_PTR;
-	pGlUniform4fvARB = NULL_PTR;
-	pGlUniform1ivARB = NULL_PTR;
-	pGlUniform1fvARB = NULL_PTR;
-	pGlUniform2fvARB = NULL_PTR;
-	pGlUniform3fvARB = NULL_PTR;
-	pGlUniformMatrix2fvARB = NULL_PTR;
-	pGlUniformMatrix3fvARB = NULL_PTR;
-	pGlUniformMatrix4fvARB = NULL_PTR;
-	pGlUniformMatrix3x4	= NULL_PTR;
-	pGlGetActiveUniformARB = NULL_PTR;
+	pGlGenProgramsARB = nullptr;
+	pGlGenProgramsNV = nullptr;
+	pGlBindProgramARB = nullptr;
+	pGlBindProgramNV = nullptr;
+	pGlProgramStringARB = nullptr;
+	pGlLoadProgramNV = nullptr;
+	pGlDeleteProgramsARB = nullptr;
+	pGlDeleteProgramsNV = nullptr;
+	pGlProgramLocalParameter4fvARB =nullptr;
+	pGlCreateShaderObjectARB = nullptr;
+	pGlShaderSourceARB = nullptr;
+	pGlCompileShaderARB = nullptr;
+	pGlCreateProgramObjectARB = nullptr;
+	pGlBindFragDataLocation = nullptr;
+	pGlAttachObjectARB = nullptr;
+	pGlLinkProgramARB = nullptr;
+	pGlUseProgramObjectARB = nullptr;
+	pGlDeleteObjectARB = nullptr;
+	pGlGetAttachedObjectsARB = nullptr;
+	pGlGetInfoLogARB = nullptr;
+	pGlGetObjectParameterivARB = nullptr;
+	pGlGetUniformLocationARB = nullptr;
+	pGlUniform4fvARB = nullptr;
+	pGlUniform1ivARB = nullptr;
+	pGlUniform1fvARB = nullptr;
+	pGlUniform2fvARB = nullptr;
+	pGlUniform3fvARB = nullptr;
+	pGlUniformMatrix2fvARB = nullptr;
+	pGlUniformMatrix3fvARB = nullptr;
+	pGlUniformMatrix4fvARB = nullptr;
+	pGlUniformMatrix3x4	= nullptr;
+	pGlGetActiveUniformARB = nullptr;
 
 	// get point parameter extension
-	pGlPointParameterfARB = NULL_PTR;
-	pGlPointParameterfvARB = NULL_PTR;
+	pGlPointParameterfARB = nullptr;
+	pGlPointParameterfvARB = nullptr;
 
 	// get stencil extension
-	pGlStencilFuncSeparate = NULL_PTR;
-	pGlStencilOpSeparate = NULL_PTR;
+	pGlStencilFuncSeparate = nullptr;
+	pGlStencilOpSeparate = nullptr;
 
 	// FrameBufferObjects
-	pGlBindFramebufferEXT = NULL_PTR;
-	pGlDeleteFramebuffersEXT = NULL_PTR;
-	pGlGenFramebuffersEXT = NULL_PTR;
-	pGlCheckFramebufferStatusEXT = NULL_PTR;
-	pGlFramebufferTexture2DEXT = NULL_PTR;
-	pGlBlitFramebufferEXT = NULL_PTR;
-	pGlBindRenderbufferEXT = NULL_PTR;
-	pGlDeleteRenderbuffersEXT = NULL_PTR;
-	pGlGenRenderbuffersEXT = NULL_PTR;
-	pGlRenderbufferStorageEXT = NULL_PTR;
-	pGlRenderBufferStorageMultisampleEXT = NULL_PTR;
-	pGlGetRenderBufferParameterivEXT = NULL_PTR;
-	pGlFramebufferRenderbufferEXT = NULL_PTR;
-	pGlInvalidateFramebuffer = NULL_PTR;
-	pGlDrawBuffersARB = NULL_PTR;
-	pGlDrawBuffersATI = NULL_PTR;
+	pGlBindFramebufferEXT = nullptr;
+	pGlDeleteFramebuffersEXT = nullptr;
+	pGlGenFramebuffersEXT = nullptr;
+	pGlCheckFramebufferStatusEXT = nullptr;
+	pGlFramebufferTexture2DEXT = nullptr;
+	pGlBlitFramebufferEXT = nullptr;
+	pGlBindRenderbufferEXT = nullptr;
+	pGlDeleteRenderbuffersEXT = nullptr;
+	pGlGenRenderbuffersEXT = nullptr;
+	pGlRenderbufferStorageEXT = nullptr;
+	pGlRenderBufferStorageMultisampleEXT = nullptr;
+	pGlGetRenderBufferParameterivEXT = nullptr;
+	pGlFramebufferRenderbufferEXT = nullptr;
+	pGlInvalidateFramebuffer = nullptr;
+	pGlDrawBuffersARB = nullptr;
+	pGlDrawBuffersATI = nullptr;
 
 	// get vertex buffer extension
-	pGlGenBuffersARB = NULL_PTR;
-	pGlBindBufferARB = NULL_PTR;
-	pGlBufferDataARB = NULL_PTR;
-	pGlDeleteBuffersARB = NULL_PTR;
-	pGlBufferSubDataARB= NULL_PTR;
-	pGlGetBufferSubDataARB= NULL_PTR;
-	pGlMapBufferARB= NULL_PTR;
-	pGlUnmapBufferARB= NULL_PTR;
-	pGlIsBufferARB= NULL_PTR;
-	pGlGetBufferParameterivARB= NULL_PTR;
-	pGlGetBufferPointervARB= NULL_PTR;
-	pGlProvokingVertexARB= NULL_PTR;
-	pGlProvokingVertexEXT= NULL_PTR;
-	pGlColorMaskIndexedEXT= NULL_PTR;
-	pGlEnableIndexedEXT= NULL_PTR;
-	pGlDisableIndexedEXT= NULL_PTR;
-	pGlProgramParameteriARB= NULL_PTR;
-	pGlProgramParameteriEXT= NULL_PTR;
+	pGlGenBuffersARB = nullptr;
+	pGlBindBufferARB = nullptr;
+	pGlBufferDataARB = nullptr;
+	pGlDeleteBuffersARB = nullptr;
+	pGlBufferSubDataARB= nullptr;
+	pGlGetBufferSubDataARB= nullptr;
+	pGlMapBufferARB= nullptr;
+	pGlUnmapBufferARB= nullptr;
+	pGlIsBufferARB= nullptr;
+	pGlGetBufferParameterivARB= nullptr;
+	pGlGetBufferPointervARB= nullptr;
+	pGlProvokingVertexARB= nullptr;
+	pGlProvokingVertexEXT= nullptr;
+	pGlColorMaskIndexedEXT= nullptr;
+	pGlEnableIndexedEXT= nullptr;
+	pGlDisableIndexedEXT= nullptr;
+	pGlProgramParameteriARB= nullptr;
+	pGlProgramParameteriEXT= nullptr;
 
-	pGlDrawRangeElements = NULL_PTR;
-	pGlDrawElementsBaseVertex = NULL_PTR;
-	pGlDrawRangeElementsBaseVertex = NULL_PTR;
+	pGlDrawRangeElements = nullptr;
+	pGlDrawElementsBaseVertex = nullptr;
+	pGlDrawRangeElementsBaseVertex = nullptr;
 
-	pGlGetProgramBinary = NULL_PTR;
-	pGlProgramBinary = NULL_PTR;
+	pGlGetProgramBinary = nullptr;
+	pGlProgramBinary = nullptr;
 
 	//vao
-	pGlGenVertexArrays = NULL_PTR;
-	pGlDeleteVertexArrays = NULL_PTR;
-	pGlBindVertexArray = NULL_PTR;
-	pGlEnableVertexAttribArrayARB = NULL_PTR;
-	pGlDisableVertexAttribArrayARB = NULL_PTR;
-	pGlVertexAttribPointerARB = NULL_PTR;
-	pGlGetAttribLocationARB = NULL_PTR;
+	pGlGenVertexArrays = nullptr;
+	pGlDeleteVertexArrays = nullptr;
+	pGlBindVertexArray = nullptr;
+	pGlEnableVertexAttribArrayARB = nullptr;
+	pGlDisableVertexAttribArrayARB = nullptr;
+	pGlVertexAttribPointerARB = nullptr;
+	pGlGetAttribLocationARB = nullptr;
 
-	pGlTexImage2DMultisample = NULL_PTR;
+	pGlTexImage2DMultisample = nullptr;
 
 }
 
@@ -576,7 +576,7 @@ bool COpenGLExtension::initExtensions()
 		TextureCompression3DC;
 
 	MultisampleSupported = FeatureAvailable[IRR_EXT_framebuffer_multisample] && FeatureAvailable[IRR_ARB_texture_multisample];
-	DiscardFrameSupported = pGlInvalidateFramebuffer != NULL_PTR;
+	DiscardFrameSupported = pGlInvalidateFramebuffer != nullptr;
 
 	if (Version>102 || FeatureAvailable[IRR_ARB_multitexture])
 	{

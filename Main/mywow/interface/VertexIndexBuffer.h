@@ -10,9 +10,9 @@ private:
 public:
 	IVertexBuffer()
 	{
-		HWLink = NULL_PTR;
+		HWLink = nullptr;
 		Clear = true;
-		Vertices = NULL_PTR;
+		Vertices = nullptr;
 		Type = EST_P;
 		Size = 0;
 		Mapping = EMM_STATIC;
@@ -22,8 +22,8 @@ public:
 	explicit IVertexBuffer(bool clear)
 		: Clear(clear)
 	{
-		HWLink = NULL_PTR;
-		Vertices = NULL_PTR;
+		HWLink = nullptr;
+		Vertices = nullptr;
 		Type = EST_P;
 		Size = 0;
 		Mapping = EMM_STATIC;
@@ -72,9 +72,9 @@ private:
 public:
 	IIndexBuffer() 
 	{
-		HWLink = NULL_PTR;
+		HWLink = nullptr;
 		Clear = true;
-		Indices = NULL_PTR;
+		Indices = nullptr;
 		Type = EIT_16BIT;
 		Size = 0;
 		Mapping = EMM_STATIC;
@@ -84,8 +84,8 @@ public:
 	explicit IIndexBuffer(bool clear) 
 		: Clear(clear) 
 	{
-		HWLink = NULL_PTR;
-		Indices = NULL_PTR;
+		HWLink = nullptr;
+		Indices = nullptr;
 		Type = EIT_16BIT;
 		Size = 0;
 		Mapping = EMM_STATIC;
@@ -135,15 +135,15 @@ struct SBufferParam
 
 	void clear()
 	{
-		vbuffer0 = vbuffer1 = NULL_PTR;
-		ibuffer = NULL_PTR;
+		vbuffer0 = vbuffer1 = nullptr;
+		ibuffer = nullptr;
 	}
 
 	void destroy()
 	{
-		delete ibuffer; ibuffer = NULL_PTR;
-		delete vbuffer1; vbuffer1 = NULL_PTR;
-		delete vbuffer0; vbuffer0 = NULL_PTR;
+		delete ibuffer; ibuffer = nullptr;
+		delete vbuffer1; vbuffer1 = nullptr;
+		delete vbuffer0; vbuffer0 = nullptr;
 	}
 
 	IVertexBuffer* getVBuffer(u32 index) const
@@ -155,7 +155,7 @@ struct SBufferParam
 		case 1:
 			return vbuffer1;
 		default:
-			return NULL_PTR;
+			return nullptr;
 		}
 	}
 

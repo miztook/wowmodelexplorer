@@ -83,7 +83,7 @@ private:
 		{
 			for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 			{
-				TextureUnits[i].texture = NULL_PTR;
+				TextureUnits[i].texture = nullptr;
 				TextureUnits[i].SamplerDesc.reset();
 			}
 			BlendDesc.reset();

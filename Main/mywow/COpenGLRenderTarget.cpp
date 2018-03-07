@@ -12,7 +12,7 @@
 #include "COpenGLMaterialRenderServices.h"
 
 COpenGLRenderTarget::COpenGLRenderTarget( const dimension2du& size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt )
-	: IRenderTarget(colorFmt, depthFmt), FrameBuffer(0), CopyFrameBuffer(0), ColorTexture(NULL_PTR), DepthSurface(0), MultiSample(false)
+	: IRenderTarget(colorFmt, depthFmt), FrameBuffer(0), CopyFrameBuffer(0), ColorTexture(nullptr), DepthSurface(0), MultiSample(false)
 {
 	RTCopyTexture = new COpenGLTexture(false);
 	
@@ -172,7 +172,7 @@ void COpenGLRenderTarget::releaseVideoTexture()
 	if (ColorTexture)
 	{
 		ColorTexture->drop();
-		ColorTexture = NULL_PTR;
+		ColorTexture = nullptr;
 	}
 
 	if (CopyFrameBuffer)

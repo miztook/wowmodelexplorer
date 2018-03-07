@@ -12,7 +12,7 @@ CMeshDecalServices::CMeshDecalServices( u32 bufferQuota )
 
 CMeshDecalServices::~CMeshDecalServices()
 {
-	BufferParam.ibuffer = NULL_PTR;		//don't destroy common index buffer
+	BufferParam.ibuffer = nullptr;		//don't destroy common index buffer
 
 	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(BufferParam.vbuffer0);
 	BufferParam.destroy();

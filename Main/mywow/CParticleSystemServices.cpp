@@ -18,7 +18,7 @@ CParticleSystemServices::CParticleSystemServices( u32 poolQuota, u32 bufferQuota
 
 CParticleSystemServices::~CParticleSystemServices()
 {
-	BufferParam.ibuffer = NULL_PTR;		//don't destroy common index buffer
+	BufferParam.ibuffer = nullptr;		//don't destroy common index buffer
 
 	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(BufferParam.vbuffer0);
 	BufferParam.destroy();

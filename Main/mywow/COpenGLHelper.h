@@ -42,7 +42,7 @@ public:
 	static bool init();
 
 public:
-	static const GLvoid* buffer_offset(u32 offset) { return (const GLvoid*)((char*)NULL_PTR + offset); }
+	static const GLvoid* buffer_offset(u32 offset) { return (const GLvoid*)((char*)nullptr + offset); }
 
 	static void colorToGLfloat4(const SColor& col, GLfloat v[]);
 

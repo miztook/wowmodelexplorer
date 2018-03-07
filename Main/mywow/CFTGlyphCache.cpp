@@ -10,7 +10,7 @@
 #include FT_OUTLINE_H
 
 CFTGlyphCacheNode::CFTGlyphCacheNode()
-	: nIndex(-1), nSize(0), glyph(NULL_PTR)
+	: nIndex(-1), nSize(0), glyph(nullptr)
 {
 	InitializeListHead(&Link);
 }
@@ -49,7 +49,7 @@ FT_BitmapGlyph CFTGlyphCache::LookupGlyph( int nIndex )
 		pNode = NewNode(nIndex);
 
 	if (!pNode)
-		return NULL_PTR;
+		return nullptr;
 	else
 		return pNode->glyph;
 }
@@ -88,7 +88,7 @@ CFTGlyphCacheNode * CFTGlyphCache::NewNode( int nIndex )
 {
 	CFontServices* fontServices = static_cast<CFontServices*>(g_Engine->getFontServices());
 
-	FT_Glyph ftResultGlyph = NULL_PTR;
+	FT_Glyph ftResultGlyph = nullptr;
 	FT_Error error = 0;
 
 	// get outline
@@ -124,13 +124,13 @@ CFTGlyphCacheNode * CFTGlyphCache::NewNode( int nIndex )
 			transform.xy = 0x0366AL;
 			transform.yy = 0x10000L;
 
-			FT_Glyph_Transform(ftResultGlyph, &transform, NULL_PTR);
+			FT_Glyph_Transform(ftResultGlyph, &transform, nullptr);
 		}
-		error = FT_Glyph_To_Bitmap(&ftResultGlyph, FT_RENDER_MODE_NORMAL, NULL_PTR, 1);
+		error = FT_Glyph_To_Bitmap(&ftResultGlyph, FT_RENDER_MODE_NORMAL, nullptr, 1);
 	}
 	FTC_Node_Unref(rawNode, fontServices->GetCacheManager());
-	if(ftResultGlyph == NULL_PTR)
-		return NULL_PTR;
+	if(ftResultGlyph == nullptr)
+		return nullptr;
 
 	CFTGlyphCacheNode* pNode = new CFTGlyphCacheNode;
 	pNode->nIndex = nIndex;
@@ -163,7 +163,7 @@ CFTGlyphCacheNode * CFTGlyphCache::FindInCache( int nIndex )
 {
 	T_GlyphCacheMap::iterator itr = m_GlyphCacheMap.find(nIndex);
 	if (itr == m_GlyphCacheMap.end())
-		return NULL_PTR;
+		return nullptr;
 
 	CFTGlyphCacheNode* p = itr->second;
 	if (p)

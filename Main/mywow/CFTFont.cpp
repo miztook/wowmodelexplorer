@@ -13,10 +13,10 @@ CFTFont::CFTFont(const char* faceName, int faceIndex, u32 size, int fontStyle, i
 	NextX = NextY = CurrentX = CurrentY = MaxY = 0;
 
 	FontServices = static_cast<CFontServices*>(g_Engine->getFontServices());
-	MyFTGlyphCache = NULL_PTR;
+	MyFTGlyphCache = nullptr;
 
-	MyFaceID = NULL_PTR;
-	FTCScaler = NULL_PTR;
+	MyFaceID = nullptr;
+	FTCScaler = nullptr;
 	UnicodeCMapIndex = -1;
 	BoldWidth = 0;
 
@@ -282,7 +282,7 @@ dimension2du CFTFont::getTextExtent( const char* utf8text, int nCharCount, bool 
 ITexture* CFTFont::getTexture( u32 idx )
 {
 	if (idx >= FontTextures.size())
-		return NULL_PTR;
+		return nullptr;
 
 	return FontTextures[idx];
 }
@@ -304,7 +304,7 @@ const IFTFont::SCharInfo* CFTFont::addChar( c16 ch )
 	if (!bitmapGlyph)
 	{
 		ASSERT(false);
-		return NULL;
+		return nullptr;
 	}
 
 	NextX = CurrentX + m_iFontWidth;
@@ -458,7 +458,7 @@ bool CFTFont::addFontTexture()
 	return true;
 }
 
-void CFTFont::drawA(const char* utf8text, SColor color, vector2di position, int nCharCount /*= -1*/, recti* pClip /*= NULL_PTR*/)
+void CFTFont::drawA(const char* utf8text, SColor color, vector2di position, int nCharCount /*= -1*/, recti* pClip /*= nullptr*/)
 {
 	int x = position.X;
 	int y = position.Y;
@@ -591,7 +591,7 @@ void CFTFont::drawA(const char* utf8text, SColor color, vector2di position, int 
 	g_Engine->getDrawServices()->flushAll2DQuads();
 }
 
-void CFTFont::drawW(const c16* text, SColor color, vector2di position, int nCharCount /*= -1*/, recti* pClip /*= NULL_PTR*/)
+void CFTFont::drawW(const c16* text, SColor color, vector2di position, int nCharCount /*= -1*/, recti* pClip /*= nullptr*/)
 {
 	int x = position.X;
 	int y = position.Y;
@@ -748,7 +748,7 @@ void CFTFont::addTextA( const char* utf8text, SColor color, vector2di position, 
 	d.color = color;
 	d.position = position;
 	d.bVertical = bVertical;
-	d.bClip = pClip != NULL_PTR;
+	d.bClip = pClip != nullptr;
 	if (pClip)
 		d.rcClip = *pClip;
 	DrawTexts.push_back(d);
@@ -771,7 +771,7 @@ void CFTFont::addTextW( const c16* text, SColor color, vector2di position, int n
 	d.color = color;
 	d.position = position;
 	d.bVertical = bVertical;
-	d.bClip = pClip != NULL_PTR;
+	d.bClip = pClip != nullptr;
 	if (pClip)
 		d.rcClip = *pClip;
 	DrawTexts.push_back(d);
@@ -790,7 +790,7 @@ const IFTFont::SCharInfo* CFTFont::getCharInfo( c16 ch ) const
 	T_CharacterMap::const_iterator itr = CharacterMap.find(ch);
 	if(itr != CharacterMap.end())
 		return &itr->second;
-	return NULL_PTR;
+	return nullptr;
 }
 
 int CFTFont::GetUnicodeCMapIndex( FT_Face ftFace )
@@ -805,14 +805,14 @@ int CFTFont::GetUnicodeCMapIndex( FT_Face ftFace )
 
 FT_Face CFTFont::GetFTFace()
 {
-	FT_Face ftFace = NULL_PTR;
+	FT_Face ftFace = nullptr;
 	FTC_Manager_LookupFace(FontServices->GetCacheManager(), (FTC_FaceID)MyFaceID, &ftFace);
 	return ftFace;
 }
 
 FT_Size CFTFont::GetFTSize()
 {
-	FT_Size ftSize = NULL_PTR;
+	FT_Size ftSize = nullptr;
 	FTC_Manager_LookupSize(FontServices->GetCacheManager(), FTCScaler, &ftSize);
 	return ftSize;
 }
@@ -824,7 +824,7 @@ FT_BitmapGlyph CFTFont::getCharExtent( u32 ch, int& offsetX, int& offsetY, int& 
 	ftGlyph = RenderChar(ch);
 
 	if (!ftGlyph)
-		return NULL_PTR;
+		return nullptr;
 
 	FT_Size ftSize = GetFTSize();
 
@@ -851,7 +851,7 @@ FT_BitmapGlyph CFTFont::RenderChar( u32 ch )
 	{
 		index = FTC_CMapCache_Lookup(mapCache, ftFaceID, UnicodeCMapIndex, L'¡õ');
 		if (0 == index)
-			return NULL_PTR;
+			return nullptr;
 	}
 
 	return MyFTGlyphCache->LookupGlyph(index);

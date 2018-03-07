@@ -13,7 +13,7 @@ wow_wdtScene::wow_wdtScene( CWDTSceneNode* wdtNode )
 
 	Row = Col = -1;
 
-	CamChunk = LastCamChunk = NULL_PTR;
+	CamChunk = LastCamChunk = nullptr;
 
 	AdtLoadSize = g_Engine->getSceneRenderServices()->getAdtLoadSize();
 

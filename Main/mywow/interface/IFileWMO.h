@@ -31,7 +31,7 @@ enum E_WMO_SHADER : int32_t
 
 struct SWMOMaterial
 {
-	SWMOMaterial() : texture0(NULL_PTR), texture1(NULL_PTR)
+	SWMOMaterial() : texture0(nullptr), texture1(nullptr)
 	{
 		flags = 0;
 		alphatest = false;
@@ -117,18 +117,18 @@ protected:
 public:
 	IFileWMO() : VideoBuilt(false)
 	{
-		TextureFileNameBlock = NULL_PTR;
-		Materials = NULL_PTR;
-		GroupNamesBlock = NULL_PTR;
-		Groups = NULL_PTR;
-		PortalVertices = NULL_PTR;
-		Portals = NULL_PTR;
-		PortalRelations = NULL_PTR;
-		Lights = NULL_PTR;
-		DoodadSets = NULL_PTR;
-		ModelNamesBlock = NULL_PTR;
-		Doodads = NULL_PTR;
-		Fogs = NULL_PTR;
+		TextureFileNameBlock = nullptr;
+		Materials = nullptr;
+		GroupNamesBlock = nullptr;
+		Groups = nullptr;
+		PortalVertices = nullptr;
+		Portals = nullptr;
+		PortalRelations = nullptr;
+		Lights = nullptr;
+		DoodadSets = nullptr;
+		ModelNamesBlock = nullptr;
+		Doodads = nullptr;
+		Fogs = nullptr;
 
 		NumDoodads = NumPortalVertices = NumFogs = NumPortalRelations = GroupNameBlockSize = DoodadNameBlockSize = 0;
 

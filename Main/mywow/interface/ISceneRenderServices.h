@@ -11,7 +11,7 @@ struct SRenderUnit;
 class ISceneRenderServices
 {
 public:
-	ISceneRenderServices() : SCENE_SCALE(3.0f), CurrentUnit(NULL_PTR)
+	ISceneRenderServices() : SCENE_SCALE(3.0f), CurrentUnit(nullptr)
 	{
 		ClipDistance = 1000.0f;
 		ModelLodBias = 0;

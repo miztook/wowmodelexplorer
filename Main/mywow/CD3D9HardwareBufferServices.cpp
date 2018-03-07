@@ -93,7 +93,7 @@ void CD3D9HardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffer 
 	{
 		RemoveEntryList(&vbuffer->Link);
 		((IDirect3DVertexBuffer9*)vbuffer->HWLink)->Release();
-		vbuffer->HWLink = NULL_PTR;
+		vbuffer->HWLink = nullptr;
 	}
 }
 
@@ -105,7 +105,7 @@ void CD3D9HardwareBufferServices::destroyHardwareBuffer( IIndexBuffer* ibuffer )
 	{
 		RemoveEntryList(&ibuffer->Link);
 		((IDirect3DIndexBuffer9*)ibuffer->HWLink)->Release();
-		ibuffer->HWLink = NULL_PTR;
+		ibuffer->HWLink = nullptr;
 	}
 }
 
@@ -196,7 +196,7 @@ void CD3D9HardwareBufferServices::onLost()
 		if (vbuffer->Mapping != EMM_STATIC && vbuffer->HWLink)
 		{
 			((IDirect3DVertexBuffer9*)vbuffer->HWLink)->Release();
-			vbuffer->HWLink = NULL_PTR;
+			vbuffer->HWLink = nullptr;
 		}
 	}
 
@@ -208,7 +208,7 @@ void CD3D9HardwareBufferServices::onLost()
 		if (ibuffer->Mapping != EMM_STATIC && ibuffer->HWLink)
 		{
 			((IDirect3DIndexBuffer9*)ibuffer->HWLink)->Release();
-			ibuffer->HWLink = NULL_PTR;
+			ibuffer->HWLink = nullptr;
 		}
 	}
 }
@@ -244,7 +244,7 @@ void CD3D9HardwareBufferServices::onReset()
 
 bool CD3D9HardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuffer )
 {
-	ASSERT(NULL_PTR == ibuffer->HWLink);
+	ASSERT(nullptr == ibuffer->HWLink);
 
 	DWORD flags = 0;
 	D3DPOOL pool = D3DPOOL_DEFAULT;
@@ -296,7 +296,7 @@ bool CD3D9HardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuff
 		break;
 	}
 
-	if(FAILED(Driver->pID3DDevice->CreateIndexBuffer( ibuffer->Size * indexSize, flags, indexType, pool, (IDirect3DIndexBuffer9**)&ibuffer->HWLink, NULL_PTR)))
+	if(FAILED(Driver->pID3DDevice->CreateIndexBuffer( ibuffer->Size * indexSize, flags, indexType, pool, (IDirect3DIndexBuffer9**)&ibuffer->HWLink, nullptr)))
 	{
 		ASSERT(false);
 		return false;
@@ -314,7 +314,7 @@ bool CD3D9HardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuff
 
 bool CD3D9HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbuffer )
 {
-	ASSERT(NULL_PTR == vbuffer->HWLink);
+	ASSERT(nullptr == vbuffer->HWLink);
 
 	DWORD flags = 0;
 	D3DPOOL pool = D3DPOOL_DEFAULT;
@@ -348,7 +348,7 @@ bool CD3D9HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbu
 
 	DWORD FVF = 0;
 	u32 vertexSize = getStreamPitchFromType(vbuffer->Type);
-	if( FAILED(Driver->pID3DDevice->CreateVertexBuffer( vbuffer->Size * vertexSize, flags, FVF, pool, (IDirect3DVertexBuffer9**)&vbuffer->HWLink, NULL_PTR) ) )
+	if( FAILED(Driver->pID3DDevice->CreateVertexBuffer( vbuffer->Size * vertexSize, flags, FVF, pool, (IDirect3DVertexBuffer9**)&vbuffer->HWLink, nullptr) ) )
 	{
 		ASSERT(false);
 		return false;

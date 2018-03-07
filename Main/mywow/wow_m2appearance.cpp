@@ -5,7 +5,7 @@
 #include "wow_m2instance.h"
 
 wow_m2appearance::wow_m2appearance( IM2SceneNode* node )
-	: HideHelmHair(false), HideHelmFacial1(false), HideHelmFacial2(false), HideHelmFacial3(false), HelmNode(NULL_PTR)
+	: HideHelmHair(false), HideHelmFacial1(false), HideHelmFacial2(false), HideHelmFacial3(false), HelmNode(nullptr)
 {
 	M2SceneNode = node;
 	M2Instance = node->getM2Instance();

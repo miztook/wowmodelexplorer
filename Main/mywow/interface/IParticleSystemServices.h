@@ -9,7 +9,7 @@
 class IParticleSystemServices
 {
 public:
-	IParticleSystemServices() { Vertices=NULL_PTR; BufferParam.clear(); BufferParam.vType = EVT_PCT; }
+	IParticleSystemServices() { Vertices=nullptr; BufferParam.clear(); BufferParam.vType = EVT_PCT; }
 	virtual ~IParticleSystemServices() {}
 
 public:

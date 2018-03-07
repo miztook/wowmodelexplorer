@@ -6,7 +6,7 @@
 
 CWavInput::CWavInput()
 {
-	File = NULL_PTR;
+	File = nullptr;
 	Type = EWT_UNSUPPORTED;
 	::memset(&Header, 0, sizeof(Header));
 	StreamStart = sizeof(SWaveHeader);
@@ -89,7 +89,7 @@ void CWavInput::closeFile()
 	if (File)
 	{
 		delete File;
-		File = NULL_PTR;
+		File = nullptr;
 	}
 }
 

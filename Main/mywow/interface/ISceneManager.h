@@ -33,8 +33,8 @@ public:
 		::memset(AreaName, 0, sizeof(AreaName));
 		::memset(DebugText, 0, sizeof(DebugText));
 
-		ActiveCamera = NULL_PTR;
-		Timer = NULL_PTR;
+		ActiveCamera = nullptr;
+		Timer = nullptr;
 	}
 
 	virtual ~ISceneManager() {}

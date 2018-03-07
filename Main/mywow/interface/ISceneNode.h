@@ -177,7 +177,7 @@ inline bool ISceneNode::removeChild( ISceneNode* child )
 		if(node == child)
 		{
 			RemoveEntryList(&child->Link);
-			child->Parent = NULL_PTR;
+			child->Parent = nullptr;
 
 			return true;
 		}
@@ -194,7 +194,7 @@ inline void ISceneNode::removeAllChildren()
 		e = e->Flink;
 
 		node->removeAllChildren();
-		node->Parent = NULL_PTR;
+		node->Parent = nullptr;
 		delete node;
 	}
 	InitializeListHead(&ChildNodeList);

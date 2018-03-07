@@ -39,13 +39,13 @@ COpenGLManualTextureServices::~COpenGLManualTextureServices()
 ITexture* COpenGLManualTextureServices::addTexture( const c8* name, const dimension2du& size, IImage* img, bool mipmap )
 {
 	if(TextureMap.find(name) != TextureMap.end())
-		return NULL_PTR;
+		return nullptr;
 
 	COpenGLTexture* tex = new COpenGLTexture(mipmap);
 	if(!tex->createFromImage(size, img))
 	{
 		tex->drop();
-		return NULL_PTR;
+		return nullptr;
 	}
 	TextureMap[name] =  tex;
 
@@ -93,7 +93,7 @@ ITexture* COpenGLManualTextureServices::createTextureFromImage( const dimension2
 	if (!tex->createFromImage(size, image))
 	{
 		tex->drop();
-		tex = NULL_PTR;
+		tex = nullptr;
 	}
 	return tex;
 }
@@ -105,7 +105,7 @@ ITexture* COpenGLManualTextureServices::createTextureFromData( const dimension2d
 	if (!tex->createFromImage(size, image))
 	{
 		tex->drop();
-		tex = NULL_PTR;
+		tex = nullptr;
 	}
 	image->drop();
 	return tex;
@@ -117,14 +117,14 @@ ITexture* COpenGLManualTextureServices::createCompressTextureFromData( const dim
 	if (!image->fromImageData((const u8*)data, size, format, mipmap))
 	{
 		image->drop();
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	COpenGLTexture* tex = new COpenGLTexture(mipmap);
 	if (!tex->createFromBlpImage(image))
 	{
 		tex->drop();
-		tex = NULL_PTR;
+		tex = nullptr;
 	}
 	image->drop();
 	return tex;
@@ -139,7 +139,7 @@ ITexture* COpenGLManualTextureServices::createEmptyTexture( const dimension2du& 
 		return tex;
 	}
 	tex->drop();
-	return NULL_PTR;
+	return nullptr;
 }
 
 void COpenGLManualTextureServices::onLost()

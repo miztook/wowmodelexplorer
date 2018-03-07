@@ -14,7 +14,7 @@ CMeshSceneNode::CMeshSceneNode( IMesh* mesh, ISceneNode* parent )
 
 	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
-		Textures[i] = NULL_PTR;
+		Textures[i] = nullptr;
 		Material.TextureLayer[i].TextureWrapU =
 		Material.TextureLayer[i].TextureWrapV = ETC_CLAMP;
 	}

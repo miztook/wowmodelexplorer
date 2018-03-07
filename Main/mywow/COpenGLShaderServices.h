@@ -88,8 +88,8 @@ private:
 	{
 		void reset()
 		{
-			vshader = NULL_PTR;
-			pshader = NULL_PTR;
+			vshader = nullptr;
+			pshader = nullptr;
 		}
 
 		COpenGLVertexShader*		vshader;
@@ -150,7 +150,7 @@ inline const SGLUniformInfo* COpenGLShaderServices::getUniformInfo( const SGLPro
 	ASSERT(p);
 	SGLProgram::T_UniformMap::const_iterator itr = p->uniformMap.find(name);
 	if (itr == p->uniformMap.end())
-		return NULL_PTR;
+		return nullptr;
 
 	u32 i = itr->second;
 	return &p->uniforms[i];

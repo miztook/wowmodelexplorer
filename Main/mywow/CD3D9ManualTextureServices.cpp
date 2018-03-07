@@ -40,13 +40,13 @@ CD3D9ManualTextureServices::~CD3D9ManualTextureServices()
 ITexture* CD3D9ManualTextureServices::addTexture( const c8* name, const dimension2du& size, IImage* img, bool mipmap )
 {
 	if(TextureMap.find(name) != TextureMap.end())
-		return NULL_PTR;
+		return nullptr;
 
 	CD3D9Texture* tex = new CD3D9Texture(mipmap);
 	if(!tex->createFromImage(size, img))
 	{
 		tex->drop();
-		return NULL_PTR;
+		return nullptr;
 	}
 	TextureMap[name] =  tex;
 
@@ -110,7 +110,7 @@ ITexture* CD3D9ManualTextureServices::createTextureFromImage( const dimension2du
 	if (!tex->createFromImage(size, image))
 	{
 		tex->drop();
-		tex = NULL_PTR;
+		tex = nullptr;
 	}
 	return tex;
 }
@@ -122,7 +122,7 @@ ITexture* CD3D9ManualTextureServices::createTextureFromData( const dimension2du&
 	if (!tex->createFromImage(size, image))
 	{
 		tex->drop();
-		tex = NULL_PTR;
+		tex = nullptr;
 	}
 	image->drop();
 	return tex;
@@ -134,14 +134,14 @@ ITexture* CD3D9ManualTextureServices::createCompressTextureFromData( const dimen
 	if (!image->fromImageData((const u8*)data, size, format, mipmap))
 	{
 		image->drop();
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	CD3D9Texture* tex = new CD3D9Texture(mipmap);
 	if (!tex->createFromBlpImage(image))
 	{
 		tex->drop();
-		tex = NULL_PTR;
+		tex = nullptr;
 	}
 	image->drop();
 	return tex;
@@ -156,7 +156,7 @@ ITexture* CD3D9ManualTextureServices::createEmptyTexture( const dimension2du& si
 		return tex;
 	}
 	tex->drop();
-	return NULL_PTR;
+	return nullptr;
 }
 
 void CD3D9ManualTextureServices::loadDefaultTextures()

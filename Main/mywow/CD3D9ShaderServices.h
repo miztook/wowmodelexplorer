@@ -54,8 +54,8 @@ private:
 	{
 		 void reset()
 		{
-			vshader = NULL_PTR;
-			pshader = NULL_PTR;
+			vshader = nullptr;
+			pshader = nullptr;
 		}
 
 		IVertexShader*		vshader;

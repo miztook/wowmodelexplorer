@@ -8,9 +8,9 @@ wow_m2FSM::wow_m2FSM( IM2SceneNode* node )
 {
 	M2SceneNode = node;
 
-	CurrentState = NULL_PTR;
-	PreviousState = NULL_PTR;
-	GlobalState = NULL_PTR;
+	CurrentState = nullptr;
+	PreviousState = nullptr;
+	GlobalState = nullptr;
 
 	::memset(States, 0, sizeof(States));
 }
@@ -69,7 +69,7 @@ bool wow_m2FSM::playAction( wow_m2Action* action, u32 blendtime )
 
 void wow_m2FSM::finishAction()
 {
-	DynAction.action = NULL_PTR;
+	DynAction.action = nullptr;
 	DynAction.playedTime = 0;
 	DynAction.currentAnimLoop = 0;
 	DynAction.finished = true;
@@ -94,9 +94,9 @@ void wow_m2FSM::resetState()
 	if (CurrentState)
 		CurrentState->exit();
 
-	CurrentState = NULL_PTR;
-	PreviousState = NULL_PTR;
-	GlobalState = NULL_PTR;
+	CurrentState = nullptr;
+	PreviousState = nullptr;
+	GlobalState = nullptr;
 
 	finishAction();
 }
@@ -286,7 +286,7 @@ void wow_m2FSM::onAnimationEndRandom()
 wow_m2State<IM2SceneNode>* wow_m2FSM::getState( E_M2_STATES state ) const
 {
 	if (state < 0 || state >= EMS_COUNT)
-		return NULL_PTR;
+		return nullptr;
 
 	return States[state];
 }
@@ -298,7 +298,7 @@ void wow_m2FSM::clearStates()
 		if (States[i])
 		{
 			delete States[i];
-			States[i] = NULL_PTR;
+			States[i] = nullptr;
 		}
 	}
 }

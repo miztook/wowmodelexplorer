@@ -506,9 +506,6 @@
     <ClInclude Include="interface\system.h">
       <Filter>interface\system</Filter>
     </ClInclude>
-    <ClInclude Include="interface\CLock.h">
-      <Filter>interface\system</Filter>
-    </ClInclude>
     <ClInclude Include="interface\ddslib.h">
       <Filter>interface\system</Filter>
     </ClInclude>

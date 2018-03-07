@@ -43,7 +43,7 @@ private:
 	DISALLOW_COPY_AND_ASSIGN(CMapChunk);
 
 public:
-	CMapChunk() : numTextures(0), numAlphaMap(0), sounds(NULL_PTR)
+	CMapChunk() : numTextures(0), numAlphaMap(0), sounds(nullptr)
 	{ 
 		::memset(textures,0, sizeof(ITexture*)*4);
 		areaID = 0;
@@ -52,7 +52,7 @@ public:
 		::memset(mclys, 0, sizeof(mclys));
 
 #ifdef FIXPIPELINE
-		shadowmap = NULL_PTR;
+		shadowmap = nullptr;
 		memset(alphamap, 0, sizeof(alphamap));
 		data_shadowmap = new u8[64 * 64];
 		for (u32 k=0; k<3; ++k)
@@ -130,12 +130,12 @@ protected:
 public:
 	IFileADT() : VideoBuilt(false)
 	{
-		WmoInstances = NULL_PTR;
-		M2Instances = NULL_PTR;
-		M2FileNameIndices = NULL_PTR;
-		M2FileNameBlock = NULL_PTR;
-		WmoFileNameIndices = NULL_PTR;
-		WmoFileNameBlock = NULL_PTR;
+		WmoInstances = nullptr;
+		M2Instances = nullptr;
+		M2FileNameIndices = nullptr;
+		M2FileNameBlock = nullptr;
+		WmoFileNameIndices = nullptr;
+		WmoFileNameBlock = nullptr;
 
 		NumWmoInstance = NumM2Instance = 
 		NumWmoFileNames = NumM2FileNames = 0;

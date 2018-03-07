@@ -121,9 +121,9 @@ class IVideoDriver
 public:
 	IVideoDriver()
 	{
-		ShaderServices = NULL_PTR;
-		MaterialRenderServices = NULL_PTR;
-		SceneStateServices = NULL_PTR;
+		ShaderServices = nullptr;
+		MaterialRenderServices = nullptr;
+		SceneStateServices = nullptr;
 		memset(&DriverSetting, 0, sizeof(DriverSetting));
 	}
 	virtual ~IVideoDriver() {}

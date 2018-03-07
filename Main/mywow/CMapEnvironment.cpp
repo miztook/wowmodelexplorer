@@ -73,7 +73,7 @@ s32 SSkyLight::getColor( u32 row, u32 time, vector3df& v, s32 hint )
 CMapEnvironment::CMapEnvironment( s32 mapid )
 	: MapId(mapid)
 {
-	GlobalLight = NULL_PTR;
+	GlobalLight = nullptr;
 
 	::memset(ColorSet, 0, sizeof(vector3df) * COLOR_COUNT);
 

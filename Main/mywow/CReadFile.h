@@ -19,7 +19,7 @@ public:
 	virtual s32 getPos() const;
 	virtual bool isEof() const;
 	virtual const c8* getFileName() const { return FileName; }
-	virtual bool isOpen() const { return File != NULL_PTR; }
+	virtual bool isOpen() const { return File != nullptr; }
 	virtual bool isBinary() const { return IsBinary; }
 
 private:

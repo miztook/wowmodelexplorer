@@ -30,9 +30,9 @@
 
 COpenGLDriver::COpenGLDriver()
 {
-	HWnd = NULL_PTR;
-	Hdc = NULL_PTR;
-	Hgrc = NULL_PTR;
+	HWnd = nullptr;
+	Hdc = nullptr;
+	Hgrc = nullptr;
 
 	ColorFormat = ECF_A8R8G8B8;
 	DepthFormat = ECF_D24S8;
@@ -43,17 +43,17 @@ COpenGLDriver::COpenGLDriver()
 	CurrentRenderMode = ERM_NONE;
 	ResetRenderStates = true;
 	DefaultFrameBuffer = 0;
-	CurrentRenderTarget = NULL_PTR;
+	CurrentRenderTarget = nullptr;
 
 	GLExtension = new COpenGLExtension;
 
-	MaterialRenderer = NULL_PTR;
-	ShaderServices = NULL_PTR;
-	MaterialRenderServices = NULL_PTR;
-	SceneStateServices = NULL_PTR;
-	OpenGLShaderServices = NULL_PTR;
-	OpenGLMaterialRenderServices = NULL_PTR;
-	OpenGLSceneStateServices = NULL_PTR;
+	MaterialRenderer = nullptr;
+	ShaderServices = nullptr;
+	MaterialRenderServices = nullptr;
+	SceneStateServices = nullptr;
+	OpenGLShaderServices = nullptr;
+	OpenGLMaterialRenderServices = nullptr;
+	OpenGLSceneStateServices = nullptr;
 	
 	AdapterCount = 0;
 
@@ -94,7 +94,7 @@ COpenGLDriver::~COpenGLDriver()
 
 	delete		GLExtension;
 
-	if (!wglMakeCurrent(NULL_PTR, NULL_PTR))
+	if (!wglMakeCurrent(nullptr, nullptr))
 	{
 		ASSERT(false);
 	}
@@ -313,7 +313,7 @@ int COpenGLDriver::chooseMultiSamplePixelFormat( int pixelformat, u8& antialias,
 	window_type hWnd;
 	dc_type hDC, hDC_before=wglGetCurrentDC();
 	WNDCLASS wndCls;
-	HINSTANCE inst = GetModuleHandle(NULL_PTR);
+	HINSTANCE inst = GetModuleHandle(nullptr);
 
 	/* create a dummy window */
 	ZeroMemory(&wndCls, sizeof(wndCls));
@@ -468,7 +468,7 @@ bool COpenGLDriver::endScene()
 	//discard frame buffer
 	if (GLExtension->DiscardFrameSupported)
 	{
-		if(CurrentRenderTarget != NULL_PTR)
+		if(CurrentRenderTarget != nullptr)
 		{
 			const GLenum attachments[] = { GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT };
 			GLExtension->extGlInvalidateFramebuffer(GL_FRAMEBUFFER_EXT, 2, attachments);
@@ -710,7 +710,7 @@ bool COpenGLDriver::setRenderTarget( IRenderTarget* texture )
 {
 	COpenGLRenderTarget* tex = static_cast<COpenGLRenderTarget*>(texture);
 
-	if ( tex == NULL_PTR )
+	if ( tex == nullptr )
 	{
 		//discard frame buffer
 		const GLenum attachments[] = { GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT };

@@ -12,12 +12,12 @@
 
 CGLES2Platform::CGLES2Platform()
 {
-	HWnd = NULL_PTR;
-	Hdc = NULL_PTR;
-	EglDisplay = NULL_PTR;
-	EglConfig = NULL_PTR;
-	EglSurface = NULL_PTR;
-	EglContext = NULL_PTR;
+	HWnd = nullptr;
+	Hdc = nullptr;
+	EglDisplay = nullptr;
+	EglConfig = nullptr;
+	EglSurface = nullptr;
+	EglContext = nullptr;
 }
 
 CGLES2Platform::~CGLES2Platform()
@@ -105,7 +105,7 @@ bool CGLES2Platform::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool f
 	}
 
 	//step 5 create surface
-	EglSurface = eglCreateWindowSurface(EglDisplay, EglConfig, HWnd, NULL_PTR);
+	EglSurface = eglCreateWindowSurface(EglDisplay, EglConfig, HWnd, nullptr);
 	if (EglSurface == EGL_NO_SURFACE)
 	{
 		EGLint err = eglGetError();
@@ -132,7 +132,7 @@ bool CGLES2Platform::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool f
 
 	//create context
 	EGLint ai32ContextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
-	EglContext = eglCreateContext(EglDisplay, EglConfig, NULL_PTR, ai32ContextAttribs);
+	EglContext = eglCreateContext(EglDisplay, EglConfig, nullptr, ai32ContextAttribs);
 	if (EglContext == EGL_NO_CONTEXT)
 	{
 		ASSERT(false);

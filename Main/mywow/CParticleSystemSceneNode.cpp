@@ -40,7 +40,7 @@ CParticleSystemSceneNode::CParticleSystemSceneNode( ParticleSystem* ps, IM2Scene
 	CurrentFrame = 0;
 	Emitting = false;
 
-	CurrentProjection = CurrentView = NULL_PTR;
+	CurrentProjection = CurrentView = nullptr;
 
 	//color, alpha
 	EnableModelColor = false;
@@ -252,7 +252,7 @@ void CParticleSystemSceneNode::render() const
 	unit.material = Material;
 	setMaterial(unit.material);
 	unit.textures[0] = Ps->texture;
-	unit.matWorld = NULL_PTR;			//unit
+	unit.matWorld = nullptr;			//unit
 	unit.matView = CurrentView;
 	unit.matProjection = CurrentProjection;
 

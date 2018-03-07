@@ -9,7 +9,7 @@ class IM2SceneNode;
 struct SDynAction
 {
 	SDynAction() 
-		: action(NULL_PTR),  currentIndex(0), currentAnimLoop(0), playedTime(0), finished(true)
+		: action(nullptr),  currentIndex(0), currentAnimLoop(0), playedTime(0), finished(true)
 	{
 	}
 	wow_m2Action* action;

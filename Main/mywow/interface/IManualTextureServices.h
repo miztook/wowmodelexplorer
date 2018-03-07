@@ -36,7 +36,7 @@ inline ITexture* IManualTextureServices::getManualTexture( const c8* name )
 {
 	T_TextureMap::const_iterator itr = TextureMap.find(name);
 	if (itr == TextureMap.end())
-		return NULL_PTR;
+		return nullptr;
 
 	return (*itr).second;
 }

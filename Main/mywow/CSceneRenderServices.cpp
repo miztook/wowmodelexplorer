@@ -190,7 +190,7 @@ void CSceneRenderServices::addRenderUnit( const SRenderUnit* unit, E_RENDERINST_
 
 void CSceneRenderServices::renderAll(E_RENDERINST_TYPE type, ICamera* cam)
 {
-	CurrentUnit = NULL_PTR;
+	CurrentUnit = nullptr;
 
 	switch(type)
 	{
@@ -289,7 +289,7 @@ void CSceneRenderServices::renderAll(E_RENDERINST_TYPE type, ICamera* cam)
 		break;
 	}
 
-	CurrentUnit = NULL_PTR;
+	CurrentUnit = nullptr;
 }
 
 

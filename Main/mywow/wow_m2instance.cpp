@@ -41,7 +41,7 @@ CharTexture::~CharTexture()
 
 void CharTexture::addLayer( const c8* name, s32 region, s32 layer )
 {
-	if (name == NULL_PTR || strlen(name) == 0)
+	if (name == nullptr || strlen(name) == 0)
 		return;
 
 	CharTexturePart* part = &TextureParts[TexPartCount++];
@@ -55,7 +55,7 @@ void CharTexture::addLayer( const c8* name, s32 region, s32 layer )
 
 bool CharTexture::addItemLayer( const c8* name, s32 region, u32 gender, s32 layer )
 {
-	if (name == NULL_PTR || strlen(name) == 0)
+	if (name == nullptr || strlen(name) == 0)
 		return false;
 
 	c8 outname[QMAX_PATH];
@@ -152,7 +152,7 @@ ITexture* CharTexture::compose(bool pandaren)
 		{
 			CImage* srcImage = static_cast<CImage*>(image);
 			CImage* newImage = srcImage;
-			u32* tmpData = NULL_PTR;			//临时image
+			u32* tmpData = nullptr;			//临时image
 			bool needScale = srcImage->getDimension().Width != coords.xsize ||
 				srcImage->getDimension().Height != coords.ysize;			//扩大
 
@@ -230,17 +230,17 @@ wow_m2instance::wow_m2instance( IFileM2* m2, bool npc )
 {
 	Mesh = static_cast<CFileM2*>(m2);
 
-	CharacterInfo = NULL_PTR;
+	CharacterInfo = nullptr;
 
 	ShowParticles = true;
 	ShowRibbons = false;
-	TextureAnimHints = NULL_PTR;
-	ColorHints = NULL_PTR;
+	TextureAnimHints = nullptr;
+	ColorHints = nullptr;
 	LastBoneAnim = LastColorAnim = LastTextureAnim = -1;
 	LastBoneTime = LastColorTime = LastTextureTime = -1;
 
 	for (u32 i=0; i<NUM_TEXTURETYPE; ++i)
-		ReplaceTextures[i] = NULL_PTR;
+		ReplaceTextures[i] = nullptr;
 
 	CurrentSkin = Mesh->Skin;
 	if (CurrentSkin)
@@ -254,7 +254,7 @@ wow_m2instance::wow_m2instance( IFileM2* m2, bool npc )
 	UseAttachments = new s8[Mesh->NumAttachments];
 	::memset(UseAttachments, 0, sizeof(s8) * Mesh->NumAttachments);
 
-	DynGeosets = NULL_PTR;
+	DynGeosets = nullptr;
 	if (CurrentSkin)				//有skin
 	{
 		DynGeosets = new SDynGeoset[CurrentSkin->NumGeosets];
@@ -695,7 +695,7 @@ void wow_m2instance::calcAttachmentBone( u8 i, u32 anim, u32 time, f32 blend )
 
 	if (b->parent != -1)
 	{
-		calcBone((u8)b->parent, anim, time, blend, false, NULL_PTR);
+		calcBone((u8)b->parent, anim, time, blend, false, nullptr);
 
 		DynBones[i].mat = m * DynBones[b->parent].mat;
 	}
@@ -1655,7 +1655,7 @@ void wow_m2instance::buildVisibleGeosets()
 			}
 			else
 			{
-				DynGeosets[i].Texture0 = NULL_PTR;
+				DynGeosets[i].Texture0 = nullptr;
 			}
 
 			DynGeosets[i].Texture1 = g_Engine->getSpecialTextureServices()->getTexture(EST_ARMORREFLECT);
@@ -1750,12 +1750,12 @@ void wow_m2instance::buildVisibleGeosets()
 		}
 		else
 		{
-			DynGeosets[i].Texture0 = NULL_PTR;
+			DynGeosets[i].Texture0 = nullptr;
 		}
 
 
 		DynGeosets[i].Texture1 = g_Engine->getSpecialTextureServices()->getTexture(EST_ARMORREFLECT);
-		DynGeosets[i].Texture2 = NULL_PTR; //DynGeosets[i].Texture0;
+		DynGeosets[i].Texture2 = nullptr; //DynGeosets[i].Texture0;
 
 		if (id == 0)		
 		{

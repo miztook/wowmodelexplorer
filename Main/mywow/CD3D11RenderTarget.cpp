@@ -11,7 +11,7 @@
 #include "CD3D11Texture.h"
 
 CD3D11RenderTarget::CD3D11RenderTarget(const dimension2du& size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt)
-	: IRenderTarget(colorFmt, depthFmt), RTView(NULL_PTR), DepthView(NULL_PTR)
+	: IRenderTarget(colorFmt, depthFmt), RTView(nullptr), DepthView(nullptr)
 {
 	RTTexture = new CD3D11Texture(false);
 	DSTexture = new CD3D11Texture(false);

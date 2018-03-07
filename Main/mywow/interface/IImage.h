@@ -11,7 +11,7 @@ protected:
 	virtual ~IImage() {}
 	
 public:
-	IImage( ECOLOR_FORMAT format, const dimension2du& size ) : Data(NULL_PTR), Size(size), Format(format)
+	IImage( ECOLOR_FORMAT format, const dimension2du& size ) : Data(nullptr), Size(size), Format(format)
 	{
 		Pitch = ROUND_4BYTES(getBytesPerPixel() * Size.Width);
 	}

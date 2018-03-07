@@ -148,12 +148,12 @@ ID3D11InputLayout* CD3D11VertexDeclaration::getInputLayout( IVertexShader* shade
 	if (!signature)
 	{
 		ASSERT(false);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	u32 shaderSize = vertexShader->getCodeSize();
 
-	ID3D11InputLayout* layout = NULL_PTR;
+	ID3D11InputLayout* layout = nullptr;
 	T_LayoutMap::const_iterator itr = LayoutMap.find(signature);
 	if (itr != LayoutMap.end())
 	{
@@ -164,7 +164,7 @@ ID3D11InputLayout* CD3D11VertexDeclaration::getInputLayout( IVertexShader* shade
 		if(FAILED(pDevice->CreateInputLayout(IAElements, Size, signature, shaderSize, &layout)))
 		{
 			ASSERT(false);
-			return NULL_PTR;
+			return nullptr;
 		}
 		LayoutMap[signature] = layout;
 	}

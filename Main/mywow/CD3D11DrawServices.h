@@ -54,7 +54,7 @@ public:
 		E_BLEND_FACTOR destBlend=EBF_ONE_MINUS_SRC_ALPHA);
 	virtual void draw2DImage(ITexture* texture,
 		vector2di destPos,
-		const recti* sourceRect = NULL_PTR,
+		const recti* sourceRect = nullptr,
 		SColor color = SColor(),
 		E_RECT_UVCOORDS uvcoords = ERU_00_11,
 		float scale = 1.0f,
@@ -77,7 +77,7 @@ public:
 		const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource());
 	virtual void draw2DImageRect(ITexture* texture,
 		const recti* destRect,
-		const recti* sourceRect = NULL_PTR,
+		const recti* sourceRect = nullptr,
 		SColor color = SColor(),
 		E_RECT_UVCOORDS uvcoords = ERU_00_11,
 		const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource());

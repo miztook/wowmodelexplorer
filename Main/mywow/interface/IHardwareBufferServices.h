@@ -13,7 +13,7 @@ class IHardwareBufferServices : public ILostResetCallback
 public:
 	IHardwareBufferServices()
 	{
-		StaticIndexBufferQuadList = NULL_PTR;
+		StaticIndexBufferQuadList = nullptr;
 	}
 	virtual ~IHardwareBufferServices() { }
 

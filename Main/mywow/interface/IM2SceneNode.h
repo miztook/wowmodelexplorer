@@ -50,7 +50,7 @@ public:
 	virtual s32 getCurrentAnimationIndex() const = 0;	
 	virtual void setParticleSpeed(f32 speed) = 0;
 	virtual f32 getParticleSpeed() const = 0;
-	virtual s32 getCurrentAnimation(animation* anim = NULL_PTR) const = 0;
+	virtual s32 getCurrentAnimation(animation* anim = nullptr) const = 0;
 
 	virtual bool setModelCamera(s32 index) = 0;
 	virtual s32 getModelCamera() const = 0;

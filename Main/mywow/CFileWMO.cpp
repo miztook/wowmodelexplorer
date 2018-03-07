@@ -6,18 +6,18 @@ CWMOGroup::CWMOGroup()
 {
 	flags = 0;
 
-	Indices = NULL_PTR;
-	Vertices = NULL_PTR;
-	Batches = NULL_PTR;
-	Lights = NULL_PTR;
-	Doodads = NULL_PTR;
-	BspTriangles = NULL_PTR;
-	BspNodes = NULL_PTR;
+	Indices = nullptr;
+	Vertices = nullptr;
+	Batches = nullptr;
+	Lights = nullptr;
+	Doodads = nullptr;
+	BspTriangles = nullptr;
+	BspNodes = nullptr;
 
-	BspVertices = NULL_PTR;
-	BspVertexBuffer = NULL_PTR;
-	BspIndices = NULL_PTR;
-	BspIndexbuffer = NULL_PTR;
+	BspVertices = nullptr;
+	BspVertexBuffer = nullptr;
+	BspIndices = nullptr;
+	BspIndexbuffer = nullptr;
 
 	NumBatches = NumLights = NumDoodads =
 		NumBspNodes = NumBspTriangles = 0;	
@@ -45,16 +45,16 @@ CWMOGroup::~CWMOGroup()
 
 CFileWMO::CFileWMO()
 {
-	FileData = NULL_PTR;
+	FileData = nullptr;
 
-	PortalVertexBuffer = NULL_PTR;
+	PortalVertexBuffer = nullptr;
 
-	FrontPortalEntries = BackPortalEntries = NULL_PTR;
+	FrontPortalEntries = BackPortalEntries = nullptr;
 
-	Vertices = NULL_PTR;
-	Indices = NULL_PTR;
-	VertexBuffer = NULL_PTR;
-	IndexBuffer = NULL_PTR;
+	Vertices = nullptr;
+	Indices = nullptr;
+	VertexBuffer = nullptr;
+	IndexBuffer = nullptr;
 }
 
 CFileWMO::~CFileWMO()
@@ -204,7 +204,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 		}
 		else if (strcmp(fourcc, "MOPV") == 0)			//portal vertices
 		{
-			ASSERT(PortalVertices == NULL_PTR);
+			ASSERT(PortalVertices == nullptr);
 			NumPortalVertices = size / sizeof(vector3df);
 			vector3df v;
 			if (NumPortalVertices)
@@ -370,7 +370,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 		}
 		else
 		{
-		//	MessageBoxA(NULL_PTR, fourcc, "", 0);
+		//	MessageBoxA(nullptr, fourcc, "", 0);
 			ASSERT(false);
 		}
 
@@ -808,7 +808,7 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 		}
 		else
 		{
-			//MessageBoxA(NULL_PTR, fourcc, "", 0);
+			//MessageBoxA(nullptr, fourcc, "", 0);
 			ASSERT(false);
 		}
 

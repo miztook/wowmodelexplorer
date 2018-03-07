@@ -70,7 +70,7 @@ IImage* CImageLoaderPVR::loadAsImage( IMemFile* file )
 			default:
 				{
 					ASSERT(false);			//not supported format
-					return NULL_PTR;
+					return nullptr;
 				}
 			}
 		}
@@ -87,7 +87,7 @@ IImage* CImageLoaderPVR::loadAsImage( IMemFile* file )
 		if (headerV2->dwPVR  != FOURCC('P', 'V', 'R', '!'))
 		{
 			ASSERT(false);
-			return NULL_PTR;
+			return nullptr;
 		}
 
 		offset = headerV2->dwHeaderSize;
@@ -120,7 +120,7 @@ IImage* CImageLoaderPVR::loadAsImage( IMemFile* file )
 		default:
 			{
 				ASSERT(false);			//not supported format
-				return NULL_PTR;
+				return nullptr;
 			}
 		}
 	}
@@ -158,7 +158,7 @@ IImage* CImageLoaderPVR::loadAsImage( IMemFile* file )
 	default:
 		delete[] decompressed;
 		ASSERT(false);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	CImage* image = new CImage(ECF_A8R8G8B8, dim, decompressed, true);

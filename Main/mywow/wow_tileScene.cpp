@@ -10,7 +10,7 @@ wow_tileScene::wow_tileScene( CMapTileSceneNode* mapTileNode ) : TileSceneNode(m
 {
 	FileWDT = TileSceneNode->FileWDT;
 
-	CamChunk = LastCamChunk = NULL_PTR;
+	CamChunk = LastCamChunk = nullptr;
 
 	u32 numM2Instance = TileSceneNode->Block.tile->fileAdt->NumM2Instance;
 	u32 numWmoInstance = TileSceneNode->Block.tile->fileAdt->NumWmoInstance;

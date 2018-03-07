@@ -9,7 +9,6 @@
 
 #include "COpenGLDriver.h"
 #include "COpenGLExtension.h"
-#include "CLock.h"
 #include "COpenGLHelper.h"
 
 COpenGLHardwareBufferServices::COpenGLHardwareBufferServices()
@@ -104,7 +103,7 @@ void COpenGLHardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffe
 
 		GLuint buffers[] = { (GLuint)PTR_TO_UINT32(vbuffer->HWLink) };
 		Driver->getGLExtension()->extGlDeleteBuffers(1, buffers);
-		vbuffer->HWLink = NULL_PTR;
+		vbuffer->HWLink = nullptr;
 
 		Driver->deleteVao(vbuffer);
 	}
@@ -119,7 +118,7 @@ void COpenGLHardwareBufferServices::destroyHardwareBuffer( IIndexBuffer* ibuffer
 		RemoveEntryList(&ibuffer->Link);
 		GLuint buffers[] = { (GLuint)PTR_TO_UINT32(ibuffer->HWLink) };
 		Driver->getGLExtension()->extGlDeleteBuffers(1, buffers);
-		ibuffer->HWLink = NULL_PTR;
+		ibuffer->HWLink = nullptr;
 	}
 }
 
@@ -227,7 +226,7 @@ void COpenGLHardwareBufferServices::destroyStaticIndexBufferQuadList()
 
 bool COpenGLHardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbuffer )
 {
-	ASSERT(NULL_PTR == vbuffer->HWLink);
+	ASSERT(nullptr == vbuffer->HWLink);
 
 	GLenum usage = GL_DYNAMIC_DRAW;
 	switch(vbuffer->Mapping)
@@ -270,7 +269,7 @@ bool COpenGLHardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* v
 
 bool COpenGLHardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuffer )
 {
-	ASSERT(NULL_PTR == ibuffer->HWLink);
+	ASSERT(nullptr == ibuffer->HWLink);
 
 	GLenum usage = GL_DYNAMIC_DRAW;
 	switch(ibuffer->Mapping)

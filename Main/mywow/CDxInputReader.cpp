@@ -66,12 +66,12 @@ CDxInputReader::CDxInputReader()
 {
 	CHECK_SIZEOF4BYTES(*this);
 
-	HWnd = NULL_PTR;
-	HLib = NULL_PTR;
+	HWnd = nullptr;
+	HLib = nullptr;
 
-	pIDInput = NULL_PTR;
-	pIDeviceKeyboard = NULL_PTR;
-	pIDeviceMouse = NULL_PTR;
+	pIDInput = nullptr;
+	pIDeviceKeyboard = nullptr;
+	pIDeviceMouse = nullptr;
 
 	memset( Diks, 0, sizeof(u8) * 256 );
 	memset( &Dims2, 0, sizeof(DIMOUSESTATE2) );
@@ -338,8 +338,8 @@ bool CDxInputReader::initDevice(HWND hwnd)
 	DXINPUT8CREATE dx8create = (DXINPUT8CREATE)::GetProcAddress(HLib, "DirectInput8Create");
 	if(!dx8create) { ASSERT(false); return false; }
 
-	if (FAILED(dx8create( GetModuleHandle(NULL_PTR), DIRECTINPUT_VERSION, IID_IDirectInput8,
-		(LPVOID*)&pIDInput, NULL_PTR)))
+	if (FAILED(dx8create( GetModuleHandle(nullptr), DIRECTINPUT_VERSION, IID_IDirectInput8,
+		(LPVOID*)&pIDInput, nullptr)))
 	{
 		ASSERT(false);
 		return false;
@@ -353,7 +353,7 @@ bool CDxInputReader::initDevice(HWND hwnd)
 
 bool CDxInputReader::initializeKeyboard()
 {
-	if (FAILED(pIDInput->CreateDevice( GUID_SysKeyboard, &pIDeviceKeyboard, NULL_PTR ) ))
+	if (FAILED(pIDInput->CreateDevice( GUID_SysKeyboard, &pIDeviceKeyboard, nullptr ) ))
 	{
 		ASSERT(false);
 		return false;
@@ -391,7 +391,7 @@ bool CDxInputReader::initializeKeyboard()
 
 bool CDxInputReader::initializeMouse()
 {
-	if (FAILED(pIDInput->CreateDevice( GUID_SysMouse, &pIDeviceMouse, NULL_PTR ) ))
+	if (FAILED(pIDInput->CreateDevice( GUID_SysMouse, &pIDeviceMouse, nullptr ) ))
 	{
 		ASSERT(false);
 		return false;

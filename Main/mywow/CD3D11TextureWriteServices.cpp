@@ -32,7 +32,7 @@ CD3D11TextureWriter::CD3D11TextureWriter( const dimension2du& size, ECOLOR_FORMA
 	desc.BindFlags = 0;
 	desc.MipLevels = NumMipmaps;
 	
-	HRESULT hr = Driver->pID3DDevice11->CreateTexture2D( &desc, NULL_PTR, &SrcTexture );
+	HRESULT hr = Driver->pID3DDevice11->CreateTexture2D( &desc, nullptr, &SrcTexture );
 	if (FAILED(hr))
 	{
 		ASSERT(false);
@@ -48,13 +48,13 @@ void* CD3D11TextureWriter::lock( u32 level, u32& pitch )
 {
 	D3D11_MAPPED_SUBRESOURCE mappedData;
 
-	void* pData = NULL_PTR;
+	void* pData = nullptr;
 	//ImmediateContext
 	HRESULT hr = Driver->ImmediateContext->Map( SrcTexture, level, D3D11_MAP_WRITE, 0, &mappedData );
 	if (FAILED(hr))
 	{
 		ASSERT(false);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	pitch = mappedData.RowPitch;

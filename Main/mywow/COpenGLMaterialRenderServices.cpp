@@ -709,7 +709,7 @@ void COpenGLMaterialRenderServices::applyMaterialChanges()
 			{
 				glBindTexture(GL_TEXTURE_2D, 0);
 				ASSERT_OPENGL_SUCCESS();
-				RsCache.TextureUnits[st].texture = NULL_PTR;
+				RsCache.TextureUnits[st].texture = nullptr;
 				continue;
 			}
 
@@ -826,7 +826,7 @@ void COpenGLMaterialRenderServices::resetRSCache()
 	//texture op
 	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
-		RsCache.TextureUnits[i].texture = NULL_PTR;
+		RsCache.TextureUnits[i].texture = nullptr;
 	}
 
 	glGetIntegerv(GL_ACTIVE_TEXTURE, &RsCache.ActiveTextureIndex);

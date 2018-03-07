@@ -7,7 +7,6 @@
 
 #include "COpenGLDriver.h"
 #include "COpenGLHelper.h"
-#include "CLock.h"
 #include "CImage.h"
 #include "COpenGLMaterialRenderServices.h"
 #include "COpenGLExtension.h"
@@ -174,11 +173,11 @@ bool COpenGLTexture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT fo
 		services->applyTextureWrap(0, ETA_V, ETC_CLAMP);
 		services->applyTextureMipMap(0, false);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, size.Width, size.Height, 0, pixelFormat, pixelType, NULL_PTR);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, size.Width, size.Height, 0, pixelFormat, pixelType, nullptr);
 		ASSERT_OPENGL_SUCCESS();
 
 		//end bind
-		services->applySamplerTexture(0, NULL_PTR);
+		services->applySamplerTexture(0, nullptr);
 	}
 	else
 	{
@@ -376,7 +375,7 @@ bool COpenGLTexture::createTexture( const dimension2du& size, ECOLOR_FORMAT form
 		services->applyTextureMipMap(0, false);
 
 		//end bind
-		services->applySamplerTexture(0, NULL_PTR);
+		services->applySamplerTexture(0, nullptr);
 	}
 	
 	return true;

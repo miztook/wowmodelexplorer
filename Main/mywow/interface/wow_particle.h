@@ -79,15 +79,15 @@ friend class SphereParticleEmitter;
 
 public:
 	ParticleSystem()
-		: Mesh(NULL_PTR)
+		: Mesh(nullptr)
 	{
 		tileRotation = 0;
-		emitter = NULL_PTR;
+		emitter = nullptr;
 		blend = 0;
 		rows = cols = 0;
 
 		boneIndex = -1;
-		texture = NULL_PTR;
+		texture = nullptr;
 		billboard = false;
 		ribbontype = false;
 
@@ -99,7 +99,7 @@ public:
 		flags = 0;
 		NumTiles = 0;
 
-		Tiles = NULL_PTR;
+		Tiles = nullptr;
 	}
 
 	~ParticleSystem()
@@ -179,7 +179,7 @@ private:
 
 public:
 	RibbonEmitter()
-	: Mesh(NULL_PTR), texture(NULL_PTR)
+	: Mesh(nullptr), texture(nullptr)
 	{
 		parent = 0;
 		boneIndex = 0;

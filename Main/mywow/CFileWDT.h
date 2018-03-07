@@ -72,6 +72,6 @@ private:
 inline STile* CFileWDT::getTile( u32 index )
 {
 	if (index >= Tiles.size())
-		return NULL_PTR;
+		return nullptr;
 	return &Tiles[index];
 }

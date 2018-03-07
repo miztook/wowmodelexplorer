@@ -21,7 +21,7 @@ public:
 	void setLoopMode(bool on) { Looping = on; }
 	bool isLoop() const { return Looping; }
 	//
-	f32 buildFrameNumber( u32 timeMs, bool* animEnd = NULL_PTR );			//·µ»Øframe delta
+	f32 buildFrameNumber( u32 timeMs, bool* animEnd = nullptr );			//·µ»Øframe delta
 
 	bool isFrameStart() const;
 	bool isFrameEnd() const;

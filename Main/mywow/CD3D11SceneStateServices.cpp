@@ -48,7 +48,7 @@ void CD3D11SceneStateServices::turnLightOn( u32 lightIndex, bool turnOn )
 const SLight* CD3D11SceneStateServices::getDynamicLight( u32 index ) const
 {
 	if(index >= SceneState.MAX_LIGTHTS)
-		return NULL_PTR;
+		return nullptr;
 
 	return &SceneState.Lights[index];
 }

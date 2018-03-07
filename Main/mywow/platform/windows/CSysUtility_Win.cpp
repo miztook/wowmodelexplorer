@@ -142,12 +142,12 @@ bool CSysUtility::openURLtoJsonFile( const c8* url, const c8* filename )
 	//request
 	c8 buffer[1024];
 
-	HINTERNET hSession = InternetOpen("mywowUrl", INTERNET_OPEN_TYPE_PRECONFIG, NULL_PTR, NULL_PTR, 0);
-	if(hSession != NULL_PTR)
+	HINTERNET hSession = InternetOpen("mywowUrl", INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
+	if(hSession != nullptr)
 	{
-		HINTERNET hHttp = InternetOpenUrl(hSession, strFinal.c_str(), NULL_PTR, 0, INTERNET_FLAG_RELOAD | INTERNET_FLAG_DONT_CACHE, 0);
+		HINTERNET hHttp = InternetOpenUrl(hSession, strFinal.c_str(), nullptr, 0, INTERNET_FLAG_RELOAD | INTERNET_FLAG_DONT_CACHE, 0);
 
-		if (hHttp != NULL_PTR)
+		if (hHttp != nullptr)
 		{
 			IWriteFile* file = g_Engine->getFileSystem()->createAndWriteFile(path.c_str(), false);
 			if (file)
@@ -168,11 +168,11 @@ bool CSysUtility::openURLtoJsonFile( const c8* url, const c8* filename )
 			}
 
 			InternetCloseHandle(hHttp);
-			hHttp = NULL_PTR;
+			hHttp = nullptr;
 		}
 
 		InternetCloseHandle(hSession);
-		hSession = NULL_PTR;
+		hSession = nullptr;
 	} 
 
 	return ret;
@@ -180,7 +180,7 @@ bool CSysUtility::openURLtoJsonFile( const c8* url, const c8* filename )
 
 void CSysUtility::messageBoxWarning( const c8* msg )
 {
-	MessageBoxA(NULL_PTR, msg, "warning", MB_ICONEXCLAMATION);
+	MessageBoxA(nullptr, msg, "warning", MB_ICONEXCLAMATION);
 }
 
 void CSysUtility::outputDebug( const c8* format, ... )
@@ -206,7 +206,7 @@ SWindowInfo CSysUtility::createWindow( const char* caption, const dimension2du& 
 	if (fullscreen)
 		hide = false;
 
-	HINSTANCE hInstance = ::GetModuleHandle(NULL_PTR);
+	HINSTANCE hInstance = ::GetModuleHandle(nullptr);
 	HWND hwnd;
 
 	const char* className = "mywowWindow";
@@ -218,13 +218,13 @@ SWindowInfo CSysUtility::createWindow( const char* caption, const dimension2du& 
 	wcex.cbClsExtra		= 0;
 	wcex.cbWndExtra		= 0;
 	wcex.hInstance		= hInstance;
-	wcex.hIcon			= NULL_PTR;
-	wcex.hCursor		= ::LoadCursor(NULL_PTR, IDC_ARROW);
+	wcex.hIcon			= nullptr;
+	wcex.hCursor		= ::LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground	= (HBRUSH)COLOR_BACKGROUND;
 	wcex.lpszMenuName	= 0;
 	wcex.lpszClassName	= className;
 	wcex.hIconSm		= 0;
-	wcex.hIcon			= ::LoadIcon(NULL_PTR, IDI_APPLICATION);
+	wcex.hIcon			= ::LoadIcon(nullptr, IDI_APPLICATION);
 
 	::RegisterClassEx( &wcex );
 
@@ -258,7 +258,7 @@ SWindowInfo CSysUtility::createWindow( const char* caption, const dimension2du& 
 		windowTop = 0;	// make sure window menus are in screen on creation
 
 	hwnd = ::CreateWindow( className, caption, style, windowLeft, windowTop,
-		width, height, NULL_PTR, NULL_PTR, hInstance, NULL_PTR);
+		width, height, nullptr, nullptr, hInstance, nullptr);
 
 	::ShowWindow(hwnd, hide? SW_HIDE : SW_SHOW);
 	::UpdateWindow(hwnd);

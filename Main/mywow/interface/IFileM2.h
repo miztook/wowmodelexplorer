@@ -203,7 +203,7 @@ private:
 	DISALLOW_COPY_AND_ASSIGN(CGeoset);
 
 public:
-	CGeoset() : GeoID(0), BillboardRects(NULL_PTR), VStart(0), VCount(0), IStart(0), 
+	CGeoset() : GeoID(0), BillboardRects(nullptr), VStart(0), VCount(0), IStart(0), 
 		ICount(0), MaxWeights(4), 
 		BillBoard(true) {}
 
@@ -235,7 +235,7 @@ public:
 	const STexUnit* getTexUnit(u8 index) const 
 	{
 		if (index >= TexUnits.size())
-			return NULL_PTR;
+			return nullptr;
 		return &TexUnits[index];
 	}
 };
@@ -258,32 +258,32 @@ public:
 		: VideoBuilt(false)
 	{
 		M2Version = MD20;
-		m2Header = NULL_PTR;
-		m2HeaderEx = NULL_PTR;
-		GVertices = NULL_PTR;
-		AVertices = NULL_PTR;
-		Bounds = NULL_PTR;
-		BoundTris = NULL_PTR;
-		TextureFlags = NULL_PTR;
-		TextureTypes = NULL_PTR;
-		Textures = NULL_PTR;
-		TexLookup = NULL_PTR;
-		Attachments = NULL_PTR;
-		AttachLookup = NULL_PTR;
-		GlobalSequences = NULL_PTR;
-		Colors = NULL_PTR;
-		Transparencies = NULL_PTR;
-		TransparencyLookup = NULL_PTR;
-		TextureAnim = NULL_PTR;
-		Bones = NULL_PTR;
-		BoneLookup = NULL_PTR;
-		Animations = NULL_PTR;
-		AnimationLookup = NULL_PTR;
-		RenderFlags = NULL_PTR;
-		Skin = NULL_PTR;
-		ParticleSystems = NULL_PTR;
-		RibbonEmitters = NULL_PTR;
-		ModelCameras = NULL_PTR;
+		m2Header = nullptr;
+		m2HeaderEx = nullptr;
+		GVertices = nullptr;
+		AVertices = nullptr;
+		Bounds = nullptr;
+		BoundTris = nullptr;
+		TextureFlags = nullptr;
+		TextureTypes = nullptr;
+		Textures = nullptr;
+		TexLookup = nullptr;
+		Attachments = nullptr;
+		AttachLookup = nullptr;
+		GlobalSequences = nullptr;
+		Colors = nullptr;
+		Transparencies = nullptr;
+		TransparencyLookup = nullptr;
+		TextureAnim = nullptr;
+		Bones = nullptr;
+		BoneLookup = nullptr;
+		Animations = nullptr;
+		AnimationLookup = nullptr;
+		RenderFlags = nullptr;
+		Skin = nullptr;
+		ParticleSystems = nullptr;
+		RibbonEmitters = nullptr;
+		ModelCameras = nullptr;
 
 		NumVertices =
 		NumBoundingTriangles =
@@ -350,7 +350,7 @@ public:
 	ITexture* getTexture(u32 idx) const
 	{ 
 		if( idx >= NumTextures) 
-			return NULL_PTR; 
+			return nullptr; 
 		return Textures[idx]; 
 	}
 

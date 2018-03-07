@@ -656,7 +656,7 @@ inline void utf16_to_gbk(const c16* utf16, c8* gbk, u32 size)
 #ifdef MW_PLATFORM_WINDOWS
 	if (utf16)
 	{
-		WideCharToMultiByte( 936, 0, (LPCWSTR)utf16, -1, gbk, size, NULL, NULL);
+		WideCharToMultiByte(936, 0, (LPCWSTR)utf16, -1, gbk, size, NULL, NULL);
 
 		gbk[size - 1] = '\0';
 	}
@@ -757,7 +757,7 @@ inline void Q_getLocalTime(c8* timebuf, size_t size)
 	::time_t m_time;
 	::timeval timeofday;
 	::localtime_r(&m_time, &t);
-	::gettimeofday(&timeofday, NULL_PTR);
+	::gettimeofday(&timeofday, nullptr);
 	Q_sprintf(
 		timebuf, 
 		size, 
@@ -953,7 +953,7 @@ inline bool Q_iterateFiles(const c8* dirname, const c8* ext, ITERATEFILECALLBACK
 
 #else
 	DIR* handle = opendir(path);
-	if (NULL_PTR == handle)
+	if (nullptr == handle)
 	{
 		perror("directory::open");
 		return false;

@@ -62,7 +62,7 @@ protected:
 		DISALLOW_COPY_AND_ASSIGN(CMapBlock);
 
 	public:
-		CMapBlock() : tile(NULL_PTR)
+		CMapBlock() : tile(nullptr)
 		{
 			memset(DynChunks, 0, sizeof(DynChunks));
 		}

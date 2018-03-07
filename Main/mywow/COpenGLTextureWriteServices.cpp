@@ -48,7 +48,7 @@ COpenGLTextureWriter::~COpenGLTextureWriter()
 void* COpenGLTextureWriter::lock( u32 level, u32& pitch )
 {
 	if (level >= NumMipmaps)
-		return NULL_PTR;
+		return nullptr;
 
 	pitch = MipData[level].pitch;
 	return MipData[level].data;
@@ -67,7 +67,7 @@ void COpenGLTextureWriter::initEmptyData()
 	unlock(0);
 }
 
-bool COpenGLTextureWriter::copyToTexture( ITexture* texture, const recti* descRect /*= NULL_PTR*/ )
+bool COpenGLTextureWriter::copyToTexture( ITexture* texture, const recti* descRect /*= nullptr*/ )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(driver->getMaterialRenderServices());
@@ -128,7 +128,7 @@ bool COpenGLTextureWriter::copyToTexture( ITexture* texture, const recti* descRe
 		Z_FreeTempMemory(data);
 		
 		//end bind
-		services->applySamplerTexture(0, NULL_PTR);
+		services->applySamplerTexture(0, nullptr);
 	}
 	else
 	{
@@ -159,7 +159,7 @@ bool COpenGLTextureWriter::copyToTexture( ITexture* texture, const recti* descRe
 		}
 
 		//end bind
-		services->applySamplerTexture(0, NULL_PTR);
+		services->applySamplerTexture(0, nullptr);
 	}
 
 	return true;

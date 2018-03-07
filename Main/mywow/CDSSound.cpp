@@ -13,7 +13,7 @@
 #define  NUM_PLAY_NOTIFICATIONS 16
 
 CDSSound::CDSSound(LPDIRECTSOUND pIDS, E_SOUND_TYPE type, u32 index)
-	: pIDSound(pIDS), pIDSBuffer(NULL_PTR), pIDNotify(NULL_PTR), ISound(type), Index(index), Callback(NULL_PTR)
+	: pIDSound(pIDS), pIDSBuffer(nullptr), pIDNotify(nullptr), ISound(type), Index(index), Callback(nullptr)
 {
 	INIT_LOCK(&cs);
 	INIT_EVENT(&NotificationEvent, "");
@@ -36,7 +36,7 @@ CDSSound::CDSSound(LPDIRECTSOUND pIDS, E_SOUND_TYPE type, u32 index)
 		break;
 	default:
 		ASSERT(false);
-		AudioInput = NULL_PTR;
+		AudioInput = nullptr;
 		break;
 	}
 
@@ -162,7 +162,7 @@ void CDSSound::reset()
 	Loop = false;
 	FillNextNotificationWithSilence = false;
 	SilenceCount = 0;
-	Callback = NULL_PTR;
+	Callback = nullptr;
 
 	if(AudioInput)
 		AudioInput->reset();
@@ -210,8 +210,8 @@ bool CDSSound::handleStreamNotification()
 	if (!restoreBuffer(restored, 100))
 		return false;
 	
-	VOID* pDSLockedBuffer = NULL_PTR;
-	VOID* pDSLockedBuffer2 = NULL_PTR;
+	VOID* pDSLockedBuffer = nullptr;
+	VOID* pDSLockedBuffer2 = nullptr;
 	DWORD dwDSLockedBufferSize;
 	DWORD dwDSLockedBufferSize2;
 
@@ -271,7 +271,7 @@ bool CDSSound::handleStreamNotification()
 		}
 	}
 
-	pIDSBuffer->Unlock(pDSLockedBuffer, dwDSLockedBufferSize, NULL_PTR, 0);
+	pIDSBuffer->Unlock(pDSLockedBuffer, dwDSLockedBufferSize, nullptr, 0);
 
 	bool stopped = false;
 	if (FillNextNotificationWithSilence)
@@ -328,12 +328,12 @@ bool CDSSound::restoreBuffer(bool& restored, s32 timeout)
 
 void CDSSound::fillBufferWithSilence()
 {
-	VOID* pDSLockedBuffer = NULL_PTR;
+	VOID* pDSLockedBuffer = nullptr;
 	DWORD dwDSLockedBufferSize;
 
 	if (FAILED( pIDSBuffer->Lock( 0, BufferSize,
 		&pDSLockedBuffer, &dwDSLockedBufferSize,
-		NULL_PTR, NULL_PTR, 0)))
+		nullptr, nullptr, 0)))
 	{
 		ASSERT(false);
 		return;
@@ -344,7 +344,7 @@ void CDSSound::fillBufferWithSilence()
 		dwDSLockedBufferSize,
 		(u8)(AudioInput->BitsPerSample == 8 ? 128 : 0));
 
-	pIDSBuffer->Unlock(pDSLockedBuffer, dwDSLockedBufferSize, NULL_PTR, 0);
+	pIDSBuffer->Unlock(pDSLockedBuffer, dwDSLockedBufferSize, nullptr, 0);
 }
 
 bool CDSSound::recreateDSBuffer(const SAudioSetting& setting)
@@ -371,7 +371,7 @@ bool CDSSound::recreateDSBuffer(const SAudioSetting& setting)
 	SAFE_RELEASE_STRICT(pIDSBuffer);
 	SAFE_RELEASE_STRICT(pIDNotify);
 	
-	if (FAILED(pIDSound->CreateSoundBuffer(&desc, &pIDSBuffer, NULL_PTR)))
+	if (FAILED(pIDSound->CreateSoundBuffer(&desc, &pIDSBuffer, nullptr)))
 	{
 		END_LOCK(&cs);
 		ASSERT(false);

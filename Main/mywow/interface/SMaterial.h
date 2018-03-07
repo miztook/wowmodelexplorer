@@ -17,7 +17,7 @@ struct SMaterialLayer
 	bool	UseTextureMatrix;
 
 	SMaterialLayer()
-		: TextureMatrix(NULL_PTR),
+		: TextureMatrix(nullptr),
 		TextureWrapU(ETC_CLAMP),
 		TextureWrapV(ETC_CLAMP),
 		TextureWrapW(ETC_CLAMP),
@@ -165,7 +165,7 @@ struct SMaterial
 		EmissiveColor(0,0,0,0),
 		SpecularColor(0,0,0,0),
 		Shininess(0.0f),
-		VertexShader(NULL_PTR),
+		VertexShader(nullptr),
 		ZBuffer(ECFN_LESSEQUAL),
 		Cull(ECM_NONE),
 		AntiAliasing(EAAM_SIMPLE),
@@ -304,7 +304,7 @@ struct  SRenderStateBlock
 	};
 
 	SRenderStateBlock()
-		: pixelShader(NULL_PTR),
+		: pixelShader(nullptr),
 		blendOp(EBO_ADD),
 		srcBlend(EBF_ONE), destBlend(EBF_ZERO),
 		alphaTestEnabled(false),

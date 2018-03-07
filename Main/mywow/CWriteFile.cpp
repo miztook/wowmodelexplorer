@@ -18,7 +18,7 @@ CWriteFile::~CWriteFile()
 
 u32 CWriteFile::write(const void* buffer, u32 sizeToWrite)
 {
-	if (!isOpen() || buffer == NULL_PTR)
+	if (!isOpen() || buffer == nullptr)
 		return 0;
 
 	return (u32)fwrite(buffer, 1, sizeToWrite, File);
@@ -26,7 +26,7 @@ u32 CWriteFile::write(const void* buffer, u32 sizeToWrite)
 
 u32 CWriteFile::writeText(const c8* buffer, u32 len /*= MAX_WRITE_NUM */)
 {
-	if (!isOpen() || buffer == NULL_PTR)
+	if (!isOpen() || buffer == nullptr)
 		return 0;
 
 	ASSERT(!IsBinary);
@@ -46,7 +46,7 @@ u32 CWriteFile::writeText(const c8* buffer, u32 len /*= MAX_WRITE_NUM */)
 
 u32 CWriteFile::writeLine(const c8* text)
 {
-	if (!isOpen() || text == NULL_PTR)
+	if (!isOpen() || text == nullptr)
 		return 0;
 
 	ASSERT(!IsBinary);

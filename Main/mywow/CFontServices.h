@@ -108,7 +108,7 @@ public:
 		My_FaceID faceId;
 		int refCount;
 
-		FaceID_Node(): faceId(NULL_PTR), refCount(0) {}
+		FaceID_Node(): faceId(nullptr), refCount(0) {}
 		FaceID_Node(My_FaceID faceId, int refCount): faceId(faceId), refCount(refCount) {}
 	};
 

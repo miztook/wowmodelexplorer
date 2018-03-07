@@ -18,7 +18,7 @@ class IReferenceCounted
 {
 public:
 	//
-	IReferenceCounted() : ReferenceCounter(1), Cache(NULL_PTR)
+	IReferenceCounted() : ReferenceCounter(1), Cache(nullptr)
 	{
 		
 	}
@@ -139,7 +139,7 @@ T* IResourceCache<T>::tryLoadFromCache( const char* filename )
 
 	BEGIN_LOCK(&cs);
 
-	typename T_UseMap::const_iterator itrUse = UseMap.find(filename);
+	auto itrUse = UseMap.find(filename);
 	if (itrUse != UseMap.end())
 	{
 		itrUse->second->grab();
@@ -149,7 +149,7 @@ T* IResourceCache<T>::tryLoadFromCache( const char* filename )
 	}
 
 	// free cache ÖÐ²éÕÒ
-	for ( typename T_FreeList::iterator itr = FreeList.begin(); itr != FreeList.end(); ++itr )
+	for ( auto itr = FreeList.begin(); itr != FreeList.end(); ++itr )
 	{
 		T* t = (*itr);
 		const c8* fname = t->getFileName();
@@ -165,7 +165,7 @@ T* IResourceCache<T>::tryLoadFromCache( const char* filename )
 	}
 
 	END_LOCK(&cs);
-	return NULL_PTR;
+	return nullptr;
 }
 
 template <class T>
@@ -191,7 +191,7 @@ void IResourceCache<T>::removeFromCache( T* item )
 	ASSERT(!isAbsoluteFileName(filename) && isNormalized(filename) && isLowerFileName(filename));
 	
 	BEGIN_LOCK(&cs);
-	typename T_UseMap::iterator itr = UseMap.find(filename);
+	auto itr = UseMap.find(filename);
 	ASSERT(itr != UseMap.end());
 	if (itr != UseMap.end())
 		UseMap.erase(itr);
