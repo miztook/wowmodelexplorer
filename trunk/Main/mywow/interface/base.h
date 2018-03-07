@@ -5,6 +5,32 @@
 #include <cstdint>
 #include "qzone_allocator.h"
 
+#if MW_PLATFORM_WINDOWS
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#include <malloc.h>
+
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4355) // this used in base initializer list
+#pragma warning(disable : 4996)
+#pragma warning(disable : 4481)
+
+#else
+
+#include <alloca.h>
+
+#endif
+
+#ifdef USE_QALLOCATOR
+#include "qzone_allocator.h"
+#endif
+
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
 TypeName(const TypeName&);               \
 TypeName& operator=(const TypeName&)
@@ -76,14 +102,6 @@ typedef		void*				glcontext_type;
 #define ASSERT assert
 #endif
 
-#ifndef NULL
-#define NULL 0
-#endif
-
-#ifndef NULL_PTR
-#define  NULL_PTR	nullptr
-#endif
-
 #ifndef MAX
     #define MAX(a, b) ((a) < (b) ? (b) : (a))
 #endif
@@ -149,15 +167,15 @@ typedef		void*				glcontext_type;
 #define	CHUNKS_IN_TILE	16				//每个tile包括 16 X 16 个chunk
 
 #ifndef SAFE_RELEASE
-#define SAFE_RELEASE(p)      { if (p) { (p)->Release(); (p)=NULL_PTR; } }
+#define SAFE_RELEASE(p)      { if (p) { (p)->Release(); (p)=nullptr; } }
 #endif
 
 #ifndef SAFE_DELETE
-#define SAFE_DELETE(p)		{ if (p) { delete (p); (p) = NULL_PTR; } }
+#define SAFE_DELETE(p)		{ if (p) { delete (p); (p) = nullptr; } }
 #endif
 
 #ifndef SAFE_RELEASE_STRICT
-#define SAFE_RELEASE_STRICT(p)      { if (p) { ULONG u = (p)->Release(); ASSERT(!u); (p)=NULL_PTR; } }
+#define SAFE_RELEASE_STRICT(p)      { if (p) { ULONG u = (p)->Release(); ASSERT(!u); (p)=nullptr; } }
 #endif
 
 #ifndef RELEASE_ALL

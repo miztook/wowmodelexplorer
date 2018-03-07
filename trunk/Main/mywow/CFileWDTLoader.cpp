@@ -10,7 +10,7 @@ IFileWDT* CWDTLoader::loadWDT( IMemFile* file, s32 mapid, bool simple )
 		if (!wdtFile->loadFileSimple(file, mapid))
 		{
 			wdtFile->drop();
-			return NULL_PTR;
+			return nullptr;
 		}
 	}
 	else
@@ -18,7 +18,7 @@ IFileWDT* CWDTLoader::loadWDT( IMemFile* file, s32 mapid, bool simple )
 		if (!wdtFile->loadFile(file, mapid))
 		{
 			wdtFile->drop();
-			return NULL_PTR;
+			return nullptr;
 		}
 	}
 

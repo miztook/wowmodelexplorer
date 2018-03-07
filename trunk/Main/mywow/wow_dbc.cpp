@@ -6,8 +6,8 @@
 dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 	: minorVersion(0), IsSparse(false)
 {
-	_recordStart = NULL_PTR;
-	_stringStart = NULL_PTR;
+	_recordStart = nullptr;
+	_stringStart = nullptr;
 
 	nRecords = 0;
 	nFields = 0;
@@ -15,11 +15,11 @@ dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 	StringSize = 0;
 	nActualRecords = 0;
 
-	Fields = NULL_PTR;
-	OffsetMaps = NULL_PTR;
-	IDs = NULL_PTR;
-	CopyTables = NULL_PTR;
-	CommonColumns = NULL_PTR;
+	Fields = nullptr;
+	OffsetMaps = nullptr;
+	IDs = nullptr;
+	CopyTables = nullptr;
+	CommonColumns = nullptr;
 
 	HasDataOffsetBlock = false;
 	HasIndex = false;
@@ -264,7 +264,7 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 			curOffset += len;
 			++count;
 		}
-		_stringStart = NULL;
+		_stringStart = nullptr;
 
 		file->seek(indexDataStart);
 	}
@@ -393,7 +393,7 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 			curOffset += len;
 			++count;
 		}
-		_stringStart = NULL;
+		_stringStart = nullptr;
 
 		file->seek(indexDataStart);
 	}
@@ -624,7 +624,7 @@ const SItemRecord* ItemCollections::getById( s32 id ) const
 		s32 i = itr->second;
 		return &items[i];
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 void ItemCollections::build( itemDB* itemDb, itemSparseDB* itemSparseDb)
@@ -786,7 +786,7 @@ const SNPCRecord* NPCCollections::getById( s32 id ) const
 		s32 i = itr->second;
 		return &npcs[i];
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 const SStartOutfitEntry* StartOutfitClassCollections::get( u32 race, bool female, u32 idx )
@@ -802,7 +802,7 @@ const SStartOutfitEntry* StartOutfitClassCollections::get( u32 race, bool female
 			++count;
 		}
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 u32 StartOutfitClassCollections::getNumStartOutfits( u32 race, bool female )
@@ -821,7 +821,7 @@ const SMapRecord* MapCollections::getMapById( s32 id ) const
 {
 	T_mapLookup::const_iterator itr = mapLookup.find(id);
 	if (itr == mapLookup.end())
-		return NULL_PTR;
+		return nullptr;
 
 	s32 index = itr->second;
 	return &maps[index];
@@ -831,7 +831,7 @@ SMapRecord* MapCollections::getMapById( s32 id )
 {
 	T_mapLookup::iterator itr = mapLookup.find(id);
 	if (itr == mapLookup.end())
-		return NULL_PTR;
+		return nullptr;
 
 	s32 index = itr->second;
 	return &maps[index];
@@ -841,7 +841,7 @@ const SArea* MapCollections::getAreaById( s32 id ) const
 {
 	T_areaLookup::const_iterator itr = areaLookup.find(id);
 	if (itr == areaLookup.end())
-		return NULL_PTR;
+		return nullptr;
 
 	s32 index = itr->second;
 	return &areas[index];
@@ -851,7 +851,7 @@ SArea* MapCollections::getAreaById( s32 id )
 {
 	T_areaLookup::iterator itr = areaLookup.find(id);
 	if (itr == areaLookup.end())
-		return NULL_PTR;
+		return nullptr;
 
 	s32 index = itr->second;
 	return &areas[index];
@@ -901,7 +901,7 @@ bool RidableCollections::open( const c8* filename, const NPCCollections& npcs )
 	while (file->readText(line, 512))
 	{
 		SRidable rec(line);
-		if (rec.npcid != 0 || npcs.getById(rec.npcid) != NULL_PTR)
+		if (rec.npcid != 0 || npcs.getById(rec.npcid) != nullptr)
 		{
 			ridables.emplace_back(rec);
 		}

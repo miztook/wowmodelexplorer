@@ -10,7 +10,7 @@ CGestureRecognizer_Joystick::CGestureRecognizer_Joystick( CGestureReader* gestur
 	: CGestureRecognizerBase(gestureReader)
 {
 	Type = GestureType_Joystick;
-	FnIsValidPosition = NULL_PTR;
+	FnIsValidPosition = nullptr;
 }
 
 void CGestureRecognizer_Joystick::onTouchBegin( const std::vector<SGesTouchInfo>& touchInfos )

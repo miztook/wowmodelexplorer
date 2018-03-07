@@ -23,7 +23,7 @@ IImage* CImageLoaderKTX::loadAsImage( IMemFile* file )
 	if (memcmp(header.identifier, KTX_IDENTIFIER, 12) != 0)
 	{
 		ASSERT(false);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	width = header.pixelWidth;
@@ -43,7 +43,7 @@ IImage* CImageLoaderKTX::loadAsImage( IMemFile* file )
 	default:
 		{
 			ASSERT(false);			//not supported format
-			return NULL_PTR;
+			return nullptr;
 		}
 	}
 
@@ -68,7 +68,7 @@ IImage* CImageLoaderKTX::loadAsImage( IMemFile* file )
 	default:
 		delete[] decompressed;
 		ASSERT(false);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	CImage* image = new CImage(ECF_A8R8G8B8, dim, decompressed, true);

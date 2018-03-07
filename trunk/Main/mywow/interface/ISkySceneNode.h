@@ -6,7 +6,7 @@
 class ISkySceneNode : public ISceneNode
 {
 public:
-	ISkySceneNode() : ISceneNode(NULL_PTR){ Type = EST_SKY; }
+	ISkySceneNode() : ISceneNode(nullptr){ Type = EST_SKY; }
 
 	virtual ~ISkySceneNode() { }
 

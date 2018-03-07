@@ -11,7 +11,7 @@
 #include "CD3D9Texture.h"
 
 CD3D9RenderTarget::CD3D9RenderTarget( const dimension2du& size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt )
-	: IRenderTarget(colorFmt, depthFmt), RTTSurface(NULL_PTR), DepthSurface(NULL_PTR)
+	: IRenderTarget(colorFmt, depthFmt), RTTSurface(nullptr), DepthSurface(nullptr)
 {
 	RTCopyTexture = new CD3D9Texture(false);
 
@@ -68,7 +68,7 @@ bool CD3D9RenderTarget::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT c
 		quality,
 		FALSE,			//not lockable
 		&RTTSurface,
-		NULL_PTR);
+		nullptr);
 
 	if(FAILED(hr))
 	{
@@ -96,7 +96,7 @@ bool CD3D9RenderTarget::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT c
 		quality,
 		FALSE,
 		&DepthSurface,
-		NULL_PTR);
+		nullptr);
 
 	if(FAILED(hr))
 	{
@@ -134,7 +134,7 @@ void CD3D9RenderTarget::onReset()
 
 bool CD3D9RenderTarget::writeToRTTexture()
 {
-	IDirect3DSurface9* surface = NULL_PTR;
+	IDirect3DSurface9* surface = nullptr;
 	HRESULT hr = RTCopyTexture->getDXTexture()->GetSurfaceLevel(0, &surface);
 
 	if (FAILED(hr))
@@ -147,7 +147,7 @@ bool CD3D9RenderTarget::writeToRTTexture()
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
 	IDirect3DDevice9* device = (IDirect3DDevice9*)driver->pID3DDevice;
 
-	hr = device->StretchRect(RTTSurface, NULL_PTR, surface, NULL_PTR, D3DTEXF_NONE);
+	hr = device->StretchRect(RTTSurface, nullptr, surface, nullptr, D3DTEXF_NONE);
 	if (FAILED(hr))
 	{
 		ASSERT(false);

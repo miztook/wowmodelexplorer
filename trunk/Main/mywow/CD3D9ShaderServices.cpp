@@ -121,7 +121,7 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 		return false;
 	}
 
-	IDirect3DVertexShader9* vertexShader = NULL_PTR;
+	IDirect3DVertexShader9* vertexShader = nullptr;
 	u32 len = 0;
 
 	//read bls file
@@ -184,7 +184,7 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 	}
 	Z_FreeTempMemory(constBuffer);
 
-	ASSERT(VertexShaders[type] == NULL_PTR);
+	ASSERT(VertexShaders[type] == nullptr);
 	VertexShaders[type] = shader;
 	
 	return true;
@@ -203,7 +203,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 		return false;
 	}
 
-	IDirect3DPixelShader9* pixelShader = NULL_PTR;
+	IDirect3DPixelShader9* pixelShader = nullptr;
 	u32 len = 0;
 
 	//read bls file
@@ -291,7 +291,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 
 	Z_FreeTempMemory(constBuffer);
 
-	ASSERT(PixelShaders[type][macro] == NULL_PTR);
+	ASSERT(PixelShaders[type][macro] == nullptr);
 	PixelShaders[type][macro] = shader;
 
 	return true;
@@ -314,7 +314,7 @@ bool CD3D9ShaderServices::loadVShader( const c8* filename, E_VS_TYPE type, VSHAD
 #endif
 
 	LPD3DXBUFFER pCode;
-	HRESULT hr = CD3D9Helper::d3dxAssembleShaderFromFileW( absFileNameW, NULL_PTR, NULL_PTR, dwShaderFlags, &pCode, NULL_PTR );
+	HRESULT hr = CD3D9Helper::d3dxAssembleShaderFromFileW( absFileNameW, nullptr, nullptr, dwShaderFlags, &pCode, nullptr );
 	if (FAILED(hr))
 	{
 		g_Engine->getFileSystem()->writeLog(ELOG_GX, "CD3D9ShaderServices::loadVShader Failed");
@@ -333,7 +333,7 @@ bool CD3D9ShaderServices::loadVShader( const c8* filename, E_VS_TYPE type, VSHAD
 		return false;
 	}
 
-	ASSERT(VertexShaders[type] == NULL_PTR);
+	ASSERT(VertexShaders[type] == nullptr);
 	VertexShaders[type] = new CD3D9VertexShader(type, vertexShader, callback);
 
 	return true;
@@ -355,7 +355,7 @@ bool CD3D9ShaderServices::loadPShader( const c8* filename, E_PS_TYPE type, PSHAD
 
 
 	LPD3DXBUFFER pCode;
-	HRESULT hr = CD3D9Helper::d3dxAssembleShaderFromFileW( absFileNameW, NULL_PTR, NULL_PTR, dwShaderFlags, &pCode, NULL_PTR );
+	HRESULT hr = CD3D9Helper::d3dxAssembleShaderFromFileW( absFileNameW, nullptr, nullptr, dwShaderFlags, &pCode, nullptr );
 	if (FAILED(hr))
 	{
 		g_Engine->getFileSystem()->writeLog(ELOG_GX, "CD3D9ShaderServices::loadPShader Failed");
@@ -374,7 +374,7 @@ bool CD3D9ShaderServices::loadPShader( const c8* filename, E_PS_TYPE type, PSHAD
 		return false;
 	}
 
-	ASSERT(PixelShaders[type] == NULL_PTR);
+	ASSERT(PixelShaders[type] == nullptr);
 	PixelShaders[type] = new CD3D9PixelShader(type, pixelShader, callback);
 
 	return true;
@@ -396,7 +396,7 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 
 	LPD3DXBUFFER pCode;
 	LPD3DXCONSTANTTABLE constantsTable;
-	HRESULT hr = CD3D9Helper::d3dxCompileShaderFromFileW( absFileNameW, NULL_PTR, NULL_PTR, entry, profile, dwShaderFlags, &pCode, NULL_PTR, &constantsTable );
+	HRESULT hr = CD3D9Helper::d3dxCompileShaderFromFileW( absFileNameW, nullptr, nullptr, entry, profile, dwShaderFlags, &pCode, nullptr, &constantsTable );
 
 	if (FAILED(hr))
 	{
@@ -430,10 +430,10 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 		for (u32 i=0; i<table_desc.Constants; ++i)
 		{
 			D3DXCONSTANT_DESC desc;
-			D3DXHANDLE handle = constantsTable->GetConstant(NULL_PTR, i);
+			D3DXHANDLE handle = constantsTable->GetConstant(nullptr, i);
 			if (handle)
 			{
-				constantsTable->GetConstantDesc(handle, &desc, NULL_PTR);
+				constantsTable->GetConstantDesc(handle, &desc, nullptr);
 				SDx9ConstDesc d;
 				d.index = desc.RegisterIndex;
 				d.size = desc.Bytes;
@@ -466,7 +466,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 
 	LPD3DXBUFFER pCode;
 	LPD3DXCONSTANTTABLE constantsTable;
-	HRESULT hr = CD3D9Helper::d3dxCompileShaderFromFileW( absFileNameW, NULL_PTR, NULL_PTR, entry, profile, dwShaderFlags, &pCode, NULL_PTR, &constantsTable );
+	HRESULT hr = CD3D9Helper::d3dxCompileShaderFromFileW( absFileNameW, nullptr, nullptr, entry, profile, dwShaderFlags, &pCode, nullptr, &constantsTable );
 
 	if (FAILED(hr))
 	{
@@ -499,10 +499,10 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 		for (u32 i=0; i<table_desc.Constants; ++i)
 		{
 			D3DXCONSTANT_DESC desc;
-			D3DXHANDLE handle = constantsTable->GetConstant(NULL_PTR, i);
+			D3DXHANDLE handle = constantsTable->GetConstant(nullptr, i);
 			if (handle)
 			{
-				constantsTable->GetConstantDesc(handle, &desc, NULL_PTR);
+				constantsTable->GetConstantDesc(handle, &desc, nullptr);
 				SDx9ConstDesc d;
 				d.index = desc.RegisterIndex;
 				d.size = desc.Bytes;
@@ -534,7 +534,7 @@ void CD3D9ShaderServices::applyShaders()
 #ifndef FIXPIPELINE
 			ASSERT(false);
 #endif
-			Device->SetVertexShader(NULL_PTR);
+			Device->SetVertexShader(nullptr);
 		}
 	}
 
@@ -550,7 +550,7 @@ void CD3D9ShaderServices::applyShaders()
 #ifndef FIXPIPELINE
 			ASSERT(false);
 #endif
-			Device->SetPixelShader(NULL_PTR);
+			Device->SetPixelShader(nullptr);
 		}
 	}
 
@@ -597,7 +597,7 @@ IVertexShader* CD3D9ShaderServices::getDefaultVertexShader( E_VERTEX_TYPE vType 
 	case EVT_PT:
 		return getVertexShader(EVST_DEFAULT_PT);
 	default:
-		return NULL_PTR;
+		return nullptr;
 	}
 }
 
@@ -625,7 +625,7 @@ IPixelShader* CD3D9ShaderServices::getDefaultPixelShader( E_VERTEX_TYPE vType, E
 	case EVT_PT:
 		return getPixelShader(EPST_DEFAULT_PT, macro);
 	default:
-		return NULL_PTR;
+		return nullptr;
 	}
 }
 

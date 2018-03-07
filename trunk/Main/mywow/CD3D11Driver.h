@@ -151,8 +151,8 @@ private:
 		void reset()
 		{
 			vType = (E_VERTEX_TYPE)-1;
-			vBuffer0= vBuffer1 = NULL_PTR;
-			iBuffer = NULL_PTR;
+			vBuffer0= vBuffer1 = nullptr;
+			iBuffer = nullptr;
 			vOffset0 = vOffset1 = 0;
 		}
 

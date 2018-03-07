@@ -31,7 +31,7 @@ struct SAttachmentInfo
 
 struct SAttachmentEntry
 {
-	SAttachmentEntry() :  scale(1.0f), node(NULL_PTR), id(-1), slot(-1), attachIndex(-1) { }
+	SAttachmentEntry() :  scale(1.0f), node(nullptr), id(-1), slot(-1), attachIndex(-1) { }
     
 	f32		scale;
 	void*		node;

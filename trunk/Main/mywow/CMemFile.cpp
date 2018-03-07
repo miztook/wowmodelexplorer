@@ -36,7 +36,7 @@ void CMemFile::close()
 		Z_FreeTempMemory(buffer);
 	else
 		delete[] buffer;
-	buffer = NULL_PTR;
+	buffer = nullptr;
 
 	eof = true;
 }
@@ -50,7 +50,7 @@ bool CMemFile::save( const c8* filename )
 		return false;
 	
 	FILE* file = Q_fopen(realfilename, "wb");
-	if (file != NULL_PTR)
+	if (file != nullptr)
 	{
 		fwrite(buffer, 1, size, file);
 		fclose(file);

@@ -56,7 +56,7 @@ const c8* updatefiles[] =
 };
 
 wowEnvironment::wowEnvironment(IFileSystem* fs, bool useCompress, bool outputFilename)
-	: FileSystem(fs), UseLocale(true), RecordFile(NULL_PTR), hStorage(NULL_PTR), CascLocale(0)
+	: FileSystem(fs), UseLocale(true), RecordFile(nullptr), hStorage(nullptr), CascLocale(0)
 {
 #if defined(MW_USE_MPQ) || defined(MW_USE_CASC)
 	UseCompress = useCompress;
@@ -447,7 +447,7 @@ void wowEnvironment::unloadRoot()
 		delete ar;
 	}
 #elif defined(MW_USE_CASC)
-	if(hStorage != NULL_PTR)
+	if(hStorage != nullptr)
 		CascCloseStorage(hStorage);
 #else
 	ASSERT(false);
@@ -485,12 +485,12 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 				continue;
 
 			// Found!
-			u32 size = SFileGetFileSize( fh, NULL_PTR );
+			u32 size = SFileGetFileSize( fh, nullptr );
 
 			// HACK: in patch.mpq some files don't want to open and give 1 for filesize
 			if (size<=1) {
 				SFileCloseFile(fh);
-				return NULL_PTR;
+				return nullptr;
 			}
 
 			//found
@@ -499,7 +499,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 			else
 				buffer = new unsigned char[size];
 
-			bool ret = SFileReadFile(fh, buffer, (DWORD)size, NULL_PTR, NULL_PTR);
+			bool ret = SFileReadFile(fh, buffer, (DWORD)size, nullptr, nullptr);
 			ASSERT(ret);
 			SFileCloseFile(fh);
 
@@ -538,12 +538,12 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 			}
 			
 			// Found!
-			u32 size = SFileGetFileSize( fh, NULL_PTR );
+			u32 size = SFileGetFileSize( fh, nullptr );
 
 			// HACK: in patch.mpq some files don't want to open and give 1 for filesize
 			if (size<=1 || size == 0xffffffff) {
 				SFileCloseFile(fh);
-				return NULL_PTR;
+				return nullptr;
 			}
 
 			//found
@@ -552,7 +552,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 			else
 				buffer = new unsigned char[size];
 
-			bool ret = SFileReadFile(fh, buffer, (DWORD)size, NULL_PTR, NULL_PTR);
+			bool ret = SFileReadFile(fh, buffer, (DWORD)size, nullptr, nullptr);
 			ASSERT(ret);
 			SFileCloseFile(fh);
 
@@ -581,7 +581,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 			if (size <= 1 || size == 0xffffffff)
 			{
 				delete rfile;
-				return NULL_PTR;
+				return nullptr;
 			}
 
 			if (tempfile)
@@ -601,7 +601,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 		if (!CascOpenFile(hStorage, realfilename, CascLocale, 0, &hFile))
 		{
 			if (CascLocale == 0 || !CascOpenFile(hStorage, realfilename, 0, 0, &hFile))
-				return NULL_PTR;
+				return nullptr;
 		}
 
 		// Found!
@@ -611,7 +611,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 		// HACK: in patch.mpq some files don't want to open and give 1 for filesize
 		if (size<=1 || size == 0xffffffff) {
 			CascCloseFile(hFile);
-			return NULL_PTR;
+			return nullptr;
 		}
 
 		//found
@@ -620,7 +620,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 		else
 			buffer = new unsigned char[size];
 
-		bool ret = CascReadFile(hFile, buffer, (DWORD)size, NULL_PTR);
+		bool ret = CascReadFile(hFile, buffer, (DWORD)size, nullptr);
 		if (!ret)
 		{
 			if (tempfile)
@@ -629,7 +629,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 				delete[] buffer;
 
 			CascCloseFile(hFile);
-			return NULL_PTR;
+			return nullptr;
 		}
 
 		CascCloseFile(hFile);
@@ -656,7 +656,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 		if (!FileSystem->isFileExists(path.c_str()))
 		{
 			if (!UseLocale)
-				return NULL_PTR;
+				return nullptr;
 
 			path = LocalePath;
 			path.append(MPQFILES);
@@ -664,7 +664,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 			path.normalize();
 			if (!FileSystem->isFileExists(path.c_str()))
 			{
-				return NULL_PTR;			//not found
+				return nullptr;			//not found
 			}
 		}
 
@@ -674,7 +674,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 		if (size <= 1)
 		{
 			delete rfile;
-			return NULL_PTR;
+			return nullptr;
 		}
 
 		if (tempfile)
@@ -689,7 +689,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 		return new CMemFile(buffer, size, realfilename, tempfile);
 	}
 
-	return NULL_PTR;
+	return nullptr;
 }
 
 bool wowEnvironment::exists( const c8* filename )
@@ -789,12 +789,12 @@ void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void*
 			if( !SFileOpenFileEx( mpq_a, "(listfile)", SFILE_OPEN_ANY_LOCALE, &fh ) )
 				continue;
 
-			size_t size = SFileGetFileSize( fh, NULL_PTR );
+			size_t size = SFileGetFileSize( fh, nullptr );
 
 			if (size > 0)
 			{
 				u8* buffer = (u8*)Z_AllocateTempMemory(size);
-				SFileReadFile(fh, buffer, (DWORD)size, NULL_PTR, NULL_PTR);
+				SFileReadFile(fh, buffer, (DWORD)size, nullptr, nullptr);
 				u8* p = buffer;
 				u8* end = buffer + size;
 
@@ -835,12 +835,12 @@ void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void*
 			if( !SFileOpenFileEx( mpq_a, "(listfile)", SFILE_OPEN_ANY_LOCALE, &fh ) )
 				continue;
 
-			size_t size = SFileGetFileSize( fh, NULL_PTR );
+			size_t size = SFileGetFileSize( fh, nullptr );
 
 			if (size > 0)
 			{
 				u8* buffer = (u8*)Z_AllocateTempMemory(size);
-				SFileReadFile(fh, buffer, (DWORD)size, NULL_PTR, NULL_PTR);
+				SFileReadFile(fh, buffer, (DWORD)size, nullptr, nullptr);
 				u8* p = buffer;
 				u8* end = buffer + size;
 

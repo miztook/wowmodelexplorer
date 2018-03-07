@@ -7,7 +7,7 @@
 class IMeshDecalServices
 {
 public:
-	IMeshDecalServices() { Vertices=NULL_PTR; BufferParam.clear(); BufferParam.vType = EVT_PCT; }
+	IMeshDecalServices() { Vertices=nullptr; BufferParam.clear(); BufferParam.vType = EVT_PCT; }
 	virtual ~IMeshDecalServices() {}
 
 public:

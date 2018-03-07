@@ -7,7 +7,6 @@
 #include "CSysThread.h"
 #include "CMiniDump.h"
 #include "CFPSCounter.h"
-#include "CLock.h"
 #include "ddslib.h"
 #include "pvrlib.h"
 #include "CTimer.h"

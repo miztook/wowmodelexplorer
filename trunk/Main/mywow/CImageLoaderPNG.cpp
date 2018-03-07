@@ -29,24 +29,24 @@ void PNGAPI user_read_data_fcn(png_structp png_ptr, png_bytep data, png_size_t l
 
 IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 {
-	u8** RowPointers = NULL_PTR;
+	u8** RowPointers = nullptr;
 
 	png_byte buffer[8];
 	if(file->read(buffer, 8) != 8)
 	{
 		CSysUtility::outputDebug("LOAD PNG: can't read file", file->getFileName());
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	if( png_sig_cmp(buffer, 0, 8) )
 	{
 		CSysUtility::outputDebug("LOAD PNG: not really a png", file->getFileName());
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	// Allocate the png read struct
 	png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,
-		NULL_PTR, (png_error_ptr)png_cpexcept_error, (png_error_ptr)png_cpexcept_warn);
+		nullptr, (png_error_ptr)png_cpexcept_error, (png_error_ptr)png_cpexcept_warn);
 	if (!png_ptr)
 	{
 		CSysUtility::outputDebug("LOAD PNG: Internal PNG create read struct failure", file->getFileName());
@@ -58,14 +58,14 @@ IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 	if (!info_ptr)
 	{
 		CSysUtility::outputDebug("LOAD PNG: Internal PNG create info struct failure", file->getFileName());
-		png_destroy_read_struct(&png_ptr, NULL_PTR, NULL_PTR);
+		png_destroy_read_struct(&png_ptr, nullptr, nullptr);
 		return 0;
 	}
 
 	// for proper error handling
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
-		png_destroy_read_struct(&png_ptr, &info_ptr, NULL_PTR);
+		png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
 		if (RowPointers)
 			delete [] RowPointers;
 		return 0;
@@ -88,7 +88,7 @@ IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 		// Extract info
 		png_get_IHDR(png_ptr, info_ptr,
 			&w, &h,
-			&BitDepth, &ColorType, NULL_PTR, NULL_PTR, NULL_PTR);
+			&BitDepth, &ColorType, nullptr, nullptr, nullptr);
 		Width=w;
 		Height=h;
 	}
@@ -140,7 +140,7 @@ IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 		// Extract info
 		png_get_IHDR(png_ptr, info_ptr,
 			&w, &h,
-			&BitDepth, &ColorType, NULL_PTR, NULL_PTR, NULL_PTR);
+			&BitDepth, &ColorType, nullptr, nullptr, nullptr);
 		Width=w;
 		Height=h;
 	}
@@ -152,7 +152,7 @@ IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 	}
 
 	u32 dataSize = 0;
-	u8* pImageData = NULL_PTR;
+	u8* pImageData = nullptr;
 	IImage* image = new CImage(ECF_A8R8G8B8, dimension2du(Width, Height));
 	u32 pitch = 0;
 
@@ -183,10 +183,10 @@ IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 	// for proper error handling
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
-		png_destroy_read_struct(&png_ptr, &info_ptr, NULL_PTR);
+		png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
 		delete [] RowPointers;
 		image->drop();
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	// Read data using the library function that handles all transformations including interlacing
@@ -228,7 +228,7 @@ IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 		}
 	}
 
-	png_read_end(png_ptr, NULL_PTR);
+	png_read_end(png_ptr, nullptr);
 	delete [] RowPointers;
 	png_destroy_read_struct(&png_ptr,&info_ptr, 0); // Clean up memory
 

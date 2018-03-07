@@ -4,7 +4,7 @@
 
 struct SWindowInfo
 {
-	SWindowInfo() : hwnd(NULL_PTR), width(0), height(0), scale(1.0f) {}
+	SWindowInfo() : hwnd(nullptr), width(0), height(0), scale(1.0f) {}
 
 	window_type hwnd;
 	u32 width;

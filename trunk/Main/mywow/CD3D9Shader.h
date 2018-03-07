@@ -31,7 +31,7 @@ private:
 	~CD3D9VertexShader();
 
 public:
-	bool isValid() const { return VertexShader != NULL_PTR; }
+	bool isValid() const { return VertexShader != nullptr; }
 	void onShaderUsed() {}
 
 	 u32 getConstantCount() const { return (u32)ConstList.size(); }
@@ -64,7 +64,7 @@ private:
 	~CD3D9PixelShader();
 
 public:
-	bool isValid() const { return PixelShader != NULL_PTR; }
+	bool isValid() const { return PixelShader != nullptr; }
 	void onShaderUsed() {}
 
 	 u32 getConstantCount() const { return (u32)ConstList.size(); }

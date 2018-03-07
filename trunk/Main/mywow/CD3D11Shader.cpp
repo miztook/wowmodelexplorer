@@ -37,13 +37,13 @@ const SDx11ConstDesc* CD3D11VertexShader::getConstantDesc( const c8* name ) cons
 			return &(*itr);
 	}
 
-	return NULL_PTR;
+	return nullptr;
 }
 
 SDx11ConstDesc* CD3D11VertexShader::getConstantDesc( u32 index )
 {
 	if (index >= getConstantCount())
-		return NULL_PTR;
+		return nullptr;
 
 	if (index < CBufferList.size())
 	{
@@ -74,7 +74,7 @@ const STextureDesc11* CD3D11VertexShader::getTextureDesc( const c8* name ) const
 		if (strcmp(name, itr->name) == 0)
 			return &(*itr);
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 void CD3D11VertexShader::setShaderConstant( const c8* name, const void* srcData, u32 size )
@@ -94,7 +94,7 @@ const SSamplerDesc11* CD3D11VertexShader::getSamplerDesc( const c8* name ) const
 		if (strcmp(name, itr->name) == 0)
 			return &(*itr);
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 void CD3D11VertexShader::setShaderConstant( const SDx11ConstDesc* desc, const void* srcData, u32 size )
@@ -103,7 +103,7 @@ void CD3D11VertexShader::setShaderConstant( const SDx11ConstDesc* desc, const vo
 	
 	D3D11_MAPPED_SUBRESOURCE mapOut;
 
-	void* pDest = NULL_PTR;
+	void* pDest = nullptr;
 	//ImmediateContext
 
 	HRESULT hr = Driver->ImmediateContext->Map(desc->constBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapOut);
@@ -182,13 +182,13 @@ const SDx11ConstDesc* CD3D11PixelShader::getConstantDesc( const c8* name ) const
 			return &(*itr);
 	}
 
-	return NULL_PTR;
+	return nullptr;
 }
 
 SDx11ConstDesc* CD3D11PixelShader::getConstantDesc( u32 index )
 {
 	if (index >= getConstantCount())
-		return NULL_PTR;
+		return nullptr;
 
 	if (index < CBufferList.size())
 	{
@@ -219,7 +219,7 @@ const STextureDesc11* CD3D11PixelShader::getTextureDesc( const c8* name ) const
 		if (strcmp(name, itr->name) == 0)
 			return &(*itr);
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 const SSamplerDesc11* CD3D11PixelShader::getSamplerDesc( const c8* name ) const
@@ -229,7 +229,7 @@ const SSamplerDesc11* CD3D11PixelShader::getSamplerDesc( const c8* name ) const
 		if (strcmp(name, itr->name) == 0)
 			return &(*itr);
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 void CD3D11PixelShader::setShaderConstant( const SDx11ConstDesc* desc, const void* srcData, u32 size )
@@ -239,7 +239,7 @@ void CD3D11PixelShader::setShaderConstant( const SDx11ConstDesc* desc, const voi
 
 	D3D11_MAPPED_SUBRESOURCE mapOut;
 
-	void* pDest = NULL_PTR;
+	void* pDest = nullptr;
 
 	//ImmediateContext
 	HRESULT hr = Driver->ImmediateContext->Map(desc->constBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapOut);

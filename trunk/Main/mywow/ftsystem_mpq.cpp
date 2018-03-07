@@ -56,7 +56,7 @@ FT_CALLBACK_DEF( void )
 		delete pointer->mpqfile;
 	}
 	delete pointer;
-	stream->descriptor.pointer = NULL_PTR;
+	stream->descriptor.pointer = nullptr;
 	stream->size               = 0;
 	stream->base               = 0;
 }
@@ -71,15 +71,15 @@ FT_CALLBACK_DEF( FT_Error )
 		return FT_Err_Invalid_Stream_Handle;
 
 	SPointer* pointer = new SPointer;
-	pointer->file = NULL_PTR;
-	pointer->mpqfile = NULL_PTR;
+	pointer->file = nullptr;
+	pointer->mpqfile = nullptr;
 
-	stream->descriptor.pointer = NULL_PTR;
+	stream->descriptor.pointer = nullptr;
 	stream->pathname.pointer   = (char*)filepathname;
 	stream->base               = 0;
 	stream->pos                = 0;
-	stream->read               = NULL_PTR;
-	stream->close              = NULL_PTR;
+	stream->read               = nullptr;
+	stream->close              = nullptr;
 
 	const c8* basedir = g_Engine->getFileSystem()->getBaseDirectory();
 	c8 path[QMAX_PATH];

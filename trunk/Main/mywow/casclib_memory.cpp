@@ -11,7 +11,7 @@
 
 void* Malloc(size_t nSize)
 {
-	void* p = NULL_PTR;
+	void* p = nullptr;
 	if (nSize <= 4)
 	{
 		BEGIN_LOCK(&g_Globals.allocatorCS);
@@ -51,7 +51,7 @@ void* ReAlloc(void* ptr, size_t nSize)
 {
 	bool ret = false;
 
-	void* p = NULL_PTR;
+	void* p = nullptr;
 	if (nSize <= 4)
 	{
 		BEGIN_LOCK(&g_Globals.allocatorCS);

@@ -11,11 +11,11 @@ volatile bool CX2AudioPlayer::g_StopThread  = false;
 
 CX2AudioPlayer::CX2AudioPlayer()
 {
-	HLib = NULL_PTR;
-	XAudio2 = NULL_PTR;
-	MasterVoice = NULL_PTR;
+	HLib = nullptr;
+	XAudio2 = nullptr;
+	MasterVoice = nullptr;
 
-	 CoInitializeEx( NULL_PTR, COINIT_MULTITHREADED );
+	 CoInitializeEx( nullptr, COINIT_MULTITHREADED );
 
 	::memset(WavSounds, 0, sizeof(CX2Sound*)*NUM_WAV_SOUNDS);
 	::memset(OggSounds, 0, sizeof(CX2Sound*)*NUM_OGG_SOUNDS);
@@ -42,7 +42,7 @@ CX2AudioPlayer::~CX2AudioPlayer()
 	if (MasterVoice)
 	{
 		MasterVoice->DestroyVoice();
-		MasterVoice = NULL_PTR;
+		MasterVoice = nullptr;
 	}
 
 	SAFE_RELEASE( XAudio2 );
@@ -87,7 +87,7 @@ int CX2AudioPlayer::NotificationProc( void* lpParameter )
 
 bool CX2AudioPlayer::initDevice(u32 primaryChannels, u32 primarySampleRate)
 {
-	HLib = NULL_PTR;
+	HLib = nullptr;
 	c8 libName[DEFAULT_SIZE];
 	for ( s32 version = 7; version >= 0; --version )
 	{
@@ -115,12 +115,12 @@ bool CX2AudioPlayer::initDevice(u32 primaryChannels, u32 primarySampleRate)
 	bool ret = true;
 	HRESULT hr;
 	if ( FAILED(hr = XAudio2->CreateMasteringVoice( &MasterVoice, primaryChannels,
-		primarySampleRate, 0, 0, NULL_PTR ) ) )
+		primarySampleRate, 0, 0, nullptr ) ) )
 	{
 		if ( FAILED(hr = XAudio2->CreateMasteringVoice( &MasterVoice, XAUDIO2_DEFAULT_CHANNELS,
-			XAUDIO2_DEFAULT_SAMPLERATE, 0, 0, NULL_PTR ) ) )
+			XAUDIO2_DEFAULT_SAMPLERATE, 0, 0, nullptr ) ) )
 		{
-			MasterVoice = NULL_PTR;
+			MasterVoice = nullptr;
 			ASSERT(false);
 			
 			ret = false;
@@ -151,60 +151,60 @@ bool CX2AudioPlayer::initDevice(u32 primaryChannels, u32 primarySampleRate)
 ISound* CX2AudioPlayer::getEmptyWavSound() const
 {
 	if (!AudioAvailable)
-		return NULL_PTR;
+		return nullptr;
 
 	for (u32 i=0; i<NUM_WAV_SOUNDS; ++i)
 	{
 		if (!WavSounds[i]->isPlaying())
 			return WavSounds[i];
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 ISound* CX2AudioPlayer::getEmptyOggSound() const
 {
 	if (!AudioAvailable)
-		return NULL_PTR;
+		return nullptr;
 
 	for (u32 i=0; i<NUM_OGG_SOUNDS; ++i)
 	{
 		if (!OggSounds[i]->isPlaying())
 			return OggSounds[i];
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 ISound* CX2AudioPlayer::getEmptyMp3Sound() const
 {
 	if (!AudioAvailable)
-		return NULL_PTR;
+		return nullptr;
 
 	for (u32 i=0; i<NUM_MP3_SOUNDS; ++i)
 	{
 		if (!Mp3Sounds[i]->isPlaying())
 			return Mp3Sounds[i];
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 ISound* CX2AudioPlayer::getWavSound( u32 index ) const
 {
 	if (index >= NUM_WAV_SOUNDS)
-		return NULL_PTR;
+		return nullptr;
 	return WavSounds[index];
 }
 
 ISound* CX2AudioPlayer::getOggSound( u32 index ) const
 {
 	if (index >= NUM_OGG_SOUNDS)
-		return NULL_PTR;
+		return nullptr;
 	return OggSounds[index];
 }
 
 ISound* CX2AudioPlayer::getMp3Sound( u32 index ) const
 {
 	if (index >= NUM_MP3_SOUNDS)
-		return NULL_PTR;
+		return nullptr;
 	return Mp3Sounds[index];
 }
 

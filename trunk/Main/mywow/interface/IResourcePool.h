@@ -10,7 +10,7 @@ private:
 	DISALLOW_COPY_AND_ASSIGN(IResourcePool);
 
 public:
-	IResourcePool() : Quota(0), FreeCount(0), Entries(NULL_PTR)	{ InitializeListHead(&FreeList); }
+	IResourcePool() : Quota(0), FreeCount(0), Entries(nullptr)	{ InitializeListHead(&FreeList); }
 	virtual ~IResourcePool() 
 	{ 
 		if (Entries)
@@ -59,7 +59,7 @@ template<typename T>
 T* IResourcePool<T>::get()
 {
 	if (IsListEmpty(&FreeList))
-		return NULL_PTR;
+		return nullptr;
 
 	LENTRY* p = RemoveHeadList(&FreeList);
 	SEntry* entry = reinterpret_cast<SEntry*>CONTAINING_RECORD(p, SEntry, Link);

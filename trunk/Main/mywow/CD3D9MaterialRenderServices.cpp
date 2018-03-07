@@ -473,7 +473,7 @@ void CD3D9MaterialRenderServices::resetRSCache()
 
 	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
-		RsCache.TextureUnits[i].texture = NULL_PTR;
+		RsCache.TextureUnits[i].texture = nullptr;
 
 #ifdef FIXPIPELINE		
 		pID3DDevice->GetTextureStageState(i, D3DTSS_TEXTURETRANSFORMFLAGS, &RsCache.TextureUnits[i].textureTransformFlags);
@@ -750,8 +750,8 @@ void CD3D9MaterialRenderServices::applyMaterialChanges()
 		{
 			if (!texunit.texture)
 			{
-				pID3DDevice->SetTexture(st, NULL_PTR);
-				RsCache.TextureUnits[st].texture = NULL_PTR;
+				pID3DDevice->SetTexture(st, nullptr);
+				RsCache.TextureUnits[st].texture = nullptr;
 				continue;
 			}
 

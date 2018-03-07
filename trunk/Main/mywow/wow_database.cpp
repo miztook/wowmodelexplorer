@@ -63,12 +63,12 @@ wowDatabase::wowDatabase( wowEnvironment* env )
 	WorldMapAreaDB = new worldMapAreaDB(env);
 	LightSkyboxDB = new lightSkyboxDB(env);
 #else
-	LightDB = NULL_PTR;
-	ItemVisualsDB = NULL_PTR;
-	ItemVisualEffectDB = NULL_PTR;
-	WmoAreaTableDB = NULL_PTR;
-	WorldMapAreaDB = NULL_PTR;
-	LightSkyboxDB = NULL_PTR;
+	LightDB = nullptr;
+	ItemVisualsDB = nullptr;
+	ItemVisualEffectDB = nullptr;
+	WmoAreaTableDB = nullptr;
+	WorldMapAreaDB = nullptr;
+	LightSkyboxDB = nullptr;
 #endif
 
 	ItemDB = new itemDB(env);
@@ -81,25 +81,25 @@ wowDatabase::wowDatabase( wowEnvironment* env )
 	TextureFileDataDB = new textureFileDataDB(env);
 	ModelFileDataDB = new modelFileDataDB(env);
 #elif defined(WOW60)
-	NpcModelItemSlotDisplayInfoDB = NULL_PTR;
-	ItemDisplayInfoMaterialResDB = NULL_PTR;
+	NpcModelItemSlotDisplayInfoDB = nullptr;
+	ItemDisplayInfoMaterialResDB = nullptr;
 	ItemModifiedAppearanceDB = new itemModifiedAppearanceDB(env);
 	ItemAppearanceDB = new itemAppearanceDB(env);
 	TextureFileDataDB = new textureFileDataDB(env);
-	ModelFileDataDB = NULL_PTR;
+	ModelFileDataDB = nullptr;
 #else
-	NpcModelItemSlotDisplayInfoDB = NULL_PTR;
-	ItemDisplayInfoMaterialResDB = NULL_PTR;
-	ItemModifiedAppearanceDB = NULL_PTR;
-	ItemAppearanceDB = NULL_PTR;
-	TextureFileDataDB = NULL_PTR;
-	ModelFileDataDB = NULL_PTR;
+	NpcModelItemSlotDisplayInfoDB = nullptr;
+	ItemDisplayInfoMaterialResDB = nullptr;
+	ItemModifiedAppearanceDB = nullptr;
+	ItemAppearanceDB = nullptr;
+	TextureFileDataDB = nullptr;
+	ModelFileDataDB = nullptr;
 #endif
 
 #ifdef WOW60
 	FileDataDB = new fileDataDB(env);
 #else
-	FileDataDB = NULL_PTR;
+	FileDataDB = nullptr;
 #endif
 
 	MapDB = new mapDB(env);
@@ -111,9 +111,9 @@ wowDatabase::wowDatabase( wowEnvironment* env )
 	SpellVisualDB = new spellVisualDB(env);
 	SpellDB = new spellDB(env);
 #else
-	SpellVisualKitDB = NULL_PTR; 
-	SpellVisualDB = NULL_PTR;
-	SpellDB = NULL_PTR; 
+	SpellVisualKitDB = nullptr; 
+	SpellVisualDB = nullptr;
+	SpellDB = nullptr; 
 #endif
 }
 
@@ -612,7 +612,7 @@ bool wowDatabase::getEffectVisualPath( s32 visualId, c8* path, u32 size )
 const SMapRecord* wowDatabase::getMap( u32 idx ) const
 {
 	if (idx >= mapCollections.maps.size())
-		return NULL_PTR;
+		return nullptr;
 	return &mapCollections.maps[idx];
 }
 
@@ -621,14 +621,14 @@ const SMapRecord* wowDatabase::getMap( u32 idx ) const
 const SItemRecord* wowDatabase::getItem( u32 idx ) const
 {
 	if(itemCollections.items.size() <= idx)
-		return NULL_PTR;
+		return nullptr;
 	return &itemCollections.items[idx]; 
 }
 
 const SNPCRecord* wowDatabase::getNPC( u32 idx ) const
 {
 	if(npcCollections.npcs.size() <= idx)
-		return NULL_PTR;
+		return nullptr;
 	return &npcCollections.npcs[idx]; 
 }
 
@@ -645,28 +645,28 @@ const SStartOutfitEntry* wowDatabase::getStartOutfit( u32 race, bool female, u32
 const c8* wowDatabase::getWmoFileName( u32 index ) const
 {
 	if (index >= wmoCollections.wmos.size())
-		return NULL_PTR;
+		return nullptr;
 	return wmoCollections.wmos[index].c_str();
 }
 
 const c8* wowDatabase::getWorldModelFileName(u32 index) const
 {
 	if (index >= worldModelCollections.models.size())
-		return NULL_PTR;
+		return nullptr;
 	return worldModelCollections.models[index].c_str();
 }
 
 const c8* wowDatabase::getTextureFileName( u32 index ) const
 {
 	if (index >= textureCollections.textures.size())
-		return NULL_PTR;
+		return nullptr;
 	return textureCollections.textures[index].c_str();
 }
 
 const SRidable* wowDatabase::getRidable( u32 idx ) const
 {
 	if (idx >= ridableCollections.ridables.size())
-		return NULL_PTR;
+		return nullptr;
 	return &ridableCollections.ridables[idx];
 }
 

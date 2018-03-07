@@ -15,7 +15,7 @@ public:
 	~CD3D9RenderTarget();
 
 public:
-	virtual bool isValid() const { return RTTSurface != NULL_PTR && DepthSurface != NULL_PTR; }
+	virtual bool isValid() const { return RTTSurface != nullptr && DepthSurface != nullptr; }
 	virtual ITexture* getRTTexture() const;
 	virtual bool writeToRTTexture(); 
 

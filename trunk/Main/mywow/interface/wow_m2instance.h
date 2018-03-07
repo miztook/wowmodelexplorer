@@ -239,7 +239,7 @@ private:
 	static int getClothesSlotLayer( int slot )	;
 
 	void calcAttachmentBone(u8 i, u32 anim, u32 time, f32 blend);
-	void calcBone(u8 i, u32 anim, u32 time, f32 blend, bool enableScale, aabbox3df* animatedBox=NULL_PTR);				//i: indexinGlobal
+	void calcBone(u8 i, u32 anim, u32 time, f32 blend, bool enableScale, aabbox3df* animatedBox=nullptr);				//i: indexinGlobal
 
 	bool isBlinkGeoset(u32 index) const;
 	void getEquipScale(f32& head, f32& shoulder, f32& weapon, f32& waist) const;

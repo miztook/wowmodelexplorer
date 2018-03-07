@@ -63,7 +63,7 @@ IFTFont* CFontServices::createFont( SFontKey type )
 	if (itr != FontMap.end())
 	{
 		ASSERT(false);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	CFTFont* pFont = new CFTFont(A_FACE_NAME, 
@@ -76,7 +76,7 @@ IFTFont* CFontServices::createFont( SFontKey type )
 	{
 		delete pFont;
 		CSysUtility::outputDebug("CFontServices::createFont failed! font face: %s", A_FACE_NAME);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	FontMap[type] = pFont;
@@ -106,7 +106,7 @@ bool CFontServices::init(int nMaxFontFamilyCountInCache, int nMaxFontStyleInCach
 		return false;
 	}
 
-	error = FTC_Manager_New(FTLibrary, nMaxFontFamilyCountInCache, nMaxFontStyleInCache, nMaxCacheSizeBytes, MyFTCFaceRequest, NULL_PTR, &FTCManager);
+	error = FTC_Manager_New(FTLibrary, nMaxFontFamilyCountInCache, nMaxFontStyleInCache, nMaxCacheSizeBytes, MyFTCFaceRequest, nullptr, &FTCManager);
 	if (error)
 	{
 		ASSERT(false);
@@ -157,7 +157,7 @@ bool CFontServices::createDefaultFonts()
 	IFTFont* pFont = createFont(SFontKey(DefaultFontSize, STYLE_NORMAL, 0));
 	if (pFont)
 		pFont->setFixedSize(true);
-	return pFont != NULL_PTR;
+	return pFont != nullptr;
 }
 
 void CFontServices::onWindowSizeChanged( const dimension2du& size )
@@ -207,7 +207,7 @@ My_FaceID CFontServices::LookupFaceID( const char* strFontPath, int nFaceIndex, 
 
 void CFontServices::RemoveFaceID( My_FaceID faceId )
 {
-	if (faceId == NULL_PTR)
+	if (faceId == nullptr)
 		return;
 
 	FaceID_Key key;

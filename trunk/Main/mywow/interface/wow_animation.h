@@ -89,9 +89,9 @@ class SWowAnimation
 {
 public:
 	SWowAnimation() 
-		: Animations(NULL_PTR), NumAnimations(0),
+		: Animations(nullptr), NumAnimations(0),
 		Type(INTERPOLATION_NONE), Seq(-1), 
-		GlobalSeq(NULL_PTR), NumGlobalSeq(0) { }
+		GlobalSeq(nullptr), NumGlobalSeq(0) { }
 
 	 void init(const M2::animblock* block, const u8* fileData, s32* globalSeq, u32 numGlobalSeq);
 	 void init(const M2::animblock* block, const u8* m2FileData, SAnimFile* animFiles, s32* globalSeq, u32 numGlobalSeq);
@@ -111,7 +111,7 @@ public:
 private:
 	struct	SAnimationEntry				//µ¥¸öanimation
 	{
-		SAnimationEntry() : numKeys(0), times(NULL_PTR), values(NULL_PTR), values1(NULL_PTR), values2(NULL_PTR) { }
+		SAnimationEntry() : numKeys(0), times(nullptr), values(nullptr), values1(nullptr), values2(nullptr) { }
 		~SAnimationEntry() 
 		{
 			delete times;

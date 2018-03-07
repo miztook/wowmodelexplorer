@@ -16,23 +16,23 @@
 
 CD3D11Driver::CD3D11Driver()
 {
-	HLibDXGI = NULL_PTR;
-	HLibD3D = NULL_PTR;
-	pID3DDevice11 = NULL_PTR;
-	ImmediateContext = NULL_PTR;
+	HLibDXGI = nullptr;
+	HLibD3D = nullptr;
+	pID3DDevice11 = nullptr;
+	ImmediateContext = nullptr;
 
 	HWnd = 0;
 	DevType = D3D_DRIVER_TYPE_HARDWARE;
 	
 	AdapterCount = 0;
-	SwapChain = NULL_PTR;
-	Adapter = NULL_PTR;
-	DXGIOutput = NULL_PTR;
-	DXGIFactory = NULL_PTR;
+	SwapChain = nullptr;
+	Adapter = nullptr;
+	DXGIOutput = nullptr;
+	DXGIFactory = nullptr;
 
-	DefaultBackBuffer = NULL_PTR;
-	DefaultDepthTexture = NULL_PTR;
-	DefaultDepthBuffer = NULL_PTR;
+	DefaultBackBuffer = nullptr;
+	DefaultDepthTexture = nullptr;
+	DefaultDepthBuffer = nullptr;
 	BackBufferFormat = DXGI_FORMAT_UNKNOWN;
 	DepthStencilFormat = DXGI_FORMAT_UNKNOWN;
 	DepthTextureFormat = DXGI_FORMAT_UNKNOWN;
@@ -44,16 +44,16 @@ CD3D11Driver::CD3D11Driver()
 	CurrentDeviceState.reset();
 	CurrentRenderMode = ERM_NONE;
 	ResetRenderStates = true;
-	CurrentRenderTarget = NULL_PTR;
+	CurrentRenderTarget = nullptr;
 
-	MaterialRenderer = NULL_PTR;
-	ShaderServices = NULL_PTR;
-	MaterialRenderServices = NULL_PTR;
-	SceneStateServices = NULL_PTR;
+	MaterialRenderer = nullptr;
+	ShaderServices = nullptr;
+	MaterialRenderServices = nullptr;
+	SceneStateServices = nullptr;
 
-	D3D11ShaderServices = NULL_PTR;
-	D3D11MaterialRenderServices = NULL_PTR;
-	D3D11SceneStateServices = NULL_PTR;
+	D3D11ShaderServices = nullptr;
+	D3D11MaterialRenderServices = nullptr;
+	D3D11SceneStateServices = nullptr;
 
 	//2D
 	InitMaterial2D.MaterialType = EMT_2D;
@@ -88,7 +88,7 @@ CD3D11Driver::CD3D11Driver()
 CD3D11Driver::~CD3D11Driver()
 {
 	if (SwapChain)
-		SwapChain->SetFullscreenState(FALSE, NULL_PTR);
+		SwapChain->SetFullscreenState(FALSE, nullptr);
 	if (ImmediateContext)
 	{
 		ImmediateContext->ClearState();
@@ -170,7 +170,7 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 	if(!multithread)
 		flags |= D3D11_CREATE_DEVICE_SINGLETHREADED;
 
-	hr = createDeviceFunc( NULL_PTR, DevType, NULL_PTR, flags, RequestedLevels, RequestedLevelsSize, D3D11_SDK_VERSION, &pID3DDevice11, &FeatureLevel, &ImmediateContext );
+	hr = createDeviceFunc( nullptr, DevType, nullptr, flags, RequestedLevels, RequestedLevelsSize, D3D11_SDK_VERSION, &pID3DDevice11, &FeatureLevel, &ImmediateContext );
 	if (FAILED(hr)) 
 	{ 
 		ASSERT(false); 
@@ -202,7 +202,7 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 		break;
 	}
 
-	IDXGIDevice* DXGIDevice = NULL_PTR;
+	IDXGIDevice* DXGIDevice = nullptr;
 	pID3DDevice11->QueryInterface( __uuidof( IDXGIDevice ), reinterpret_cast<void**>( &DXGIDevice ) );
 
 	//adapter, factory, output
@@ -242,7 +242,7 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 
 	// set present params...
 	u32 numModes = 0;
-	hr = DXGIOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_SCALING, &numModes, NULL_PTR);
+	hr = DXGIOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_SCALING, &numModes, nullptr);
 	ASSERT(SUCCEEDED(hr));
 
 	DXGI_MODE_DESC* pDesc = new DXGI_MODE_DESC[numModes];
@@ -348,7 +348,7 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 	DXGIDevice->Release();
 
 	// Get default render target
-	ID3D11Texture2D* backBuffer = NULL_PTR;
+	ID3D11Texture2D* backBuffer = nullptr;
 	hr = SwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), reinterpret_cast<void**>( &backBuffer ) );
 	if( FAILED(hr))
 	{
@@ -358,7 +358,7 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 	D3D11_TEXTURE2D_DESC texDesc;
 	backBuffer->GetDesc(&texDesc);
 	BackBufferFormat = texDesc.Format;
-	hr = pID3DDevice11->CreateRenderTargetView( backBuffer, NULL_PTR, &DefaultBackBuffer );
+	hr = pID3DDevice11->CreateRenderTargetView( backBuffer, nullptr, &DefaultBackBuffer );
 	if( FAILED(hr))
 	{
 		ASSERT(false);
@@ -427,8 +427,8 @@ void CD3D11Driver::recreateDepthStencilView( dimension2du size, ECOLOR_FORMAT de
 	}
 
 	// create depth buffer
-	ID3D11DepthStencilView* dsView = NULL_PTR;
-	ID3D11Texture2D* depthTexture = NULL_PTR;
+	ID3D11DepthStencilView* dsView = nullptr;
+	ID3D11Texture2D* depthTexture = nullptr;
 	D3D11_TEXTURE2D_DESC dsTexDesc;
 	::ZeroMemory( &dsTexDesc, sizeof( dsTexDesc ) );
 	dsTexDesc.ArraySize = 1;
@@ -440,11 +440,11 @@ void CD3D11Driver::recreateDepthStencilView( dimension2du size, ECOLOR_FORMAT de
 	dsTexDesc.SampleDesc.Quality = quality;
 	dsTexDesc.Width = (UINT)size.Width;
 	dsTexDesc.Height = (UINT)size.Height;
-	hr = pID3DDevice11->CreateTexture2D( &dsTexDesc, NULL_PTR, &depthTexture );
+	hr = pID3DDevice11->CreateTexture2D( &dsTexDesc, nullptr, &depthTexture );
 	if(FAILED(hr))
 	{
 		ASSERT(false);
-		DefaultDepthBuffer = NULL_PTR;
+		DefaultDepthBuffer = nullptr;
 		return;
 	}
 
@@ -461,7 +461,7 @@ void CD3D11Driver::recreateDepthStencilView( dimension2du size, ECOLOR_FORMAT de
 	{
 		ASSERT(false);
 		SAFE_RELEASE_STRICT(DefaultDepthTexture);
-		DefaultDepthBuffer = NULL_PTR;
+		DefaultDepthBuffer = nullptr;
 		return;
 	}
 
@@ -494,7 +494,7 @@ bool CD3D11Driver::beginScene()
 
 	//ImmediateContext
 	{
-		ID3D11ShaderResourceView* views[1] = { NULL_PTR };
+		ID3D11ShaderResourceView* views[1] = { nullptr };
 
 		ImmediateContext->VSSetShaderResources( 0, 1, views );
 		ImmediateContext->GSSetShaderResources( 0, 1, views );
@@ -622,8 +622,8 @@ bool CD3D11Driver::reset(bool recreateSwapChain)
 		(*itr)->onLost();
 
 	//ImmediateContext
-	ID3D11RenderTargetView* views[1] = { NULL_PTR };	
-	ImmediateContext->OMSetRenderTargets(1, views, NULL_PTR);
+	ID3D11RenderTargetView* views[1] = { nullptr };	
+	ImmediateContext->OMSetRenderTargets(1, views, nullptr);
 
 	SAFE_RELEASE_STRICT(DefaultDepthBuffer);
 	SAFE_RELEASE_STRICT(DefaultDepthTexture);
@@ -658,7 +658,7 @@ bool CD3D11Driver::reset(bool recreateSwapChain)
 	}
 
 	// Get default render target
-	ID3D11Texture2D* backBuffer = NULL_PTR;
+	ID3D11Texture2D* backBuffer = nullptr;
 	hr = SwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), reinterpret_cast<void**>( &backBuffer ) );
 	if( FAILED(hr))
 	{
@@ -668,7 +668,7 @@ bool CD3D11Driver::reset(bool recreateSwapChain)
 	D3D11_TEXTURE2D_DESC texDesc;
 	backBuffer->GetDesc(&texDesc);
 	BackBufferFormat = texDesc.Format;
-	hr = pID3DDevice11->CreateRenderTargetView( backBuffer, NULL_PTR, &DefaultBackBuffer );
+	hr = pID3DDevice11->CreateRenderTargetView( backBuffer, nullptr, &DefaultBackBuffer );
 	SAFE_RELEASE_STRICT(backBuffer);
 	if( FAILED(hr))
 	{
@@ -804,7 +804,7 @@ bool CD3D11Driver::setRenderTarget( IRenderTarget* texture )
 {
 	CD3D11RenderTarget* tex = static_cast<CD3D11RenderTarget*>(texture);
 
-	if ( tex == NULL_PTR )
+	if ( tex == nullptr )
 	{
 		ImmediateContext->OMSetRenderTargets( 1, &DefaultBackBuffer, DefaultDepthBuffer );
 	}
@@ -812,14 +812,14 @@ bool CD3D11Driver::setRenderTarget( IRenderTarget* texture )
 	{
 		//ImmediateContext
 		{
-			ID3D11ShaderResourceView* views[1] = { NULL_PTR };
+			ID3D11ShaderResourceView* views[1] = { nullptr };
 
 			ImmediateContext->VSSetShaderResources( 0, 1, views );
 			ImmediateContext->GSSetShaderResources( 0, 1, views );
 			ImmediateContext->PSSetShaderResources( 0, 1, views );
 		}
 
-		ID3D11RenderTargetView*  rtViews[1] = { NULL_PTR };
+		ID3D11RenderTargetView*  rtViews[1] = { nullptr };
 		rtViews[0] = tex->getRenderTargetView();
 		ImmediateContext->OMSetRenderTargets( 1, rtViews, tex->getDepthStencilView() );
 	}

@@ -18,7 +18,7 @@ CReadFile::~CReadFile()
 
 u32 CReadFile::read(void* buffer, u32 sizeToRead)
 {
-	if (!isOpen() || buffer == NULL_PTR)
+	if (!isOpen() || buffer == nullptr)
 		return 0;
 
 	return (u32)fread(buffer, 1, sizeToRead, File);
@@ -26,7 +26,7 @@ u32 CReadFile::read(void* buffer, u32 sizeToRead)
 
 u32 CReadFile::readText(c8* buffer, u32 len /*= MAX_READ_NUM */)
 {
-	if (!isOpen() || buffer == NULL_PTR)
+	if (!isOpen() || buffer == nullptr)
 		return 0;
 
 	ASSERT(!IsBinary);
@@ -37,7 +37,7 @@ u32 CReadFile::readText(c8* buffer, u32 len /*= MAX_READ_NUM */)
 
 u32 CReadFile::readLine(c8* buffer, u32 len /*= MAX_READ_NUM*/)
 {
-	if (!isOpen() || buffer == NULL_PTR)
+	if (!isOpen() || buffer == nullptr)
 		return 0;
 
 	ASSERT(!IsBinary);
@@ -59,7 +59,7 @@ u32 CReadFile::readLine(c8* buffer, u32 len /*= MAX_READ_NUM*/)
 
 u32 CReadFile::readLineSkipSpace(c8* buffer, u32 len /*= MAX_READ_NUM*/)
 {
-	if (!isOpen() || buffer == NULL_PTR)
+	if (!isOpen() || buffer == nullptr)
 		return 0;
 
 	memset(buffer, 0, len);

@@ -11,7 +11,7 @@
 #include "CBlit.h"
 
 CD3D9Texture::CD3D9Texture( bool mipmap )
-	: DXTexture(NULL_PTR)
+	: DXTexture(nullptr)
 {
 	HasMipMaps = mipmap;
 }
@@ -134,14 +134,14 @@ bool CD3D9Texture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT form
 
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
 	IDirect3DDevice9* device = (IDirect3DDevice9*)driver->pID3DDevice;
-	IDirect3DTexture9* tex = NULL_PTR;
+	IDirect3DTexture9* tex = nullptr;
 	HRESULT hr = device->CreateTexture(TextureSize.Width, TextureSize.Height,
 		1,			//no mipmap
 		D3DUSAGE_RENDERTARGET,			//no lock
 		d3dfmt,
 		D3DPOOL_DEFAULT,
 		&tex,
-		NULL_PTR);
+		nullptr);
 
 	if (FAILED(hr))
 	{
@@ -185,14 +185,14 @@ bool CD3D9Texture::createDSTexture( const dimension2du& size )
 		d3dfmt = desc.Format;
 	}
 
-	IDirect3DTexture9* tex = NULL_PTR;
+	IDirect3DTexture9* tex = nullptr;
 	HRESULT hr = device->CreateTexture(TextureSize.Width, TextureSize.Height,
 		1,			//no mipmap
 		D3DUSAGE_DEPTHSTENCIL,			//no lock
 		d3dfmt,
 		D3DPOOL_DEFAULT,
 		&tex,
-		NULL_PTR);
+		nullptr);
 
 	if (FAILED(hr))
 	{
@@ -304,7 +304,7 @@ bool CD3D9Texture::createTexture( const dimension2du& size, ECOLOR_FORMAT format
 		0,		//
 		d3dfmt, 
 		g_Engine->getOSInfo()->IsAeroSupport() ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED,
-		&DXTexture, NULL_PTR);
+		&DXTexture, nullptr);
 
 	if (FAILED(hr))
 	{

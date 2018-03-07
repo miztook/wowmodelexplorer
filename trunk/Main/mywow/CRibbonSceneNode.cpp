@@ -147,7 +147,7 @@ void CRibbonSceneNode::render() const
 	unit.sceneNode = this;
 	unit.material = Material;
 	unit.textures[0] = Texture;
-	unit.matWorld = NULL_PTR;			//unit
+	unit.matWorld = nullptr;			//unit
 
 	sceneRenderServices->addRenderUnit(&unit, ERT_RIBBON);
 }

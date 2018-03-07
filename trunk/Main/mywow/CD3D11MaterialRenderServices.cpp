@@ -49,7 +49,7 @@ CD3D11MaterialRenderServices::~CD3D11MaterialRenderServices()
 
 ID3D11BlendState* CD3D11MaterialRenderServices::getBlendState()
 {
-	ID3D11BlendState* state = NULL_PTR;
+	ID3D11BlendState* state = nullptr;
 	const SD3D11_BLEND_DESC& blendDesc = CurrentRenderState.BlendDesc;
 
 	T_BlendStateMap::const_iterator itr = BlendStateMap.find(blendDesc);
@@ -70,7 +70,7 @@ ID3D11BlendState* CD3D11MaterialRenderServices::getBlendState()
 
 ID3D11RasterizerState* CD3D11MaterialRenderServices::getRasterizerState()
 {
-	ID3D11RasterizerState* state = NULL_PTR;
+	ID3D11RasterizerState* state = nullptr;
 	const SD3D11_RASTERIZER_DESC& rasterizerDesc = CurrentRenderState.RasterizerDesc;
 
 	T_RasterizerStateMap::const_iterator itr = RasterizerStateMap.find(rasterizerDesc);
@@ -91,7 +91,7 @@ ID3D11RasterizerState* CD3D11MaterialRenderServices::getRasterizerState()
 
 ID3D11DepthStencilState* CD3D11MaterialRenderServices::getDepthStencilState()
 {
-	ID3D11DepthStencilState* state = NULL_PTR;
+	ID3D11DepthStencilState* state = nullptr;
 	const SD3D11_DEPTH_STENCIL_DESC& depthStencilDesc = CurrentRenderState.DepthStencilDesc;
 
 	T_DepthStencilStateMap::const_iterator itr = DepthStencilStateMap.find(depthStencilDesc);
@@ -113,9 +113,9 @@ ID3D11DepthStencilState* CD3D11MaterialRenderServices::getDepthStencilState()
 ID3D11SamplerState* CD3D11MaterialRenderServices::getSamplerState( u32 index )
 {
 	if(index >= MATERIAL_MAX_TEXTURES)
-		return NULL_PTR;
+		return nullptr;
 
-	ID3D11SamplerState* state = NULL_PTR;
+	ID3D11SamplerState* state = nullptr;
 	const SD3D11_SAMPLER_DESC& samplerDesc = CurrentRenderState.TextureUnits[index].SamplerDesc;
 
 	T_SamplerStateMap::const_iterator itr = SamplerStateMap.find(samplerDesc);
@@ -428,13 +428,13 @@ E_TEXTURE_CLAMP CD3D11MaterialRenderServices::getTextureWrap( u32 st, E_TEXTURE_
 void CD3D11MaterialRenderServices::resetRSCache()
 {
 	//blend state
-	RsCache.BlendState = NULL_PTR;
+	RsCache.BlendState = nullptr;
 
 	//rasterizer state
-	RsCache.RasterizerState = NULL_PTR;
+	RsCache.RasterizerState = nullptr;
 
 	//depth stencil state
-	RsCache.DepthStencilState = NULL_PTR;
+	RsCache.DepthStencilState = nullptr;
 }
 
 void CD3D11MaterialRenderServices::clearStateMap()
@@ -479,7 +479,7 @@ void CD3D11MaterialRenderServices::applyMaterialChanges()
 	for (u32 i=0; i<textureCount; ++i)
 	{
 		const CD3D11Texture* tex = static_cast<const CD3D11Texture*>(CurrentRenderState.TextureUnits[i].texture);
-		views[i] = tex ? tex->getShaderResourceView() : NULL_PTR;
+		views[i] = tex ? tex->getShaderResourceView() : nullptr;
 		ASSERT(views[i]);
 	}
 

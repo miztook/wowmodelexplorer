@@ -25,7 +25,7 @@ CM2SceneNode::CM2SceneNode( IFileM2* mesh, ISceneNode* parent, bool npc )
 	M2Instance = new wow_m2instance(Mesh, npc);
 
 	if (!M2Instance->CharacterInfo)			//²»ÔÊÐí»»×°
-		M2Appearance = NULL_PTR;
+		M2Appearance = nullptr;
 	else
 		M2Appearance = new wow_m2appearance(this);
 
@@ -37,9 +37,9 @@ CM2SceneNode::CM2SceneNode( IFileM2* mesh, ISceneNode* parent, bool npc )
 	}
 	else
 	{
-		M2FSM = NULL_PTR;
-		M2Move = NULL_PTR;
-		M2Spell = NULL_PTR;
+		M2FSM = nullptr;
+		M2Move = nullptr;
+		M2Spell = nullptr;
 	}
 
 	for (u32 i=0; i<Mesh->NumParticleSystems; ++i)
@@ -298,7 +298,7 @@ void CM2SceneNode::render() const
 	//AbsoluteTransformation.transformBox(box);
 	//g_Engine->getDrawServices()->add3DBox(box, SColor(255,0,0));
 
-  	//g_Engine->getDrawServices()->draw2DImage(M2Instance->ReplaceTextures[TEXTURE_BODY], vector2di(300,0), NULL_PTR, SColor(), 1.0f, false);
+  	//g_Engine->getDrawServices()->draw2DImage(M2Instance->ReplaceTextures[TEXTURE_BODY], vector2di(300,0), nullptr, SColor(), 1.0f, false);
 }
 
 void CM2SceneNode::renderGeoset( u32 index ) const
@@ -387,7 +387,7 @@ void CM2SceneNode::renderGeoset( u32 index ) const
 		unit.drawParam.numVertices = set->VCount;
 
 		unit.sceneNode = this;
-		unit.matWorld = NULL_PTR;
+		unit.matWorld = nullptr;
 
 		//texture anim
 		unit.material.TextureLayer[0].UseTextureMatrix = dset->UseTextureAnim;
@@ -529,7 +529,7 @@ void CM2SceneNode::setM2ModelEquipment( s32 slot, s32 itemid, bool sheath )
 	SAttachmentInfo info1, info2;
 	M2Instance->setM2Equipment(slot, itemid, sheath, &entry1, &info1, &entry2, &info2);
 
-	IFileM2* m1 = NULL_PTR;
+	IFileM2* m1 = nullptr;
 	if (entry1.attachIndex != -1 && strcmp(info1.modelpath, "") != 0)
 	{
 		m1 = g_Engine->getResourceLoader()->loadM2(info1.modelpath);
@@ -565,7 +565,7 @@ void CM2SceneNode::setM2ModelEquipment( s32 slot, s32 itemid, bool sheath )
 		}
 	}
 
-	IFileM2* m2 = NULL_PTR;
+	IFileM2* m2 = nullptr;
 	if (entry2.attachIndex != -1 && strcmp(info2.modelpath, "") != 0)
 	{
 		m2 = g_Engine->getResourceLoader()->loadM2(info2.modelpath);
@@ -643,7 +643,7 @@ void CM2SceneNode::setSpellVisualKit(u32 spellvkId)
 		SAttachmentEntry* entry = &vkinfo.attachmentEntries[i];
 		SAttachmentInfo* info = &vkinfo.attachmentInfos[i];
 
-		IM2SceneNode* node = NULL_PTR;
+		IM2SceneNode* node = nullptr;
 
 		if (entry->attachIndex != -1)
 		{
@@ -652,7 +652,7 @@ void CM2SceneNode::setSpellVisualKit(u32 spellvkId)
 			IFileM2* m2 = g_Engine->getResourceLoader()->loadM2(info->modelpath);
 			if (m2)
 			{
-				node = g_Engine->getSceneManager()->addM2SceneNode(m2, NULL_PTR, false);
+				node = g_Engine->getSceneManager()->addM2SceneNode(m2, nullptr, false);
 				wow_m2instance* c = node->getM2Instance();
 				c->buildVisibleGeosets();
 				entry->node = node;
@@ -688,7 +688,7 @@ void CM2SceneNode::removeM2ModelEquipment( s32 slot )
 				
 				if (M2Appearance)
 				{
-					M2Appearance->HelmNode = NULL_PTR;
+					M2Appearance->HelmNode = nullptr;
 					M2Appearance->HideHelmHair = false;
 					M2Appearance->HideHelmFacial1 = false;
 					M2Appearance->HideHelmFacial2 = false;
@@ -743,7 +743,7 @@ void CM2SceneNode::removeSpellVisualKit(IM2SceneNode* node)
 			M2Instance->UseAttachments[entry->attachIndex] -= 1;
 
 			u32 idx = (u32)(entry->slot - CS_EFFECT_HEAD);
-			M2Spell->DynSpell.nodes[idx] = NULL_PTR;
+			M2Spell->DynSpell.nodes[idx] = nullptr;
 
 			IM2SceneNode* n = reinterpret_cast<IM2SceneNode*>(entry->node);
 			g_Engine->getSceneManager()->removeSceneNode(n, true);
@@ -766,7 +766,7 @@ void CM2SceneNode::removeAllSpellVisualKits()
 			M2Instance->UseAttachments[entry->attachIndex] -= 1;
 
 			u32 idx = (u32)(entry->slot - CS_EFFECT_HEAD);
-			M2Spell->DynSpell.nodes[idx] = NULL_PTR;
+			M2Spell->DynSpell.nodes[idx] = nullptr;
 
 			IM2SceneNode* n = reinterpret_cast<IM2SceneNode*>(entry->node);
 			g_Engine->getSceneManager()->removeSceneNode(n, true);
@@ -862,7 +862,7 @@ void CM2SceneNode::updateSpellEffectEntry( const SAttachmentEntry* entry )
 IParticleSystemSceneNode* CM2SceneNode::addParticleSystemSceneNode( ParticleSystem* ps )
 {
 	if (!ps)
-		return NULL_PTR;
+		return nullptr;
 
 	return new CParticleSystemSceneNode(ps, this);
 }
@@ -870,7 +870,7 @@ IParticleSystemSceneNode* CM2SceneNode::addParticleSystemSceneNode( ParticleSyst
 IRibbonSceneNode* CM2SceneNode::addRibbonEmitterSceneNode( RibbonEmitter* re )
 {
 	if (!re)
-		return NULL_PTR;
+		return nullptr;
 
 	return new CRibbonSceneNode(re, this);
 }
@@ -938,8 +938,8 @@ bool CM2SceneNode::setModelCamera( s32 index )
 		for (T_ParticleSystemNodes::const_iterator i = ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 		{
 			IParticleSystemSceneNode* node = (IParticleSystemSceneNode*)(*i);
-			node->setOwnView(NULL_PTR);
-			node->setOwnProjection(NULL_PTR);
+			node->setOwnView(nullptr);
+			node->setOwnProjection(nullptr);
 		}
 
 		return false;

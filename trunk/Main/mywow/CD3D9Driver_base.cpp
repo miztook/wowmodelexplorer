@@ -23,17 +23,17 @@ typedef HRESULT (__stdcall *D3DCREATETYPEEX)(UINT, IDirect3D9Ex**);
 
 CD3D9Driver::CD3D9Driver()
 {
-	HLib = NULL_PTR;
-	pID3D = NULL_PTR;
-	pID3DDevice = NULL_PTR;
+	HLib = nullptr;
+	pID3D = nullptr;
+	pID3DDevice = nullptr;
 
-	HWnd = NULL_PTR;
+	HWnd = nullptr;
 	DevType = D3DDEVTYPE_HAL;
 
 	DeviceLost = false;
 
-	DefaultDepthBuffer = NULL_PTR;
-	DefaultBackBuffer = NULL_PTR;
+	DefaultDepthBuffer = nullptr;
+	DefaultBackBuffer = nullptr;
 	BackBufferFormat = D3DFMT_UNKNOWN;
 
 	PrimitivesDrawn = 0;
@@ -43,16 +43,16 @@ CD3D9Driver::CD3D9Driver()
 	CurrentDeviceState.reset();
 	CurrentRenderMode = ERM_NONE;
 	ResetRenderStates = true;
-	CurrentRenderTarget = NULL_PTR;
+	CurrentRenderTarget = nullptr;
 
-	MaterialRenderer = NULL_PTR;
-	ShaderServices = NULL_PTR;
-	MaterialRenderServices = NULL_PTR;
-	SceneStateServices = NULL_PTR;
+	MaterialRenderer = nullptr;
+	ShaderServices = nullptr;
+	MaterialRenderServices = nullptr;
+	SceneStateServices = nullptr;
 
-	D3D9SceneStateServices = NULL_PTR;
-	D3D9ShaderServices = NULL_PTR;
-	D3D9MaterialRenderServices = NULL_PTR;
+	D3D9SceneStateServices = nullptr;
+	D3D9ShaderServices = nullptr;
+	D3D9MaterialRenderServices = nullptr;
 
 	AdapterCount = 0;
 
@@ -138,7 +138,7 @@ bool CD3D9Driver::initDriver(const SWindowInfo& wndInfo, u32 adapter, bool fulls
 	}
 	else
 	{
-		IDirect3D9Ex* pID3DEx = NULL_PTR;
+		IDirect3D9Ex* pID3DEx = nullptr;
 		D3DCREATETYPEEX d3dcreate = (D3DCREATETYPEEX)::GetProcAddress(HLib, "Direct3DCreate9Ex");
 		if(!d3dcreate) { ASSERT(false); return false; }
 		hr = (d3dcreate)(D3D_SDK_VERSION, &pID3DEx);
@@ -307,7 +307,7 @@ bool CD3D9Driver::initDriver(const SWindowInfo& wndInfo, u32 adapter, bool fulls
 		IDirect3DDevice9Ex*	pID3DDeviceEx;
 		IDirect3D9Ex* pID3DEx = (IDirect3D9Ex*)pID3D;
 		hr = pID3DEx->CreateDeviceEx(AdapterInfo.index, DevType, wndInfo.hwnd,
-			creationFlag , &Present, NULL_PTR, &pID3DDeviceEx);
+			creationFlag , &Present, nullptr, &pID3DDeviceEx);
 
 		ASSERT(SUCCEEDED(hr));				//Ç¿ÖÆhardware processing
 
@@ -425,7 +425,7 @@ bool CD3D9Driver::checkValid()
 		{
 			if (hr == D3DERR_DEVICELOST)
 			{
-				SLEEP(100);
+				THIS_THREAD_SLEEP(100);
 				hr = pID3DDevice->TestCooperativeLevel();
 				if (hr == D3DERR_DEVICELOST)
 					return false;
@@ -464,9 +464,9 @@ bool CD3D9Driver::endScene()
 
 	HRESULT hr;
 	if (g_Engine->getOSInfo()->IsAeroSupport())
-		hr = ((IDirect3DDevice9Ex*)pID3DDevice)->PresentEx(NULL_PTR, NULL_PTR, NULL_PTR, NULL_PTR, 0);
+		hr = ((IDirect3DDevice9Ex*)pID3DDevice)->PresentEx(nullptr, nullptr, nullptr, nullptr, 0);
 	else
-		hr = pID3DDevice->Present(NULL_PTR, NULL_PTR, NULL_PTR, NULL_PTR);
+		hr = pID3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 
 	if (SUCCEEDED(hr))
 		return true;
@@ -490,7 +490,7 @@ bool CD3D9Driver::clear( bool renderTarget, bool zBuffer, bool stencil, SColor c
 		{
 			if (hr == D3DERR_DEVICELOST)
 			{
-				SLEEP(100);
+				THIS_THREAD_SLEEP(100);
 				hr = pID3DDevice->TestCooperativeLevel();
 				if (hr == D3DERR_DEVICELOST)
 					return false;
@@ -512,7 +512,7 @@ bool CD3D9Driver::clear( bool renderTarget, bool zBuffer, bool stencil, SColor c
 
 	if (flags)
 	{
-		hr = pID3DDevice->Clear( 0, NULL_PTR, flags, color.color, 1.0f, 0);
+		hr = pID3DDevice->Clear( 0, nullptr, flags, color.color, 1.0f, 0);
 		if (FAILED(hr)) { ASSERT(false); return false; }
 	}
 	return true;
@@ -704,7 +704,7 @@ bool CD3D9Driver::setRenderTarget( IRenderTarget* texture )
 
 	HRESULT hr;
 
-	if ( tex == NULL_PTR )
+	if ( tex == nullptr )
 	{
 		hr = pID3DDevice->SetRenderTarget(0, DefaultBackBuffer);
 		if(FAILED(hr))
@@ -906,7 +906,7 @@ bool CD3D9Driver::reset()
 		displayMode.RefreshRate = dm.refreshrate;
 		displayMode.Format = Present.BackBufferFormat;
 		displayMode.ScanLineOrdering = D3DSCANLINEORDERING_PROGRESSIVE;
-		hr = ((IDirect3DDevice9Ex*)pID3DDevice)->ResetEx(&Present, Present.Windowed ? NULL_PTR : &displayMode);
+		hr = ((IDirect3DDevice9Ex*)pID3DDevice)->ResetEx(&Present, Present.Windowed ? nullptr : &displayMode);
 
 		if (!Present.Windowed)		//adjust
 		{

@@ -11,7 +11,7 @@
 
 
 CD3D11Texture::CD3D11Texture( bool mipmap )
-	: DXTexture(NULL_PTR), SRView(NULL_PTR)
+	: DXTexture(nullptr), SRView(nullptr)
 {
 	HasMipMaps = mipmap;
 }
@@ -144,7 +144,7 @@ bool CD3D11Texture::createEmptyTexture( const dimension2du& size, ECOLOR_FORMAT 
 
 	u32 numberOfMipLevels = desc.MipLevels;
 	
-	HRESULT hr = pDevice->CreateTexture2D(&desc, NULL_PTR, &DXTexture);
+	HRESULT hr = pDevice->CreateTexture2D(&desc, nullptr, &DXTexture);
 	if (FAILED(hr))
 	{
 		ASSERT(false);
@@ -209,7 +209,7 @@ bool CD3D11Texture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT for
 
 	u32 numberOfMipLevels = desc.MipLevels;
 
-	HRESULT hr = pDevice->CreateTexture2D(&desc, NULL_PTR, &DXTexture);
+	HRESULT hr = pDevice->CreateTexture2D(&desc, nullptr, &DXTexture);
 	if (FAILED(hr))
 	{
 		ASSERT(false);
@@ -273,11 +273,11 @@ bool CD3D11Texture::createDSTexture( const dimension2du& size, ECOLOR_FORMAT for
 	desc.SampleDesc.Quality = quality;
 	desc.Width = (UINT)TextureSize.Width;
 	desc.Height = (UINT)TextureSize.Height;
-	HRESULT hr = pDevice->CreateTexture2D( &desc, NULL_PTR, &DXTexture );
+	HRESULT hr = pDevice->CreateTexture2D( &desc, nullptr, &DXTexture );
 	if(FAILED(hr))
 	{
 		ASSERT(false);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	SampleCount = desc.SampleDesc.Count;

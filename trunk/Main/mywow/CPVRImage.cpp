@@ -52,7 +52,7 @@ const u32 PVRTEX_V1_HEADER_SIZE		= 44;			// old header size was 44 for identific
 
 CPVRImage::CPVRImage()
 {
-	FileData = NULL_PTR;
+	FileData = nullptr;
 	memset(MipmapOffset, 0, sizeof(MipmapOffset));
 }
 
@@ -325,12 +325,12 @@ bool CPVRImage::fromImageData( const u8* src, const dimension2du& size, ECOLOR_F
 const void* CPVRImage::getMipmapData( u32 level ) const
 {
 	if (level >= 16)
-		return NULL_PTR;
+		return nullptr;
 
 	if (MipmapDataSize[level])
 		return FileData +MipmapOffset[level];
 
-	return NULL_PTR;
+	return nullptr;
 }
 
 bool CPVRImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32 height )

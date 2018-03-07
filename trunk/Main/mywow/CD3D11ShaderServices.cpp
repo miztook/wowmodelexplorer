@@ -164,7 +164,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 	delete rfile;
 
 	//create
-	HRESULT hr = Device->CreateVertexShader((const void*)codeBuffer, blockHeader.codeSize, NULL_PTR, &vertexShader);
+	HRESULT hr = Device->CreateVertexShader((const void*)codeBuffer, blockHeader.codeSize, nullptr, &vertexShader);
 	if (FAILED(hr))
 	{
 		g_Engine->getFileSystem()->writeLog(ELOG_GX, "CD3D11ShaderServices::loadVShaderHLSL Failed : CreateVertexShader");
@@ -252,7 +252,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 		textureList.sort();
 	}
 
-	ASSERT(VertexShaders[type] == NULL_PTR);
+	ASSERT(VertexShaders[type] == nullptr);
 	VertexShaders[type] = shader;
 
 	Z_FreeTempMemory(codeBuffer);
@@ -334,7 +334,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 	delete rfile;
 
 	//create
-	HRESULT hr = Device->CreatePixelShader((const void*)codeBuffer, blockHeader.codeSize, NULL_PTR, &pixelShader);
+	HRESULT hr = Device->CreatePixelShader((const void*)codeBuffer, blockHeader.codeSize, nullptr, &pixelShader);
 	if (FAILED(hr))
 	{
 		g_Engine->getFileSystem()->writeLog(ELOG_GX, "CD3D11ShaderServices::loadPShaderHLSL Failed");
@@ -422,7 +422,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 		textureList.sort();
 	}
 
-	ASSERT(PixelShaders[type][macro] == NULL_PTR);
+	ASSERT(PixelShaders[type][macro] == nullptr);
 	PixelShaders[type][macro] = shader;
 
 	Z_FreeTempMemory(codeBuffer);
@@ -450,10 +450,10 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 	dwShaderFlags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
 
-	ID3DBlob* pBlobOut = NULL_PTR;
+	ID3DBlob* pBlobOut = nullptr;
 	ID3DBlob* pErrorBlob;
-	HRESULT hr = CD3D11Helper::d3dx11CompileFromFileW(absFileNameW, NULL_PTR, NULL_PTR, entry, profile,
-		dwShaderFlags, 0, NULL_PTR, &pBlobOut, &pErrorBlob, NULL_PTR);
+	HRESULT hr = CD3D11Helper::d3dx11CompileFromFileW(absFileNameW, nullptr, nullptr, entry, profile,
+		dwShaderFlags, 0, nullptr, &pBlobOut, &pErrorBlob, nullptr);
 	if (FAILED(hr))
 	{
 		if (pErrorBlob)
@@ -467,7 +467,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 		pErrorBlob->Release();
 
 	ID3D11VertexShader* vertexShader;
-	hr = Device->CreateVertexShader(pBlobOut->GetBufferPointer(), pBlobOut->GetBufferSize(), NULL_PTR, &vertexShader);
+	hr = Device->CreateVertexShader(pBlobOut->GetBufferPointer(), pBlobOut->GetBufferSize(), nullptr, &vertexShader);
 	if (FAILED(hr))
 	{
 		g_Engine->getFileSystem()->writeLog(ELOG_GX, "CD3D11ShaderServices::loadVShaderHLSL Failed");
@@ -479,7 +479,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 	CD3D11VertexShader* shader = new CD3D11VertexShader(type, vertexShader, callback, pBlobOut->GetBufferPointer(), pBlobOut->GetBufferSize());
 
 	//const buffer
-	ID3D11ShaderReflection* pReflector = NULL_PTR; 
+	ID3D11ShaderReflection* pReflector = nullptr; 
 	CD3D11Helper::d3dReflect( pBlobOut->GetBufferPointer(), pBlobOut->GetBufferSize(), 
 		IID_ID3D11ShaderReflection, (void**) &pReflector);
 
@@ -524,10 +524,10 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 	dwShaderFlags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
 
-	ID3DBlob* pBlobOut = NULL_PTR;
+	ID3DBlob* pBlobOut = nullptr;
 	ID3DBlob* pErrorBlob;
-	HRESULT hr = CD3D11Helper::d3dx11CompileFromFileW(absFileNameW, NULL_PTR, NULL_PTR, entry, profile,
-		dwShaderFlags, 0, NULL_PTR, &pBlobOut, &pErrorBlob, NULL_PTR);
+	HRESULT hr = CD3D11Helper::d3dx11CompileFromFileW(absFileNameW, nullptr, nullptr, entry, profile,
+		dwShaderFlags, 0, nullptr, &pBlobOut, &pErrorBlob, nullptr);
 	if (FAILED(hr))
 	{
 		if (pErrorBlob)
@@ -541,7 +541,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 		pErrorBlob->Release();
 
 	ID3D11PixelShader* pixelShader;
-	hr = Device->CreatePixelShader(pBlobOut->GetBufferPointer(), pBlobOut->GetBufferSize(), NULL_PTR, &pixelShader);
+	hr = Device->CreatePixelShader(pBlobOut->GetBufferPointer(), pBlobOut->GetBufferSize(), nullptr, &pixelShader);
 	if (FAILED(hr))
 	{
 		g_Engine->getFileSystem()->writeLog(ELOG_GX, "CD3D11ShaderServices::loadPShaderHLSL Failed");
@@ -553,7 +553,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 	CD3D11PixelShader* shader = new CD3D11PixelShader(type, pixelShader, callback);
 
 	//const buffer
-	ID3D11ShaderReflection* pReflector = NULL_PTR; 
+	ID3D11ShaderReflection* pReflector = nullptr; 
 	CD3D11Helper::d3dReflect( pBlobOut->GetBufferPointer(), pBlobOut->GetBufferSize(), 
 		IID_ID3D11ShaderReflection, (void**) &pReflector);
 
@@ -597,12 +597,12 @@ void CD3D11ShaderServices::applyShaders()
 		{
 			vs->onShaderUsed();
 			//ImmediateContext
-			Driver->ImmediateContext->VSSetShader(vs->getDXVShader(), NULL_PTR, 0);
+			Driver->ImmediateContext->VSSetShader(vs->getDXVShader(), nullptr, 0);
 		}
 		else
 		{
 			ASSERT(false);
-			Driver->ImmediateContext->VSSetShader(NULL_PTR, NULL_PTR, 0);
+			Driver->ImmediateContext->VSSetShader(nullptr, nullptr, 0);
 		}
 	}
 
@@ -614,12 +614,12 @@ void CD3D11ShaderServices::applyShaders()
 			ps->onShaderUsed();
 
 			//ImmediateContext
-			Driver->ImmediateContext->PSSetShader(ps->getDXPShader(), NULL_PTR, 0);
+			Driver->ImmediateContext->PSSetShader(ps->getDXPShader(), nullptr, 0);
 		}
 		else
 		{		
 			ASSERT(false);
-			Driver->ImmediateContext->PSSetShader(NULL_PTR, NULL_PTR, 0);
+			Driver->ImmediateContext->PSSetShader(nullptr, nullptr, 0);
 		}
 	}
 
@@ -666,7 +666,7 @@ IVertexShader* CD3D11ShaderServices::getDefaultVertexShader( E_VERTEX_TYPE vType
 	case EVT_PT:
 		return getVertexShader(EVST_DEFAULT_PT);
 	default:
-		return NULL_PTR;
+		return nullptr;
 	}
 }
 
@@ -694,7 +694,7 @@ IPixelShader* CD3D11ShaderServices::getDefaultPixelShader( E_VERTEX_TYPE vType, 
 	case EVT_PT:
 		return getPixelShader(EPST_DEFAULT_PT, macro);
 	default:
-		return NULL_PTR;
+		return nullptr;
 	}
 }
 
@@ -716,7 +716,7 @@ CD3D11ShaderServices::SConstantBuffer* CD3D11ShaderServices::findAvailableConsta
 				return &(*itr);
 		}
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 void CD3D11ShaderServices::buildConstantBuffers()
@@ -805,13 +805,13 @@ void CD3D11ShaderServices::buildConstantBuffers()
 			bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 			bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			if(FAILED(Device->CreateBuffer(&bufferDesc, NULL_PTR, &buffer.constBuffer)))
+			if(FAILED(Device->CreateBuffer(&bufferDesc, nullptr, &buffer.constBuffer)))
 			{
 				ASSERT(false);
-				buffer.constBuffer = NULL_PTR;
-				buffer.shaderResourceView = NULL_PTR;
+				buffer.constBuffer = nullptr;
+				buffer.shaderResourceView = nullptr;
 			}
-			buffer.shaderResourceView = NULL_PTR;
+			buffer.shaderResourceView = nullptr;
 
 			CBufferList.emplace_back(buffer);
 
@@ -920,13 +920,13 @@ void CD3D11ShaderServices::buildTextureBuffers()
 			bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 			bufferDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			if(FAILED(Device->CreateBuffer(&bufferDesc, NULL_PTR, &buffer.constBuffer)))
+			if(FAILED(Device->CreateBuffer(&bufferDesc, nullptr, &buffer.constBuffer)))
 			{
 				ASSERT(false);
-				buffer.constBuffer = NULL_PTR;
-				buffer.shaderResourceView = NULL_PTR;
+				buffer.constBuffer = nullptr;
+				buffer.shaderResourceView = nullptr;
 			}
-			buffer.shaderResourceView = NULL_PTR;
+			buffer.shaderResourceView = nullptr;
 
 			if(buffer.constBuffer)
 			{
@@ -939,7 +939,7 @@ void CD3D11ShaderServices::buildTextureBuffers()
 				if (FAILED(Driver->pID3DDevice11->CreateShaderResourceView(buffer.constBuffer, &viewDesc, &buffer.shaderResourceView)))
 				{
 					ASSERT(false);
-					buffer.shaderResourceView = NULL_PTR;
+					buffer.shaderResourceView = nullptr;
 				}
 			}
 

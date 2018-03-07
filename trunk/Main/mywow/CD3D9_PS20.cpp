@@ -15,11 +15,11 @@
 
 static CD3D9_PS20::SPixelShaderEntry g_d3d9ps20_pixelShaderEntries[] =
 {
-	{EPST_DEFAULT_P, "Default_P", NULL_PTR},
-	{EPST_DEFAULT_PC, "Default_PC", NULL_PTR},
+	{EPST_DEFAULT_P, "Default_P", nullptr},
+	{EPST_DEFAULT_PC, "Default_PC", nullptr},
 	{EPST_DEFAULT_PCT, "Default_PCT", CD3D9_PS20::Default_setShaderConst_T1},
-	{EPST_DEFAULT_PN, "Default_PN", NULL_PTR},
-	{EPST_DEFAULT_PNC, "Default_PNC", NULL_PTR},
+	{EPST_DEFAULT_PN, "Default_PN", nullptr},
+	{EPST_DEFAULT_PNC, "Default_PNC", nullptr},
 	{EPST_DEFAULT_PNCT, "Default_PNCT", CD3D9_PS20::Default_setShaderConst_T1},
 	{EPST_DEFAULT_PNCT2, "Default_PNCT2", CD3D9_PS20::Default_setShaderConst_T2},
 	{EPST_DEFAULT_PNT, "Default_PNT", CD3D9_PS20::Default_setShaderConst_T1},

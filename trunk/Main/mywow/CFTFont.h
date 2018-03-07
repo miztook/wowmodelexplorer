@@ -21,10 +21,10 @@ public:
 	~CFTFont();
 
 public:
-	virtual void drawA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = NULL_PTR);
-	virtual void drawW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = NULL_PTR);
-	virtual void addTextA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = NULL_PTR, bool bVertical = false);
-	virtual void addTextW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = NULL_PTR, bool bVertical = false);
+	virtual void drawA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr);
+	virtual void drawW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr);
+	virtual void addTextA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr, bool bVertical = false);
+	virtual void addTextW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr, bool bVertical = false);
 	virtual void flushText();
 
 	virtual dimension2du getTextExtent(const char* utf8text, int nCharCount = -1, bool vertical = false);	

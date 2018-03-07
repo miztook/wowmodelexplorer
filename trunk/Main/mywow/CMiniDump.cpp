@@ -19,7 +19,7 @@ void CMiniDump::begin()
 
 void CMiniDump::end()
 {
-	::SetUnhandledExceptionFilter( NULL_PTR );
+	::SetUnhandledExceptionFilter( nullptr );
 }
 
 LONG WINAPI CMiniDump::TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInfo )
@@ -29,10 +29,10 @@ LONG WINAPI CMiniDump::TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInf
 	// firstly see if dbghelp.dll is around and has the function we need
 	// look next to the EXE first, as the one in System32 might be old 
 	// (e.g. Windows 2000)
-	HMODULE hDll = NULL_PTR;
+	HMODULE hDll = nullptr;
 	char szDbgHelpPath[_MAX_PATH];
 
-	GetModuleFileName( NULL_PTR, szDbgHelpPath, _MAX_PATH );
+	GetModuleFileName( nullptr, szDbgHelpPath, _MAX_PATH );
 	
 	char* pSlash = strrchr( szDbgHelpPath, '\\' );
 	if (pSlash)
@@ -41,7 +41,7 @@ LONG WINAPI CMiniDump::TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInf
 		hDll = ::LoadLibrary( szDbgHelpPath );
 	}
 	
-	if (hDll==NULL_PTR)
+	if (hDll==nullptr)
 	{
 		// load any version we can
 		hDll = ::LoadLibrary( "DBGHELP.DLL" );
@@ -56,7 +56,7 @@ LONG WINAPI CMiniDump::TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInf
 
 	char szDumpPath[_MAX_PATH];
 
-	GetModuleFileName( NULL_PTR, szDumpPath, _MAX_PATH );
+	GetModuleFileName( nullptr, szDumpPath, _MAX_PATH );
 
 	// work out a good place for the dump file
 	pSlash = strrchr( szDumpPath, '.' );
@@ -75,8 +75,8 @@ LONG WINAPI CMiniDump::TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInf
 	// ask the user if they want to save a dump file
 
 	// create the file
-	HANDLE hFile = ::CreateFile( szDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL_PTR, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL_PTR );
+	HANDLE hFile = ::CreateFile( szDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL, nullptr );
 
 	if (hFile!=INVALID_HANDLE_VALUE)
 	{
@@ -87,7 +87,7 @@ LONG WINAPI CMiniDump::TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInf
 		ExInfo.ClientPointers = FALSE;
 
 		// write the dump
-		BOOL bOK = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, NULL_PTR, NULL_PTR );
+		BOOL bOK = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, nullptr, nullptr );
 		if (bOK)
 		{
 			retval = EXCEPTION_EXECUTE_HANDLER;

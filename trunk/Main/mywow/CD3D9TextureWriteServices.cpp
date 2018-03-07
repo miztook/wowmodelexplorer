@@ -26,15 +26,15 @@ CD3D9TextureWriter::CD3D9TextureWriter(const dimension2du& size, ECOLOR_FORMAT f
 		fmt, 
 		D3DPOOL_SYSTEMMEM, 
 		&SrcTexture, 
-		NULL_PTR)))
+		nullptr)))
 	{
 		ASSERT(false);
-		SrcTexture = NULL_PTR;
+		SrcTexture = nullptr;
 	}
 }
 
 CD3D9TextureWriter::CD3D9TextureWriter() 
-	: SrcTexture(NULL_PTR), NeedCreate(false), ITextureWriter(1)
+	: SrcTexture(nullptr), NeedCreate(false), ITextureWriter(1)
 {
 	Driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
 }
@@ -56,10 +56,10 @@ void CD3D9TextureWriter::setSourceTexture( ITexture* texture )
 void* CD3D9TextureWriter::lock(u32 level, u32& pitch)
 {
 	D3DLOCKED_RECT rect;
-	if (FAILED(SrcTexture->LockRect(level, &rect, NULL_PTR, 0)))
+	if (FAILED(SrcTexture->LockRect(level, &rect, nullptr, 0)))
 	{
 		ASSERT(false);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	pitch = rect.Pitch;

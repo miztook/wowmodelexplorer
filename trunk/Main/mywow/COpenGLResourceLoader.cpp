@@ -15,7 +15,7 @@ COpenGLResourceLoader::COpenGLResourceLoader()
 ITexture* COpenGLResourceLoader::loadTexture( const c8* filename, bool mipmap /*= true*/ )
 {
 	if (strlen(filename) == 0)
-		return NULL_PTR;
+		return nullptr;
 
 	c8 realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);

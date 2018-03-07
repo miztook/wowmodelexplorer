@@ -64,7 +64,7 @@ void CMemDbg::setAllocHook( bool enable, u32 nMaxAlloc /*= 1000*/ )
 	}
 	else
 	{
-		_CrtSetAllocHook(NULL_PTR);
+		_CrtSetAllocHook(nullptr);
 	}
 }
 

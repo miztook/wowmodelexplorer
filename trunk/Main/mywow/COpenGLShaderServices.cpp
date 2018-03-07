@@ -13,7 +13,7 @@
 #include "COpenGLMaterialRenderServices.h"
 
 COpenGLShaderServices::COpenGLShaderServices()
-	: CurrentProgram(NULL_PTR)
+	: CurrentProgram(nullptr)
 {
 	Driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	Extension = Driver->getGLExtension();
@@ -265,7 +265,7 @@ bool COpenGLShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry
 		return false;
 	}
 
-	ASSERT(VertexShaders[type] == NULL_PTR);
+	ASSERT(VertexShaders[type] == nullptr);
 	VertexShaders[type] = new COpenGLVertexShader(type, (GLuint)vertexShader, callback);
 
 	return true;
@@ -310,7 +310,7 @@ bool COpenGLShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry
 		if(size>1 && !isComment(p))			//skip comment
 		{
 			if(!version)
-				version = strstr(p, "#version") != NULL_PTR;
+				version = strstr(p, "#version") != nullptr;
 
 			p += size;
 		}
@@ -340,7 +340,7 @@ bool COpenGLShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry
 		return false;
 	}
 
-	ASSERT(PixelShaders[type][macro] == NULL_PTR);
+	ASSERT(PixelShaders[type][macro] == nullptr);
 	PixelShaders[type][macro] = new COpenGLPixelShader(type, macro, (GLuint)pixelShader, callback);
 
 	return true;
@@ -359,7 +359,7 @@ void COpenGLShaderServices::applyShaders()
 #ifndef FIXPIPELINE
 			ASSERT(false);
 #endif
-			CurrentProgram = NULL_PTR;
+			CurrentProgram = nullptr;
 		}
 
 		if (CurrentProgram)
@@ -426,7 +426,7 @@ IVertexShader* COpenGLShaderServices::getDefaultVertexShader( E_VERTEX_TYPE vTyp
 	case EVT_PT:
 		return getVertexShader(EVST_DEFAULT_PT);
 	default:
-		return NULL_PTR;
+		return nullptr;
 	}
 }
 
@@ -454,7 +454,7 @@ IPixelShader* COpenGLShaderServices::getDefaultPixelShader( E_VERTEX_TYPE vType,
 	case EVT_PT:
 		return getPixelShader(EPST_DEFAULT_PT, macro);
 	default:
-		return NULL_PTR;
+		return nullptr;
 	}
 }
 
@@ -483,7 +483,7 @@ SGLProgram* COpenGLShaderServices::createGlProgram( IVertexShader* vshader, IPix
 	if (!vs || !ps)
 	{
 		ASSERT(false);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	u32 key = makeKey(vs, ps);
@@ -506,7 +506,7 @@ SGLProgram* COpenGLShaderServices::createGlProgram( IVertexShader* vshader, IPix
 	{
 		removeGlProgram(p);
 		ASSERT(false);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	//get uniform
@@ -516,7 +516,7 @@ SGLProgram* COpenGLShaderServices::createGlProgram( IVertexShader* vshader, IPix
 		removeGlProgram(p);
 		ASSERT(false);
 		Extension->extGlUseProgramObject(0);
-		return NULL_PTR;
+		return nullptr;
 	}
 	Extension->extGlUseProgramObject(0);
 
@@ -665,7 +665,7 @@ GLhandleARB COpenGLShaderServices::createHLShader( GLenum shaderType, const char
 {
 	GLhandleARB shaderHandle = Extension->extGlCreateShaderObject(shaderType);
 
-	Extension->extGlShaderSourceARB(shaderHandle, 1, &shader, NULL_PTR);
+	Extension->extGlShaderSourceARB(shaderHandle, 1, &shader, nullptr);
 	Extension->extGlCompileShaderARB(shaderHandle);
 
 	GLint status = 0;

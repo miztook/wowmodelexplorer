@@ -165,7 +165,7 @@ bool COpenGLSceneStateServices::setDynamicLight( u32 index, const SLight& light 
 const SLight* COpenGLSceneStateServices::getDynamicLight( u32 index ) const
 {
 	if(index >= MaxLights)
-		return NULL_PTR;
+		return nullptr;
 
 	return &SceneState.Lights[index];
 }

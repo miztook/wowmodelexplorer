@@ -52,9 +52,9 @@
 #include "CSceneManager.h"
 #include "CSceneEnvironment.h"
 
-Engine*		g_Engine = NULL_PTR;
+Engine*		g_Engine = nullptr;
 
-Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : MessageHandler(NULL_PTR)
+Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : MessageHandler(nullptr)
 {
 	WindowInfo = wndInfo;
 
@@ -81,27 +81,27 @@ Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : Mess
 
 	EngineSetting = new engineSetting();
 
-	Driver = NULL_PTR;
-	HardwareBufferServices = NULL_PTR;
-	DrawServices = NULL_PTR;
-	ResourceLoader = NULL_PTR;
-	GeometryCreator = NULL_PTR;
-	ManualMeshServices = NULL_PTR;
-	InputReader = NULL_PTR;
-	GestureReader = NULL_PTR;
-	AudioPlayer = NULL_PTR;
-	FontServices = NULL_PTR;
-	TextureWriteServices = NULL_PTR;
-	ManualTextureServices = NULL_PTR;
-	SpecialTextureServices = NULL_PTR;
-	ParticleSystemServices = NULL_PTR;
-	RibbonEmitterServices = NULL_PTR;
-	MeshDecalServices = NULL_PTR;
-	TerrainServices = NULL_PTR;
+	Driver = nullptr;
+	HardwareBufferServices = nullptr;
+	DrawServices = nullptr;
+	ResourceLoader = nullptr;
+	GeometryCreator = nullptr;
+	ManualMeshServices = nullptr;
+	InputReader = nullptr;
+	GestureReader = nullptr;
+	AudioPlayer = nullptr;
+	FontServices = nullptr;
+	TextureWriteServices = nullptr;
+	ManualTextureServices = nullptr;
+	SpecialTextureServices = nullptr;
+	ParticleSystemServices = nullptr;
+	RibbonEmitterServices = nullptr;
+	MeshDecalServices = nullptr;
+	TerrainServices = nullptr;
 
-	SceneRenderServices = NULL_PTR;
-	SceneEnvironment = NULL_PTR;
-	SceneManager = NULL_PTR;
+	SceneRenderServices = nullptr;
+	SceneEnvironment = nullptr;
+	SceneManager = nullptr;
 
 	m_IsDXFamily = false;
 }
@@ -149,7 +149,7 @@ Engine::~Engine()
 	QMem_TempInfo(low, high);
 	char msg[128];
 	sprintf_s(msg, 128, "最大临时内存使用: %d", high);
-	MessageBoxA(NULL_PTR, msg, "", 0);
+	MessageBoxA(nullptr, msg, "", 0);
 	*/
 }
 

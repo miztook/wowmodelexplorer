@@ -135,7 +135,7 @@ void CWDTSceneNode::registerSceneNode( bool frustumcheck, int sequence )
 
 	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 
-	WdtScene->setCameraChunk(NULL_PTR);
+	WdtScene->setCameraChunk(nullptr);
 	u32 num = WdtScene->getNumBlocks();
 	for (u32 i=0; i<num; ++i)
 	{
@@ -186,7 +186,7 @@ void CWDTSceneNode::registerVisibleChunks( u32 blockIndex, ICamera* cam )
 {
 	CMapBlock* block = &MapBlocks[blockIndex];
 
-	CFileADT* adt = NULL_PTR;
+	CFileADT* adt = nullptr;
 	if (!block->tile || !(adt = static_cast<CFileADT*>(block->tile->fileAdt)))
 		return;
 
@@ -243,7 +243,7 @@ void CWDTSceneNode::updateMapBlock( u32 blockIndex )
 {
 	CMapBlock* block = &MapBlocks[blockIndex];
 
-	CFileADT* adt = NULL_PTR;
+	CFileADT* adt = nullptr;
 	if (!block->tile || !(adt = static_cast<CFileADT*>(block->tile->fileAdt)))
 		return;
 
@@ -267,7 +267,7 @@ void CWDTSceneNode::collectBlockRenderList(u32 blockIndex)
 	block->HighResChunkRenderList.clear();
 	block->LowResChunkRenderList.clear();
 
-	CFileADT* adt = NULL_PTR;
+	CFileADT* adt = nullptr;
 	if (!block->tile || !(adt = static_cast<CFileADT*>(block->tile->fileAdt)))
 		return;
 

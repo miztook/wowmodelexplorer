@@ -12,7 +12,7 @@ class CMapEnvironment;
 
 struct STile	
 {
-	STile() : fileAdt(NULL_PTR){ row = col = 0 ; }
+	STile() : fileAdt(nullptr){ row = col = 0 ; }
 	u8  row;
 	u8  col;
 	IFileADT*	fileAdt;
@@ -31,16 +31,16 @@ protected:
 public:
 	IFileWDT() 
 	{
-		WmoFileNameIndices = NULL_PTR;
-		WmoFileNameBlock = NULL_PTR;
-		WmoInstances = NULL_PTR;
-		TileOffsets = NULL_PTR;
+		WmoFileNameIndices = nullptr;
+		WmoFileNameBlock = nullptr;
+		WmoInstances = nullptr;
+		TileOffsets = nullptr;
 
 		::memset(GlobalWmoFileName, 0, QMAX_PATH);
 		::memset(&GlobalWmoInstance, 0, sizeof(SWmoInstance));
 
-		TextureInfos = NULL_PTR;
-		TextureFileNameBlock = NULL_PTR;
+		TextureInfos = nullptr;
+		TextureFileNameBlock = nullptr;
 
 		NumTextures = NumWmoFileNames = NumWmoInstance = 0;
 	}

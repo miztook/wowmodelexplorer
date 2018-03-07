@@ -61,7 +61,7 @@ void CMapTileSceneNode::registerSceneNode(bool frustumcheck, int sequence)
 
 	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 
-	TileScene->setCameraChunk(NULL_PTR);
+	TileScene->setCameraChunk(nullptr);
 	registerVisibleChunks(cam);
 
 	TileScene->registerInstances(cam);

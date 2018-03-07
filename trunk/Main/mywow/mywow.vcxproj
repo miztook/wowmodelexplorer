@@ -481,7 +481,6 @@
     <ClInclude Include="CX2AudioPlayer.h" />
     <ClInclude Include="CX2Sound.h" />
     <ClInclude Include="interface\CFPSCounter.h" />
-    <ClInclude Include="interface\CLock.h" />
     <ClInclude Include="interface\CMemDbg.h" />
     <ClInclude Include="interface\CMiniDump.h" />
     <ClInclude Include="interface\compileconfig.h" />

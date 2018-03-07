@@ -11,7 +11,6 @@
 #include "COpenGLMaterialRenderServices.h"
 #include "COpenGLShaderServices.h"
 #include "COpenGLHelper.h"
-#include "CLock.h"
 
 #define NAME_POS		"Pos"
 #define NAME_NORMAL		"Normal"

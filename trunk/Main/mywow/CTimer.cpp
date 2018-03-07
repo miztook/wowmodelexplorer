@@ -24,7 +24,7 @@ void CTimer::beginPerf( bool enable )
 	PerfStart = li.QuadPart;
 #else
 	timeval time;
-	gettimeofday(&time, NULL_PTR);
+	gettimeofday(&time, nullptr);
 	PerfStart = time.tv_sec * 1000000 + time.tv_usec;
 #endif
 }
@@ -41,7 +41,7 @@ void CTimer::endPerf( bool enble, u32& time )
 	time = (u32)((PerfEnd - PerfStart) * 1000000 / PerfFreq);
 #else
 	timeval tv;
-	gettimeofday(&tv, NULL_PTR);
+	gettimeofday(&tv, nullptr);
 	PerfEnd = tv.tv_sec * 1000000 + tv.tv_usec;
 	time = (u32)(PerfEnd - PerfStart);
 #endif
@@ -55,7 +55,7 @@ u32 CTimer::getMillisecond() const
 	return (u32)(time.QuadPart * 1000 / PerfFreq);
 #else
 	timeval time;
-	gettimeofday(&time, NULL_PTR);
+	gettimeofday(&time, nullptr);
 	return (u32)(time.tv_sec * 1000 + time.tv_usec / 1000);
 #endif
 }
@@ -68,7 +68,7 @@ u32 CTimer::getMicrosecond() const
 	return (u32)(time.QuadPart * 1000000 / PerfFreq);
 #else
 	timeval time;
-	gettimeofday(&time, NULL_PTR);
+	gettimeofday(&time, nullptr);
 	return (u32)(time.tv_sec * 1000000 + time.tv_usec);
 #endif
 }

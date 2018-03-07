@@ -10,7 +10,7 @@ IFileADT* CADTLoader::loadADT( IMemFile* file, bool simple )
 		if (!adtFile->loadFileSimple(file))
 		{
 			adtFile->drop();
-			return NULL_PTR;
+			return nullptr;
 		}
 	}
 	else
@@ -18,7 +18,7 @@ IFileADT* CADTLoader::loadADT( IMemFile* file, bool simple )
 		if (!adtFile->loadFile(file))
 		{
 			adtFile->drop();
-			return NULL_PTR;
+			return nullptr;
 		}
 	}
 
@@ -31,7 +31,7 @@ IFileADT* CADTLoader::loadADTTextures(IMemFile* file)
 	if (!adtFile->loadFileTextures(file))
 	{
 		adtFile->drop();
-		return NULL_PTR;
+		return nullptr;
 	}
 	
 	return adtFile;

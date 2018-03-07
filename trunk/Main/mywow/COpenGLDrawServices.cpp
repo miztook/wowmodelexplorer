@@ -532,9 +532,9 @@ void COpenGLDrawServices::draw2DColor(const recti& rect, SColor color, float sca
 	draw2DImage(tex, destPos, &rc, color, ERU_00_11, scale, blendParam);
 }
 
-void COpenGLDrawServices::draw2DImage(ITexture* texture, vector2di destPos, const recti* sourceRect /* = NULL_PTR */, SColor color /* = SColor() */, E_RECT_UVCOORDS uvcoords /* = ERU_00_11 */, float scale /* = 1.0f */, const S2DBlendParam& blendParam /* = S2DBlendParam::OpaqueSource() */)
+void COpenGLDrawServices::draw2DImage(ITexture* texture, vector2di destPos, const recti* sourceRect /* = nullptr */, SColor color /* = SColor() */, E_RECT_UVCOORDS uvcoords /* = ERU_00_11 */, float scale /* = 1.0f */, const S2DBlendParam& blendParam /* = S2DBlendParam::OpaqueSource() */)
 {
-	draw2DImageBatch(texture, &destPos, sourceRect ? &sourceRect : NULL_PTR, 1, color, uvcoords, scale, blendParam);
+	draw2DImageBatch(texture, &destPos, sourceRect ? &sourceRect : nullptr, 1, color, uvcoords, scale, blendParam);
 }
 
 void COpenGLDrawServices::draw2DImageBatch(ITexture* texture, const vector2di* positions, const recti* sourceRects[], u32 batchCount, SColor color /* = SColor() */, E_RECT_UVCOORDS uvcoords /* = ERU_00_11 */, float scale /* = 1.0f */, const S2DBlendParam& blendParam /* = S2DBlendParam::OpaqueSource() */)
@@ -631,7 +631,7 @@ void COpenGLDrawServices::draw2DImageBatch(ITexture* texture, const vector2di* p
 	HWBufferServices->updateHardwareBuffer(VBImage, batchCount * 4);
 
 	Driver->setTexture(0, texture);
-	Driver->setTexture(1, NULL_PTR);
+	Driver->setTexture(1, nullptr);
 
 	SBufferParam bufferParam = {0};
 	bufferParam.vType = EVT_PCT;
@@ -742,7 +742,7 @@ void COpenGLDrawServices::draw2DImageBatch( ITexture* texture, const vector2di* 
 	HWBufferServices->updateHardwareBuffer(VBImage, batchCount * 4);
 
 	Driver->setTexture(0, texture);
-	Driver->setTexture(1, NULL_PTR);
+	Driver->setTexture(1, nullptr);
 
 	SBufferParam bufferParam = {0};
 	bufferParam.vType = EVT_PCT;
@@ -758,9 +758,9 @@ void COpenGLDrawServices::draw2DImageBatch( ITexture* texture, const vector2di* 
 		blendParam);
 }
 
-void COpenGLDrawServices::draw2DImageRect(ITexture* texture, const recti* destRect, const recti* sourceRect /* = NULL_PTR */, SColor color /* = SColor() */, E_RECT_UVCOORDS uvcoords /* = ERU_00_11 */, const S2DBlendParam& blendParam /* = S2DBlendParam::OpaqueSource() */)
+void COpenGLDrawServices::draw2DImageRect(ITexture* texture, const recti* destRect, const recti* sourceRect /* = nullptr */, SColor color /* = SColor() */, E_RECT_UVCOORDS uvcoords /* = ERU_00_11 */, const S2DBlendParam& blendParam /* = S2DBlendParam::OpaqueSource() */)
 {
-	draw2DImageRectBatch(texture, &destRect, sourceRect? &sourceRect : NULL_PTR, 1, color, uvcoords, blendParam);
+	draw2DImageRectBatch(texture, &destRect, sourceRect? &sourceRect : nullptr, 1, color, uvcoords, blendParam);
 }
 
 void COpenGLDrawServices::draw2DImageRectBatch(ITexture* texture, const recti* destRects[], const recti* sourceRects[], u32 batchCount, SColor color /*= SColor()*/, E_RECT_UVCOORDS uvcoords /*= ERU_00_11*/, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
@@ -847,7 +847,7 @@ void COpenGLDrawServices::draw2DImageRectBatch(ITexture* texture, const recti* d
 	HWBufferServices->updateHardwareBuffer(VBImage, batchCount * 4);
 
 	Driver->setTexture(0, texture);
-	Driver->setTexture(1, NULL_PTR);
+	Driver->setTexture(1, nullptr);
 
 	SBufferParam bufferParam = {0};
 	bufferParam.vType = EVT_PCT;
@@ -948,7 +948,7 @@ void COpenGLDrawServices::draw2DImageRectBatch(ITexture* texture, const recti* d
 	HWBufferServices->updateHardwareBuffer(VBImage, batchCount * 4);
 
 	Driver->setTexture(0, texture);
-	Driver->setTexture(1, NULL_PTR);
+	Driver->setTexture(1, nullptr);
 
 	SBufferParam bufferParam = {0};
 	bufferParam.vType = EVT_PCT;
@@ -977,7 +977,7 @@ void COpenGLDrawServices::draw2DSquadBatch(ITexture* texture, const SVertex_PCT*
 	HWBufferServices->updateHardwareBuffer(VBImage, batchCount * 4);
 
 	Driver->setTexture(0, texture);
-	Driver->setTexture(1, NULL_PTR);
+	Driver->setTexture(1, nullptr);
 
 	SBufferParam bufferParam = {0};
 	bufferParam.vType = EVT_PCT;
@@ -1008,7 +1008,7 @@ void COpenGLDrawServices::draw2DVertices(ITexture* texture, const SVertex_PCT* v
 	HWBufferServices->updateHardwareBuffer(IB2D, numIndices);
 
 	Driver->setTexture(0, texture);
-	Driver->setTexture(1, NULL_PTR);
+	Driver->setTexture(1, nullptr);
 
 	SBufferParam bufferParam = {0};
 	bufferParam.vType = EVT_PCT;

@@ -16,7 +16,7 @@ public:
 public:
 	virtual void* lock(u32 level, u32& pitch) = 0;
 	virtual void unlock(u32 level) = 0;
-	virtual bool copyToTexture(ITexture* texture, const recti* descRect = NULL_PTR) = 0;
+	virtual bool copyToTexture(ITexture* texture, const recti* descRect = nullptr) = 0;
 	virtual void initEmptyData() = 0;
 
 public:

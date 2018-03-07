@@ -8,7 +8,7 @@ IFileWMO* CWMOLoader::loadWMO( IMemFile* file )
 	if (!wmoFile->loadFile(file))
 	{
 		wmoFile->drop();
-		return NULL_PTR;
+		return nullptr;
 	}
 	return wmoFile;
 }

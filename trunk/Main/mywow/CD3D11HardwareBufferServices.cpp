@@ -92,7 +92,7 @@ void CD3D11HardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffer
 	{
 		RemoveEntryList(&vbuffer->Link);
 		((ID3D11Buffer*)vbuffer->HWLink)->Release();
-		vbuffer->HWLink = NULL_PTR;
+		vbuffer->HWLink = nullptr;
 	}
 }
 
@@ -104,7 +104,7 @@ void CD3D11HardwareBufferServices::destroyHardwareBuffer( IIndexBuffer* ibuffer 
 	{
 		RemoveEntryList(&ibuffer->Link);
 		((ID3D11Buffer*)ibuffer->HWLink)->Release();
-		ibuffer->HWLink = NULL_PTR;
+		ibuffer->HWLink = nullptr;
 	}
 }
 
@@ -209,7 +209,7 @@ void CD3D11HardwareBufferServices::onReset()
 
 bool CD3D11HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbuffer )
 {
-	ASSERT(NULL_PTR == vbuffer->HWLink);
+	ASSERT(nullptr == vbuffer->HWLink);
 
 	D3D11_USAGE	usage = D3D11_USAGE_DEFAULT;
 	UINT cpuAccess = 0;
@@ -261,7 +261,7 @@ bool CD3D11HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vb
 	}
 	else
 	{
-		if(FAILED(Driver->pID3DDevice11->CreateBuffer(&desc, NULL_PTR, (ID3D11Buffer**)&vbuffer->HWLink)))
+		if(FAILED(Driver->pID3DDevice11->CreateBuffer(&desc, nullptr, (ID3D11Buffer**)&vbuffer->HWLink)))
 		{
 			ASSERT(false);
 			return false;
@@ -273,7 +273,7 @@ bool CD3D11HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vb
 
 bool CD3D11HardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuffer )
 {
-	ASSERT(NULL_PTR == ibuffer->HWLink);
+	ASSERT(nullptr == ibuffer->HWLink);
 
 	D3D11_USAGE	usage = D3D11_USAGE_DEFAULT;
 	UINT cpuAccess = 0;
@@ -327,7 +327,7 @@ bool CD3D11HardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuf
 	}
 	else
 	{
-		if(FAILED(Driver->pID3DDevice11->CreateBuffer(&desc, NULL_PTR, (ID3D11Buffer**)&ibuffer->HWLink)))
+		if(FAILED(Driver->pID3DDevice11->CreateBuffer(&desc, nullptr, (ID3D11Buffer**)&ibuffer->HWLink)))
 		{
 			ASSERT(false);
 			return false;

@@ -69,7 +69,7 @@ private:
 	SDx11ConstDesc* getConstantDesc(u32 index);
 
 public:
-	bool isValid() const { return VertexShader != NULL_PTR; }
+	bool isValid() const { return VertexShader != nullptr; }
 	void onShaderUsed();
 
 	u32 getConstantCount() const { return (u32)CBufferList.size() + (u32)TBufferList.size(); }
@@ -123,7 +123,7 @@ private:
 	SDx11ConstDesc* getConstantDesc(u32 index);
 
 public:
-	bool isValid() const { return PixelShader != NULL_PTR; }
+	bool isValid() const { return PixelShader != nullptr; }
 	void onShaderUsed();
 
 	void setShaderConstant(const c8* name, const void* srcData, u32 size);

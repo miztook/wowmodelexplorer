@@ -137,7 +137,7 @@ floatSwapUnion;
 //	
 //	
 //	/* dummy check */
-//	if(	dds == NULL_PTR || pf == NULL_PTR )
+//	if(	dds == nullptr || pf == nullptr )
 //		return;
 //	
 //	/* extract fourCC */
@@ -170,7 +170,7 @@ floatSwapUnion;
 //int DDSGetInfo( ddsBuffer_t *dds, int *width, int *height, ddsPF_t *pf )
 //{
 //	/* dummy test */
-//	if( dds == NULL_PTR )
+//	if( dds == nullptr )
 //		return -1;
 //	
 //	/* test dds header */
@@ -180,9 +180,9 @@ floatSwapUnion;
 //		return -1;
 //	
 //	/* extract width and height */
-//	if( width != NULL_PTR )
+//	if( width != nullptr )
 //		*width = DDSLittleLong( dds->width );
-//	if( height != NULL_PTR )
+//	if( height != nullptr )
 //		*height = DDSLittleLong( dds->height );
 //	
 //	/* get pixel format */

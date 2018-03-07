@@ -18,7 +18,7 @@ CSceneManager::CSceneManager( )
 	Perf_tickTime(0), Perf_renderTime(0), 
 	Perf_terrainTime(0), Perf_wmoTime(0), Perf_meshTime(0),
 	Perf_alphaTestTime(0), Perf_transparentTime(0), Perf_3DwireTime(0), Perf_2DTime(0),
-	Perf_GPUTime(0), FrameRT(NULL_PTR)
+	Perf_GPUTime(0), FrameRT(nullptr)
 {
 	::memset(Text, 0, sizeof(Text));
 	::memset(SceneInfo, 0, sizeof(SceneInfo));
@@ -32,7 +32,7 @@ CSceneManager::CSceneManager( )
 	SceneRenderServices = static_cast<CSceneRenderServices*>(g_Engine->getSceneRenderServices());
 	DrawServices = g_Engine->getDrawServices();
 
-	DebugTexture = NULL_PTR;
+	DebugTexture = nullptr;
 	
 // 	IImage* image = g_Engine->getResourceLoader()->loadJPGAsImage("D:\\myeditor\\2.jpg");
 // 	if (image)
@@ -123,7 +123,7 @@ void CSceneManager::drawAll(bool foreground)
 			ISceneNode* node = reinterpret_cast<ISceneNode*>CONTAINING_RECORD(e, ISceneNode, Link);
 			e = e->Flink;
 
-			ASSERT(node->Parent == NULL_PTR);
+			ASSERT(node->Parent == nullptr);
 			node->registerSceneNode(true, i);
 		}
 
@@ -202,7 +202,7 @@ void CSceneManager::renderRT()
 	//render target to screen texture
 	FrameRT->writeToRTTexture();
 
-	Driver->setRenderTarget(NULL_PTR);
+	Driver->setRenderTarget(nullptr);
 
 	//draw screen texture
 	vector2di upperLeft(0, 0);
@@ -211,7 +211,7 @@ void CSceneManager::renderRT()
 
 	E_DRIVER_TYPE dType = Driver->getDriverType();
 	if(dType == EDT_OPENGL)
-		g_Engine->getDrawServices()->draw2DImageRect(FrameRT->getRTTexture(), &rc, NULL_PTR, SColor(), ERU_01_10);
+		g_Engine->getDrawServices()->draw2DImageRect(FrameRT->getRTTexture(), &rc, nullptr, SColor(), ERU_01_10);
 	else
 		g_Engine->getDrawServices()->draw2DImageRect(FrameRT->getRTTexture(), &rc);
 
@@ -332,7 +332,7 @@ void CSceneManager::removeAllSceneNodes()
 			ISceneNode* node = reinterpret_cast<ISceneNode*>CONTAINING_RECORD(e, ISceneNode, Link);
 			e = e->Blink;
 
-			ASSERT(node->Parent == NULL_PTR);
+			ASSERT(node->Parent == nullptr);
 			RemoveEntryList(&node->Link);
 			node->removeAllChildren();
 			delete node;
@@ -401,7 +401,7 @@ IMeshSceneNode* CSceneManager::addMeshSceneNode( const c8* name, ISceneNode* par
 {
 	IMesh* m = g_Engine->getManualMeshServices()->getMesh(name);
 	if (!m)
-		return NULL_PTR;
+		return nullptr;
 
 	CMeshSceneNode* node = new CMeshSceneNode(m, parent);
 
@@ -413,7 +413,7 @@ IMeshSceneNode* CSceneManager::addMeshSceneNode( const c8* name, ISceneNode* par
 IM2SceneNode* CSceneManager::addM2SceneNode( IFileM2* mesh, ISceneNode* parent, bool npc/* = false*/ )
 {
 	if (!mesh)
-		return NULL_PTR;
+		return nullptr;
 
 	CM2SceneNode* node = new CM2SceneNode(mesh, parent, npc);
 	mesh->drop();
@@ -432,7 +432,7 @@ IM2SceneNode* CSceneManager::addM2SceneNode( IFileM2* mesh, ISceneNode* parent, 
 IMapTileSceneNode* CSceneManager::addMapTileSceneNode( IFileWDT* wdt, STile* tile, ISceneNode* parent )
 {
 	if (!tile)
-		return NULL_PTR;
+		return nullptr;
 
 	CMapTileSceneNode* node = new CMapTileSceneNode(wdt, tile, parent);
 
@@ -444,7 +444,7 @@ IMapTileSceneNode* CSceneManager::addMapTileSceneNode( IFileWDT* wdt, STile* til
 IWMOSceneNode* CSceneManager::addWMOSceneNode( IFileWMO* wmo, ISceneNode* parent )
 {
 	if (!wmo)
-		return NULL_PTR;
+		return nullptr;
 
 	CWMOSceneNode* node = new CWMOSceneNode(wmo, parent);
 	wmo->drop();
@@ -501,7 +501,7 @@ void CSceneManager::drawSceneInfo()
 IWDTSceneNode* CSceneManager::addWDTSceneNode( IFileWDT* wdt, ISceneNode* parent )
 {
 	if (!wdt)
-		return NULL_PTR;
+		return nullptr;
 
 	CWDTSceneNode* node = new CWDTSceneNode(wdt, parent);
 
@@ -514,7 +514,7 @@ void CSceneManager::drawDebugTexture()
 {
 	if (DebugTexture)
 	{
-		DrawServices->draw2DImage(DebugTexture, vector2di(0,0), NULL_PTR, SColor(), ERU_00_11, 1.0f);
+		DrawServices->draw2DImage(DebugTexture, vector2di(0,0), nullptr, SColor(), ERU_00_11, 1.0f);
 	}
 }
 

@@ -9,7 +9,7 @@
 
 #ifdef MW_USE_AUDIO
 
-CX2Sound::CX2Sound( IXAudio2* pXA, E_SOUND_TYPE type, u32 index ) : pXAudio2(pXA), ISound(type), Callback(NULL_PTR)
+CX2Sound::CX2Sound( IXAudio2* pXA, E_SOUND_TYPE type, u32 index ) : pXAudio2(pXA), ISound(type), Callback(nullptr)
 {
 	INIT_LOCK(&cs);
 
@@ -26,7 +26,7 @@ CX2Sound::CX2Sound( IXAudio2* pXA, E_SOUND_TYPE type, u32 index ) : pXAudio2(pXA
 		break;
 	default:
 		ASSERT(false);
-		AudioInput = NULL_PTR;
+		AudioInput = nullptr;
 		break;
 	}
 
@@ -50,7 +50,7 @@ void CX2Sound::unload()
 
 }
 
-bool CX2Sound::play( bool loop, FN_SOUND_CALLBACK callback /*= NULL_PTR*/ )
+bool CX2Sound::play( bool loop, FN_SOUND_CALLBACK callback /*= nullptr*/ )
 {
 	return false;
 }

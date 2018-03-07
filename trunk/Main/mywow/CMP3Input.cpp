@@ -8,7 +8,7 @@
 
 CMP3Input::CMP3Input()
 {
-	File = NULL_PTR;
+	File = nullptr;
 
 	m_xing.flags = 0;
 	m_timer = mad_timer_zero;
@@ -142,7 +142,7 @@ void CMP3Input::closeFile()
 		mad_stream_finish(&m_stream);		
 
 		delete File;
-		File = NULL_PTR;
+		File = nullptr;
 	}
 }
 

@@ -11,7 +11,7 @@ long vorbisTell(void *file);
 
 CVorbisInput::CVorbisInput()
 {
-	File = NULL_PTR;
+	File = nullptr;
 	memset(&OggFile, 0, sizeof(OggFile));
 }
 
@@ -65,7 +65,7 @@ bool CVorbisInput::openFile( const c8* filename )
 		(long(*)(void *)) vorbisTell
 	};
 
-	if (ov_open_callbacks((void *)File, &OggFile, NULL_PTR, 0, callbacks) < 0)
+	if (ov_open_callbacks((void *)File, &OggFile, nullptr, 0, callbacks) < 0)
 	{
 		closeFile();
 		ASSERT(false);
@@ -81,7 +81,7 @@ bool CVorbisInput::openFile( const c8* filename )
 
 	vorbis_info* pInfo;
 	pInfo = ov_info(&OggFile, -1);
-	if (pInfo == NULL_PTR || pInfo->channels > 2)
+	if (pInfo == nullptr || pInfo->channels > 2)
 	{
 		closeFile();
 		ASSERT(false);
@@ -103,7 +103,7 @@ void CVorbisInput::closeFile()
 	{
 		ov_clear(&OggFile);
 		delete File;
-		File = NULL_PTR;
+		File = nullptr;
 	}
 }
 

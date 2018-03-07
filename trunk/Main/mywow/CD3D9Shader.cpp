@@ -36,7 +36,7 @@ const SDx9ConstDesc* CD3D9VertexShader::getConstantDesc( const c8* name ) const
 		if (strcmp(name, itr->name) == 0)
 			return &(*itr);
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 void CD3D9VertexShader::setShaderConstant( const SDx9ConstDesc* desc, const void* srcData, u32 size )
@@ -88,7 +88,7 @@ const SDx9ConstDesc* CD3D9PixelShader::getConstantDesc(const c8* name) const
 		if (strcmp(name, itr->name) == 0)
 			return &(*itr);
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 void CD3D9PixelShader::setShaderConstant( const SDx9ConstDesc* desc, const void* srcData, u32 size )

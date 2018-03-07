@@ -11,8 +11,8 @@ volatile bool CDSAudioPlayer::g_StopThread = false;
 
 CDSAudioPlayer::CDSAudioPlayer( ) : AudioAvailable(false)
 {
-	HLib = NULL_PTR;
-	pIDSound = NULL_PTR;
+	HLib = nullptr;
+	pIDSound = nullptr;
 	::memset(WavSounds, 0, sizeof(CDSSound*)*NUM_WAV_SOUNDS);
 	::memset(OggSounds, 0, sizeof(CDSSound*)*NUM_OGG_SOUNDS);
 	::memset(Mp3Sounds, 0, sizeof(CDSSound*)*NUM_MP3_SOUNDS);
@@ -55,7 +55,7 @@ bool CDSAudioPlayer::initDevice( HWND hwnd, u32 primaryChannels, u32 primarySamp
 	}
 
 	DSCREATE dsCreate = (DSCREATE)::GetProcAddress(HLib, "DirectSoundCreate");
-	if (!dsCreate || FAILED(dsCreate(NULL_PTR, &pIDSound, NULL_PTR)))
+	if (!dsCreate || FAILED(dsCreate(nullptr, &pIDSound, nullptr)))
 	{
 		SAFE_RELEASE(pIDSound);
 		g_Engine->getFileSystem()->writeLog(ELOG_SOUND, "DSAudioPlayer DirectSoundCreate Failed!");
@@ -97,15 +97,15 @@ bool CDSAudioPlayer::initDevice( HWND hwnd, u32 primaryChannels, u32 primarySamp
 
 bool CDSAudioPlayer::setPrimaryBufferFormat( u32 primaryChannels, u32 primarySampleRate, u32 primayBitsPerSample )
 {
-	LPDIRECTSOUNDBUFFER	pPrimaryBuffer = NULL_PTR;
+	LPDIRECTSOUNDBUFFER	pPrimaryBuffer = nullptr;
 
 	DSBUFFERDESC desc = {0};
 	desc.dwSize = sizeof(DSBUFFERDESC);
 	desc.dwFlags = DSBCAPS_PRIMARYBUFFER;
 	desc.dwBufferBytes = 0;
-	desc.lpwfxFormat = NULL_PTR;
+	desc.lpwfxFormat = nullptr;
 
-	if (FAILED(pIDSound->CreateSoundBuffer(&desc, &pPrimaryBuffer, NULL_PTR)))
+	if (FAILED(pIDSound->CreateSoundBuffer(&desc, &pPrimaryBuffer, nullptr)))
 	{
 		SAFE_RELEASE(pPrimaryBuffer);
 
@@ -198,40 +198,40 @@ int CDSAudioPlayer::NotificationProc( void* lpParameter )
 ISound* CDSAudioPlayer::getEmptyWavSound() const
 {
 	if (!AudioAvailable)
-		return NULL_PTR;
+		return nullptr;
 
 	for (u32 i=0; i<NUM_WAV_SOUNDS; ++i)
 	{
 		if (!WavSounds[i]->isPlaying())
 			return WavSounds[i];
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 ISound* CDSAudioPlayer::getEmptyOggSound() const
 {
 	if (!AudioAvailable)
-		return NULL_PTR;
+		return nullptr;
 
 	for (u32 i=0; i<NUM_OGG_SOUNDS; ++i)
 	{
 		if (!OggSounds[i]->isPlaying())
 			return OggSounds[i];
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 ISound* CDSAudioPlayer::getEmptyMp3Sound() const
 {
 	if (!AudioAvailable)
-		return NULL_PTR;
+		return nullptr;
 
 	for (u32 i=0; i<NUM_MP3_SOUNDS; ++i)
 	{
 		if (!Mp3Sounds[i]->isPlaying())
 			return Mp3Sounds[i];
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 void CDSAudioPlayer::setAudioSetting( const SAudioSetting& setting )
@@ -307,21 +307,21 @@ void CDSAudioPlayer::tickFadeOutSounds( u32 timeSinceLastFrame )
 ISound* CDSAudioPlayer::getWavSound( u32 index ) const
 {
 	if (index >= NUM_WAV_SOUNDS)
-		return NULL_PTR;
+		return nullptr;
 	return WavSounds[index];
 }
 
 ISound* CDSAudioPlayer::getOggSound( u32 index ) const
 {
 	if (index >= NUM_OGG_SOUNDS)
-		return NULL_PTR;
+		return nullptr;
 	return OggSounds[index];
 }
 
 ISound* CDSAudioPlayer::getMp3Sound( u32 index ) const
 {
 	if (index >= NUM_MP3_SOUNDS)
-		return NULL_PTR;
+		return nullptr;
 	return Mp3Sounds[index];
 }
 

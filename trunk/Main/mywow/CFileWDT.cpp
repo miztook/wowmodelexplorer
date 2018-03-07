@@ -6,9 +6,9 @@
 
 CFileWDT::CFileWDT()
 {
-	FileData = NULL_PTR;
+	FileData = nullptr;
 	TileOffsets = new s32[TILENUM * TILENUM];
-	MapEnvironment = NULL_PTR;
+	MapEnvironment = nullptr;
 	MapId = 0;
 
 	AdtRow = AdtCol = -1;
@@ -210,7 +210,7 @@ STile* CFileWDT::getTile( u8 row, u8 col )
 	u16 n = M_MAKEWORD(col, row);
 	T_TileLookup::const_iterator itr = TileLookup.find(n);
 	if (itr == TileLookup.end())
-		return NULL_PTR;
+		return nullptr;
 	return &Tiles[itr->second];
 }
 
@@ -230,7 +230,7 @@ bool CFileWDT::loadADT( STile* tile, bool simple )
 		tile->fileAdt = adt;
 	}
 
-	return adt != NULL_PTR;
+	return adt != nullptr;
 }
 
 bool CFileWDT::loadADTTextures(STile* tile)
@@ -248,7 +248,7 @@ bool CFileWDT::loadADTTextures(STile* tile)
 		tile->fileAdt = adt;
 	}
 
-	return adt != NULL_PTR;
+	return adt != nullptr;
 }
 
 bool CFileWDT::unloadADT( STile* tile )
@@ -257,7 +257,7 @@ bool CFileWDT::unloadADT( STile* tile )
  		return false;
 
 	tile->fileAdt->drop();
-	tile->fileAdt = NULL_PTR;
+	tile->fileAdt = nullptr;
 
 	return true;
 }
@@ -434,7 +434,7 @@ void CFileWDT::loadTEX()
 const c8* CFileWDT::getWMOFileName( u32 index ) const
 {
 	if (index >= NumWmoFileNames)
-		return NULL_PTR;
+		return nullptr;
 	return (const c8*)&WmoFileNameBlock[WmoFileNameIndices[index]];
 }
 
@@ -461,7 +461,7 @@ bool CFileWDT::loadADTData( STile* tile )
 		tile->fileAdt = adt;
 	}
 
-	return adt != NULL_PTR;
+	return adt != nullptr;
 }
 
 

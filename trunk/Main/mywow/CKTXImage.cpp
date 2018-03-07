@@ -8,7 +8,7 @@ const u8 KTX_IDENTIFIER[12] = {0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0
 
 CKTXImage::CKTXImage()
 {
-	FileData = NULL_PTR;
+	FileData = nullptr;
 	memset(MipmapOffset, 0, sizeof(MipmapOffset));
 }
 
@@ -157,12 +157,12 @@ bool CKTXImage::fromImageData( const u8* src, const dimension2du& size, ECOLOR_F
 const void* CKTXImage::getMipmapData( u32 level ) const
 {
 	if (level >= 16)
-		return NULL_PTR;
+		return nullptr;
 
 	if (MipmapDataSize[level])
 		return FileData +MipmapOffset[level];
 
-	return NULL_PTR;
+	return nullptr;
 }
 
 bool CKTXImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32 height )

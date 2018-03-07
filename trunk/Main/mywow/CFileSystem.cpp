@@ -5,14 +5,13 @@
 #include "CWriteFile.h"
 #include "CSysGlobal.h"
 #include "CSysUtility.h"
-#include "CLock.h"
 
 #define RESOURCE_SUBDIR  "Data/"
 #define LOG_DIR	"Logs/"
 #define  SUBDIR_SHADER		"Shaders/"
 
 CFileSystem::CFileSystem(const c8* baseDir, const c8* logDir, bool ignoreSetting)
-	: LogGxFile(NULL_PTR), LogResFile(NULL_PTR), LogSoundFile(NULL_PTR)
+	: LogGxFile(nullptr), LogResFile(nullptr), LogSoundFile(nullptr)
 {
 	::memset(LogString, 0, sizeof(LogString));
 
@@ -130,7 +129,7 @@ IReadFile* CFileSystem::createAndOpenFile( const c8* filename, bool binary )
 		return file;
 
 	delete file;
-	return NULL_PTR;
+	return nullptr;
 }
 
 IWriteFile* CFileSystem::createAndWriteFile( const c8* filename, bool binary, bool append /*= false*/ )
@@ -140,7 +139,7 @@ IWriteFile* CFileSystem::createAndWriteFile( const c8* filename, bool binary, bo
 		return file;
 
 	delete file;
-	return NULL_PTR;
+	return nullptr;
 }
 
 void CFileSystem::getAbsolutePath( const c8* filename, c8* outfilename, u32 size )
@@ -222,7 +221,7 @@ const c8* CFileSystem::getLogFileName( E_LOG_TYPE type ) const
 
 void CFileSystem::writeLog( E_LOG_TYPE type, const c8* format, ... )
 {
-	CLock lock(&g_Globals.logCS);
+	CLock lock(g_Globals.logCS);
 
 	va_list va;
 	va_start( va, format );

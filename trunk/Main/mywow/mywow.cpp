@@ -44,7 +44,7 @@ void createEngine(const SEngineInitParam& param, const SWindowInfo& wndInfo)
 void destroyEngine()
 {
 	delete g_Engine;
-	g_Engine = NULL_PTR;
+	g_Engine = nullptr;
 
 	deleteGlobal();
 }

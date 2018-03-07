@@ -33,9 +33,9 @@ CFileADT::CFileADT()
 	VertexBuffer = new IVertexBuffer;
 	VertexBuffer->set(Vertices, EST_PNCT2, 16 * 16 * 145, EMM_STATIC);
 
-	Data_BlendMap =  NULL_PTR;
-	BlendMap = NULL_PTR;
-	FileData = NULL_PTR;
+	Data_BlendMap =  nullptr;
+	BlendMap = nullptr;
+	FileData = nullptr;
 }
 
 CFileADT::~CFileADT()
@@ -130,7 +130,7 @@ bool CFileADT::loadFile( IMemFile* file )
 		}
 		else
 		{
-			//MessageBoxA(NULL_PTR, fourcc, "", 0);
+			//MessageBoxA(nullptr, fourcc, "", 0);
 			ASSERT(false);
 		}
 
@@ -274,7 +274,7 @@ void CFileADT::readChunk( IMemFile* file, u8 row, u8 col, u32 lastpos)
 			u32 nSounds = size / sizeof(ADT::SSoundEmitter);
 			if (nSounds)
 			{
-				ASSERT(currentChunk.sounds == NULL_PTR);
+				ASSERT(currentChunk.sounds == nullptr);
 				currentChunk.sounds = new SChunkSound[nSounds];
 				ADT::SSoundEmitter sound;
 				for (u32 i=0; i<nSounds; ++i)
@@ -942,7 +942,7 @@ bool CFileADT::loadTex( u32 n )
 		}
 		else 
 		{
-			//MessageBoxA(NULL_PTR, fourcc, "", 0);
+			//MessageBoxA(nullptr, fourcc, "", 0);
 			ASSERT(false);
 		}
 
@@ -1119,14 +1119,14 @@ void CFileADT::releaseVideoResources()
 				if (Chunks[i][j].alphamap[k])
 				{
 					Chunks[i][j].alphamap[k]->drop();
-					Chunks[i][j].alphamap[k] = NULL_PTR;
+					Chunks[i][j].alphamap[k] = nullptr;
 				}
 			}
 
 			if(Chunks[i][j].shadowmap)
 			{
 				Chunks[i][j].shadowmap->drop();
-				Chunks[i][j].shadowmap = NULL_PTR;
+				Chunks[i][j].shadowmap = nullptr;
 			}
 		}
 	}
@@ -1196,7 +1196,7 @@ void CFileADT::releaseVideoResources()
 	if (BlendMap)
 	{
 		BlendMap->drop();
-		BlendMap = NULL_PTR;
+		BlendMap = nullptr;
 	}
 
 	VideoBuilt = false;

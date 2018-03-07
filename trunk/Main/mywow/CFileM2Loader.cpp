@@ -9,7 +9,7 @@ IFileM2* CM2Loader::loadM2( IMemFile* file )
 	if (!m2File->loadFile(file))
 	{
 		m2File->drop();	
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	return m2File;

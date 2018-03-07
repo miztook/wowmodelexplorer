@@ -284,7 +284,7 @@ void *Z_TagMalloc( size_t size, int tag ) {
 // 			Com_Error( ERR_FATAL, "Z_Malloc: failed on allocation of %i bytes from the %s zone",
 // 								size, zone == smallzone ? "small" : "main");
 //			ASSERT(false);
-			return NULL_PTR;
+			return nullptr;
 		}
 		if (rover->tag) {
 			base = rover = rover->next;
@@ -340,7 +340,7 @@ bool Z_Free( void *ptr ) {
 	memzone_t *zone;
 	
 	if (!ptr) {
-		//Com_Error( ERR_DROP, "Z_Free: NULL_PTR pointer" );
+		//Com_Error( ERR_DROP, "Z_Free: nullptr pointer" );
 		ASSERT(false);
 		return true;
 	}
@@ -419,7 +419,7 @@ void* Z_Realloc( void* ptr, size_t size, int tag, bool& success )
 	if (!size && ptr)
 	{
 		Z_Free(ptr);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	if (!ptr)
@@ -429,14 +429,14 @@ void* Z_Realloc( void* ptr, size_t size, int tag, bool& success )
 	if (base->tag == 0) {
 		ASSERT(false);
 		success = false;
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	// check the memory trash tester
 	if (  *(int *)((byte *)base + base->size - 4 ) != ZONEID ) {
 		ASSERT(false);
 		success = false;
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	int newsize = (int)size;
@@ -467,7 +467,7 @@ void* Z_Realloc( void* ptr, size_t size, int tag, bool& success )
 	//alloc new memory
 	void* newptr = Z_TagMalloc(size, tag);
 	if (!newptr)
-		return NULL_PTR;
+		return nullptr;
 
 	if (newptr != ptr)
 	{
@@ -552,7 +552,7 @@ void *T_TagMalloc( size_t size, int tag ) {
 // 			Com_Error( ERR_FATAL, "Z_Malloc: failed on allocation of %i bytes from the %s zone",
 // 								size, zone == smallzone ? "small" : "main");
 			ASSERT(false);
-			return NULL_PTR;
+			return nullptr;
 		}
 		if (rover->tag) {
 			base = rover = rover->next;
@@ -608,7 +608,7 @@ bool T_Free( void* ptr ) {
 	memzone_t *zone = tempzone;
 	
 	if (!ptr) {
-		//Com_Error( ERR_DROP, "Z_Free: NULL_PTR pointer" );
+		//Com_Error( ERR_DROP, "Z_Free: nullptr pointer" );
 		ASSERT(false);
 		return true;
 	}
@@ -677,7 +677,7 @@ void* T_Realloc( void* ptr, size_t size, int tag, bool& success )
 	if (!size && ptr)
 	{
 		T_Free(ptr);
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	if (!ptr)
@@ -687,14 +687,14 @@ void* T_Realloc( void* ptr, size_t size, int tag, bool& success )
 	if (base->tag == 0) {
 		ASSERT(false);
 		success = false;
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	// check the memory trash tester
 	if (  *(int *)((byte *)base + base->size - 4 ) != ZONEID ) {
 		ASSERT(false);
 		success = false;
-		return NULL_PTR;
+		return nullptr;
 	}
 
 	size_t newsize = size;
@@ -725,7 +725,7 @@ void* T_Realloc( void* ptr, size_t size, int tag, bool& success )
 	//alloc new memory
 	void* newptr = T_TagMalloc(size, tag);
 	if (!newptr)
-		return NULL_PTR;
+		return nullptr;
 
 	if (newptr != ptr)
 	{

@@ -98,9 +98,9 @@ public:
 	class record
 	{
 	public:
-		static record EMPTY() { static record m(NULL_PTR, -1, NULL_PTR, 0); return m; }
+		static record EMPTY() { static record m(nullptr, -1, nullptr, 0); return m; }
 
-		bool isValid() const { return _ofs != NULL_PTR; }
+		bool isValid() const { return _ofs != nullptr; }
 
 		u32 getID() const
 		{

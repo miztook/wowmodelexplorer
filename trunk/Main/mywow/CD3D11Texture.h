@@ -24,7 +24,7 @@ public:
 	bool createRTTexture( const dimension2du& size, ECOLOR_FORMAT format, u32 antialias, u32 quality );
 	bool createDSTexture( const dimension2du& size, ECOLOR_FORMAT format, u32 antialias, u32 quality );
 
-	virtual bool isValid() const { return DXTexture!=NULL_PTR; }
+	virtual bool isValid() const { return DXTexture!=nullptr; }
 
 	//video memory
 	virtual bool createVideoTexture();

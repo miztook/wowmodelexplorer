@@ -6,7 +6,7 @@
 
 CBLPImage::CBLPImage()
 {
-	FileData = NULL_PTR;
+	FileData = nullptr;
 }
 
 CBLPImage::~CBLPImage()
@@ -192,13 +192,13 @@ bool CBLPImage::fromImageData( const u8* src, const dimension2du& size, ECOLOR_F
 const void* CBLPImage::getMipmapData( u32 level ) const
 {
 	if (level >= 16)
-		return NULL_PTR;
+		return nullptr;
 
 	SBLPHeader* header = reinterpret_cast<SBLPHeader*>(FileData);
 	if (header->_mipmapSize[level])
 		return FileData + header->_mipmapOfs[level];
 
-	return NULL_PTR;
+	return nullptr;
 }
 
 bool CBLPImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32 height )

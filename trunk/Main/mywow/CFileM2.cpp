@@ -4,7 +4,7 @@
 
 CFileM2::CFileM2()
 {
-	FileData = NULL_PTR;
+	FileData = nullptr;
 
 	NumTextures = 0;
 
@@ -345,7 +345,7 @@ void CFileM2::loadTextures()
 		}
 		else
 		{
-			Textures[i] = NULL_PTR;
+			Textures[i] = nullptr;
 		}
 	}
 
@@ -459,7 +459,7 @@ void CFileM2::loadBones()
 // 		const c8* animName = g_Engine->getWowDatabase()->getAnimationName(Animations[i].animID);
 // 		if (strcmp(animName, "Stand") != 0)
 // 		{
-// 			animMpqs[i] = NULL_PTR;
+// 			animMpqs[i] = nullptr;
 // 			continue;
 // 		}
 
@@ -782,7 +782,7 @@ wow_m2Action* CFileM2::getAction( const c8* name ) const
 	{
 		return itr->second;
 	}
-	return NULL_PTR;
+	return nullptr;
 }
 
 void CFileM2::clearAllActions()
@@ -840,8 +840,8 @@ u32 CFileM2::getSkinIndex(u32 race, u32 gender, bool isHD)
 }
 
 CFileSkin::CFileSkin()
-	: Geosets(NULL_PTR), Indices(NULL_PTR), AVertices(NULL_PTR), NumIndices(0), NumBoneVertices(0),
-	NumGeosets(0), NumTexUnit(0), GVertexBuffer(NULL_PTR), AVertexBuffer(NULL_PTR), IndexBuffer(NULL_PTR)
+	: Geosets(nullptr), Indices(nullptr), AVertices(nullptr), NumIndices(0), NumBoneVertices(0),
+	NumGeosets(0), NumTexUnit(0), GVertexBuffer(nullptr), AVertexBuffer(nullptr), IndexBuffer(nullptr)
 { 
 	GVertexBuffer = new IVertexBuffer(false);
 	AVertexBuffer = new IVertexBuffer(false);

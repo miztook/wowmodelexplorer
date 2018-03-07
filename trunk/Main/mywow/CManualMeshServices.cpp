@@ -18,7 +18,7 @@ IMesh* CManualMeshServices::getMesh( const c8* name )
 {
 	TMeshMap::const_iterator i = MeshMap.find(name);
 	if (i == MeshMap.end())
-		return NULL_PTR;
+		return nullptr;
 
 	return i->second;
 }

@@ -40,7 +40,7 @@ CGestureReader::CGestureReader()
 	memset(CacheButtonDown, 0, sizeof(CacheButtonDown));
 
 	HWND hwnd = g_Engine->getWindowInfo().hwnd;
-	::SetTimer(hwnd, (UINT_PTR)hwnd, 20, NULL_PTR);
+	::SetTimer(hwnd, (UINT_PTR)hwnd, 20, nullptr);
 }
 
 CGestureReader::~CGestureReader()

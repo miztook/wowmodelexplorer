@@ -44,10 +44,10 @@ public:
 	};
 
 public:
-	virtual void drawA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = NULL_PTR) = 0;
-	virtual void drawW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = NULL_PTR) = 0;
-	virtual void addTextA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = NULL_PTR, bool bVertical = false) = 0;
-	virtual void addTextW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = NULL_PTR, bool bVertical = false) = 0;
+	virtual void drawA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr) = 0;
+	virtual void drawW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr) = 0;
+	virtual void addTextA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr, bool bVertical = false) = 0;
+	virtual void addTextW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr, bool bVertical = false) = 0;
 	virtual void flushText() = 0;
 
 	virtual dimension2du getTextExtent(const char* utf8text, int nCharCount = -1, bool vertical = false) = 0;	

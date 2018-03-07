@@ -25,7 +25,7 @@ ITexture* CSpecialTextureServices::getTexture( E_SPECIAL_TEXTURES tex ) const
 {
 	s32 idx = (s32)tex;
 	if (idx >= EST_TEXTURE_COUNT)
-		return NULL_PTR;
+		return nullptr;
 
 	return Textures[idx];
 }

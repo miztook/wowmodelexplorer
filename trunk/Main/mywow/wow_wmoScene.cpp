@@ -160,7 +160,7 @@ void wow_wmoScene::loadDoodadSceneNodes()
 		string256 modelpath = pWmoDoodad->name;
 		modelpath.changeExt("mdx", "m2");
 
-		IM2SceneNode* node = NULL_PTR;
+		IM2SceneNode* node = nullptr;
 		IFileM2* pFileM2 = g_Engine->getResourceLoader()->loadM2(modelpath.c_str());
 		if(pFileM2)
 		{
