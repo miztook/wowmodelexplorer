@@ -35,14 +35,14 @@ void CSpecialTextureServices::loadTextures()
 	ITexture* tex = g_Engine->getResourceLoader()->loadTexture(texArmorReflect, true);
 	if (tex)
 	{
-		tex->createVideoTexture();
+		IVideoResource::buildVideoResources(tex);
 		Textures[EST_ARMORREFLECT] = tex;
 	}
 
 	tex = g_Engine->getResourceLoader()->loadTexture(texArmorReflectRainbow, true);
 	if (tex)
 	{
-		tex->createVideoTexture();
+		IVideoResource::buildVideoResources(tex);
 		Textures[EST_ARMORREFLECT_RAINBOW] = tex;
 	}
 }

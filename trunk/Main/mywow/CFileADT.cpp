@@ -1163,7 +1163,7 @@ bool CFileADT::buildVideoResources()
 	for (u32 i=0; i<Textures.size(); ++i)
 	{
 		if(Textures[i].texture)
-			Textures[i].texture->createVideoTexture();
+			IVideoResource::buildVideoResources(Textures[i].texture);
 	}
 
 	g_Engine->getHardwareBufferServices()->createHardwareBuffer(VertexBuffer);
@@ -1188,7 +1188,7 @@ void CFileADT::releaseVideoResources()
 	for (u32 i=0; i<Textures.size(); ++i)
 	{
 		if(Textures[i].texture && Textures[i].texture->getReferenceCount() == 2)
-			Textures[i].texture->releaseVideoTexture();
+			IVideoResource::releaseVideoResources(Textures[i].texture);
 	}
 
 	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(VertexBuffer);

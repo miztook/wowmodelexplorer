@@ -6,7 +6,7 @@ SGlobal g_Globals;
 
 void initGlobal()
 {
-	INIT_LOCK(&g_Globals.refCS);
+//	INIT_LOCK(&g_Globals.refCS);
 	INIT_LOCK(&g_Globals.allocatorCS);
 	INIT_LOCK(&g_Globals.tempCS);
 
@@ -31,7 +31,7 @@ void deleteGlobal()
 
 	DESTROY_LOCK(&g_Globals.tempCS);
 	DESTROY_LOCK(&g_Globals.allocatorCS);
-	DESTROY_LOCK(&g_Globals.refCS);
+//	DESTROY_LOCK(&g_Globals.refCS);
 }
 
 void createEngine(const SEngineInitParam& param, const SWindowInfo& wndInfo)

@@ -65,7 +65,7 @@ bool COpenGLRenderTarget::writeToRTTexture()
 void COpenGLRenderTarget::onLost()
 {
 	if (MultiSample)
-		RTCopyTexture->releaseVideoTexture();
+		RTCopyTexture->drop();
 
 	releaseVideoTexture();
 }

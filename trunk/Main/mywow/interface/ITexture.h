@@ -2,6 +2,7 @@
 
 #include "core.h"
 #include "IResourceCache.h"
+#include "IVideoResource.h"
 
 enum E_TEXTURE_TYPE
 {
@@ -12,19 +13,21 @@ enum E_TEXTURE_TYPE
 	ETT_COUNT
 };
 
-class ITexture : public IReferenceCounted<ITexture>
+class ITexture : public IReferenceCounted<ITexture>, public IVideoResource
 {
 protected:
-	virtual void onRemove() 
-	{
-		releaseVideoTexture();
-	}
 	virtual ~ITexture() { }
 
 public:
-	ITexture() : TextureSize(0,0), ColorFormat(ECF_UNKNOWN), Type(ETT_IMAGE), 
-		SampleCount(1), HasMipMaps(false), VideoBuilt(false), NumMipmaps(1) {}
-	
+	explicit ITexture(bool mipmap) : HasMipMaps(mipmap), TextureSize(0, 0), Type(ETT_IMAGE), VideoBuilt(false)
+	{
+		ColorFormat = ECF_UNKNOWN;
+		SampleCount = 0;
+		NumMipmaps = 1;
+	}
+public:
+	virtual bool isValid() const = 0;
+
 public:
 	const dimension2du& getSize() const { return TextureSize; }
 	ECOLOR_FORMAT getColorFormat() const { return ColorFormat; }
@@ -33,18 +36,12 @@ public:
 	u8 getSampleCount() const { return SampleCount; }
 	E_TEXTURE_TYPE getType() const { return (E_TEXTURE_TYPE)Type; }
 
-	virtual bool isValid() const = 0;
-
-	//video memory
-	virtual bool createVideoTexture() = 0;
-	virtual void releaseVideoTexture() = 0;
-
 protected:
 	dimension2du	TextureSize;
 	ECOLOR_FORMAT	ColorFormat;
 	u32		NumMipmaps;
 	u8	Type;
 	u8	SampleCount;
-	bool	HasMipMaps;	
-	bool VideoBuilt;
+	const bool	HasMipMaps;	
+	bool	VideoBuilt;
 };

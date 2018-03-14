@@ -12,7 +12,6 @@ class IMemFile;
 class IPVRImage : public IReferenceCounted<IPVRImage>
 {
 protected:
-	virtual void onRemove() {}
 	virtual ~IPVRImage() {}
 
 public:

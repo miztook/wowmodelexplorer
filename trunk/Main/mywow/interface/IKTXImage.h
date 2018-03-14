@@ -11,7 +11,6 @@ class IMemFile;
 class IKTXImage : public IReferenceCounted<IKTXImage>
 {
 protected:
-	virtual void onRemove() {}
 	virtual ~IKTXImage() {}
 
 public:

@@ -1078,7 +1078,7 @@ void wow_m2instance::setReplaceTexture( ETextureTypes type, ITexture* texture )
 
 	if (ReplaceTextures[idx])
 	{
-		ReplaceTextures[idx]->createVideoTexture();
+		IVideoResource::buildVideoResources(ReplaceTextures[idx]);
 	}
 }
 

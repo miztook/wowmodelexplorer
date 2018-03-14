@@ -118,7 +118,7 @@ void CD3D9RenderTarget::releaseVideoTexture()
 
 void CD3D9RenderTarget::onLost()
 {
-	RTCopyTexture->releaseVideoTexture();
+	RTCopyTexture->drop();
 	
 	releaseVideoTexture();
 }

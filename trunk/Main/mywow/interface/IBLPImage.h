@@ -12,7 +12,6 @@ class IImage;
 class IBLPImage : public IReferenceCounted<IBLPImage>
 {
 protected:
-	virtual void onRemove() {}
 	virtual ~IBLPImage() {}
 
 public:
