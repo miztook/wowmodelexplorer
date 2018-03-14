@@ -26,13 +26,14 @@ public:
 	bool createDSTexture( const dimension2du& size );
 
 	virtual bool isValid() const { return DXTexture!=nullptr; }
-
-	//video memory
-	virtual bool createVideoTexture();
-	virtual void releaseVideoTexture();
-
+	
 	//
-	 IDirect3DTexture9*  getDXTexture() const { return DXTexture; }
+	IDirect3DTexture9*  getDXTexture() const { return DXTexture; }
+
+protected:
+	virtual bool buildVideoResources();
+	virtual void releaseVideoResources();
+	virtual bool hasVideoBuilt() const { return VideoBuilt; }
 
 private:
 	bool createTexture( const dimension2du& size, ECOLOR_FORMAT format, u32 numMipmap );

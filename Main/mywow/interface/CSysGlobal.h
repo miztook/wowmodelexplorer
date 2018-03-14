@@ -4,7 +4,7 @@
 
 struct SGlobal
 {
-	lock_type refCS;
+//	lock_type refCS;
 	lock_type allocatorCS;
 	lock_type tempCS;
 

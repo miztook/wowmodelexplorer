@@ -26,6 +26,7 @@
 #include "IRibbonEmitterServices.h"
 #include "IMeshDecalServices.h"
 #include "ITerrainServices.h"
+#include "IVideoResource.h"
 
 #include "IManualMeshServices.h"
 #include "IManualTextureServices.h"

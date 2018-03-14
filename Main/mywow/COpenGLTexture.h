@@ -26,11 +26,12 @@ public:
 
 	virtual bool isValid() const { return GLTexture != 0; }
 
-	//video memory
-	virtual bool createVideoTexture();
-	virtual void releaseVideoTexture();
+	GLuint getGLTexture() const { return GLTexture; }
 
-	 GLuint getGLTexture() const { return GLTexture; }
+protected:
+	virtual bool buildVideoResources();
+	virtual void releaseVideoResources();
+	virtual bool hasVideoBuilt() const { return VideoBuilt; }
 
 private:
 	bool createTexture( const dimension2du& size, ECOLOR_FORMAT format, bool mipmap = true );

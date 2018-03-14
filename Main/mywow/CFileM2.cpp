@@ -670,7 +670,7 @@ bool CFileM2::buildVideoResources()
 	for (u32 i=0; i<NumTextures; ++i)
 	{
 		if (Textures[i])
-			Textures[i]->createVideoTexture();
+			IVideoResource::buildVideoResources(Textures[i]);
 	}
 
 	//gvertex buffer
@@ -703,7 +703,7 @@ void CFileM2::releaseVideoResources()
 	for (u32 i=0; i<NumTextures; ++i)
 	{
 		if (Textures[i] && Textures[i]->getReferenceCount()==2)		//refcount==2说明此时纹理只被当前m2文件使用，可以release
-			Textures[i]->releaseVideoTexture();
+			IVideoResource::releaseVideoResources(Textures[i]);
 	}
 
 	if (Skin->IndexBuffer)

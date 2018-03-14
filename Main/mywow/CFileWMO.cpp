@@ -478,10 +478,10 @@ bool CFileWMO::buildVideoResources()
 	for (u32 i=0; i<Header.nMaterials; ++i)
 	{
 		if (Materials[i].texture0)
-			Materials[i].texture0->createVideoTexture();
+			IVideoResource::buildVideoResources(Materials[i].texture0);
 
 		if (Materials[i].texture1)
-			Materials[i].texture1->createVideoTexture();
+			IVideoResource::buildVideoResources(Materials[i].texture1);
 	}
 
 	if(VertexBuffer)
@@ -506,10 +506,10 @@ void CFileWMO::releaseVideoResources()
 	for (u32 i=0; i<Header.nMaterials; ++i)
 	{
 		if (Materials[i].texture0 && Materials[i].texture0->getReferenceCount() == 2)
-			Materials[i].texture0->releaseVideoTexture();
+			IVideoResource::releaseVideoResources(Materials[i].texture0);
 
 		if (Materials[i].texture1 && Materials[i].texture1->getReferenceCount() == 2)
-			Materials[i].texture1->releaseVideoTexture();
+			IVideoResource::releaseVideoResources(Materials[i].texture1);
 	}
 
 	if(VertexBuffer)

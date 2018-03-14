@@ -25,7 +25,6 @@ struct STile
 class IFileWDT : public IReferenceCounted<IFileWDT>
 {
 protected:
-	virtual void onRemove() {}
 	virtual ~IFileWDT() { }
 
 public:

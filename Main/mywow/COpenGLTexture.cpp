@@ -13,14 +13,14 @@
 #include "CBlit.h"
 
 COpenGLTexture::COpenGLTexture( bool mipmap )
-	: GLTexture(0)
+: ITexture(mipmap), GLTexture(0)
 {
-	HasMipMaps = mipmap;
+
 }
 
 COpenGLTexture::~COpenGLTexture()
 {
-	
+	releaseVideoResources();
 }
 
 bool COpenGLTexture::createEmptyTexture( const dimension2du& size, ECOLOR_FORMAT format )
@@ -33,7 +33,8 @@ bool COpenGLTexture::createEmptyTexture( const dimension2du& size, ECOLOR_FORMAT
 		return false;
 	}
 
-	HasMipMaps = false;
+	ASSERT(!HasMipMaps);
+
 	NumMipmaps = 1;
 	TextureSize = size;
 	ColorFormat = format;
@@ -147,8 +148,9 @@ bool COpenGLTexture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT fo
 		return false;
 	}
 
+	ASSERT(!HasMipMaps);
+
 	Type = ETT_RENDERTARGET;
-	HasMipMaps = false;
 	NumMipmaps = 1;
 	TextureSize = size;
 	ColorFormat = format;
@@ -194,7 +196,7 @@ bool COpenGLTexture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT fo
 	return true;
 }
 
-bool COpenGLTexture::createVideoTexture()
+bool COpenGLTexture::buildVideoResources()
 {
 	//CLock lock(&g_Globals.textureCS);
 	ASSERT(Type == ETT_IMAGE);
@@ -242,7 +244,7 @@ bool COpenGLTexture::createVideoTexture()
 	return true;
 }
 
-void COpenGLTexture::releaseVideoTexture()
+void COpenGLTexture::releaseVideoResources()
 {
 	if (VideoBuilt)
 	{

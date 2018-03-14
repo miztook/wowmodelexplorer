@@ -149,10 +149,10 @@ bool CD3D11RenderTarget::createViews( DXGI_FORMAT colorFmt, DXGI_FORMAT depthFmt
 
 void CD3D11RenderTarget::onLost()
 {
-	DSTexture->releaseVideoTexture();
-	RTTexture->releaseVideoTexture();
+	RTCopyTexture->drop();
 
-	RTCopyTexture->releaseVideoTexture();
+	DSTexture->drop();
+	RTTexture->drop();
 
 	releaseVideoTexture();
 }

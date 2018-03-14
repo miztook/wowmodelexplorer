@@ -20,40 +20,30 @@ public:
 	//
 	IReferenceCounted() : ReferenceCounter(1), Cache(nullptr)
 	{
-		
+		ASSERT(ReferenceCounter.is_lock_free());
 	}
 	virtual ~IReferenceCounted(){}
 
 	//
 	void grab()
 	{ 
-		BEGIN_LOCK(&g_Globals.refCS);
 		++ReferenceCounter;
-		END_LOCK(&g_Globals.refCS);
 	}
 
 	bool drop()
 	{
 		s32 refCount;
 
-		BEGIN_LOCK(&g_Globals.refCS);
-
 		ASSERT( ReferenceCounter>0 );
 		--ReferenceCounter;
 		refCount = ReferenceCounter;
 
-		END_LOCK(&g_Globals.refCS);
-
 		if (refCount == 1 && Cache)			
 		{
-			onRemove();
 			Cache->removeFromCache(static_cast<T*>(this));	
 		}
 		else if ( 0 == refCount )
 		{
-			if (!Cache)
-				onRemove();
-
 			delete this;
 			return true;
 		}
@@ -65,9 +55,7 @@ public:
 	{ 
 		s32 refCount;
 
-		BEGIN_LOCK(&g_Globals.refCS);
 		refCount = ReferenceCounter;
-		END_LOCK(&g_Globals.refCS);
 
 		return refCount; 
 	}
@@ -81,12 +69,9 @@ public:
 	IResourceCache<T>* getCache() const { return Cache; }
 	void setCache(IResourceCache<T>* cache) { Cache = cache; }
 
-protected:
-	virtual void onRemove() = 0;
-
 private:
 	string256	FileName;
-	volatile s32 ReferenceCounter;
+	atomic_type<int> ReferenceCounter;
 	IResourceCache<T>* Cache;	
 };
 

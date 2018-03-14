@@ -11,17 +11,16 @@
 #include "CBlit.h"
 
 CD3D9Texture::CD3D9Texture( bool mipmap )
-	: DXTexture(nullptr)
+  : ITexture(mipmap), DXTexture(nullptr)
 {
-	HasMipMaps = mipmap;
 }
 
 CD3D9Texture::~CD3D9Texture()
 {
-	
+	releaseVideoResources();
 }
 
-bool CD3D9Texture::createVideoTexture()
+bool CD3D9Texture::buildVideoResources()
 {
 	//CLock lock(&g_Globals.textureCS);
 	ASSERT(Type == ETT_IMAGE);
@@ -68,7 +67,7 @@ bool CD3D9Texture::createVideoTexture()
 	return true;
 }
 
-void CD3D9Texture::releaseVideoTexture()
+void CD3D9Texture::releaseVideoResources()
 {
 	if (VideoBuilt)
 	{
@@ -88,7 +87,8 @@ bool CD3D9Texture::createEmptyTexture( const dimension2du& size, ECOLOR_FORMAT f
 		return false;
 	}
 
-	HasMipMaps = false;
+	ASSERT(!HasMipMaps);
+
 	NumMipmaps = 1;
 	TextureSize = size;
 	ColorFormat = format;
@@ -123,9 +123,9 @@ bool CD3D9Texture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT form
 		return false;
 	}
 
-	Type = ETT_RENDERTARGET;
+	ASSERT(!HasMipMaps);
 
-	HasMipMaps = false;
+	Type = ETT_RENDERTARGET;
 	NumMipmaps = 1;
 	TextureSize = size;
 	ColorFormat = format;
@@ -167,12 +167,13 @@ bool CD3D9Texture::createDSTexture( const dimension2du& size )
 		return false;
 	}
 	
+	ASSERT(!HasMipMaps);
+
 	Type = ETT_DEPTHSTENCIL;
 
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
 	IDirect3DDevice9* device = (IDirect3DDevice9*)driver->pID3DDevice;
-	
-	HasMipMaps = false;
+
 	NumMipmaps = 1;
 	TextureSize = size;
 	ColorFormat = ECF_UNKNOWN;

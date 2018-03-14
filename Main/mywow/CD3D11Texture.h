@@ -26,12 +26,13 @@ public:
 
 	virtual bool isValid() const { return DXTexture!=nullptr; }
 
-	//video memory
-	virtual bool createVideoTexture();
-	virtual void releaseVideoTexture();
-
 	ID3D11Texture2D* getDXTexture() const { return DXTexture; }
 	ID3D11ShaderResourceView* getShaderResourceView() const { return SRView; }
+
+protected:
+	virtual bool buildVideoResources();
+	virtual void releaseVideoResources();
+	virtual bool hasVideoBuilt() const { return VideoBuilt; }
 
 private:
 	bool createViews(DXGI_FORMAT format, u32 mipmapLevels, bool multisample);

@@ -368,15 +368,6 @@
     <ClInclude Include="CSpecialTextureServices.h">
       <Filter>implementation\video</Filter>
     </ClInclude>
-    <ClInclude Include="CDxInputReader.h">
-      <Filter>implementation\input</Filter>
-    </ClInclude>
-    <ClInclude Include="CX2AudioPlayer.h">
-      <Filter>implementation\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="CX2Sound.h">
-      <Filter>implementation\audio</Filter>
-    </ClInclude>
     <ClInclude Include="COpenGLHelper.h">
       <Filter>implementation\video\OpenGL</Filter>
     </ClInclude>
@@ -998,6 +989,9 @@
     <ClInclude Include="TGAImageWriter.h">
       <Filter>implementation\image\writer</Filter>
     </ClInclude>
+    <ClInclude Include="interface\IVideoResource.h">
+      <Filter>interface\video</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1305,15 +1299,6 @@
     </ClCompile>
     <ClCompile Include="wow_tileScene.cpp">
       <Filter>wow\tile</Filter>
-    </ClCompile>
-    <ClCompile Include="CDxInputReader.cpp">
-      <Filter>implementation\input</Filter>
-    </ClCompile>
-    <ClCompile Include="CX2AudioPlayer.cpp">
-      <Filter>implementation\audio</Filter>
-    </ClCompile>
-    <ClCompile Include="CX2Sound.cpp">
-      <Filter>implementation\audio</Filter>
     </ClCompile>
     <ClCompile Include="COpenGLHelper.cpp">
       <Filter>implementation\video\OpenGL</Filter>

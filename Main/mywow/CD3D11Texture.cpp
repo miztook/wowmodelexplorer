@@ -11,16 +11,16 @@
 
 
 CD3D11Texture::CD3D11Texture( bool mipmap )
-	: DXTexture(nullptr), SRView(nullptr)
+	: ITexture(mipmap), DXTexture(nullptr), SRView(nullptr)
 {
-	HasMipMaps = mipmap;
+	
 }
 
 CD3D11Texture::~CD3D11Texture()
 {
 }
 
-bool CD3D11Texture::createVideoTexture()
+bool CD3D11Texture::buildVideoResources()
 {
 	//CLock lock(&g_Globals.textureCS);
 	ASSERT(Type == ETT_IMAGE);
@@ -52,7 +52,7 @@ bool CD3D11Texture::createVideoTexture()
 	return true;
 }
 
-void CD3D11Texture::releaseVideoTexture()
+void CD3D11Texture::releaseVideoResources()
 {
 	//CLock lock(&g_Globals.textureCS);
 
@@ -119,7 +119,8 @@ bool CD3D11Texture::createEmptyTexture( const dimension2du& size, ECOLOR_FORMAT 
 		return false;
 	}
 
-	HasMipMaps = false;
+	ASSERT(!HasMipMaps);
+
 	NumMipmaps = 1;
 	TextureSize = size;
 	ColorFormat = format;
@@ -183,8 +184,8 @@ bool CD3D11Texture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT for
 		return false;
 	}
 
+	ASSERT(!HasMipMaps);
 	Type = ETT_RENDERTARGET;
-	HasMipMaps = false;
 	NumMipmaps = 1;
 	TextureSize = size;
 	ColorFormat = format;
@@ -240,8 +241,8 @@ bool CD3D11Texture::createDSTexture( const dimension2du& size, ECOLOR_FORMAT for
 		return false;
 	}
 
+	ASSERT(!HasMipMaps);
 	Type = ETT_DEPTHSTENCIL;
-	HasMipMaps = false;
 	NumMipmaps = 1;
 	TextureSize = size;
 	ColorFormat = format;

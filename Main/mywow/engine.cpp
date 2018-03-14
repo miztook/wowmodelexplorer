@@ -34,8 +34,6 @@
 
 #ifdef MW_PLATFORM_WINDOWS
 #include "CDSAudioPlayer.h"
-#include "CX2AudioPlayer.h"
-#include "CDxInputReader.h"
 #endif
 
 #include "CInputReader.h"

@@ -456,7 +456,6 @@
     <ClInclude Include="CGeometryCreator.h" />
     <ClInclude Include="CImage.h" />
     <ClInclude Include="CImageLoaderBLP.h" />
-    <ClInclude Include="CDxInputReader.h" />
     <ClInclude Include="CM2SceneNode.h" />
     <ClInclude Include="CManualMeshServices.h" />
     <ClInclude Include="CMapEnvironment.h" />
@@ -478,8 +477,6 @@
     <ClInclude Include="CWmoRenderer.h" />
     <ClInclude Include="CWMOSceneNode.h" />
     <ClInclude Include="CWriteFile.h" />
-    <ClInclude Include="CX2AudioPlayer.h" />
-    <ClInclude Include="CX2Sound.h" />
     <ClInclude Include="interface\CFPSCounter.h" />
     <ClInclude Include="interface\CMemDbg.h" />
     <ClInclude Include="interface\CMiniDump.h" />
@@ -499,6 +496,7 @@
     <ClInclude Include="interface\IGestureReader.h" />
     <ClInclude Include="interface\IGestureRecognizer.h" />
     <ClInclude Include="interface\IInputListener.h" />
+    <ClInclude Include="interface\IVideoResource.h" />
     <ClInclude Include="interface\strutil.h" />
     <ClInclude Include="interface\SWindowInfo.h" />
     <ClInclude Include="interface\ddslib.h" />
@@ -749,7 +747,6 @@
     <ClCompile Include="CGeometryCreator.cpp" />
     <ClCompile Include="CImage.cpp" />
     <ClCompile Include="CImageLoaderBLP.cpp" />
-    <ClCompile Include="CDxInputReader.cpp" />
     <ClCompile Include="CM2SceneNode.cpp" />
     <ClCompile Include="CManualMeshServices.cpp" />
     <ClCompile Include="CMapEnvironment.cpp" />
@@ -771,8 +768,6 @@
     <ClCompile Include="CWmoRenderer.cpp" />
     <ClCompile Include="CWMOSceneNode.cpp" />
     <ClCompile Include="CWriteFile.cpp" />
-    <ClCompile Include="CX2AudioPlayer.cpp" />
-    <ClCompile Include="CX2Sound.cpp" />
     <ClCompile Include="ddslib.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="enginesetting.cpp" />
