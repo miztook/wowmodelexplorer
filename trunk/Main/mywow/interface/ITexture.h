@@ -22,7 +22,7 @@ public:
 	explicit ITexture(bool mipmap) : HasMipMaps(mipmap), TextureSize(0, 0), Type(ETT_IMAGE), VideoBuilt(false)
 	{
 		ColorFormat = ECF_UNKNOWN;
-		SampleCount = 0;
+		SampleCount = 1;
 		NumMipmaps = 1;
 	}
 public:

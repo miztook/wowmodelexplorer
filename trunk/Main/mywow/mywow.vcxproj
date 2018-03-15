@@ -794,6 +794,7 @@
     </ClCompile>
     <ClCompile Include="stormlib_memory.cpp" />
     <ClCompile Include="TGAImageWriter.cpp" />
+    <ClCompile Include="VertexIndexBuffer.cpp" />
     <ClCompile Include="wowEnvironment.cpp" />
     <ClCompile Include="wow_m2Action.cpp" />
     <ClCompile Include="wow_m2FSM.cpp" />
