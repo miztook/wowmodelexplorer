@@ -1,8 +1,10 @@
 #pragma once
 
 #include "base.h"
+#include "linklist.h"
+#include "IVideoResource.h"
 
-class IVertexBuffer
+class IVertexBuffer : public IVideoResource
 {
 private:
 	DISALLOW_COPY_AND_ASSIGN(IVertexBuffer);
@@ -37,6 +39,11 @@ public:
 			delete[] Vertices;
 	}
 
+protected:
+	virtual bool buildVideoResources() override final;
+	virtual void releaseVideoResources() override final;
+	virtual bool hasVideoBuilt() const override final { return HWLink != nullptr; }
+
 public:
 	void set(void* vertices, E_STREAM_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping);
 
@@ -64,7 +71,7 @@ inline void IVertexBuffer::set( void* vertices, E_STREAM_TYPE type, u32 size, E_
 	Mapping = mapping;
 }
 
-class IIndexBuffer
+class IIndexBuffer : public IVideoResource
 {
 private:
 	DISALLOW_COPY_AND_ASSIGN(IIndexBuffer);
@@ -103,6 +110,12 @@ public:
 	void set(void* indices, E_INDEX_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping);
 
 	void setClear(bool c) { Clear = c; }
+
+protected:
+	virtual bool buildVideoResources() override final;
+	virtual void releaseVideoResources() override final;
+	virtual bool hasVideoBuilt() const override final { return HWLink != nullptr; }
+
 public:
 	LENTRY		Link;		//
 public:
