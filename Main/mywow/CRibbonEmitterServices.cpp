@@ -25,7 +25,7 @@ void CRibbonEmitterServices::createBuffer()
 
 	//vertex buffer
 	Vertices = new SVertex_PCT[vsize];
-	BufferParam.vbuffer0 = new IVertexBuffer;
+	BufferParam.vbuffer0 = new IVertexBuffer(false);
 	BufferParam.vbuffer0->set(Vertices, EST_PCT, vsize, EMM_DYNAMIC);
 	g_Engine->getHardwareBufferServices()->createHardwareBuffers(BufferParam);
 }

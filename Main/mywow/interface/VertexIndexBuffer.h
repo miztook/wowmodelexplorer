@@ -10,17 +10,6 @@ private:
 	DISALLOW_COPY_AND_ASSIGN(IVertexBuffer);
 
 public:
-	IVertexBuffer()
-	{
-		HWLink = nullptr;
-		Clear = true;
-		Vertices = nullptr;
-		Type = EST_P;
-		Size = 0;
-		Mapping = EMM_STATIC;
-
-		InitializeListHead(&Link);
-	}
 	explicit IVertexBuffer(bool clear)
 		: Clear(clear)
 	{
@@ -35,6 +24,8 @@ public:
 
 	virtual ~IVertexBuffer() 
 	{
+		releaseVideoResources();
+
 		if (Clear)
 			delete[] Vertices;
 	}
@@ -45,14 +36,27 @@ protected:
 	virtual bool hasVideoBuilt() const override final { return HWLink != nullptr; }
 
 public:
-	void set(void* vertices, E_STREAM_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping);
+	bool updateHWBuffer(u32 size);
 
-	void setClear(bool c) { Clear = c; }
+	template <class T>
+	void set(const T* vertices, E_VERTEX_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping)
+	{
+		//ASSERT(type == T::TYPE());
+
+		Vertices = vertices;
+		Type = type;
+		Size = size;
+
+		Mapping = mapping;
+	}
+
+public:
+	void set(void* vertices, E_STREAM_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping);
 
 public:
 	LENTRY		Link;		
 
-	void*	Vertices;
+	const void*	Vertices;
 	void*	HWLink;
 	u32  Size;
 	E_STREAM_TYPE		Type;
@@ -77,17 +81,6 @@ private:
 	DISALLOW_COPY_AND_ASSIGN(IIndexBuffer);
 
 public:
-	IIndexBuffer() 
-	{
-		HWLink = nullptr;
-		Clear = true;
-		Indices = nullptr;
-		Type = EIT_16BIT;
-		Size = 0;
-		Mapping = EMM_STATIC;
-
-		InitializeListHead(&Link);
-	}
 	explicit IIndexBuffer(bool clear) 
 		: Clear(clear) 
 	{
@@ -102,6 +95,8 @@ public:
 
 	virtual ~IIndexBuffer() 
 	{
+		releaseVideoResources();
+
 		if (Clear)
 			delete[] Indices;
 	}
@@ -109,17 +104,30 @@ public:
 public:
 	void set(void* indices, E_INDEX_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping);
 
-	void setClear(bool c) { Clear = c; }
-
 protected:
 	virtual bool buildVideoResources() override final;
 	virtual void releaseVideoResources() override final;
 	virtual bool hasVideoBuilt() const override final { return HWLink != nullptr; }
 
 public:
+	bool updateHWBuffer(u32 size);
+
+	template <class T>
+	void set(const T* indices, E_INDEX_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping)
+	{
+		ASSERT((sizeof(T) == 2 && type == EIT_16BIT) || (sizeof(T) == 4 && type == EIT_32BIT));
+
+		Indices = indices;
+		Type = type;
+		Size = size;
+
+		Mapping = mapping;
+	}
+
+public:
 	LENTRY		Link;		//
 public:
-	void*	Indices;
+	const void*	Indices;
 	void*	HWLink;
 	u32  Size;
 	E_INDEX_TYPE		Type;
