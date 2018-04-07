@@ -13,8 +13,8 @@ public:
 
 public:
 
-	IIndexBuffer* getLowResIndexBuffer() const { return LowResIndexBuffer; }
-	IIndexBuffer* getHighResIndexBuffer() const { return HighResIndexBuffer; }
+	CIndexBuffer* getLowResIndexBuffer() const { return LowResIndexBuffer; }
+	CIndexBuffer* getHighResIndexBuffer() const { return HighResIndexBuffer; }
 
 	u32 getVertexCount() const { return 9*9 + 8*8; }
 	u32 getLowResPrimCount() const { return 8*8*2; } //{ return 4; }
@@ -27,6 +27,6 @@ private:
 	int indexMapBuf(int x, int y) { return ((y+1)/2)*9 + (y/2)*8 + x; }
 
 private:
-	IIndexBuffer*		LowResIndexBuffer;
-	IIndexBuffer*		HighResIndexBuffer;
+	CIndexBuffer*		LowResIndexBuffer;
+	CIndexBuffer*		HighResIndexBuffer;
 };

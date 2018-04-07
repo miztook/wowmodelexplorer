@@ -24,9 +24,9 @@ void CRibbonEmitterServices::createBuffer()
 	u32 vsize = BufferQuota * 2;							//每个segment 2 个顶点
 
 	//vertex buffer
-	Vertices = new SVertex_PCT[vsize];
-	BufferParam.vbuffer0 = new IVertexBuffer(false);
-	BufferParam.vbuffer0->set(Vertices, EST_PCT, vsize, EMM_DYNAMIC);
+	Vertices.resize(vsize);
+	BufferParam.vbuffer0 = new CVertexBuffer(false);
+	BufferParam.vbuffer0->set(Vertices.data(), EST_PCT, vsize, EMM_DYNAMIC);
 	g_Engine->getHardwareBufferServices()->createHardwareBuffers(BufferParam);
 }
 

@@ -14,8 +14,4 @@ public:
 	virtual ~IRibbonSceneNode() { }
 
 public:
-
-#ifdef FULL_INTERFACE
-	virtual u32 onFillVertexBuffer(SVertex_PCT* vertices, u32 vertexCount) = 0;
-#endif
 };

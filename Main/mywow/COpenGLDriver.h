@@ -94,7 +94,7 @@ public:
 
 public:
 	 COpenGLExtension*	getGLExtension() const { return GLExtension; }
-	void deleteVao(IVertexBuffer* vbuffer);
+	void deleteVao(CVertexBuffer* vbuffer);
 
 private:
 	struct SDeviceState				//除去material以外的state，material设置时已经做了cache
@@ -117,7 +117,7 @@ private:
 	bool reset();
 	void createVertexDecl();
 	void releaseVertexDecl();
-	void setVertexDeclarationAndBuffers(E_VERTEX_TYPE type, const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0, IVertexBuffer* vbuffer1, u32 offset1, IIndexBuffer* ibuffer);
+	void setVertexDeclarationAndBuffers(E_VERTEX_TYPE type, const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1, CIndexBuffer* ibuffer);
 
 	COpenGLVertexDeclaration* getVertexDeclaration(E_VERTEX_TYPE type) const { return VertexDeclarations[type]; }
 	void setRenderState3DMode(E_VERTEX_TYPE vType);

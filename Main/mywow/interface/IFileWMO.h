@@ -142,19 +142,6 @@ public:
 	virtual bool buildVideoResources() = 0;
 	virtual void releaseVideoResources() = 0;
 
-#ifdef FULL_INTERFACE
-
-	virtual u8* getFileData() const = 0;
-	virtual aabbox3df getBoundingBox() const = 0;
-	
-	//portal
-	virtual u32 getPortalCountAsFront(u32 frontGroupIndex) const = 0;
-	virtual s32 getPortalIndexAsFront(u32 frontGroupIndex, u32 index) const = 0;
-	virtual u32 getPortalCountAsBack(u32 backGroupIndex) const = 0;
-	virtual s32 getPortalIndexAsBack(u32 backGroupIndex, u32 index) const = 0;
-
-#endif
-
 public:
 	c8		Name[QMAX_PATH];
 

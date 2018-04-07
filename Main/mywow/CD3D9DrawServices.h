@@ -10,8 +10,8 @@
 #include <vector>
 #include <unordered_map>
 
-class IVertexBuffer;
-class IIndexBuffer;
+class CVertexBuffer;
+class CIndexBuffer;
 class CD3D9Driver;
 class CD3D9HardwareBufferServices;
 
@@ -170,13 +170,13 @@ private:
 	SVertex_PCT*		Vertices2D;		//2d
 	u16*		Indices2D;
 
-	IVertexBuffer*		VBLine2D;		//line
-	IVertexBuffer*		VBLine3D;
-	IVertexBuffer*		VBImage;		//image
-	IVertexBuffer*		VB3D;		//3d
-	IIndexBuffer*		IB3D;
-	IVertexBuffer*		VB2D;		//2d
-	IIndexBuffer*		IB2D;
+	CVertexBuffer*		VBLine2D;		//line
+	CVertexBuffer*		VBLine3D;
+	CVertexBuffer*		VBImage;		//image
+	CVertexBuffer*		VB3D;		//3d
+	CIndexBuffer*		IB3D;
+	CVertexBuffer*		VB2D;		//2d
+	CIndexBuffer*		IB2D;
 
 	CD3D9Driver*		Driver;
 	CD3D9HardwareBufferServices*		HWBufferServices;

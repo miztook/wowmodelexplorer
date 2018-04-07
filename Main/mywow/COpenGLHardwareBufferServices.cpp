@@ -55,7 +55,7 @@ bool COpenGLHardwareBufferServices::createHardwareBuffers( const SBufferParam& b
 	return true;
 }
 
-bool COpenGLHardwareBufferServices::createHardwareBuffer( IVertexBuffer* vbuffer )
+bool COpenGLHardwareBufferServices::createHardwareBuffer( CVertexBuffer* vbuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -69,7 +69,7 @@ bool COpenGLHardwareBufferServices::createHardwareBuffer( IVertexBuffer* vbuffer
 	return success;
 }
 
-bool COpenGLHardwareBufferServices::createHardwareBuffer( IIndexBuffer* ibuffer )
+bool COpenGLHardwareBufferServices::createHardwareBuffer( CIndexBuffer* ibuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -93,7 +93,7 @@ void COpenGLHardwareBufferServices::destroyHardwareBuffers( const SBufferParam& 
 		destroyHardwareBuffer(bufferParam.vbuffer1);
 }
 
-void COpenGLHardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffer )
+void COpenGLHardwareBufferServices::destroyHardwareBuffer( CVertexBuffer* vbuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -109,7 +109,7 @@ void COpenGLHardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffe
 	}
 }
 
-void COpenGLHardwareBufferServices::destroyHardwareBuffer( IIndexBuffer* ibuffer )
+void COpenGLHardwareBufferServices::destroyHardwareBuffer( CIndexBuffer* ibuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -122,7 +122,7 @@ void COpenGLHardwareBufferServices::destroyHardwareBuffer( IIndexBuffer* ibuffer
 	}
 }
 
-bool COpenGLHardwareBufferServices::updateHardwareBuffer( IVertexBuffer* vbuffer, u32 size )
+bool COpenGLHardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, u32 size )
 {
 	if (vbuffer->Size >= 65536 || size > vbuffer->Size || vbuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -151,7 +151,7 @@ bool COpenGLHardwareBufferServices::updateHardwareBuffer( IVertexBuffer* vbuffer
 	return true;
 }
 
-bool COpenGLHardwareBufferServices::updateHardwareBuffer( IIndexBuffer* ibuffer, u32 size )
+bool COpenGLHardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, u32 size )
 {
 	if (ibuffer->Size >= 65536 || size > ibuffer->Size || ibuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -209,7 +209,7 @@ void COpenGLHardwareBufferServices::createStaticIndexBufferQuadList()
 		firstIndex += 6;
 	}
 
-	StaticIndexBufferQuadList = new IIndexBuffer(false);
+	StaticIndexBufferQuadList = new CIndexBuffer(false);
 	StaticIndexBufferQuadList->set(indices, EIT_16BIT, MAX_QUADS() * 6, EMM_STATIC);
 
 	createHardwareBuffer(StaticIndexBufferQuadList);
@@ -224,7 +224,7 @@ void COpenGLHardwareBufferServices::destroyStaticIndexBufferQuadList()
 	delete StaticIndexBufferQuadList;
 }
 
-bool COpenGLHardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbuffer )
+bool COpenGLHardwareBufferServices::internalCreateVertexBuffer( CVertexBuffer* vbuffer )
 {
 	ASSERT(nullptr == vbuffer->HWLink);
 
@@ -267,7 +267,7 @@ bool COpenGLHardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* v
 	return true;
 }
 
-bool COpenGLHardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuffer )
+bool COpenGLHardwareBufferServices::internalCreateIndexBuffer( CIndexBuffer* ibuffer )
 {
 	ASSERT(nullptr == ibuffer->HWLink);
 

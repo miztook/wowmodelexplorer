@@ -57,7 +57,7 @@ bool CManualMeshServices::addGridLineMesh( const c8* name, u32 xzCount, f32 grid
 	SVertex_PC* vertices = new SVertex_PC[vcount];
 	geo->fillGridLineMeshV(vertices, vcount, xzCount, gridSize, color);
 
-	IVertexBuffer* vbuffer = new IVertexBuffer(true);
+	CVertexBuffer* vbuffer = new CVertexBuffer(true);
 	vbuffer->set(vertices, EST_PC, vcount, EMM_STATIC);
 
 	SBufferParam bufferParam = {0};
@@ -78,10 +78,10 @@ bool CManualMeshServices::addDecal( const c8* name, f32 width, f32 height, SColo
 	u16* indices = new u16[6];
 	indices[0] = 0; indices[1] = 1; indices[2] = 2; indices[3] = 2; indices[4] = 1; indices[5] = 3;
 
-	IVertexBuffer* vbuffer = new IVertexBuffer(true);
+	CVertexBuffer* vbuffer = new CVertexBuffer(true);
 	vbuffer->set(vertices, EST_PCT, 4, EMM_STATIC);
 
-	IIndexBuffer* ibuffer = new IIndexBuffer(true);
+	CIndexBuffer* ibuffer = new CIndexBuffer(true);
 	ibuffer->set(indices, EIT_16BIT, 6, EMM_STATIC);
 
 	SBufferParam bufferParam = {0};
@@ -104,10 +104,10 @@ bool CManualMeshServices::addCube( const c8* name, const vector3df& size, SColor
 	u16* indices = new u16[icount];
 	geo->fillCubeMeshVI(vertices, vcount, indices, icount, size, color);
 
-	IVertexBuffer* vbuffer = new IVertexBuffer(true);
+	CVertexBuffer* vbuffer = new CVertexBuffer(true);
 	vbuffer->set(vertices, EST_PCT, vcount, EMM_STATIC);
 
-	IIndexBuffer* ibuffer = new IIndexBuffer(true);
+	CIndexBuffer* ibuffer = new CIndexBuffer(true);
 	ibuffer->set(indices, EIT_16BIT, icount, EMM_STATIC);
 
 	SBufferParam bufferParam = {0};
@@ -130,10 +130,10 @@ bool CManualMeshServices::addSphere( const c8* name, f32 radius, u32 polyCountX,
 	u16* indices = new u16[icount];
 	geo->fillSphereMeshVI(vertices, vcount, indices, icount, radius, polyCountX, polyCountY, color);
 
-	IVertexBuffer* vbuffer = new IVertexBuffer(true);
+	CVertexBuffer* vbuffer = new CVertexBuffer(true);
 	vbuffer->set(vertices, EST_PCT, vcount, EMM_STATIC);
 
-	IIndexBuffer* ibuffer = new IIndexBuffer(true);
+	CIndexBuffer* ibuffer = new CIndexBuffer(true);
 	ibuffer->set(indices, EIT_16BIT, icount, EMM_STATIC);
 
 	SBufferParam bufferParam = {0};
@@ -156,10 +156,10 @@ bool CManualMeshServices::addSkyDome( const c8* name, u32 horiRes, u32 vertRes, 
 	u16* indices = new u16[icount];
 	geo->fillSkyDomeMeshVI(vertices, vcount, indices, icount, horiRes, vertRes, spherePercentage, radius, color);
 
-	IVertexBuffer* vbuffer = new IVertexBuffer(true);
+	CVertexBuffer* vbuffer = new CVertexBuffer(true);
 	vbuffer->set(vertices, EST_PC, vcount, EMM_STATIC);
 
-	IIndexBuffer* ibuffer = new IIndexBuffer(true);
+	CIndexBuffer* ibuffer = new CIndexBuffer(true);
 	ibuffer->set(indices, EIT_16BIT, icount, EMM_STATIC);
 
 	SBufferParam bufferParam = {0};

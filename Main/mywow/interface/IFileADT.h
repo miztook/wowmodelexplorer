@@ -5,7 +5,7 @@
 #include "wow_adt_structs.h"
 #include <list>
 
-class IVertexBuffer;
+class CVertexBuffer;
 class ITexture;
 
 struct MHDR {
@@ -172,27 +172,6 @@ public:
 	virtual bool loadFileTextures(IMemFile* file) = 0;	
 
 	void SetPosition(u8 row, u8 col) { Row = row; Col = col; }
-
-#ifdef FULL_INTERFACE
-
-	virtual u8* getFileData() const = 0;
-	virtual const CMapChunk* getChunk(u8 row, u8 col) const = 0;
-	virtual aabbox3df getBoundingBox() const = 0;
-	virtual bool getHeight(f32 x, f32 z, f32& height) const = 0;
-	virtual bool getNormal(f32 x, f32 z, vector3df& normal) const = 0;
-
-	virtual const c8* getM2FileName(u32 index) const = 0;
-	virtual const c8* getWMOFileName(u32 index) const = 0;
-
-	virtual IVertexBuffer* getVBuffer() const = 0;
-	virtual E_VERTEX_TYPE getVertexType() const = 0;
-	virtual u32 getChunkVerticesOffset(u8 row, u8 col) const = 0;
-	virtual ITexture* getBlendMap() const = 0;
-
-	virtual const SM2Instance* getM2Instance(u32 index) const = 0;
-	virtual const SWmoInstance* getWMOInstance(u32 index) const = 0;
-
-#endif
 
 	virtual bool buildVideoResources() = 0;
 	virtual void releaseVideoResources() = 0;

@@ -144,13 +144,13 @@ private:
 		}
 
 		E_VERTEX_TYPE 	vType;
-		IVertexBuffer*	vBuffer0;
-		IVertexBuffer	*vBuffer1;
+		CVertexBuffer*	vBuffer0;
+		CVertexBuffer	*vBuffer1;
 
 		u32		vOffset0;
 		u32		vOffset1;
 
-		IIndexBuffer*		iBuffer;
+		CIndexBuffer*		iBuffer;
 	};
 
 private:

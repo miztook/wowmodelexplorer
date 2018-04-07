@@ -59,20 +59,4 @@ public:
 
 	virtual void setLight(u32 lightIndex, bool enable, const SLight& dirLight, SColor color) = 0;
 
-#ifdef FULL_INTERFACE	
-	virtual bool setClipPlane( u32 index, const plane3df& plane ) = 0;
-	virtual void enableClipPlane( u32 index, bool enable ) = 0;
-	virtual void deleteAllDynamicLights() = 0;
-	virtual void setAmbientLight( SColor color ) = 0;
-	virtual bool setDynamicLight( u32 index, const SLight& light )  = 0;
-	virtual void turnLightOn(u32 lightIndex, bool turnOn) = 0;
-	virtual void setFog(const SFogParam& fogParam) = 0;
-	virtual bool isClipPlaneEnable( u32 index ) const = 0;
-	virtual SColor getAmbientLight() const = 0;
-	virtual const SLight* getDynamicLight(u32 index) const  = 0;
-	virtual SFogParam getFog() const = 0;
-	virtual bool getClipPlane( u32 index, plane3df& plane ) const = 0;
-	virtual bool reset() = 0;
-#endif
-
 };

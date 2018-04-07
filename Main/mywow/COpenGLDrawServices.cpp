@@ -40,19 +40,19 @@ COpenGLDrawServices::COpenGLDrawServices()
 	Vertices2D = new SVertex_PCT[VertexLimit2D];
 	Indices2D = new u16[IndexLimit2D];
 
-	VBLine2D = new IVertexBuffer(false);
+	VBLine2D = new CVertexBuffer(false);
 	VBLine2D->set(Line2DVertices, EST_PC, Line2DVertexLimit, EMM_DYNAMIC);
-	VBLine3D = new IVertexBuffer(false);
+	VBLine3D = new CVertexBuffer(false);
 	VBLine3D->set(Line3DVertices, EST_PC, Line3DVertexLimit, EMM_DYNAMIC);
-	VBImage = new IVertexBuffer(false);
+	VBImage = new CVertexBuffer(false);
 	VBImage->set(ImageVertices, EST_PCT, ImageVertexLimit, EMM_DYNAMIC);
-	VB3D = new IVertexBuffer(false);
+	VB3D = new CVertexBuffer(false);
 	VB3D->set(Vertices3D, EST_PC, VertexLimit, EMM_DYNAMIC);
-	IB3D = new IIndexBuffer(false);
+	IB3D = new CIndexBuffer(false);
 	IB3D->set(Indices3D, EIT_16BIT, IndexLimit, EMM_DYNAMIC);
-	VB2D = new IVertexBuffer(false);
+	VB2D = new CVertexBuffer(false);
 	VB2D->set(Vertices2D, EST_PCT, VertexLimit2D, EMM_DYNAMIC);
-	IB2D = new IIndexBuffer(false);
+	IB2D = new CIndexBuffer(false);
 	IB2D->set(Indices2D, EIT_16BIT, IndexLimit2D, EMM_DYNAMIC);
 
 	Line2DVertexCount = 0;

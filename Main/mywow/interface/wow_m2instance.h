@@ -7,7 +7,7 @@
 #include "SMaterial.h"
 
 class ITexture;
-class IVertexBuffer;
+class CVertexBuffer;
 class CFileSkin;
 
 struct CharTexturePart				//ÎÆÀí×éºÏ

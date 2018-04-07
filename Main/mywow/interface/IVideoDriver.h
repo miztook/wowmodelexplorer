@@ -9,8 +9,8 @@
 struct SBufferParam;
 class IRenderTarget;
 class IMaterialRenderer;
-class IVertexBuffer;
-class IIndexBuffer;
+class CVertexBuffer;
+class CIndexBuffer;
 class ISceneStateServices;
 class IMaterialRenderServices;
 class IShaderServices;
@@ -180,40 +180,6 @@ public:
 	virtual void helper_renderAllBatches(CTransluscentDecalRenderer* transDecalRenderer, const SRenderUnit*& currentUnit, ICamera* cam) = 0;
 	virtual void helper_renderAllBatches(CAlphaTestDecalRenderer* meshDecalRenderer, const SRenderUnit*& currentUnit, ICamera* cam) = 0;
 
-#ifdef FULL_INTERFACE
-
-	virtual bool queryFeature(E_VIDEO_DRIVER_FEATURE feature) const =0;
-	virtual void setTexture(u32 stage, ITexture* texture) = 0;
-	virtual ITexture* getTexture(u32 index) const= 0;
-	virtual void registerLostReset( ILostResetCallback* callback ) = 0;
-	virtual void removeLostReset( ILostResetCallback* callback ) = 0;
-
-	virtual void draw3DMode(const SBufferParam& bufferParam, 
-		E_PRIMITIVE_TYPE primType,
-		u32 primCount, 
-		const SDrawParam& drawParam) = 0;
-
-	virtual void draw2DMode(const SBufferParam& bufferParam, 
-		E_PRIMITIVE_TYPE primType,
-		u32 primCount, 
-		const SDrawParam& drawParam,
-		const S2DBlendParam& blendParam,
-		bool zTest = false) = 0;
-
-	virtual void setTransform_Material_Textures(const matrix4& matWorld,
-		const SMaterial& material,
-		ITexture* const textures[],
-		u32 numTextures) = 0;
-
-	virtual void setTransform_Material_Textures(const matrix4& matWorld,
-		const matrix4& matView, 
-		const matrix4& matProjection,
-		const SMaterial& material,
-		ITexture* const textures[],
-		u32 numTextures) = 0;
-
-#endif
-	
 protected:
 	SMaterial	Material;
 	SMaterial LastMaterial;

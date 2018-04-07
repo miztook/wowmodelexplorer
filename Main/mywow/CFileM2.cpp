@@ -843,9 +843,9 @@ CFileSkin::CFileSkin()
 	: Geosets(nullptr), Indices(nullptr), AVertices(nullptr), NumIndices(0), NumBoneVertices(0),
 	NumGeosets(0), NumTexUnit(0), GVertexBuffer(nullptr), AVertexBuffer(nullptr), IndexBuffer(nullptr)
 { 
-	GVertexBuffer = new IVertexBuffer(false);
-	AVertexBuffer = new IVertexBuffer(false);
-	IndexBuffer = new IIndexBuffer(false);
+	GVertexBuffer = new CVertexBuffer(false);
+	AVertexBuffer = new CVertexBuffer(false);
+	IndexBuffer = new CIndexBuffer(false);
 }
 
 CFileSkin::~CFileSkin()

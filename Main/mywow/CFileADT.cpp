@@ -30,7 +30,7 @@ CFileADT::CFileADT()
 
 	Vertices = new SVertex_PNCT2[16 * 16 * 145];	
 
-	VertexBuffer = new IVertexBuffer;
+	VertexBuffer = new CVertexBuffer(false);
 	VertexBuffer->set(Vertices, EST_PNCT2, 16 * 16 * 145, EMM_STATIC);
 
 	Data_BlendMap =  nullptr;

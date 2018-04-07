@@ -13,8 +13,6 @@ CMeshDecalServices::CMeshDecalServices( u32 bufferQuota )
 CMeshDecalServices::~CMeshDecalServices()
 {
 	BufferParam.ibuffer = nullptr;		//don't destroy common index buffer
-
-	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(BufferParam.vbuffer0);
 	BufferParam.destroy();
 }
 
@@ -34,10 +32,10 @@ void CMeshDecalServices::createBuffer()
 	u32 vsize = BufferQuota * 4;
 
 	//vertex buffer
-	Vertices = new SVertex_PCT[vsize];
-	BufferParam.vbuffer0 = new IVertexBuffer(false);
+	Vertices.resize(vsize);
+	BufferParam.vbuffer0 = new CVertexBuffer(false);
 
-	BufferParam.vbuffer0->set(Vertices, EST_PCT, vsize, EMM_DYNAMIC);
+	BufferParam.vbuffer0->set(Vertices.data(), EST_PCT, vsize, EMM_DYNAMIC);
 
 	g_Engine->getHardwareBufferServices()->createHardwareBuffer(BufferParam.vbuffer0);
 

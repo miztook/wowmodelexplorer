@@ -30,7 +30,7 @@ CD3D11HardwareBufferServices::~CD3D11HardwareBufferServices()
 	ASSERT(IsListEmpty(&IndexBufferList));
 }
 
-bool CD3D11HardwareBufferServices::createHardwareBuffer( IVertexBuffer* vbuffer )
+bool CD3D11HardwareBufferServices::createHardwareBuffer( CVertexBuffer* vbuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -44,7 +44,7 @@ bool CD3D11HardwareBufferServices::createHardwareBuffer( IVertexBuffer* vbuffer 
 	return success;
 }
 
-bool CD3D11HardwareBufferServices::createHardwareBuffer( IIndexBuffer* ibuffer )
+bool CD3D11HardwareBufferServices::createHardwareBuffer( CIndexBuffer* ibuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -84,7 +84,7 @@ bool CD3D11HardwareBufferServices::createHardwareBuffers( const SBufferParam& bu
 	return true;
 }
 
-void CD3D11HardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffer )
+void CD3D11HardwareBufferServices::destroyHardwareBuffer( CVertexBuffer* vbuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -96,7 +96,7 @@ void CD3D11HardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffer
 	}
 }
 
-void CD3D11HardwareBufferServices::destroyHardwareBuffer( IIndexBuffer* ibuffer )
+void CD3D11HardwareBufferServices::destroyHardwareBuffer( CIndexBuffer* ibuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -118,7 +118,7 @@ void CD3D11HardwareBufferServices::destroyHardwareBuffers( const SBufferParam& b
 		destroyHardwareBuffer(bufferParam.vbuffer1);
 }
 
-bool CD3D11HardwareBufferServices::updateHardwareBuffer( IVertexBuffer* vbuffer, u32 size )
+bool CD3D11HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, u32 size )
 {
 	if (vbuffer->Size >= 65536 || size > vbuffer->Size || vbuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -157,7 +157,7 @@ bool CD3D11HardwareBufferServices::updateHardwareBuffer( IVertexBuffer* vbuffer,
 	return true;
 }
 
-bool CD3D11HardwareBufferServices::updateHardwareBuffer( IIndexBuffer* ibuffer, u32 size )
+bool CD3D11HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, u32 size )
 {
 	if (ibuffer->Size >= 65536 || size > ibuffer->Size || ibuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -207,7 +207,7 @@ void CD3D11HardwareBufferServices::onReset()
 
 }
 
-bool CD3D11HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbuffer )
+bool CD3D11HardwareBufferServices::internalCreateVertexBuffer( CVertexBuffer* vbuffer )
 {
 	ASSERT(nullptr == vbuffer->HWLink);
 
@@ -271,7 +271,7 @@ bool CD3D11HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vb
 	return true;
 }
 
-bool CD3D11HardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuffer )
+bool CD3D11HardwareBufferServices::internalCreateIndexBuffer( CIndexBuffer* ibuffer )
 {
 	ASSERT(nullptr == ibuffer->HWLink);
 
@@ -356,7 +356,7 @@ void CD3D11HardwareBufferServices::createStaticIndexBufferQuadList()
 		firstIndex += 6;
 	}
 
-	StaticIndexBufferQuadList = new IIndexBuffer(false);
+	StaticIndexBufferQuadList = new CIndexBuffer(false);
 	StaticIndexBufferQuadList->set(indices, EIT_16BIT, MAX_QUADS() * 6, EMM_STATIC);
 
 	createHardwareBuffer(StaticIndexBufferQuadList);

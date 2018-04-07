@@ -424,7 +424,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 
 	buildPortalEntries();
 
-	PortalVertexBuffer = new IVertexBuffer(false);
+	PortalVertexBuffer = new CVertexBuffer(false);
 	PortalVertexBuffer->set(PortalVertices, EST_P, NumPortalVertices, EMM_STATIC);
 
 	return true;
@@ -460,10 +460,10 @@ void CFileWMO::buildGroupBuffers()
 		delete[] group->Indices;
 	}
 
-	VertexBuffer = new IVertexBuffer(false);
+	VertexBuffer = new CVertexBuffer(false);
 	VertexBuffer->set(Vertices, EST_PNCT2, vCount, EMM_STATIC);
 
-	IndexBuffer = new IIndexBuffer(false);
+	IndexBuffer = new CIndexBuffer(false);
 	IndexBuffer->set(Indices, EIT_32BIT, iCount, EMM_STATIC);
 }
 
@@ -832,7 +832,7 @@ void CWMOGroup::buildBspVIBuffers()
 		{
 			BspVertices[i].Pos = Vertices[i].Pos;
 		}
-		BspVertexBuffer = new IVertexBuffer;
+		BspVertexBuffer = new CVertexBuffer(false);
 		BspVertexBuffer->set(BspVertices, EST_P, VCount, EMM_STATIC);
 
 		//bsp index buffer
@@ -876,7 +876,7 @@ void CWMOGroup::buildBspVIBuffers()
 			ASSERT(node->minVertex < node->maxVertex);
 		}
 
-		BspIndexbuffer = new IIndexBuffer;
+		BspIndexbuffer = new CIndexBuffer(false);
 		BspIndexbuffer->set(BspIndices, EIT_16BIT, icount, EMM_STATIC);
 	}
 }
