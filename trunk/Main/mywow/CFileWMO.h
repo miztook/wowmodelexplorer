@@ -32,8 +32,8 @@ struct SWMOBspNode
 };
 
 class IFileWMO;
-class IIndexBuffer;
-class IVertexBuffer;
+class CIndexBuffer;
+class CVertexBuffer;
 
 class CWMOGroup
 {
@@ -72,9 +72,9 @@ public:
 
 	//bsp
 	SVertex_P*	BspVertices;
-	IVertexBuffer*	BspVertexBuffer;
+	CVertexBuffer*	BspVertexBuffer;
 	u16*		BspIndices;
-	IIndexBuffer*		BspIndexbuffer;		//for bsp nodes
+	CIndexBuffer*		BspIndexbuffer;		//for bsp nodes
 
 	//
 	bool outdoor;
@@ -122,12 +122,12 @@ public:
 	u8*			FileData;
 	aabbox3df	Box;
 
-	IVertexBuffer*	PortalVertexBuffer;
+	CVertexBuffer*	PortalVertexBuffer;
 
 	u32*		Indices;
 	SVertex_PNCT2*	 Vertices;
-	IVertexBuffer*	VertexBuffer;			//groups vertex buffer
-	IIndexBuffer*		IndexBuffer;			//groups index buffer
+	CVertexBuffer*	VertexBuffer;			//groups vertex buffer
+	CIndexBuffer*		IndexBuffer;			//groups index buffer
 
 private:
 	struct SPortalEntry

@@ -154,7 +154,7 @@ struct SModelCamera
 	}
 };
 
-class IIndexBuffer;
+class CIndexBuffer;
 
 class CBoneUnit
 {
@@ -331,10 +331,6 @@ public:
 	virtual M2Type getType() const = 0;
 	virtual bool isCharacter() const = 0;
 	virtual bool isHD() const = 0;
-
-#ifdef FULL_INTERFACE	
-	virtual const aabbox3df& getBoundingBox() const = 0;
-#endif
 
 	virtual s16 getAnimationIndex(const c8* name, u32 subIdx = 0) const= 0;
 	virtual u32 getAnimationCount(const c8* name) const = 0;

@@ -29,7 +29,7 @@ public:
 	virtual bool buildVideoResources();
 	virtual void releaseVideoResources();
 
-	IVertexBuffer* getVBuffer() const { return VertexBuffer; }
+	CVertexBuffer* getVBuffer() const { return VertexBuffer; }
 	E_VERTEX_TYPE getVertexType() const { return EVT_PNCT2; }
 	u32 getChunkVerticesOffset(u8 row, u8 col) const { return (row * 16 + col) * 145; }
 	ITexture* getBlendMap() const { return BlendMap; }
@@ -76,7 +76,7 @@ private:
 
 	//chunk
 	SVertex_PNCT2*		Vertices;
-	IVertexBuffer*		VertexBuffer;
+	CVertexBuffer*		VertexBuffer;
 	u32*		Data_BlendMap;
 	ITexture*		BlendMap;				//整个adt的blend map,由16 X 16个chunk的map合成
 

@@ -97,11 +97,6 @@ public:
 public:
 	E_VS_TYPE getType() const { return Type; }
 
-#ifdef FULL_INTERFACE
-	virtual bool isValid() const  = 0;
-	virtual void onShaderUsed() = 0;			//when shader is used
-#endif
-
 	VSHADERCONSTCALLBACK		ShaderConstCallback;
 protected:
 	E_VS_TYPE	Type;
@@ -117,11 +112,6 @@ public:
 public:
 	E_PS_TYPE getType() const { return Type; }
 	E_PS_MACRO getMacro() const { return Macro; }
-
-#ifdef FULL_INTERFACE
-	virtual bool isValid() const  = 0;
-	virtual void onShaderUsed() = 0;		//when shader is used
-#endif
 
 	PSHADERCONSTCALLBACK		ShaderConstCallback;
 protected:

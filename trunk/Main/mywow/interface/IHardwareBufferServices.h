@@ -4,8 +4,8 @@
 #include "core.h"
 #include "ILostResetCallback.h"
 
-class IVertexBuffer;
-class IIndexBuffer;
+class CVertexBuffer;
+class CIndexBuffer;
 struct SBufferParam;
 
 class IHardwareBufferServices : public ILostResetCallback
@@ -19,18 +19,18 @@ public:
 
 public:
 	virtual bool createHardwareBuffers(const SBufferParam& bufferParam) = 0;
-	virtual bool createHardwareBuffer(IVertexBuffer* vbuffer) = 0;
-	virtual bool createHardwareBuffer(IIndexBuffer* ibuffer) = 0;
+	virtual bool createHardwareBuffer(CVertexBuffer* vbuffer) = 0;
+	virtual bool createHardwareBuffer(CIndexBuffer* ibuffer) = 0;
 	virtual void destroyHardwareBuffers(const SBufferParam& bufferParam) = 0;
-	virtual void destroyHardwareBuffer(IVertexBuffer* vbuffer) = 0;
-	virtual void destroyHardwareBuffer(IIndexBuffer* ibuffer) = 0;
-	virtual bool updateHardwareBuffer(IVertexBuffer* vbuffer, u32 size) = 0;
-	virtual bool updateHardwareBuffer(IIndexBuffer* ibuffer, u32 size) = 0;
+	virtual void destroyHardwareBuffer(CVertexBuffer* vbuffer) = 0;
+	virtual void destroyHardwareBuffer(CIndexBuffer* ibuffer) = 0;
+	virtual bool updateHardwareBuffer(CVertexBuffer* vbuffer, u32 size) = 0;
+	virtual bool updateHardwareBuffer(CIndexBuffer* ibuffer, u32 size) = 0;
 
-	IIndexBuffer* getStaticIndexBufferQuadList() const { return StaticIndexBufferQuadList; }
+	CIndexBuffer* getStaticIndexBufferQuadList() const { return StaticIndexBufferQuadList; }
 
     static u32 MAX_QUADS() { return MAX_TEXT_LENGTH; }
 
 protected:
-	IIndexBuffer*			StaticIndexBufferQuadList;
+	CIndexBuffer*			StaticIndexBufferQuadList;
 };

@@ -4,10 +4,10 @@
 
 CTerrainServices::CTerrainServices()
 {
-	LowResIndexBuffer = new IIndexBuffer(false);
+	LowResIndexBuffer = new CIndexBuffer(false);
 	createLowResIndexBuffer();
 
-	HighResIndexBuffer = new IIndexBuffer(false);
+	HighResIndexBuffer = new CIndexBuffer(false);
 	createHighResIndexBuffer();
 }
 

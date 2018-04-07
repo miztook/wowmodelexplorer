@@ -871,7 +871,7 @@ void COpenGLDriver::releaseVertexDecl()
 	}
 }
 
-void COpenGLDriver::setVertexDeclarationAndBuffers( E_VERTEX_TYPE type, const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0, IVertexBuffer* vbuffer1, u32 offset1, IIndexBuffer* ibuffer )
+void COpenGLDriver::setVertexDeclarationAndBuffers( E_VERTEX_TYPE type, const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1, CIndexBuffer* ibuffer )
 {
 	COpenGLVertexDeclaration* decl = getVertexDeclaration(type);
 	ASSERT(decl);
@@ -884,7 +884,7 @@ void COpenGLDriver::setVertexDeclarationAndBuffers( E_VERTEX_TYPE type, const SG
 	}
 }
 
-void COpenGLDriver::deleteVao( IVertexBuffer* vbuffer )
+void COpenGLDriver::deleteVao( CVertexBuffer* vbuffer )
 {
 	E_VERTEX_TYPE vType = getVertexType(vbuffer->Type);
 	if (vType != EVT_INVALID)

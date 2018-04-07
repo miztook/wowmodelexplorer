@@ -27,21 +27,6 @@ public:
 	const f32 SCENE_SCALE;
 
 public:
-
-#ifdef FULL_INTERFACE
-
-	virtual void addSceneNode(ISceneNode* node, bool visible, int sequence) = 0;
-	virtual void skipSceneNode(ISceneNode* node) = 0;
-
-	virtual void clearAllSceneNodes() = 0;
-	virtual void tickAllSceneNodes(u32 timeSinceStart, u32 timeSinceLastFrame, int sequence) = 0;
-	virtual void renderAllSceneNodes() const = 0;
-
-	virtual void addRenderUnit(const SRenderUnit* unit, E_RENDERINST_TYPE type) = 0;
-	virtual void renderAll(E_RENDERINST_TYPE type, ICamera* cam) = 0;
-
-#endif
-
 	const SRenderUnit* getCurrentUnit() const { return CurrentUnit; }
 
 	//scene

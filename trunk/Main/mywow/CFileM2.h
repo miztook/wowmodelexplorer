@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <map>
 
-class IVertexBuffer;
+class CVertexBuffer;
 class CFileM2;
 
 class CFileSkin
@@ -54,9 +54,9 @@ public:
 	SVertex_A*		AVertices;
 	
 	//vm
-	IVertexBuffer*		GVertexBuffer;
-	IVertexBuffer*		AVertexBuffer;
-	IIndexBuffer*		IndexBuffer;
+	CVertexBuffer*		GVertexBuffer;
+	CVertexBuffer*		AVertexBuffer;
+	CIndexBuffer*		IndexBuffer;
 };
 
 class CFileM2 : public IFileM2

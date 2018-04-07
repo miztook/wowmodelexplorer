@@ -4,12 +4,13 @@
 #include "wow_particle.h"
 #include "S3DVertex.h"
 #include "VertexIndexBuffer.h"
+#include <vector>
 
 //给粒子系统提供粒子池和硬件缓存
 class IParticleSystemServices
 {
 public:
-	IParticleSystemServices() { Vertices=nullptr; BufferParam.clear(); BufferParam.vType = EVT_PCT; }
+	IParticleSystemServices() { BufferParam.clear(); BufferParam.vType = EVT_PCT; }
 	virtual ~IParticleSystemServices() {}
 
 public:
@@ -19,18 +20,7 @@ public:
 
 	virtual u32 getActiveParticlesCount() const = 0;
 
-#ifdef FULL_INTERFACE
-
-	virtual f32 getParticleDynamicDensity() const = 0;
-	virtual void updateVertices(u32 numVertices) = 0;
-	virtual Particle* getParticle()= 0;
-	virtual void putParticle(Particle* p) = 0;
-	virtual u32 getMaxVertexCount() const = 0;
-	virtual u32 getBufferQuota() const = 0;
-
-#endif
-
 public:
 	SBufferParam		BufferParam;
-	SVertex_PCT*		Vertices;
+	std::vector<SVertex_PCT>		Vertices;
 };

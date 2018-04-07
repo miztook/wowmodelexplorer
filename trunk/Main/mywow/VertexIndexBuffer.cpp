@@ -2,7 +2,7 @@
 #include "VertexIndexBuffer.h"
 #include "mywow.h"
 
-bool IVertexBuffer::buildVideoResources()
+bool CVertexBuffer::buildVideoResources()
 {
 	if (!Vertices || Size == 0)
 		return true;
@@ -19,7 +19,7 @@ bool IVertexBuffer::buildVideoResources()
 	return true;
 }
 
-void IVertexBuffer::releaseVideoResources()
+void CVertexBuffer::releaseVideoResources()
 {
 	if (!HWLink)
 		return;
@@ -27,12 +27,12 @@ void IVertexBuffer::releaseVideoResources()
 	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(this);
 }
 
-bool IVertexBuffer::updateHWBuffer(u32 size)
+bool CVertexBuffer::updateHWBuffer(u32 size)
 {
 	return g_Engine->getHardwareBufferServices()->updateHardwareBuffer(this, size);
 }
 
-bool IIndexBuffer::buildVideoResources()
+bool CIndexBuffer::buildVideoResources()
 {
 	if (!Indices || Size == 0)
 		return true;
@@ -49,7 +49,7 @@ bool IIndexBuffer::buildVideoResources()
 	return true;
 }
 
-void IIndexBuffer::releaseVideoResources()
+void CIndexBuffer::releaseVideoResources()
 {
 	if (!HWLink)
 		return;
@@ -57,7 +57,7 @@ void IIndexBuffer::releaseVideoResources()
 	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(this);
 }
 
-bool IIndexBuffer::updateHWBuffer(u32 size)
+bool CIndexBuffer::updateHWBuffer(u32 size)
 {
 	return g_Engine->getHardwareBufferServices()->updateHardwareBuffer(this, size);
 }

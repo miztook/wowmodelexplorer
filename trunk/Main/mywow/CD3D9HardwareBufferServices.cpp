@@ -31,7 +31,7 @@ CD3D9HardwareBufferServices::~CD3D9HardwareBufferServices()
 	ASSERT(IsListEmpty(&IndexBufferList));
 }
 
-bool CD3D9HardwareBufferServices::createHardwareBuffer( IVertexBuffer* vbuffer )
+bool CD3D9HardwareBufferServices::createHardwareBuffer( CVertexBuffer* vbuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -45,7 +45,7 @@ bool CD3D9HardwareBufferServices::createHardwareBuffer( IVertexBuffer* vbuffer )
 	return success;
 }
 
-bool CD3D9HardwareBufferServices::createHardwareBuffer( IIndexBuffer* ibuffer )
+bool CD3D9HardwareBufferServices::createHardwareBuffer( CIndexBuffer* ibuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -85,7 +85,7 @@ bool CD3D9HardwareBufferServices::createHardwareBuffers( const SBufferParam& buf
 	return true;
 }
 
-void CD3D9HardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffer )
+void CD3D9HardwareBufferServices::destroyHardwareBuffer( CVertexBuffer* vbuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -97,7 +97,7 @@ void CD3D9HardwareBufferServices::destroyHardwareBuffer( IVertexBuffer* vbuffer 
 	}
 }
 
-void CD3D9HardwareBufferServices::destroyHardwareBuffer( IIndexBuffer* ibuffer )
+void CD3D9HardwareBufferServices::destroyHardwareBuffer( CIndexBuffer* ibuffer )
 {
 	//CLock lock(&g_Globals.hwbufferCS);
 
@@ -119,7 +119,7 @@ void CD3D9HardwareBufferServices::destroyHardwareBuffers( const SBufferParam& bu
 		destroyHardwareBuffer(bufferParam.vbuffer1);
 }
 
-bool CD3D9HardwareBufferServices::updateHardwareBuffer( IVertexBuffer* vbuffer, u32 size )
+bool CD3D9HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, u32 size )
 {
 	if (vbuffer->Size >= 65536 || size > vbuffer->Size || vbuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -151,7 +151,7 @@ bool CD3D9HardwareBufferServices::updateHardwareBuffer( IVertexBuffer* vbuffer, 
 	return true;
 }
 
-bool CD3D9HardwareBufferServices::updateHardwareBuffer( IIndexBuffer* ibuffer, u32 size )
+bool CD3D9HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, u32 size )
 {
 	if (ibuffer->Size >= 65536 || size > ibuffer->Size || ibuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -190,7 +190,7 @@ void CD3D9HardwareBufferServices::onLost()
 
 	for (PLENTRY e = VertexBufferList.Flink; e != &VertexBufferList; )
 	{
-		IVertexBuffer* vbuffer = reinterpret_cast<IVertexBuffer*>CONTAINING_RECORD(e, IVertexBuffer, Link);
+		CVertexBuffer* vbuffer = reinterpret_cast<CVertexBuffer*>CONTAINING_RECORD(e, CVertexBuffer, Link);
 		e = e->Flink;
 
 		if (vbuffer->Mapping != EMM_STATIC && vbuffer->HWLink)
@@ -202,7 +202,7 @@ void CD3D9HardwareBufferServices::onLost()
 
 	for (PLENTRY e = IndexBufferList.Flink; e != &IndexBufferList; )
 	{
-		IIndexBuffer* ibuffer = reinterpret_cast<IIndexBuffer*>CONTAINING_RECORD(e, IIndexBuffer, Link);
+		CIndexBuffer* ibuffer = reinterpret_cast<CIndexBuffer*>CONTAINING_RECORD(e, CIndexBuffer, Link);
 		e = e->Flink;
 
 		if (ibuffer->Mapping != EMM_STATIC && ibuffer->HWLink)
@@ -220,7 +220,7 @@ void CD3D9HardwareBufferServices::onReset()
 
 	for (PLENTRY e = VertexBufferList.Flink; e != &VertexBufferList; )
 	{
-		IVertexBuffer* vbuffer = reinterpret_cast<IVertexBuffer*>CONTAINING_RECORD(e, IVertexBuffer, Link);
+		CVertexBuffer* vbuffer = reinterpret_cast<CVertexBuffer*>CONTAINING_RECORD(e, CVertexBuffer, Link);
 		e = e->Flink;
 
 		if (vbuffer->Mapping == EMM_STATIC)
@@ -231,7 +231,7 @@ void CD3D9HardwareBufferServices::onReset()
 
 	for (PLENTRY e = IndexBufferList.Flink; e != &IndexBufferList; )
 	{
-		IIndexBuffer* ibuffer = reinterpret_cast<IIndexBuffer*>CONTAINING_RECORD(e, IIndexBuffer, Link);
+		CIndexBuffer* ibuffer = reinterpret_cast<CIndexBuffer*>CONTAINING_RECORD(e, CIndexBuffer, Link);
 		e = e->Flink;
 
 		if (ibuffer->Mapping == EMM_STATIC)
@@ -242,7 +242,7 @@ void CD3D9HardwareBufferServices::onReset()
 	}
 }
 
-bool CD3D9HardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuffer )
+bool CD3D9HardwareBufferServices::internalCreateIndexBuffer( CIndexBuffer* ibuffer )
 {
 	ASSERT(nullptr == ibuffer->HWLink);
 
@@ -312,7 +312,7 @@ bool CD3D9HardwareBufferServices::internalCreateIndexBuffer( IIndexBuffer* ibuff
 	return true;
 }
 
-bool CD3D9HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbuffer )
+bool CD3D9HardwareBufferServices::internalCreateVertexBuffer( CVertexBuffer* vbuffer )
 {
 	ASSERT(nullptr == vbuffer->HWLink);
 
@@ -364,7 +364,7 @@ bool CD3D9HardwareBufferServices::internalCreateVertexBuffer( IVertexBuffer* vbu
 	return true;
 }
 
-bool CD3D9HardwareBufferServices::fillVertexBuffer( IVertexBuffer* vbuffer )
+bool CD3D9HardwareBufferServices::fillVertexBuffer( CVertexBuffer* vbuffer )
 {
 	u32 vertexSize = getStreamPitchFromType(vbuffer->Type);
 	u32 sizeToLock = vbuffer->Size * vertexSize;
@@ -382,7 +382,7 @@ bool CD3D9HardwareBufferServices::fillVertexBuffer( IVertexBuffer* vbuffer )
 	return SUCCEEDED(hr);
 }
 
-bool CD3D9HardwareBufferServices::fillIndexBuffer( IIndexBuffer* ibuffer )
+bool CD3D9HardwareBufferServices::fillIndexBuffer( CIndexBuffer* ibuffer )
 {
 	u32 indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
 	u32 sizeToLock = ibuffer->Size * indexSize;
@@ -419,7 +419,7 @@ void CD3D9HardwareBufferServices::createStaticIndexBufferQuadList()
 		firstIndex += 6;
 	}
 
-	StaticIndexBufferQuadList = new IIndexBuffer(false);
+	StaticIndexBufferQuadList = new CIndexBuffer(false);
 	StaticIndexBufferQuadList->set(indices, EIT_16BIT, MAX_QUADS() * 6, EMM_STATIC);
 
 	createHardwareBuffer(StaticIndexBufferQuadList);

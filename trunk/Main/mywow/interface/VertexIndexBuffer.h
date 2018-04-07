@@ -4,13 +4,13 @@
 #include "linklist.h"
 #include "IVideoResource.h"
 
-class IVertexBuffer : public IVideoResource
+class CVertexBuffer : public IVideoResource
 {
 private:
-	DISALLOW_COPY_AND_ASSIGN(IVertexBuffer);
+	DISALLOW_COPY_AND_ASSIGN(CVertexBuffer);
 
 public:
-	explicit IVertexBuffer(bool clear)
+	explicit CVertexBuffer(bool clear)
 		: Clear(clear)
 	{
 		HWLink = nullptr;
@@ -22,7 +22,7 @@ public:
 		InitializeListHead(&Link);
 	}
 
-	virtual ~IVertexBuffer() 
+	virtual ~CVertexBuffer() 
 	{
 		releaseVideoResources();
 
@@ -66,7 +66,7 @@ private:
 	bool Clear;
 };
 
-inline void IVertexBuffer::set( void* vertices, E_STREAM_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping )
+inline void CVertexBuffer::set( void* vertices, E_STREAM_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping )
 {
 	Vertices = vertices;
 	Type = type;
@@ -75,13 +75,13 @@ inline void IVertexBuffer::set( void* vertices, E_STREAM_TYPE type, u32 size, E_
 	Mapping = mapping;
 }
 
-class IIndexBuffer : public IVideoResource
+class CIndexBuffer : public IVideoResource
 {
 private:
-	DISALLOW_COPY_AND_ASSIGN(IIndexBuffer);
+	DISALLOW_COPY_AND_ASSIGN(CIndexBuffer);
 
 public:
-	explicit IIndexBuffer(bool clear) 
+	explicit CIndexBuffer(bool clear) 
 		: Clear(clear) 
 	{
 		HWLink = nullptr;
@@ -93,7 +93,7 @@ public:
 		InitializeListHead(&Link);
 	}
 
-	virtual ~IIndexBuffer() 
+	virtual ~CIndexBuffer() 
 	{
 		releaseVideoResources();
 
@@ -138,7 +138,7 @@ private:
 
 };
 
-inline void IIndexBuffer::set( void* indices, E_INDEX_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping)
+inline void CIndexBuffer::set( void* indices, E_INDEX_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping)
 {
 	Indices = indices;
 	Type = type;
@@ -149,9 +149,9 @@ inline void IIndexBuffer::set( void* indices, E_INDEX_TYPE type, u32 size, E_MES
 
 struct SBufferParam
 {
-	IVertexBuffer*		vbuffer0;				//1 stream
-	IVertexBuffer*		vbuffer1;			//2 stream
-	IIndexBuffer*		ibuffer;	
+	CVertexBuffer*		vbuffer0;				//1 stream
+	CVertexBuffer*		vbuffer1;			//2 stream
+	CIndexBuffer*		ibuffer;	
 	E_VERTEX_TYPE		vType;
 
 	void clear()
@@ -167,7 +167,7 @@ struct SBufferParam
 		delete vbuffer0; vbuffer0 = nullptr;
 	}
 
-	IVertexBuffer* getVBuffer(u32 index) const
+	CVertexBuffer* getVBuffer(u32 index) const
 	{
 		switch(index)
 		{

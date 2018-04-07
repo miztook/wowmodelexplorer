@@ -76,10 +76,10 @@ void CSkySceneNode::createSkyDomeMesh()
 	SBufferParam bufferParam = {0};
 
 	bufferParam.vType = EVT_PC;
-	bufferParam.vbuffer0 = new IVertexBuffer(true);
+	bufferParam.vbuffer0 = new CVertexBuffer(true);
 	bufferParam.vbuffer0->set(vertices, EST_PC, vcount, EMM_DYNAMIC);
 
-	bufferParam.ibuffer = new IIndexBuffer(true);
+	bufferParam.ibuffer = new CIndexBuffer(true);
 	bufferParam.ibuffer->set(indices, EIT_16BIT, icount, EMM_STATIC);
 
 	SkyDomeMesh = new CMesh(bufferParam, EPT_TRIANGLES, icount/3, aabbox3df(-SkyRadius, -SkyRadius, -SkyRadius, SkyRadius, SkyRadius, SkyRadius));

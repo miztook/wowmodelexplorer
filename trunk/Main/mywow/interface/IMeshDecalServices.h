@@ -7,20 +7,12 @@
 class IMeshDecalServices
 {
 public:
-	IMeshDecalServices() { Vertices=nullptr; BufferParam.clear(); BufferParam.vType = EVT_PCT; }
+	IMeshDecalServices() { BufferParam.clear(); BufferParam.vType = EVT_PCT; }
 	virtual ~IMeshDecalServices() {}
 
 public:
 
-#ifdef FULL_INTERFACE
-
-	virtual void updateVertices(u32 numVertices) = 0;
-	virtual u32 getMaxVertexCount() const = 0;
-	virtual u32 getBufferQuota() const = 0;
-
-#endif
-
 public:
 	SBufferParam		BufferParam;
-	SVertex_PCT*		Vertices;
+	std::vector<SVertex_PCT>		Vertices;
 };

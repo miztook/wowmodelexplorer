@@ -20,23 +20,23 @@ public:
 
 public:
 	virtual bool createHardwareBuffers(const SBufferParam& bufferParam);
-	virtual bool createHardwareBuffer(IVertexBuffer* vbuffer);
-	virtual bool createHardwareBuffer(IIndexBuffer* ibuffer);
+	virtual bool createHardwareBuffer(CVertexBuffer* vbuffer);
+	virtual bool createHardwareBuffer(CIndexBuffer* ibuffer);
 	virtual void destroyHardwareBuffers(const SBufferParam& bufferParam);
-	virtual void destroyHardwareBuffer(IVertexBuffer* vbuffer);
-	virtual void destroyHardwareBuffer(IIndexBuffer* ibuffer);
-	virtual bool updateHardwareBuffer(IVertexBuffer* vbuffer, u32 size);
-	virtual bool updateHardwareBuffer(IIndexBuffer* ibuffer, u32 size);
+	virtual void destroyHardwareBuffer(CVertexBuffer* vbuffer);
+	virtual void destroyHardwareBuffer(CIndexBuffer* ibuffer);
+	virtual bool updateHardwareBuffer(CVertexBuffer* vbuffer, u32 size);
+	virtual bool updateHardwareBuffer(CIndexBuffer* ibuffer, u32 size);
 
 public:
 	virtual void onLost();
 	virtual void onReset();
 
 private:
-	bool internalCreateVertexBuffer( IVertexBuffer* vbuffer );
-	bool internalCreateIndexBuffer( IIndexBuffer* ibuffer );
-	bool fillVertexBuffer(IVertexBuffer* vbuffer);
-	bool fillIndexBuffer(IIndexBuffer* ibuffer);
+	bool internalCreateVertexBuffer( CVertexBuffer* vbuffer );
+	bool internalCreateIndexBuffer( CIndexBuffer* ibuffer );
+	bool fillVertexBuffer(CVertexBuffer* vbuffer);
+	bool fillIndexBuffer(CIndexBuffer* ibuffer);
 
 	void createStaticIndexBufferQuadList();
 	void destroyStaticIndexBufferQuadList();

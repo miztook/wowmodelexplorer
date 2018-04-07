@@ -41,7 +41,7 @@ COpenGLVertexDeclaration::~COpenGLVertexDeclaration()
 	VaoMap.clear();
 }
 
-void COpenGLVertexDeclaration::apply(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0, IVertexBuffer* vbuffer1, u32 offset1)
+void COpenGLVertexDeclaration::apply(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1)
 {
 	if (Extension->canUseVAO())
 	{
@@ -158,7 +158,7 @@ GLuint COpenGLVertexDeclaration::getVao( const SVAOParam& param )
 	return itr->second;
 }
 
-void COpenGLVertexDeclaration::createVao_P( const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_P( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -175,7 +175,7 @@ void COpenGLVertexDeclaration::createVao_P( const SGLProgram* program, IVertexBu
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PC( const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PC( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -200,7 +200,7 @@ void COpenGLVertexDeclaration::createVao_PC( const SGLProgram* program, IVertexB
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PCT( const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PCT( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -233,7 +233,7 @@ void COpenGLVertexDeclaration::createVao_PCT( const SGLProgram* program, IVertex
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PN( const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PN( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -258,7 +258,7 @@ void COpenGLVertexDeclaration::createVao_PN( const SGLProgram* program, IVertexB
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PNC( const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PNC( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -291,7 +291,7 @@ void COpenGLVertexDeclaration::createVao_PNC( const SGLProgram* program, IVertex
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PNT( const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PNT( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -324,7 +324,7 @@ void COpenGLVertexDeclaration::createVao_PNT( const SGLProgram* program, IVertex
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PT( const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PT( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -349,7 +349,7 @@ void COpenGLVertexDeclaration::createVao_PT( const SGLProgram* program, IVertexB
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PNCT( const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PNCT( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -390,7 +390,7 @@ void COpenGLVertexDeclaration::createVao_PNCT( const SGLProgram* program, IVerte
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PNCT2( const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PNCT2( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -439,7 +439,7 @@ void COpenGLVertexDeclaration::createVao_PNCT2( const SGLProgram* program, IVert
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PNT2W( const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0, IVertexBuffer* vbuffer1, u32 offset1 )
+void COpenGLVertexDeclaration::createVao_PNT2W( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
@@ -498,7 +498,7 @@ void COpenGLVertexDeclaration::createVao_PNT2W( const SGLProgram* program, IVert
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::deleteVao( IVertexBuffer* vbuffer0 )
+void COpenGLVertexDeclaration::deleteVao( CVertexBuffer* vbuffer0 )
 {
 	//CLock lock(&g_Globals.vaoCS);
 
@@ -512,7 +512,7 @@ void COpenGLVertexDeclaration::deleteVao( IVertexBuffer* vbuffer0 )
 	}
 }
 
-void COpenGLVertexDeclaration::setDecl_P(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_P(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
 {	
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -525,7 +525,7 @@ void COpenGLVertexDeclaration::setDecl_P(const SGLProgram* program, IVertexBuffe
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PC(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PC(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -544,7 +544,7 @@ void COpenGLVertexDeclaration::setDecl_PC(const SGLProgram* program, IVertexBuff
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PCT(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PCT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -570,7 +570,7 @@ void COpenGLVertexDeclaration::setDecl_PCT(const SGLProgram* program, IVertexBuf
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PN(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PN(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -589,7 +589,7 @@ void COpenGLVertexDeclaration::setDecl_PN(const SGLProgram* program, IVertexBuff
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PNC(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PNC(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -614,7 +614,7 @@ void COpenGLVertexDeclaration::setDecl_PNC(const SGLProgram* program, IVertexBuf
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PNT(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PNT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -640,7 +640,7 @@ void COpenGLVertexDeclaration::setDecl_PNT(const SGLProgram* program, IVertexBuf
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PT(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -660,7 +660,7 @@ void COpenGLVertexDeclaration::setDecl_PT(const SGLProgram* program, IVertexBuff
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PNCT(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PNCT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -692,7 +692,7 @@ void COpenGLVertexDeclaration::setDecl_PNCT(const SGLProgram* program, IVertexBu
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PNCT2(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PNCT2(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -731,7 +731,7 @@ void COpenGLVertexDeclaration::setDecl_PNCT2(const SGLProgram* program, IVertexB
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PNT2W(const SGLProgram* program, IVertexBuffer* vbuffer0, u32 offset0, IVertexBuffer* vbuffer1, u32 offset1)
+void COpenGLVertexDeclaration::setDecl_PNT2W(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 

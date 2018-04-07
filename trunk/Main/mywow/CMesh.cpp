@@ -25,7 +25,7 @@ CMesh::~CMesh()
 
 void CMesh::updateVertexBuffer(u32 index)
 {
-	IVertexBuffer* vbuffer = BufferParam.getVBuffer(index);
+	CVertexBuffer* vbuffer = BufferParam.getVBuffer(index);
 	if(vbuffer && vbuffer->Mapping != EMM_STATIC)
 		g_Engine->getHardwareBufferServices()->updateHardwareBuffer(vbuffer, vbuffer->Size);
 }

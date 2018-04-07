@@ -56,13 +56,4 @@ public:
 
 public:
 
-#ifdef FULL_INTERFACE
-	virtual void addRenderUnit(const SRenderUnit* unit) = 0;
-	virtual void render(const SRenderUnit*& currentUnit, ICamera* cam) = 0;
-
-	//在实际的渲染前后设置fog, dlight, ambient
-	virtual void begin_setupLightFog(ICamera* cam) const = 0;
-	virtual void end_setupLightFog() const = 0;
-
-#endif
 };
