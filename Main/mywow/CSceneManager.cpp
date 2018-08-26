@@ -147,10 +147,6 @@ void CSceneManager::drawAll(bool foreground)
 #endif
 	}
 	
-#ifdef MW_USE_AUDIO
-	g_Engine->getAudioPlayer()->tickFadeOutSounds(timeSinceLastFrame);
-#endif
-
 	g_Engine->getParticleSystemServices()->adjustParticles();
 }
 

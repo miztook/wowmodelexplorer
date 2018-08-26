@@ -291,17 +291,11 @@ typedef struct _TCascSearch
 //  - Memory freeing function doesn't have to test the pointer to NULL
 //
 
-__inline void* Malloc(size_t nSize); 
-__inline void Free(void* ptr);
-__inline void* ReAlloc(void* ptr, size_t nSize);
-__inline void* TempMalloc(size_t nSize);
-__inline void TempFree(void* ptr);
-
-#define CASC_REALLOC(type, ptr, count) (type *)ReAlloc(ptr, (count) * sizeof(type))
-#define CASC_ALLOC(type, count)        (type *)Malloc((count) * sizeof(type))
-#define CASC_FREE(ptr)                 Free(ptr)
-#define CASC_TEMP_ALLOC(type, count)        (type *)TempMalloc((count) * sizeof(type))
-#define CASC_TEMP_FREE(ptr)                 TempFree(ptr)
+#define CASC_REALLOC(type, ptr, count) (type *)realloc(ptr, (count) * sizeof(type))
+#define CASC_ALLOC(type, count)        (type *)malloc((count) * sizeof(type))
+#define CASC_FREE(ptr)                 free(ptr)
+#define CASC_TEMP_ALLOC(type, count)        (type *)malloc((count) * sizeof(type))
+#define CASC_TEMP_FREE(ptr)                 free(ptr)
 
 //-----------------------------------------------------------------------------
 // Big endian number manipulation

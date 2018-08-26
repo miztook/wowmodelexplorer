@@ -29,8 +29,5 @@
     <ClCompile Include="TestCascLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="casclib_memory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

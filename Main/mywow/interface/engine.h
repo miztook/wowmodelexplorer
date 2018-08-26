@@ -27,7 +27,6 @@ class IMeshDecalServices;
 class ITerrainServices;
 class IInputReader;
 class IGestureReader;
-class IAudioPlayer;
 class engineSetting;
 class CTimer;
 
@@ -103,7 +102,6 @@ public:
 	ITerrainServices*	getTerrainServices() const { return TerrainServices; }
 	IInputReader*	getInputReader() const { return InputReader; }
 	IGestureReader*		getGestureReader() const { return GestureReader; }
-	IAudioPlayer*   getAudioPlayer() const { return AudioPlayer; }
 	engineSetting*		getEngineSetting() const { return EngineSetting; } 
 	CTimer*		getTimer() const { return Timer; }
 	bool isDXFamily() const { return m_IsDXFamily; }
@@ -133,7 +131,6 @@ private:
 	IRibbonEmitterServices*		RibbonEmitterServices;
 	IMeshDecalServices*			MeshDecalServices;
 	ITerrainServices*		TerrainServices;
-	IAudioPlayer*		AudioPlayer;
 	engineSetting*		EngineSetting;
 	CTimer*			Timer;
 	IMessageHandler*		MessageHandler;

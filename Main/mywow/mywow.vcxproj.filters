@@ -51,12 +51,6 @@
     <Filter Include="implementation\input">
       <UniqueIdentifier>{f275d72e-7696-421e-a52e-2b1912bc3aec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="interface\audio">
-      <UniqueIdentifier>{83714bc6-73b6-47ea-816e-494db867ff84}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="implementation\audio">
-      <UniqueIdentifier>{a428d538-c33d-43d9-b942-5c2249e54061}</UniqueIdentifier>
-    </Filter>
     <Filter Include="implementation\video\Direct3D11">
       <UniqueIdentifier>{c4f87801-983c-44fa-a6ec-31ea4d20a222}</UniqueIdentifier>
     </Filter>
@@ -244,21 +238,6 @@
     </ClInclude>
     <ClInclude Include="CD3D9SceneStateServices.h">
       <Filter>implementation\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="CWavInput.h">
-      <Filter>implementation\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="CDSAudioPlayer.h">
-      <Filter>implementation\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="CDSSound.h">
-      <Filter>implementation\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="CVorbisInput.h">
-      <Filter>implementation\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="CMP3Input.h">
-      <Filter>implementation\audio</Filter>
     </ClInclude>
     <ClInclude Include="CWmoRenderer.h">
       <Filter>implementation\renderer</Filter>
@@ -515,9 +494,6 @@
     <ClInclude Include="interface\animation.h">
       <Filter>interface\core</Filter>
     </ClInclude>
-    <ClInclude Include="interface\audio.h">
-      <Filter>interface\audio</Filter>
-    </ClInclude>
     <ClInclude Include="interface\dimension2d.h">
       <Filter>interface\core</Filter>
     </ClInclude>
@@ -526,12 +502,6 @@
     </ClInclude>
     <ClInclude Include="interface\frustum.h">
       <Filter>interface\core</Filter>
-    </ClInclude>
-    <ClInclude Include="interface\IAudioInput.h">
-      <Filter>interface\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="interface\IAudioPlayer.h">
-      <Filter>interface\audio</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>implementation</Filter>
@@ -748,9 +718,6 @@
     </ClInclude>
     <ClInclude Include="interface\IWMOSceneNode.h">
       <Filter>interface\scene\sceneNode</Filter>
-    </ClInclude>
-    <ClInclude Include="interface\ISound.h">
-      <Filter>interface\audio</Filter>
     </ClInclude>
     <ClInclude Include="interface\IWriteFile.h">
       <Filter>interface\iosys</Filter>
@@ -1131,21 +1098,6 @@
     </ClCompile>
     <ClCompile Include="CFileWMO.cpp">
       <Filter>wow</Filter>
-    </ClCompile>
-    <ClCompile Include="CWavInput.cpp">
-      <Filter>implementation\audio</Filter>
-    </ClCompile>
-    <ClCompile Include="CDSAudioPlayer.cpp">
-      <Filter>implementation\audio</Filter>
-    </ClCompile>
-    <ClCompile Include="CDSSound.cpp">
-      <Filter>implementation\audio</Filter>
-    </ClCompile>
-    <ClCompile Include="CVorbisInput.cpp">
-      <Filter>implementation\audio</Filter>
-    </ClCompile>
-    <ClCompile Include="CMP3Input.cpp">
-      <Filter>implementation\audio</Filter>
     </ClCompile>
     <ClCompile Include="CWmoRenderer.cpp">
       <Filter>implementation\renderer</Filter>

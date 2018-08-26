@@ -45,53 +45,53 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_60|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_60|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_60|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_60|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -159,7 +159,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -176,7 +176,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;WOW60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -193,7 +193,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FPM_64BIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -210,7 +210,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FPM_64BIT;WOW60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -228,7 +228,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>MaxSpeed</Optimization>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -257,7 +257,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;WOW60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>MaxSpeed</Optimization>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -286,7 +286,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FPM_64BIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>MaxSpeed</Optimization>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -315,7 +315,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FPM_64BIT;WOW60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\libvorbis;..\..\Dependency\libogg;..\..\Dependency\libmad;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\DirectxSdk-June2010\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>MaxSpeed</Optimization>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -367,7 +367,6 @@
     <ClInclude Include="interface\aabbox3d.h" />
     <ClInclude Include="interface\algorithm.h" />
     <ClInclude Include="interface\animation.h" />
-    <ClInclude Include="interface\audio.h" />
     <ClInclude Include="interface\base.h" />
     <ClInclude Include="CConfigs.h" />
     <ClInclude Include="CCoordSceneNode.h" />
@@ -399,15 +398,12 @@
     <ClInclude Include="CD3D9VertexDeclaration.h" />
     <ClInclude Include="CD3D9_VS20.h" />
     <ClInclude Include="CD3D9_VS30.h" />
-    <ClInclude Include="CDSAudioPlayer.h" />
-    <ClInclude Include="CDSSound.h" />
     <ClInclude Include="CBLPImage.h" />
     <ClInclude Include="CFileADTLoader.h" />
     <ClInclude Include="CFileM2Loader.h" />
     <ClInclude Include="CFileWDTLoader.h" />
     <ClInclude Include="CFileWMOLoader.h" />
     <ClInclude Include="CMeshDecalServices.h" />
-    <ClInclude Include="CMP3Input.h" />
     <ClInclude Include="COpenGLDrawServices.h" />
     <ClInclude Include="COpenGLDriver.h" />
     <ClInclude Include="COpenGLExtension.h" />
@@ -432,8 +428,6 @@
     <ClInclude Include="CSkySceneNode.h" />
     <ClInclude Include="CSpecialTextureServices.h" />
     <ClInclude Include="CParticleRenderer.h" />
-    <ClInclude Include="CVorbisInput.h" />
-    <ClInclude Include="CWavInput.h" />
     <ClInclude Include="CBlit.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CD3D9Driver.h" />
@@ -507,7 +501,6 @@
     <ClInclude Include="GL\glext.h" />
     <ClInclude Include="GL\wglext.h" />
     <ClInclude Include="interface\function.h" />
-    <ClInclude Include="interface\IAudioPlayer.h" />
     <ClInclude Include="interface\ICamera.h" />
     <ClInclude Include="interface\IBLPImage.h" />
     <ClInclude Include="interface\IConfigs.h" />
@@ -538,9 +531,7 @@
     <ClInclude Include="interface\ISceneNodeAddCallback.h" />
     <ClInclude Include="interface\ISceneRenderer.h" />
     <ClInclude Include="interface\ISceneStateServices.h" />
-    <ClInclude Include="interface\IAudioInput.h" />
     <ClInclude Include="interface\ISkySceneNode.h" />
-    <ClInclude Include="interface\ISound.h" />
     <ClInclude Include="interface\ISpecialTextureServices.h" />
     <ClInclude Include="interface\ITerrainServices.h" />
     <ClInclude Include="interface\ITextureWriteServices.h" />
@@ -659,8 +650,6 @@
     <ClCompile Include="CD3D9RenderTarget.cpp" />
     <ClCompile Include="CD3D9VertexDeclaration.cpp" />
     <ClCompile Include="CD3D9_VS30.cpp" />
-    <ClCompile Include="CDSAudioPlayer.cpp" />
-    <ClCompile Include="CDSSound.cpp" />
     <ClCompile Include="CBLPImage.cpp" />
     <ClCompile Include="CFileADTLoader.cpp" />
     <ClCompile Include="CFileM2Loader.cpp" />
@@ -689,7 +678,6 @@
     <ClCompile Include="CMeshDecalRenderer.cpp" />
     <ClCompile Include="CMeshDecalServices.cpp" />
     <ClCompile Include="CMiniDump.cpp" />
-    <ClCompile Include="CMP3Input.cpp" />
     <ClCompile Include="COpenGLDrawServices.cpp" />
     <ClCompile Include="COpenGLDriver_base.cpp" />
     <ClCompile Include="COpenGLDriver_draw.cpp" />
@@ -720,8 +708,6 @@
     <ClCompile Include="CTimer.cpp" />
     <ClCompile Include="CParticleRenderer.cpp" />
     <ClCompile Include="CTransluscentDecalRenderer.cpp" />
-    <ClCompile Include="CVorbisInput.cpp" />
-    <ClCompile Include="CWavInput.cpp" />
     <ClCompile Include="CBlit.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CD3D9Driver_base.cpp" />

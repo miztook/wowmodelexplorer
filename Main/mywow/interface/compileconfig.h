@@ -24,8 +24,6 @@
 
 //#define MW_USE_CASC
 
-//#define MW_USE_AUDIO
-
 //#define MW_USE_DIRECTINPUT
 
 //#define MW_USE_TOUCH_INPUT
@@ -79,8 +77,6 @@
 #if defined(MW_PLATFORM_WINDOWS)
 
 	#define MW_EDITOR
-
-	//#define MW_USE_AUDIO
 
 	#define USE_QALLOCATOR
 

@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
 	//_CrtSetBreakAlloc(100);
 
-	const TCHAR* szStorage = _T("E:\\World Of Warcraft\\Data\\");
+	const TCHAR* szStorage = _T("D:\\World Of Warcraft 60\\Data\\");
 
 	//const char* filename = "Character\\Orc\\Male\\orcmale_hd.m2";
 	//

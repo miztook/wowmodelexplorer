@@ -32,10 +32,6 @@
 #include "COpenGLManualTextureServices.h"
 #include "COpenGLHelper.h"
 
-#ifdef MW_PLATFORM_WINDOWS
-#include "CDSAudioPlayer.h"
-#endif
-
 #include "CInputReader.h"
 #include "CGestureReader.h"
 #include "CFontServices.h"
@@ -87,7 +83,6 @@ Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : Mess
 	ManualMeshServices = nullptr;
 	InputReader = nullptr;
 	GestureReader = nullptr;
-	AudioPlayer = nullptr;
 	FontServices = nullptr;
 	TextureWriteServices = nullptr;
 	ManualTextureServices = nullptr;
@@ -122,7 +117,6 @@ Engine::~Engine()
 	delete ManualMeshServices;
 	delete GeometryCreator;
 	delete FontServices;
-	delete AudioPlayer;
 	delete GestureReader;
 	delete InputReader;
 
@@ -247,33 +241,6 @@ bool Engine::initDriver(E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen, 
 	InputReader = new CInputReader;
 	GestureReader = new CGestureReader;
 
-#ifdef MW_PLATFORM_WINDOWS
-
-#ifdef MW_USE_AUDIO
-	//		InputReader = new CDxInputReader;
-	// 	if(!static_cast<CDxInputReader*>(InputReader)->initDevice(WindowInfo.hwnd))
-	// 	{
-	// 		FileSystem->writeLog(ELOG_GX, "InputReader initDevice Failed!");
-	// 		ASSERT(false);
-	// 		goto fail;
-	// 	}
-
-	AudioPlayer = new CDSAudioPlayer;
-	if (!static_cast<CDSAudioPlayer*>(AudioPlayer)->initDevice(WindowInfo.hwnd, 2, 22050, 16))
-	{
-		ASSERT(false);
-	}
-
-#endif
-
-#endif
-
-	// 	AudioPlayer = new CX2AudioPlayer;
-	// 	if(!static_cast<CX2AudioPlayer*>(AudioPlayer)->initDevice(2, 22050))
-	// 	{
-	// 		ASSERT(false);
-	// 	}
-
 	FontServices = new CFontServices(0, 0, 0, 12);
 	FontServices->createDefaultFonts();
 
@@ -308,7 +275,6 @@ fail:
 	SAFE_DELETE(ManualMeshServices);
 	SAFE_DELETE(GeometryCreator);
 	SAFE_DELETE(FontServices);
-	SAFE_DELETE(AudioPlayer);
 	SAFE_DELETE(GestureReader);
 	SAFE_DELETE(InputReader);
 	SAFE_DELETE(ManualTextureServices);

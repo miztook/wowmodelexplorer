@@ -34,12 +34,6 @@
 #include <dinput.h>
 #endif
 
-//audio
-#include <mmreg.h>
-#ifdef MW_USE_AUDIO
-#include <dsound.h>
-#endif
-
 #include <io.h>
 #include <direct.h>
 #include <share.h>
@@ -162,15 +156,5 @@
 #elif defined(MW_USE_CASC)
 #include "CascLib.h"
 #endif
-
-//libogg
-#include "ogg/ogg.h"
-
-//libvorbis
-#include "vorbis/codec.h"
-#include "vorbis/vorbisfile.h"
-
-//libmad
-#include "mad.h"
 
 #endif
