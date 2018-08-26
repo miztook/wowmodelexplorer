@@ -81,11 +81,6 @@ IManualMeshServices*  Engine_getManualMeshServices()
 	return g_Engine->getManualMeshServices();
 }
 
-IAudioPlayer* Engine_getAudioPlayer()
-{
-	return g_Engine->getAudioPlayer();
-}
-
 IResourceLoader* Engine_getResourceLoader()
 {
 	return g_Engine->getResourceLoader();

@@ -127,7 +127,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioPlayer.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="CoordSceneNode.cs" />
@@ -170,7 +169,6 @@
     <Compile Include="MeshSceneNode.cs" />
     <Compile Include="mwTool.cs" />
     <Compile Include="NewMath.cs" />
-    <Compile Include="PInvokes\AudioPlayer_Native.cs" />
     <Compile Include="PInvokes\Camera_Native.cs" />
     <Compile Include="PInvokes\Client_Native.cs" />
     <Compile Include="PInvokes\CoordSceneNode_Native.cs" />

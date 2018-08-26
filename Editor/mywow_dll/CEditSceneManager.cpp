@@ -432,7 +432,7 @@ void CEditSceneManager::setCenterTexture(const c8* filename)
 	ITexture* tex = g_Engine->getResourceLoader()->loadTexture(filename, false);
 	if(!tex)
 		return;
-	tex->createVideoTexture();
+	IVideoResource::buildVideoResources(tex);
 	CenterTexture = tex;
 }
 

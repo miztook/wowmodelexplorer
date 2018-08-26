@@ -59,9 +59,6 @@
     <ClInclude Include="editor_ManualMeshServices.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="editor_AudioPlayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="editor_ResourceLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -164,9 +161,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="editor_M2SceneNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="editor_AudioPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="editor_ResourceLoader.cpp">

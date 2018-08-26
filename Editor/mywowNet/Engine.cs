@@ -55,7 +55,6 @@ namespace mywowNet
             _wowDatabase = new WowDatabase(engine_getWowDatabase());
             _wowEnvironment = new WowEnvironment(engine_getWowEnvironment());
             _manualMeshServices = new ManualMeshServices(engine_getManualMeshServices());
-            _audioPlayer = null; // new AudioPlayer(engine_getAudioPlayer());
             _resourceLoader = new ResourceLoader(engine_getResourceLoader());
             _sceneEnvironment = new SceneEnvironment(engine_getSceneEnvironment());
             _drawServices = new DrawServices(engine_getDrawServices());
@@ -108,7 +107,6 @@ namespace mywowNet
         WowDatabase _wowDatabase;
         WowEnvironment _wowEnvironment;
         ManualMeshServices _manualMeshServices;
-        AudioPlayer _audioPlayer;
         ResourceLoader _resourceLoader;
         SceneEnvironment _sceneEnvironment;
         DrawServices _drawServices;
@@ -137,11 +135,6 @@ namespace mywowNet
         public ManualMeshServices ManualMeshServices
         {
             get { return _manualMeshServices;  }
-        }
-
-        public AudioPlayer AudioPlayer
-        {
-            get { return _audioPlayer; }
         }
 
         public ResourceLoader ResourceLoader

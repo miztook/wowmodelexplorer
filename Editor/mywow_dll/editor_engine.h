@@ -22,7 +22,6 @@ MW_API ISceneManager*  Engine_getSceneManager();
 MW_API wowDatabase*  Engine_getWowDatabase();
 MW_API wowEnvironment*  Engine_getWowEnvironment();
 MW_API IManualMeshServices*  Engine_getManualMeshServices();
-MW_API IAudioPlayer* Engine_getAudioPlayer();
 MW_API IResourceLoader* Engine_getResourceLoader();
 MW_API ISceneEnvironment* Engine_getSceneEnvironment();
 MW_API IDrawServices* Engine_getDrawServices();
