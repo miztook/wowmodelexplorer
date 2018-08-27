@@ -8,13 +8,11 @@
 //编辑器模式
 //#define MW_EDITOR
 
-//#define WOW60
-
-#if !defined(WOW30) && !defined(WOW40) && !defined(WOW50) && !defined(WOW60)
-	#define WOW70
+#ifndef WOW_VER
+	#define WOW_VER 80
 #endif
 
-#if defined(WOW60) || defined(WOW70)
+#if WOW_VER >= 60
 	#define MW_USE_CASC
 #else
 	#define MW_USE_MPQ

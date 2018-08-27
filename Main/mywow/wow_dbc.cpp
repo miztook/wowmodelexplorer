@@ -640,7 +640,7 @@ void ItemCollections::build( itemDB* itemDb, itemSparseDB* itemSparseDb)
 			continue;
 
 		SItemRecord rec;
-#ifdef WOW70
+#if WOW_VER >= 70
 		rec.id = rs.getID();
 #else
 		rec.id = itemSparseDb->getRecordSparseRow(i);
@@ -657,7 +657,7 @@ void ItemCollections::build( itemDB* itemDb, itemSparseDB* itemSparseDb)
 		rec.subclass = r.getInt(itemDB::Subclass);
 		rec.type = r.getInt(itemDB::InventorySlot);
 
-#ifdef WOW70
+#if WOW_VER >= 70
 		Q_sprintf(rec.name, DEFAULT_SIZE * 2, "Item-%d", rec.id);
 #else
 		const c8* str = rs.getString(itemSparseDb->getItemNameField());

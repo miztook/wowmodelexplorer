@@ -73,14 +73,14 @@ wowDatabase::wowDatabase( wowEnvironment* env )
 
 	ItemDB = new itemDB(env);
 
-#if defined(WOW70)
+#if WOW_VER >= 70
 	NpcModelItemSlotDisplayInfoDB = new npcModelItemSlotDisplayInfoDB(env);
 	ItemDisplayInfoMaterialResDB = new itemDisplayInfoMaterialResDB(env);
 	ItemModifiedAppearanceDB = new itemModifiedAppearanceDB(env);
 	ItemAppearanceDB = new itemAppearanceDB(env);
 	TextureFileDataDB = new textureFileDataDB(env);
 	ModelFileDataDB = new modelFileDataDB(env);
-#elif defined(WOW60)
+#elif WOW_VER >= 60
 	NpcModelItemSlotDisplayInfoDB = nullptr;
 	ItemDisplayInfoMaterialResDB = nullptr;
 	ItemModifiedAppearanceDB = new itemModifiedAppearanceDB(env);
@@ -96,7 +96,7 @@ wowDatabase::wowDatabase( wowEnvironment* env )
 	ModelFileDataDB = nullptr;
 #endif
 
-#ifdef WOW60
+#if WOW_VER == 60
 	FileDataDB = new fileDataDB(env);
 #else
 	FileDataDB = nullptr;
@@ -190,7 +190,7 @@ void wowDatabase::buildStartOutfitClass()
 		dbc::record r = StartOutFitDB->getRecord(i);
 		if (r.isValid())
 		{
-#ifdef WOW70
+#if WOW_VER >= 70
 			u8 race = (u8)r.getUInt(startOutfitDB::Race);
 			u8 id = (u8)r.getUInt(startOutfitDB::Class);
 			u8 gender =	(u8)r.getUInt(startOutfitDB::Gender);
@@ -394,11 +394,11 @@ bool wowDatabase::getNpcPath(s32 npcid, bool isHD, c8* path, u32 size)
 	if (!r.isValid())
 		return false;
 
-#if defined(WOW70)
+#if WOW_VER >= 70
 	s32 fileId = r.getByte3(creatureModelDB::FileNameID);
 	c8 filename[512];
 	g_Engine->getWowDatabase()->getFilePath(fileId, filename, 512);
-#elif defined(WOW60)
+#elif WOW_VER >= 60
 	s32 fileId = r.getInt(creatureModelDB::FileNameID);
 	c8 filename[512];
 	g_Engine->getWowDatabase()->getFilePath(fileId, filename, 512);
@@ -674,7 +674,7 @@ const SRidable* wowDatabase::getRidable( u32 idx ) const
 
 s32 wowDatabase::getItemDisplayId( s32 itemid ) const
 {
-#if defined(WOW60) || defined(WOW70)
+#if WOW_VER >= 60
 	dbc::record r = getItemModifiedAppearanceDB()->getByItemID(itemid);
 	if (!r.isValid())
 		return -1;
@@ -696,7 +696,7 @@ s32 wowDatabase::getItemDisplayId( s32 itemid ) const
 
 void wowDatabase::getFilePath( s32 fileId, string256& path ) const
 {
-#if defined(WOW70)
+#if WOW_VER >= 70
 	if(fileId == 0)
 	{
 		path.clear();
@@ -714,7 +714,7 @@ void wowDatabase::getFilePath( s32 fileId, string256& path ) const
 	}
 	path.normalize();
 	path.make_lower();
-#elif defined(WOW60)
+#elif WOW_VER >= 60
 	dbc::record r = getFileDataDB()->getByID(fileId);
 	if (!r.isValid())
 	{
@@ -734,7 +734,7 @@ void wowDatabase::getFilePath( s32 fileId, string256& path ) const
 
 void wowDatabase::getFilePath( s32 fileId, c8* path, u32 size ) const
 {
-#if defined(WOW70)
+#if WOW_VER >= 70
 	if(fileId == 0)
 	{
 		memset(path, 0, size);
@@ -752,7 +752,7 @@ void wowDatabase::getFilePath( s32 fileId, c8* path, u32 size ) const
 	}
 	normalizeFileName(path);
 	Q_strlwr(path);
-#elif defined(WOW60)
+#elif WOW_VER >= 60
 	dbc::record r = getFileDataDB()->getByID(fileId);
 	if (!r.isValid())
 	{
@@ -773,7 +773,7 @@ void wowDatabase::getFilePath( s32 fileId, c8* path, u32 size ) const
 
 void wowDatabase::getTextureFilePath( s32 texId, string256& path ) const
 {
-#if defined(WOW70)
+#if WOW_VER >= 70
 	dbc::record r = getTextureFileDataDB()->getByTextureId(texId);
 	if (!r.isValid())
 	{
@@ -782,7 +782,7 @@ void wowDatabase::getTextureFilePath( s32 texId, string256& path ) const
 	}
 	s32 fileId = r.getByte3(textureFileDataDB::Path);
 	getFilePath(fileId, path);
-#elif defined(WOW60)
+#elif WOW_VER >= 60
 	dbc::record r = getTextureFileDataDB()->getByTextureId(texId);
 	if (!r.isValid())
 	{
@@ -799,7 +799,7 @@ void wowDatabase::getTextureFilePath( s32 texId, string256& path ) const
 
 void wowDatabase::getTextureFilePath( s32 texId, c8* path, u32 size ) const
 {
-#if defined(WOW70)
+#if WOW_VER >= 70
 	dbc::record r = getTextureFileDataDB()->getByTextureId(texId);
 	if (!r.isValid())
 	{
@@ -808,7 +808,7 @@ void wowDatabase::getTextureFilePath( s32 texId, c8* path, u32 size ) const
 	}
 	s32 fileId = r.getByte3(textureFileDataDB::Path);
 	getFilePath(fileId, path, size);
-#elif defined(WOW60) 
+#elif WOW_VER >= 60 
 	dbc::record r = getTextureFileDataDB()->getByTextureId(texId);
 	if (!r.isValid())
 	{
@@ -825,7 +825,7 @@ void wowDatabase::getTextureFilePath( s32 texId, c8* path, u32 size ) const
 
 void wowDatabase::getModelFilePath(s32 modelId, string256& path) const
 {
-#if defined(WOW70)
+#if WOW_VER >= 70
 	dbc::record r = getModelFileDataDB()->getByModelId(modelId);
 	if (!r.isValid())
 	{
@@ -842,7 +842,7 @@ void wowDatabase::getModelFilePath(s32 modelId, string256& path) const
 
 void wowDatabase::getModelFilePath(s32 modelId, c8* path, u32 size) const
 {
-#if defined(WOW70)
+#if WOW_VER >= 70
 	dbc::record r = getModelFileDataDB()->getByModelId(modelId);
 	if (!r.isValid())
 	{
@@ -880,10 +880,10 @@ bool wowDatabase::getItemPath(s32 itemid, c8* modelpath, u32 modelSize, c8* text
 
 	string256 model1;
 	string256 skin1;
-#if defined(WOW70)
+#if WOW_VER >= 70
 	getModelFilePath((s32)display.getInArray<u16>(itemDisplayDB::Model, 0), model1);
 	getTextureFilePath((s32)display.getByte3InArray(itemDisplayDB::Skin, 0), skin1);
-#elif defined(WOW60)
+#elif WOW_VER >= 60
 	model1 = display.getString(itemDisplayDB::Model);
 	s32 skin1Id = display.getInt(itemDisplayDB::Skin);
 	getTextureFilePath(skin1Id, skin1);

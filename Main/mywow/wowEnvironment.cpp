@@ -6,7 +6,7 @@
 
 #define MPQFILES	"mpqfiles/"
 
-#ifdef WOW60
+#if WOW_VER == 60
 #define LISTFILE	"listfile60.txt"
 #else
 #define LISTFILE	"listfile.txt"
@@ -79,7 +79,7 @@ wowEnvironment::wowEnvironment(IFileSystem* fs, bool useCompress, bool outputFil
 
     CSysUtility::outputDebug(LocalePath);
     
-#if !defined(WOW60) && !defined(WOW70)
+#if WOW_VER < 60
 	if (!FileSystem->isFileExists(LocalePath))
 	{
 		Locale = "enUS";
@@ -94,7 +94,7 @@ wowEnvironment::wowEnvironment(IFileSystem* fs, bool useCompress, bool outputFil
 	UseAlternate = false;
 #endif
 
-#if !defined(WOW60) && !defined(WOW70)
+#if WOW_VER < 60
 	if (!FileSystem->isFileExists(LocalePath))
 	{
 		UseLocale = false;
@@ -186,7 +186,7 @@ void wowEnvironment::loadCascListFiles()
 		Z_FreeTempMemory(buffer);
 
 		std::sort(CascListFiles.begin(), CascListFiles.end());
-#ifdef WOW70
+#if WOW_VER >= 70
 		for (int i = 0; i < (int)CascListFiles.size(); ++i)		
 		{
 			char realfilename[256];

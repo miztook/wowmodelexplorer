@@ -561,7 +561,7 @@ public:
 
 public:
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 Name = 0;		// string
 #else
 	static const u32 Name = 1;		// string
@@ -585,7 +585,7 @@ class charClassesDB: public dbc
 public:
 	charClassesDB(wowEnvironment* env): dbc(env, "DBFilesClient\\ChrClasses.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 NameV400 = 3;		//string
 	static const u32 ShortName = 4;
 #else
@@ -604,7 +604,7 @@ public:
 
 
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 RaceV400 = 1;				// byte
 	static const u32 GenderV400 = 2;				// byte
 	static const u32 StyleV400 = 3;				// byte
@@ -626,7 +626,7 @@ class charHairGeosetsDB : public dbc
 public:
 	charHairGeosetsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharHairGeosets.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 Race = 1;				// byte
 	static const u32 Gender = 2;				// byte
 	static const u32 Section = 3;			// byte
@@ -649,7 +649,7 @@ class charComponentTextureLayoutsDB : public dbc
 public:
 	charComponentTextureLayoutsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharComponentTextureLayouts.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 Width = 0;
 	static const u32 Height = 1;
 #else
@@ -663,7 +663,7 @@ class charComponentTextureSectionsDB : public dbc
 public:
 	charComponentTextureSectionsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharComponentTextureSections.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 LayoutID = 4;
 	static const u32 Section = 5;
 	static const u32 X = 0;
@@ -686,7 +686,7 @@ class charRacesDB : public dbc
 public:
 	charRacesDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ChrRaces.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 ShortName = 1;		// string, Name, represented by only 2 chars
 	static const u32 Name = 2;			// string, Model name, 10048 to 11
 	static const u32 maleModelID = 15;
@@ -711,7 +711,7 @@ class charSectionsDB : public dbc
 public:
 	charSectionsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharSections.dbc") {}
 	
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 Race = 2;		// byte
 	static const u32 Gender = 3;		// byte
 	static const u32 Type = 4;		// byte
@@ -755,7 +755,7 @@ class creatureTypeDB : public dbc
 public:
 	creatureTypeDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureType.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 Name = 0;		// string
 #else
 	static const u32 Name = 1;		// string
@@ -770,7 +770,7 @@ public:
 	/// Fields
 	//static const u32 Type = 1;			// uint
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 FileNameID = 19;		// uint fileDataId
 #else
 	static const u32 FileNameID = 2;		// uint FileData
@@ -782,7 +782,7 @@ class creatureDisplayInfoDB : public dbc
 public:
 	creatureDisplayInfoDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureDisplayInfo.dbc") {}
 
-#if defined(WOW70)
+#if WOW_VER >= 70
 	/// Fields
 	static const u32 ModelID = 9;		// uint
 	static const u32 NPCExtraID = 0;			// uint CreatureDisplayInfoExtraID
@@ -805,7 +805,7 @@ class creatureDisplayInfoExtraDB : public dbc
 public:
 	creatureDisplayInfoExtraDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureDisplayInfoExtra.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 SkinColor = 5;		// byte
 	static const u32 Face = 6;			// byte
 	static const u32 HairStyle = 7;		// byte
@@ -846,7 +846,7 @@ public:
 	static const u32 CapeID = 18;		// uint, Slot16
 #endif
 
-#if defined(WOW60)
+#if WOW_VER >= 60
 	static const u32 FileNameID = 20;
 	static const u32 HDFileNameID = 21;
 #else
@@ -869,7 +869,7 @@ class helmGeosetDB : public dbc
 public:
 	helmGeosetDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\HelmetGeosetVisData.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 HideHair = 0;		//int array
 #else
 	static const u32 HideHair = 1;		//int array
@@ -881,7 +881,7 @@ class itemDisplayDB : public dbc
 public:
 	itemDisplayDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemDisplayInfo.dbc") { }
 
-#if defined(WOW70)
+#if WOW_VER >= 70
 	static const u32 Model = 0;			// u16 array, modelleft, modelright
 	static const u32 Skin = 1;			// byte3 array, textureleft, textureright
 #else
@@ -889,7 +889,7 @@ public:
 	static const u32 Skin = 3;			// string array, textureleft, textureright
 #endif
 
-#if defined(WOW60) || defined(WOW70)
+#if WOW_VER >= 60
 	static const u32 GeosetGroup = 5;		// uint array 3, (0,1,2,3,4,5)
 	//static const u32 BracerGeosetFlags = 6;		// uint, (0,1,2,3)
 	//static const u32 RobeGeosetFlags = 7;		// uint, (0,1)
@@ -959,7 +959,7 @@ public:
 
 	static const u32 NumItems = 17;
 
-#if defined(WOW70)
+#if WOW_VER >= 70
 	/// Fields
 	static const u32 Name = 0;	// string, Localization
 	static const u32 ItemIDBaseV400 = 1; // int array 17
@@ -976,7 +976,7 @@ class itemSubClassDB : public dbc
 public:
 	itemSubClassDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemSubClass.dbc") {}
 
-#if defined(WOW70)
+#if WOW_VER >= 70
 	static const u32 ClassIDV400 = 3;	// byte
 	static const u32 SubClassIDV400 = 4;	// byte
 	static const u32 NameV400 = 0;		// string
@@ -998,12 +998,12 @@ public:
 
 	static const u32 NumItems = 24;
 
-#if defined(WOW70)
+#if WOW_VER >= 70
 	static const u32 Race = 2;	// byte offset
 	static const u32 Class = 3;		// byte offset
 	static const u32 Gender = 4;	// byte offset
 	static const u32 ItemIDBase = 0; // uint array, 24
-#elif defined(WOW60)
+#elif WOW_VER >= 60
 	static const u32 Race = 4;	// byte offset
 	static const u32 Class = 5;		// byte offset
 	static const u32 Gender = 6;	// byte offset
@@ -1058,12 +1058,12 @@ class itemDB : public dbc
 public:
 	itemDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Item.dbc") { }
 
-#if defined(WOW70)
+#if WOW_VER >= 70
 	static const u32 Itemclass = 1;	// byte
 	static const u32 Subclass = 2;	// byte
 	static const u32 InventorySlot = 5;	// byte
 	static const u32 Sheath = 6;		// byte
-#elif defined(WOW60) 
+#elif WOW_VER >= 60 
 	static const u32 Itemclass = 1;	// unit
 	static const u32 Subclass = 2;	// unit
 	static const u32 InventorySlot = 5;	// unit
@@ -1082,17 +1082,17 @@ class itemSparseDB : public dbc
 public:
 	itemSparseDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Item-Sparse.dbc") { }
 
-#if defined(WOW70)
+#if WOW_VER >= 70
 	static const u32 Quality = 42;
-#elif defined(WOW60)
+#elif WOW_VER >= 60
 	static const u32 Quality = 1;
 #endif
 
 	u32 getItemNameField() const
 	{
-#if defined(WOW70)
+#if WOW_VER >= 70
 		return 13;
-#elif defined(WOW60)
+#elif WOW_VER >= 60
 		return 70;
 #else
 		if (minorVersion >= 19000)
@@ -1113,7 +1113,7 @@ public:
 		buildItemLookup();
 	}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 ItemId = 0;	// uint
 	static const u32 ItemAppearanceId = 1;	//uint
 #else
@@ -1150,7 +1150,7 @@ class itemAppearanceDB : public dbc
 public:
 	itemAppearanceDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemAppearance.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 ItemDisplay = 0;		// unit
 	static const u32 Icon = 1;		// uint filedata
 #else
@@ -1167,7 +1167,7 @@ public:
 		buildItemLookup();
 	}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 TextureId = 0;
 	static const u32 Path = 2;		//byte3 fileid
 #else	
@@ -1266,7 +1266,7 @@ class mapDB : public dbc
 public:
 	mapDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Map.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 Name = 0;		// string
 	static const u32 AreaType = 15;		// int
 #else
@@ -1280,7 +1280,7 @@ class spellVisualEffectNameDB : public dbc
 public:
 	spellVisualEffectNameDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\SpellVisualEffectName.dbc") {}
 
-#ifdef WOW70
+#if WOW_VER >= 70
 	static const u32 Model = 0;		// string
 #else
 	static const u32 Model = 1;		// string
