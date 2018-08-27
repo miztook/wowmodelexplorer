@@ -13,66 +13,126 @@
 #include "../CascCommon.h"
 
 //-----------------------------------------------------------------------------
-// Common support
+// Constructor and destructor
 
-int RootHandler_Insert(TRootHandler * pRootHandler, const char * szFileName, LPBYTE pbEncodingKey)
+TRootHandler::TRootHandler()
 {
-    if(pRootHandler == NULL || pRootHandler->Insert == NULL)
-        return ERROR_NOT_SUPPORTED;
-
-    return pRootHandler->Insert(pRootHandler, szFileName, pbEncodingKey);
+    dwRootFlags = 0;
 }
 
-LPBYTE RootHandler_Search(TRootHandler * pRootHandler, struct _TCascSearch * pSearch, PDWORD PtrFileSize, PDWORD PtrLocaleFlags)
-{
-    // Check if the root structure is valid at all
-    if(pRootHandler == NULL)
-        return NULL;
+TRootHandler::~TRootHandler()
+{}
 
-    return pRootHandler->Search(pRootHandler, pSearch, PtrFileSize, PtrLocaleFlags);
+//-----------------------------------------------------------------------------
+// Virtual functions
+
+int TRootHandler::Insert(const char * /* szFileName */, PCASC_CKEY_ENTRY /* pCKeyEntry */)
+{
+    return ERROR_NOT_SUPPORTED;
 }
 
-void RootHandler_EndSearch(TRootHandler * pRootHandler, struct _TCascSearch * pSearch)
+LPBYTE TRootHandler::Search(struct _TCascSearch * /* pSearch */)
 {
-    // Check if the root structure is valid at all
-    if(pRootHandler != NULL)
+    return NULL;
+}
+
+void TRootHandler::EndSearch(struct _TCascSearch * /* pSearch */)
+{}
+
+LPBYTE TRootHandler::GetKey(const char * /* szFileName */, PDWORD /* PtrFileSize */)
+{
+    return NULL;
+}
+
+DWORD TRootHandler::GetFileId(const char * /* szFileName */)
+{
+    return 0;
+}
+
+//-----------------------------------------------------------------------------
+// Constructor and destructor - TFileTreeRoot
+
+TFileTreeRoot::TFileTreeRoot(DWORD FileTreeFlags) : TRootHandler()
+{
+    // Initialize the file tree
+    FileTree.Create(FileTreeFlags);
+
+    // Remember that we have file names
+    dwRootFlags |= ROOT_FLAG_HAS_NAMES;
+}
+
+TFileTreeRoot::~TFileTreeRoot()
+{
+    // Free the file tree
+    FileTree.Free();
+    dwRootFlags = 0;
+}
+
+//-----------------------------------------------------------------------------
+// Virtual functions - TFileTreeRoot
+
+int TFileTreeRoot::Insert(
+    const char * szFileName,
+    PCASC_CKEY_ENTRY pCKeyEntry)
+{
+    PCONTENT_KEY pCKey = (PCONTENT_KEY)pCKeyEntry->CKey;
+    DWORD FileSize = ConvertBytesToInteger_4(pCKeyEntry->ContentSize);
+    void * pItem;
+
+    // We can support both mappings (FileName->CKey or FileName->CKey)
+    if(dwRootFlags & ROOT_FLAG_USES_EKEY)
     {
-        pRootHandler->EndSearch(pRootHandler, pSearch);
+        if(pCKeyEntry->EKeyCount == 0)
+            return ERROR_CAN_NOT_COMPLETE;
+        pCKey = (PCONTENT_KEY)pCKeyEntry->EKey;
     }
+
+    // Insert the entry
+    pItem = FileTree.Insert(pCKey, szFileName, CASC_INVALID_ID, FileSize);
+    return (pItem != NULL) ? ERROR_SUCCESS : ERROR_CAN_NOT_COMPLETE;
 }
 
-LPBYTE RootHandler_GetKey(TRootHandler * pRootHandler, const char * szFileName)
+LPBYTE TFileTreeRoot::Search(TCascSearch * pSearch)
 {
-    // Check if the root structure is valid at all
-    if(pRootHandler == NULL)
-        return NULL;
+    PCASC_FILE_NODE pFileNode;
+    size_t ItemCount = FileTree.GetCount();
 
-    return pRootHandler->GetKey(pRootHandler, szFileName);
-}
-
-void RootHandler_Dump(TCascStorage * hs, LPBYTE pbRootHandler, DWORD cbRootHandler, const TCHAR * szNameFormat, const TCHAR * szListFile, int nDumpLevel)
-{
-    TDumpContext * dc;
-
-    // Only if the ROOT provider suports the dump option
-    if(hs->pRootHandler != NULL && hs->pRootHandler->Dump != NULL)
+    // Are we still inside the root directory range?
+    while(pSearch->IndexLevel1 < ItemCount)
     {
-        // Create the dump file
-        dc = CreateDumpContext(hs, szNameFormat);
-        if(dc != NULL)
+        // Retrieve the file item
+        pFileNode = FileTree.PathAt(pSearch->szFileName, MAX_PATH, pSearch->IndexLevel1);
+        pSearch->IndexLevel1++;
+        
+        // Ignore folders and items with no name
+        if(pFileNode->NameLength != 0 && (pFileNode->Flags & CFN_FLAG_FOLDER) == 0)
         {
-            // Dump the content and close the file
-            hs->pRootHandler->Dump(hs, dc, pbRootHandler, cbRootHandler, szListFile, nDumpLevel);
-            dump_close(dc);
+            // Check the wildcard
+            if (CheckWildCard(pSearch->szFileName, pSearch->szMask))
+            {
+                FileTree.GetExtras(pFileNode, &pSearch->dwFileDataId, &pSearch->dwFileSize, &pSearch->dwLocaleFlags);
+                return pFileNode->CKey.Value;
+            }
         }
     }
+
+    // No more entries
+    return NULL;
 }
 
-void RootHandler_Close(TRootHandler * pRootHandler)
+LPBYTE TFileTreeRoot::GetKey(const char * szFileName, PDWORD PtrFileSize)
 {
-    // Check if the root structure is allocated at all
-    if(pRootHandler != NULL)
-    {
-        pRootHandler->Close(pRootHandler);
-    }
+    PCASC_FILE_NODE pFileNode = FileTree.Find(szFileName, PtrFileSize);
+
+    return (pFileNode != NULL) ? pFileNode->CKey.Value : NULL;
+}
+
+DWORD TFileTreeRoot::GetFileId(const char * szFileName)
+{
+    PCASC_FILE_NODE pFileNode = FileTree.Find(szFileName, NULL);
+    DWORD FileId = CASC_INVALID_ID;
+
+    if(pFileNode != NULL)
+        FileTree.GetExtras(pFileNode, &FileId, NULL, NULL);
+    return FileId;
 }

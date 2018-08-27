@@ -65,18 +65,186 @@ unsigned char IntToHexChar[] = "0123456789abcdef";
 // GetLastError/SetLastError support for non-Windows platform
 
 #ifndef PLATFORM_WINDOWS
-static int nLastError = ERROR_SUCCESS;
+static DWORD dwLastError = ERROR_SUCCESS;
 
-int GetLastError()
+DWORD GetLastError()
 {
-    return nLastError;
+    return dwLastError;
 }
 
-void SetLastError(int nError)
+void SetLastError(DWORD dwErrCode)
 {
-    nLastError = nError;
+    dwLastError = dwErrCode;
 }
 #endif
+
+//-----------------------------------------------------------------------------
+// Conversion of big-endian to integer
+
+// Read the 16-bit big-endian offset into ULONGLONG
+DWORD ConvertBytesToInteger_2(LPBYTE ValueAsBytes)
+{
+    USHORT Value = 0;
+
+    Value = (Value << 0x08) | ValueAsBytes[0];
+    Value = (Value << 0x08) | ValueAsBytes[1];
+
+    return Value;
+}
+
+// Read the 24-bit big-endian offset into ULONGLONG
+DWORD ConvertBytesToInteger_3(LPBYTE ValueAsBytes)
+{
+    DWORD Value = 0;
+
+    Value = (Value << 0x08) | ValueAsBytes[0];
+    Value = (Value << 0x08) | ValueAsBytes[1];
+    Value = (Value << 0x08) | ValueAsBytes[2];
+
+    return Value;
+}
+
+// Read the 32-bit big-endian offset into ULONGLONG
+DWORD ConvertBytesToInteger_4(LPBYTE ValueAsBytes)
+{
+    DWORD Value = 0;
+
+    Value = (Value << 0x08) | ValueAsBytes[0];
+    Value = (Value << 0x08) | ValueAsBytes[1];
+    Value = (Value << 0x08) | ValueAsBytes[2];
+    Value = (Value << 0x08) | ValueAsBytes[3];
+
+    return Value;
+}
+
+// Converts the variable-size big-endian into integer
+DWORD ConvertBytesToInteger_X(LPBYTE ValueAsBytes, DWORD dwByteSize)
+{
+    DWORD Value = 0;
+
+    if(dwByteSize > 0)
+        Value = (Value << 0x08) | ValueAsBytes[0];
+    if(dwByteSize > 1)
+        Value = (Value << 0x08) | ValueAsBytes[1];
+    if(dwByteSize > 2)
+        Value = (Value << 0x08) | ValueAsBytes[2];
+    if(dwByteSize > 3)
+        Value = (Value << 0x08) | ValueAsBytes[3];
+
+    return Value;
+}
+
+DWORD ConvertBytesToInteger_4_LE(LPBYTE ValueAsBytes)
+{
+    DWORD Value = 0;
+
+    Value = (Value << 0x08) | ValueAsBytes[3];
+    Value = (Value << 0x08) | ValueAsBytes[2];
+    Value = (Value << 0x08) | ValueAsBytes[1];
+    Value = (Value << 0x08) | ValueAsBytes[0];
+
+    return Value;
+}
+
+// Read the 40-bit big-endian offset into ULONGLONG
+ULONGLONG ConvertBytesToInteger_5(LPBYTE ValueAsBytes)
+{
+    ULONGLONG Value = 0;
+
+    Value = (Value << 0x08) | ValueAsBytes[0];
+    Value = (Value << 0x08) | ValueAsBytes[1];
+    Value = (Value << 0x08) | ValueAsBytes[2];
+    Value = (Value << 0x08) | ValueAsBytes[3];
+    Value = (Value << 0x08) | ValueAsBytes[4];
+
+    return Value;
+}
+
+void ConvertIntegerToBytes_4(DWORD Value, LPBYTE ValueAsBytes)
+{
+    ValueAsBytes[0] = (Value >> 0x18) & 0xFF;
+    ValueAsBytes[1] = (Value >> 0x10) & 0xFF;
+    ValueAsBytes[2] = (Value >> 0x08) & 0xFF;
+    ValueAsBytes[3] = (Value >> 0x00) & 0xFF;
+}
+
+void ConvertIntegerToBytes_4_LE(DWORD Value, LPBYTE ValueAsBytes)
+{
+    ValueAsBytes[0] = (Value >> 0x00) & 0xFF;
+    ValueAsBytes[1] = (Value >> 0x08) & 0xFF;
+    ValueAsBytes[2] = (Value >> 0x10) & 0xFF;
+    ValueAsBytes[3] = (Value >> 0x18) & 0xFF;
+}
+
+//-----------------------------------------------------------------------------
+// Linear data stream manipulation
+
+LPBYTE CaptureInteger32(LPBYTE pbDataPtr, LPBYTE pbDataEnd, PDWORD PtrValue)
+{
+    // Is there enough data?
+    if((pbDataPtr + sizeof(DWORD)) > pbDataEnd)
+        return NULL;
+
+    // Give data
+    PtrValue[0] = *(PDWORD)pbDataPtr;
+
+    // Return the pointer to data following after the integer
+    return pbDataPtr + sizeof(DWORD);
+}
+
+LPBYTE CaptureInteger32_BE(LPBYTE pbDataPtr, LPBYTE pbDataEnd, PDWORD PtrValue)
+{
+    // Is there enough data?
+    if((pbDataPtr + sizeof(DWORD)) > pbDataEnd)
+        return NULL;
+
+    // Convert data from Little endian to 
+    PtrValue[0] = ConvertBytesToInteger_4(pbDataPtr);
+
+    // Return the pointer to data following after the integer
+    return pbDataPtr + sizeof(DWORD);
+}
+
+LPBYTE CaptureByteArray(LPBYTE pbDataPtr, LPBYTE pbDataEnd, size_t nLength, LPBYTE pbOutput)
+{
+    // Is there enough data?
+    if((pbDataPtr + nLength) > pbDataEnd)
+        return NULL;
+
+    // Give data
+    memcpy(pbOutput, pbDataPtr, nLength);
+
+    // Return the pointer to data following after the integer
+    return pbDataPtr + nLength;
+}
+
+LPBYTE CaptureContentKey(LPBYTE pbDataPtr, LPBYTE pbDataEnd, PCONTENT_KEY * PtrCKey)
+{
+    // Is there enough data?
+    if((pbDataPtr + sizeof(CONTENT_KEY)) > pbDataEnd)
+        return NULL;
+
+    // Give data
+    PtrCKey[0] = (PCONTENT_KEY)pbDataPtr;
+
+    // Return the pointer to data following after the integer
+    return pbDataPtr + sizeof(CONTENT_KEY);
+}
+
+LPBYTE CaptureArray_(LPBYTE pbDataPtr, LPBYTE pbDataEnd, LPBYTE * PtrArray, size_t ItemSize, size_t ItemCount)
+{
+    size_t ArraySize = ItemSize * ItemCount;
+
+    // Is there enough data?
+    if((pbDataPtr + ArraySize) > pbDataEnd)
+        return NULL;
+
+    // Give data
+    PtrArray[0] = pbDataPtr;
+
+    // Return the pointer to data following after the array
+    return pbDataPtr + ArraySize;
+}
 
 //-----------------------------------------------------------------------------
 // String manipulation
@@ -137,23 +305,6 @@ wchar_t * CascNewStr(const wchar_t * szString, size_t nCharsToReserve)
     return szNewString;
 }
 
-TCHAR * CascNewStrFromAnsi(const char * szBegin, const char * szEnd)
-{
-    TCHAR * szNewString = NULL;
-
-    // Only if the entry is valid
-    if(szBegin != NULL && szEnd > szBegin)
-    {
-        // Allocate and copy the string
-        szNewString = CASC_ALLOC(TCHAR, (szEnd - szBegin + 1));
-        if(szNewString != NULL)
-            CopyString(szNewString, szBegin, (szEnd - szBegin));
-    }
-
-    // Return the string
-    return szNewString;
-}
-
 TCHAR * CombinePath(const TCHAR * szDirectory, const TCHAR * szSubDir)
 {
     TCHAR * szFullPath = NULL;
@@ -175,14 +326,14 @@ TCHAR * CombinePath(const TCHAR * szDirectory, const TCHAR * szSubDir)
     if(szSubDir != NULL)
     {
         // Cut all leading backslashes
-        while(szSubDir[0] == _T(PATH_SEPARATOR))
+        while(szSubDir[0] == _T(PATH_SEP_CHAR))
             szSubDir++;
 
         // Get the length of the subdir
         nLength2 = _tcslen(szSubDir);
 
         // Cut all ending backslashes
-        while(nLength2 > 0 && szSubDir[nLength2 - 1] == _T(PATH_SEPARATOR))
+        while(nLength2 > 0 && szSubDir[nLength2 - 1] == _T(PATH_SEP_CHAR))
             nLength2--;
     }
 
@@ -202,7 +353,7 @@ TCHAR * CombinePath(const TCHAR * szDirectory, const TCHAR * szSubDir)
         {
             // Append backslash to the previous one
             if(szPathPtr > szFullPath)
-                *szPathPtr++ = _T(PATH_SEPARATOR);
+                *szPathPtr++ = _T(PATH_SEP_CHAR);
 
             // Copy the string
             memcpy(szPathPtr, szSubDir, (nLength2 * sizeof(TCHAR)));
@@ -222,15 +373,46 @@ TCHAR * CombinePathAndString(const TCHAR * szPath, const char * szString, size_t
     TCHAR * szSubDir;
 
     // Create the subdir string
-    szSubDir = CASC_TEMP_ALLOC(TCHAR, nLength + 1);
+    szSubDir = CASC_ALLOC(TCHAR, nLength + 1);
     if(szSubDir != NULL)
     {
         CopyString(szSubDir, szString, nLength);
         szFullPath = CombinePath(szPath, szSubDir);
-        CASC_TEMP_FREE(szSubDir);
+        CASC_FREE(szSubDir);
     }
 
     return szFullPath;
+}
+
+size_t CombineUrlPath(TCHAR * szBuffer, size_t nMaxChars, const char * szHost, const char * szPath)
+{
+    TCHAR * szBufferEnd = szBuffer + nMaxChars - 1;
+    TCHAR * szBufferPtr = szBuffer;
+    char chLastChar = 0;
+
+    // Copy the host, up to '?'
+    while (szBufferPtr < szBufferEnd && szHost[0] != 0 && szHost[0] != '?')
+        *szBufferPtr++ = chLastChar = *szHost++;
+
+    // Append the slash, if needed
+    if (szBufferPtr < szBufferEnd && chLastChar != '/' && szPath[0] != '/')
+        *szBufferPtr++ = '/';
+
+    // Skip the slashes
+    while (szPath[0] == '/')
+        szPath++;
+
+    // Append the subdirectory
+    while (szBufferPtr < szBufferEnd && szPath[0] != 0)
+        *szBufferPtr++ = *szPath++;
+
+    // Copy the rest of the host (the parameters beginning with '?')
+    while (szBufferPtr < szBufferEnd && szHost[0] != 0)
+        *szBufferPtr++ = *szHost++;
+
+    if (szBufferPtr < szBufferEnd)
+        szBufferPtr[0] = 0;
+    return (szBufferPtr < szBufferEnd) ? (szBufferPtr - szBuffer) : 0;
 }
 
 size_t NormalizeFileName(const unsigned char * NormTable, char * szNormName, const char * szFileName, size_t cchMaxChars)
@@ -257,19 +439,26 @@ size_t NormalizeFileName_LowerSlash(char * szNormName, const char * szFileName, 
     return NormalizeFileName(AsciiToLowerTable_Slash, szNormName, szFileName, cchMaxChars);
 }
 
+ULONGLONG CalcNormNameHash(const char * szNormName, size_t nLength)
+{
+    uint32_t dwHashHigh = 0;
+    uint32_t dwHashLow = 0;
+
+    // Calculate the HASH value of the normalized file name
+    hashlittle2(szNormName, nLength, &dwHashHigh, &dwHashLow);
+    return ((ULONGLONG)dwHashHigh << 0x20) | dwHashLow;
+}
+
 ULONGLONG CalcFileNameHash(const char * szFileName)
 {
     char szNormName[MAX_PATH+1];
-    uint32_t dwHashHigh = 0;
-    uint32_t dwHashLow = 0;
     size_t nLength;
 
     // Normalize the file name - convert to uppercase, slashes to backslashes
     nLength = NormalizeFileName_UpperBkSlash(szNormName, szFileName, MAX_PATH);
 
-    // Calculate the HASH value of the normalized file name
-    hashlittle2(szNormName, nLength, &dwHashHigh, &dwHashLow);
-    return ((ULONGLONG)dwHashHigh << 0x20) | dwHashLow;
+    // Calculate hash from the normalized name
+    return CalcNormNameHash(szNormName, nLength);
 }
 
 int ConvertDigitToInt32(const TCHAR * szString, PDWORD PtrValue)
@@ -373,13 +562,17 @@ char * StringFromBinary(LPBYTE pbBinary, size_t cbBinary, char * szBuffer)
 {
     char * szSaveBuffer = szBuffer;
 
-    // Convert the string to the array of MD5
-    // Copy the blob data as text
-    for(size_t i = 0; i < cbBinary; i++)
+    // Verify the binary pointer
+    if(pbBinary && cbBinary)
     {
-        *szBuffer++ = IntToHexChar[pbBinary[0] >> 0x04];
-        *szBuffer++ = IntToHexChar[pbBinary[0] & 0x0F];
-        pbBinary++;
+        // Convert the string to the array of MD5
+        // Copy the blob data as text
+        for(size_t i = 0; i < cbBinary; i++)
+        {
+            *szBuffer++ = IntToHexChar[pbBinary[0] >> 0x04];
+            *szBuffer++ = IntToHexChar[pbBinary[0] & 0x0F];
+            pbBinary++;
+        }
     }
 
     // Terminate the string
@@ -394,34 +587,6 @@ char * StringFromMD5(LPBYTE md5, char * szBuffer)
 
 //-----------------------------------------------------------------------------
 // File name utilities
-
-const wchar_t * GetPlainFileName(const wchar_t * szFileName)
-{
-    const wchar_t * szPlainName = szFileName;
-
-    while(*szFileName != 0)
-    {
-        if(*szFileName == '\\' || *szFileName == '/')
-            szPlainName = szFileName + 1;
-        szFileName++;
-    }
-
-    return szPlainName;
-}
-
-const char * GetPlainFileName(const char * szFileName)
-{
-    const char * szPlainName = szFileName;
-
-    while(*szFileName != 0)
-    {
-        if(*szFileName == '\\' || *szFileName == '/')
-            szPlainName = szFileName + 1;
-        szFileName++;
-    }
-
-    return szPlainName;
-}
 
 bool CheckWildCard(const char * szString, const char * szWildCard)
 {
@@ -483,12 +648,10 @@ bool CheckWildCard(const char * szString, const char * szWildCard)
 
 bool IsValidMD5(LPBYTE pbMd5)
 {
-    BYTE BitSummary = 0;
+    LPDWORD Int32Array = (LPDWORD)pbMd5;
 
-    // The MD5 is considered invalid of it is zeroed
-    BitSummary |= pbMd5[0x00] | pbMd5[0x01] | pbMd5[0x02] | pbMd5[0x03] | pbMd5[0x04] | pbMd5[0x05] | pbMd5[0x06] | pbMd5[0x07];
-    BitSummary |= pbMd5[0x08] | pbMd5[0x09] | pbMd5[0x0A] | pbMd5[0x0B] | pbMd5[0x0C] | pbMd5[0x0D] | pbMd5[0x0E] | pbMd5[0x0F];
-    return (BitSummary != 0);
+    // The MD5 is considered invalid if it is zeroed
+    return (Int32Array[0] | Int32Array[1] | Int32Array[2] | Int32Array[3]) ? true : false;
 }
 
 bool VerifyDataBlockHash(void * pvDataBlock, DWORD cbDataBlock, LPBYTE expected_md5)

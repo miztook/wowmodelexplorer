@@ -21,30 +21,40 @@
 //-----------------------------------------------------------------------------
 // Defines for Windows
 
-#if !defined(PLATFORM_DEFINED) && (defined(WIN32) || defined(WIN64))
+#if !defined(PLATFORM_DEFINED) && (defined(_WIN32) || defined(_WIN64))
 
   // In MSVC 8.0, there are some functions declared as deprecated.
   #if _MSC_VER >= 1400
-  #define _CRT_SECURE_NO_DEPRECATE
-  #define _CRT_NON_CONFORMING_SWPRINTFS
+    #ifndef _CRT_SECURE_NO_DEPRECATE
+      #define _CRT_SECURE_NO_DEPRECATE
+    #endif
+    #ifndef _CRT_NON_CONFORMING_SWPRINTFS
+      #define _CRT_NON_CONFORMING_SWPRINTFS
+    #endif
+  #endif
+
+  #ifndef WIN32_LEAN_AND_MEAN
+    #define WIN32_LEAN_AND_MEAN
   #endif
 
   #include <tchar.h>
   #include <assert.h>
   #include <ctype.h>
   #include <stdio.h>
+  #include <malloc.h>
   #include <windows.h>
   #include <wininet.h>
   #include <sys/types.h>
   #define PLATFORM_LITTLE_ENDIAN
 
-  #ifdef WIN64
+  #ifdef _WIN64
     #define PLATFORM_64BIT
   #else
     #define PLATFORM_32BIT
   #endif
 
-  #define PATH_SEPARATOR     '\\'
+  #define PATH_SEP_CHAR             '\\'
+  #define PATH_SEP_STRING           "\\"
   #define CREATE_DIRECTORY(name)    CreateDirectory(name, NULL);
 
   #define PLATFORM_WINDOWS
@@ -67,6 +77,8 @@
   #include <dirent.h>
   #include <errno.h>
   #include <stddef.h>
+  #include <string.h>
+  #include <cassert>
 
   // Support for PowerPC on Max OS X
   #if (__ppc__ == 1) || (__POWERPC__ == 1) || (_ARCH_PPC == 1)
@@ -82,7 +94,8 @@
     #define PLATFORM_LITTLE_ENDIAN
   #endif
 
-  #define PATH_SEPARATOR     '/'
+  #define PATH_SEP_CHAR             '/'
+  #define PATH_SEP_STRING           "/"
   #define CREATE_DIRECTORY(name)    mkdir(name, 0755)
 
   #define PLATFORM_MAC
@@ -95,7 +108,6 @@
 // Assumption: we are not on Windows nor Macintosh, so this must be linux *grin*
 
 #if !defined(PLATFORM_DEFINED)
-
   #include <sys/types.h>
   #include <sys/stat.h>
   #include <sys/mman.h>
@@ -112,7 +124,8 @@
   #include <assert.h>
   #include <errno.h>
 
-  #define PATH_SEPARATOR     '/'
+  #define PATH_SEP_CHAR             '/'
+  #define PATH_SEP_STRING           "/"
   #define CREATE_DIRECTORY(name)    mkdir(name, 0755)
 
   #define PLATFORM_LITTLE_ENDIAN
@@ -137,9 +150,6 @@
   typedef unsigned short USHORT;
   typedef int            LONG;
   typedef unsigned int   DWORD;
-  typedef unsigned long  DWORD_PTR;
-  typedef long           LONG_PTR;
-  typedef long           INT_PTR;
   typedef long long      LONGLONG;
   typedef unsigned long long ULONGLONG;
   typedef unsigned long long *PULONGLONG;
@@ -149,7 +159,9 @@
   typedef unsigned int   LCID;
   typedef LONG         * PLONG;
   typedef DWORD        * PDWORD;
+  typedef DWORD        * LPDWORD;
   typedef BYTE         * LPBYTE;
+  typedef char         * LPSTR;
 
   #ifdef PLATFORM_32BIT
     #define _LZMA_UINT32_IS_ULONG

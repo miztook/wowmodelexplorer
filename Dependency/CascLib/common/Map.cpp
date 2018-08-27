@@ -15,27 +15,14 @@
 //-----------------------------------------------------------------------------
 // Local functions
 
-// Returns the extension, right after "."
-static const char * String_GetExtension(const char * szString)
-{
-    const char * szExtension = strrchr(szString, '.');
-    return (szExtension != NULL) ? szExtension + 1 : NULL;
-}
-
 static DWORD CalcHashIndex_Key(PCASC_MAP pMap, void * pvKey)
 {
     LPBYTE pbKey = (LPBYTE)pvKey;
     DWORD dwHash = 0x7EEE7EEE;
 
-    // Construct the hash from the first 8 digits
-    dwHash = (dwHash >> 24) ^ (dwHash << 5) ^ dwHash ^ pbKey[0];
-    dwHash = (dwHash >> 24) ^ (dwHash << 5) ^ dwHash ^ pbKey[1];
-    dwHash = (dwHash >> 24) ^ (dwHash << 5) ^ dwHash ^ pbKey[2];
-    dwHash = (dwHash >> 24) ^ (dwHash << 5) ^ dwHash ^ pbKey[3];
-    dwHash = (dwHash >> 24) ^ (dwHash << 5) ^ dwHash ^ pbKey[4];
-    dwHash = (dwHash >> 24) ^ (dwHash << 5) ^ dwHash ^ pbKey[5];
-    dwHash = (dwHash >> 24) ^ (dwHash << 5) ^ dwHash ^ pbKey[6];
-    dwHash = (dwHash >> 24) ^ (dwHash << 5) ^ dwHash ^ pbKey[7];
+    // Construct the hash from the key
+    for(DWORD i = 0; i < pMap->KeyLength; i++)
+        dwHash = (dwHash >> 24) ^ (dwHash << 5) ^ dwHash ^ pbKey[i];
 
     // Return the hash limited by the table size
     return (dwHash % pMap->TableSize);
@@ -90,24 +77,25 @@ static bool CompareObject_String(
 //-----------------------------------------------------------------------------
 // Public functions
 
-PCASC_MAP Map_Create(DWORD dwMaxItems, DWORD dwKeyLength, DWORD dwKeyOffset)
+PCASC_MAP Map_Create(size_t MaxItems, size_t KeyLength, size_t KeyOffset)
 {
     PCASC_MAP pMap;
     size_t cbToAllocate;
-    size_t dwTableSize;
+    size_t TableSize;
 
     // Calculate the size of the table
-    dwTableSize = (dwMaxItems * 3 / 2) | 0x01;
+    TableSize = (MaxItems * 3 / 2) | 0x01;
+    KeyLength = CASCLIB_MIN(KeyLength, 8);
 
     // Allocate new map for the objects
-    cbToAllocate = sizeof(CASC_MAP) + (dwTableSize * sizeof(void *));
+    cbToAllocate = sizeof(CASC_MAP) + (TableSize * sizeof(void *));
     pMap = (PCASC_MAP)CASC_ALLOC(LPBYTE, cbToAllocate);
     if(pMap != NULL)
     {
         memset(pMap, 0, cbToAllocate);
-        pMap->KeyLength = dwKeyLength;
-        pMap->TableSize = dwTableSize;
-        pMap->KeyOffset = dwKeyOffset;
+        pMap->KeyLength = KeyLength;
+        pMap->TableSize = TableSize;
+        pMap->KeyOffset = KeyOffset;
     }
 
     // Return the allocated map
@@ -130,9 +118,11 @@ size_t Map_EnumObjects(PCASC_MAP pMap, void **ppvArray)
                 ppvArray[nIndex++] = pMap->HashTable[i];
             }
         }
+
+        return pMap->ItemCount;
     }
 
-    return pMap->ItemCount;
+    return 0;
 }
 
 void * Map_FindObject(PCASC_MAP pMap, void * pvKey, PDWORD PtrIndex)
@@ -219,7 +209,7 @@ bool Map_InsertString(PCASC_MAP pMap, const char * szString, bool bCutExtension)
 
         // Retrieve the length of the string without extension
         if(bCutExtension)
-            szStringEnd = String_GetExtension(szString);
+            szStringEnd = GetFileExtension(szString);
         if(szStringEnd == NULL)
             szStringEnd = szString + strlen(szString);
 

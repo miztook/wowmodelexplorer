@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
 	//_CrtSetBreakAlloc(100);
 
-	const TCHAR* szStorage = _T("D:\\World Of Warcraft 60\\Data\\");
+	const TCHAR* szStorage = _T("D:\\World Of Warcraft\\Data\\");
 
 	//const char* filename = "Character\\Orc\\Male\\orcmale_hd.m2";
 	//
@@ -64,7 +64,7 @@ static int TestOpenStorage_OpenFile(const TCHAR * szStorage, const char * szFile
 	DWORD dwFeatures = 0;
 	if(CascGetStorageInfo(hStorage, CascStorageFeatures, &dwFeatures, sizeof(DWORD), NULL))
 	{
-		printf("support listfile? %s\n", (dwFeatures & CASC_FEATURE_LISTFILE) ? "YES" : "NO");
+		printf("has names? %s\n", (dwFeatures & CASC_FEATURE_HAS_NAMES) ? "YES" : "NO");
 	}
 
 	DWORD dwGameBuild = 0;

@@ -74,6 +74,7 @@ static bool BaseFile_Create(TFileStream * pStream)
         handle = open(pStream->szFileName, O_RDWR | O_CREAT | O_TRUNC | O_LARGEFILE, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
         if(handle == -1)
         {
+            pStream->Base.File.hFile = INVALID_HANDLE_VALUE;
             SetLastError(errno);
             return false;
         }
@@ -123,6 +124,7 @@ static bool BaseFile_Open(TFileStream * pStream, const TCHAR * szFileName, DWORD
         intptr_t handle;
 
         // Open the file
+        pStream->Base.File.hFile = INVALID_HANDLE_VALUE;
         handle = open(szFileName, oflag | O_LARGEFILE);
         if(handle == -1)
         {
@@ -134,6 +136,7 @@ static bool BaseFile_Open(TFileStream * pStream, const TCHAR * szFileName, DWORD
         if(fstat64(handle, &fileinfo) == -1)
         {
             SetLastError(errno);
+            close(handle);
             return false;
         }
 
@@ -192,7 +195,11 @@ static bool BaseFile_Read(
         // we have to update the file position
         if(ByteOffset != pStream->Base.File.FilePos)
         {
-            lseek64((intptr_t)pStream->Base.File.hFile, (off64_t)(ByteOffset), SEEK_SET);
+            if(lseek64((intptr_t)pStream->Base.File.hFile, (off64_t)(ByteOffset), SEEK_SET) == (off64_t)-1)
+            {
+                SetLastError(errno);
+                return false;
+            }
             pStream->Base.File.FilePos = ByteOffset;
         }
 
@@ -212,10 +219,24 @@ static bool BaseFile_Read(
 #endif
 
     // Increment the current file position by number of bytes read
-    // If the number of bytes read doesn't match to required amount, return false
     pStream->Base.File.FilePos = ByteOffset + dwBytesRead;
-    if(dwBytesRead != dwBytesToRead)
-        SetLastError(ERROR_HANDLE_EOF);
+
+    // If the number of bytes read doesn't match to required amount, return false
+    // However, Blizzard's CASC handlers read encoded data so that if less than expected
+    // was read, then they fill the rest with zeros
+    if(dwBytesRead < dwBytesToRead)
+    {
+        if(pStream->dwFlags & STREAM_FLAG_FILL_MISSING)
+        {
+            memset((LPBYTE)pvBuffer + dwBytesRead, 0, (dwBytesToRead - dwBytesRead));
+            dwBytesRead = dwBytesToRead;
+        }
+        else
+        {
+            SetLastError(ERROR_HANDLE_EOF);
+        }
+    }
+        
     return (dwBytesRead == dwBytesToRead);
 }
 
@@ -263,7 +284,11 @@ static bool BaseFile_Write(TFileStream * pStream, ULONGLONG * pByteOffset, const
         // we have to update the file position
         if(ByteOffset != pStream->Base.File.FilePos)
         {
-            lseek64((intptr_t)pStream->Base.File.hFile, (off64_t)(ByteOffset), SEEK_SET);
+            if(lseek64((intptr_t)pStream->Base.File.hFile, (off64_t)(ByteOffset), SEEK_SET) == (off64_t)-1)
+            {
+                SetLastError(errno);
+                return false;
+            }
             pStream->Base.File.FilePos = ByteOffset;
         }
 
@@ -844,7 +869,7 @@ static bool BlockStream_Read(
     BlockBufferOffset = (DWORD)(ByteOffset & (BlockSize - 1));
 
     // Allocate buffer for reading blocks
-    TransferBuffer = BlockBuffer = CASC_TEMP_ALLOC(BYTE, (BlockCount * BlockSize));
+    TransferBuffer = BlockBuffer = CASC_ALLOC(BYTE, (BlockCount * BlockSize));
     if(TransferBuffer == NULL)
     {
         SetLastError(ERROR_NOT_ENOUGH_MEMORY);
@@ -933,7 +958,7 @@ static bool BlockStream_Read(
         pStream->pfnCallback(pStream->UserData, 0, 0);
 
     // Free the block buffer and return
-    CASC_TEMP_FREE(TransferBuffer);
+    CASC_FREE(TransferBuffer);
     return bResult;
 }
 
@@ -1015,7 +1040,7 @@ static TFileStream * AllocateFileStream(
     if(pStream != NULL)
     {
         // Zero the entire structure
-        memset(pStream, 0, StreamSize);
+        memset(pStream, 0, StreamSize + FileNameSize + sizeof(TCHAR));
         pStream->pMaster = pMaster;
         pStream->dwFlags = dwStreamFlags;
 
@@ -1333,7 +1358,10 @@ static TFileStream * FlatStream_Open(const TCHAR * szFileName, DWORD dwStreamFla
     // Create new empty stream
     pStream = (TBlockStream *)AllocateFileStream(szFileName, sizeof(TBlockStream), dwStreamFlags);
     if(pStream == NULL)
+    {
+        SetLastError(ERROR_NOT_ENOUGH_MEMORY);
         return NULL;
+    }
 
     // Do we have a master stream?
     if(pStream->pMaster != NULL)
@@ -1743,7 +1771,6 @@ static bool PartStream_CreateMirror(TBlockStream * pStream)
     // which would take long time on larger files.
     return true;
 }
-
 
 static TFileStream * PartStream_Open(const TCHAR * szFileName, DWORD dwStreamFlags)
 {
@@ -2225,7 +2252,7 @@ static TFileStream * Block4Stream_Open(const TCHAR * szFileName, DWORD dwStreamF
     pStream->BlockRead     = (BLOCK_READ)Block4Stream_BlockRead;
 
     // Allocate work space for numeric names
-    szNameBuff = CASC_TEMP_ALLOC(TCHAR, nNameLength + 4);
+    szNameBuff = CASC_ALLOC(TCHAR, nNameLength + 4);
     if(szNameBuff != NULL)
     {
         // Set the base flags
@@ -2291,7 +2318,7 @@ static TFileStream * Block4Stream_Open(const TCHAR * szFileName, DWORD dwStreamF
         pStream->StreamPos = 0;
         pStream->dwFlags |= STREAM_FLAG_READ_ONLY;
 
-        CASC_TEMP_FREE(szNameBuff);
+        CASC_FREE(szNameBuff);
     }
 
     // If we opened something, return success

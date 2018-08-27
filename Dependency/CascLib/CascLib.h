@@ -29,14 +29,18 @@ extern "C" {
 //-----------------------------------------------------------------------------
 // Defines
 
-#define CASCLIB_VERSION                 0x0100  // Current version of CascLib (1.0)
-#define CASCLIB_VERSION_STRING          "1.00"  // String version of CascLib version
+#define CASCLIB_VERSION                 0x010B  // Current version of CascLib (1.11)
+#define CASCLIB_VERSION_STRING          "1.11"  // String version of CascLib version
 
 // Values for CascOpenStorage
 #define CASC_STOR_XXXXX             0x00000001  // Not used
 
 // Values for CascOpenFile
-#define CASC_OPEN_BY_ENCODING_KEY   0x00000001  // The name is just the encoding key; skip ROOT file processing
+#define CASC_OPEN_BY_NAME           0x00000000  // Open the file by name. This is the default value
+#define CASC_OPEN_BY_CKEY           0x00000001  // The name is just the content key; skip ROOT file processing
+#define CASC_OPEN_BY_EKEY           0x00000002  // The name is just the encoded key; skip ROOT file processing
+#define CASC_OPEN_TYPE_MASK         0x0000000F  // The mask which gets open type from the dwFlags
+#define CASC_STRICT_DATA_CHECK      0x00000010  // Verify all data read from a file
 
 #define CASC_LOCALE_ALL             0xFFFFFFFF
 #define CASC_LOCALE_NONE            0x00000000
@@ -92,40 +96,79 @@ extern "C" {
 #endif
 
 // Return value for CascGetFileSize and CascSetFilePointer
+#define CASC_INVALID_INDEX          0xFFFFFFFF
 #define CASC_INVALID_SIZE           0xFFFFFFFF
 #define CASC_INVALID_POS            0xFFFFFFFF
+#define CASC_INVALID_ID             0xFFFFFFFF
 
 // Flags for CascGetStorageInfo
-#define CASC_FEATURE_LISTFILE       0x00000001  // The storage supports listfile
+#define CASC_FEATURE_HAS_NAMES      0x00000001  // The storage contains file names
 
 //-----------------------------------------------------------------------------
 // Structures
 
 typedef enum _CASC_STORAGE_INFO_CLASS
 {
+    // Return the total number of unique files in the storage. Note that files
+    // can exist under different names, so the total number of files in the archive
+    // can be higher than the value returned by this info class
     CascStorageFileCount,
+
     CascStorageFeatures,
     CascStorageGameInfo,
     CascStorageGameBuild,
+    CascStorageInstalledLocales,
     CascStorageInfoClassMax
 
 } CASC_STORAGE_INFO_CLASS, *PCASC_STORAGE_INFO_CLASS;
 
+typedef enum _CASC_FILE_INFO_CLASS
+{
+    CascFileContentKey,
+    CascFileEncodedKey,
+    CascFileInfoClassMax
+} CASC_FILE_INFO_CLASS, *PCASC_FILE_INFO_CLASS;
 
+// Query key for a file. Contains CKey [+EKey]
 typedef struct _QUERY_KEY
 {
     LPBYTE pbData;
-    DWORD cbData;
+    size_t cbData;
 } QUERY_KEY, *PQUERY_KEY;
+
+// Query size for a file. Contains CSize + ESize
+typedef struct _QUERY_SIZE
+{
+    DWORD ContentSize;
+    DWORD EncodedSize;
+} QUERY_SIZE, *PQUERY_SIZE;
 
 // Structure for SFileFindFirstFile and SFileFindNextFile
 typedef struct _CASC_FIND_DATA
 {
-    char   szFileName[MAX_PATH];                // Full name of the found file
-    char * szPlainName;                         // Plain name of the found file
-    BYTE   EncodingKey[MD5_HASH_SIZE];          // Encoding key
-    DWORD  dwLocaleFlags;                       // Locale flags (WoW only)
-    DWORD  dwFileSize;                          // Size of the file
+    // Full name of the found file. In case when this is CKey/EKey,
+    // this will be just string representation of the key stored in 'FileKey'
+    char   szFileName[MAX_PATH];
+    
+    // Plain name of the found file. Pointing inside the 'szFileName' array
+    char * szPlainName;
+
+    // Content/Encoded key. The type can be determined by dwOpenFlags
+    // (CASC_OPEN_BY_CKEY vs CASC_OPEN_BY_EKEY)
+    BYTE   FileKey[MD5_HASH_SIZE];
+
+    // Locale flags. Only for games that support locale flags (WoW)
+    DWORD  dwLocaleFlags;
+
+    // File data ID. Only for games that support File data ID (WoW)
+    DWORD  dwFileDataId;
+    
+    // Size of the file, as retrieved from encoding entry or index entry
+    DWORD  dwFileSize;
+
+    // It is recommended to use this value for subsequent CascOpenFile
+    // Contains valid value if the 'szFileName' contains file key.
+    DWORD  dwOpenFlags;
 
 } CASC_FIND_DATA, *PCASC_FIND_DATA;
 
@@ -147,10 +190,12 @@ bool  WINAPI CascOpenStorage(const TCHAR * szDataPath, DWORD dwLocaleMask, HANDL
 bool  WINAPI CascGetStorageInfo(HANDLE hStorage, CASC_STORAGE_INFO_CLASS InfoClass, void * pvStorageInfo, size_t cbStorageInfo, size_t * pcbLengthNeeded);
 bool  WINAPI CascCloseStorage(HANDLE hStorage);
 
-bool  WINAPI CascOpenFileByIndexKey(HANDLE hStorage, PQUERY_KEY pIndexKey, DWORD dwFlags, HANDLE * phFile);
-bool  WINAPI CascOpenFileByEncodingKey(HANDLE hStorage, PQUERY_KEY pEncodingKey, DWORD dwFlags, HANDLE * phFile);
-bool  WINAPI CascOpenFile(HANDLE hStorage, const char * szFileName, DWORD dwLocale, DWORD dwFlags, HANDLE * phFile);
+bool  WINAPI CascOpenFileByEKey(HANDLE hStorage, PQUERY_KEY pCKey, PQUERY_KEY pEKey, DWORD dwOpenFlags, DWORD dwEncodedSize, HANDLE * phFile);
+bool  WINAPI CascOpenFileByCKey(HANDLE hStorage, PQUERY_KEY pCKey, DWORD dwOpenFlags, HANDLE * phFile);
+bool  WINAPI CascOpenFile(HANDLE hStorage, const char * szFileName, DWORD dwLocaleFlags, DWORD dwOpenFlags, HANDLE * phFile);
+bool  WINAPI CascGetFileInfo(HANDLE hFile, CASC_FILE_INFO_CLASS InfoClass, void * pvFileInfo, size_t cbFileInfo, size_t * pcbLengthNeeded);
 DWORD WINAPI CascGetFileSize(HANDLE hFile, PDWORD pdwFileSizeHigh);
+DWORD WINAPI CascGetFileId(HANDLE hStorage, const char * szFileName);
 DWORD WINAPI CascSetFilePointer(HANDLE hFile, LONG lFilePos, LONG * plFilePosHigh, DWORD dwMoveMethod);
 bool  WINAPI CascReadFile(HANDLE hFile, void * lpBuffer, DWORD dwToRead, PDWORD pdwRead);
 bool  WINAPI CascCloseFile(HANDLE hFile);
@@ -164,8 +209,8 @@ bool  WINAPI CascFindClose(HANDLE hFind);
 
 #ifndef PLATFORM_WINDOWS
 
-int GetLastError();
-void SetLastError(int nError);
+DWORD GetLastError();
+void SetLastError(DWORD dwErrCode);
 
 #endif  // PLATFORM_WINDOWS
 
