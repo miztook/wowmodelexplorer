@@ -24,9 +24,6 @@ public:
 	~CD3D9ShaderServices();
 
 public:
-	virtual void onLost();
-	virtual void onReset();
-
 	virtual void loadAll();
 
 	virtual IPixelShader* getPixelShader(E_PS_TYPE type, E_PS_MACRO macro = PS_Macro_None) { return PixelShaders[type][PS_Macro_None]; }
@@ -71,8 +68,6 @@ private:
 	CD3D9_PS20 ps20Loader;
 	CD3D9_PS30 ps30Loader;	
 	
-	bool		ResetShaders;
-
 private:
 	IDirect3DDevice9*		Device;
 	CD3D9Driver*	Driver;

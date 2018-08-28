@@ -14,7 +14,6 @@ CD3D11ShaderServices::CD3D11ShaderServices()
 {
 	Driver = static_cast<CD3D11Driver*>(g_Engine->getDriver());
 	Device = Driver->pID3DDevice11;
-	Driver->registerLostReset(this);
 
 	LastShaderState.reset();
 	ShaderState.reset();
@@ -23,8 +22,6 @@ CD3D11ShaderServices::CD3D11ShaderServices()
 
 CD3D11ShaderServices::~CD3D11ShaderServices()
 {
-	Driver->removeLostReset(this);
-	
 	releaseTextureBuffers();
 
 	releaseConstantBuffers();
@@ -92,15 +89,6 @@ void CD3D11ShaderServices::loadAll()
 	buildTextureBuffers();
 
 	assignBuffersToShaders();
-}
-
-void CD3D11ShaderServices::onLost()
-{
-}
-
-void CD3D11ShaderServices::onReset()
-{
-	ResetShaders = true;
 }
 
 bool CD3D11ShaderServices::loadVShader( const c8* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )

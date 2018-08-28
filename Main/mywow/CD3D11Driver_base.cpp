@@ -618,9 +618,6 @@ bool CD3D11Driver::queryFeature( E_VIDEO_DRIVER_FEATURE feature ) const
 
 bool CD3D11Driver::reset(bool recreateSwapChain)
 {
-	for( T_LostResetList::const_iterator itr=LostResetList.begin(); itr != LostResetList.end(); ++itr )
-		(*itr)->onLost();
-
 	//ImmediateContext
 	ID3D11RenderTargetView* views[1] = { nullptr };	
 	ImmediateContext->OMSetRenderTargets(1, views, nullptr);
@@ -682,9 +679,6 @@ bool CD3D11Driver::reset(bool recreateSwapChain)
 	// Set render targets
 	//ImmediateContext
 	ImmediateContext->OMSetRenderTargets( 1, &DefaultBackBuffer, DefaultDepthBuffer );
-
-	for( T_LostResetList::const_iterator itr=LostResetList.begin(); itr != LostResetList.end(); ++itr )
-		(*itr)->onReset();
 
 	//reset
 	LastMaterial.MaterialType = (E_MATERIAL_TYPE)-1;
@@ -1006,19 +1000,6 @@ void CD3D11Driver::setVertexDeclaration( E_VERTEX_TYPE type, IVertexShader* vs )
 
 		CurrentDeviceState.vType = type;
 	}
-}
-
-void CD3D11Driver::registerLostReset( ILostResetCallback* callback )
-{
-	if (std::find(LostResetList.begin(), LostResetList.end(), callback) == LostResetList.end())
-	{
-		LostResetList.push_back(callback);
-	}
-}
-
-void CD3D11Driver::removeLostReset( ILostResetCallback* callback )
-{
-	LostResetList.remove(callback);
 }
 
 #endif

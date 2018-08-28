@@ -180,16 +180,6 @@ bool COpenGLHardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer,
 	return true;
 }
 
-void COpenGLHardwareBufferServices::onLost()
-{
-
-}
-
-void COpenGLHardwareBufferServices::onReset()
-{
-
-}
-
 void COpenGLHardwareBufferServices::createStaticIndexBufferQuadList()
 {
 	//index buffer

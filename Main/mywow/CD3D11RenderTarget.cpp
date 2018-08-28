@@ -147,26 +147,6 @@ bool CD3D11RenderTarget::createViews( DXGI_FORMAT colorFmt, DXGI_FORMAT depthFmt
 	return true;
 }
 
-void CD3D11RenderTarget::onLost()
-{
-	RTCopyTexture->drop();
-
-	DSTexture->drop();
-	RTTexture->drop();
-
-	releaseVideoTexture();
-}
-
-void CD3D11RenderTarget::onReset()
-{
-	const SDriverSetting& setting = g_Engine->getDriver()->getDriverSetting();
-	bool success = createAsRenderTarget(TextureSize, ColorFormat, DepthFormat, setting.antialias * 2, setting.quality);
-	ASSERT(success);
-
-	success = createCopyTextures(TextureSize, ColorFormat);
-	ASSERT(success);
-}
-
 bool CD3D11RenderTarget::writeToRTTexture()
 {
 	CD3D11Driver* driver = static_cast<CD3D11Driver*>(g_Engine->getDriver());

@@ -116,22 +116,6 @@ void CD3D9RenderTarget::releaseVideoTexture()
 	VideoBuilt = false;
 }
 
-void CD3D9RenderTarget::onLost()
-{
-	RTCopyTexture->drop();
-	
-	releaseVideoTexture();
-}
-
-void CD3D9RenderTarget::onReset()
-{
-	const SDriverSetting& setting = g_Engine->getDriver()->getDriverSetting();
-	bool success = createAsRenderTarget(TextureSize, ColorFormat, DepthFormat, setting.antialias, setting.quality);
-	ASSERT(success);
-
-	RTCopyTexture->createRTTexture(TextureSize, ColorFormat);
-}
-
 bool CD3D9RenderTarget::writeToRTTexture()
 {
 	IDirect3DSurface9* surface = nullptr;

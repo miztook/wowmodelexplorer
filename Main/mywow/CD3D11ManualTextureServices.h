@@ -29,10 +29,6 @@ public:
 	virtual ITexture* createCompressTextureFromData(const dimension2du& size, ECOLOR_FORMAT format, const void* data, bool mipmap);
 	virtual ITexture* createEmptyTexture(const dimension2du& size, ECOLOR_FORMAT format);
 
-public:
-	virtual void onLost();
-	virtual void onReset();
-
 private:
 	void loadDefaultTextures();
 

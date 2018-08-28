@@ -71,7 +71,7 @@ Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : Mess
 
 	FileSystem->writeLog(ELOG_RES, "start loading db files...\n");
 
-	WowDatabase = new wowDatabase(WowEnvironment);
+	WowDatabase = nullptr; // new wowDatabase(WowEnvironment);
 
 	EngineSetting = new engineSetting();
 

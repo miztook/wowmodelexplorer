@@ -62,28 +62,6 @@ bool COpenGLRenderTarget::writeToRTTexture()
 	return true;
 }
 
-void COpenGLRenderTarget::onLost()
-{
-	if (MultiSample)
-		RTCopyTexture->drop();
-
-	releaseVideoTexture();
-}
-
-void COpenGLRenderTarget::onReset()
-{
-	const SDriverSetting& setting = g_Engine->getDriver()->getDriverSetting();
-	bool success = createAsRenderTarget(TextureSize, ColorFormat, DepthFormat, setting.antialias);
-	ASSERT(success);
-
-	if (MultiSample)
-	{
-		success = RTCopyTexture->createRTTexture(TextureSize, ColorFormat, 0);
-		ASSERT(success);
-		bindTexture();
-	}
-}
-
 bool COpenGLRenderTarget::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, u8 antialias )
 {
 	if (VideoBuilt)

@@ -17,7 +17,6 @@ COpenGLShaderServices::COpenGLShaderServices()
 {
 	Driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	Extension = Driver->getGLExtension();
-	Driver->registerLostReset(this);
 
 	LastShaderState.reset();
 	ShaderState.reset();
@@ -26,8 +25,6 @@ COpenGLShaderServices::COpenGLShaderServices()
 
 COpenGLShaderServices::~COpenGLShaderServices()
 {
-	Driver->removeLostReset(this);
-
 	Extension->extGlUseProgramObject(0);
 
 	for (T_ProgramMap::const_iterator i = ProgramMap.begin(); i != ProgramMap.end(); ++i)
@@ -45,16 +42,6 @@ COpenGLShaderServices::~COpenGLShaderServices()
 		for (u32 k=PS_Macro_None; k<PS_Macro_Num; ++k)
 			delete PixelShaders[i][k];
 	}
-}
-
-void COpenGLShaderServices::onLost()
-{
-
-}
-
-void COpenGLShaderServices::onReset()
-{
-	ResetShaders = true;
 }
 
 void COpenGLShaderServices::loadAll()

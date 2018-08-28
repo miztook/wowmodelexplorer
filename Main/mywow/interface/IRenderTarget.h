@@ -1,11 +1,10 @@
 #pragma once
 
 #include "core.h"
-#include "ILostResetCallback.h"
 
 class ITexture;
 
-class IRenderTarget : public ILostResetCallback
+class IRenderTarget
 {
 public:
 	IRenderTarget(ECOLOR_FORMAT colorfmt, ECOLOR_FORMAT depthFmt) : ColorFormat(colorfmt), DepthFormat(depthFmt), VideoBuilt(false) { }

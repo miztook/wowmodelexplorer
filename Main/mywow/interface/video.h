@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ILostResetCallback.h"
 #include "SColor.h"
 #include "S3DVertex.h"
 #include "IImage.h"

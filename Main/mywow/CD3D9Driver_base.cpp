@@ -878,9 +878,6 @@ bool CD3D9Driver::setDriverSetting( const SDriverSetting& setting )
 
 bool CD3D9Driver::reset()
 {
-	for( T_LostResetList::const_iterator itr=LostResetList.begin(); itr != LostResetList.end(); ++itr )
-		(*itr)->onLost();
-
 	//depth stencil buffer
 	SAFE_RELEASE(DefaultDepthBuffer);
 
@@ -964,9 +961,6 @@ bool CD3D9Driver::reset()
 
 	DeviceLost = false;
 	
-	for( T_LostResetList::const_iterator itr=LostResetList.begin(); itr != LostResetList.end(); ++itr )
-		(*itr)->onReset();
-
 	//reset
 	LastMaterial.MaterialType = (E_MATERIAL_TYPE)-1;
 	ResetRenderStates = true;
@@ -1005,19 +999,6 @@ void CD3D9Driver::setVertexDeclaration( E_VERTEX_TYPE type )
 		pID3DDevice->SetVertexDeclaration(decl->getDx9Declaration());
 		CurrentDeviceState.vType = type;
 	}
-}
-
-void CD3D9Driver::registerLostReset( ILostResetCallback* callback )
-{
-	if (std::find(LostResetList.begin(), LostResetList.end(), callback) == LostResetList.end())
-	{
-		LostResetList.push_back(callback);
-	}
-}
-
-void CD3D9Driver::removeLostReset( ILostResetCallback* callback )
-{
-	LostResetList.remove(callback);
 }
 
 #endif

@@ -19,10 +19,6 @@ public:
 	virtual ITexture* getRTTexture() const;
 	virtual bool writeToRTTexture(); 
 
-	//lost reset
-	void onLost();
-	void onReset();
-
 	//
 	 IDirect3DSurface9*	getRTTSurface() const { return RTTSurface; }
 	 IDirect3DSurface9* getRTTDepthSurface() const { return DepthSurface; }

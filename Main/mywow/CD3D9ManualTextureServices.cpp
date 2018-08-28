@@ -15,15 +15,12 @@
 CD3D9ManualTextureServices::CD3D9ManualTextureServices()
 {
 	Driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
-	Driver->registerLostReset(this);
 
 	loadDefaultTextures();
 }
 
 CD3D9ManualTextureServices::~CD3D9ManualTextureServices()
 {	
-	Driver->removeLostReset(this);
-
 	for (T_TextureMap::const_iterator itr = TextureMap.begin(); itr != TextureMap.end(); ++itr)
 	{
 		ITexture* tex = itr->second;
@@ -85,22 +82,6 @@ void CD3D9ManualTextureServices::removeRenderTarget( IRenderTarget* texture )
 			RenderTargets.erase(itr);
 			break;
 		}
-	}
-}
-
-void CD3D9ManualTextureServices::onLost()
-{
-	for (T_RTList::const_iterator itr = RenderTargets.begin(); itr != RenderTargets.end(); ++itr)
-	{
-		(*itr)->onLost();
-	}
-}
-
-void CD3D9ManualTextureServices::onReset()
-{
-	for (T_RTList::const_iterator itr = RenderTargets.begin(); itr != RenderTargets.end(); ++itr)
-	{
-		(*itr)->onReset();
 	}
 }
 

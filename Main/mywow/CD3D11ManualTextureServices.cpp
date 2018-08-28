@@ -15,15 +15,12 @@
 CD3D11ManualTextureServices::CD3D11ManualTextureServices()
 {
 	Driver= static_cast<CD3D11Driver*>(g_Engine->getDriver());
-	Driver->registerLostReset(this);
 
 	loadDefaultTextures();
 }
 
 CD3D11ManualTextureServices::~CD3D11ManualTextureServices()
 {
-	Driver->removeLostReset(this);
-
 	for (T_TextureMap::const_iterator itr = TextureMap.begin(); itr != TextureMap.end(); ++itr)
 	{
 		ITexture* tex = itr->second;
@@ -141,22 +138,6 @@ ITexture* CD3D11ManualTextureServices::createEmptyTexture( const dimension2du& s
 	}
 	tex->drop();
 	return nullptr;
-}
-
-void CD3D11ManualTextureServices::onLost()
-{
-	for (T_RTList::const_iterator itr = RenderTargets.begin(); itr != RenderTargets.end(); ++itr)
-	{
-		(*itr)->onLost();
-	}
-}
-
-void CD3D11ManualTextureServices::onReset()
-{
-	for (T_RTList::const_iterator itr = RenderTargets.begin(); itr != RenderTargets.end(); ++itr)
-	{
-		(*itr)->onReset();
-	}
 }
 
 void CD3D11ManualTextureServices::loadDefaultTextures()

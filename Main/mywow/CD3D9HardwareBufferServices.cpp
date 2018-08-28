@@ -16,16 +16,12 @@ CD3D9HardwareBufferServices::CD3D9HardwareBufferServices()
 
 	Driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
 
-	Driver->registerLostReset(this);
-
 	createStaticIndexBufferQuadList();
 }
 
 CD3D9HardwareBufferServices::~CD3D9HardwareBufferServices()
 {
 	destroyStaticIndexBufferQuadList();
-
-	Driver->removeLostReset(this);
 
 	ASSERT(IsListEmpty(&VertexBufferList));
 	ASSERT(IsListEmpty(&IndexBufferList));
@@ -181,65 +177,6 @@ bool CD3D9HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, u
 	}
 
 	return true;
-}
-
-void CD3D9HardwareBufferServices::onLost()
-{
-	if (g_Engine->getOSInfo()->IsAeroSupport())
-		return;
-
-	for (PLENTRY e = VertexBufferList.Flink; e != &VertexBufferList; )
-	{
-		CVertexBuffer* vbuffer = reinterpret_cast<CVertexBuffer*>CONTAINING_RECORD(e, CVertexBuffer, Link);
-		e = e->Flink;
-
-		if (vbuffer->Mapping != EMM_STATIC && vbuffer->HWLink)
-		{
-			((IDirect3DVertexBuffer9*)vbuffer->HWLink)->Release();
-			vbuffer->HWLink = nullptr;
-		}
-	}
-
-	for (PLENTRY e = IndexBufferList.Flink; e != &IndexBufferList; )
-	{
-		CIndexBuffer* ibuffer = reinterpret_cast<CIndexBuffer*>CONTAINING_RECORD(e, CIndexBuffer, Link);
-		e = e->Flink;
-
-		if (ibuffer->Mapping != EMM_STATIC && ibuffer->HWLink)
-		{
-			((IDirect3DIndexBuffer9*)ibuffer->HWLink)->Release();
-			ibuffer->HWLink = nullptr;
-		}
-	}
-}
-
-void CD3D9HardwareBufferServices::onReset()
-{
-	if (g_Engine->getOSInfo()->IsAeroSupport())
-		return;
-
-	for (PLENTRY e = VertexBufferList.Flink; e != &VertexBufferList; )
-	{
-		CVertexBuffer* vbuffer = reinterpret_cast<CVertexBuffer*>CONTAINING_RECORD(e, CVertexBuffer, Link);
-		e = e->Flink;
-
-		if (vbuffer->Mapping == EMM_STATIC)
-			continue;
-		internalCreateVertexBuffer(vbuffer);
-		updateHardwareBuffer(vbuffer, vbuffer->Size);
-	}
-
-	for (PLENTRY e = IndexBufferList.Flink; e != &IndexBufferList; )
-	{
-		CIndexBuffer* ibuffer = reinterpret_cast<CIndexBuffer*>CONTAINING_RECORD(e, CIndexBuffer, Link);
-		e = e->Flink;
-
-		if (ibuffer->Mapping == EMM_STATIC)
-			continue;
-
-		internalCreateIndexBuffer(ibuffer);
-		updateHardwareBuffer(ibuffer, ibuffer->Size);
-	}
 }
 
 bool CD3D9HardwareBufferServices::internalCreateIndexBuffer( CIndexBuffer* ibuffer )

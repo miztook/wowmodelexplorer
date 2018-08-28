@@ -15,16 +15,12 @@ CD3D11HardwareBufferServices::CD3D11HardwareBufferServices()
 
 	Driver = static_cast<CD3D11Driver*>(g_Engine->getDriver());
 
-	Driver->registerLostReset(this);
-
 	createStaticIndexBufferQuadList();
 }
 
 CD3D11HardwareBufferServices::~CD3D11HardwareBufferServices()
 {
 	destroyStaticIndexBufferQuadList();
-
-	Driver->removeLostReset(this);
 
 	ASSERT(IsListEmpty(&VertexBufferList));
 	ASSERT(IsListEmpty(&IndexBufferList));
@@ -195,16 +191,6 @@ bool CD3D11HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, 
 	}
 
 	return true;
-}
-
-void CD3D11HardwareBufferServices::onLost()
-{
-
-}
-
-void CD3D11HardwareBufferServices::onReset()
-{
-
 }
 
 bool CD3D11HardwareBufferServices::internalCreateVertexBuffer( CVertexBuffer* vbuffer )

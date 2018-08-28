@@ -19,10 +19,6 @@ public:
 	virtual ITexture* getRTTexture() const;
 	virtual bool writeToRTTexture();
 
-	//lost reset
-	void onLost();
-	void onReset();
-
 	 ID3D11RenderTargetView* getRenderTargetView() const { return RTView; }
 	 ID3D11DepthStencilView* getDepthStencilView() const { return DepthView; }
 

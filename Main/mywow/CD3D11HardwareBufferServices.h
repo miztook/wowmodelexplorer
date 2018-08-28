@@ -27,10 +27,6 @@ public:
 	virtual bool updateHardwareBuffer(CVertexBuffer* vbuffer, u32 size);
 	virtual bool updateHardwareBuffer(CIndexBuffer* ibuffer, u32 size);
 
-public:
-	virtual void onLost();
-	virtual void onReset();
-
 private:
 	bool internalCreateVertexBuffer( CVertexBuffer* vbuffer );
 	bool internalCreateIndexBuffer( CIndexBuffer* ibuffer );

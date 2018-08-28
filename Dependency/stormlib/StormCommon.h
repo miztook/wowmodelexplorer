@@ -93,16 +93,10 @@ __inline void * DebugMalloc(char * /* szFile */, int /* nLine */, size_t nSize)
 }
 #endif
 
-__inline void* Malloc(size_t nSize); 
-__inline void Free(void * ptr);
-__inline void* TempMalloc(size_t nSize);
-__inline void TempFree(void* ptr);
-
-
-#define STORM_ALLOC(type, nitems)   (type *)Malloc((nitems) * sizeof(type))
-#define STORM_FREE(ptr) Free(ptr)
-#define STORM_TEMP_ALLOC(type, nitems) (type *)TempMalloc((nitems) * sizeof(type))
-#define STORM_TEMP_FREE(ptr) TempFree(ptr)
+#define STORM_ALLOC(type, nitems)   (type *)malloc((nitems) * sizeof(type))
+#define STORM_FREE(ptr) free(ptr)
+#define STORM_TEMP_ALLOC(type, nitems) (type *)malloc((nitems) * sizeof(type))
+#define STORM_TEMP_FREE(ptr) free(ptr)
 
 
 

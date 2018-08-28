@@ -28,9 +28,6 @@ public:
 	~CD3D11ShaderServices();
 
 public:
-	virtual void onLost();
-	virtual void onReset();
-
 	virtual void loadAll();
 
 	virtual IPixelShader* getPixelShader(E_PS_TYPE type, E_PS_MACRO macro = PS_Macro_None) { return PixelShaders[type][macro]; }

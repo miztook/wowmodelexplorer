@@ -62,8 +62,6 @@ public:
 
 	void setTexture(u32 stage, ITexture* texture);
 	ITexture* getTexture(u32 index) const;
-	void registerLostReset( ILostResetCallback* callback );
-	void removeLostReset( ILostResetCallback* callback );
 
 	//draw
 	void draw3DMode( const SBufferParam& bufferParam, 
@@ -168,9 +166,6 @@ private:
 	u32		AdapterCount;
 	u32		PrimitivesDrawn;
 	u32		DrawCall;
-
-	typedef std::list<ILostResetCallback*, qzone_allocator<ILostResetCallback*> > T_LostResetList;
-	T_LostResetList	LostResetList;
 
 	c8		DebugMsg[512];
 

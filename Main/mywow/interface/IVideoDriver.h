@@ -4,7 +4,6 @@
 #include "SMaterial.h"
 #include <algorithm>
 #include <list>
-#include "ILostResetCallback.h"
 
 struct SBufferParam;
 class IRenderTarget;

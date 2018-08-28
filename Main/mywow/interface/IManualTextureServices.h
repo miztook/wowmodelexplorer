@@ -2,14 +2,13 @@
 
 #include "core.h"
 #include <unordered_map>
-#include "ILostResetCallback.h"
 
 class IRenderTarget;
 class ITexture;
 class IImage;
 
 //手工创建的texture, 或创建render target
-class IManualTextureServices : public ILostResetCallback
+class IManualTextureServices
 {
 public:
 	virtual ~IManualTextureServices() {}

@@ -38,6 +38,11 @@ void MyMessageHandler::onSize(window_type hwnd, int width, int height)
 
 void createScene()
 {
+	g_Engine->getManualMeshServices()->addGridLineMesh("$grid20", 20, 1, SColor(128, 128, 128));
+
+	IMeshSceneNode* gridNode = g_Engine->getSceneManager()->addMeshSceneNode("$grid20", NULL);
+
+	/*
 	const SMapRecord* mapRecord = g_Engine->getWowDatabase()->getMap(1);
 
 	g_Engine->getEngineSetting()->setViewDistance(EL_FAIR);
@@ -60,6 +65,7 @@ void createScene()
 	cam->recalculateAll();
 	
 	g_Engine->getSceneManager()->addSkySceneNode(fileWDT->getMapEnvironment());
+	*/
 
 	/*
 	STile* tile = fileWDT->getTile(29,40);

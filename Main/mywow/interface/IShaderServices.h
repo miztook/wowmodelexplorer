@@ -3,14 +3,13 @@
 #include "base.h"
 #include "SMaterial.h"
 #include "IShader.h"
-#include "ILostResetCallback.h"
 
 #define DIRECTX_USE_COMPILED_SHADER
 
 
 //提供所有shader相关的辅助函数，参数设置等
 //管理所有加载的shader 
-class IShaderServices : public ILostResetCallback
+class IShaderServices
 {
 public:
 	IShaderServices()

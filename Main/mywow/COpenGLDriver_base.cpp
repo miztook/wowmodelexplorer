@@ -745,19 +745,6 @@ void COpenGLDriver::setViewPort( recti area )
 	Viewport = vp;
 }
 
-void COpenGLDriver::registerLostReset( ILostResetCallback* callback )
-{
-	if (std::find(LostResetList.begin(), LostResetList.end(), callback) == LostResetList.end())
-	{
-		LostResetList.push_back(callback);
-	}
-}
-
-void COpenGLDriver::removeLostReset( ILostResetCallback* callback )
-{
-	LostResetList.remove(callback);
-}
-
 void COpenGLDriver::SDeviceState::reset()
 {
 	glGetFloatv(GL_COLOR_CLEAR_VALUE, (GLfloat*)&clearColor);
@@ -769,12 +756,6 @@ void COpenGLDriver::SDeviceState::reset()
 
 bool COpenGLDriver::reset()
 {
-	for( T_LostResetList::const_iterator itr=LostResetList.begin(); itr != LostResetList.end(); ++itr )
-		(*itr)->onLost();
-
-	for( T_LostResetList::const_iterator itr=LostResetList.begin(); itr != LostResetList.end(); ++itr )
-		(*itr)->onReset();
-
 	//reset
 	LastMaterial.MaterialType = (E_MATERIAL_TYPE)-1;
 	ResetRenderStates = true;

@@ -19,10 +19,6 @@ public:
 	virtual ITexture* getRTTexture() const;
 	virtual bool writeToRTTexture(); 
 
-	//lost reset
-	void onLost();
-	void onReset();
-
 	GLuint getFrameBuffer() const { return FrameBuffer; }
 
 private:

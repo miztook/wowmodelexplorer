@@ -2,13 +2,12 @@
 #pragma once
 
 #include "core.h"
-#include "ILostResetCallback.h"
 
 class CVertexBuffer;
 class CIndexBuffer;
 struct SBufferParam;
 
-class IHardwareBufferServices : public ILostResetCallback
+class IHardwareBufferServices
 {
 public:
 	IHardwareBufferServices()

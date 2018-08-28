@@ -15,17 +15,12 @@ CD3D9ShaderServices::CD3D9ShaderServices()
 	Driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
 	Device = Driver->pID3DDevice;
 
-	Driver->registerLostReset(this);
-
 	LastShaderState.reset();
 	ShaderState.reset();
-	ResetShaders = true;
 }
 
 CD3D9ShaderServices::~CD3D9ShaderServices()
 {
-	Driver->removeLostReset(this);
-
 	for (u32 i=0; i < EVST_COUNT; ++i)
 	{
 		delete VertexShaders[i];
@@ -83,15 +78,6 @@ void CD3D9ShaderServices::loadAll()
 	}
 
 	g_Engine->getFileSystem()->writeLog(ELOG_GX, "finish loading shaders %s.", profile);
-}
-
-void CD3D9ShaderServices::onLost()
-{
-}
-
-void CD3D9ShaderServices::onReset()
-{
-	ResetShaders = true;
 }
 
 #ifdef DIRECTX_USE_COMPILED_SHADER
@@ -522,7 +508,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 
 void CD3D9ShaderServices::applyShaders()
 {
-	if (ResetShaders || LastShaderState.vshader != ShaderState.vshader)
+	if (LastShaderState.vshader != ShaderState.vshader)
 	{
 		CD3D9VertexShader* vs = static_cast<CD3D9VertexShader*>(ShaderState.vshader);
 		if (vs)	
@@ -538,7 +524,7 @@ void CD3D9ShaderServices::applyShaders()
 		}
 	}
 
-	if (ResetShaders || LastShaderState.pshader != ShaderState.pshader)
+	if (LastShaderState.pshader != ShaderState.pshader)
 	{
 		CD3D9PixelShader* ps = static_cast<CD3D9PixelShader*>(ShaderState.pshader);
 		if (ps)	
@@ -555,7 +541,6 @@ void CD3D9ShaderServices::applyShaders()
 	}
 
 	LastShaderState = ShaderState;
-	ResetShaders = false;
 }
 
 void CD3D9ShaderServices::setShaderConstants( IVertexShader* vs, const SMaterial& material, u32 pass )

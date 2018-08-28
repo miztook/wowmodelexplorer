@@ -512,7 +512,6 @@
     <ClInclude Include="interface\IFileWDT.h" />
     <ClInclude Include="interface\IFileWMO.h" />
     <ClInclude Include="interface\IInputReader.h" />
-    <ClInclude Include="interface\ILostResetCallback.h" />
     <ClInclude Include="interface\IM2SceneNode.h" />
     <ClInclude Include="interface\IManualTextureServices.h" />
     <ClInclude Include="interface\IMapTileSceneNode.h" />
@@ -619,7 +618,6 @@
     <ClCompile Include="CAlphaTestDecalRenderer.cpp" />
     <ClCompile Include="CAlphaTestMeshRenderer.cpp" />
     <ClCompile Include="CAlphaTestWmoRenderer.cpp" />
-    <ClCompile Include="casclib_memory.cpp" />
     <ClCompile Include="CConfigs.cpp" />
     <ClCompile Include="CCoordSceneNode.cpp" />
     <ClCompile Include="CD3D11DrawServices.cpp" />
@@ -778,7 +776,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_60|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="stormlib_memory.cpp" />
     <ClCompile Include="TGAImageWriter.cpp" />
     <ClCompile Include="VertexIndexBuffer.cpp" />
     <ClCompile Include="wowEnvironment.cpp" />

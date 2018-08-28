@@ -14,15 +14,12 @@
 COpenGLManualTextureServices::COpenGLManualTextureServices()
 {
 	Driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
-	Driver->registerLostReset(this);
 
 	loadDefaultTextures();
 }
 
 COpenGLManualTextureServices::~COpenGLManualTextureServices()
 {	
-	Driver->removeLostReset(this);
-
 	for (T_TextureMap::const_iterator itr = TextureMap.begin(); itr != TextureMap.end(); ++itr)
 	{
 		ITexture* tex = itr->second;
@@ -140,22 +137,6 @@ ITexture* COpenGLManualTextureServices::createEmptyTexture( const dimension2du& 
 	}
 	tex->drop();
 	return nullptr;
-}
-
-void COpenGLManualTextureServices::onLost()
-{
-	for (T_RTList::const_iterator itr = RenderTargets.begin(); itr != RenderTargets.end(); ++itr)
-	{
-		(*itr)->onLost();
-	}
-}
-
-void COpenGLManualTextureServices::onReset()
-{
-	for (T_RTList::const_iterator itr = RenderTargets.begin(); itr != RenderTargets.end(); ++itr)
-	{
-		(*itr)->onReset();
-	}
 }
 
 void COpenGLManualTextureServices::loadDefaultTextures()

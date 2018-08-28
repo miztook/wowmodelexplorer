@@ -62,8 +62,6 @@ public:
 
 	void setTexture(u32 stage, ITexture* texture);
 	ITexture* getTexture(u32 index) const;
-	void registerLostReset( ILostResetCallback* callback );
-	void removeLostReset( ILostResetCallback* callback );
 
 	void setTransform(const matrix4& matView, const matrix4& matProjection);
 
@@ -181,9 +179,6 @@ private:
 	E_RENDER_MODE		CurrentRenderMode;
 
 	CD3D11VertexDeclaration* VertexDeclarations[EVT_COUNT];
-
-	typedef std::list<ILostResetCallback*, qzone_allocator<ILostResetCallback*> > T_LostResetList;
-	T_LostResetList	LostResetList;
 
 	c8		DebugMsg[512];	
 	
