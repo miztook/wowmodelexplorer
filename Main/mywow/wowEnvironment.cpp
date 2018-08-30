@@ -6,10 +6,12 @@
 
 #define MPQFILES	"mpqfiles/"
 
-#if WOW_VER == 60
-#define LISTFILE	"listfile60.txt"
-#else
-#define LISTFILE	"listfile.txt"
+#if WOW_VER == 80
+#define LISTFILE	"listfile80.txt"
+#elif WOW_VER == 70
+#define LISTFILE	"listfile70.txt"
+#elif WOW_VER == 60
+#define LISTFILE    "listfile60.txt"
 #endif
 
 const c8* basempqfiles[] = 
