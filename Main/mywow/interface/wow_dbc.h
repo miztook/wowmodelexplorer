@@ -29,8 +29,8 @@ struct db2Header
 	u32 hash;
 	u32 clientminor;		//version
 	u32 unknown1;
-	u32 firstrow;
-	u32 lastrow;
+	u32 min_id;
+	u32 max_id;
 	u32 localecode;
 	u32 refdatasize;
 };
@@ -49,8 +49,8 @@ struct db5Header
 
 	u32 tablehash;
 	u32 layouthash;
-	u32 firstrow;
-	u32 lastrow;
+	u32 min_id;
+	u32 max_id;
 	s32 localecode;
 	u32 refdatasize;
 	u16 fileflags;		
@@ -67,8 +67,8 @@ struct db6Header
 
 	u32 tablehash;
 	u32 layouthash;
-	u32 firstrow;
-	u32 lastrow;
+	u32 min_id;
+	u32 max_id;
 	s32 localecode;
 	u32 refdatasize;
 	u16 fileflags;
@@ -87,8 +87,8 @@ struct dc1Header
 
 	u32 tablehash;
 	u32 layouthash;
-	u32 firstrow;
-	u32 lastrow;
+	u32 min_id;
+	u32 max_id;
 	s32 localecode;
 	u32 refdatasize;
 	u16 fileflags;
@@ -114,8 +114,8 @@ struct dc2Header
 
 	u32 tablehash;
 	u32 layouthash;
-	u32 firstrow;
-	u32 lastrow;
+	u32 min_id;
+	u32 max_id;
 	s32 localecode;
 	u16 fileflags;
 	u16 idindex;			// this is the index of the field containing ID values; this is ignored if flags & 0x04 != 0
@@ -144,6 +144,7 @@ protected:
 	void readWDB2(wowEnvironment* env, IMemFile* file, bool tmp);
 	void readWDB5(wowEnvironment* env, IMemFile* file, bool tmp);
 	void readWDB6(wowEnvironment* env, IMemFile* file, bool tmp);
+	void readWDC2(wowEnvironment* env, IMemFile* file, bool tmp);
 
 public:
 	class record
@@ -158,7 +159,6 @@ public:
 			if (!_dbc->Fields)
 				return getUInt(0);
 
-			ASSERT(_dbc->hasIndex() && _index >= 0);
 			return _dbc->getIDs()[_index];
 		}
 
@@ -290,11 +290,7 @@ public:
 	dbc::record getRecord(u32 idx) const
 	{
 		ASSERT(idx < nRecords);
-
-		if(HasDataOffsetBlock)
-			return record(this, idx, _recordStart + OffsetMaps[idx].offset, OffsetMaps[idx].length);
-		else
-			return record(this, idx, _recordStart + idx * RecordSize, RecordSize);
+		return record(this, idx, _recordStart + idx * RecordSize, RecordSize);
 	}
 
 	dbc::record getByID(u32 id) const
@@ -314,7 +310,7 @@ public:
 	u32 getStringSize() const { return HasDataOffsetBlock ? 0 : StringSize; }
 	u8* getStringStart() const { return _stringStart; }
 	u16 getFieldSize(int idx) const { return Fields ? Fields[idx].size : 4; }
-	const u32* getIDs() const { return IDs; }
+	const u32* getIDs() const { return IDs.data(); }
 	bool hasIndex() const { return HasIndex; }
 
 	//for sparse db2
@@ -350,7 +346,7 @@ protected:		//WDB2
 
 protected:	//WDB5
 	bool	HasDataOffsetBlock;
-	bool	HasUnknownStuff;
+	bool	HasRelationshipData;
 	bool	HasIndex;
 
 	struct SField 
@@ -372,9 +368,9 @@ protected:	//WDB5
 	};
 
 	SField* Fields;		//[header.field_count]
-	SOffsetMapEntry*	OffsetMaps;  //if (flags & 0x01 != 0) [header.max_id - header.min_id + 1];
-	u32* IDs;		//if (flags & 0x04 != 0) [header.record_count]
-	SCopyTableEntry* CopyTables;		//if (header.refdatasize > 0)
+	std::vector<SOffsetMapEntry>	OffsetMaps;  //if (flags & 0x01 != 0) [header.max_id - header.min_id + 1];
+	std::vector<u32> IDs;		//if (flags & 0x04 != 0) [header.record_count]
+	std::vector<SCopyTableEntry> CopyTables;		//if (header.refdatasize > 0)
 
 protected:	//WDB6
 
@@ -386,6 +382,45 @@ protected:	//WDB6
 
 	SCommonColumn*   CommonColumns;
 
+protected:		//WDC1
+
+
+protected:		//WDC2
+	struct SSectionHeader
+	{
+		u32 wdc2_unk_header1;       // always 0 in Battle (8.0.1.26231) and unnamed in client binary
+		u32 wdc2_unk_header2;       // always 0 in Battle (8.0.1.26231) and unnamed in client binary
+		u32 file_offset;            // absolute position to the beginning of the section
+		u32 record_count;           // 'record_count' for the section
+		u32 string_table_size;      // 'string_table_size' for the section
+		u32 copy_table_size;
+		u32 offset_map_offset;      // Offset to array of struct {uint32_t offset; uint16_t size;}[max_id - min_id + 1];
+		u32 id_list_size;           // List of ids present in the DB file
+		u32 relationship_data_size;
+	};
+
+	enum FIELD_COMPRESSION
+	{
+		NONE,
+		BITPACKED,
+		COMMON_DATA,
+		BITPACKED_INDEXED,
+		BITPACKED_INDEXED_ARRAY,
+		BITPACKED_SIGNED
+	};
+
+	struct SFieldStorageInfo
+	{
+		u16 field_offset_bits;
+		u16 field_size_bits; 
+		u32 additional_data_size;
+		u32 storage_type;
+		u32 val1;
+		u32 val2;
+		u32 val3;
+	};
+
+	SFieldStorageInfo* FieldStorageInfos;
 };
 
 /*

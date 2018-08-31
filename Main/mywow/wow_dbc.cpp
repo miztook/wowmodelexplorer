@@ -15,14 +15,12 @@ dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 	nActualRecords = 0;
 
 	Fields = nullptr;
-	OffsetMaps = nullptr;
-	IDs = nullptr;
-	CopyTables = nullptr;
 	CommonColumns = nullptr;
+	FieldStorageInfos = nullptr;
 
 	HasDataOffsetBlock = false;
 	HasIndex = false;
-	HasUnknownStuff = false;
+	HasRelationshipData = false;
 
 	string512 path = filename;
 	IMemFile* file = env->openFile(path.c_str());
@@ -56,6 +54,10 @@ dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 		db_type = 5;
 	else if (strncmp(magic, "WDB6", 4) == 0)
 		db_type = 6;
+	else if (strncmp(magic, "WDC1", 4) == 0)
+		db_type = 7;
+	else if (strncmp(magic, "WDC2", 4) == 0)
+		db_type = 8;
 	else
 		ASSERT(false);
 
@@ -67,16 +69,18 @@ dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 		readWDB5(env, file, tmp);
 	else if (db_type == 6)	//db6
 		readWDB6(env, file, tmp);
+	else if (db_type == 8)	//dc2
+		readWDC2(env, file, tmp);
+	else
+		ASSERT(false);
 
 	delete file;
 }
 
 dbc::~dbc()
 {
+	delete[] FieldStorageInfos;
 	delete[] CommonColumns;
-	delete[] CopyTables;
-	delete[] IDs;
-	delete[] OffsetMaps;
 	delete[] Fields;
 	delete[] _stringStart;
 	delete[] _recordStart;
@@ -135,12 +139,11 @@ void dbc::readWDB2(wowEnvironment* env, IMemFile* file, bool tmp)
 	StringSize = header._stringsize;
 	nActualRecords = nRecords;
 
-	bool isSparse = (header.firstrow != 0 && header.lastrow != 0);
+	bool isSparse = (header.min_id != 0 && header.max_id != 0);
 	if (isSparse)
 	{
 		nActualRecords = 0;
-
-		for (u32 i= header.firstrow; i <= header.lastrow; ++i)
+		for (u32 i= header.min_id; i <= header.max_id; ++i)
 		{
 			u32 avail;
 			file->read(&avail, 4);
@@ -154,7 +157,7 @@ void dbc::readWDB2(wowEnvironment* env, IMemFile* file, bool tmp)
 		}
 
 		//skip
-		file->seek((header.lastrow - header.firstrow + 1) * 2, true);
+		file->seek((header.max_id - header.min_id + 1) * 2, true);
 	}
 	
 	fs->writeLog(ELOG_RES, "db file %s: field num %d, record size %d, record num %d, string size %d", 
@@ -197,7 +200,7 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 	nActualRecords = nRecords;
 
 	HasDataOffsetBlock = (header.fileflags & WDB5_FLAG_DATAOFFSET) != 0;
-	HasUnknownStuff = (header.fileflags & WDB5_FLAG_UNKNOWN) != 0;
+	HasRelationshipData = (header.fileflags & WDB5_FLAG_UNKNOWN) != 0;
 	HasIndex = (header.fileflags & WDB5_FLAG_INDEX) != 0;
 
 	Fields = new SField[nFields];
@@ -210,84 +213,87 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 
 		Fields[i].size = (32 - size) / 8;
 		Fields[i].position = offset;
-
 	}
-
-	//TOOD file count
 
 	if (HasDataOffsetBlock)
 	{
 		u32 curPos = file->getPos();
 		file->seek(header._stringsize);
 
-		std::map<u32, u16, std::less<u32>, qzone_allocator<std::pair<u32, u16> > > dataOffsetMap;
 		u32 nTotalSize = 0;
-		while((u32)dataOffsetMap.size() < header._nRecords)
+		for (u32 i = header.min_id; i <= header.max_id; ++i)
 		{
-			u32 offset;
-			u16 length;
-			file->read(&offset, sizeof(u32));
-			file->read(&length, sizeof(u16));
-			if (offset > 0 && dataOffsetMap.find(offset) == dataOffsetMap.end())
-			{
-				ASSERT(offset >= curPos);
-				dataOffsetMap[offset] = length;
-				nTotalSize += length;
-			}
+			SOffsetMapEntry entry;
+			file->read(&entry, sizeof(SOffsetMapEntry));
 
-			if (file->isEof())
-			{	
-				fs->writeLog(ELOG_RES, "dataoffset load error: %s", file->getFileName());
-				return;
+			if (entry.offset > 0 && entry.length > 0)
+			{
+				ASSERT(entry.offset >= curPos);			
+				IDs.push_back(i);
+				OffsetMaps.push_back(entry);
+				nTotalSize += entry.length;
 			}
 		}
 
-		u32 indexDataStart = file->getPos();
-
-		int x = 0;
-		OffsetMaps = new SOffsetMapEntry[header._nRecords];
+		//整合recordstart
+		const u32 indexDataStart = file->getPos();
 		_recordStart = new u8[nTotalSize];
 		u32 curOffset = 0;
-		int count = 0;
-		for (auto itr = dataOffsetMap.begin(); itr != dataOffsetMap.end(); ++itr)
-		{
-			u32 off = itr->first;
-			u16 len = itr->second;
-			
-			file->seek(off);
-			file->read(&_recordStart[curOffset], len);
-			
-			OffsetMaps[count].offset = curOffset;
-			OffsetMaps[count].length = len;
-
-			curOffset += len;
-			++count;
+		for (const auto& entry : OffsetMaps)
+		{ 	
+			file->seek(entry.offset);
+			file->read(&_recordStart[curOffset], entry.length);
+			curOffset += entry.length;
 		}
-		_stringStart = nullptr;
-
 		file->seek(indexDataStart);
+		_stringStart = nullptr;
 	}
-	else
+	else   //no dataoffset
 	{
 		u32 current = file->getPos();
 		_recordStart = new u8[RecordSize * nRecords];
 		_stringStart = new u8[StringSize];
 
 		file->read(_recordStart, RecordSize * nRecords);			//records
-		file->seek(current + RecordSize * nRecords);
 		file->read(_stringStart, StringSize);		//string
+
+		//IDs
+		if (HasIndex)
+		{
+			IDs.resize(nRecords);
+			file->read(IDs.data(), nRecords * sizeof(u32));
+		}
+		else
+		{
+			u16 indexPos = Fields[header.idindex].position;
+			u16 indexSize = Fields[header.idindex].size;
+			u32 indexMask = 0xFFFFFFFF;
+			if (indexSize == 1)
+				indexMask = 0x000000FF;
+			else if (indexSize == 2)
+				indexMask = 0x0000FFFF;
+			else if (indexSize == 3)
+				indexMask = 0x00FFFFFF;
+
+			for (u32 i = 0; i < nRecords; ++i)
+			{
+				u8* ofs = _recordStart + i * RecordSize;
+				u32 val;
+				memcpy(&val, ofs + indexPos, indexSize);
+				val &= indexMask;
+				IDs.push_back(val);
+			};
+		}
 	}
 
-	s32 indexDataSize = nRecords * sizeof(s32);
-	if(HasUnknownStuff)
-		file->seek(indexDataSize, true);
-
-	if (HasIndex)
+	//relationship
+	if (HasRelationshipData)
 	{
-		IDs = new u32[nRecords];
-		file->read(IDs, sizeof(u32) * nRecords);
+		s32 relationshipDataSize = nRecords * sizeof(s32);
+		file->seek(nRecords * sizeof(s32), true);
 	}
 
+	//copy table
 	if (header.refdatasize > 0)
 	{
 		ASSERT(header.refdatasize % sizeof(SCopyTableEntry) == 0);
@@ -300,7 +306,7 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 	ASSERT(file->getPos() == file->getSize());
 
 	//build map
-	if (!tmp && HasIndex)		//临时文件不写map
+	if (!tmp)		//临时文件不写map
 	{
 		for (u32 i=0; i<nRecords; ++i)
 		{
@@ -326,7 +332,7 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 	nActualRecords = nRecords;
 
 	HasDataOffsetBlock = (header.fileflags & WDB5_FLAG_DATAOFFSET) != 0;
-	HasUnknownStuff = (header.fileflags & WDB5_FLAG_UNKNOWN) != 0;
+	HasRelationshipData = (header.fileflags & WDB5_FLAG_UNKNOWN) != 0;
 	HasIndex = (header.fileflags & WDB5_FLAG_INDEX) != 0;
 
 	Fields = new SField[nFields];
@@ -339,84 +345,87 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 
 		Fields[i].size = (32 - size) / 8;
 		Fields[i].position = offset;
-
 	}
-
-	//TOOD file count
 
 	if (HasDataOffsetBlock)
 	{
 		u32 curPos = file->getPos();
 		file->seek(header._stringsize);
 
-		std::map<u32, u16, std::less<u32>, qzone_allocator<std::pair<u32, u16> > > dataOffsetMap;
 		u32 nTotalSize = 0;
-		while ((u32)dataOffsetMap.size() < header._nRecords)
+		for (u32 i = header.min_id; i <= header.max_id; ++i)
 		{
-			u32 offset;
-			u16 length;
-			file->read(&offset, sizeof(u32));
-			file->read(&length, sizeof(u16));
-			if (offset > 0 && dataOffsetMap.find(offset) == dataOffsetMap.end())
-			{
-				ASSERT(offset >= curPos);
-				dataOffsetMap[offset] = length;
-				nTotalSize += length;
-			}
+			SOffsetMapEntry entry;
+			file->read(&entry, sizeof(SOffsetMapEntry));
 
-			if (file->isEof())
+			if (entry.offset > 0 && entry.length > 0)
 			{
-				fs->writeLog(ELOG_RES, "dataoffset load error: %s", file->getFileName());
-				return;
+				ASSERT(entry.offset >= curPos);
+				IDs.push_back(i);
+				OffsetMaps.push_back(entry);
+				nTotalSize += entry.length;
 			}
 		}
 
-		u32 indexDataStart = file->getPos();
-
-		int x = 0;
-		OffsetMaps = new SOffsetMapEntry[header._nRecords];
+		//整合recordstart
+		const u32 indexDataStart = file->getPos();
 		_recordStart = new u8[nTotalSize];
 		u32 curOffset = 0;
-		int count = 0;
-		for (auto itr = dataOffsetMap.begin(); itr != dataOffsetMap.end(); ++itr)
+		for (const auto& entry : OffsetMaps)
 		{
-			u32 off = itr->first;
-			u16 len = itr->second;
-
-			file->seek(off);
-			file->read(&_recordStart[curOffset], len);
-
-			OffsetMaps[count].offset = curOffset;
-			OffsetMaps[count].length = len;
-
-			curOffset += len;
-			++count;
+			file->seek(entry.offset);
+			file->read(&_recordStart[curOffset], entry.length);
+			curOffset += entry.length;
 		}
-		_stringStart = nullptr;
-
 		file->seek(indexDataStart);
+		_stringStart = nullptr;
 	}
-	else
+	else   //no dataoffset
 	{
 		u32 current = file->getPos();
 		_recordStart = new u8[RecordSize * nRecords];
 		_stringStart = new u8[StringSize];
 
 		file->read(_recordStart, RecordSize * nRecords);			//records
-		file->seek(current + RecordSize * nRecords);
 		file->read(_stringStart, StringSize);		//string
+
+		//IDs
+		if (HasIndex)
+		{
+			IDs.resize(nRecords);
+			file->read(IDs.data(), nRecords * sizeof(u32));
+		}
+		else
+		{
+			u16 indexPos = Fields[header.idindex].position;
+			u16 indexSize = Fields[header.idindex].size;
+			u32 indexMask = 0xFFFFFFFF;
+			if (indexSize == 1)
+				indexMask = 0x000000FF;
+			else if (indexSize == 2)
+				indexMask = 0x0000FFFF;
+			else if (indexSize == 3)
+				indexMask = 0x00FFFFFF;
+
+			for (u32 i = 0; i < nRecords; ++i)
+			{
+				u8* ofs = _recordStart + i * RecordSize;
+				u32 val;
+				memcpy(&val, ofs + indexPos, indexSize);
+				val &= indexMask;
+				IDs.push_back(val);
+			};
+		}
 	}
 
-	s32 indexDataSize = nRecords * sizeof(s32);
-	if (HasUnknownStuff)
-		file->seek(indexDataSize, true);
-
-	if (HasIndex)
+	//relationship
+	if (HasRelationshipData)
 	{
-		IDs = new u32[nRecords];
-		file->read(IDs, sizeof(u32) * nRecords);
+		s32 relationshipDataSize = nRecords * sizeof(s32);
+		file->seek(nRecords * sizeof(s32), true);
 	}
 
+	//copy table
 	if (header.refdatasize > 0)
 	{
 		ASSERT(header.refdatasize % sizeof(SCopyTableEntry) == 0);
@@ -467,6 +476,69 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 			CommonColumns[c] = std::move(commonColumn);
 		}
 	}
+
+	ASSERT(file->getPos() == file->getSize());
+
+	//build map
+	if (!tmp && HasIndex)		//临时文件不写map
+	{
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			u32 id = IDs[i];
+			RecordLookup32[id] = i;
+		}
+	}
+
+	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
+}
+
+void dbc::readWDC2(wowEnvironment* env, IMemFile* file, bool tmp)
+{
+	IFileSystem* fs = env->getFileSystem();
+
+	dc2Header header;
+	file->read(&header, sizeof(header));
+
+	nRecords = header._nRecords;
+	nFields = header._nFields;
+	RecordSize = header._recordSize;
+	StringSize = header._stringsize;
+	nActualRecords = nRecords;
+
+	HasDataOffsetBlock = (header.fileflags & WDB5_FLAG_DATAOFFSET) != 0;
+	HasRelationshipData = (header.fileflags & WDB5_FLAG_UNKNOWN) != 0;
+	HasIndex = (header.fileflags & WDB5_FLAG_INDEX) != 0;
+
+	//section
+	std::vector<SSectionHeader> sectionHeaders;
+	sectionHeaders.resize(header.section_count);
+	file->read(sectionHeaders.data(), header.section_count * sizeof(SSectionHeader));
+
+	//field
+	Fields = new SField[nFields];
+	file->read(Fields, nFields * sizeof(SField));
+
+	//field_storage_info 
+	u32 nFieldStorage = header.field_storage_info_size / sizeof(SFieldStorageInfo);
+	FieldStorageInfos = new SFieldStorageInfo[nFieldStorage];
+	file->read(FieldStorageInfos, nFieldStorage * sizeof(SFieldStorageInfo));
+
+	//
+	u32 palletBlockOffset = file->getPos();
+	u32 commonBlockOffset = palletBlockOffset + header.pallet_data_size;
+
+	file->seek(RecordSize * nRecords, true);
+
+	u32 stringSize = HasDataOffsetBlock ? 0 : header._stringsize;
+	u32 IdBlockOffset = file->getPos() + stringSize;
+	u32 copyBlockOffset = IdBlockOffset + sectionHeaders[0].id_list_size;
+	u32 relationshipDataOffset = copyBlockOffset + sectionHeaders[0].copy_table_size;
+
+	if (HasDataOffsetBlock)
+	{
+
+	}
+
 
 	ASSERT(file->getPos() == file->getSize());
 
