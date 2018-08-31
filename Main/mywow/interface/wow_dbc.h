@@ -77,6 +77,57 @@ struct db6Header
 	u32 nonzero_column_table_size;
 };
 
+struct dc1Header
+{
+	/*0x00*/    char      _magic[4];	// "WDC1"
+	/*0x04*/    u32  _nRecords;        // 	  
+	/*0x08*/    u32  _nFields;      	// 
+	/*0x0C*/    u32  _recordSize;      // 
+	/*0x10*/    u32  _stringsize;
+
+	u32 tablehash;
+	u32 layouthash;
+	u32 firstrow;
+	u32 lastrow;
+	s32 localecode;
+	u32 refdatasize;
+	u16 fileflags;
+	u16 idindex;
+	u32 total_field_count;      // in WDC1 this value seems to always be the same as the 'field_count' value
+	u32 bitpacked_data_offset;  // relative position in record where bitpacked data begins; not important for parsing the file
+	u32 lookup_column_count;
+	u32 offset_map_offset;      // Offset to array of struct {uint32 offset; uint16_t size;}[max_id - min_id + 1];
+	u32 id_list_size;           // List of ids present in the DB file
+	u32 field_storage_info_size;
+	u32 common_data_size;
+	u32 pallet_data_size;
+	u32 relationship_data_size;
+};
+
+struct dc2Header
+{
+	/*0x00*/    char      _magic[4];	// "WDC2"
+	/*0x04*/    u32  _nRecords;        // 	  
+	/*0x08*/    u32  _nFields;      	// 
+	/*0x0C*/    u32  _recordSize;      // 
+	/*0x10*/    u32  _stringsize;
+
+	u32 tablehash;
+	u32 layouthash;
+	u32 firstrow;
+	u32 lastrow;
+	s32 localecode;
+	u16 fileflags;
+	u16 idindex;			// this is the index of the field containing ID values; this is ignored if flags & 0x04 != 0
+	u32 total_field_count;      // in WDC1 this value seems to always be the same as the 'field_count' value
+	u32 bitpacked_data_offset;  // relative position in record where bitpacked data begins; not important for parsing the file
+	u32 lookup_column_count;
+	u32 field_storage_info_size;
+	u32 common_data_size;
+	u32 pallet_data_size;
+	u32 section_count;          // new to WDC2, this is number of sections of data (records + copy table + id list + relationship map = a section)
+};
+
 #	pragma pack ()
 
 class dbc 
@@ -248,7 +299,7 @@ public:
 
 	dbc::record getByID(u32 id) const
 	{
-		T_RecordLookup32::const_iterator itr = RecordLookup32.find(id);
+		auto itr = RecordLookup32.find(id);
 		if ( itr == RecordLookup32.end())
 			return record::EMPTY();
 
@@ -264,13 +315,12 @@ public:
 	u8* getStringStart() const { return _stringStart; }
 	u16 getFieldSize(int idx) const { return Fields ? Fields[idx].size : 4; }
 	const u32* getIDs() const { return IDs; }
-	bool isSparse() const { return IsSparse; }
 	bool hasIndex() const { return HasIndex; }
 
 	//for sparse db2
 	s32 getRecordSparseRow(u32 index) const
 	{
-		T_RecordSparseLookup32::const_iterator itr = RecordSparseLookup32.find(index);
+		auto itr = RecordSparseLookup32.find(index);
 		if (itr == RecordSparseLookup32.end())
 			return -1;
 
@@ -278,29 +328,25 @@ public:
 	}
 
 protected:
+
+	typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_RecordLookup32;
+	typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_RecordSparseLookup32;
+
+	T_RecordLookup32		RecordLookup32;
+
 	u8*		_recordStart;
 	u8*		_stringStart;
 
+protected:
 	u32		nFields;
 	u32		nRecords;
 	u32		RecordSize;
 	u32		StringSize;
 	u32		nActualRecords;
 
-	u32		minorVersion;
-
-#ifdef USE_QALLOCATOR
-	typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_RecordLookup32;
-	typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_RecordSparseLookup32;
-#else
-	typedef std::unordered_map<u32, u32> T_RecordLookup32;
-	typedef std::unordered_map<u32, u32> T_RecordSparseLookup32;
-#endif
-
-	T_RecordLookup32		RecordLookup32;
 protected:		//WDB2
+	u32		minorVersion;
 	T_RecordSparseLookup32			RecordSparseLookup32;
-	bool	IsSparse;
 
 protected:	//WDB5
 	bool	HasDataOffsetBlock;

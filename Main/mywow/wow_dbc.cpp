@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "wow_dbc.h"
 #include "mywow.h"
-#include <tuple>
 
 dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
-	: minorVersion(0), IsSparse(false)
+	: minorVersion(0)
 {
 	_recordStart = nullptr;
 	_stringStart = nullptr;
@@ -136,8 +135,8 @@ void dbc::readWDB2(wowEnvironment* env, IMemFile* file, bool tmp)
 	StringSize = header._stringsize;
 	nActualRecords = nRecords;
 
-	IsSparse = (header.firstrow != 0 && header.lastrow != 0);
-	if (IsSparse)
+	bool isSparse = (header.firstrow != 0 && header.lastrow != 0);
+	if (isSparse)
 	{
 		nActualRecords = 0;
 
@@ -172,7 +171,7 @@ void dbc::readWDB2(wowEnvironment* env, IMemFile* file, bool tmp)
 	ASSERT(file->getPos() == file->getSize());
 
 	//build map
-	if (!IsSparse && !tmp)		//临时文件不写map
+	if (!isSparse && !tmp)		//临时文件不写map
 	{
 		for (u32 i=0; i<nActualRecords; ++i)
 		{
