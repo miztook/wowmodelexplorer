@@ -220,6 +220,7 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 		u32 curPos = file->getPos();
 		file->seek(header._stringsize);
 
+		nActualRecords = 0;
 		u32 nTotalSize = 0;
 		for (u32 i = header.min_id; i <= header.max_id; ++i)
 		{
@@ -232,6 +233,8 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 				IDs.push_back(i);
 				OffsetMaps.push_back(entry);
 				nTotalSize += entry.length;
+
+				++nActualRecords;
 			}
 		}
 

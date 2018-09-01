@@ -180,7 +180,6 @@ public:
 			if(!_dbc->Fields)
 				return *reinterpret_cast<u32*>(_ofs+idx*4); 
 
-			ASSERT(idx < _dbc->getNumFields());
 			u32 ret = 0;
 			if(_dbc->Fields[idx].size == sizeof(u32))
 				ret = *reinterpret_cast<u32*>(_ofs + _dbc->Fields[idx].position);
@@ -218,7 +217,6 @@ public:
 			if(!_dbc->Fields)
 				return *reinterpret_cast<s32*>(_ofs+idx*4); 
 
-			ASSERT(idx < _dbc->getNumFields());
 			s32 ret = 0;
 			if(_dbc->Fields[idx].size == sizeof(s32))
 				ret = *reinterpret_cast<s32*>(_ofs + _dbc->Fields[idx].position);
@@ -238,7 +236,6 @@ public:
 			if(!_dbc->Fields)
 				return *reinterpret_cast<u8*>(_ofs+ idx); 
 
-			ASSERT(idx < _dbc->getNumFields());
 			ASSERT(_dbc->Fields[idx].size == sizeof(u8));
 			return *reinterpret_cast<u8*>(_ofs + _dbc->Fields[idx].position);
 		}
@@ -251,7 +248,6 @@ public:
 			if(!_dbc->Fields)
 				return reinterpret_cast<T*>(_ofs + idx * sizeof(T)); 
 
-			ASSERT(idx < _dbc->getNumFields());
 			return reinterpret_cast<T*>(_ofs + _dbc->Fields[idx].position);
 		}
 
@@ -263,7 +259,6 @@ public:
 			if(!_dbc->Fields)
 				return (reinterpret_cast<T*>(_ofs + idx * sizeof(T)))[arrayIndex]; 
 
-			ASSERT(idx < _dbc->getNumFields());
 			return (reinterpret_cast<T*>(_ofs + _dbc->Fields[idx].position))[arrayIndex];
 		}
 
@@ -271,9 +266,14 @@ public:
 		{
 			ASSERT(idx < _dbc->getNumFields());
 			
-			u32 offset = getUInt(idx);
-			ASSERT(offset < _dbc->getStringSize());
-			return reinterpret_cast<c8*>(_dbc->_stringStart + offset);
+			if (!_dbc->Fields)
+			{
+				u32 offset = getUInt(idx);
+				ASSERT(offset < _dbc->getStringSize());
+				return reinterpret_cast<c8*>(_dbc->_stringStart + offset);
+			}
+
+			return reinterpret_cast<c8*>(_ofs + _dbc->Fields[idx].position);
 		}
 
 	public:
@@ -310,8 +310,7 @@ public:
 	u32 getStringSize() const { return HasDataOffsetBlock ? 0 : StringSize; }
 	u8* getStringStart() const { return _stringStart; }
 	u16 getFieldSize(int idx) const { return Fields ? Fields[idx].size : 4; }
-	const u32* getIDs() const { return IDs.data(); }
-	bool hasIndex() const { return HasIndex; }
+	const std::vector<u32>& getIDs() const { return IDs; }
 
 	//for sparse db2
 	s32 getRecordSparseRow(u32 index) const
