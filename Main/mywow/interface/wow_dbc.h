@@ -52,7 +52,7 @@ struct db5Header
 	u32 min_id;
 	u32 max_id;
 	s32 localecode;
-	u32 refdatasize;
+	u32 copydatasize;
 	u16 fileflags;		
 	u16 idindex;
 };
@@ -70,7 +70,7 @@ struct db6Header
 	u32 min_id;
 	u32 max_id;
 	s32 localecode;
-	u32 refdatasize;
+	u32 copydatasize;
 	u16 fileflags;
 	u16 idindex;
 	u32	total_field_count;
@@ -90,7 +90,7 @@ struct dc1Header
 	u32 min_id;
 	u32 max_id;
 	s32 localecode;
-	u32 refdatasize;
+	u32 copydatasize;
 	u16 fileflags;
 	u16 idindex;
 	u32 total_field_count;      // in WDC1 this value seems to always be the same as the 'field_count' value
@@ -289,8 +289,13 @@ public:
 public:
 	dbc::record getRecord(u32 idx) const
 	{
-		ASSERT(idx < nRecords);
-		return record(this, idx, _recordStart + idx * RecordSize, RecordSize);
+		ASSERT(idx < nActualRecords);
+
+		if (!(HasDataOffsetBlock|| HasCopyData))
+			return record(this, idx, _recordStart + idx * RecordSize, RecordSize);
+
+		const auto& entry = OffsetMaps[idx];
+		return record(this, idx, _recordStart + entry.offset, (u32)entry.length);
 	}
 
 	dbc::record getByID(u32 id) const
@@ -303,6 +308,8 @@ public:
 		return getRecord(i);
 	}
 
+	const std::vector<u32>& getIDs() const { return IDs; }
+
 	u32 getNumRecords() const { return nRecords; }
 	u32 getNumActualRecords() const { return nActualRecords; }
 	u32 getNumFields() const { return nFields; }
@@ -310,8 +317,7 @@ public:
 	u32 getStringSize() const { return HasDataOffsetBlock ? 0 : StringSize; }
 	u8* getStringStart() const { return _stringStart; }
 	u16 getFieldSize(int idx) const { return Fields ? Fields[idx].size : 4; }
-	const std::vector<u32>& getIDs() const { return IDs; }
-
+	
 	//for sparse db2
 	s32 getRecordSparseRow(u32 index) const
 	{
@@ -347,6 +353,7 @@ protected:	//WDB5
 	bool	HasDataOffsetBlock;
 	bool	HasRelationshipData;
 	bool	HasIndex;
+	bool	HasCopyData;
 
 	struct SField 
 	{
@@ -369,7 +376,7 @@ protected:	//WDB5
 	SField* Fields;		//[header.field_count]
 	std::vector<SOffsetMapEntry>	OffsetMaps;  //if (flags & 0x01 != 0) [header.max_id - header.min_id + 1];
 	std::vector<u32> IDs;		//if (flags & 0x04 != 0) [header.record_count]
-	std::vector<SCopyTableEntry> CopyTables;		//if (header.refdatasize > 0)
+	//SCopyTableEntry* CopyTables;
 
 protected:	//WDB6
 
@@ -420,6 +427,10 @@ protected:		//WDC2
 	};
 
 	SFieldStorageInfo* FieldStorageInfos;
+
+	bool readFieldValue(u32 recordIndex, u32 fieldIndex, u32 arrayIndex, u32 arraySize, u32& result) const;
+	u32 readBitpackedValue(const SFieldStorageInfo& info, const u8* recordOffset) const;
+	u32 readBitpackedValue2(const SFieldStorageInfo& info, const u8* recordOffset) const;
 };
 
 /*

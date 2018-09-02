@@ -202,6 +202,7 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 	HasDataOffsetBlock = (header.fileflags & WDB5_FLAG_DATAOFFSET) != 0;
 	HasRelationshipData = (header.fileflags & WDB5_FLAG_UNKNOWN) != 0;
 	HasIndex = (header.fileflags & WDB5_FLAG_INDEX) != 0;
+	HasCopyData = header.copydatasize > 0;
 
 	Fields = new SField[nFields];
 	for (u32 i=0; i<nFields; ++i)
@@ -242,10 +243,12 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 		const u32 indexDataStart = file->getPos();
 		_recordStart = new u8[nTotalSize];
 		u32 curOffset = 0;
-		for (const auto& entry : OffsetMaps)
-		{ 	
+		for (auto& entry : OffsetMaps)
+		{
 			file->seek(entry.offset);
 			file->read(&_recordStart[curOffset], entry.length);
+
+			entry.offset = curOffset;
 			curOffset += entry.length;
 		}
 		file->seek(indexDataStart);
@@ -287,6 +290,14 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 				IDs.push_back(val);
 			};
 		}
+
+		for (u32 i = 0; i < nActualRecords; ++i)
+		{
+			SOffsetMapEntry entry;
+			entry.offset = i * RecordSize;
+			entry.length = RecordSize;
+			OffsetMaps.push_back(entry);
+		}
 	}
 
 	//relationship
@@ -297,13 +308,32 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 	}
 
 	//copy table
-	if (header.refdatasize > 0)
+	if (HasCopyData)
 	{
-		ASSERT(header.refdatasize % sizeof(SCopyTableEntry) == 0);
-		//int nCount = header.refdatasize / sizeof(SCopyTableEntry);
-		//CopyTables = new SCopyTableEntry[nCount];
-		//file->read(CopyTables, header.refdatasize);
-		file->seek(header.refdatasize, true);
+		ASSERT(header.copydatasize % sizeof(SCopyTableEntry) == 0);
+		u32 nbEntries = (u32)(header.copydatasize / sizeof(SCopyTableEntry));
+
+		std::vector<SCopyTableEntry> copyTables;
+		copyTables.resize(nbEntries);
+		file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
+
+		IDs.reserve(nActualRecords + nbEntries);
+		OffsetMaps.reserve(nActualRecords + nbEntries);
+
+		std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
+		for (u32 i = 0; i < nActualRecords; ++i)
+		{
+			IdToIndexMap[IDs[i]] = i;
+		}
+
+		for (const auto& entry : copyTables)
+		{
+			IDs.push_back(entry.id_new_row);
+			u32 idx = IdToIndexMap[entry.id_copied_row];
+			OffsetMaps.push_back(OffsetMaps[idx]);
+		}
+
+		nActualRecords += nbEntries;
 	}
 
 	ASSERT(file->getPos() == file->getSize());
@@ -311,7 +341,7 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 	//build map
 	if (!tmp)		//临时文件不写map
 	{
-		for (u32 i=0; i<nRecords; ++i)
+		for (u32 i = 0; i < (u32)IDs.size(); ++i)
 		{
 			u32 id = IDs[i];
 			RecordLookup32[id] = i;
@@ -355,6 +385,7 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 		u32 curPos = file->getPos();
 		file->seek(header._stringsize);
 
+		nActualRecords = 0;
 		u32 nTotalSize = 0;
 		for (u32 i = header.min_id; i <= header.max_id; ++i)
 		{
@@ -367,6 +398,8 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 				IDs.push_back(i);
 				OffsetMaps.push_back(entry);
 				nTotalSize += entry.length;
+
+				++nActualRecords;
 			}
 		}
 
@@ -374,10 +407,12 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 		const u32 indexDataStart = file->getPos();
 		_recordStart = new u8[nTotalSize];
 		u32 curOffset = 0;
-		for (const auto& entry : OffsetMaps)
+		for (auto& entry : OffsetMaps)
 		{
 			file->seek(entry.offset);
 			file->read(&_recordStart[curOffset], entry.length);
+
+			entry.offset = curOffset;
 			curOffset += entry.length;
 		}
 		file->seek(indexDataStart);
@@ -419,6 +454,14 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 				IDs.push_back(val);
 			};
 		}
+
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			SOffsetMapEntry entry;
+			entry.offset = i * RecordSize;
+			entry.length = RecordSize;
+			OffsetMaps.push_back(entry);
+		}
 	}
 
 	//relationship
@@ -429,13 +472,32 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 	}
 
 	//copy table
-	if (header.refdatasize > 0)
+	if (HasCopyData)
 	{
-		ASSERT(header.refdatasize % sizeof(SCopyTableEntry) == 0);
-		//int nCount = header.refdatasize / sizeof(SCopyTableEntry);
-		//CopyTables = new SCopyTableEntry[nCount];
-		//file->read(CopyTables, header.refdatasize);
-		file->seek(header.refdatasize, true);
+		ASSERT(header.copydatasize % sizeof(SCopyTableEntry) == 0);
+		u32 nbEntries = (u32)(header.copydatasize / sizeof(SCopyTableEntry));
+
+		std::vector<SCopyTableEntry> copyTables;
+		copyTables.resize(nbEntries);
+		file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
+
+		IDs.reserve(nActualRecords + nbEntries);
+		OffsetMaps.reserve(nActualRecords + nbEntries);
+
+		std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
+		for (u32 i = 0; i < nActualRecords; ++i)
+		{
+			IdToIndexMap[IDs[i]] = i;
+		}
+
+		for (const auto& entry : copyTables)
+		{
+			IDs.push_back(entry.id_new_row);
+			u32 idx = IdToIndexMap[entry.id_copied_row];
+			OffsetMaps.push_back(OffsetMaps[idx]);
+		}
+
+		nActualRecords += nbEntries;
 	}
 
 	if (header.nonzero_column_table_size > 0)
@@ -530,16 +592,139 @@ void dbc::readWDC2(wowEnvironment* env, IMemFile* file, bool tmp)
 	u32 palletBlockOffset = file->getPos();
 	u32 commonBlockOffset = palletBlockOffset + header.pallet_data_size;
 
-	file->seek(RecordSize * nRecords, true);
-
 	u32 stringSize = HasDataOffsetBlock ? 0 : header._stringsize;
-	u32 IdBlockOffset = file->getPos() + stringSize;
+	u32 IdBlockOffset = file->getPos() + nRecords * RecordSize;
 	u32 copyBlockOffset = IdBlockOffset + sectionHeaders[0].id_list_size;
 	u32 relationshipDataOffset = copyBlockOffset + sectionHeaders[0].copy_table_size;
 
 	if (HasDataOffsetBlock)
 	{
+		file->seek(sectionHeaders[0].offset_map_offset);
 
+		nActualRecords = 0;
+		u32 nTotalSize = 0;
+		for (u32 i = header.min_id; i <= header.max_id; ++i)
+		{
+			SOffsetMapEntry entry;
+			file->read(&entry, sizeof(SOffsetMapEntry));
+
+			if (entry.offset > 0 && entry.length > 0)
+			{
+				IDs.push_back(i);
+				OffsetMaps.push_back(entry);
+				nTotalSize += entry.length;
+
+				++nActualRecords;
+			}
+		}
+
+		//整合recordstart
+		const u32 indexDataStart = file->getPos();
+		_recordStart = new u8[nTotalSize];
+		u32 curOffset = 0;
+		for (auto& entry : OffsetMaps)
+		{
+			file->seek(entry.offset);
+			file->read(&_recordStart[curOffset], entry.length);
+
+			entry.offset = curOffset;
+			curOffset += entry.length;
+		}
+		file->seek(indexDataStart);
+		_stringStart = nullptr;
+	}
+	else
+	{
+		u32 current = file->getPos();
+		_recordStart = new u8[RecordSize * nRecords];
+		_stringStart = new u8[StringSize];
+
+		file->read(_recordStart, RecordSize * nRecords);			//records
+		file->read(_stringStart, StringSize);		//string
+
+		//IDs
+		if (HasIndex)
+		{
+			IDs.resize(nRecords);
+			file->read(IDs.data(), nRecords * sizeof(u32));
+		}
+		else
+		{
+			ASSERT(StringSize == 0);
+
+			const SFieldStorageInfo& info = FieldStorageInfos[header.idindex];
+			const u8* data = file->getPointer();
+
+			for (u32 i = 0; i < nRecords; ++i)
+			{
+				const u8* recordOffset = data + i * RecordSize;
+				switch (info.storage_type)
+				{
+				case FIELD_COMPRESSION::NONE:
+				{
+					u8* val = new u8[info.field_size_bits / 8];
+					memcpy(&val, recordOffset + info.field_offset_bits / 8, info.field_size_bits / 8);
+					IDs.push_back((*reinterpret_cast<u32*>(val)));
+					delete[] val;
+				}
+					break;
+				case FIELD_COMPRESSION::BITPACKED:
+				{
+					u32 id = readBitpackedValue(info, recordOffset);
+					IDs.push_back(id);
+				}
+					break;
+				case FIELD_COMPRESSION::BITPACKED_INDEXED:
+				case FIELD_COMPRESSION::BITPACKED_SIGNED:
+				{
+					u32 id = readBitpackedValue2(info, recordOffset);
+					IDs.push_back(id);
+				}
+					break;
+				case FIELD_COMPRESSION::COMMON_DATA:
+				case FIELD_COMPRESSION::BITPACKED_INDEXED_ARRAY:
+				default:
+					ASSERT(false);
+					break;
+				}
+			}		
+		}
+
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			SOffsetMapEntry entry;
+			entry.offset = i * RecordSize;
+			entry.length = RecordSize;
+			OffsetMaps.push_back(entry);
+		}
+	}
+
+	if (sectionHeaders[0].copy_table_size > 0)
+	{
+		file->seek(copyBlockOffset);
+		u32 nbEntries = (u32)(sectionHeaders[0].copy_table_size / sizeof(SCopyTableEntry));
+
+		std::vector<SCopyTableEntry> copyTables;
+		copyTables.resize(nbEntries);
+		file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
+
+		IDs.reserve(nActualRecords + nbEntries);
+		OffsetMaps.reserve(nActualRecords + nbEntries);
+
+		std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
+		for (u32 i = 0; i < nActualRecords; ++i)
+		{
+			IdToIndexMap[IDs[i]] = i;
+		}
+
+		for (const auto& entry : copyTables)
+		{
+			IDs.push_back(entry.id_new_row);
+			u32 idx = IdToIndexMap[entry.id_copied_row];
+			OffsetMaps.push_back(OffsetMaps[idx]);
+		}
+
+		nActualRecords += nbEntries;
 	}
 
 
@@ -556,6 +741,38 @@ void dbc::readWDC2(wowEnvironment* env, IMemFile* file, bool tmp)
 	}
 
 	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
+}
+
+bool dbc::readFieldValue(u32 recordIndex, u32 fieldIndex, u32 arrayIndex, u32 arraySize, u32& result) const
+{
+	return true;
+}
+
+u32 dbc::readBitpackedValue(const SFieldStorageInfo& info, const u8* recordOffset) const
+{
+	u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
+	u32 offset = info.field_offset_bits / 8;
+	u8* v = new u8[size];
+	memcpy(v, recordOffset + offset, size);
+	u32 result = (*reinterpret_cast<u32*>(v));
+	delete v;
+
+	result = result & ((1ull << info.field_size_bits) - 1);
+	return result;
+}
+
+u32 dbc::readBitpackedValue2(const SFieldStorageInfo& info, const u8* recordOffset) const
+{
+	u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
+	u32 offset = info.field_offset_bits / 8;
+	u8* v = new u8[size];
+	memcpy(v, recordOffset + offset, size);
+	u32 result = (*reinterpret_cast<u32*>(v));
+	delete v;
+
+	result = result >> (info.field_offset_bits & 7);
+	result = result & ((1ull << info.field_size_bits) - 1);
+	return result;
 }
 
 dbc::record charFacialHairDB::getByParams(unsigned int race, unsigned int gender, unsigned int style) const
