@@ -24,7 +24,6 @@ public:
 	virtual wow_m2appearance* getM2Appearance() const { return M2Appearance; }
 	virtual wow_m2FSM* getM2FSM() const { return M2FSM; }
 	virtual wow_m2Move* getM2Move() const { return M2Move; }
-	virtual wow_m2spell* getM2Spell() const { return M2Spell; }
 
 	virtual u32 onFillVertexBuffer(u32 geoset, SVertex_PCT* vertices, u32 vcount) const;
 
@@ -48,9 +47,6 @@ public:
 	virtual s32 getModelCamera() const { return CurrentCamera; }
 	virtual void setM2ModelEquipment(s32 slot, s32 itemid, bool sheath);
 	virtual bool setMountM2SceneNode(IM2SceneNode* m2Node);
-	virtual void setSpellVisualKit(u32 spellvkId);
-	virtual void removeSpellVisualKit( IM2SceneNode* node );
-	virtual void removeAllSpellVisualKits();
 
 	virtual IParticleSystemSceneNode* addParticleSystemSceneNode(ParticleSystem* ps);
 	virtual IRibbonSceneNode* addRibbonEmitterSceneNode(RibbonEmitter* re);
@@ -100,7 +96,6 @@ protected:
 	wow_m2appearance*		M2Appearance;
 	wow_m2FSM*	M2FSM;
 	wow_m2Move* M2Move;
-	wow_m2spell* M2Spell;
 
 	aabbox3df		AnimatedWorldAABB;
 	aabbox3df	WorldBoundingAABox;
@@ -121,8 +116,6 @@ protected:
 
 	typedef std::list<SAttachmentEntry, qzone_allocator<SAttachmentEntry> >	T_AttachmentList;
 	T_AttachmentList		AttachmentList;
-
-	T_AttachmentList		SpellEffectList;
 
 	typedef std::list<SFadeEntry, qzone_allocator<SFadeEntry> > T_SceneNodeList;
 	T_SceneNodeList		FadeList;

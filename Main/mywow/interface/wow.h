@@ -4,6 +4,13 @@
 #include "wow_def.h"
 #include "wow_dbc.h"
 #include "wow_dbc70.h"
+
+#if WOW_VER >= 70
+using dbtable = dbc70;
+#else
+using dbtable = dbc;
+#endif
+
 #include "wow_database.h"
 #include "wowEnvironment.h"
 #include "wow_animation.h"
@@ -20,4 +27,3 @@
 #include "wow_m2FSM.h"
 #include "wow_m2Move.h"
 #include "wow_m2State.h"
-#include "wow_m2spell.h"

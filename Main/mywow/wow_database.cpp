@@ -187,7 +187,7 @@ void wowDatabase::buildStartOutfitClass()
 
 	for (u32 i=0; i<numtotal; ++i)
 	{
-		dbc::record r = StartOutFitDB->getRecord(i);
+		auto r = StartOutFitDB->getRecord(i);
 		if (r.isValid())
 		{
 #if WOW_VER >= 70
@@ -199,7 +199,7 @@ void wowDatabase::buildStartOutfitClass()
 			u8 id = r.getByte(startOutfitDB::Class);
 			u8 gender =	r.getByte(startOutfitDB::Gender);
 #endif
-			dbc::record rec = CharClassesDB->getByID(id);
+			auto rec = CharClassesDB->getByID(id);
 			if (rec.isValid())
 			{
 				SStartOutfitEntry entry;
@@ -222,7 +222,7 @@ void wowDatabase::buildMaps()
 	u32 numMaps = MapDB->getNumRecords();
 	for (u32 i=0; i<numMaps; ++i)
 	{
-		dbc::record r = MapDB->getRecord(i);
+		auto r = MapDB->getRecord(i);
 
 		SMapRecord m;
 		m.id = r.getID();
@@ -236,7 +236,7 @@ void wowDatabase::buildMaps()
 	u32 numAreas = AreaTableDB->getNumRecords();
 	for (u32 i=0; i<numAreas; ++i)
 	{
-		dbc::record r = AreaTableDB->getRecord(i);
+		auto r = AreaTableDB->getRecord(i);
 
 		SArea area;
 		area.id = r.getID();
@@ -307,7 +307,7 @@ bool wowDatabase::getRaceGender( const c8* filename, u32& race, u32& gender, boo
 	Q_strncpy(raceName, DEFAULT_SIZE, n, len);
 	raceName[len] = '\0';
 
-	dbc::record r = CharRacesDB->getByName(raceName);
+	auto r = CharRacesDB->getByName(raceName);
 	if (!r.isValid())
 		return false;
 	race = r.getID();
@@ -317,7 +317,7 @@ bool wowDatabase::getRaceGender( const c8* filename, u32& race, u32& gender, boo
 
 bool wowDatabase::getRaceId(const c8* raceName, u32& race)
 {
-	dbc::record r = CharRacesDB->getByName(raceName);
+	auto r = CharRacesDB->getByName(raceName);
 	if (!r.isValid())
 		return false;
 	race = r.getID();
@@ -326,7 +326,7 @@ bool wowDatabase::getRaceId(const c8* raceName, u32& race)
 
 const c8* wowDatabase::getRaceName( u32 race )
 {
-	dbc::record r = CharRacesDB->getByID(race);
+	auto r = CharRacesDB->getByID(race);
 	if (!r.isValid())
 		return "";
 	return r.getString(charRacesDB::Name);
@@ -334,7 +334,7 @@ const c8* wowDatabase::getRaceName( u32 race )
 
 bool wowDatabase::getCharacterPath( const c8* raceName, bool female, bool isHD, c8* path, u32 size )
 {
-	dbc::record r = CharRacesDB->getByName(raceName);
+	auto r = CharRacesDB->getByName(raceName);
 	if (!r.isValid())
 		return false;
 
@@ -371,7 +371,7 @@ bool wowDatabase::getCharacterPath( const c8* raceName, bool female, bool isHD, 
 
 s32 wowDatabase::getNpcModelId( s32 npcid )
 {
-	dbc::record rSkin = CreatureDisplayInfoDB->getByID(npcid);
+	auto rSkin = CreatureDisplayInfoDB->getByID(npcid);
 	if (!rSkin.isValid())
 		return -1;
 
@@ -390,7 +390,7 @@ bool wowDatabase::getNpcPath(s32 npcid, bool isHD, c8* path, u32 size)
 	if (-1 == modelId)
 		return false;
 
-	dbc::record r = CreatureModelDB->getByID((u32)modelId);
+	auto r = CreatureModelDB->getByID((u32)modelId);
 	if (!r.isValid())
 		return false;
 
@@ -439,7 +439,7 @@ bool wowDatabase::getNpcPath(s32 npcid, bool isHD, c8* path, u32 size)
 
 const c8* wowDatabase::getAnimationName( u32 id )
 {
-	dbc::record r = AnimDB->getByID(id);
+	auto r = AnimDB->getByID(id);
 	if (r.isValid())
 	{
 		return r.getString(animDB::Name);
@@ -491,7 +491,7 @@ u32 wowDatabase::getMaxFacialHairStyle( u32 race, bool female )
 
 void wowDatabase::getSubClassName( s32 id, s32 subid, c16* outname, u32 size )
 {
-	dbc::record  r = ItemSubClassDB->getById(id, subid);
+	auto  r = ItemSubClassDB->getById(id, subid);
 	if (r.isValid() && id>0)
 	{
 		const c8* n = r.getString(itemSubClassDB::NameV400);
@@ -505,7 +505,7 @@ void wowDatabase::getSubClassName( s32 id, s32 subid, c16* outname, u32 size )
 
 void wowDatabase::getNpcTypeName(s32 id, c16* outname, u32 size)
 {
-	dbc::record r = CreatureTypeDB->getByID(id);
+	auto r = CreatureTypeDB->getByID(id);
 	if (r.isValid())
 	{
 		const c8* n = r.getString(creatureTypeDB::Name);
@@ -520,7 +520,7 @@ void wowDatabase::getNpcTypeName(s32 id, c16* outname, u32 size)
 
 const c8* wowDatabase::getClassShortName( u32 classId )
 {
-	dbc::record r = CharClassesDB->getByID(classId);
+	auto r = CharClassesDB->getByID(classId);
 	if (!r.isValid())
 		return "";
 	return r.getString(charClassesDB::ShortName);
@@ -530,7 +530,7 @@ bool wowDatabase::getClassInfo( const c8* shortname, c16* classname, u32 size, u
 {
 	for (u32 i=0; i<CharClassesDB->getNumActualRecords(); ++i)
 	{
-		dbc::record r = CharClassesDB->getRecord(i);
+		auto r = CharClassesDB->getRecord(i);
 		if(!r.isValid())
 			continue;
 
@@ -549,7 +549,7 @@ bool wowDatabase::getClassInfo( const c8* shortname, c16* classname, u32 size, u
 
 bool wowDatabase::getSet( u32 index, s32& setid, c16* outname, u32 size )
 {
-	dbc::record r = ItemSetDB->getRecord(index);
+	auto r = ItemSetDB->getRecord(index);
 	if (!r.isValid())
 		return false;
 
@@ -563,7 +563,7 @@ bool wowDatabase::getSet( u32 index, s32& setid, c16* outname, u32 size )
 
 bool wowDatabase::getItemVisualPath( s32 visualId, c8* path, u32 size )
 {
-	dbc::record rEff = ItemVisualEffectDB->getByID(visualId);
+	auto rEff = ItemVisualEffectDB->getByID(visualId);
 	if (!rEff.isValid())
 		return false;
 
@@ -587,7 +587,7 @@ bool wowDatabase::getItemVisualPath( s32 visualId, c8* path, u32 size )
 
 bool wowDatabase::getEffectVisualPath( s32 visualId, c8* path, u32 size )
 {
-	dbc::record rEff = SpellVisualEffectNameDB->getByID(visualId);
+	auto rEff = SpellVisualEffectNameDB->getByID(visualId);
 	if (!rEff.isValid())
 		return false;
 
@@ -675,7 +675,7 @@ const SRidable* wowDatabase::getRidable( u32 idx ) const
 s32 wowDatabase::getItemDisplayId( s32 itemid ) const
 {
 #if WOW_VER >= 60
-	dbc::record r = getItemModifiedAppearanceDB()->getByItemID(itemid);
+	auto r = getItemModifiedAppearanceDB()->getByItemID(itemid);
 	if (!r.isValid())
 		return -1;
 
@@ -687,7 +687,7 @@ s32 wowDatabase::getItemDisplayId( s32 itemid ) const
 	return r.getInt(itemAppearanceDB::ItemDisplay);
 
 #else
-	dbc::record r = g_Engine->getWowDatabase()->getItemDB()->getByID(itemid);
+	auto r = g_Engine->getWowDatabase()->getItemDB()->getByID(itemid);
 	if (!r.isValid())
 		return -1;
 	return r.getInt(itemDB::ItemDisplayInfo);
@@ -715,7 +715,7 @@ void wowDatabase::getFilePath( s32 fileId, string256& path ) const
 	path.normalize();
 	path.make_lower();
 #elif WOW_VER >= 60
-	dbc::record r = getFileDataDB()->getByID(fileId);
+	auto r = getFileDataDB()->getByID(fileId);
 	if (!r.isValid())
 	{
 		path.clear();
@@ -753,7 +753,7 @@ void wowDatabase::getFilePath( s32 fileId, c8* path, u32 size ) const
 	normalizeFileName(path);
 	Q_strlwr(path);
 #elif WOW_VER >= 60
-	dbc::record r = getFileDataDB()->getByID(fileId);
+	auto r = getFileDataDB()->getByID(fileId);
 	if (!r.isValid())
 	{
 		memset(path, 0, size);
@@ -774,7 +774,7 @@ void wowDatabase::getFilePath( s32 fileId, c8* path, u32 size ) const
 void wowDatabase::getTextureFilePath( s32 texId, string256& path ) const
 {
 #if WOW_VER >= 70
-	dbc::record r = getTextureFileDataDB()->getByTextureId(texId);
+	auto r = getTextureFileDataDB()->getByTextureId(texId);
 	if (!r.isValid())
 	{
 		path.clear();
@@ -783,7 +783,7 @@ void wowDatabase::getTextureFilePath( s32 texId, string256& path ) const
 	s32 fileId = r.getByte3(textureFileDataDB::Path);
 	getFilePath(fileId, path);
 #elif WOW_VER >= 60
-	dbc::record r = getTextureFileDataDB()->getByTextureId(texId);
+	auto r = getTextureFileDataDB()->getByTextureId(texId);
 	if (!r.isValid())
 	{
 		path.clear();
@@ -800,7 +800,7 @@ void wowDatabase::getTextureFilePath( s32 texId, string256& path ) const
 void wowDatabase::getTextureFilePath( s32 texId, c8* path, u32 size ) const
 {
 #if WOW_VER >= 70
-	dbc::record r = getTextureFileDataDB()->getByTextureId(texId);
+	auto r = getTextureFileDataDB()->getByTextureId(texId);
 	if (!r.isValid())
 	{
 		memset(path, 0, size);
@@ -809,7 +809,7 @@ void wowDatabase::getTextureFilePath( s32 texId, c8* path, u32 size ) const
 	s32 fileId = r.getByte3(textureFileDataDB::Path);
 	getFilePath(fileId, path, size);
 #elif WOW_VER >= 60 
-	dbc::record r = getTextureFileDataDB()->getByTextureId(texId);
+	auto r = getTextureFileDataDB()->getByTextureId(texId);
 	if (!r.isValid())
 	{
 		memset(path, 0, size);
@@ -826,7 +826,7 @@ void wowDatabase::getTextureFilePath( s32 texId, c8* path, u32 size ) const
 void wowDatabase::getModelFilePath(s32 modelId, string256& path) const
 {
 #if WOW_VER >= 70
-	dbc::record r = getModelFileDataDB()->getByModelId(modelId);
+	auto r = getModelFileDataDB()->getByModelId(modelId);
 	if (!r.isValid())
 	{
 		path.clear();
@@ -843,7 +843,7 @@ void wowDatabase::getModelFilePath(s32 modelId, string256& path) const
 void wowDatabase::getModelFilePath(s32 modelId, c8* path, u32 size) const
 {
 #if WOW_VER >= 70
-	dbc::record r = getModelFileDataDB()->getByModelId(modelId);
+	auto r = getModelFileDataDB()->getByModelId(modelId);
 	if (!r.isValid())
 	{
 		memset(path, 0, size);
@@ -874,7 +874,7 @@ bool wowDatabase::isRaceHasHD( u32 race )
 bool wowDatabase::getItemPath(s32 itemid, c8* modelpath, u32 modelSize, c8* texturepath, u32 texSize)
 {
 	u32 displayid = getItemDisplayId(itemid);
-	dbc::record display = getItemDisplayDB()->getByID(displayid);
+	auto display = getItemDisplayDB()->getByID(displayid);
 	if (!display.isValid())
 		return false;
 

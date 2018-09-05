@@ -114,6 +114,12 @@ public:
 	dbc70(wowEnvironment* env, const c8* filename, bool tmp = false);
 	virtual ~dbc70();
 
+protected:
+	void readWDB5(wowEnvironment* env, IMemFile* file, bool tmp);
+	void readWDB6(wowEnvironment* env, IMemFile* file, bool tmp);
+	void readWDC1(wowEnvironment* env, IMemFile* file, bool tmp);
+	void readWDC2(wowEnvironment* env, IMemFile* file, bool tmp);
+
 public:
 	class record
 	{

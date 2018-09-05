@@ -8,7 +8,6 @@ class wow_m2instance;
 class wow_m2appearance;
 class wow_m2FSM;
 class wow_m2Move;
-class wow_m2spell;
 class ITexture;
 class IParticleSystemSceneNode;
 class IRibbonSceneNode;
@@ -31,7 +30,6 @@ public:
 	virtual wow_m2appearance* getM2Appearance() const = 0;
 	virtual wow_m2FSM* getM2FSM() const = 0;
 	virtual wow_m2Move* getM2Move() const = 0;
-	virtual wow_m2spell* getM2Spell() const = 0;
 
 	virtual u32 onFillVertexBuffer(u32 geoset, SVertex_PCT* vertices, u32 vcount) const = 0;
 
@@ -57,9 +55,6 @@ public:
 
 	virtual void setM2ModelEquipment(s32 slot, s32 itemid, bool sheath) = 0;
 	virtual bool setMountM2SceneNode(IM2SceneNode* m2Node) = 0;
-	virtual void setSpellVisualKit(u32 spellvkId) = 0;
-	virtual void removeSpellVisualKit( IM2SceneNode* node ) = 0;
-	virtual void removeAllSpellVisualKits() = 0;
 
 	virtual void setModelAlpha(bool enable, f32 val) = 0;
 	virtual void setModelColor(bool enable, SColor color) = 0;

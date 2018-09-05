@@ -184,9 +184,6 @@ public:
 	//head decal
 	void setHeadDecal(SAttachmentEntry* entry);
 
-	//spellvisualkit
-	void setSpellVisualKit(u32 spellvkId, SSpellVKInfo* svkInfo);
-
 	//startoutfit
 	void dressStartOutfit(s32 startid);
 

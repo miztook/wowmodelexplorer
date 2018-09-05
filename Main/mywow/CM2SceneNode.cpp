@@ -8,7 +8,6 @@
 #include "wow_m2appearance.h"
 #include "wow_m2FSM.h"
 #include "wow_m2Move.h"
-#include "wow_m2spell.h"
 #include "CSceneRenderServices.h"
 #include "CFileM2.h"
 
@@ -33,13 +32,11 @@ CM2SceneNode::CM2SceneNode( IFileM2* mesh, ISceneNode* parent, bool npc )
 	{
 		M2FSM = new wow_m2FSM(this);
 		M2Move = new wow_m2Move(this);
-		M2Spell = new wow_m2spell(this);
 	}
 	else
 	{
 		M2FSM = nullptr;
 		M2Move = nullptr;
-		M2Spell = nullptr;
 	}
 
 	for (u32 i=0; i<Mesh->NumParticleSystems; ++i)
@@ -63,9 +60,7 @@ CM2SceneNode::~CM2SceneNode()
 {
 	removeMountM2SceneNode();
 	removeAllM2Attachments();
-	removeAllSpellVisualKits();
 
-	delete M2Spell;
 	delete M2Move;
 	delete M2FSM;
 	delete M2Appearance;
@@ -139,9 +134,6 @@ void CM2SceneNode::tickInvisible( u32 timeSinceStart, u32 timeSinceLastFrame )
 	// fsm
 	if (M2FSM)
 		M2FSM->tick(timeSinceStart, timeSinceLastFrame);
-
-	if (M2Spell)
-		M2Spell->tick(timeSinceStart, timeSinceLastFrame);
 }
 
 void CM2SceneNode::tickVisible( u32 timeSinceStart, u32 timeSinceLastFrame )
@@ -189,9 +181,6 @@ void CM2SceneNode::tickVisible( u32 timeSinceStart, u32 timeSinceLastFrame )
 	// fsm
 	if (M2FSM)
 		M2FSM->tick(timeSinceStart, timeSinceLastFrame);
-
-	if (M2Spell)
-		M2Spell->tick(timeSinceStart, timeSinceLastFrame);
 
 	u32 lastingFrame = (u32)(timeSinceStart * Animation.getAnimationSpeed());
 	lastingFrame %= 38400;
@@ -268,12 +257,6 @@ void CM2SceneNode::tickVisible( u32 timeSinceStart, u32 timeSinceLastFrame )
 	{
 		SAttachmentEntry* entry = &(*itr);
 		updateAttachmentEntry(entry);
-	}
-
-	for (T_AttachmentList::iterator itr = SpellEffectList.begin(); itr != SpellEffectList.end(); ++itr)
-	{
-		SAttachmentEntry* entry = &(*itr);
-		updateSpellEffectEntry(entry);
 	}
 }
 
@@ -629,42 +612,6 @@ bool CM2SceneNode::setMountM2SceneNode( IM2SceneNode* m2Node )
 	return ret;
 }
 
-void CM2SceneNode::setSpellVisualKit(u32 spellvkId)
-{
-	removeAllSpellVisualKits();
-	if (spellvkId == 0)		
-		return;
-
-	SSpellVKInfo vkinfo;
-	M2Instance->setSpellVisualKit(spellvkId, &vkinfo);
-
-	for (u32 i=0; i<SVK_COUNT; ++i)
-	{
-		SAttachmentEntry* entry = &vkinfo.attachmentEntries[i];
-		SAttachmentInfo* info = &vkinfo.attachmentInfos[i];
-
-		IM2SceneNode* node = nullptr;
-
-		if (entry->attachIndex != -1)
-		{
-			M2Instance->UseAttachments[entry->attachIndex] += 1;
-
-			IFileM2* m2 = g_Engine->getResourceLoader()->loadM2(info->modelpath);
-			if (m2)
-			{
-				node = g_Engine->getSceneManager()->addM2SceneNode(m2, nullptr, false);
-				wow_m2instance* c = node->getM2Instance();
-				c->buildVisibleGeosets();
-				entry->node = node;
-				SpellEffectList.emplace_back(*entry);
-
-				updateSpellEffectEntry(entry);	
-			}
-		}
-		M2Spell->DynSpell.nodes[i] = node;
-	}
-}
-
 void CM2SceneNode::removeM2ModelEquipment( s32 slot )
 {
 	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end();)
@@ -730,54 +677,6 @@ bool CM2SceneNode::removeMountM2SceneNode()
 		}
 	}
 	return false;
-}
-
-void CM2SceneNode::removeSpellVisualKit(IM2SceneNode* node)
-{
-	for (T_AttachmentList::iterator itr = SpellEffectList.begin(); itr != SpellEffectList.end(); ++itr)
-	{
-		SAttachmentEntry* entry = &(*itr);
-
-		if (entry->node == node)
-		{		
-			M2Instance->UseAttachments[entry->attachIndex] -= 1;
-
-			u32 idx = (u32)(entry->slot - CS_EFFECT_HEAD);
-			M2Spell->DynSpell.nodes[idx] = nullptr;
-
-			IM2SceneNode* n = reinterpret_cast<IM2SceneNode*>(entry->node);
-			g_Engine->getSceneManager()->removeSceneNode(n, true);
-
-			SpellEffectList.erase(itr);
-
-			break;
-		}
-	}
-}
-
-void CM2SceneNode::removeAllSpellVisualKits()
-{
-	for (T_AttachmentList::iterator itr = SpellEffectList.begin(); itr != SpellEffectList.end();)
-	{
-		SAttachmentEntry* entry = &(*itr);
-
-		if (entry->slot >= CS_EFFECT_HEAD && entry->slot <= CS_EFFECT_AOE)
-		{		
-			M2Instance->UseAttachments[entry->attachIndex] -= 1;
-
-			u32 idx = (u32)(entry->slot - CS_EFFECT_HEAD);
-			M2Spell->DynSpell.nodes[idx] = nullptr;
-
-			IM2SceneNode* n = reinterpret_cast<IM2SceneNode*>(entry->node);
-			g_Engine->getSceneManager()->removeSceneNode(n, true);
-
-			itr = SpellEffectList.erase(itr);
-		}
-		else
-		{
-			++itr;
-		}
-	}
 }
 
 void CM2SceneNode::removeAllM2Attachments()
@@ -927,14 +826,6 @@ bool CM2SceneNode::setModelCamera( s32 index )
 			node->CurrentCamera = -1;
 		}
 
-		for (T_AttachmentList::iterator itr = SpellEffectList.begin(); itr != SpellEffectList.end(); ++itr)
-		{
-			SAttachmentEntry* entry = &(*itr);
-
-			CM2SceneNode* node = reinterpret_cast<CM2SceneNode*>(entry->node);
-			node->CurrentCamera = -1;
-		}
-
 		for (T_ParticleSystemNodes::const_iterator i = ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 		{
 			IParticleSystemSceneNode* node = (IParticleSystemSceneNode*)(*i);
@@ -961,17 +852,6 @@ bool CM2SceneNode::setModelCamera( s32 index )
 
 	//attachments
 	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
-	{
-		SAttachmentEntry* entry = &(*itr);
-
-		CM2SceneNode* node = reinterpret_cast<CM2SceneNode*>(entry->node);
-		node->CurrentCamera = index;
-		node->CurrentProjection = CurrentProjection;
-		node->CurrentView = CurrentView;
-	}
-
-	//spelleffects
-	for (T_AttachmentList::iterator itr = SpellEffectList.begin(); itr != SpellEffectList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 
@@ -1071,14 +951,6 @@ void CM2SceneNode::setModelAlpha( bool enable, f32 val )
 		}
 	}
 
-	for (T_AttachmentList::iterator itr = SpellEffectList.begin(); itr != SpellEffectList.end(); ++itr)
-	{
-		SAttachmentEntry* entry = &(*itr);
-
-		CM2SceneNode* node = reinterpret_cast<CM2SceneNode*>(entry->node);
-		node->setModelAlpha(enable, v);
-	}
-
 	for (T_ParticleSystemNodes::const_iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 	{
 		(*i)->setWholeAlpha(enable,v);
@@ -1091,14 +963,6 @@ void CM2SceneNode::setModelColor( bool enable, SColor color )
 	M2Instance->ModelColor = color;
 
 	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
-	{
-		SAttachmentEntry* entry = &(*itr);
-
-		CM2SceneNode* node = reinterpret_cast<CM2SceneNode*>(entry->node);
-		node->setModelColor(enable, color);
-	}
-
-	for (T_AttachmentList::iterator itr = SpellEffectList.begin(); itr != SpellEffectList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 

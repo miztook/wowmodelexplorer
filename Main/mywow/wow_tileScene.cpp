@@ -163,7 +163,7 @@ void wow_tileScene::update( )
 	{
 		if (CamChunk)
 		{
-			dbc::record r = g_Engine->getWowDatabase()->getAreaTableDB()->getByID(CamChunk->areaID);
+			auto r = g_Engine->getWowDatabase()->getAreaTableDB()->getByID(CamChunk->areaID);
 			if (r.isValid())
 				Q_sprintf(g_Engine->getSceneManager()->AreaName, MAX_TEXT_LENGTH, "%s %s", FileWDT->getMapName(), r.getString(areaTableDB::Name));
 			else

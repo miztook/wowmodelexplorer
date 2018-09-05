@@ -340,7 +340,7 @@ void wow_wdtScene::update()
 	{
 		if (CamChunk)
 		{
-			dbc::record r = g_Engine->getWowDatabase()->getAreaTableDB()->getByID(CamChunk->areaID);
+			auto r = g_Engine->getWowDatabase()->getAreaTableDB()->getByID(CamChunk->areaID);
 			if (r.isValid())
 				Q_sprintf(g_Engine->getSceneManager()->AreaName, MAX_TEXT_LENGTH, "%s (%d, %d): %s", FileWDT->getMapName(), Row, Col, r.getString(areaTableDB::Name));
 			else

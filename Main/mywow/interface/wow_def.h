@@ -44,12 +44,6 @@ struct SAttachmentEntry
 	s16		attachIndex;
 };
 
-struct SSpellVKInfo
-{
-	SAttachmentEntry	attachmentEntries[SVK_COUNT];
-	SAttachmentInfo		attachmentInfos[SVK_COUNT];
-};
-
 //物品和npc需要建两个单独的内存数据
 struct SItemRecord
 {

@@ -913,7 +913,7 @@ bool wow_m2instance::slotHasModel( s32 slot ) const
 
 bool wow_m2instance::updateNpc(s32 npcid)
 {
-	dbc::record rSkin = g_Engine->getWowDatabase()->getCreatureDisplayInfoDB()->getByID(npcid);
+	auto rSkin = g_Engine->getWowDatabase()->getCreatureDisplayInfoDB()->getByID(npcid);
 	if (!rSkin.isValid())
 		return false;
 
@@ -922,7 +922,7 @@ bool wow_m2instance::updateNpc(s32 npcid)
 
 	if (!CharacterInfo)
 	{
-		dbc::record r = g_Engine->getWowDatabase()->getCreatureModelDB()->getByID(modelId);
+		auto r = g_Engine->getWowDatabase()->getCreatureModelDB()->getByID(modelId);
 		if (!r.isValid())
 			return false;
 
@@ -1005,7 +1005,7 @@ bool wow_m2instance::updateNpc(s32 npcid)
 	}
 	else			//character
 	{
-		dbc::record r = g_Engine->getWowDatabase()->getCreatureDisplayInfoExtraDB()->getByID(npcId);
+		auto r = g_Engine->getWowDatabase()->getCreatureDisplayInfoExtraDB()->getByID(npcId);
 
 		ASSERT(r.isValid());
 		if (!r.isValid())
@@ -1023,7 +1023,7 @@ bool wow_m2instance::updateNpc(s32 npcid)
 		const npcModelItemSlotDisplayInfoDB* npcItemDB = g_Engine->getWowDatabase()->getNpcModelItemSlotDisplayInfoDB();
 		for(u32 i= 0; i < npcItemDB->getNumRecords(); ++i)
 		{
-			dbc::record rItem = npcItemDB->getRecord(i);
+			auto rItem = npcItemDB->getRecord(i);
 			if(npcId != rItem.getUInt(npcModelItemSlotDisplayInfoDB::NPCExtraID))
 				continue;
 
@@ -1097,7 +1097,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 
 	//base
 	{
-		dbc::record r = charSection->getByParams(Race, Gender, (isHD ? charSectionsDB::SkinTypeHD : charSectionsDB::SkinType), 0, SkinColor);
+		auto r = charSection->getByParams(Race, Gender, (isHD ? charSectionsDB::SkinTypeHD : charSectionsDB::SkinType), 0, SkinColor);
 		if(!r.isValid())
 			r = charSection->getByParams(Race, Gender, (isHD ? charSectionsDB::SkinTypeHD : charSectionsDB::SkinType), 0, 0);
 		if (r.isValid())
@@ -1128,7 +1128,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 
 	//underwear
 	{
-		dbc::record r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::UnderwearTypeHD : charSectionsDB::UnderwearType), 0, SkinColor);
+		auto r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::UnderwearTypeHD : charSectionsDB::UnderwearType), 0, SkinColor);
 		if(!r.isValid())
 			r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::UnderwearTypeHD : charSectionsDB::UnderwearType), 0, 0);
 		if (r.isValid())
@@ -1153,7 +1153,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 
 	//face
 	{
-		dbc::record r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::FaceTypeHD : charSectionsDB::FaceType), FaceType, SkinColor);
+		auto r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::FaceTypeHD : charSectionsDB::FaceType), FaceType, SkinColor);
 		if (!r.isValid())
 			r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::FaceTypeHD : charSectionsDB::FaceType), FaceType, 0);
 		if (!r.isValid())
@@ -1181,7 +1181,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 	//facial hair
 	{
 		//texture
-		dbc::record r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::FacialHairTypeHD : charSectionsDB::FacialHairType), FacialHair, HairColor);
+		auto r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::FacialHairTypeHD : charSectionsDB::FacialHairType), FacialHair, HairColor);
 		if (!r.isValid())
 			r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::FacialHairTypeHD : charSectionsDB::FacialHairType), FacialHair, 0);
 		if (!r.isValid())
@@ -1208,7 +1208,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 
 	//hair texture
 	{
-		dbc::record r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::HairTypeHD : charSectionsDB::HairType), HairStyle, HairColor);
+		auto r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::HairTypeHD : charSectionsDB::HairType), HairStyle, HairColor);
 		if (!r.isValid())
 			r = g_Engine->getWowDatabase()->getCharSectionDB()->getByParams(Race, Gender, (isHD ? charSectionsDB::HairTypeHD : charSectionsDB::HairType), HairStyle, 0);
 		if (!r.isValid())
@@ -1265,7 +1265,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 
 	if (Equipments[CS_CHEST] != 0)
 	{
-		dbc::record r = g_Engine->getWowDatabase()->getItemDB()->getByID(Equipments[CS_CHEST]);
+		auto r = g_Engine->getWowDatabase()->getItemDB()->getByID(Equipments[CS_CHEST]);
 		if (r.isValid() &&  r.getInt(itemDB::InventorySlot) == IT_ROBE)
 		{
 			// 			if (r.getUInt(itemDisplayDB::RobeGeosetFlags) == 1)
@@ -1275,7 +1275,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 
 	if (Equipments[CS_PANTS] != 0)
 	{
-		dbc::record r = g_Engine->getWowDatabase()->getItemDB()->getByID(Equipments[CS_PANTS]);
+		auto r = g_Engine->getWowDatabase()->getItemDB()->getByID(Equipments[CS_PANTS]);
 		if (r.isValid() &&  r.getInt(itemDB::InventorySlot) == IT_PANTS)
 		{
 			if (r.getUInt(itemDisplayDB::GeosetGroup + 2) == 1)
@@ -1321,7 +1321,7 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 	
 	if (!npc)
 	{
-		dbc::record r = database->getItemDB()->getByID(itemnum);
+		auto r = database->getItemDB()->getByID(itemnum);
 		ASSERT(r.isValid());
 		if(!r.isValid())
 			return;
@@ -1338,7 +1338,7 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 #if WOW_VER >= 70
 	const itemDisplayInfoMaterialResDB* itemDisplayInfoResDB = database->getItemDisplayInfoMaterialResDB();	
 #else
-	dbc::record r = database->getItemDisplayDB()->getByID(itemID);
+	auto r = database->getItemDisplayDB()->getByID(itemID);
 	ASSERT(r.isValid());
 	if (!r.isValid())
 		return;
@@ -1346,7 +1346,7 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 
 	if (slot == CS_CHEST || slot == CS_SHIRT)
 	{
-		dbc::record r = database->getItemDisplayDB()->getByID(itemID);
+		auto r = database->getItemDisplayDB()->getByID(itemID);
 		if(r.isValid())
 			Geosets[CG_WRISTBANDS] = 1 + r.getUInt(itemDisplayDB::GeosetGroup + 0);
 
@@ -1445,7 +1445,7 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 	}
 	else if (slot == CS_PANTS)
 	{
-		dbc::record r = database->getItemDisplayDB()->getByID(itemID);
+		auto r = database->getItemDisplayDB()->getByID(itemID);
 		if(r.isValid())
 		{
 			Geosets[CG_PANTS2] = 1 + r.getUInt(itemDisplayDB::GeosetGroup + 0);
@@ -1480,7 +1480,7 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 	}
 	else if (slot == CS_GLOVES)
 	{
-		dbc::record r = database->getItemDisplayDB()->getByID(itemID);
+		auto r = database->getItemDisplayDB()->getByID(itemID);
 		if(r.isValid())
 			Geosets[CG_GLOVES] = 1 + r.getUInt(itemDisplayDB::GeosetGroup + 0);
 
@@ -1517,7 +1517,7 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 	}
 	else if (slot == CS_BOOTS)
 	{
-		dbc::record r = database->getItemDisplayDB()->getByID(itemID);
+		auto r = database->getItemDisplayDB()->getByID(itemID);
 		if(r.isValid())
  			Geosets[CG_BOOTS] = 1 + r.getUInt(itemDisplayDB::GeosetGroup + 0);
  
@@ -1582,7 +1582,7 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 	{	
 #if WOW_VER >= 70
 		c8 rt[256];
-		dbc::record r = database->getItemDisplayDB()->getByID(itemID);
+		auto r = database->getItemDisplayDB()->getByID(itemID);
 		if(r.isValid())
 			g_Engine->getWowDatabase()->getFilePath(r.getByte3(itemDisplayDB::Skin), rt, 256);
 		else
@@ -1624,7 +1624,7 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 
 	if (Geosets[CG_TROUSERS] == 1)
 	{
-		dbc::record r = database->getItemDisplayDB()->getByID(itemID);
+		auto r = database->getItemDisplayDB()->getByID(itemID);
 		if(r.isValid())
 			Geosets[CG_TROUSERS] = 1 + r.getUInt(itemDisplayDB::GeosetGroup + 2);
 	}
@@ -1690,7 +1690,7 @@ void wow_m2instance::buildVisibleGeosets()
 
 	//hair facial visbility
 	{
-		dbc::record r = g_Engine->getWowDatabase()->getCharFacialHairDB()->getByParams( Race, Gender, CharacterInfo->FacialHair );
+		auto r = g_Engine->getWowDatabase()->getCharFacialHairDB()->getByParams( Race, Gender, CharacterInfo->FacialHair );
 		if (!r.isValid())
 			r = g_Engine->getWowDatabase()->getCharFacialHairDB()->getByParams( Race, Gender, 0 );
 		if (r.isValid())
@@ -1706,7 +1706,7 @@ void wow_m2instance::buildVisibleGeosets()
 	memset(geoShow, 0, sizeof(bool) * CurrentSkin->NumGeosets);
 
 	const charHairGeosetsDB* hairGeosetDb = g_Engine->getWowDatabase()->getCharHairGeosetDB();
-	dbc::record rh = hairGeosetDb->getByParams(Race, Gender, CharacterInfo->HairStyle);
+	auto rh = hairGeosetDb->getByParams(Race, Gender, CharacterInfo->HairStyle);
 	if (rh.isValid())
 	{
 		u32 id = rh.getUInt(charHairGeosetsDB::Geoset);
@@ -1945,7 +1945,7 @@ bool wow_m2instance::getItemInfo( s32 itemid, bool npc, SItemInfo& itemInfo ) co
 	itemInfo.itemType = 0;
 	itemInfo.sheathtype = 0;
 
-	dbc::record r = g_Engine->getWowDatabase()->getItemDB()->getByID(itemid);
+	auto r = g_Engine->getWowDatabase()->getItemDB()->getByID(itemid);
 	if (!r.isValid())
 		return false;
 
@@ -1993,7 +1993,7 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 		break;
 	}
 
-	dbc::record display = g_Engine->getWowDatabase()->getItemDisplayDB()->getByID(itemInfo.id);
+	auto display = g_Engine->getWowDatabase()->getItemDisplayDB()->getByID(itemInfo.id);
 	if (!display.isValid())
 		return;
 
@@ -2011,7 +2011,7 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 
 		u32 hair = 0;
 
-		dbc::record helmet = dbc::record::EMPTY();
+		auto helmet = dbc::record::EMPTY();
 		if (Gender == 0)
 		{
 			u32 vis1 = display.getUInt(itemDisplayDB::GeosetVisID + 0);
@@ -2135,7 +2135,7 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 			{
 				modelPath.subString(0, modelPath.length()-4, headPath);
 				headPath.append("_");
-				dbc::record race = g_Engine->getWowDatabase()->getCharRacesDB()->getByID(Race);
+				auto race = g_Engine->getWowDatabase()->getCharRacesDB()->getByID(Race);
 				ASSERT(race.isValid());
 
 				headPath.append(race.getString(charRacesDB::ShortName));
@@ -2233,111 +2233,6 @@ void wow_m2instance::setHeadDecal( SAttachmentEntry* entry )
 	entry->slot = CS_HEADDECAL;
 }
 
-void wow_m2instance::setSpellVisualKit( u32 spellvkId, SSpellVKInfo* svkInfo )
-{
-	wowDatabase* database = g_Engine->getWowDatabase();
-	const spellVisualKitDB* spellvisualkitdb = database->getSpellVisualKitDB();
-	dbc::record r = spellvisualkitdb->getByID(spellvkId);
-	if (!r.isValid())
-		return;
-
-	//head
-	u32 head = r.getUInt(spellVisualKitDB::Head);
-	if (head)
-	{
-		SAttachmentEntry* entry = &svkInfo->attachmentEntries[SVK_HEAD];
-		entry->id = ATT_TOP_OF_HEAD;
-		entry->attachIndex = ATT_TOP_OF_HEAD < (s32)Mesh->NumAttachLookup ? Mesh->AttachLookup[ATT_TOP_OF_HEAD] : -1;
-		entry->scale = 1.0f;
-		entry->slot = CS_EFFECT_HEAD;
-		database->getEffectVisualPath(head, svkInfo->attachmentInfos[SVK_HEAD].modelpath, QMAX_PATH);
-	}
-	else
-	{
-		 svkInfo->attachmentEntries[SVK_HEAD].attachIndex = -1;
-	}
-	
-	//chest
-	u32 chest = r.getUInt(spellVisualKitDB::Chest);
-	if (chest)
-	{
-		SAttachmentEntry* entry = &svkInfo->attachmentEntries[SVK_CHEST];
-		entry->id = ATT_BUST;
-		entry->attachIndex = ATT_BUST < (s32)Mesh->NumAttachLookup ? Mesh->AttachLookup[ATT_BUST] : -1;
-		entry->scale = 1.0f;
-		entry->slot = CS_EFFECT_CHEST;
-		database->getEffectVisualPath(chest, svkInfo->attachmentInfos[SVK_CHEST].modelpath, QMAX_PATH);
-	}
-	else
-	{
-		 svkInfo->attachmentEntries[SVK_CHEST].attachIndex = -1;
-	}
-
-	//ground
-	u32 ground = r.getUInt(spellVisualKitDB::Ground);
-	if (ground)
-	{
-		SAttachmentEntry* entry = &svkInfo->attachmentEntries[SVK_GROUND];
-		entry->id = ATT_GROUND;
-		entry->attachIndex = ATT_GROUND < (s32)Mesh->NumAttachLookup ? Mesh->AttachLookup[ATT_GROUND] : -1;
-		entry->scale = 1.0f;
-		entry->slot = CS_EFFECT_GROUND;
-		database->getEffectVisualPath(ground, svkInfo->attachmentInfos[SVK_GROUND].modelpath, QMAX_PATH);
-	}
-	else
-	{
-		 svkInfo->attachmentEntries[SVK_GROUND].attachIndex = -1;
-	}
-	
-	//righthand
-	u32 righthand = r.getUInt(spellVisualKitDB::RightHand);
-	if (righthand)
-	{
-		SAttachmentEntry* entry = &svkInfo->attachmentEntries[SVK_RIGHTHAND];
-		entry->id = ATT_RIGHT_PALM2;
-		entry->attachIndex = ATT_RIGHT_PALM2 < (s32)Mesh->NumAttachLookup ? Mesh->AttachLookup[ATT_RIGHT_PALM2] : -1;
-		entry->scale = 1.0f;
-		entry->slot = CS_EFFECT_RIGHTHAND;
-		database->getEffectVisualPath(righthand, svkInfo->attachmentInfos[SVK_RIGHTHAND].modelpath, QMAX_PATH);
-	}
-	else
-	{
-		svkInfo->attachmentEntries[SVK_RIGHTHAND].attachIndex = -1;
-	}
-
-	//lefthand
-	u32 lefthand = r.getUInt(spellVisualKitDB::LeftHand);
-	if (lefthand)
-	{
-		SAttachmentEntry* entry = &svkInfo->attachmentEntries[SVK_LEFTHAND];
-		entry->id = ATT_LEFT_PALM2;
-		entry->attachIndex = ATT_LEFT_PALM2 < (s32)Mesh->NumAttachLookup ? Mesh->AttachLookup[ATT_LEFT_PALM2] : -1;
-		entry->scale = 1.0f;
-		entry->slot = CS_EFFECT_LEFTHAND;
-		database->getEffectVisualPath(lefthand, svkInfo->attachmentInfos[SVK_LEFTHAND].modelpath, QMAX_PATH);
-	}
-	else
-	{
-		svkInfo->attachmentEntries[SVK_LEFTHAND].attachIndex = -1;
-	}
-
-	//aoe
-	u32 aoe = r.getUInt(spellVisualKitDB::AOE);
-	if (aoe)
-	{
-		SAttachmentEntry* entry = &svkInfo->attachmentEntries[SVK_AOE];
-		entry->id = ATT_BUST;
-		entry->attachIndex = ATT_BUST < (s32)Mesh->NumAttachLookup ? Mesh->AttachLookup[ATT_BUST] : -1;
-		entry->scale = 1.0f;
-		entry->slot = CS_EFFECT_AOE;
-		database->getEffectVisualPath(aoe, svkInfo->attachmentInfos[SVK_AOE].modelpath, QMAX_PATH);
-	}
-	else
-	{
-		svkInfo->attachmentEntries[SVK_AOE].attachIndex = -1;
-	}
-}
-
 bool wow_m2instance::isBothHandsDagger( s32 itemid ) const
 {
 	SItemInfo itemInfo;
@@ -2347,7 +2242,7 @@ bool wow_m2instance::isBothHandsDagger( s32 itemid ) const
 	if (!dagger)
 		return false;
 
-	dbc::record display = g_Engine->getWowDatabase()->getItemDisplayDB()->getByID(itemInfo.id);
+	auto display = g_Engine->getWowDatabase()->getItemDisplayDB()->getByID(itemInfo.id);
 	if (!display.isValid())
 		return false;
 
@@ -2365,7 +2260,7 @@ bool wow_m2instance::isOrdinaryDagger( s32 itemid ) const
 	if (!dagger)
 		return false;
 
-	dbc::record display = g_Engine->getWowDatabase()->getItemDisplayDB()->getByID(itemInfo.id);
+	auto display = g_Engine->getWowDatabase()->getItemDisplayDB()->getByID(itemInfo.id);
 	if (!display.isValid())
 		return false;
 
@@ -2375,7 +2270,7 @@ bool wow_m2instance::isOrdinaryDagger( s32 itemid ) const
 
 void wow_m2instance::dressStartOutfit( s32 startid )
 {
-	dbc::record r = g_Engine->getWowDatabase()->getStartOutfitDB()->getByID(startid);
+	auto r = g_Engine->getWowDatabase()->getStartOutfitDB()->getByID(startid);
 	if (!r.isValid())
 		return;
 
@@ -2395,7 +2290,7 @@ void wow_m2instance::dressStartOutfit( s32 startid )
 		if (id == 0)
 			continue;
 
-		dbc::record rItem = g_Engine->getWowDatabase()->getItemDB()->getByID(id);
+		auto rItem = g_Engine->getWowDatabase()->getItemDB()->getByID(id);
 		if (rItem.isValid() && rItem.getInt(itemDB::InventorySlot) > 0)
 		{
 			s32 slot = getItemSlot(id);
@@ -2408,7 +2303,7 @@ void wow_m2instance::dressStartOutfit( s32 startid )
 
 void wow_m2instance::dressSet( s32 setid )
 {
-	dbc::record r = g_Engine->getWowDatabase()->getItemSetDB()->getByID(setid);
+	auto r = g_Engine->getWowDatabase()->getItemSetDB()->getByID(setid);
 	if (!r.isValid())
 		return;
 
@@ -2422,7 +2317,7 @@ void wow_m2instance::dressSet( s32 setid )
 		if (id == 0)
 			continue;
 
-		dbc::record rItem = g_Engine->getWowDatabase()->getItemDB()->getByID(id);
+		auto rItem = g_Engine->getWowDatabase()->getItemDB()->getByID(id);
 		if (rItem.isValid() && rItem.getInt(itemDB::InventorySlot) > 0)
 		{
 			s32 slot = getItemSlot(id);
