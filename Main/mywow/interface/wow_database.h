@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base.h"
+#include "wow_def.h"
 #include "wow_dbc.h"
 
 class wowEnvironment;

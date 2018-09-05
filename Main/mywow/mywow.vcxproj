@@ -604,7 +604,6 @@
     <ClInclude Include="interface\wow_dbc.h" />
     <ClInclude Include="interface\wow_enums.h" />
     <ClInclude Include="interface\wow_m2Move.h" />
-    <ClInclude Include="interface\wow_m2spell.h" />
     <ClInclude Include="interface\wow_m2State.h" />
     <ClInclude Include="interface\wow_particle.h" />
     <ClInclude Include="interface\wow_m2_structs.h" />
@@ -613,6 +612,7 @@
     <ClInclude Include="interface\wow_wmoScene.h" />
     <ClInclude Include="interface\wow_wmo_structs.h" />
     <ClInclude Include="TGAImageWriter.h" />
+    <ClInclude Include="wow_dbc70.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAlphaTestDecalRenderer.cpp" />
@@ -779,6 +779,8 @@
     <ClCompile Include="TGAImageWriter.cpp" />
     <ClCompile Include="VertexIndexBuffer.cpp" />
     <ClCompile Include="wowEnvironment.cpp" />
+    <ClCompile Include="wow_dbc70.cpp" />
+    <ClCompile Include="wow_def.cpp" />
     <ClCompile Include="wow_m2Action.cpp" />
     <ClCompile Include="wow_m2FSM.cpp" />
     <ClCompile Include="wow_m2appearance.cpp" />
@@ -786,7 +788,6 @@
     <ClCompile Include="wow_database.cpp" />
     <ClCompile Include="wow_dbc.cpp" />
     <ClCompile Include="wow_m2Move.cpp" />
-    <ClCompile Include="wow_m2spell.cpp" />
     <ClCompile Include="wow_particle.cpp" />
     <ClCompile Include="wow_tileScene.cpp" />
     <ClCompile Include="wow_wdtScene.cpp" />

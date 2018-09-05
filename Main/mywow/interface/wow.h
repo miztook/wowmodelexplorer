@@ -3,6 +3,7 @@
 #include "wow_enums.h"
 #include "wow_def.h"
 #include "wow_dbc.h"
+#include "wow_dbc70.h"
 #include "wow_database.h"
 #include "wowEnvironment.h"
 #include "wow_animation.h"

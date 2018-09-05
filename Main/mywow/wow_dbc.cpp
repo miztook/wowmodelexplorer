@@ -14,14 +14,6 @@ dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 	StringSize = 0;
 	nActualRecords = 0;
 
-	Fields = nullptr;
-	CommonColumns = nullptr;
-	FieldStorageInfos = nullptr;
-
-	HasDataOffsetBlock = false;
-	HasIndex = false;
-	HasRelationshipData = false;
-
 	string512 path = filename;
 	IMemFile* file = env->openFile(path.c_str());
 
@@ -65,12 +57,12 @@ dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 		readWDBC(env, file, tmp);
 	else if(db_type == 2)		//db2
 		readWDB2(env, file, tmp);
-	else if (db_type == 5)		//db5
-		readWDB5(env, file, tmp);
-	else if (db_type == 6)	//db6
-		readWDB6(env, file, tmp);
-	else if (db_type == 8)	//dc2
-		readWDC2(env, file, tmp);
+// 	else if (db_type == 5)		//db5
+// 		readWDB5(env, file, tmp);
+// 	else if (db_type == 6)	//db6
+// 		readWDB6(env, file, tmp);
+// 	else if (db_type == 8)	//dc2
+// 		readWDC2(env, file, tmp);
 	else
 		ASSERT(false);
 
@@ -79,9 +71,6 @@ dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
 
 dbc::~dbc()
 {
-	delete[] FieldStorageInfos;
-	delete[] CommonColumns;
-	delete[] Fields;
 	delete[] _stringStart;
 	delete[] _recordStart;
 }
@@ -186,6 +175,7 @@ void dbc::readWDB2(wowEnvironment* env, IMemFile* file, bool tmp)
 	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
 }
 
+/*
 void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 {
 	IFileSystem* fs = env->getFileSystem();
@@ -743,37 +733,7 @@ void dbc::readWDC2(wowEnvironment* env, IMemFile* file, bool tmp)
 	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
 }
 
-bool dbc::readFieldValue(u32 recordIndex, u32 fieldIndex, u32 arrayIndex, u32 arraySize, u32& result) const
-{
-	return true;
-}
-
-u32 dbc::readBitpackedValue(const SFieldStorageInfo& info, const u8* recordOffset) const
-{
-	u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
-	u32 offset = info.field_offset_bits / 8;
-	u8* v = new u8[size];
-	memcpy(v, recordOffset + offset, size);
-	u32 result = (*reinterpret_cast<u32*>(v));
-	delete v;
-
-	result = result & ((1ull << info.field_size_bits) - 1);
-	return result;
-}
-
-u32 dbc::readBitpackedValue2(const SFieldStorageInfo& info, const u8* recordOffset) const
-{
-	u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
-	u32 offset = info.field_offset_bits / 8;
-	u8* v = new u8[size];
-	memcpy(v, recordOffset + offset, size);
-	u32 result = (*reinterpret_cast<u32*>(v));
-	delete v;
-
-	result = result >> (info.field_offset_bits & 7);
-	result = result & ((1ull << info.field_size_bits) - 1);
-	return result;
-}
+*/
 
 dbc::record charFacialHairDB::getByParams(unsigned int race, unsigned int gender, unsigned int style) const
 {
@@ -907,316 +867,18 @@ void itemModifiedAppearanceDB::buildItemLookup()
 	}
 }
 
-const SItemRecord* ItemCollections::getById( s32 id ) const
-{
-	T_itemLookup::const_iterator itr = itemLookup.find(id);
-	if (itr != itemLookup.end()) 
-	{
-		s32 i = itr->second;
-		return &items[i];
-	}
-	return nullptr;
-}
-
-void ItemCollections::build( itemDB* itemDb, itemSparseDB* itemSparseDb)
-{
-	u32 numRecords = itemSparseDb->getNumActualRecords();
-	items.clear();
-	items.reserve(numRecords);
-
-	for (u32 i=0; i<numRecords; ++i)
-	{
-		dbc::record rs = itemSparseDb->getRecord(i);
-		if(!rs.isValid())
-			continue;
-
-		SItemRecord rec;
-#if WOW_VER >= 70
-		rec.id = rs.getID();
-#else
-		rec.id = itemSparseDb->getRecordSparseRow(i);
-#endif
-		if (rec.id == -1)
-			continue;
-
-		//item db
-		dbc::record r = itemDb->getByID(rec.id);		
-		if (!r.isValid())
-			continue;
-
-		rec.itemclass = r.getInt(itemDB::Itemclass);
-		rec.subclass = r.getInt(itemDB::Subclass);
-		rec.type = r.getInt(itemDB::InventorySlot);
-
-#if WOW_VER >= 70
-		Q_sprintf(rec.name, DEFAULT_SIZE * 2, "Item-%d", rec.id);
-#else
-		const c8* str = rs.getString(itemSparseDb->getItemNameField());
-		Q_strcpy(rec.name, DEFAULT_SIZE * 2, str);
-#endif
-		
-		items.emplace_back(rec);
-		itemLookup[rec.id] = (s32)(items.size() -1);
-	}
-
-
-
-	/*
-	//Î´·­ÒëµÄ
-	for (u32 i=0; i<itemDb->getNumRecords(); ++i)
-	{
-		dbc::record r = itemDb->getRecord(i);
-		s32 id = r.getInt(itemDB::ID);
-		if (itemLookup.find(id)!=itemLookup.end())
-			continue;
-
-		SItemRecord rec;
-		rec.id = id;
-		rec.quality = 0;
-		rec.model = r.getInt(itemDB::ItemDisplayInfo);
-		rec.itemclass = r.getInt(itemDB::Itemclass);
-		rec.subclass = r.getInt(itemDB::Subclass);
-		rec.type = r.getInt(itemDB::InventorySlot);
-		switch (r.getInt(itemDB::Sheath))
-		{
-		case SHEATHETYPE_MAINHAND: rec.sheath = ATT_LEFT_BACK_SHEATH; break;
-		case SHEATHETYPE_LARGEWEAPON: rec.sheath = ATT_RIGHT_BACK_SHEATH; break;
-		case SHEATHETYPE_HIPWEAPON: rec.sheath = ATT_LEFT_HIP_SHEATH; break;
-		case SHEATHETYPE_SHIELD: rec.sheath = ATT_MIDDLE_BACK_SHEATH; break;
-		default: rec.sheath = SHEATHETYPE_NONE;
-		}
-
-		Q_sprintf(rec.name, DEFAULT_SIZE, "%d", id);
-
-		items.emplace_back(rec);
-		itemLookup[rec.id] = (s32)(items.size() -1);
-	}
-	*/
-}
-
-SNPCRecord::SNPCRecord( const c8* line )
-{
-	s32 id;
-
-	Q_sscanf(line, "%d,%d,%d", &id, &model, &type);
-
-	size_t len = strlen(line);
-	for (size_t i=len-2; i>1; i--) {
-		if (line[i]==',') 
-		{
-			Q_strcpy(name, DEFAULT_SIZE * 2, line+i+1);
-			break;
-		}
-	}
-
-	u32 l = (u32)Q_strlen(name);
-	if ( l > 0 )
-		name[l-1] = '\0';
-}
-
-bool NPCCollections::open( const c8* filename )
-{
-	IFileSystem* fs = g_Engine->getFileSystem();
-	string_path path;
-	path = fs->getDataDirectory();
-	path.append(g_Engine->getWowEnvironment()->getLocale());
-	path.append("\\");
-	path.append(filename);
-
-	IReadFile* file = fs->createAndOpenFile(path.c_str(), false);
-	ASSERT(file);
-	if (!file)
-		return false;
-
-	npcs.reserve(1024);
-
-	c8 line[512];
-	while (file->readText(line, 512))
-	{
-		SNPCRecord rec(line);
-
-		if (rec.type > 0 && rec.model > 0)
-		{
-			npcs.emplace_back(rec);
-			npcLookup[rec.model] = (s32)(npcs.size() -1);
-
-			//id_set.insert(rec.id);
-		}
-	}
-
-	delete file;
-
-	//build other npcs (unknown name)
-	const creatureDisplayInfoDB* db = g_Engine->getWowDatabase()->getCreatureDisplayInfoDB();
-	for (u32 i=0; i<db->getNumActualRecords(); ++i)
-	{
-		dbc::record r = db->getRecord(i);
-		s32 id = r.getInt(0);
-		if (npcLookup.find(id) != npcLookup.end())		//skip npcs already built
-			continue;
-      
-		SNPCRecord rec;
-        Q_sprintf(rec.name, 32, "Unknown%d", id);
-		rec.model = id;
-		rec.type = 0;		//unknown
-
-		npcs.emplace_back(rec);
-		npcLookup[rec.model] = (s32)(npcs.size() -1);
-	}
-
-	//npcs.shrink_to_fit();
-
-	return true;
-}
-
-const SNPCRecord* NPCCollections::getById( s32 id ) const
-{
-	T_npcLookup::const_iterator itr = npcLookup.find(id);
-	if (itr != npcLookup.end()) 
-	{
-		s32 i = itr->second;
-		return &npcs[i];
-	}
-	return nullptr;
-}
-
-const SStartOutfitEntry* StartOutfitClassCollections::get( u32 race, bool female, u32 idx )
-{
-	u32 count = 0;
-	for (u32 i=0; i<startOutfits.size(); ++i)
-	{
-		if(startOutfits[i].race == race && 
-			startOutfits[i].female == female)
-		{
-			if(count == idx)
-				return &startOutfits[i];
-			++count;
-		}
-	}
-	return nullptr;
-}
-
-u32 StartOutfitClassCollections::getNumStartOutfits( u32 race, bool female )
-{
-	u32 count = 0;
-	for (u32 i=0; i<startOutfits.size(); ++i)
-	{
-		if(startOutfits[i].race == race && startOutfits[i].female == female)
-			++count;
-	}
-	return count;
-}
-
-
-const SMapRecord* MapCollections::getMapById( s32 id ) const
-{
-	T_mapLookup::const_iterator itr = mapLookup.find(id);
-	if (itr == mapLookup.end())
-		return nullptr;
-
-	s32 index = itr->second;
-	return &maps[index];
-}
-
-SMapRecord* MapCollections::getMapById( s32 id )
-{
-	T_mapLookup::iterator itr = mapLookup.find(id);
-	if (itr == mapLookup.end())
-		return nullptr;
-
-	s32 index = itr->second;
-	return &maps[index];
-}
-
-const SArea* MapCollections::getAreaById( s32 id ) const
-{
-	T_areaLookup::const_iterator itr = areaLookup.find(id);
-	if (itr == areaLookup.end())
-		return nullptr;
-
-	s32 index = itr->second;
-	return &areas[index];
-}
-
-SArea* MapCollections::getAreaById( s32 id )
-{
-	T_areaLookup::iterator itr = areaLookup.find(id);
-	if (itr == areaLookup.end())
-		return nullptr;
-
-	s32 index = itr->second;
-	return &areas[index];
-}
-
-WMOCollections::WMOCollections()
-{
-	wmos.reserve(1024);
-}
-
-WorldModelCollections::WorldModelCollections()
-{
-	models.reserve(1024);
-}
-
-TextureCollections::TextureCollections()
-{
-	textures.reserve(1024);
-}
-
-RidableCollections::RidableCollections()
-{
-	ridables.reserve(64);
-}
-
-
-SRidable::SRidable( const c8* line )
-{
-	Q_sscanf(line, "%d,%d", &npcid, &mountflag);
-}
-
-bool RidableCollections::open( const c8* filename, const NPCCollections& npcs )
-{
-	IFileSystem* fs = g_Engine->getFileSystem();
-	string_path path;
-	path = fs->getDataDirectory();
-	path.append(g_Engine->getWowEnvironment()->getLocale());
-	path.append("\\");
-	path.append(filename);
-
-	IReadFile* file = fs->createAndOpenFile(path.c_str(), false);
-	ASSERT(file);
-	if (!file)
-		return false;
-
-	c8 line[512];
-	while (file->readText(line, 512))
-	{
-		SRidable rec(line);
-		if (rec.npcid != 0 || npcs.getById(rec.npcid) != nullptr)
-		{
-			ridables.emplace_back(rec);
-		}
-	}
-
-	delete file;
-
-	//ridables.shrink_to_fit();
-
-	return true;
-}
-
 void fileDataDB::saveListFile(const char* szPath)
 {
 	FILE* file = fopen(szPath, "wt");
 	if (!file)
 		return;
 
-	for (u32 i=0; i<getNumActualRecords(); ++i)
+	for (u32 i = 0; i < getNumActualRecords(); ++i)
 	{
 		dbc::record r = getRecord(i);
 		if (!r.isValid())
 			continue;
-		
+
 		char path[MAX_PATH];
 		Q_strcpy(path, MAX_PATH, r.getString(fileDataDB::FilePath));
 		Q_strcat(path, MAX_PATH, r.getString(fileDataDB::FileName));
@@ -1230,10 +892,10 @@ void fileDataDB::saveListFile(const char* szPath)
 
 dbc::record itemDisplayInfoMaterialResDB::getByItemDisplayInfoIDAndSlot(u32 itemDisplayId, u32 slot) const
 {
-	for (u32 i=0; i<nRecords; ++i)
+	for (u32 i = 0; i < nRecords; ++i)
 	{
 		dbc::record r = getRecord(i);
-		if(r.getUInt(itemDisplayInfoMaterialResDB::ItemDisplayInfoID) == itemDisplayId &&
+		if (r.getUInt(itemDisplayInfoMaterialResDB::ItemDisplayInfoID) == itemDisplayId &&
 			r.getUInt(itemDisplayInfoMaterialResDB::TextureSlot) == slot)
 			return r;
 	}
@@ -1250,4 +912,79 @@ void itemDisplayInfoMaterialResDB::getTexturePath(u32 itemDisplayId, u32 slot, c
 	}
 	int texId = r.getInt(itemDisplayInfoMaterialResDB::TextureFileDataID);
 	g_Engine->getWowDatabase()->getTextureFilePath(texId, path, size);
+}
+
+void buildItemCollections(ItemCollections& itemCollections, const itemDB* itemDb, const itemSparseDB* itemSparseDb)
+{
+	u32 numRecords = itemSparseDb->getNumActualRecords();
+	itemCollections.items.clear();
+	itemCollections.items.reserve(numRecords);
+
+	for (u32 i = 0; i<numRecords; ++i)
+	{
+		dbc::record rs = itemSparseDb->getRecord(i);
+		if (!rs.isValid())
+			continue;
+
+		SItemRecord rec;
+#if WOW_VER >= 70
+		rec.id = rs.getID();
+#else
+		rec.id = itemSparseDb->getRecordSparseRow(i);
+#endif
+		if (rec.id == -1)
+			continue;
+
+		//item db
+		dbc::record r = itemDb->getByID(rec.id);
+		if (!r.isValid())
+			continue;
+
+		rec.itemclass = r.getInt(itemDB::Itemclass);
+		rec.subclass = r.getInt(itemDB::Subclass);
+		rec.type = r.getInt(itemDB::InventorySlot);
+
+#if WOW_VER >= 70
+		Q_sprintf(rec.name, DEFAULT_SIZE * 2, "Item-%d", rec.id);
+#else
+		const c8* str = rs.getString(itemSparseDb->getItemNameField());
+		Q_strcpy(rec.name, DEFAULT_SIZE * 2, str);
+#endif
+
+		itemCollections.items.emplace_back(rec);
+		itemCollections.itemLookup[rec.id] = (s32)(itemCollections.items.size() - 1);
+	}
+
+
+	/*
+	//Î´·­ÒëµÄ
+	for (u32 i=0; i<itemDb->getNumRecords(); ++i)
+	{
+	dbc::record r = itemDb->getRecord(i);
+	s32 id = r.getInt(itemDB::ID);
+	if (itemLookup.find(id)!=itemLookup.end())
+	continue;
+
+	SItemRecord rec;
+	rec.id = id;
+	rec.quality = 0;
+	rec.model = r.getInt(itemDB::ItemDisplayInfo);
+	rec.itemclass = r.getInt(itemDB::Itemclass);
+	rec.subclass = r.getInt(itemDB::Subclass);
+	rec.type = r.getInt(itemDB::InventorySlot);
+	switch (r.getInt(itemDB::Sheath))
+	{
+	case SHEATHETYPE_MAINHAND: rec.sheath = ATT_LEFT_BACK_SHEATH; break;
+	case SHEATHETYPE_LARGEWEAPON: rec.sheath = ATT_RIGHT_BACK_SHEATH; break;
+	case SHEATHETYPE_HIPWEAPON: rec.sheath = ATT_LEFT_HIP_SHEATH; break;
+	case SHEATHETYPE_SHIELD: rec.sheath = ATT_MIDDLE_BACK_SHEATH; break;
+	default: rec.sheath = SHEATHETYPE_NONE;
+	}
+
+	Q_sprintf(rec.name, DEFAULT_SIZE, "%d", id);
+
+	items.emplace_back(rec);
+	itemLookup[rec.id] = (s32)(items.size() -1);
+	}
+	*/
 }

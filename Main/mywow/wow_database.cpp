@@ -160,7 +160,7 @@ wowDatabase::~wowDatabase()
 void wowDatabase::buildItems( )
 {
 	itemSparseDB* sparseDB = new itemSparseDB(Environment);
-	itemCollections.build(ItemDB, sparseDB);
+	buildItemCollections(itemCollections, ItemDB, sparseDB);
 	delete sparseDB;
 }
 

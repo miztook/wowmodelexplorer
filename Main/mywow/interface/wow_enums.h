@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base.h"
+#include "function.h"
 
 //texture
 //人物的特殊贴图指可以变化的贴图，如头发，肤色等

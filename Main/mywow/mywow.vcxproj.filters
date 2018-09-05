@@ -770,9 +770,6 @@
     <ClInclude Include="interface\wow_m2Move.h">
       <Filter>wow\m2</Filter>
     </ClInclude>
-    <ClInclude Include="interface\wow_m2spell.h">
-      <Filter>wow\m2</Filter>
-    </ClInclude>
     <ClInclude Include="interface\wow_tileScene.h">
       <Filter>wow\tile</Filter>
     </ClInclude>
@@ -949,6 +946,9 @@
     </ClInclude>
     <ClInclude Include="interface\IVideoResource.h">
       <Filter>interface\video</Filter>
+    </ClInclude>
+    <ClInclude Include="wow_dbc70.h">
+      <Filter>wow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1315,9 +1315,6 @@
     <ClCompile Include="CMeshDecalServices.cpp">
       <Filter>implementation\video</Filter>
     </ClCompile>
-    <ClCompile Include="wow_m2spell.cpp">
-      <Filter>wow\m2</Filter>
-    </ClCompile>
     <ClCompile Include="COpenGLDrawServices.cpp">
       <Filter>implementation\video\OpenGL</Filter>
     </ClCompile>
@@ -1452,6 +1449,12 @@
     </ClCompile>
     <ClCompile Include="VertexIndexBuffer.cpp">
       <Filter>implementation\video</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_dbc70.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_def.cpp">
+      <Filter>wow</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
