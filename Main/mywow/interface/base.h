@@ -3,6 +3,7 @@
 #include "compileconfig.h"
 #include <cassert>
 #include <cstdint>
+#include <memory>
 #include "qzone_allocator.h"
 
 #if MW_PLATFORM_WINDOWS

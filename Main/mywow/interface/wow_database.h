@@ -12,6 +12,8 @@ public:
 	explicit wowDatabase(wowEnvironment* env);
 	~wowDatabase();
 
+	bool init();
+
 	void buildItems();
 	bool buildNpcs(const c8* filename);
 	void buildStartOutfitClass();
@@ -41,8 +43,6 @@ public:			//数据查询
 	u32 getMaxFacialHairStyle(u32 race, bool female);
 
 	bool getSet(u32 index, s32& setid, c16* outname, u32 size);
-	bool getItemVisualPath(s32 visualId, c8* path, u32 size);
-	bool getEffectVisualPath(s32 visualId, c8* path, u32 size);
 
 	u32 getNumMaps() const { return (u32)mapCollections.maps.size(); }
 	const SMapRecord* getMap(u32 idx) const;
@@ -85,80 +85,62 @@ public:			//数据查询
 #endif
 
 public:
-	const animDB* getAnimDB() const { return AnimDB; }
-	const areaTableDB*	getAreaTableDB() const { return AreaTableDB; }
-	const charClassesDB*		getCharClassesDB() const { return CharClassesDB; }
-	const charHairGeosetsDB*	getCharHairGeosetDB() const { return CharHairGeosetsDB; }
-	const charFacialHairDB*		getCharFacialHairDB() const { return CharFacialHairDB; }
-	const charRacesDB*		getCharRacesDB() const { return CharRacesDB; }
-	const charSectionsDB*			getCharSectionDB() const { return CharSectionsDB; }
-	const creatureTypeDB*			getCreatureTypeDB() const { return CreatureTypeDB; }
-	const creatureModelDB*		getCreatureModelDB() const { return CreatureModelDB; }
-	const creatureDisplayInfoDB*		getCreatureDisplayInfoDB() const { return CreatureDisplayInfoDB; }
-	const creatureDisplayInfoExtraDB*		getCreatureDisplayInfoExtraDB() const { return CreatureDisplayInfoExtraDB; }
-	const npcModelItemSlotDisplayInfoDB*	getNpcModelItemSlotDisplayInfoDB() const { return NpcModelItemSlotDisplayInfoDB; }
-	const helmGeosetDB*	getHelmGeosetDB() const { return HelmGeosetDB; }
-	const itemDisplayDB*	getItemDisplayDB() const { return ItemDisplayDB; }
-	const itemDisplayInfoMaterialResDB*  getItemDisplayInfoMaterialResDB() const { return ItemDisplayInfoMaterialResDB; }
-	const itemSetDB*	getItemSetDB() const { return ItemSetDB; }
-	const itemSubClassDB*	 getItemSubClassDB() const { return ItemSubClassDB; }
-	const itemVisualsDB*	 getItemVisualsDB() const 	{ return ItemVisualsDB; }
-	const itemVisualEffectDB*	 getItemVisualEffectDB() const { return ItemVisualEffectDB; }
-	const startOutfitDB*	getStartOutfitDB() const { return	StartOutFitDB; }
-	const lightDB*	getLightDB() const { return LightDB; }
-	const lightSkyboxDB*	getLightSkyboxDB() const  { return LightSkyboxDB; }
-	const itemDB*		getItemDB() const	{ return ItemDB; }
-	const itemModifiedAppearanceDB*		getItemModifiedAppearanceDB() const { return ItemModifiedAppearanceDB; }
-	const itemAppearanceDB* getItemAppearanceDB() const { return ItemAppearanceDB; }
-	const textureFileDataDB* getTextureFileDataDB() const { return TextureFileDataDB; }
-	const modelFileDataDB*  getModelFileDataDB() const { return ModelFileDataDB; }
-	const fileDataDB* getFileDataDB() const { return FileDataDB; }
-	const mapDB*		getMapDB() const	{ return MapDB; }
-	const spellVisualEffectNameDB*	 getSpellVisualEffectNameDB() const { return SpellVisualEffectNameDB; }
- 	const spellVisualDB*		getSpellVisualDB() const { return SpellVisualDB; }
- 	const spellVisualKitDB*		getSpellVisualKitDB() const { return SpellVisualKitDB; }
- 	const spellDB*	getSpellDB() const { return SpellDB; }
- 	const wmoAreaTableDB*		getWmoAreaTableDB() const { return WmoAreaTableDB; }
- 	const worldMapAreaDB*		getWorldMapAreaDB() const { return WorldMapAreaDB; }
+	const animDB* getAnimDB() const { return AnimDB.get(); }
+	const areaTableDB*	getAreaTableDB() const { return AreaTableDB.get(); }
+	const charClassesDB*		getCharClassesDB() const { return CharClassesDB.get(); }
+	const charHairGeosetsDB*	getCharHairGeosetDB() const { return CharHairGeosetsDB.get(); }
+	const charFacialHairDB*		getCharFacialHairDB() const { return CharFacialHairDB.get(); }
+	const charRacesDB*		getCharRacesDB() const { return CharRacesDB.get(); }
+	const charSectionsDB*			getCharSectionDB() const { return CharSectionsDB.get(); }
+	const creatureTypeDB*			getCreatureTypeDB() const { return CreatureTypeDB.get(); }
+	const creatureModelDB*		getCreatureModelDB() const { return CreatureModelDB.get(); }
+	const creatureDisplayInfoDB*		getCreatureDisplayInfoDB() const { return CreatureDisplayInfoDB.get(); }
+	const creatureDisplayInfoExtraDB*		getCreatureDisplayInfoExtraDB() const { return CreatureDisplayInfoExtraDB.get(); }
+	const npcModelItemSlotDisplayInfoDB*	getNpcModelItemSlotDisplayInfoDB() const { return NpcModelItemSlotDisplayInfoDB.get(); }
+	const helmGeosetDB*	getHelmGeosetDB() const { return HelmGeosetDB.get(); }
+	const itemDisplayDB*	getItemDisplayDB() const { return ItemDisplayDB.get(); }
+	const itemDisplayInfoMaterialResDB*  getItemDisplayInfoMaterialResDB() const { return ItemDisplayInfoMaterialResDB.get(); }
+	const itemSetDB*	getItemSetDB() const { return ItemSetDB.get(); }
+	const itemSubClassDB*	 getItemSubClassDB() const { return ItemSubClassDB.get(); }
+	const startOutfitDB*	getStartOutfitDB() const { return	StartOutFitDB.get(); }
+	const itemDB*		getItemDB() const	{ return ItemDB.get(); }
+	const itemModifiedAppearanceDB*		getItemModifiedAppearanceDB() const { return ItemModifiedAppearanceDB.get(); }
+	const itemAppearanceDB* getItemAppearanceDB() const { return ItemAppearanceDB.get(); }
+	const textureFileDataDB* getTextureFileDataDB() const { return TextureFileDataDB.get(); }
+	const modelFileDataDB*  getModelFileDataDB() const { return ModelFileDataDB.get(); }
+	const fileDataDB* getFileDataDB() const { return FileDataDB.get(); }
+	const mapDB*		getMapDB() const	{ return MapDB.get(); }
+	const spellDB*	getSpellDB() const { return SpellDB.get(); }
 
 private:
 	wowEnvironment*		Environment;
 
-	animDB*		AnimDB;
-	areaTableDB*	AreaTableDB;
-	charClassesDB*		CharClassesDB;
-	charFacialHairDB*		CharFacialHairDB;
-	charHairGeosetsDB*		CharHairGeosetsDB;
-	charRacesDB*			CharRacesDB;
-	charSectionsDB*					CharSectionsDB;
-	creatureTypeDB*					CreatureTypeDB;
-	creatureModelDB*				CreatureModelDB;
-	creatureDisplayInfoDB*				CreatureDisplayInfoDB;
-	creatureDisplayInfoExtraDB*		CreatureDisplayInfoExtraDB;
-	npcModelItemSlotDisplayInfoDB*	NpcModelItemSlotDisplayInfoDB;
-	helmGeosetDB*					HelmGeosetDB;
-	itemDisplayDB*			ItemDisplayDB;
-	itemDisplayInfoMaterialResDB*	ItemDisplayInfoMaterialResDB;
-	itemSetDB*					ItemSetDB;
-	itemSubClassDB*					ItemSubClassDB;
-	itemVisualsDB*						ItemVisualsDB;
-	itemVisualEffectDB*			ItemVisualEffectDB;
-	startOutfitDB*					StartOutFitDB;
-	lightDB*				LightDB;
-	lightSkyboxDB*				LightSkyboxDB;
-	itemDB*									ItemDB;
-	itemModifiedAppearanceDB*		ItemModifiedAppearanceDB;
-	itemAppearanceDB*			ItemAppearanceDB;
-	textureFileDataDB*			TextureFileDataDB;
-	modelFileDataDB*			ModelFileDataDB;
-	fileDataDB*			FileDataDB;
-	mapDB*									MapDB;
- 	spellVisualEffectNameDB*					SpellVisualEffectNameDB;
- 	spellVisualKitDB*			SpellVisualKitDB;
- 	spellVisualDB*		SpellVisualDB;
- 	spellDB*			SpellDB;
-	wmoAreaTableDB*			WmoAreaTableDB;
-	worldMapAreaDB*			WorldMapAreaDB;
+	std::unique_ptr<animDB>		AnimDB;
+	std::unique_ptr<areaTableDB>	AreaTableDB;
+	std::unique_ptr<charClassesDB>		CharClassesDB;
+	std::unique_ptr<charFacialHairDB>		CharFacialHairDB;
+	std::unique_ptr<charHairGeosetsDB>		CharHairGeosetsDB;
+	std::unique_ptr<charRacesDB>			CharRacesDB;
+	std::unique_ptr<charSectionsDB>					CharSectionsDB;
+	std::unique_ptr<creatureTypeDB>					CreatureTypeDB;
+	std::unique_ptr<creatureModelDB>				CreatureModelDB;
+	std::unique_ptr<creatureDisplayInfoDB>				CreatureDisplayInfoDB;
+	std::unique_ptr<creatureDisplayInfoExtraDB>		CreatureDisplayInfoExtraDB;
+	std::unique_ptr<npcModelItemSlotDisplayInfoDB>	NpcModelItemSlotDisplayInfoDB;
+	std::unique_ptr<helmGeosetDB>					HelmGeosetDB;
+	std::unique_ptr<itemDisplayDB>			ItemDisplayDB;
+	std::unique_ptr<itemDisplayInfoMaterialResDB>	ItemDisplayInfoMaterialResDB;
+	std::unique_ptr<itemSetDB>					ItemSetDB;
+	std::unique_ptr<itemSubClassDB>					ItemSubClassDB;
+	std::unique_ptr<startOutfitDB>					StartOutFitDB;
+	std::unique_ptr<itemDB>									ItemDB;
+	std::unique_ptr<itemModifiedAppearanceDB>		ItemModifiedAppearanceDB;
+	std::unique_ptr<itemAppearanceDB>			ItemAppearanceDB;
+	std::unique_ptr<textureFileDataDB>			TextureFileDataDB;
+	std::unique_ptr<modelFileDataDB>			ModelFileDataDB;
+	std::unique_ptr<fileDataDB>			FileDataDB;
+	std::unique_ptr<mapDB>									MapDB;
+	std::unique_ptr<spellDB>			SpellDB;
 
 	//
 	ItemCollections		itemCollections;

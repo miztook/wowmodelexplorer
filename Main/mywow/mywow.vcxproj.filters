@@ -950,6 +950,9 @@
     <ClInclude Include="interface\wow_dbc70.h">
       <Filter>wow</Filter>
     </ClInclude>
+    <ClInclude Include="interface\wow_database70.h">
+      <Filter>wow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1454,6 +1457,9 @@
       <Filter>wow</Filter>
     </ClCompile>
     <ClCompile Include="wow_def.cpp">
+      <Filter>wow</Filter>
+    </ClCompile>
+    <ClCompile Include="wow_database70.cpp">
       <Filter>wow</Filter>
     </ClCompile>
   </ItemGroup>

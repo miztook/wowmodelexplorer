@@ -38,54 +38,38 @@ void g_callbackWorldM2(const c8* filename, void* param)
 wowDatabase::wowDatabase( wowEnvironment* env )
 	: Environment(env)
 {
-	AnimDB = new animDB(env);
-	AreaTableDB = new areaTableDB(env);
-	CharClassesDB = new charClassesDB(env);
-	CharFacialHairDB = new charFacialHairDB(env);
-	CharHairGeosetsDB = new charHairGeosetsDB(env);
-	CharRacesDB = new charRacesDB(env);
-	CharSectionsDB = new charSectionsDB(env);
-	CreatureTypeDB = new creatureTypeDB(env);
-	CreatureModelDB = new creatureModelDB(env);
-	CreatureDisplayInfoDB = new creatureDisplayInfoDB(env);
-	CreatureDisplayInfoExtraDB = new creatureDisplayInfoExtraDB(env);
-	HelmGeosetDB = new helmGeosetDB(env);
-	ItemDisplayDB = new itemDisplayDB(env);
-	ItemSetDB = new itemSetDB(env);
-	ItemSubClassDB = new itemSubClassDB(env);
-	StartOutFitDB = new startOutfitDB(env);
+	AnimDB = std::make_unique<animDB>(env);
+	AreaTableDB = std::make_unique< areaTableDB>(env);
+	CharClassesDB = std::make_unique< charClassesDB>(env);
+	CharFacialHairDB = std::make_unique< charFacialHairDB>(env);
+	CharHairGeosetsDB = std::make_unique< charHairGeosetsDB>(env);
+	CharRacesDB = std::make_unique< charRacesDB>(env);
+	CharSectionsDB = std::make_unique< charSectionsDB>(env);
+	CreatureTypeDB = std::make_unique< creatureTypeDB>(env);
+	CreatureModelDB = std::make_unique< creatureModelDB>(env);
+	CreatureDisplayInfoDB = std::make_unique< creatureDisplayInfoDB>(env);
+	CreatureDisplayInfoExtraDB = std::make_unique< creatureDisplayInfoExtraDB>(env);
+	HelmGeosetDB = std::make_unique< helmGeosetDB>(env);
+	ItemDisplayDB = std::make_unique< itemDisplayDB>(env);
+	ItemSetDB = std::make_unique< itemSetDB>(env);
+	ItemSubClassDB = std::make_unique< itemSubClassDB>(env);
+	StartOutFitDB = std::make_unique< startOutfitDB>(env);
 
-#if 0
-	LightDB = new lightDB(env);
-	ItemVisualsDB = new itemVisualsDB(env);
-	ItemVisualEffectDB = new itemVisualEffectDB(env);
-	WmoAreaTableDB = new wmoAreaTableDB(env);
-	WorldMapAreaDB = new worldMapAreaDB(env);
-	LightSkyboxDB = new lightSkyboxDB(env);
-#else
-	LightDB = nullptr;
-	ItemVisualsDB = nullptr;
-	ItemVisualEffectDB = nullptr;
-	WmoAreaTableDB = nullptr;
-	WorldMapAreaDB = nullptr;
-	LightSkyboxDB = nullptr;
-#endif
-
-	ItemDB = new itemDB(env);
+	ItemDB = std::make_unique< itemDB>(env);
 
 #if WOW_VER >= 70
-	NpcModelItemSlotDisplayInfoDB = new npcModelItemSlotDisplayInfoDB(env);
-	ItemDisplayInfoMaterialResDB = new itemDisplayInfoMaterialResDB(env);
-	ItemModifiedAppearanceDB = new itemModifiedAppearanceDB(env);
-	ItemAppearanceDB = new itemAppearanceDB(env);
-	TextureFileDataDB = new textureFileDataDB(env);
-	ModelFileDataDB = new modelFileDataDB(env);
+	NpcModelItemSlotDisplayInfoDB = std::make_unique< npcModelItemSlotDisplayInfoDB>(env);
+	ItemDisplayInfoMaterialResDB = std::make_unique< itemDisplayInfoMaterialResDB>(env);
+	ItemModifiedAppearanceDB = std::make_unique< itemModifiedAppearanceDB>(env);
+	ItemAppearanceDB = std::make_unique< itemAppearanceDB>(env);
+	TextureFileDataDB = std::make_unique< textureFileDataDB>(env);
+	ModelFileDataDB = std::make_unique< modelFileDataDB>(env);
 #elif WOW_VER >= 60
 	NpcModelItemSlotDisplayInfoDB = nullptr;
 	ItemDisplayInfoMaterialResDB = nullptr;
-	ItemModifiedAppearanceDB = new itemModifiedAppearanceDB(env);
-	ItemAppearanceDB = new itemAppearanceDB(env);
-	TextureFileDataDB = new textureFileDataDB(env);
+	ItemModifiedAppearanceDB = std::make_unique< itemModifiedAppearanceDB>(env);
+	ItemAppearanceDB = std::make_unique< itemAppearanceDB>(env);
+	TextureFileDataDB = std::make_unique< textureFileDataDB>(env);
 	ModelFileDataDB = nullptr;
 #else
 	NpcModelItemSlotDisplayInfoDB = nullptr;
@@ -97,70 +81,27 @@ wowDatabase::wowDatabase( wowEnvironment* env )
 #endif
 
 #if WOW_VER == 60
-	FileDataDB = new fileDataDB(env);
+	FileDataDB = std::make_unique<fileDataDB>(env);
 #else
 	FileDataDB = nullptr;
 #endif
 
-	MapDB = new mapDB(env);
-	
-	SpellVisualEffectNameDB = new spellVisualEffectNameDB(env);
-
-#if 0
-	SpellVisualKitDB = new spellVisualKitDB(env);
-	SpellVisualDB = new spellVisualDB(env);
-	SpellDB = new spellDB(env);
-#else
-	SpellVisualKitDB = nullptr; 
-	SpellVisualDB = nullptr;
-	SpellDB = nullptr; 
-#endif
+	MapDB = std::make_unique<mapDB>(env);
 }
 
 wowDatabase::~wowDatabase()
 {
-	delete SpellDB;
-	delete SpellVisualDB;
-	delete SpellVisualKitDB;
-	delete SpellVisualEffectNameDB;
-	delete MapDB;
-	delete FileDataDB;
-	delete ModelFileDataDB;
-	delete TextureFileDataDB;
-	delete ItemAppearanceDB;
-	delete ItemModifiedAppearanceDB;
-	delete ItemDisplayInfoMaterialResDB;
-	delete NpcModelItemSlotDisplayInfoDB;
-	delete ItemDB;
-	delete LightSkyboxDB;
-	delete LightDB;
+}
 
-	delete WorldMapAreaDB;
-	delete WmoAreaTableDB;
-	delete ItemVisualEffectDB;
-	delete ItemVisualsDB;
-	delete StartOutFitDB;
-	delete ItemSubClassDB;
-	delete ItemSetDB;
-	delete ItemDisplayDB;
-	delete HelmGeosetDB;
-	delete CreatureDisplayInfoExtraDB;
-	delete CreatureDisplayInfoDB;
-	delete CreatureModelDB;
-	delete CreatureTypeDB;
-	delete CharSectionsDB;
-	delete CharRacesDB;
-	delete CharHairGeosetsDB;
-	delete CharFacialHairDB;
-	delete CharClassesDB;
-	delete AreaTableDB;
-	delete AnimDB;
+bool wowDatabase::init()
+{
+	return true;
 }
 
 void wowDatabase::buildItems( )
 {
 	itemSparseDB* sparseDB = new itemSparseDB(Environment);
-	buildItemCollections(itemCollections, ItemDB, sparseDB);
+	buildItemCollections(itemCollections, ItemDB.get(), sparseDB);
 	delete sparseDB;
 }
 
@@ -558,54 +499,6 @@ bool wowDatabase::getSet( u32 index, s32& setid, c16* outname, u32 size )
 	if (size <= strlen(n))
 		return false;
 	utf8to16(n, outname, size);
-	return true;
-}
-
-bool wowDatabase::getItemVisualPath( s32 visualId, c8* path, u32 size )
-{
-	auto rEff = ItemVisualEffectDB->getByID(visualId);
-	if (!rEff.isValid())
-		return false;
-
-	const c8* filename = rEff.getString(itemVisualEffectDB::Model);
-	if (!filename || strlen(filename) < 4 || strlen(filename) > 255)
-		return false;
-
-	string256 modelpath, tmppath;
-	modelpath = filename;
-	modelpath.subString(0, modelpath.length()-4, tmppath);
-	tmppath.append(".M2");
-	if (size <= tmppath.length())
-		return false;
-
-	Q_strcpy(path, size, tmppath.c_str());
-	normalizeFileName(path);
-	Q_strlwr(path);
-
-	return true;
-}
-
-bool wowDatabase::getEffectVisualPath( s32 visualId, c8* path, u32 size )
-{
-	auto rEff = SpellVisualEffectNameDB->getByID(visualId);
-	if (!rEff.isValid())
-		return false;
-
-	const c8* filename = rEff.getString(spellVisualEffectNameDB::Model);
-	if (!filename || strlen(filename) < 4 || strlen(filename) > 255)
-		return false;
-
-	string256 modelpath, tmppath;
-	modelpath = filename;
-	modelpath.subString(0, modelpath.length()-4, tmppath);
-	tmppath.append(".M2");
-	if (size <= tmppath.length())
-		return false;
-
-	Q_strcpy(path, size, tmppath.c_str());
-	normalizeFileName(path);
-	Q_strlwr(path);
-
 	return true;
 }
 

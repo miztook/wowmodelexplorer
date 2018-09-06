@@ -538,6 +538,7 @@
     <ClInclude Include="interface\IWMOSceneNode.h" />
     <ClInclude Include="interface\linklist.h" />
     <ClInclude Include="interface\pvrlib.h" />
+    <ClInclude Include="interface\wow_database70.h" />
     <ClInclude Include="interface\wow_dbc70.h" />
     <ClInclude Include="interface\wow_def.h" />
     <ClInclude Include="interface\obbox.h" />
@@ -779,6 +780,7 @@
     <ClCompile Include="TGAImageWriter.cpp" />
     <ClCompile Include="VertexIndexBuffer.cpp" />
     <ClCompile Include="wowEnvironment.cpp" />
+    <ClCompile Include="wow_database70.cpp" />
     <ClCompile Include="wow_dbc70.cpp" />
     <ClCompile Include="wow_def.cpp" />
     <ClCompile Include="wow_m2Action.cpp" />
