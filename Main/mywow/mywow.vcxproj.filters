@@ -947,7 +947,7 @@
     <ClInclude Include="interface\IVideoResource.h">
       <Filter>interface\video</Filter>
     </ClInclude>
-    <ClInclude Include="wow_dbc70.h">
+    <ClInclude Include="interface\wow_dbc70.h">
       <Filter>wow</Filter>
     </ClInclude>
   </ItemGroup>

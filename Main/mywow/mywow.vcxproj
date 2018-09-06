@@ -538,6 +538,7 @@
     <ClInclude Include="interface\IWMOSceneNode.h" />
     <ClInclude Include="interface\linklist.h" />
     <ClInclude Include="interface\pvrlib.h" />
+    <ClInclude Include="interface\wow_dbc70.h" />
     <ClInclude Include="interface\wow_def.h" />
     <ClInclude Include="interface\obbox.h" />
     <ClInclude Include="mpq_stormlib.h" />
@@ -612,7 +613,6 @@
     <ClInclude Include="interface\wow_wmoScene.h" />
     <ClInclude Include="interface\wow_wmo_structs.h" />
     <ClInclude Include="TGAImageWriter.h" />
-    <ClInclude Include="wow_dbc70.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAlphaTestDecalRenderer.cpp" />
