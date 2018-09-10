@@ -71,7 +71,13 @@ Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : Mess
 
 	FileSystem->writeLog(ELOG_RES, "start loading db files...\n");
 
+	WowDatabase70 = new wowDatabase70(WowEnvironment);
+	if (!WowDatabase70->init())
+		FileSystem->writeLog(ELOG_RES, "wow database 70 init failed...\n");
+
 	WowDatabase = new wowDatabase(WowEnvironment);
+	if (!WowDatabase->init())
+		FileSystem->writeLog(ELOG_RES, "wow database init failed...\n");
 
 	EngineSetting = new engineSetting();
 
@@ -129,6 +135,7 @@ Engine::~Engine()
 
 	delete EngineSetting;
 	delete WowDatabase;
+	delete WowDatabase70;
 	delete WowEnvironment;
 	delete FileSystem;
 	delete Timer;

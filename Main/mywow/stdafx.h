@@ -148,6 +148,9 @@
 //libpng
 #include "png.h"
 
+//pugixml
+#include "pugixml.hpp"
+
 #ifdef MW_PLATFORM_WINDOWS  //在非windows平台下暂时屏蔽下面的开源库
 
 #if defined(MW_USE_MPQ)

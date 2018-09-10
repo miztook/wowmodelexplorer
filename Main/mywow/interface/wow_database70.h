@@ -6,16 +6,43 @@
 
 class wowEnvironment;
 
+class CFieldStructure
+{
+public:
+	string256 name;
+	string256 type;
+	bool isKey;
+	bool needIndex;
+	u32 arraySize;
+	s32 id;
+
+	s32 pos;
+	bool isCommonData;
+	bool isRelationshipData;
+};
+
+class CTableStructure
+{
+public:
+	string256 name;
+	string256 file;
+	std::vector<CFieldStructure> fields;
+};
+
 class wowDatabase70
 {
 public:
 	explicit wowDatabase70(wowEnvironment* env);
 
-	bool init(const c8* xmlfile);
+	bool init();
 
 	~wowDatabase70();
 
 private:
+	bool initFromXml();
+
+private:
 	wowEnvironment*		Environment;
 
+	std::vector<CTableStructure>  DbStructures;
 };

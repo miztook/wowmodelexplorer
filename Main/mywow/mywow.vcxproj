@@ -159,7 +159,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\pugixml\src</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -176,7 +176,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;WOW_VER=60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\pugixml\src</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -193,7 +193,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;FPM_64BIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\pugixml\src</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -210,7 +210,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;WOW_VER=60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\pugixml\src</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -228,7 +228,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\pugixml\src</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>MaxSpeed</Optimization>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -257,7 +257,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;WOW_VER=60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\pugixml\src</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>MaxSpeed</Optimization>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -286,7 +286,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;FPM_64BIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\pugixml\src</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>MaxSpeed</Optimization>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -315,7 +315,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;WOW_VER=60;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\interface;.\;..\..\Dependency\CascLib;..\..\Dependency\stormlib;..\..\Dependency\freetype-2.5.5\include;..\..\Dependency\jpeglib;..\..\Dependency\lpng1621;..\..\Dependency\pugixml\src</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <Optimization>MaxSpeed</Optimization>
       <WholeProgramOptimization>true</WholeProgramOptimization>

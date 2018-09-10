@@ -12,6 +12,7 @@ using dbtable = dbc;
 #endif
 
 #include "wow_database.h"
+#include "wow_database70.h"
 #include "wowEnvironment.h"
 #include "wow_animation.h"
 #include "wow_particle.h"

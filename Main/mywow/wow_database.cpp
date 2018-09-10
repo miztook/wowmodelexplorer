@@ -36,40 +36,49 @@ void g_callbackWorldM2(const c8* filename, void* param)
 }
 
 wowDatabase::wowDatabase( wowEnvironment* env )
-	: Environment(env)
+: Environment(env)
 {
-	AnimDB = std::make_unique<animDB>(env);
-	AreaTableDB = std::make_unique< areaTableDB>(env);
-	CharClassesDB = std::make_unique< charClassesDB>(env);
-	CharFacialHairDB = std::make_unique< charFacialHairDB>(env);
-	CharHairGeosetsDB = std::make_unique< charHairGeosetsDB>(env);
-	CharRacesDB = std::make_unique< charRacesDB>(env);
-	CharSectionsDB = std::make_unique< charSectionsDB>(env);
-	CreatureTypeDB = std::make_unique< creatureTypeDB>(env);
-	CreatureModelDB = std::make_unique< creatureModelDB>(env);
-	CreatureDisplayInfoDB = std::make_unique< creatureDisplayInfoDB>(env);
-	CreatureDisplayInfoExtraDB = std::make_unique< creatureDisplayInfoExtraDB>(env);
-	HelmGeosetDB = std::make_unique< helmGeosetDB>(env);
-	ItemDisplayDB = std::make_unique< itemDisplayDB>(env);
-	ItemSetDB = std::make_unique< itemSetDB>(env);
-	ItemSubClassDB = std::make_unique< itemSubClassDB>(env);
-	StartOutFitDB = std::make_unique< startOutfitDB>(env);
 
-	ItemDB = std::make_unique< itemDB>(env);
+}
+
+wowDatabase::~wowDatabase()
+{
+}
+
+bool wowDatabase::init()
+{
+	AnimDB = std::make_unique<animDB>(Environment);
+	AreaTableDB = std::make_unique< areaTableDB>(Environment);
+	CharClassesDB = std::make_unique< charClassesDB>(Environment);
+	CharFacialHairDB = std::make_unique< charFacialHairDB>(Environment);
+	CharHairGeosetsDB = std::make_unique< charHairGeosetsDB>(Environment);
+	CharRacesDB = std::make_unique< charRacesDB>(Environment);
+	CharSectionsDB = std::make_unique< charSectionsDB>(Environment);
+	CreatureTypeDB = std::make_unique< creatureTypeDB>(Environment);
+	CreatureModelDB = std::make_unique< creatureModelDB>(Environment);
+	CreatureDisplayInfoDB = std::make_unique< creatureDisplayInfoDB>(Environment);
+	CreatureDisplayInfoExtraDB = std::make_unique< creatureDisplayInfoExtraDB>(Environment);
+	HelmGeosetDB = std::make_unique< helmGeosetDB>(Environment);
+	ItemDisplayDB = std::make_unique< itemDisplayDB>(Environment);
+	ItemSetDB = std::make_unique< itemSetDB>(Environment);
+	ItemSubClassDB = std::make_unique< itemSubClassDB>(Environment);
+	StartOutFitDB = std::make_unique< startOutfitDB>(Environment);
+
+	ItemDB = std::make_unique< itemDB>(Environment);
 
 #if WOW_VER >= 70
-	NpcModelItemSlotDisplayInfoDB = std::make_unique< npcModelItemSlotDisplayInfoDB>(env);
-	ItemDisplayInfoMaterialResDB = std::make_unique< itemDisplayInfoMaterialResDB>(env);
-	ItemModifiedAppearanceDB = std::make_unique< itemModifiedAppearanceDB>(env);
-	ItemAppearanceDB = std::make_unique< itemAppearanceDB>(env);
-	TextureFileDataDB = std::make_unique< textureFileDataDB>(env);
-	ModelFileDataDB = std::make_unique< modelFileDataDB>(env);
+	NpcModelItemSlotDisplayInfoDB = std::make_unique< npcModelItemSlotDisplayInfoDB>(Environment);
+	ItemDisplayInfoMaterialResDB = std::make_unique< itemDisplayInfoMaterialResDB>(Environment);
+	ItemModifiedAppearanceDB = std::make_unique< itemModifiedAppearanceDB>(Environment);
+	ItemAppearanceDB = std::make_unique< itemAppearanceDB>(Environment);
+	TextureFileDataDB = std::make_unique< textureFileDataDB>(Environment);
+	ModelFileDataDB = std::make_unique< modelFileDataDB>(Environment);
 #elif WOW_VER >= 60
 	NpcModelItemSlotDisplayInfoDB = nullptr;
 	ItemDisplayInfoMaterialResDB = nullptr;
-	ItemModifiedAppearanceDB = std::make_unique< itemModifiedAppearanceDB>(env);
-	ItemAppearanceDB = std::make_unique< itemAppearanceDB>(env);
-	TextureFileDataDB = std::make_unique< textureFileDataDB>(env);
+	ItemModifiedAppearanceDB = std::make_unique< itemModifiedAppearanceDB>(Environment);
+	ItemAppearanceDB = std::make_unique< itemAppearanceDB>(Environment);
+	TextureFileDataDB = std::make_unique< textureFileDataDB>(Environment);
 	ModelFileDataDB = nullptr;
 #else
 	NpcModelItemSlotDisplayInfoDB = nullptr;
@@ -81,20 +90,13 @@ wowDatabase::wowDatabase( wowEnvironment* env )
 #endif
 
 #if WOW_VER == 60
-	FileDataDB = std::make_unique<fileDataDB>(env);
+	FileDataDB = std::make_unique<fileDataDB>(Environment);
 #else
 	FileDataDB = nullptr;
 #endif
 
-	MapDB = std::make_unique<mapDB>(env);
-}
+	MapDB = std::make_unique<mapDB>(Environment);
 
-wowDatabase::~wowDatabase()
-{
-}
-
-bool wowDatabase::init()
-{
 	return true;
 }
 

@@ -6,6 +6,7 @@
 class COSInfo;
 class wowEnvironment;
 class wowDatabase;
+class wowDatabase70;
 class IFileSystem;
 class IVideoDriver;
 class IHardwareBufferServices;
@@ -109,6 +110,7 @@ public:
 private:
 	SWindowInfo WindowInfo;
 	COSInfo*	OSInfo;
+	wowDatabase70*		WowDatabase70;
 	wowDatabase*		WowDatabase;
 	wowEnvironment*		WowEnvironment;
 	IFileSystem*		FileSystem;

@@ -11,6 +11,7 @@
 //#pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "jpeglib.lib")
 #pragma comment(lib, "libpng.lib")
+#pragma comment(lib, "pugixml.lib")
 #pragma comment(lib, "wininet.lib") 
 
 #ifdef MW_COMPILE_WITH_OPENGL
