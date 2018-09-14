@@ -44,7 +44,7 @@ struct SEngineInitParam
 	{
 		memset(baseDir, 0, sizeof(baseDir));
 		memset(logDir, 0, sizeof(logDir));
-        osversion = 0.0f;
+		osversion = 0.0f;
 		ignoreSetting = false;
 		useCompress = true;
 		outputFileName = false;
@@ -52,7 +52,7 @@ struct SEngineInitParam
 
 	c8 baseDir[QMAX_PATH];
 	c8 logDir[QMAX_PATH];
-    float osversion;
+	float osversion;
 	bool ignoreSetting;
 	bool useCompress;
 	bool outputFileName;
@@ -64,10 +64,10 @@ public:
 	Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo);
 	~Engine();
 
-	static SWindowInfo createWindow( const char* caption, const dimension2du& windowSize, f32 scale = 1.0f, bool fullscreen=false, bool hide=false );
+	static SWindowInfo createWindow(const char* caption, const dimension2du& windowSize, f32 scale = 1.0f, bool fullscreen = false, bool hide = false);
 
 	bool initDriver(E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread);
-    
+
 	void initSceneManager();
 
 	void setMessageHandler(IMessageHandler* messageHandler) { MessageHandler = messageHandler; }
@@ -78,7 +78,7 @@ public:
 
 	void setSceneManager(ISceneManager* smgr) { SceneManager = smgr; }
 
-public:	
+public:
 	SWindowInfo getWindowInfo() const { return WindowInfo; }
 	COSInfo* getOSInfo() const { return OSInfo; }
 	wowDatabase* getWowDatabase() const { return WowDatabase; }
@@ -103,7 +103,7 @@ public:
 	ITerrainServices*	getTerrainServices() const { return TerrainServices; }
 	IInputReader*	getInputReader() const { return InputReader; }
 	IGestureReader*		getGestureReader() const { return GestureReader; }
-	engineSetting*		getEngineSetting() const { return EngineSetting; } 
+	engineSetting*		getEngineSetting() const { return EngineSetting; }
 	CTimer*		getTimer() const { return Timer; }
 	bool isDXFamily() const { return m_IsDXFamily; }
 
@@ -136,7 +136,7 @@ private:
 	engineSetting*		EngineSetting;
 	CTimer*			Timer;
 	IMessageHandler*		MessageHandler;
-	bool			m_IsDXFamily;	
+	bool			m_IsDXFamily;
 };
 
 extern Engine* g_Engine;

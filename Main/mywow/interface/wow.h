@@ -5,12 +5,6 @@
 #include "wow_dbc.h"
 #include "wow_dbc70.h"
 
-#if WOW_VER >= 70
-using dbtable = dbc70;
-#else
-using dbtable = dbc;
-#endif
-
 #include "wow_database.h"
 #include "wow_database70.h"
 #include "wowEnvironment.h"

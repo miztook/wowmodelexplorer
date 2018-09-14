@@ -10,88 +10,86 @@
 #define DATABASEFILE	"database80.xml"
 #endif
 
-wowDatabase70::wowDatabase70(wowEnvironment* env)
-: Environment(env)
+namespace WowLegion
 {
-
-}
-
-bool wowDatabase70::init()
-{
-	if (!initFromXml())
-		return false;
-
-
-
-	return true;
-}
-
-wowDatabase70::~wowDatabase70()
-{
-
-}
-
-bool wowDatabase70::initFromXml()
-{
-	string_path path = Environment->getFileSystem()->getDataDirectory();
-	path.normalizeDir();
-	path.append(DATABASEFILE);
-	path.normalize();
-
-	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file(path.c_str());
-	if (result.status != pugi::status_ok)
-		return false;
-
-	auto root = doc.first_child();
-	for (auto dbtable : root.children("table"))
+	wowDatabase70::wowDatabase70(wowEnvironment* env)
+		: Environment(env)
 	{
-		CTableStructure tblStruct;
+	}
 
-		tblStruct.name = dbtable.attribute("name").as_string();
+	bool wowDatabase70::init()
+	{
+		if (!initFromXml())
+			return false;
 
-		auto attr_dbfile = dbtable.attribute("dbfile");
-		if (!attr_dbfile.empty())
-			tblStruct.file = attr_dbfile.as_string();
-		else
-			tblStruct.file = tblStruct.name;
+		return true;
+	}
 
-		int fieldId = 0;
-		for (auto dbfield : dbtable.children("field"))
+	wowDatabase70::~wowDatabase70()
+	{
+	}
+
+	bool wowDatabase70::initFromXml()
+	{
+		string_path path = Environment->getFileSystem()->getDataDirectory();
+		path.normalizeDir();
+		path.append(DATABASEFILE);
+		path.normalize();
+
+		pugi::xml_document doc;
+		pugi::xml_parse_result result = doc.load_file(path.c_str());
+		if (result.status != pugi::status_ok)
+			return false;
+
+		auto root = doc.first_child();
+		for (auto dbtable : root.children("table"))
 		{
-			CFieldStructure fieldStruct;
+			CTableStructure tblStruct;
 
-			auto attr_name = dbfield.attribute("name");
-			auto attr_type = dbfield.attribute("type");
-			auto attr_key = dbfield.attribute("primary");
-			auto attr_arraySize = dbfield.attribute("arraySize");
-			auto attr_index = dbfield.attribute("createIndex");
-			auto attr_pos = dbfield.attribute("pos");
-			auto attr_commonData = dbfield.attribute("commonData");
-			auto attr_relationshipData = dbfield.attribute("relationshipData");
+			tblStruct.name = dbtable.attribute("name").as_string();
 
-			if (!attr_name.empty() && !attr_type.empty())
+			auto attr_dbfile = dbtable.attribute("dbfile");
+			if (!attr_dbfile.empty())
+				tblStruct.file = attr_dbfile.as_string();
+			else
+				tblStruct.file = tblStruct.name;
+
+			int fieldId = 0;
+			for (auto dbfield : dbtable.children("field"))
 			{
-				fieldStruct.name = attr_name.as_string();
-				fieldStruct.type = attr_type.as_string();
+				CFieldStructure fieldStruct;
 
-				fieldStruct.isKey = !attr_key.empty();
-				fieldStruct.needIndex = !attr_index.empty();
-				fieldStruct.arraySize = attr_arraySize.as_uint();
+				auto attr_name = dbfield.attribute("name");
+				auto attr_type = dbfield.attribute("type");
+				auto attr_key = dbfield.attribute("primary");
+				auto attr_arraySize = dbfield.attribute("arraySize");
+				auto attr_index = dbfield.attribute("createIndex");
+				auto attr_pos = dbfield.attribute("pos");
+				auto attr_commonData = dbfield.attribute("commonData");
+				auto attr_relationshipData = dbfield.attribute("relationshipData");
 
-				fieldStruct.pos = attr_pos.as_int();
-				fieldStruct.isCommonData = attr_commonData.as_bool();
-				fieldStruct.isRelationshipData = attr_relationshipData.as_bool();
+				if (!attr_name.empty() && !attr_type.empty())
+				{
+					fieldStruct.name = attr_name.as_string();
+					fieldStruct.type = attr_type.as_string();
 
-				//add
-				tblStruct.fields.emplace_back(fieldStruct);
+					fieldStruct.isKey = !attr_key.empty();
+					fieldStruct.needIndex = !attr_index.empty();
+					fieldStruct.arraySize = attr_arraySize.as_uint();
+
+					fieldStruct.pos = attr_pos.as_int();
+					fieldStruct.isCommonData = attr_commonData.as_bool();
+					fieldStruct.isRelationshipData = attr_relationshipData.as_bool();
+
+					//add
+					tblStruct.fields.emplace_back(fieldStruct);
+				}
+
+				++fieldId;
 			}
 
-			++fieldId;
+			DbStructureMap.insert(std::pair<string256, CTableStructure>(tblStruct.name, tblStruct));
 		}
-
-		DbStructures.emplace_back(tblStruct);
+		return true;
 	}
-	return true;
-}
-
+};

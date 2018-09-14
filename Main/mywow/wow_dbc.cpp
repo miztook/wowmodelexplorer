@@ -2,182 +2,184 @@
 #include "wow_dbc.h"
 #include "mywow.h"
 
-dbc::dbc( wowEnvironment* env, const c8* filename, bool tmp )
-	: minorVersion(0)
+namespace WowClassic
 {
-	_recordStart = nullptr;
-	_stringStart = nullptr;
-
-	nRecords = 0;
-	nFields = 0;
-	RecordSize = 0;
-	StringSize = 0;
-	nActualRecords = 0;
-
-	string512 path = filename;
-	IMemFile* file = env->openFile(path.c_str());
-
-	if (!file)
+	dbc::dbc(wowEnvironment* env, const c8* filename, bool tmp)
+		: minorVersion(0)
 	{
-		if (hasFileExtensionA(path.c_str(), "dbc"))
-			path.changeExt(".dbc", ".db2");
+		_recordStart = nullptr;
+		_stringStart = nullptr;
 
-		file = env->openFile(path.c_str());
-	}
-
-	ASSERT(file);
-
-	IFileSystem* fs = env->getFileSystem();
-	
-	if (!file)
-	{
-		fs->writeLog(ELOG_RES, "cannot open db file: %s", path.c_str());
-		return;
-	}
-
-	const c8* magic = (const c8*)file->getBuffer();
-	int db_type = 0;
-
-	if (strncmp(magic, "WDBC", 4) == 0)
-		db_type = 1;
-	else if (strncmp(magic, "WDB2", 4) == 0)
-		db_type = 2;
-	else if (strncmp(magic, "WDB5", 4) == 0)
-		db_type = 5;
-	else if (strncmp(magic, "WDB6", 4) == 0)
-		db_type = 6;
-	else if (strncmp(magic, "WDC1", 4) == 0)
-		db_type = 7;
-	else if (strncmp(magic, "WDC2", 4) == 0)
-		db_type = 8;
-	else
-		ASSERT(false);
-
-	if (db_type == 1)		//dbc
-		readWDBC(env, file, tmp);
-	else if(db_type == 2)		//db2
-		readWDB2(env, file, tmp);
-// 	else if (db_type == 5)		//db5
-// 		readWDB5(env, file, tmp);
-// 	else if (db_type == 6)	//db6
-// 		readWDB6(env, file, tmp);
-// 	else if (db_type == 8)	//dc2
-// 		readWDC2(env, file, tmp);
-	else
-		ASSERT(false);
-
-	delete file;
-}
-
-dbc::~dbc()
-{
-	delete[] _stringStart;
-	delete[] _recordStart;
-}
-
-void dbc::readWDBC(wowEnvironment* env, IMemFile* file, bool tmp)
-{
-	IFileSystem* fs = env->getFileSystem();
-
-	dbcHeader header;
-	file->read(&header, sizeof(header));
-
-	nRecords = header._nRecords;
-	nFields = header._nFields;
-	RecordSize = header._recordSize;
-	StringSize = header._stringsize;
-	nActualRecords = nRecords;
-	
-	fs->writeLog(ELOG_RES, "db file %s: field num %d, record size %d, record num %d, string size %d", 
-		file->getFileName(), nFields, RecordSize, nActualRecords, StringSize);
-
-	u32 current = file->getPos();
-	_recordStart = new u8[RecordSize * nActualRecords];
-	_stringStart = new u8[StringSize];
-
-	file->read(_recordStart, RecordSize * nActualRecords);			//records
-	file->seek(current + RecordSize * nRecords);
-	file->read(_stringStart, StringSize);		//string
-
-	ASSERT(file->getPos() == file->getSize());
-
-	//build map
-	if (!tmp)		//临时文件不写map
-	{
-		for (u32 i=0; i<nActualRecords; ++i)
-		{
-			u32 id =  *reinterpret_cast<u32*>(_recordStart + i * RecordSize);
-			RecordLookup32[id] = i;
-		}
-	}
-
-	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
-}
-
-void dbc::readWDB2(wowEnvironment* env, IMemFile* file, bool tmp)
-{
-	IFileSystem* fs = env->getFileSystem();
-
-	db2Header header;
-	file->read(&header, sizeof(header));
-
-	minorVersion = header.clientminor;
-	nRecords = header._nRecords;
-	nFields = header._nFields;
-	RecordSize = header._recordSize;
-	StringSize = header._stringsize;
-	nActualRecords = nRecords;
-
-	bool isSparse = (header.min_id != 0 && header.max_id != 0);
-	if (isSparse)
-	{
+		nRecords = 0;
+		nFields = 0;
+		RecordSize = 0;
+		StringSize = 0;
 		nActualRecords = 0;
-		for (u32 i= header.min_id; i <= header.max_id; ++i)
+
+		string512 path = filename;
+		IMemFile* file = env->openFile(path.c_str());
+
+		if (!file)
 		{
-			u32 avail;
-			file->read(&avail, 4);
-			if (avail == 0)
-				continue;
-			if(!tmp)		//临时文件不写map
-			{
-				RecordSparseLookup32[nActualRecords] = i;
-			}
-			++nActualRecords;
+			if (hasFileExtensionA(path.c_str(), "dbc"))
+				path.changeExt(".dbc", ".db2");
+
+			file = env->openFile(path.c_str());
 		}
 
-		//skip
-		file->seek((header.max_id - header.min_id + 1) * 2, true);
+		ASSERT(file);
+
+		IFileSystem* fs = env->getFileSystem();
+
+		if (!file)
+		{
+			fs->writeLog(ELOG_RES, "cannot open db file: %s", path.c_str());
+			return;
+		}
+
+		const c8* magic = (const c8*)file->getBuffer();
+		int db_type = 0;
+
+		if (strncmp(magic, "WDBC", 4) == 0)
+			db_type = 1;
+		else if (strncmp(magic, "WDB2", 4) == 0)
+			db_type = 2;
+		else if (strncmp(magic, "WDB5", 4) == 0)
+			db_type = 5;
+		else if (strncmp(magic, "WDB6", 4) == 0)
+			db_type = 6;
+		else if (strncmp(magic, "WDC1", 4) == 0)
+			db_type = 7;
+		else if (strncmp(magic, "WDC2", 4) == 0)
+			db_type = 8;
+		else
+			ASSERT(false);
+
+		if (db_type == 1)		//dbc
+			readWDBC(env, file, tmp);
+		else if (db_type == 2)		//db2
+			readWDB2(env, file, tmp);
+		// 	else if (db_type == 5)		//db5
+		// 		readWDB5(env, file, tmp);
+		// 	else if (db_type == 6)	//db6
+		// 		readWDB6(env, file, tmp);
+		// 	else if (db_type == 8)	//dc2
+		// 		readWDC2(env, file, tmp);
+		else
+			ASSERT(false);
+
+		delete file;
 	}
-	
-	fs->writeLog(ELOG_RES, "db file %s: field num %d, record size %d, record num %d, string size %d", 
-		file->getFileName(), nFields, RecordSize, nActualRecords, StringSize);
 
-	u32 current = file->getPos();
-	_recordStart = new u8[RecordSize * nActualRecords];
-	_stringStart = new u8[StringSize];
-
-	file->read(_recordStart, RecordSize * nActualRecords);			//records
-	file->seek(current + RecordSize * nRecords);
-	file->read(_stringStart, StringSize);		//string
-
-	ASSERT(file->getPos() == file->getSize());
-
-	//build map
-	if (!isSparse && !tmp)		//临时文件不写map
+	dbc::~dbc()
 	{
-		for (u32 i=0; i<nActualRecords; ++i)
-		{
-			u32 id =  *reinterpret_cast<u32*>(_recordStart + i * RecordSize);
-			RecordLookup32[id] = i;
-		}
+		delete[] _stringStart;
+		delete[] _recordStart;
 	}
 
-	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
-}
+	void dbc::readWDBC(wowEnvironment* env, IMemFile* file, bool tmp)
+	{
+		IFileSystem* fs = env->getFileSystem();
 
-/*
-void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
-{
+		dbcHeader header;
+		file->read(&header, sizeof(header));
+
+		nRecords = header._nRecords;
+		nFields = header._nFields;
+		RecordSize = header._recordSize;
+		StringSize = header._stringsize;
+		nActualRecords = nRecords;
+
+		fs->writeLog(ELOG_RES, "db file %s: field num %d, record size %d, record num %d, string size %d",
+			file->getFileName(), nFields, RecordSize, nActualRecords, StringSize);
+
+		u32 current = file->getPos();
+		_recordStart = new u8[RecordSize * nActualRecords];
+		_stringStart = new u8[StringSize];
+
+		file->read(_recordStart, RecordSize * nActualRecords);			//records
+		file->seek(current + RecordSize * nRecords);
+		file->read(_stringStart, StringSize);		//string
+
+		ASSERT(file->getPos() == file->getSize());
+
+		//build map
+		if (!tmp)		//临时文件不写map
+		{
+			for (u32 i = 0; i < nActualRecords; ++i)
+			{
+				u32 id = *reinterpret_cast<u32*>(_recordStart + i * RecordSize);
+				RecordLookup32[id] = i;
+			}
+		}
+
+		fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
+	}
+
+	void dbc::readWDB2(wowEnvironment* env, IMemFile* file, bool tmp)
+	{
+		IFileSystem* fs = env->getFileSystem();
+
+		db2Header header;
+		file->read(&header, sizeof(header));
+
+		minorVersion = header.clientminor;
+		nRecords = header._nRecords;
+		nFields = header._nFields;
+		RecordSize = header._recordSize;
+		StringSize = header._stringsize;
+		nActualRecords = nRecords;
+
+		bool isSparse = (header.min_id != 0 && header.max_id != 0);
+		if (isSparse)
+		{
+			nActualRecords = 0;
+			for (u32 i = header.min_id; i <= header.max_id; ++i)
+			{
+				u32 avail;
+				file->read(&avail, 4);
+				if (avail == 0)
+					continue;
+				if (!tmp)		//临时文件不写map
+				{
+					RecordSparseLookup32[nActualRecords] = i;
+				}
+				++nActualRecords;
+			}
+
+			//skip
+			file->seek((header.max_id - header.min_id + 1) * 2, true);
+		}
+
+		fs->writeLog(ELOG_RES, "db file %s: field num %d, record size %d, record num %d, string size %d",
+			file->getFileName(), nFields, RecordSize, nActualRecords, StringSize);
+
+		u32 current = file->getPos();
+		_recordStart = new u8[RecordSize * nActualRecords];
+		_stringStart = new u8[StringSize];
+
+		file->read(_recordStart, RecordSize * nActualRecords);			//records
+		file->seek(current + RecordSize * nRecords);
+		file->read(_stringStart, StringSize);		//string
+
+		ASSERT(file->getPos() == file->getSize());
+
+		//build map
+		if (!isSparse && !tmp)		//临时文件不写map
+		{
+			for (u32 i = 0; i < nActualRecords; ++i)
+			{
+				u32 id = *reinterpret_cast<u32*>(_recordStart + i * RecordSize);
+				RecordLookup32[id] = i;
+			}
+		}
+
+		fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
+	}
+
+	/*
+	void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
+	{
 	IFileSystem* fs = env->getFileSystem();
 
 	db5Header header;
@@ -197,133 +199,133 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 	Fields = new SField[nFields];
 	for (u32 i=0; i<nFields; ++i)
 	{
-		s16 size;
-		file->read(&size, (u32)sizeof(s16));
-		u16 offset;
-		file->read(&offset, (u32)sizeof(u16));
+	s16 size;
+	file->read(&size, (u32)sizeof(s16));
+	u16 offset;
+	file->read(&offset, (u32)sizeof(u16));
 
-		Fields[i].size = (32 - size) / 8;
-		Fields[i].position = offset;
+	Fields[i].size = (32 - size) / 8;
+	Fields[i].position = offset;
 	}
 
 	if (HasDataOffsetBlock)
 	{
-		u32 curPos = file->getPos();
-		file->seek(header._stringsize);
+	u32 curPos = file->getPos();
+	file->seek(header._stringsize);
 
-		nActualRecords = 0;
-		u32 nTotalSize = 0;
-		for (u32 i = header.min_id; i <= header.max_id; ++i)
-		{
-			SOffsetMapEntry entry;
-			file->read(&entry, sizeof(SOffsetMapEntry));
+	nActualRecords = 0;
+	u32 nTotalSize = 0;
+	for (u32 i = header.min_id; i <= header.max_id; ++i)
+	{
+	SOffsetMapEntry entry;
+	file->read(&entry, sizeof(SOffsetMapEntry));
 
-			if (entry.offset > 0 && entry.length > 0)
-			{
-				ASSERT(entry.offset >= curPos);			
-				IDs.push_back(i);
-				OffsetMaps.push_back(entry);
-				nTotalSize += entry.length;
+	if (entry.offset > 0 && entry.length > 0)
+	{
+	ASSERT(entry.offset >= curPos);
+	IDs.push_back(i);
+	OffsetMaps.push_back(entry);
+	nTotalSize += entry.length;
 
-				++nActualRecords;
-			}
-		}
+	++nActualRecords;
+	}
+	}
 
-		//整合recordstart
-		const u32 indexDataStart = file->getPos();
-		_recordStart = new u8[nTotalSize];
-		u32 curOffset = 0;
-		for (auto& entry : OffsetMaps)
-		{
-			file->seek(entry.offset);
-			file->read(&_recordStart[curOffset], entry.length);
+	//整合recordstart
+	const u32 indexDataStart = file->getPos();
+	_recordStart = new u8[nTotalSize];
+	u32 curOffset = 0;
+	for (auto& entry : OffsetMaps)
+	{
+	file->seek(entry.offset);
+	file->read(&_recordStart[curOffset], entry.length);
 
-			entry.offset = curOffset;
-			curOffset += entry.length;
-		}
-		file->seek(indexDataStart);
-		_stringStart = nullptr;
+	entry.offset = curOffset;
+	curOffset += entry.length;
+	}
+	file->seek(indexDataStart);
+	_stringStart = nullptr;
 	}
 	else   //no dataoffset
 	{
-		u32 current = file->getPos();
-		_recordStart = new u8[RecordSize * nRecords];
-		_stringStart = new u8[StringSize];
+	u32 current = file->getPos();
+	_recordStart = new u8[RecordSize * nRecords];
+	_stringStart = new u8[StringSize];
 
-		file->read(_recordStart, RecordSize * nRecords);			//records
-		file->read(_stringStart, StringSize);		//string
+	file->read(_recordStart, RecordSize * nRecords);			//records
+	file->read(_stringStart, StringSize);		//string
 
-		//IDs
-		if (HasIndex)
-		{
-			IDs.resize(nRecords);
-			file->read(IDs.data(), nRecords * sizeof(u32));
-		}
-		else
-		{
-			u16 indexPos = Fields[header.idindex].position;
-			u16 indexSize = Fields[header.idindex].size;
-			u32 indexMask = 0xFFFFFFFF;
-			if (indexSize == 1)
-				indexMask = 0x000000FF;
-			else if (indexSize == 2)
-				indexMask = 0x0000FFFF;
-			else if (indexSize == 3)
-				indexMask = 0x00FFFFFF;
+	//IDs
+	if (HasIndex)
+	{
+	IDs.resize(nRecords);
+	file->read(IDs.data(), nRecords * sizeof(u32));
+	}
+	else
+	{
+	u16 indexPos = Fields[header.idindex].position;
+	u16 indexSize = Fields[header.idindex].size;
+	u32 indexMask = 0xFFFFFFFF;
+	if (indexSize == 1)
+	indexMask = 0x000000FF;
+	else if (indexSize == 2)
+	indexMask = 0x0000FFFF;
+	else if (indexSize == 3)
+	indexMask = 0x00FFFFFF;
 
-			for (u32 i = 0; i < nRecords; ++i)
-			{
-				u8* ofs = _recordStart + i * RecordSize;
-				u32 val;
-				memcpy(&val, ofs + indexPos, indexSize);
-				val &= indexMask;
-				IDs.push_back(val);
-			};
-		}
+	for (u32 i = 0; i < nRecords; ++i)
+	{
+	u8* ofs = _recordStart + i * RecordSize;
+	u32 val;
+	memcpy(&val, ofs + indexPos, indexSize);
+	val &= indexMask;
+	IDs.push_back(val);
+	};
+	}
 
-		for (u32 i = 0; i < nActualRecords; ++i)
-		{
-			SOffsetMapEntry entry;
-			entry.offset = i * RecordSize;
-			entry.length = RecordSize;
-			OffsetMaps.push_back(entry);
-		}
+	for (u32 i = 0; i < nActualRecords; ++i)
+	{
+	SOffsetMapEntry entry;
+	entry.offset = i * RecordSize;
+	entry.length = RecordSize;
+	OffsetMaps.push_back(entry);
+	}
 	}
 
 	//relationship
 	if (HasRelationshipData)
 	{
-		s32 relationshipDataSize = nRecords * sizeof(s32);
-		file->seek(nRecords * sizeof(s32), true);
+	s32 relationshipDataSize = nRecords * sizeof(s32);
+	file->seek(nRecords * sizeof(s32), true);
 	}
 
 	//copy table
 	if (HasCopyData)
 	{
-		ASSERT(header.copydatasize % sizeof(SCopyTableEntry) == 0);
-		u32 nbEntries = (u32)(header.copydatasize / sizeof(SCopyTableEntry));
+	ASSERT(header.copydatasize % sizeof(SCopyTableEntry) == 0);
+	u32 nbEntries = (u32)(header.copydatasize / sizeof(SCopyTableEntry));
 
-		std::vector<SCopyTableEntry> copyTables;
-		copyTables.resize(nbEntries);
-		file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
+	std::vector<SCopyTableEntry> copyTables;
+	copyTables.resize(nbEntries);
+	file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
 
-		IDs.reserve(nActualRecords + nbEntries);
-		OffsetMaps.reserve(nActualRecords + nbEntries);
+	IDs.reserve(nActualRecords + nbEntries);
+	OffsetMaps.reserve(nActualRecords + nbEntries);
 
-		std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
-		for (u32 i = 0; i < nActualRecords; ++i)
-		{
-			IdToIndexMap[IDs[i]] = i;
-		}
+	std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
+	for (u32 i = 0; i < nActualRecords; ++i)
+	{
+	IdToIndexMap[IDs[i]] = i;
+	}
 
-		for (const auto& entry : copyTables)
-		{
-			IDs.push_back(entry.id_new_row);
-			u32 idx = IdToIndexMap[entry.id_copied_row];
-			OffsetMaps.push_back(OffsetMaps[idx]);
-		}
+	for (const auto& entry : copyTables)
+	{
+	IDs.push_back(entry.id_new_row);
+	u32 idx = IdToIndexMap[entry.id_copied_row];
+	OffsetMaps.push_back(OffsetMaps[idx]);
+	}
 
-		nActualRecords += nbEntries;
+	nActualRecords += nbEntries;
 	}
 
 	ASSERT(file->getPos() == file->getSize());
@@ -331,18 +333,18 @@ void dbc::readWDB5(wowEnvironment* env, IMemFile* file, bool tmp)
 	//build map
 	if (!tmp)		//临时文件不写map
 	{
-		for (u32 i = 0; i < (u32)IDs.size(); ++i)
-		{
-			u32 id = IDs[i];
-			RecordLookup32[id] = i;
-		}
+	for (u32 i = 0; i < (u32)IDs.size(); ++i)
+	{
+	u32 id = IDs[i];
+	RecordLookup32[id] = i;
+	}
 	}
 
 	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
-}
+	}
 
-void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
-{
+	void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
+	{
 	IFileSystem* fs = env->getFileSystem();
 
 	db6Header header;
@@ -361,175 +363,175 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 	Fields = new SField[nFields];
 	for (u32 i = 0; i < nFields; ++i)
 	{
-		s16 size;
-		file->read(&size, (u32)sizeof(s16));
-		u16 offset;
-		file->read(&offset, (u32)sizeof(u16));
+	s16 size;
+	file->read(&size, (u32)sizeof(s16));
+	u16 offset;
+	file->read(&offset, (u32)sizeof(u16));
 
-		Fields[i].size = (32 - size) / 8;
-		Fields[i].position = offset;
+	Fields[i].size = (32 - size) / 8;
+	Fields[i].position = offset;
 	}
 
 	if (HasDataOffsetBlock)
 	{
-		u32 curPos = file->getPos();
-		file->seek(header._stringsize);
+	u32 curPos = file->getPos();
+	file->seek(header._stringsize);
 
-		nActualRecords = 0;
-		u32 nTotalSize = 0;
-		for (u32 i = header.min_id; i <= header.max_id; ++i)
-		{
-			SOffsetMapEntry entry;
-			file->read(&entry, sizeof(SOffsetMapEntry));
+	nActualRecords = 0;
+	u32 nTotalSize = 0;
+	for (u32 i = header.min_id; i <= header.max_id; ++i)
+	{
+	SOffsetMapEntry entry;
+	file->read(&entry, sizeof(SOffsetMapEntry));
 
-			if (entry.offset > 0 && entry.length > 0)
-			{
-				ASSERT(entry.offset >= curPos);
-				IDs.push_back(i);
-				OffsetMaps.push_back(entry);
-				nTotalSize += entry.length;
+	if (entry.offset > 0 && entry.length > 0)
+	{
+	ASSERT(entry.offset >= curPos);
+	IDs.push_back(i);
+	OffsetMaps.push_back(entry);
+	nTotalSize += entry.length;
 
-				++nActualRecords;
-			}
-		}
+	++nActualRecords;
+	}
+	}
 
-		//整合recordstart
-		const u32 indexDataStart = file->getPos();
-		_recordStart = new u8[nTotalSize];
-		u32 curOffset = 0;
-		for (auto& entry : OffsetMaps)
-		{
-			file->seek(entry.offset);
-			file->read(&_recordStart[curOffset], entry.length);
+	//整合recordstart
+	const u32 indexDataStart = file->getPos();
+	_recordStart = new u8[nTotalSize];
+	u32 curOffset = 0;
+	for (auto& entry : OffsetMaps)
+	{
+	file->seek(entry.offset);
+	file->read(&_recordStart[curOffset], entry.length);
 
-			entry.offset = curOffset;
-			curOffset += entry.length;
-		}
-		file->seek(indexDataStart);
-		_stringStart = nullptr;
+	entry.offset = curOffset;
+	curOffset += entry.length;
+	}
+	file->seek(indexDataStart);
+	_stringStart = nullptr;
 	}
 	else   //no dataoffset
 	{
-		u32 current = file->getPos();
-		_recordStart = new u8[RecordSize * nRecords];
-		_stringStart = new u8[StringSize];
+	u32 current = file->getPos();
+	_recordStart = new u8[RecordSize * nRecords];
+	_stringStart = new u8[StringSize];
 
-		file->read(_recordStart, RecordSize * nRecords);			//records
-		file->read(_stringStart, StringSize);		//string
+	file->read(_recordStart, RecordSize * nRecords);			//records
+	file->read(_stringStart, StringSize);		//string
 
-		//IDs
-		if (HasIndex)
-		{
-			IDs.resize(nRecords);
-			file->read(IDs.data(), nRecords * sizeof(u32));
-		}
-		else
-		{
-			u16 indexPos = Fields[header.idindex].position;
-			u16 indexSize = Fields[header.idindex].size;
-			u32 indexMask = 0xFFFFFFFF;
-			if (indexSize == 1)
-				indexMask = 0x000000FF;
-			else if (indexSize == 2)
-				indexMask = 0x0000FFFF;
-			else if (indexSize == 3)
-				indexMask = 0x00FFFFFF;
+	//IDs
+	if (HasIndex)
+	{
+	IDs.resize(nRecords);
+	file->read(IDs.data(), nRecords * sizeof(u32));
+	}
+	else
+	{
+	u16 indexPos = Fields[header.idindex].position;
+	u16 indexSize = Fields[header.idindex].size;
+	u32 indexMask = 0xFFFFFFFF;
+	if (indexSize == 1)
+	indexMask = 0x000000FF;
+	else if (indexSize == 2)
+	indexMask = 0x0000FFFF;
+	else if (indexSize == 3)
+	indexMask = 0x00FFFFFF;
 
-			for (u32 i = 0; i < nRecords; ++i)
-			{
-				u8* ofs = _recordStart + i * RecordSize;
-				u32 val;
-				memcpy(&val, ofs + indexPos, indexSize);
-				val &= indexMask;
-				IDs.push_back(val);
-			};
-		}
+	for (u32 i = 0; i < nRecords; ++i)
+	{
+	u8* ofs = _recordStart + i * RecordSize;
+	u32 val;
+	memcpy(&val, ofs + indexPos, indexSize);
+	val &= indexMask;
+	IDs.push_back(val);
+	};
+	}
 
-		for (u32 i = 0; i < nRecords; ++i)
-		{
-			SOffsetMapEntry entry;
-			entry.offset = i * RecordSize;
-			entry.length = RecordSize;
-			OffsetMaps.push_back(entry);
-		}
+	for (u32 i = 0; i < nRecords; ++i)
+	{
+	SOffsetMapEntry entry;
+	entry.offset = i * RecordSize;
+	entry.length = RecordSize;
+	OffsetMaps.push_back(entry);
+	}
 	}
 
 	//relationship
 	if (HasRelationshipData)
 	{
-		s32 relationshipDataSize = nRecords * sizeof(s32);
-		file->seek(nRecords * sizeof(s32), true);
+	s32 relationshipDataSize = nRecords * sizeof(s32);
+	file->seek(nRecords * sizeof(s32), true);
 	}
 
 	//copy table
 	if (HasCopyData)
 	{
-		ASSERT(header.copydatasize % sizeof(SCopyTableEntry) == 0);
-		u32 nbEntries = (u32)(header.copydatasize / sizeof(SCopyTableEntry));
+	ASSERT(header.copydatasize % sizeof(SCopyTableEntry) == 0);
+	u32 nbEntries = (u32)(header.copydatasize / sizeof(SCopyTableEntry));
 
-		std::vector<SCopyTableEntry> copyTables;
-		copyTables.resize(nbEntries);
-		file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
+	std::vector<SCopyTableEntry> copyTables;
+	copyTables.resize(nbEntries);
+	file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
 
-		IDs.reserve(nActualRecords + nbEntries);
-		OffsetMaps.reserve(nActualRecords + nbEntries);
+	IDs.reserve(nActualRecords + nbEntries);
+	OffsetMaps.reserve(nActualRecords + nbEntries);
 
-		std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
-		for (u32 i = 0; i < nActualRecords; ++i)
-		{
-			IdToIndexMap[IDs[i]] = i;
-		}
+	std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
+	for (u32 i = 0; i < nActualRecords; ++i)
+	{
+	IdToIndexMap[IDs[i]] = i;
+	}
 
-		for (const auto& entry : copyTables)
-		{
-			IDs.push_back(entry.id_new_row);
-			u32 idx = IdToIndexMap[entry.id_copied_row];
-			OffsetMaps.push_back(OffsetMaps[idx]);
-		}
+	for (const auto& entry : copyTables)
+	{
+	IDs.push_back(entry.id_new_row);
+	u32 idx = IdToIndexMap[entry.id_copied_row];
+	OffsetMaps.push_back(OffsetMaps[idx]);
+	}
 
-		nActualRecords += nbEntries;
+	nActualRecords += nbEntries;
 	}
 
 	if (header.nonzero_column_table_size > 0)
 	{
-		u32 ncolumns;
-		file->read(&ncolumns, sizeof(ncolumns));
+	u32 ncolumns;
+	file->read(&ncolumns, sizeof(ncolumns));
 
-		CommonColumns = new SCommonColumn[ncolumns];
-		for (u32 c = 0; c < ncolumns; ++c)
-		{
-			u32 nrecs;
-			file->read(&nrecs, sizeof(nrecs));
+	CommonColumns = new SCommonColumn[ncolumns];
+	for (u32 c = 0; c < ncolumns; ++c)
+	{
+	u32 nrecs;
+	file->read(&nrecs, sizeof(nrecs));
 
-			u8 type;
-			file->read(&type, sizeof(type));
+	u8 type;
+	file->read(&type, sizeof(type));
 
-			if (nrecs == 0)
-				continue;
+	if (nrecs == 0)
+	continue;
 
-			u32 size = 4;
-			if (type == 1)
-				size = 2;
-			else if (type == 2)
-				size = 1;
+	u32 size = 4;
+	if (type == 1)
+	size = 2;
+	else if (type == 2)
+	size = 1;
 
-			std::map < u32, u32> recmap;
-			for (u32 i = 0; i < nrecs; ++i)
-			{
-				u32 id;
-				file->read(&id, sizeof(id));
+	std::map < u32, u32> recmap;
+	for (u32 i = 0; i < nrecs; ++i)
+	{
+	u32 id;
+	file->read(&id, sizeof(id));
 
-				u32 val;
-				file->read(&val, size);
+	u32 val;
+	file->read(&val, size);
 
-				recmap[id] = val;
-			}
+	recmap[id] = val;
+	}
 
-			SCommonColumn commonColumn;
-			commonColumn.recordmap = std::move(recmap);
-			commonColumn.type = type;
-			CommonColumns[c] = std::move(commonColumn);
-		}
+	SCommonColumn commonColumn;
+	commonColumn.recordmap = std::move(recmap);
+	commonColumn.type = type;
+	CommonColumns[c] = std::move(commonColumn);
+	}
 	}
 
 	ASSERT(file->getPos() == file->getSize());
@@ -537,18 +539,18 @@ void dbc::readWDB6(wowEnvironment* env, IMemFile* file, bool tmp)
 	//build map
 	if (!tmp && HasIndex)		//临时文件不写map
 	{
-		for (u32 i = 0; i < nRecords; ++i)
-		{
-			u32 id = IDs[i];
-			RecordLookup32[id] = i;
-		}
+	for (u32 i = 0; i < nRecords; ++i)
+	{
+	u32 id = IDs[i];
+	RecordLookup32[id] = i;
+	}
 	}
 
 	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
-}
+	}
 
-void dbc::readWDC2(wowEnvironment* env, IMemFile* file, bool tmp)
-{
+	void dbc::readWDC2(wowEnvironment* env, IMemFile* file, bool tmp)
+	{
 	IFileSystem* fs = env->getFileSystem();
 
 	dc2Header header;
@@ -573,7 +575,7 @@ void dbc::readWDC2(wowEnvironment* env, IMemFile* file, bool tmp)
 	Fields = new SField[nFields];
 	file->read(Fields, nFields * sizeof(SField));
 
-	//field_storage_info 
+	//field_storage_info
 	u32 nFieldStorage = header.field_storage_info_size / sizeof(SFieldStorageInfo);
 	FieldStorageInfos = new SFieldStorageInfo[nFieldStorage];
 	file->read(FieldStorageInfos, nFieldStorage * sizeof(SFieldStorageInfo));
@@ -589,402 +591,401 @@ void dbc::readWDC2(wowEnvironment* env, IMemFile* file, bool tmp)
 
 	if (HasDataOffsetBlock)
 	{
-		file->seek(sectionHeaders[0].offset_map_offset);
+	file->seek(sectionHeaders[0].offset_map_offset);
 
-		nActualRecords = 0;
-		u32 nTotalSize = 0;
-		for (u32 i = header.min_id; i <= header.max_id; ++i)
-		{
-			SOffsetMapEntry entry;
-			file->read(&entry, sizeof(SOffsetMapEntry));
+	nActualRecords = 0;
+	u32 nTotalSize = 0;
+	for (u32 i = header.min_id; i <= header.max_id; ++i)
+	{
+	SOffsetMapEntry entry;
+	file->read(&entry, sizeof(SOffsetMapEntry));
 
-			if (entry.offset > 0 && entry.length > 0)
-			{
-				IDs.push_back(i);
-				OffsetMaps.push_back(entry);
-				nTotalSize += entry.length;
+	if (entry.offset > 0 && entry.length > 0)
+	{
+	IDs.push_back(i);
+	OffsetMaps.push_back(entry);
+	nTotalSize += entry.length;
 
-				++nActualRecords;
-			}
-		}
+	++nActualRecords;
+	}
+	}
 
-		//整合recordstart
-		const u32 indexDataStart = file->getPos();
-		_recordStart = new u8[nTotalSize];
-		u32 curOffset = 0;
-		for (auto& entry : OffsetMaps)
-		{
-			file->seek(entry.offset);
-			file->read(&_recordStart[curOffset], entry.length);
+	//整合recordstart
+	const u32 indexDataStart = file->getPos();
+	_recordStart = new u8[nTotalSize];
+	u32 curOffset = 0;
+	for (auto& entry : OffsetMaps)
+	{
+	file->seek(entry.offset);
+	file->read(&_recordStart[curOffset], entry.length);
 
-			entry.offset = curOffset;
-			curOffset += entry.length;
-		}
-		file->seek(indexDataStart);
-		_stringStart = nullptr;
+	entry.offset = curOffset;
+	curOffset += entry.length;
+	}
+	file->seek(indexDataStart);
+	_stringStart = nullptr;
 	}
 	else
 	{
-		u32 current = file->getPos();
-		_recordStart = new u8[RecordSize * nRecords];
-		_stringStart = new u8[StringSize];
+	u32 current = file->getPos();
+	_recordStart = new u8[RecordSize * nRecords];
+	_stringStart = new u8[StringSize];
 
-		file->read(_recordStart, RecordSize * nRecords);			//records
-		file->read(_stringStart, StringSize);		//string
+	file->read(_recordStart, RecordSize * nRecords);			//records
+	file->read(_stringStart, StringSize);		//string
 
-		//IDs
-		if (HasIndex)
-		{
-			IDs.resize(nRecords);
-			file->read(IDs.data(), nRecords * sizeof(u32));
-		}
-		else
-		{
-			ASSERT(StringSize == 0);
+	//IDs
+	if (HasIndex)
+	{
+	IDs.resize(nRecords);
+	file->read(IDs.data(), nRecords * sizeof(u32));
+	}
+	else
+	{
+	ASSERT(StringSize == 0);
 
-			const SFieldStorageInfo& info = FieldStorageInfos[header.idindex];
-			const u8* data = file->getPointer();
+	const SFieldStorageInfo& info = FieldStorageInfos[header.idindex];
+	const u8* data = file->getPointer();
 
-			for (u32 i = 0; i < nRecords; ++i)
-			{
-				const u8* recordOffset = data + i * RecordSize;
-				switch (info.storage_type)
-				{
-				case FIELD_COMPRESSION::NONE:
-				{
-					u8* val = new u8[info.field_size_bits / 8];
-					memcpy(&val, recordOffset + info.field_offset_bits / 8, info.field_size_bits / 8);
-					IDs.push_back((*reinterpret_cast<u32*>(val)));
-					delete[] val;
-				}
-					break;
-				case FIELD_COMPRESSION::BITPACKED:
-				{
-					u32 id = readBitpackedValue(info, recordOffset);
-					IDs.push_back(id);
-				}
-					break;
-				case FIELD_COMPRESSION::BITPACKED_INDEXED:
-				case FIELD_COMPRESSION::BITPACKED_SIGNED:
-				{
-					u32 id = readBitpackedValue2(info, recordOffset);
-					IDs.push_back(id);
-				}
-					break;
-				case FIELD_COMPRESSION::COMMON_DATA:
-				case FIELD_COMPRESSION::BITPACKED_INDEXED_ARRAY:
-				default:
-					ASSERT(false);
-					break;
-				}
-			}		
-		}
+	for (u32 i = 0; i < nRecords; ++i)
+	{
+	const u8* recordOffset = data + i * RecordSize;
+	switch (info.storage_type)
+	{
+	case FIELD_COMPRESSION::NONE:
+	{
+	u8* val = new u8[info.field_size_bits / 8];
+	memcpy(&val, recordOffset + info.field_offset_bits / 8, info.field_size_bits / 8);
+	IDs.push_back((*reinterpret_cast<u32*>(val)));
+	delete[] val;
+	}
+	break;
+	case FIELD_COMPRESSION::BITPACKED:
+	{
+	u32 id = readBitpackedValue(info, recordOffset);
+	IDs.push_back(id);
+	}
+	break;
+	case FIELD_COMPRESSION::BITPACKED_INDEXED:
+	case FIELD_COMPRESSION::BITPACKED_SIGNED:
+	{
+	u32 id = readBitpackedValue2(info, recordOffset);
+	IDs.push_back(id);
+	}
+	break;
+	case FIELD_COMPRESSION::COMMON_DATA:
+	case FIELD_COMPRESSION::BITPACKED_INDEXED_ARRAY:
+	default:
+	ASSERT(false);
+	break;
+	}
+	}
+	}
 
-		for (u32 i = 0; i < nRecords; ++i)
-		{
-			SOffsetMapEntry entry;
-			entry.offset = i * RecordSize;
-			entry.length = RecordSize;
-			OffsetMaps.push_back(entry);
-		}
+	for (u32 i = 0; i < nRecords; ++i)
+	{
+	SOffsetMapEntry entry;
+	entry.offset = i * RecordSize;
+	entry.length = RecordSize;
+	OffsetMaps.push_back(entry);
+	}
 	}
 
 	if (sectionHeaders[0].copy_table_size > 0)
 	{
-		file->seek(copyBlockOffset);
-		u32 nbEntries = (u32)(sectionHeaders[0].copy_table_size / sizeof(SCopyTableEntry));
+	file->seek(copyBlockOffset);
+	u32 nbEntries = (u32)(sectionHeaders[0].copy_table_size / sizeof(SCopyTableEntry));
 
-		std::vector<SCopyTableEntry> copyTables;
-		copyTables.resize(nbEntries);
-		file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
+	std::vector<SCopyTableEntry> copyTables;
+	copyTables.resize(nbEntries);
+	file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
 
-		IDs.reserve(nActualRecords + nbEntries);
-		OffsetMaps.reserve(nActualRecords + nbEntries);
+	IDs.reserve(nActualRecords + nbEntries);
+	OffsetMaps.reserve(nActualRecords + nbEntries);
 
-		std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
-		for (u32 i = 0; i < nActualRecords; ++i)
-		{
-			IdToIndexMap[IDs[i]] = i;
-		}
-
-		for (const auto& entry : copyTables)
-		{
-			IDs.push_back(entry.id_new_row);
-			u32 idx = IdToIndexMap[entry.id_copied_row];
-			OffsetMaps.push_back(OffsetMaps[idx]);
-		}
-
-		nActualRecords += nbEntries;
+	std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
+	for (u32 i = 0; i < nActualRecords; ++i)
+	{
+	IdToIndexMap[IDs[i]] = i;
 	}
 
+	for (const auto& entry : copyTables)
+	{
+	IDs.push_back(entry.id_new_row);
+	u32 idx = IdToIndexMap[entry.id_copied_row];
+	OffsetMaps.push_back(OffsetMaps[idx]);
+	}
+
+	nActualRecords += nbEntries;
+	}
 
 	ASSERT(file->getPos() == file->getSize());
 
 	//build map
 	if (!tmp && HasIndex)		//临时文件不写map
 	{
-		for (u32 i = 0; i < nRecords; ++i)
-		{
-			u32 id = IDs[i];
-			RecordLookup32[id] = i;
-		}
+	for (u32 i = 0; i < nRecords; ++i)
+	{
+	u32 id = IDs[i];
+	RecordLookup32[id] = i;
+	}
 	}
 
 	fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
-}
-
-*/
-
-dbc::record charFacialHairDB::getByParams(unsigned int race, unsigned int gender, unsigned int style) const
-{
-	for (u32 i=0; i<nRecords; ++i)
-	{
-		dbc::record r = getRecord(i);
-		if (r.getUInt(RaceV400) == race &&
-			r.getUInt(GenderV400) == gender &&
-			r.getUInt(StyleV400) == style)					//id是record的第一个字段
-			return r;
 	}
-	return dbc::record::EMPTY();
-}
 
-u32 charFacialHairDB::getStylesFor( unsigned int race, unsigned int gender) const
-{
-	u32 n = 0;
+	*/
 
-	for (u32 i=0; i<nRecords; ++i)
+	dbc::record charFacialHairDB::getByParams(unsigned int race, unsigned int gender, unsigned int style) const
 	{
-		dbc::record r = getRecord(i);
-		if (r.getUInt(RaceV400) == race &&
-			r.getUInt(GenderV400) == gender)
-			++n;
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (r.getUInt(RaceV400) == race &&
+				r.getUInt(GenderV400) == gender &&
+				r.getUInt(StyleV400) == style)					//id是record的第一个字段
+				return r;
+		}
+		return dbc::record::EMPTY();
 	}
-	return n;
-}
 
-dbc::record charHairGeosetsDB::getByParams( unsigned int race, unsigned int gender, unsigned int section ) const
-{
-	for (u32 i=0; i<nRecords; ++i)
+	u32 charFacialHairDB::getStylesFor(unsigned int race, unsigned int gender) const
 	{
-		dbc::record r = getRecord(i);
-		if (r.getUInt(Race) == race &&
-			r.getUInt(Gender) == gender &&
-			r.getUInt(Section) == section)					//id是record的第一个字段
-			return r;
-	}
-	return dbc::record::EMPTY();
-}
+		u32 n = 0;
 
-u32 charHairGeosetsDB::getGeosetsFor( unsigned int race, unsigned int gender ) const
-{
-	u32 n = 0;
-
-	for (u32 i=0; i<nRecords; ++i)
-	{
-		dbc::record r = getRecord(i);
-		if (r.getUInt(Race) == race &&
-			r.getUInt(Gender) == gender)
-			++n;
-	}
-	return n;
-}
-
-dbc::record charRacesDB::getByName( const c8* name )
-{
-	for (u32 i=0; i<nRecords; ++i)
-	{
-		dbc::record r = getRecord(i);
-		if(Q_stricmp(r.getString(Name),name) == 0)
-			return r;
-	}
-	return dbc::record::EMPTY();
-}
-
-dbc::record charSectionsDB::getByParams( u32 race, u32 gender, u32 type, u32 section, u32 color ) const
-{
-	for (u32 i=0; i<nRecords; ++i)
-	{
-		dbc::record r = getRecord(i);
-		if (r.getUInt(Race) == race &&
-			r.getUInt(Gender) == gender &&
-			r.getUInt(Type) == type &&
-			r.getUInt(Section) == section &&
-			r.getUInt(Color) == color)					//id是record的第一个字段
-			return r;
-	}
-	return dbc::record::EMPTY();
-}
-
-u32 charSectionsDB::getColorsFor( u32 race, u32 gender, u32 type, u32 section ) const
-{
-	u32 n = 0;
-
-	for (u32 i=0; i<nRecords; ++i)
-	{
-		dbc::record r = getRecord(i);
-		if (r.getUInt(Race) == race &&
-			r.getUInt(Gender) == gender &&
-			r.getUInt(Type) == type &&
-			r.getUInt(Section) == section)
-			++n;
-	}
-	return n;
-}
-
-u32 charSectionsDB::getSectionsFor( u32 race, u32 gender, u32 type, u32 color ) const
-{
-	u32 n = 0;
-
-	for (u32 i=0; i<nRecords; ++i)
-	{
-		dbc::record r = getRecord(i);
-		if (r.getUInt(Race) == race &&
-			r.getUInt(Gender) == gender &&
-			r.getUInt(Type) == type &&
-			r.getUInt(Color) == color)
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (r.getUInt(RaceV400) == race &&
+				r.getUInt(GenderV400) == gender)
 				++n;
+		}
+		return n;
 	}
-	return n;
-}
 
-dbc::record itemSubClassDB::getById( int id, int subid )
-{
-	for (u32 i=0; i<nRecords; ++i)
+	dbc::record charHairGeosetsDB::getByParams(unsigned int race, unsigned int gender, unsigned int section) const
 	{
-		dbc::record r = getRecord(i);
-		if (r.getInt(ClassIDV400) == id && r.getInt(SubClassIDV400) == subid)	
-			return r;
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (r.getUInt(Race) == race &&
+				r.getUInt(Gender) == gender &&
+				r.getUInt(Section) == section)					//id是record的第一个字段
+				return r;
+		}
+		return dbc::record::EMPTY();
 	}
-	return dbc::record::EMPTY();
-}
 
-void itemModifiedAppearanceDB::buildItemLookup()
-{
-	for (u32 i=0; i<nActualRecords; ++i)
+	u32 charHairGeosetsDB::getGeosetsFor(unsigned int race, unsigned int gender) const
 	{
-		u32 itemid = getRecord(i).getUInt(itemModifiedAppearanceDB::ItemId);
-		ItemLookup32[itemid] = i;
+		u32 n = 0;
+
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (r.getUInt(Race) == race &&
+				r.getUInt(Gender) == gender)
+				++n;
+		}
+		return n;
 	}
-}
 
-void fileDataDB::saveListFile(const char* szPath)
-{
-	FILE* file = fopen(szPath, "wt");
-	if (!file)
-		return;
-
-	for (u32 i = 0; i < getNumActualRecords(); ++i)
+	dbc::record charRacesDB::getByName(const c8* name)
 	{
-		dbc::record r = getRecord(i);
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (Q_stricmp(r.getString(Name), name) == 0)
+				return r;
+		}
+		return dbc::record::EMPTY();
+	}
+
+	dbc::record charSectionsDB::getByParams(u32 race, u32 gender, u32 type, u32 section, u32 color) const
+	{
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (r.getUInt(Race) == race &&
+				r.getUInt(Gender) == gender &&
+				r.getUInt(Type) == type &&
+				r.getUInt(Section) == section &&
+				r.getUInt(Color) == color)					//id是record的第一个字段
+				return r;
+		}
+		return dbc::record::EMPTY();
+	}
+
+	u32 charSectionsDB::getColorsFor(u32 race, u32 gender, u32 type, u32 section) const
+	{
+		u32 n = 0;
+
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (r.getUInt(Race) == race &&
+				r.getUInt(Gender) == gender &&
+				r.getUInt(Type) == type &&
+				r.getUInt(Section) == section)
+				++n;
+		}
+		return n;
+	}
+
+	u32 charSectionsDB::getSectionsFor(u32 race, u32 gender, u32 type, u32 color) const
+	{
+		u32 n = 0;
+
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (r.getUInt(Race) == race &&
+				r.getUInt(Gender) == gender &&
+				r.getUInt(Type) == type &&
+				r.getUInt(Color) == color)
+				++n;
+		}
+		return n;
+	}
+
+	dbc::record itemSubClassDB::getById(int id, int subid)
+	{
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (r.getInt(ClassIDV400) == id && r.getInt(SubClassIDV400) == subid)
+				return r;
+		}
+		return dbc::record::EMPTY();
+	}
+
+	void itemModifiedAppearanceDB::buildItemLookup()
+	{
+		for (u32 i = 0; i < nActualRecords; ++i)
+		{
+			u32 itemid = getRecord(i).getUInt(itemModifiedAppearanceDB::ItemId);
+			ItemLookup32[itemid] = i;
+		}
+	}
+
+	void fileDataDB::saveListFile(const char* szPath)
+	{
+		FILE* file = fopen(szPath, "wt");
+		if (!file)
+			return;
+
+		for (u32 i = 0; i < getNumActualRecords(); ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (!r.isValid())
+				continue;
+
+			char path[MAX_PATH];
+			Q_strcpy(path, MAX_PATH, r.getString(fileDataDB::FilePath));
+			Q_strcat(path, MAX_PATH, r.getString(fileDataDB::FileName));
+			Q_strcat(path, MAX_PATH, "\n");
+
+			fputs(path, file);
+		}
+
+		fclose(file);
+	}
+
+	dbc::record itemDisplayInfoMaterialResDB::getByItemDisplayInfoIDAndSlot(u32 itemDisplayId, u32 slot) const
+	{
+		for (u32 i = 0; i < nRecords; ++i)
+		{
+			dbc::record r = getRecord(i);
+			if (r.getUInt(itemDisplayInfoMaterialResDB::ItemDisplayInfoID) == itemDisplayId &&
+				r.getUInt(itemDisplayInfoMaterialResDB::TextureSlot) == slot)
+				return r;
+		}
+		return dbc::record::EMPTY();
+	}
+
+	void itemDisplayInfoMaterialResDB::getTexturePath(u32 itemDisplayId, u32 slot, c8* path, u32 size) const
+	{
+		dbc::record r = getByItemDisplayInfoIDAndSlot(itemDisplayId, slot);
 		if (!r.isValid())
-			continue;
-
-		char path[MAX_PATH];
-		Q_strcpy(path, MAX_PATH, r.getString(fileDataDB::FilePath));
-		Q_strcat(path, MAX_PATH, r.getString(fileDataDB::FileName));
-		Q_strcat(path, MAX_PATH, "\n");
-
-		fputs(path, file);
+		{
+			memset(path, 0, size);
+			return;
+		}
+		int texId = r.getInt(itemDisplayInfoMaterialResDB::TextureFileDataID);
+		g_Engine->getWowDatabase()->getTextureFilePath(texId, path, size);
 	}
 
-	fclose(file);
-}
-
-dbc::record itemDisplayInfoMaterialResDB::getByItemDisplayInfoIDAndSlot(u32 itemDisplayId, u32 slot) const
-{
-	for (u32 i = 0; i < nRecords; ++i)
+	void buildItemCollections(ItemCollections& itemCollections, const itemDB* itemDb, const itemSparseDB* itemSparseDb)
 	{
-		dbc::record r = getRecord(i);
-		if (r.getUInt(itemDisplayInfoMaterialResDB::ItemDisplayInfoID) == itemDisplayId &&
-			r.getUInt(itemDisplayInfoMaterialResDB::TextureSlot) == slot)
-			return r;
-	}
-	return dbc::record::EMPTY();
-}
+		u32 numRecords = itemSparseDb->getNumActualRecords();
+		itemCollections.items.clear();
+		itemCollections.items.reserve(numRecords);
 
-void itemDisplayInfoMaterialResDB::getTexturePath(u32 itemDisplayId, u32 slot, c8* path, u32 size) const
-{
-	dbc::record r = getByItemDisplayInfoIDAndSlot(itemDisplayId, slot);
-	if (!r.isValid())
-	{
-		memset(path, 0, size);
-		return;
-	}
-	int texId = r.getInt(itemDisplayInfoMaterialResDB::TextureFileDataID);
-	g_Engine->getWowDatabase()->getTextureFilePath(texId, path, size);
-}
+		for (u32 i = 0; i < numRecords; ++i)
+		{
+			dbc::record rs = itemSparseDb->getRecord(i);
+			if (!rs.isValid())
+				continue;
 
-void buildItemCollections(ItemCollections& itemCollections, const itemDB* itemDb, const itemSparseDB* itemSparseDb)
-{
-	u32 numRecords = itemSparseDb->getNumActualRecords();
-	itemCollections.items.clear();
-	itemCollections.items.reserve(numRecords);
+			SItemRecord rec;
+#if WOW_VER >= 70
+			rec.id = rs.getID();
+#else
+			rec.id = itemSparseDb->getRecordSparseRow(i);
+#endif
+			if (rec.id == -1)
+				continue;
 
-	for (u32 i = 0; i<numRecords; ++i)
-	{
-		dbc::record rs = itemSparseDb->getRecord(i);
-		if (!rs.isValid())
-			continue;
+			//item db
+			dbc::record r = itemDb->getByID(rec.id);
+			if (!r.isValid())
+				continue;
+
+			rec.itemclass = r.getInt(itemDB::Itemclass);
+			rec.subclass = r.getInt(itemDB::Subclass);
+			rec.type = r.getInt(itemDB::InventorySlot);
+
+#if WOW_VER >= 70
+			Q_sprintf(rec.name, DEFAULT_SIZE * 2, "Item-%d", rec.id);
+#else
+			const c8* str = rs.getString(itemSparseDb->getItemNameField());
+			Q_strcpy(rec.name, DEFAULT_SIZE * 2, str);
+#endif
+
+			itemCollections.items.emplace_back(rec);
+			itemCollections.itemLookup[rec.id] = (s32)(itemCollections.items.size() - 1);
+		}
+
+		/*
+		//未翻译的
+		for (u32 i=0; i<itemDb->getNumRecords(); ++i)
+		{
+		dbc::record r = itemDb->getRecord(i);
+		s32 id = r.getInt(itemDB::ID);
+		if (itemLookup.find(id)!=itemLookup.end())
+		continue;
 
 		SItemRecord rec;
-#if WOW_VER >= 70
-		rec.id = rs.getID();
-#else
-		rec.id = itemSparseDb->getRecordSparseRow(i);
-#endif
-		if (rec.id == -1)
-			continue;
-
-		//item db
-		dbc::record r = itemDb->getByID(rec.id);
-		if (!r.isValid())
-			continue;
-
+		rec.id = id;
+		rec.quality = 0;
+		rec.model = r.getInt(itemDB::ItemDisplayInfo);
 		rec.itemclass = r.getInt(itemDB::Itemclass);
 		rec.subclass = r.getInt(itemDB::Subclass);
 		rec.type = r.getInt(itemDB::InventorySlot);
+		switch (r.getInt(itemDB::Sheath))
+		{
+		case SHEATHETYPE_MAINHAND: rec.sheath = ATT_LEFT_BACK_SHEATH; break;
+		case SHEATHETYPE_LARGEWEAPON: rec.sheath = ATT_RIGHT_BACK_SHEATH; break;
+		case SHEATHETYPE_HIPWEAPON: rec.sheath = ATT_LEFT_HIP_SHEATH; break;
+		case SHEATHETYPE_SHIELD: rec.sheath = ATT_MIDDLE_BACK_SHEATH; break;
+		default: rec.sheath = SHEATHETYPE_NONE;
+		}
 
-#if WOW_VER >= 70
-		Q_sprintf(rec.name, DEFAULT_SIZE * 2, "Item-%d", rec.id);
-#else
-		const c8* str = rs.getString(itemSparseDb->getItemNameField());
-		Q_strcpy(rec.name, DEFAULT_SIZE * 2, str);
-#endif
+		Q_sprintf(rec.name, DEFAULT_SIZE, "%d", id);
 
-		itemCollections.items.emplace_back(rec);
-		itemCollections.itemLookup[rec.id] = (s32)(itemCollections.items.size() - 1);
+		items.emplace_back(rec);
+		itemLookup[rec.id] = (s32)(items.size() -1);
+		}
+		*/
 	}
-
-
-	/*
-	//未翻译的
-	for (u32 i=0; i<itemDb->getNumRecords(); ++i)
-	{
-	dbc::record r = itemDb->getRecord(i);
-	s32 id = r.getInt(itemDB::ID);
-	if (itemLookup.find(id)!=itemLookup.end())
-	continue;
-
-	SItemRecord rec;
-	rec.id = id;
-	rec.quality = 0;
-	rec.model = r.getInt(itemDB::ItemDisplayInfo);
-	rec.itemclass = r.getInt(itemDB::Itemclass);
-	rec.subclass = r.getInt(itemDB::Subclass);
-	rec.type = r.getInt(itemDB::InventorySlot);
-	switch (r.getInt(itemDB::Sheath))
-	{
-	case SHEATHETYPE_MAINHAND: rec.sheath = ATT_LEFT_BACK_SHEATH; break;
-	case SHEATHETYPE_LARGEWEAPON: rec.sheath = ATT_RIGHT_BACK_SHEATH; break;
-	case SHEATHETYPE_HIPWEAPON: rec.sheath = ATT_LEFT_HIP_SHEATH; break;
-	case SHEATHETYPE_SHIELD: rec.sheath = ATT_MIDDLE_BACK_SHEATH; break;
-	default: rec.sheath = SHEATHETYPE_NONE;
-	}
-
-	Q_sprintf(rec.name, DEFAULT_SIZE, "%d", id);
-
-	items.emplace_back(rec);
-	itemLookup[rec.id] = (s32)(items.size() -1);
-	}
-	*/
-}
+};
