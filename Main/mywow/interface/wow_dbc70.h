@@ -107,14 +107,14 @@ namespace WowLegion
 
 #	pragma pack ()
 
-	class dbc70
+	class dbc
 	{
 	private:
-		DISALLOW_COPY_AND_ASSIGN(dbc70);
+		DISALLOW_COPY_AND_ASSIGN(dbc);
 
 	public:
-		dbc70(wowEnvironment* env, const c8* filename, bool tmp = false);
-		virtual ~dbc70();
+		dbc(wowEnvironment* env, const c8* filename, bool tmp = false);
+		virtual ~dbc();
 
 	protected:
 		void readWDB5(wowEnvironment* env, IMemFile* file, bool tmp);

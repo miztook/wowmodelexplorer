@@ -4,7 +4,7 @@
 
 namespace WowLegion
 {
-	dbc70::dbc70(wowEnvironment* env, const c8* filename, bool tmp /*= false*/)
+	dbc::dbc(wowEnvironment* env, const c8* filename, bool tmp /*= false*/)
 	{
 		string512 path = filename;
 		IMemFile* file = env->openFile(path.c_str());
@@ -59,16 +59,16 @@ namespace WowLegion
 		delete file;
 	}
 
-	dbc70::~dbc70()
+	dbc::~dbc()
 	{
 	}
 
-	bool dbc70::readFieldValue(u32 recordIndex, u32 fieldIndex, u32 arrayIndex, u32 arraySize, u32& result) const
+	bool dbc::readFieldValue(u32 recordIndex, u32 fieldIndex, u32 arrayIndex, u32 arraySize, u32& result) const
 	{
 		return true;
 	}
 
-	u32 dbc70::readBitpackedValue(const SFieldStorageInfo& info, const u8* recordOffset) const
+	u32 dbc::readBitpackedValue(const SFieldStorageInfo& info, const u8* recordOffset) const
 	{
 		u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
 		u32 offset = info.field_offset_bits / 8;
@@ -81,7 +81,7 @@ namespace WowLegion
 		return result;
 	}
 
-	u32 dbc70::readBitpackedValue2(const SFieldStorageInfo& info, const u8* recordOffset) const
+	u32 dbc::readBitpackedValue2(const SFieldStorageInfo& info, const u8* recordOffset) const
 	{
 		u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
 		u32 offset = info.field_offset_bits / 8;

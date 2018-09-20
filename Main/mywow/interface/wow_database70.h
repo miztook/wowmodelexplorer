@@ -32,17 +32,19 @@ namespace WowLegion
 		std::vector<CFieldStructure> fields;
 	};
 
-	class wowDatabase70
+	class wowDatabase
 	{
 	public:
-		explicit wowDatabase70(wowEnvironment* env);
+		explicit wowDatabase(wowEnvironment* env);
 
 		bool init();
 
-		~wowDatabase70();
+		~wowDatabase();
 
 	private:
 		bool initFromXml();
+
+		const CTableStructure* getTableStructure(const char* name) const;
 
 	private:
 		wowEnvironment*		Environment;

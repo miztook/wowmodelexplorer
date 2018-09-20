@@ -71,11 +71,11 @@ Engine::Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo) : Mess
 
 	FileSystem->writeLog(ELOG_RES, "start loading db files...\n");
 
-	WowDatabase70 = new wowDatabase70(WowEnvironment);
+	WowDatabase70 = new WowLegion::wowDatabase(WowEnvironment);
 	if (!WowDatabase70->init())
 		FileSystem->writeLog(ELOG_RES, "wow database 70 init failed...\n");
 
-	WowDatabase = new wowDatabase(WowEnvironment);
+	WowDatabase = new WowClassic::wowDatabase(WowEnvironment);
 	if (!WowDatabase->init())
 		FileSystem->writeLog(ELOG_RES, "wow database init failed...\n");
 

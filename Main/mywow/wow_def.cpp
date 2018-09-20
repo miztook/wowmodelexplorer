@@ -2,6 +2,12 @@
 #include "wow_def.h"
 #include "mywow.h"
 
+#if WOW_VER >= 70
+using namespace WowLegion;
+#else
+using namespace WowClassic;
+#endif
+
 const SItemRecord* ItemCollections::getById(s32 id) const
 {
 	T_itemLookup::const_iterator itr = itemLookup.find(id);

@@ -5,8 +5,16 @@
 
 class COSInfo;
 class wowEnvironment;
-class wowDatabase;
-class wowDatabase70;
+namespace WowClassic
+{
+	class wowDatabase;
+}
+
+namespace WowLegion
+{
+	class wowDatabase;
+}
+
 class IFileSystem;
 class IVideoDriver;
 class IHardwareBufferServices;
@@ -81,7 +89,7 @@ public:
 public:
 	SWindowInfo getWindowInfo() const { return WindowInfo; }
 	COSInfo* getOSInfo() const { return OSInfo; }
-	wowDatabase* getWowDatabase() const { return WowDatabase; }
+	WowClassic::wowDatabase* getWowDatabase() const { return WowDatabase; }
 	wowEnvironment* getWowEnvironment() const { return WowEnvironment; }
 	IFileSystem*	getFileSystem() const { return FileSystem; }
 	IVideoDriver*	getDriver() const { return Driver; }
@@ -110,8 +118,8 @@ public:
 private:
 	SWindowInfo WindowInfo;
 	COSInfo*	OSInfo;
-	wowDatabase70*		WowDatabase70;
-	wowDatabase*		WowDatabase;
+	WowLegion::wowDatabase*		WowDatabase70;
+	WowClassic::wowDatabase*		WowDatabase;
 	wowEnvironment*		WowEnvironment;
 	IFileSystem*		FileSystem;
 	IInputReader*		InputReader;

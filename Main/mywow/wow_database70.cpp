@@ -12,12 +12,12 @@
 
 namespace WowLegion
 {
-	wowDatabase70::wowDatabase70(wowEnvironment* env)
+	wowDatabase::wowDatabase(wowEnvironment* env)
 		: Environment(env)
 	{
 	}
 
-	bool wowDatabase70::init()
+	bool wowDatabase::init()
 	{
 		if (!initFromXml())
 			return false;
@@ -25,11 +25,11 @@ namespace WowLegion
 		return true;
 	}
 
-	wowDatabase70::~wowDatabase70()
+	wowDatabase::~wowDatabase()
 	{
 	}
 
-	bool wowDatabase70::initFromXml()
+	bool wowDatabase::initFromXml()
 	{
 		string_path path = Environment->getFileSystem()->getDataDirectory();
 		path.normalizeDir();
@@ -92,4 +92,13 @@ namespace WowLegion
 		}
 		return true;
 	}
+
+	const WowLegion::CTableStructure* wowDatabase::getTableStructure(const char* name) const
+	{
+		auto itr = DbStructureMap.find(name);
+		if (itr == DbStructureMap.end())
+			return nullptr;
+		return &itr->second;
+	}
+
 };

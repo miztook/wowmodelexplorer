@@ -6,6 +6,12 @@
 #include "CFileWDT.h"
 #include "CFileM2.h"
 
+#if WOW_VER >= 70
+using namespace WowLegion;
+#else
+using namespace WowClassic;
+#endif
+
 wow_tileScene::wow_tileScene( CMapTileSceneNode* mapTileNode ) : TileSceneNode(mapTileNode)
 {
 	FileWDT = TileSceneNode->FileWDT;

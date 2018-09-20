@@ -4,6 +4,12 @@
 #include "CWDTSceneNode.h"
 #include "CFileWDT.h"
 
+#if WOW_VER >= 70
+using namespace WowLegion;
+#else
+using namespace WowClassic;
+#endif
+
 #define TIME_DELAY_TILE_CHANGED		5		//在摄像机所在tile改变后，隔多少帧开始发送新的加载请求
 
 wow_wdtScene::wow_wdtScene(CWDTSceneNode* wdtNode)

@@ -5,6 +5,12 @@
 #include "CFileM2.h"
 #include "CBlit.h"
 
+#if WOW_VER >= 70
+using namespace WowLegion;
+#else
+using namespace WowClassic;
+#endif
+
 const char* regionTextureItemPaths[NUM_REGIONS] =
 {
 	"",																				//base
