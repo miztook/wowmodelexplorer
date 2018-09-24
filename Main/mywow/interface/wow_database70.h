@@ -41,10 +41,10 @@ namespace WowLegion
 
 		~wowDatabase();
 
+	const CTableStructure* getTableStructure(const char* name) const;
+
 	private:
 		bool initFromXml();
-
-		const CTableStructure* getTableStructure(const char* name) const;
 
 	private:
 		wowEnvironment*		Environment;

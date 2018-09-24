@@ -10,6 +10,12 @@ class IMemFile;
 
 namespace WowLegion
 {
+	class wowDatabase;
+	class CTableStructure;
+}
+
+namespace WowLegion
+{
 #	pragma pack (4)
 
 #define WDB5_FLAG_DATAOFFSET 1
@@ -113,7 +119,7 @@ namespace WowLegion
 		DISALLOW_COPY_AND_ASSIGN(dbc);
 
 	public:
-		dbc(wowEnvironment* env, const c8* filename, bool tmp = false);
+		dbc(wowEnvironment* env, wowDatabase* database, const c8* filename, bool tmp = false);
 		virtual ~dbc();
 
 	protected:
@@ -127,6 +133,9 @@ namespace WowLegion
 		{
 		public:
 		};
+
+	protected:
+		const CTableStructure*  TableStructure;
 
 	protected:	//WDB5
 		bool	HasDataOffsetBlock;
@@ -209,5 +218,14 @@ namespace WowLegion
 		bool readFieldValue(u32 recordIndex, u32 fieldIndex, u32 arrayIndex, u32 arraySize, u32& result) const;
 		u32 readBitpackedValue(const SFieldStorageInfo& info, const u8* recordOffset) const;
 		u32 readBitpackedValue2(const SFieldStorageInfo& info, const u8* recordOffset) const;
+	};
+
+	class animDB : public dbc
+	{
+	public:
+		animDB(wowEnvironment* env, wowDatabase* database) : dbc(env, database, "DBFilesClient\\AnimationData.dbc") {}
+
+	public:
+		static const u32 Name = 0;		// string
 	};
 };

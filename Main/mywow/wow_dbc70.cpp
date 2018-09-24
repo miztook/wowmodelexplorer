@@ -4,9 +4,15 @@
 
 namespace WowLegion
 {
-	dbc::dbc(wowEnvironment* env, const c8* filename, bool tmp /*= false*/)
+	dbc::dbc(wowEnvironment* env, wowDatabase* database, const c8* filename, bool tmp /*= false*/)
 	{
 		string512 path = filename;
+
+		c8 name[MAX_PATH];
+		getFileNameNoExtensionA(filename, name, MAX_PATH);
+		TableStructure = database->getTableStructure(name);
+		ASSERT(TableStructure);
+
 		IMemFile* file = env->openFile(path.c_str());
 
 		if (!file)
