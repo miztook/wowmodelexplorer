@@ -11,7 +11,7 @@ namespace WowClassic
 	class wowDatabase
 	{
 	public:
-		explicit wowDatabase(wowEnvironment* env);
+		explicit wowDatabase(const wowEnvironment* env);
 		~wowDatabase();
 
 		bool init();
@@ -115,7 +115,7 @@ namespace WowClassic
 		const spellDB*	getSpellDB() const { return SpellDB.get(); }
 
 	private:
-		wowEnvironment*		Environment;
+		const wowEnvironment*		Environment;
 
 		std::unique_ptr<animDB>		AnimDB;
 		std::unique_ptr<areaTableDB>	AreaTableDB;

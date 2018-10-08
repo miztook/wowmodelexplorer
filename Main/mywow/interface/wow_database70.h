@@ -35,7 +35,7 @@ namespace WowLegion
 	class wowDatabase
 	{
 	public:
-		explicit wowDatabase(wowEnvironment* env);
+		explicit wowDatabase(const wowEnvironment* env);
 
 		bool init();
 
@@ -47,8 +47,10 @@ namespace WowLegion
 		bool initFromXml();
 
 	private:
-		wowEnvironment*		Environment;
+		const wowEnvironment*		Environment;
 
 		std::map<string256, CTableStructure>  DbStructureMap;
+
+		std::unique_ptr<animDB>		AnimDB;
 	};
 };

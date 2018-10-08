@@ -119,14 +119,14 @@ namespace WowLegion
 		DISALLOW_COPY_AND_ASSIGN(dbc);
 
 	public:
-		dbc(wowEnvironment* env, wowDatabase* database, const c8* filename, bool tmp = false);
+		dbc(const wowEnvironment* env, const wowDatabase* database, const c8* filename, bool tmp = false);
 		virtual ~dbc();
 
 	protected:
-		void readWDB5(wowEnvironment* env, IMemFile* file, bool tmp);
-		void readWDB6(wowEnvironment* env, IMemFile* file, bool tmp);
-		void readWDC1(wowEnvironment* env, IMemFile* file, bool tmp);
-		void readWDC2(wowEnvironment* env, IMemFile* file, bool tmp);
+		void readWDB5(const wowEnvironment* env, IMemFile* file, bool tmp);
+		void readWDB6(const wowEnvironment* env, IMemFile* file, bool tmp);
+		void readWDC1(const wowEnvironment* env, IMemFile* file, bool tmp);
+		void readWDC2(const wowEnvironment* env, IMemFile* file, bool tmp);
 
 	public:
 		class record
@@ -223,7 +223,7 @@ namespace WowLegion
 	class animDB : public dbc
 	{
 	public:
-		animDB(wowEnvironment* env, wowDatabase* database) : dbc(env, database, "DBFilesClient\\AnimationData.dbc") {}
+		animDB(const wowEnvironment* env, const wowDatabase* database) : dbc(env, database, "DBFilesClient\\AnimationData.dbc") {}
 
 	public:
 		static const u32 Name = 0;		// string

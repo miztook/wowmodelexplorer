@@ -457,7 +457,7 @@ void wowEnvironment::unloadRoot()
 }
 
 //读取文件使用临时内存，在打开后需要尽快释放
-IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
+IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 {
 	c8 realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
@@ -694,7 +694,7 @@ IMemFile* wowEnvironment::openFile( const c8* filename, bool tempfile )
 	return nullptr;
 }
 
-bool wowEnvironment::exists( const c8* filename )
+bool wowEnvironment::exists(const c8* filename) const
 {
 	if (strlen(filename) == 0)
 		return false;
@@ -776,7 +776,7 @@ bool wowEnvironment::exists( const c8* filename )
 	return false;
 }
 
-void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void* param )
+void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void* param) const
 {
 	if(UseCompress)
 	{
@@ -906,13 +906,13 @@ void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void*
 
 }
 
-void wowEnvironment::iterateFiles(const c8* path, const c8* ext, MPQFILECALLBACK callback, void* param)
+void wowEnvironment::iterateFiles(const c8* path, const c8* ext, MPQFILECALLBACK callback, void* param) const
 {
 #if defined(MW_USE_CASC)
 	{
 		string_cs256 strBaseDir(path);
 		strBaseDir.make_lower();
-		T_DirIndexMap::iterator itr = DirIndexMap.find(strBaseDir);
+		auto itr = DirIndexMap.find(strBaseDir);
 		if (itr == DirIndexMap.end())
 			return;
 

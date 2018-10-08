@@ -18,9 +18,9 @@ public:
 	~wowEnvironment();
 
 public:
-	IMemFile* openFile(const c8* filename, bool tempfile = true);
+	IMemFile* openFile(const c8* filename, bool tempfile = true) const;
 
-	bool exists(const c8* filename);
+	bool exists(const c8* filename) const;
 
 	const c8* getLocale() const { return Locale.c_str(); }
 	const c8* getLocalePath() const { return LocalePath; }
@@ -30,8 +30,8 @@ public:
 
 	typedef void (*MPQFILECALLBACK)(const c8* filename, void* param);
 
-	void iterateFiles(const c8* ext, MPQFILECALLBACK callback, void* param);
-	void iterateFiles(const c8* path, const c8* ext, MPQFILECALLBACK callback, void* param);
+	void iterateFiles(const c8* ext, MPQFILECALLBACK callback, void* param) const;
+	void iterateFiles(const c8* path, const c8* ext, MPQFILECALLBACK callback, void* param) const;
 
 	//
 	void clearOwnCascFiles();

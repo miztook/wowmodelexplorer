@@ -4,7 +4,7 @@
 
 namespace WowClassic
 {
-	dbc::dbc(wowEnvironment* env, const c8* filename, bool tmp)
+	dbc::dbc(const wowEnvironment* env, const c8* filename, bool tmp)
 		: minorVersion(0)
 	{
 		_recordStart = nullptr;
@@ -77,7 +77,7 @@ namespace WowClassic
 		delete[] _recordStart;
 	}
 
-	void dbc::readWDBC(wowEnvironment* env, IMemFile* file, bool tmp)
+	void dbc::readWDBC(const wowEnvironment* env, IMemFile* file, bool tmp)
 	{
 		IFileSystem* fs = env->getFileSystem();
 
@@ -116,7 +116,7 @@ namespace WowClassic
 		fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
 	}
 
-	void dbc::readWDB2(wowEnvironment* env, IMemFile* file, bool tmp)
+	void dbc::readWDB2(const wowEnvironment* env, IMemFile* file, bool tmp)
 	{
 		IFileSystem* fs = env->getFileSystem();
 

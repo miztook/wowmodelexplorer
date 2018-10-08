@@ -37,7 +37,7 @@ namespace WowClassic
 		collection->models.push_back(filename);
 	}
 
-	wowDatabase::wowDatabase(wowEnvironment* env)
+	wowDatabase::wowDatabase(const wowEnvironment* env)
 		: Environment(env)
 	{
 	}

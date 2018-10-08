@@ -46,12 +46,12 @@ namespace WowClassic
 		DISALLOW_COPY_AND_ASSIGN(dbc);
 
 	public:
-		dbc(wowEnvironment* env, const c8* filename, bool tmp = false);
+		dbc(const wowEnvironment* env, const c8* filename, bool tmp = false);
 		virtual ~dbc();
 
 	protected:
-		void readWDBC(wowEnvironment* env, IMemFile* file, bool tmp);
-		void readWDB2(wowEnvironment* env, IMemFile* file, bool tmp);
+		void readWDBC(const wowEnvironment* env, IMemFile* file, bool tmp);
+		void readWDB2(const wowEnvironment* env, IMemFile* file, bool tmp);
 
 	public:
 		class record
@@ -394,7 +394,7 @@ namespace WowClassic
 	class animDB : public dbc
 	{
 	public:
-		animDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\AnimationData.dbc") {}
+		animDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\AnimationData.dbc") {}
 
 	public:
 
@@ -408,7 +408,7 @@ namespace WowClassic
 	class areaTableDB : public dbc
 	{
 	public:
-		areaTableDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\AreaTable.dbc") {}
+		areaTableDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\AreaTable.dbc") {}
 
 		static const u32 MapID = 1;
 		static const u32 ParentAreaTableID = 2;
@@ -419,7 +419,7 @@ namespace WowClassic
 	class charClassesDB : public dbc
 	{
 	public:
-		charClassesDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ChrClasses.dbc") {}
+		charClassesDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ChrClasses.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 NameV400 = 3;		//string
@@ -433,7 +433,7 @@ namespace WowClassic
 	class charFacialHairDB : public dbc
 	{
 	public:
-		charFacialHairDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharacterFacialHairStyles.dbc") {}
+		charFacialHairDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\CharacterFacialHairStyles.dbc") {}
 
 		dbc::record getByParams(unsigned int race, unsigned int gender, unsigned int style) const;
 		u32 getStylesFor(unsigned int race, unsigned int gender) const;
@@ -458,7 +458,7 @@ namespace WowClassic
 	class charHairGeosetsDB : public dbc
 	{
 	public:
-		charHairGeosetsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharHairGeosets.dbc") {}
+		charHairGeosetsDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\CharHairGeosets.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 Race = 1;				// byte
@@ -481,7 +481,7 @@ namespace WowClassic
 	class charComponentTextureLayoutsDB : public dbc
 	{
 	public:
-		charComponentTextureLayoutsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharComponentTextureLayouts.dbc") {}
+		charComponentTextureLayoutsDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\CharComponentTextureLayouts.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 Width = 0;
@@ -495,7 +495,7 @@ namespace WowClassic
 	class charComponentTextureSectionsDB : public dbc
 	{
 	public:
-		charComponentTextureSectionsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharComponentTextureSections.dbc") {}
+		charComponentTextureSectionsDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\CharComponentTextureSections.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 LayoutID = 4;
@@ -517,7 +517,7 @@ namespace WowClassic
 	class charRacesDB : public dbc
 	{
 	public:
-		charRacesDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ChrRaces.dbc") {}
+		charRacesDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ChrRaces.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 ShortName = 1;		// string, Name, represented by only 2 chars
@@ -542,7 +542,7 @@ namespace WowClassic
 	class charSectionsDB : public dbc
 	{
 	public:
-		charSectionsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharSections.dbc") {}
+		charSectionsDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\CharSections.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 Race = 2;		// byte
@@ -586,7 +586,7 @@ namespace WowClassic
 	class creatureTypeDB : public dbc
 	{
 	public:
-		creatureTypeDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureType.dbc") {}
+		creatureTypeDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureType.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 Name = 0;		// string
@@ -598,7 +598,7 @@ namespace WowClassic
 	class creatureModelDB : public dbc
 	{
 	public:
-		creatureModelDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureModelData.dbc") {}
+		creatureModelDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureModelData.dbc") {}
 
 		/// Fields
 		//static const u32 Type = 1;			// uint
@@ -613,7 +613,7 @@ namespace WowClassic
 	class creatureDisplayInfoDB : public dbc
 	{
 	public:
-		creatureDisplayInfoDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureDisplayInfo.dbc") {}
+		creatureDisplayInfoDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureDisplayInfo.dbc") {}
 
 #if WOW_VER >= 70
 		/// Fields
@@ -635,7 +635,7 @@ namespace WowClassic
 	class creatureDisplayInfoExtraDB : public dbc
 	{
 	public:
-		creatureDisplayInfoExtraDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureDisplayInfoExtra.dbc") {}
+		creatureDisplayInfoExtraDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\CreatureDisplayInfoExtra.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 SkinColor = 5;		// byte
@@ -689,7 +689,7 @@ namespace WowClassic
 	class npcModelItemSlotDisplayInfoDB : public dbc
 	{
 	public:
-		npcModelItemSlotDisplayInfoDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\NpcModelItemSlotDisplayInfo.dbc") {}
+		npcModelItemSlotDisplayInfoDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\NpcModelItemSlotDisplayInfo.dbc") {}
 
 		static const u32 NPCExtraID = 0;
 		static const u32 ItemDisplayInfoID = 1;
@@ -699,7 +699,7 @@ namespace WowClassic
 	class helmGeosetDB : public dbc
 	{
 	public:
-		helmGeosetDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\HelmetGeosetVisData.dbc") {}
+		helmGeosetDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\HelmetGeosetVisData.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 HideHair = 0;		//int array
@@ -711,7 +711,7 @@ namespace WowClassic
 	class itemDisplayDB : public dbc
 	{
 	public:
-		itemDisplayDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemDisplayInfo.dbc") { }
+		itemDisplayDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemDisplayInfo.dbc") { }
 
 #if WOW_VER >= 70
 		static const u32 Model = 0;			// u16 array, modelleft, modelright
@@ -763,7 +763,7 @@ namespace WowClassic
 	class itemDisplayInfoMaterialResDB : public dbc
 	{
 	public:
-		itemDisplayInfoMaterialResDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemDisplayInfoMaterialRes.dbc") {}
+		itemDisplayInfoMaterialResDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemDisplayInfoMaterialRes.dbc") {}
 
 		static const u32 ItemDisplayInfoID = 0;		//uint
 		static const u32 TextureFileDataID = 1;
@@ -786,7 +786,7 @@ namespace WowClassic
 	class itemSetDB : public dbc
 	{
 	public:
-		itemSetDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemSet.dbc") {}
+		itemSetDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemSet.dbc") {}
 
 		static const u32 NumItems = 17;
 
@@ -804,7 +804,7 @@ namespace WowClassic
 	class itemSubClassDB : public dbc
 	{
 	public:
-		itemSubClassDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemSubClass.dbc") {}
+		itemSubClassDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemSubClass.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 ClassIDV400 = 3;	// byte
@@ -824,7 +824,7 @@ namespace WowClassic
 	class startOutfitDB : public dbc
 	{
 	public:
-		startOutfitDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\CharStartOutfit.dbc") {}
+		startOutfitDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\CharStartOutfit.dbc") {}
 
 		static const u32 NumItems = 24;
 
@@ -849,7 +849,7 @@ namespace WowClassic
 	class lightDB : public dbc
 	{
 	public:
-		lightDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Light.dbc") {}
+		lightDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\Light.dbc") {}
 
 		static const u32 Map = 1;			// uint
 		static const u32 PositionX = 2;		// float
@@ -863,7 +863,7 @@ namespace WowClassic
 	class lightSkyboxDB : public dbc
 	{
 	public:
-		lightSkyboxDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\LightSkybox.dbc") {}
+		lightSkyboxDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\LightSkybox.dbc") {}
 
 		static const u32 Name = 1;		// string
 	};
@@ -871,13 +871,13 @@ namespace WowClassic
 	class itemVisualsDB : public dbc
 	{
 	public:
-		itemVisualsDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemVisuals.dbc") {}
+		itemVisualsDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemVisuals.dbc") {}
 	};
 
 	class itemVisualEffectDB : public dbc
 	{
 	public:
-		itemVisualEffectDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemVisualEffects.dbc") {}
+		itemVisualEffectDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemVisualEffects.dbc") {}
 
 		static const u32 Model = 1;		// string
 	};
@@ -885,7 +885,7 @@ namespace WowClassic
 	class itemDB : public dbc
 	{
 	public:
-		itemDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Item.dbc") { }
+		itemDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\Item.dbc") { }
 
 #if WOW_VER >= 70
 		static const u32 Itemclass = 1;	// byte
@@ -909,7 +909,7 @@ namespace WowClassic
 	class itemSparseDB : public dbc
 	{
 	public:
-		itemSparseDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Item-Sparse.dbc") { }
+		itemSparseDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\Item-Sparse.dbc") { }
 
 #if WOW_VER >= 70
 		static const u32 Quality = 42;
@@ -937,7 +937,7 @@ namespace WowClassic
 	class itemModifiedAppearanceDB : public dbc
 	{
 	public:
-		itemModifiedAppearanceDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemModifiedAppearance.dbc", true)
+		itemModifiedAppearanceDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemModifiedAppearance.dbc", true)
 		{
 			buildItemLookup();
 		}
@@ -977,7 +977,7 @@ namespace WowClassic
 	class itemAppearanceDB : public dbc
 	{
 	public:
-		itemAppearanceDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemAppearance.dbc") {}
+		itemAppearanceDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ItemAppearance.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 ItemDisplay = 0;		// unit
@@ -991,7 +991,7 @@ namespace WowClassic
 	class textureFileDataDB : public dbc
 	{
 	public:
-		textureFileDataDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\TextureFileData.dbc", true)
+		textureFileDataDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\TextureFileData.dbc", true)
 		{
 			buildItemLookup();
 		}
@@ -1038,7 +1038,7 @@ namespace WowClassic
 	class modelFileDataDB : public dbc
 	{
 	public:
-		modelFileDataDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\ModelFileData.dbc", true)
+		modelFileDataDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\ModelFileData.dbc", true)
 		{
 			buildItemLookup();
 		}
@@ -1080,7 +1080,7 @@ namespace WowClassic
 	class fileDataDB : public dbc
 	{
 	public:
-		fileDataDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\FileData.dbc") {}
+		fileDataDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\FileData.dbc") {}
 
 		void saveListFile(const char* szPath);
 
@@ -1091,7 +1091,7 @@ namespace WowClassic
 	class mapDB : public dbc
 	{
 	public:
-		mapDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Map.dbc") {}
+		mapDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\Map.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 Name = 0;		// string
@@ -1105,7 +1105,7 @@ namespace WowClassic
 	class spellVisualEffectNameDB : public dbc
 	{
 	public:
-		spellVisualEffectNameDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\SpellVisualEffectName.dbc") {}
+		spellVisualEffectNameDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\SpellVisualEffectName.dbc") {}
 
 #if WOW_VER >= 70
 		static const u32 Model = 0;		// string
@@ -1117,7 +1117,7 @@ namespace WowClassic
 	class spellVisualKitDB : public dbc
 	{
 	public:
-		spellVisualKitDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\SpellVisualKit.dbc") {}
+		spellVisualKitDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\SpellVisualKit.dbc") {}
 
 		static const u32 PrecastAnimation = 1;
 		static const u32 CastAnimation = 2;
@@ -1132,13 +1132,13 @@ namespace WowClassic
 	class spellVisualDB : public dbc
 	{
 	public:
-		spellVisualDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\SpellVisual.dbc") {}
+		spellVisualDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\SpellVisual.dbc") {}
 	};
 
 	class spellDB : public dbc
 	{
 	public:
-		spellDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\Spell.dbc") {}
+		spellDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\Spell.dbc") {}
 
 		static const u32 Name = 1;
 	};
@@ -1146,7 +1146,7 @@ namespace WowClassic
 	class wmoAreaTableDB : public dbc
 	{
 	public:
-		wmoAreaTableDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\WmoAreaTable.dbc") {}
+		wmoAreaTableDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\WmoAreaTable.dbc") {}
 
 		static const u32 WMOID = 1;
 		static const u32 WMOGroupID = 2;
@@ -1156,7 +1156,7 @@ namespace WowClassic
 	class worldMapAreaDB : public dbc
 	{
 	public:
-		worldMapAreaDB(wowEnvironment* env) : dbc(env, "DBFilesClient\\WorldMapArea.dbc") {}
+		worldMapAreaDB(const wowEnvironment* env) : dbc(env, "DBFilesClient\\WorldMapArea.dbc") {}
 
 		static const u32 MapID = 1;
 		static const u32 AreaTableID = 2;

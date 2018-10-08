@@ -12,7 +12,7 @@
 
 namespace WowLegion
 {
-	wowDatabase::wowDatabase(wowEnvironment* env)
+	wowDatabase::wowDatabase(const wowEnvironment* env)
 		: Environment(env)
 	{
 	}
@@ -21,6 +21,8 @@ namespace WowLegion
 	{
 		if (!initFromXml())
 			return false;
+
+		AnimDB = std::make_unique<animDB>(Environment, this);
 
 		return true;
 	}
