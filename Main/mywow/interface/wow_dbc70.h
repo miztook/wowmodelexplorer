@@ -2,6 +2,7 @@
 
 #include "base.h"
 #include "fixstring.h"
+#include "wow_enums.h"
 #include <map>
 #include <vector>
 
@@ -135,24 +136,35 @@ namespace WowLegion
 		};
 
 	protected:
+		WowDBType DBType;
+
 		const CTableStructure*  TableStructure;
+
+		typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_RecordLookup32;
+
+		T_RecordLookup32		RecordLookup32;
+
+		u8*		_buffer;
+		u8*		_recordStart;
+		u8*		_stringStart;
+
+	protected:
+		u32		nFields;
+		u32		nRecords;
+		u32		RecordSize;
+		u32		StringSize;
+		u32		nActualRecords;
+		bool	IsSparse;
 
 	protected:	//WDB5
 		bool	HasDataOffsetBlock;
 		bool	HasRelationshipData;
 		bool	HasIndex;
-		bool	HasCopyData;
 
 		struct SField
 		{
 			u16  size;	// size in bits as calculated by: byteSize = (32 - size) / 8
 			u16 position;  //position of the field within the record
-		};
-
-		struct SOffsetMapEntry
-		{
-			u32 offset;
-			u16 length;
 		};
 
 		struct SCopyTableEntry
@@ -161,10 +173,10 @@ namespace WowLegion
 			u32 id_copied_row;
 		};
 
-		SField* Fields;		//[header.field_count]
-		std::vector<SOffsetMapEntry>	OffsetMaps;  //if (flags & 0x01 != 0) [header.max_id - header.min_id + 1];
 		std::vector<u32> IDs;		//if (flags & 0x04 != 0) [header.record_count]
-		//SCopyTableEntry* CopyTables;
+		std::vector<u8*>  RecordOffsets;
+		std::map<int, int>  FieldSizeMap;
+	
 
 	protected:	//WDB6
 
@@ -174,7 +186,7 @@ namespace WowLegion
 			u8 type;
 		};
 
-		SCommonColumn*   CommonColumns;
+		std::map<u32, SCommonColumn>   CommonDataMap;
 
 	protected:		//WDC1
 

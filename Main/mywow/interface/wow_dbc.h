@@ -2,7 +2,7 @@
 
 #include "base.h"
 #include "fixstring.h"
-#include <unordered_map>
+#include "wow_enums.h"
 #include <map>
 #include <vector>
 
@@ -158,6 +158,7 @@ namespace WowClassic
 		}
 
 	protected:
+		WowDBType DBType;
 
 		typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_RecordLookup32;
 		typedef std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> T_RecordSparseLookup32;

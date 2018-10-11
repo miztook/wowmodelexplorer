@@ -5,7 +5,8 @@
 namespace WowClassic
 {
 	dbc::dbc(const wowEnvironment* env, const c8* filename, bool tmp)
-		: minorVersion(0)
+		: DBType(WowDBType::Unknown)
+		, minorVersion(0)
 	{
 		_recordStart = nullptr;
 		_stringStart = nullptr;
@@ -38,33 +39,25 @@ namespace WowClassic
 		}
 
 		const c8* magic = (const c8*)file->getBuffer();
-		int db_type = 0;
-
 		if (strncmp(magic, "WDBC", 4) == 0)
-			db_type = 1;
+			DBType = WowDBType::WDBC;
 		else if (strncmp(magic, "WDB2", 4) == 0)
-			db_type = 2;
+			DBType = WowDBType::WDB2;
 		else if (strncmp(magic, "WDB5", 4) == 0)
-			db_type = 5;
+			DBType = WowDBType::WDB5;
 		else if (strncmp(magic, "WDB6", 4) == 0)
-			db_type = 6;
+			DBType = WowDBType::WDB6;
 		else if (strncmp(magic, "WDC1", 4) == 0)
-			db_type = 7;
+			DBType = WowDBType::WDC1;
 		else if (strncmp(magic, "WDC2", 4) == 0)
-			db_type = 8;
+			DBType = WowDBType::WDC2;
 		else
 			ASSERT(false);
 
-		if (db_type == 1)		//dbc
+		if (DBType == WowDBType::WDBC)		//dbc
 			readWDBC(env, file, tmp);
-		else if (db_type == 2)		//db2
+		else if (DBType == WowDBType::WDB2)		//db2
 			readWDB2(env, file, tmp);
-		// 	else if (db_type == 5)		//db5
-		// 		readWDB5(env, file, tmp);
-		// 	else if (db_type == 6)	//db6
-		// 		readWDB6(env, file, tmp);
-		// 	else if (db_type == 8)	//dc2
-		// 		readWDC2(env, file, tmp);
 		else
 			ASSERT(false);
 
