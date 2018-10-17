@@ -189,6 +189,30 @@ namespace WowLegion
 		std::map<u32, SCommonColumn>   CommonDataMap;
 
 	protected:		//WDC1
+		struct SFieldStorageInfo
+		{
+			u16 field_offset_bits;
+			u16 field_size_bits;
+			u32 additional_data_size;
+			u32 storage_type;
+			u32 val1;
+			u32 val2;
+			u32 val3;
+		};
+
+		enum FIELD_COMPRESSION : int
+		{
+			NONE = 0,
+			BITPACKED,
+			COMMON_DATA,
+			BITPACKED_INDEXED,
+			BITPACKED_INDEXED_ARRAY,
+		};
+
+		std::vector<SFieldStorageInfo> FieldStorageInfos;
+
+		std::map<u32, u32> PalletBlockOffsets;
+		std::map<u32, std::string> RelationShipData;
 
 	protected:		//WDC2
 		struct SSectionHeader
@@ -203,29 +227,6 @@ namespace WowLegion
 			u32 id_list_size;           // List of ids present in the DB file
 			u32 relationship_data_size;
 		};
-
-		enum FIELD_COMPRESSION
-		{
-			NONE,
-			BITPACKED,
-			COMMON_DATA,
-			BITPACKED_INDEXED,
-			BITPACKED_INDEXED_ARRAY,
-			BITPACKED_SIGNED
-		};
-
-		struct SFieldStorageInfo
-		{
-			u16 field_offset_bits;
-			u16 field_size_bits;
-			u32 additional_data_size;
-			u32 storage_type;
-			u32 val1;
-			u32 val2;
-			u32 val3;
-		};
-
-		SFieldStorageInfo* FieldStorageInfos;
 
 		bool readFieldValue(u32 recordIndex, u32 fieldIndex, u32 arrayIndex, u32 arraySize, u32& result) const;
 		u32 readBitpackedValue(const SFieldStorageInfo& info, const u8* recordOffset) const;
