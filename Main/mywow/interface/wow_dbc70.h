@@ -212,7 +212,7 @@ namespace WowLegion
 		std::vector<SFieldStorageInfo> FieldStorageInfos;
 
 		std::map<u32, u32> PalletBlockOffsets;
-		std::map<u32, std::string> RelationShipData;
+		std::map<u32, u32> RelationShipData;
 
 	protected:		//WDC2
 		struct SSectionHeader

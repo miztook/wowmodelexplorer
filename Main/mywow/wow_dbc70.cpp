@@ -585,7 +585,19 @@ namespace WowLegion
 		//relationship data
 		if (header.relationship_data_size > 0)
 		{
+			file->seek(relationshipDataOffset);
+			u32 nbEntries;
+			file->read(&nbEntries, sizeof(u32));
 
+			file->seek(8, true);
+			for (u32 i = 0; i < nbEntries; ++i)
+			{
+				u32 foreignKey;
+				u32 recordIndex;
+				file->read(&foreignKey, sizeof(u32));
+				file->read(&recordIndex, sizeof(u32));
+				RelationShipData[recordIndex] = foreignKey;
+			}
 		}
 
 		//build map
@@ -599,6 +611,29 @@ namespace WowLegion
 
 	void dbc::readWDC2(const wowEnvironment* env, IMemFile* file, bool tmp)
 	{
+		IFileSystem* fs = env->getFileSystem();
+
+		dc2Header header;
+		file->read(&header, sizeof(header));
+
+		nRecords = header._nRecords;
+		nFields = header._nFields;
+		RecordSize = header._recordSize;
+		StringSize = header._stringsize;
+		nActualRecords = nRecords;
+
+		HasDataOffsetBlock = (header.fileflags & WDB5_FLAG_DATAOFFSET) != 0;
+		HasRelationshipData = (header.fileflags & WDB5_FLAG_UNKNOWN) != 0;
+		HasIndex = (header.fileflags & WDB5_FLAG_INDEX) != 0;
+		IsSparse = HasDataOffsetBlock;
+
+		std::vector<SSectionHeader> sectionHeaders;
+		sectionHeaders.resize(header.section_count);
+		file->read(sectionHeaders.data(), sizeof(SSectionHeader)* header.section_count);
+
+		std::vector<SField> Fields;
+		Fields.resize(nFields);
+		file->read(Fields.data(), sizeof(SField)* nFields);
 
 	}
 
