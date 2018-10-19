@@ -403,7 +403,7 @@ namespace WowLegion
 			FieldSizeMap[Fields[i].position] = Fields[i].size;
 		}
 
-		u8* storageInfoStart = file->getPointer();
+		u8* recordOffsetStart = file->getPointer();
 		u32 stringTableOffset = file->getPos() + RecordSize * nRecords;
 		if (HasDataOffsetBlock)
 		{
@@ -461,6 +461,7 @@ namespace WowLegion
 		{
 			if (HasIndex)
 			{
+				file->seek(idBlockOffset);
 				IDs.resize(nRecords);
 				file->read(IDs.data(), sizeof(u32)* nRecords);
 			}
@@ -469,7 +470,7 @@ namespace WowLegion
 				const SFieldStorageInfo& info = FieldStorageInfos[header.idindex];
 				for (u32 i = 0; i < nRecords; ++i)
 				{
-					const u8* recordOffset = storageInfoStart + i * RecordSize;
+					const u8* recordOffset = recordOffsetStart + i * RecordSize;
 					switch (info.storage_type)
 					{
 					case FIELD_COMPRESSION::NONE:
@@ -510,7 +511,7 @@ namespace WowLegion
 			}
 
 			for (u32 i = 0; i < nRecords; ++i)
-				RecordOffsets.push_back(storageInfoStart + i * RecordSize);
+				RecordOffsets.push_back(recordOffsetStart + i * RecordSize);
 		}
 
 		//copy table
@@ -576,10 +577,10 @@ namespace WowLegion
 					info.additional_data_size != 0)
 				{
 					PalletBlockOffsets[fieldId] = palletBlockOffset;
+					palletBlockOffset += info.additional_data_size;
 				}
-				palletBlockOffset += info.additional_data_size;
+				++fieldId;
 			}
-			++fieldId;
 		}
 
 		//relationship data
@@ -635,6 +636,215 @@ namespace WowLegion
 		Fields.resize(nFields);
 		file->read(Fields.data(), sizeof(SField)* nFields);
 
+		for (u32 i = 0; i < nFields; ++i)
+		{
+			FieldSizeMap[Fields[i].position] = Fields[i].size;
+		}
+
+		//read storage info
+		if (header.field_storage_info_size > 0)
+		{
+			u32 nFieldStorageInfo = header.field_storage_info_size / sizeof(SFieldStorageInfo);
+			for (u32 i = 0; i < nFieldStorageInfo; ++i)
+			{
+				SFieldStorageInfo info;
+				file->read(&info, sizeof(info));
+				FieldStorageInfos.push_back(info);
+			}
+		}
+
+		u32 palletBlockOffset = file->getPos();
+		u32 commonBlockOffset = palletBlockOffset + header.pallet_data_size;
+
+		file->seek(sectionHeaders[0].file_offset);
+
+		u8* recordOffsetStart = file->getPointer();
+
+		u32 stringTableOffset = file->getPos() + RecordSize * nRecords;
+		if (HasDataOffsetBlock)
+		{
+			StringSize = 0;
+		}
+
+		file->seek(stringTableOffset);
+		_stringStart = file->getPointer();
+
+		u32 idBlockOffset = stringTableOffset + StringSize;
+		u32 copyBlockOffset = idBlockOffset + sectionHeaders[0].id_list_size;
+		u32 relationshipDataOffset = copyBlockOffset + sectionHeaders[0].copy_table_size;
+
+		if (HasDataOffsetBlock)
+		{
+			file->seek(sectionHeaders[0].offset_map_offset);
+
+			nActualRecords = 0;
+			for (u32 i = 0; i < (header.max_id - header.min_id); ++i)
+			{
+				u32 offset;
+				u16 length;
+
+				file->read(&offset, sizeof(offset));
+				file->read(&length, sizeof(length));
+
+				if ((offset == 0) || (length == 0))
+					continue;
+
+				IDs.push_back(header.min_id + i);
+				RecordOffsets.push_back(_buffer + offset);
+				++nActualRecords;
+			}
+		}
+		else
+		{
+			if (HasIndex)
+			{
+				file->seek(idBlockOffset);
+				IDs.resize(nRecords);
+				file->read(IDs.data(), sizeof(u32)* nRecords);
+			}
+			else
+			{
+				const SFieldStorageInfo& info = FieldStorageInfos[header.idindex];
+				for (u32 i = 0; i < nRecords; ++i)
+				{
+					const u8* recordOffset = recordOffsetStart + i * RecordSize;
+					switch (info.storage_type)
+					{
+					case FIELD_COMPRESSION::NONE:
+					{
+						u32 size = info.field_offset_bits / 8;
+						u8* val = new u8[size];
+						memcpy(val, recordOffset, size);
+						IDs.push_back((*reinterpret_cast<u32*>(val)));
+						delete[] val;
+					}
+						break;
+					case FIELD_COMPRESSION::BITPACKED:
+					{
+						u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
+						u32 offset = info.field_offset_bits / 8;
+						u8* val = new u8[size];
+						memcpy(val, recordOffset, size);
+						u32 id = (*reinterpret_cast<u32*>(val));
+						id = id & ((1ull << info.field_size_bits) - 1);
+						IDs.push_back(id);
+						delete[] val;
+					}
+						break;
+					case FIELD_COMPRESSION::COMMON_DATA:
+						ASSERT(false);
+						break;
+					case FIELD_COMPRESSION::BITPACKED_INDEXED:
+						ASSERT(false);
+						break;
+					case FIELD_COMPRESSION::BITPACKED_INDEXED_ARRAY:
+						ASSERT(false);
+						break;
+					default:
+						ASSERT(false);
+						break;;
+					}
+				}
+			}
+
+			for (u32 i = 0; i < nRecords; ++i)
+				RecordOffsets.push_back(recordOffsetStart + i * RecordSize);
+		}
+
+		//copy table
+		if (sectionHeaders[0].copy_table_size > 0)
+		{
+			u32 nCopys = sectionHeaders[0].copy_table_size / sizeof(SCopyTableEntry);
+			std::vector<SCopyTableEntry> copyTables;
+			copyTables.resize(nCopys);
+			file->read(copyTables.data(), sizeof(SCopyTableEntry)* nCopys);
+
+			std::map<int, u8*>  IDToOffsetMap;
+			for (u32 i = 0; i < nActualRecords; ++i)
+			{
+				IDToOffsetMap[IDs[i]] = RecordOffsets[i];
+			}
+
+			for (u32 i = 0; i < nCopys; ++i)
+			{
+				IDs.push_back(copyTables[i].id_new_row);
+				RecordOffsets.push_back(IDToOffsetMap[copyTables[i].id_copied_row]);
+			}
+
+			nActualRecords += nCopys;
+		}
+
+		//common data
+		if (header.common_data_size > 0)
+		{
+			u32 fieldId = 0;
+			for (auto info : FieldStorageInfos)
+			{
+				if (info.storage_type == FIELD_COMPRESSION::COMMON_DATA && info.additional_data_size != 0)
+				{
+					file->seek(commonBlockOffset);
+
+					SCommonColumn column;
+					column.type = 0;
+					for (u32 i = 0; i < info.additional_data_size / 8; ++i)
+					{
+						u32 id;
+						file->read(&id, sizeof(id));
+						u32 val = 0;
+						file->read(&val, 4);
+
+						column.recordmap[id] = val;
+					}
+
+					CommonDataMap[fieldId] = column;
+					commonBlockOffset += info.additional_data_size;
+				}
+				++fieldId;
+			}
+		}
+
+		//pallet data
+		if (header.pallet_data_size > 0)
+		{
+			u32 fieldId = 0;
+			for (auto info : FieldStorageInfos)
+			{
+				if (info.storage_type == FIELD_COMPRESSION::BITPACKED_INDEXED &&
+					info.storage_type == FIELD_COMPRESSION::BITPACKED_INDEXED_ARRAY &&
+					info.additional_data_size != 0)
+				{
+					PalletBlockOffsets[fieldId] = palletBlockOffset;
+					palletBlockOffset += info.additional_data_size;
+				}
+				++fieldId;
+			}
+		}
+
+		//relationship data
+		if (sectionHeaders[0].relationship_data_size > 0)
+		{
+			file->seek(relationshipDataOffset);
+			u32 nbEntries;
+			file->read(&nbEntries, sizeof(u32));
+
+			file->seek(8, true);
+			for (u32 i = 0; i < nbEntries; ++i)
+			{
+				u32 foreignKey;
+				u32 recordIndex;
+				file->read(&foreignKey, sizeof(u32));
+				file->read(&recordIndex, sizeof(u32));
+				RelationShipData[recordIndex] = foreignKey;
+			}
+		}
+
+		//build map
+		for (u32 i = 0; i < nActualRecords; ++i)
+		{
+			RecordLookup32[IDs[i]] = i;
+		}
+
+		fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
 	}
 
 	bool dbc::readFieldValue(u32 recordIndex, u32 fieldIndex, u32 arrayIndex, u32 arraySize, u32& result) const
