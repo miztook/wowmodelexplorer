@@ -241,4 +241,13 @@ namespace WowLegion
 	public:
 		static const u32 Name = 0;		// string
 	};
+
+	class charClassesDB : public dbc
+	{
+	public:
+		charClassesDB(const wowEnvironment* env, const wowDatabase* database) : dbc(env, database, "DBFilesClient\\ChrClasses.dbc") {}
+
+		static const u32 NameV400 = 3;		//string
+		static const u32 ShortName = 4;
+	};
 };

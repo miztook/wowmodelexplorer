@@ -344,18 +344,7 @@ void wow_wdtScene::update()
 	//显示当前位置
 	if (CamChunk != LastCamChunk)
 	{
-		if (CamChunk)
-		{
-			auto r = g_Engine->getWowDatabase()->getAreaTableDB()->getByID(CamChunk->areaID);
-			if (r.isValid())
-				Q_sprintf(g_Engine->getSceneManager()->AreaName, MAX_TEXT_LENGTH, "%s (%d, %d): %s", FileWDT->getMapName(), Row, Col, r.getString(areaTableDB::Name));
-			else
-				Q_sprintf(g_Engine->getSceneManager()->AreaName, MAX_TEXT_LENGTH, "%s (%d, %d)", FileWDT->getMapName(), Row, Col);
-		}
-		else
-		{
-			Q_sprintf(g_Engine->getSceneManager()->AreaName, MAX_TEXT_LENGTH, "%s (%d, %d)", FileWDT->getMapName(), Row, Col);
-		}
+		Q_sprintf(g_Engine->getSceneManager()->AreaName, MAX_TEXT_LENGTH, "%s (%d, %d)", FileWDT->getMapName(), Row, Col);
 		LastCamChunk = CamChunk;
 	}
 }

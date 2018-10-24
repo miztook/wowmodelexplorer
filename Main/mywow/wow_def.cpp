@@ -153,26 +153,6 @@ SMapRecord* MapCollections::getMapById(s32 id)
 	return &maps[index];
 }
 
-const SArea* MapCollections::getAreaById(s32 id) const
-{
-	T_areaLookup::const_iterator itr = areaLookup.find(id);
-	if (itr == areaLookup.end())
-		return nullptr;
-
-	s32 index = itr->second;
-	return &areas[index];
-}
-
-SArea* MapCollections::getAreaById(s32 id)
-{
-	T_areaLookup::iterator itr = areaLookup.find(id);
-	if (itr == areaLookup.end())
-		return nullptr;
-
-	s32 index = itr->second;
-	return &areas[index];
-}
-
 WMOCollections::WMOCollections()
 {
 	wmos.reserve(1024);

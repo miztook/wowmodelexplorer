@@ -23,6 +23,7 @@ namespace WowLegion
 			return false;
 
 		AnimDB = std::make_unique<animDB>(Environment, this);
+		CharClassesDB = std::make_unique< charClassesDB>(Environment, this);
 
 		return true;
 	}

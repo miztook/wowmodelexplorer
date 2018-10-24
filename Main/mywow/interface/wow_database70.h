@@ -52,5 +52,6 @@ namespace WowLegion
 		std::map<string256, CTableStructure>  DbStructureMap;
 
 		std::unique_ptr<animDB>		AnimDB;
+		std::unique_ptr<charClassesDB>		CharClassesDB;
 	};
 };

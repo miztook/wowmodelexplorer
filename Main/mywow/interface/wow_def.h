@@ -175,15 +175,11 @@ public:
 
 public:
 	std::vector<SMapRecord>	maps;
-	std::vector<SArea>		areas;
 
 	T_mapLookup		mapLookup;
-	T_areaLookup		areaLookup;
 
 	const SMapRecord* getMapById(s32 id) const;
 	SMapRecord* getMapById(s32 id);
-	const SArea* getAreaById(s32 id) const;
-	SArea* getAreaById(s32 id);
 };
 
 class WMOCollections

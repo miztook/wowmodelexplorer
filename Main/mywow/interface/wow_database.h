@@ -70,8 +70,6 @@ namespace WowClassic
 		u32 getNumStartOutfits(u32 race, bool female);
 		const SStartOutfitEntry* getStartOutfit(u32 race, bool female, u32 idx);
 
-		u32 getNumAreas() const { return (u32)mapCollections.areas.size(); }
-		const SArea* getAreaById(s32 id) const { return mapCollections.getAreaById(id); }
 		u32 getNumWmos() const { return (u32)wmoCollections.wmos.size(); }
 		const c8* getWmoFileName(u32 index) const;
 		u32 getNumWorldModels() const { return (u32)worldModelCollections.models.size(); }

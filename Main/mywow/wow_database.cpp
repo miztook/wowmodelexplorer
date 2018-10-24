@@ -177,21 +177,6 @@ namespace WowClassic
 			mapCollections.maps.emplace_back(m);
 		}
 
-		u32 numAreas = AreaTableDB->getNumRecords();
-		for (u32 i = 0; i < numAreas; ++i)
-		{
-			auto r = AreaTableDB->getRecord(i);
-
-			SArea area;
-			area.id = r.getID();
-			area.mapId = r.getInt(areaTableDB::MapID);
-			area.parentId = r.getInt(areaTableDB::ParentAreaTableID);
-			utf8to16(r.getString(areaTableDB::Name), area.name, DEFAULT_SIZE);
-
-			mapCollections.areaLookup[area.id] = (u32)mapCollections.areas.size();
-			mapCollections.areas.emplace_back(area);
-		}
-
 		//mapCollections.maps.shrink_to_fit();
 	}
 
