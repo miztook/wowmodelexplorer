@@ -252,39 +252,6 @@ namespace mywowNet
             }
         }
 
-        public string GetItemVisualPath(int visualId)
-        {
-            StringBuilder path = new StringBuilder(256);
-            bool success = WowDatabase_getItemVisualPath(visualId, path, (uint)path.Capacity);
-            if (success)
-            {
-                return path.ToString(0, path.Length);
-            }
-            else
-            {
-                return "";
-            }
-        }
-
-        public string GetSpellVisualEffectName(int visualId)
-        {
-            return Marshal.PtrToStringAnsi(WowDatabase_getSpellVisualEffectName(visualId));
-        }
-
-        public string GetSpellVisualEffectPath(int visualId)
-        {
-            StringBuilder path = new StringBuilder(256);
-            bool success = WowDatabase_getSpellVisualEffectPath(visualId, path, (uint)path.Capacity);
-            if (success)
-            {
-                return path.ToString(0, path.Length);
-            }
-            else
-            {
-                return "";
-            }
-        }
-
         public string GetItemPath(int itemid, out string texturePath)
         {
             StringBuilder modelpath = new StringBuilder(256);

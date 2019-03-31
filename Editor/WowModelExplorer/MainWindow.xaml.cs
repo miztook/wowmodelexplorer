@@ -177,7 +177,6 @@ namespace WowModelExplorer
 
             _characterContent.Initialize();
             _npcContent.Initialize();
-            _spellVisualEffectContent.Initialize();
             _mapModelContent.Initialize();
             _wmoContent.Initialize();
             _worldM2Content.Initialize();

@@ -2,12 +2,12 @@
 #include "editor_FileWDT.h"
 #include "CFileWDT.h"
 
-u32 FileWDT_getTileCount( IFileWDT* wdt )
+uint32_t FileWDT_getTileCount( IFileWDT* wdt )
 {
 	return static_cast<CFileWDT*>(wdt)->getTileCount();
 }
 
-bool FileWDT_getTile( IFileWDT* wdt, u32 index, u32* row, u32* col )
+bool FileWDT_getTile( IFileWDT* wdt, uint32_t index, uint32_t* row, uint32_t* col )
 {
 	STile* tile = static_cast<CFileWDT*>(wdt)->getTile(index);
 	if (!tile)
@@ -17,10 +17,10 @@ bool FileWDT_getTile( IFileWDT* wdt, u32 index, u32* row, u32* col )
 	return true;
 }
 
-IFileADT* FileWDT_loadADT( IFileWDT* wdt, u32 row, u32 col, bool simple )
+IFileADT* FileWDT_loadADT( IFileWDT* wdt, uint32_t row, uint32_t col, bool simple )
 {
 	CFileWDT* fileWDT = static_cast<CFileWDT*>(wdt);
-	STile* tile = fileWDT->getTile((u8)row, (u8)col);
+	STile* tile = fileWDT->getTile((uint8_t)row, (uint8_t)col);
 	if (!tile)
 		return NULL;
 
@@ -31,10 +31,10 @@ IFileADT* FileWDT_loadADT( IFileWDT* wdt, u32 row, u32 col, bool simple )
 	return NULL;
 }
 
-IFileADT* FileWDT_loadADTTextures(IFileWDT* wdt, u32 row, u32 col)
+IFileADT* FileWDT_loadADTTextures(IFileWDT* wdt, uint32_t row, uint32_t col)
 {
 	CFileWDT* fileWDT = static_cast<CFileWDT*>(wdt);
-	STile* tile = fileWDT->getTile((u8)row, (u8)col);
+	STile* tile = fileWDT->getTile((uint8_t)row, (uint8_t)col);
 	if (!tile)
 		return NULL;
 
@@ -48,7 +48,7 @@ IFileADT* FileWDT_loadADTTextures(IFileWDT* wdt, u32 row, u32 col)
 void FileWDT_unloadADT( IFileWDT* wdt, IFileADT* adt )
 {
 	CFileWDT* fileWDT = static_cast<CFileWDT*>(wdt);
-	for (u32 i=0; i<fileWDT->getTileCount(); ++i)
+	for (uint32_t i=0; i<fileWDT->getTileCount(); ++i)
 	{
 		STile* tile = fileWDT->getTile(i);
 		if (tile->fileAdt == adt && tile->fileAdt)

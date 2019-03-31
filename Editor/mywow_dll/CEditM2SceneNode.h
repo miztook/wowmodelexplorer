@@ -10,7 +10,7 @@ public:
 	virtual ~CEditM2SceneNode();
 
 public:
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame, bool visible) override;
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible) override;
 	virtual void render() const override;
 
 public:
@@ -18,37 +18,37 @@ public:
 	void	pause() { Paused = true; }
 	void	resume() { Paused = false; }
 	void	stop() { Animation.setCurrentFrame(0); pause(); }
-	void	step(f32 frame) { 
+	void	step(float frame) { 
 		Animation.setCurrentFrame(Animation.getCurrentFrame() + frame); 
 		pause(); 
-		TickDelta = (u32)(frame * Animation.getAnimationSpeed()); }
+		TickDelta = (uint32_t)(frame * Animation.getAnimationSpeed()); }
 
 public:
 	void showShoulder(bool show);
 	void showLeftHand(bool show);
 	void showRightHand(bool show);
 	void showParticles(bool show);
-	void showGeoset(u32 index, bool show);
-	bool isGeosetShow(u32 index);
-	void showAttachment(u32 index, bool show);
-	bool isAttachmentShow(u32 index);
+	void showGeoset(uint32_t index, bool show);
+	bool isGeosetShow(uint32_t index);
+	void showAttachment(uint32_t index, bool show);
+	bool isAttachmentShow(uint32_t index);
 	void setOverrideWireframe(editor::E_OVERRIDE_WIREFRAME wireframe);
 
 	bool getChildSceneNodes(editor::SM2ChildSceneNodes* childSceneNodes);
-	const c8* getReplaceTextureFileName(editor::E_MODEL_REPLACE_TEXTURE texture);
-	const c8* getTextureFileName(u32 index);
-	const c8* getRegionTextureFileName(ECharRegions region);
+	const char* getReplaceTextureFileName(editor::E_MODEL_REPLACE_TEXTURE texture);
+	const char* getTextureFileName(uint32_t index);
+	const char* getRegionTextureFileName(ECharRegions region);
 
-	void getGeosetDebugInfo(c16* msg, u32 size);
+	void getGeosetDebugInfo(char16_t* msg, uint32_t size);
 	void drawBoundingBox(SColor color);
 	void drawBoundingAABox(SColor color);
 	void drawCollisionAABox(SColor color);
 	void drawBones(SColor color);
 	
 private:
-	void renderGeoset(u32 index) const;
+	void renderGeoset(uint32_t index) const;
 
-	void drawBone(u32 idx, SColor color);
+	void drawBone(uint32_t idx, SColor color);
 	void updateAttachmentSceneNodes();
 
 private:
@@ -70,7 +70,7 @@ public:
 
 private:
 	bool	Paused;
-	u32		TickDelta;
+	uint32_t		TickDelta;
 	bool*	ShowGeosets;
 	bool*	IsGeosetsVisible;
 	bool*	BonesDrawn;

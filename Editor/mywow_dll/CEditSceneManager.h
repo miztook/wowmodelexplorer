@@ -21,10 +21,10 @@ public:
 	virtual void onWindowSizeChanged(const dimension2du& size) override;
 
 public:
-	void setBackImage(const c8* filename);
-	const c8* getBackImageFileName() const { return BackImageFileName.c_str(); }
+	void setBackImage(const char* filename);
+	const char* getBackImageFileName() const { return BackImageFileName.c_str(); }
 
-	void setCenterTexture(const c8* filename);
+	void setCenterTexture(const char* filename);
 
 	IM2SceneNode*	DebugM2Node;
 	IWMOSceneNode*	DebugWMONode;
@@ -46,7 +46,7 @@ private:
 	void doRender();
 
 private:
-	c16	DebugMsg[512];
+	char16_t	DebugMsg[512];
 	
 	matrix4		OldView;
 	matrix4		OldProjection;

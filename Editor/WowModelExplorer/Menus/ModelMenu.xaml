@@ -30,10 +30,6 @@
                       Command="cmd:ViewCommands.View"
                       CommandParameter="{x:Static w:ModelViewTypes.Npc}"
                       Header="{DynamicResource viewNpc}" />
-            <MenuItem Name="menuViewSpellVisualEffect"
-                      Command="cmd:ViewCommands.View"
-                      CommandParameter="{x:Static w:ModelViewTypes.SpellVisualEffect}"
-                      Header="{DynamicResource viewSpellVisualEffect}" />
             <!--
                 <MenuItem Name="menuViewMapModel"
                 Command="cmd:ViewCommands.View"

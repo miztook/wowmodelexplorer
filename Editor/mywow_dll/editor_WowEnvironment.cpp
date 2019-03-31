@@ -4,17 +4,17 @@
 std::vector<string_cs256>		g_vFileNames;
 std::vector<string_cs256>		g_vDirFullNames;
 
-bool WowEnvironment_Exists( const c8* filename )
+bool WowEnvironment_Exists( const char* filename )
 {
 	return g_Engine->getWowEnvironment()->exists(filename);
 }
 
-u32 WowEnvironment_GetCascFileCount()
+uint32_t WowEnvironment_GetCascFileCount()
 {
 	return g_Engine->getWowEnvironment()->getCascFileCount();
 }
 
-const c8* WowEnvironment_GetCascFile(int index)
+const char* WowEnvironment_GetCascFile(int index)
 {
 	return g_Engine->getWowEnvironment()->getCascFile(index);
 }
@@ -24,7 +24,7 @@ void WowEnvironment_ClearOwnCascFiles()
 	g_Engine->getWowEnvironment()->clearOwnCascFiles();
 }
 
-void WowEnvironment_AddOwnCascFile(const c8* filename)
+void WowEnvironment_AddOwnCascFile(const char* filename)
 {
 	g_Engine->getWowEnvironment()->addOwnCascFile(filename);
 }
@@ -34,13 +34,13 @@ void WowEnvironment_FinishOwnCascFiles()
 	g_Engine->getWowEnvironment()->finishOwnCascFiles();
 }
 
-int WowEnvironment_GetFileCount_InDir(const c8* baseDir, const c8* ext, bool useOwn)
+int WowEnvironment_GetFileCount_InDir(const char* baseDir, const char* ext, bool useOwn)
 {
 	g_Engine->getWowEnvironment()->getFiles(baseDir, ext, g_vFileNames, useOwn);
 	return (int)g_vFileNames.size();
 }
 
-void WowEnvironment_GetFile_InDir(bool fullname, int index, c8* outfilename, u32 size)
+void WowEnvironment_GetFile_InDir(bool fullname, int index, char* outfilename, uint32_t size)
 {
 	if (index < 0 || index >= (int)g_vFileNames.size())
 	{
@@ -55,13 +55,13 @@ void WowEnvironment_GetFile_InDir(bool fullname, int index, c8* outfilename, u32
 	}
 }
 
-int WowEnvironment_GetDirectoryCount_InDir(const c8* baseDir, bool useOwn)
+int WowEnvironment_GetDirectoryCount_InDir(const char* baseDir, bool useOwn)
 {
 	g_Engine->getWowEnvironment()->getDirectories(baseDir, g_vDirFullNames, useOwn);
 	return (int)g_vDirFullNames.size();
 }
 
-void WowEnvironment_GetDirectory_InDir(bool fullname, int index, c8* outdirname, u32 size)
+void WowEnvironment_GetDirectory_InDir(bool fullname, int index, char* outdirname, uint32_t size)
 {
 	if (fullname)
 	{
@@ -79,7 +79,7 @@ void WowEnvironment_GetDirectory_InDir(bool fullname, int index, c8* outdirname,
 	}
 }
 
-const c8* WowEnvironment_GetLocale()
+const char* WowEnvironment_GetLocale()
 {
 	return g_Engine->getWowEnvironment()->getLocale();
 }

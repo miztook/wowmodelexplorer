@@ -7,7 +7,7 @@ void  SceneManager_drawAll(bool foreground)
 	g_Engine->getSceneManager()->drawAll(foreground);
 }
 
-u32 SceneManager_getTimeSinceLastFrame()
+uint32_t SceneManager_getTimeSinceLastFrame()
 {
 	return g_Engine->getSceneManager()->getTimeSinceLastFrame();
 }
@@ -35,7 +35,7 @@ void  SceneManager_showDebug( editor::E_SCENE_DEBUG_PART part, bool show )
 	}
 }
 
-void SceneManager_onWindowSizeChanged( u32 width, u32 height )
+void SceneManager_onWindowSizeChanged( uint32_t width, uint32_t height )
 {
 	g_Engine->getSceneManager()->onWindowSizeChanged(dimension2du(width, height));
 }
@@ -65,7 +65,7 @@ ICamera*  SceneManager_getActiveCamera()
 	return g_Engine->getSceneManager()->getActiveCamera();
 }
 
-ICamera*  SceneManager_addCamera( vector3df position, vector3df lookat, vector3df up, f32 nearValue, f32 farValue, f32 fov )
+ICamera*  SceneManager_addCamera( vector3df position, vector3df lookat, vector3df up, float nearValue, float farValue, float fov )
 {
 	return g_Engine->getSceneManager()->addCamera(position, lookat, up, nearValue, farValue, fov);
 }
@@ -75,7 +75,7 @@ ICoordSceneNode* SceneManager_addCoordSceneNode()
 	return g_Engine->getSceneManager()->addCoordSceneNode(NULL);
 }
 
-IM2SceneNode*  SceneManager_addM2SceneNode( const c8* meshfilename, ISceneNode* parent, bool npc )
+IM2SceneNode*  SceneManager_addM2SceneNode( const char* meshfilename, ISceneNode* parent, bool npc )
 {
 	IFileM2* m2 = g_Engine->getResourceLoader()->loadM2(meshfilename);
 	if (!m2)
@@ -84,12 +84,12 @@ IM2SceneNode*  SceneManager_addM2SceneNode( const c8* meshfilename, ISceneNode* 
 	return g_Engine->getSceneManager()->addM2SceneNode(m2, parent, npc);
 }
 
-IMeshSceneNode*  SceneManager_addMeshSceneNode( const c8* name, ISceneNode* parent )
+IMeshSceneNode*  SceneManager_addMeshSceneNode( const char* name, ISceneNode* parent )
 {
 	return g_Engine->getSceneManager()->addMeshSceneNode(name, parent);
 }
 
-IWMOSceneNode* SceneManager_addWMOSceneNode( const c8* wmofilename, ISceneNode* parent )
+IWMOSceneNode* SceneManager_addWMOSceneNode( const char* wmofilename, ISceneNode* parent )
 {
 	IFileWMO* wmo = g_Engine->getResourceLoader()->loadWMO(wmofilename);
 	if (!wmo)
@@ -103,7 +103,7 @@ IWDTSceneNode* SceneManager_addWDTSceneNode( IFileWDT* filewdt, ISceneNode* pare
 	return g_Engine->getSceneManager()->addWDTSceneNode(filewdt, parent);
 }
 
-IMapTileSceneNode* SceneManager_addMapTileSceneNode( IFileWDT* wdt, s32 row, s32 col, ISceneNode* parent )
+IMapTileSceneNode* SceneManager_addMapTileSceneNode( IFileWDT* wdt, int32_t row, int32_t col, ISceneNode* parent )
 {
 	STile* tile = wdt->getTile(row, col);
 	if(!tile)
@@ -164,13 +164,13 @@ void SceneManager_endFrame()
 	g_Engine->getSceneManager()->endFrame();
 }
 
-void SceneManager_setBackImageFileName( const c8* filename )
+void SceneManager_setBackImageFileName( const char* filename )
 {
 	CEditSceneManager* mgr = (CEditSceneManager*)g_Engine->getSceneManager();
 	mgr->setBackImage(filename);
 }
 
-const c8* SceneManager_getBackImageFileName()
+const char* SceneManager_getBackImageFileName()
 {
 	CEditSceneManager* mgr = (CEditSceneManager*)g_Engine->getSceneManager();
 	return mgr->getBackImageFileName();

@@ -75,7 +75,6 @@ namespace WowModelExplorer.Services
         public CharacterContent CharacterContent { get { return mainWindow._characterContent; } }
         public NpcContent NpcContent { get { return mainWindow._npcContent; } }
         public RidableContent RidableContent { get { return mainWindow._ridableContent; } }
-        public SpellVisualEffectContent SpellVisualEffectContent { get { return mainWindow._spellVisualEffectContent; } }
         public MapModelContent MapModelContent { get { return mainWindow._mapModelContent; } }
         public WmoContent WmoContent { get { return mainWindow._wmoContent; } }
         public WorldM2Content WorldM2Content { get { return mainWindow._worldM2Content; } }

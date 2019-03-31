@@ -50,7 +50,7 @@ namespace WowModelExplorer.Menus
 
             menuViewCharacter.IsChecked = ShellService.Instance.CharacterContent.State != DockableContentState.Hidden;
             menuViewNpc.IsChecked = ShellService.Instance.NpcContent.State != DockableContentState.Hidden;
-            menuViewSpellVisualEffect.IsChecked = ShellService.Instance.SpellVisualEffectContent.State != DockableContentState.Hidden;
+            //menuViewSpellVisualEffect.IsChecked = ShellService.Instance.SpellVisualEffectContent.State != DockableContentState.Hidden;
             //menuViewMapModel.IsChecked = ShellService.Instance.MapModelContent.State != DockableContentState.Hidden;
             menuViewWmo.IsChecked = ShellService.Instance.WmoContent.State != DockableContentState.Hidden;
             menuViewWorldM2.IsChecked = ShellService.Instance.WorldM2Content.State != DockableContentState.Hidden;

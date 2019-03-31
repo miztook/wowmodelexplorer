@@ -36,7 +36,7 @@ void WMOSceneNode_getFileWMO( IWMOSceneNode* node, SFileWMO* filewmo )
 	filewmo->wmoID = wmo->Header.wmoID;
 }
 
-bool WMOSceneNode_getGroup( IWMOSceneNode* node, u32 index, editor::SWMOGroup* group )
+bool WMOSceneNode_getGroup( IWMOSceneNode* node, uint32_t index, editor::SWMOGroup* group )
 {
 	const IFileWMO* fileWmo = node->getFileWMO();
 	if (index >= fileWmo->Header.nGroups)
@@ -53,31 +53,31 @@ bool WMOSceneNode_getGroup( IWMOSceneNode* node, u32 index, editor::SWMOGroup* g
 	return true;
 }
 
-void WMOSceneNode_showGroup( IWMOSceneNode* node, u32 index, bool show )
+void WMOSceneNode_showGroup( IWMOSceneNode* node, uint32_t index, bool show )
 {
 	CEditWMOSceneNode* editNode = (CEditWMOSceneNode*)node;
 	editNode->showGroup(index, show);
 }
 
-bool WMOSceneNode_isGroupShow( IWMOSceneNode* node, u32 index )
+bool WMOSceneNode_isGroupShow( IWMOSceneNode* node, uint32_t index )
 {
 	CEditWMOSceneNode* editNode = (CEditWMOSceneNode*)node;
 	return editNode->isGroupShow(index);
 }
 
-void WMOSceneNode_showGroupBox( IWMOSceneNode* node, u32 index, bool show, SColor color )
+void WMOSceneNode_showGroupBox( IWMOSceneNode* node, uint32_t index, bool show, SColor color )
 {
 	CEditWMOSceneNode* editNode = (CEditWMOSceneNode*)node;
 	editNode->showGroupBox(index, show, color);
 }
 
-bool WMOSceneNode_isGroupBoxShow( IWMOSceneNode* node, u32 index )
+bool WMOSceneNode_isGroupBoxShow( IWMOSceneNode* node, uint32_t index )
 {
 	CEditWMOSceneNode* editNode = (CEditWMOSceneNode*)node;
 	return editNode->isGroupBoudingBoxShow(index);
 }
 
-bool WMOSceneNode_getPortal( IWMOSceneNode* node, u32 index, editor::SWMOPortal* portal )
+bool WMOSceneNode_getPortal( IWMOSceneNode* node, uint32_t index, editor::SWMOPortal* portal )
 {
 	const IFileWMO* wmo = node->getFileWMO();
 	if (index >= wmo->Header.nPortals)
@@ -89,31 +89,31 @@ bool WMOSceneNode_getPortal( IWMOSceneNode* node, u32 index, editor::SWMOPortal*
 	return true;
 }
 
-void WMOSceneNode_showPortal( IWMOSceneNode* node, u32 index, bool show, SColor color )
+void WMOSceneNode_showPortal( IWMOSceneNode* node, uint32_t index, bool show, SColor color )
 {
 	CEditWMOSceneNode* editNode = (CEditWMOSceneNode*)node;
 	editNode->showPortal(index, show, color);
 }
 
-bool WMOSceneNode_isPortalShow( IWMOSceneNode* node, u32 index )
+bool WMOSceneNode_isPortalShow( IWMOSceneNode* node, uint32_t index )
 {
 	CEditWMOSceneNode* editNode = (CEditWMOSceneNode*)node;
 	return editNode->isPortalShow(index);
 }
 
-void WMOSceneNode_showPortalGroups( IWMOSceneNode* node, u32 index, bool show )
+void WMOSceneNode_showPortalGroups( IWMOSceneNode* node, uint32_t index, bool show )
 {
 	CEditWMOSceneNode* editNode = (CEditWMOSceneNode*)node;
 	editNode->showPortalGroups(index, show);
 }
 
-bool WMOSceneNode_isPortalGroupsShow( IWMOSceneNode* node, u32 index )
+bool WMOSceneNode_isPortalGroupsShow( IWMOSceneNode* node, uint32_t index )
 {
 	CEditWMOSceneNode* editNode = (CEditWMOSceneNode*)node;
 	return editNode->isPortalGroupsShow(index);
 }
 
-bool WMOSceneNode_getDoodadName(IWMOSceneNode* node, u32 index, c8* filename, u32 size)
+bool WMOSceneNode_getDoodadName(IWMOSceneNode* node, uint32_t index, char* filename, uint32_t size)
 {
 	const IFileWMO* wmo = node->getFileWMO();
 	if (index >= wmo->Header.nDoodads)

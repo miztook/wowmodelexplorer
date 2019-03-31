@@ -5,5 +5,5 @@
 
 using namespace editor;
 
-MW_API void WDTSceneNode_setCurrentTile(IWDTSceneNode* node, s32 row, s32 col);
+MW_API void WDTSceneNode_setCurrentTile(IWDTSceneNode* node, int32_t row, int32_t col);
 MW_API void WDTSceneNode_getCenter(IWDTSceneNode* node, vector3df* pos);

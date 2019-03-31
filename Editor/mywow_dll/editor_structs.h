@@ -4,90 +4,90 @@
  {
 	struct SItem
 	{
-		c16 name[DEFAULT_SIZE];
-		s32 id;
-		s32 type;
-		c16 subclassname[DEFAULT_SIZE];	
+		char16_t name[DEFAULT_SIZE];
+		int32_t id;
+		int32_t type;
+		char16_t subclassname[DEFAULT_SIZE];	
 	};
 
 	struct SNpc
 	{
-		c16 name[DEFAULT_SIZE];
-		s32 modelDisplayId;
-		s32 modelId;
-		c16 type[DEFAULT_SIZE];
+		char16_t name[DEFAULT_SIZE];
+		int32_t modelDisplayId;
+		int32_t modelId;
+		char16_t type[DEFAULT_SIZE];
 	};
 
 	struct SStartOutfit
 	{
-		c16 name[DEFAULT_SIZE];
-		c16 shortname[DEFAULT_SIZE];
-		s32 id;
+		char16_t name[DEFAULT_SIZE];
+		char16_t shortname[DEFAULT_SIZE];
+		int32_t id;
 	};
 
 	struct SEntry
 	{
-		c16 name[DEFAULT_SIZE];
-		s32 id;
+		char16_t name[DEFAULT_SIZE];
+		int32_t id;
 	};
 
 	struct SMap
 	{
-		s32 id;
-		c16 name[DEFAULT_SIZE];
-		s32 type;
+		int32_t id;
+		char16_t name[DEFAULT_SIZE];
+		int32_t type;
 	};
 
 	struct SRidable
 	{
-		s32 npcid;
-		u32 mountflag;
+		int32_t npcid;
+		uint32_t mountflag;
 	};
 
 	struct SAnimation
 	{
-		c8  name[DEFAULT_SIZE];
-		u32 subIndex;
-		u32 length;
-		u32 animIndex;
-		s32	next;
+		char  name[DEFAULT_SIZE];
+		uint32_t subIndex;
+		uint32_t length;
+		uint32_t animIndex;
+		int32_t	next;
 	};
 
 	struct SCharFeature
 	{
-		u32		skinColor;
-		u32		faceType;
-		u32		hairColor;
-		u32		hairStyle;
-		u32		facialHair;
+		uint32_t		skinColor;
+		uint32_t		faceType;
+		uint32_t		hairColor;
+		uint32_t		hairStyle;
+		uint32_t		facialHair;
 	};
 
 	struct SCharacterArmoryInfo
 	{
-		c16		Name[DEFAULT_SIZE];
-		u32		Race;
-		u32		Gender;
-		c16		ClassShortName[DEFAULT_SIZE];
+		char16_t		Name[DEFAULT_SIZE];
+		uint32_t		Race;
+		uint32_t		Gender;
+		char16_t		ClassShortName[DEFAULT_SIZE];
 
-		u32		SkinColor;
-		u32		FaceType;
-		u32		HairColor;
-		u32		HairStyle;
-		u32		FacialHair;
+		uint32_t		SkinColor;
+		uint32_t		FaceType;
+		uint32_t		HairColor;
+		uint32_t		HairStyle;
+		uint32_t		FacialHair;
 
-		s32		Head;
-		s32		Shoulder;
-		s32		Boots;
-		s32		Belt;
-		s32		Shirt;
-		s32		Pants;
-		s32		Chest;
-		s32		Bracers;
-		s32		Gloves;
-		s32		HandRight;
-		s32		HandLeft;
-		s32		Cape;
-		s32		Tabard;
+		int32_t		Head;
+		int32_t		Shoulder;
+		int32_t		Boots;
+		int32_t		Belt;
+		int32_t		Shirt;
+		int32_t		Pants;
+		int32_t		Chest;
+		int32_t		Bracers;
+		int32_t		Gloves;
+		int32_t		HandRight;
+		int32_t		HandLeft;
+		int32_t		Cape;
+		int32_t		Tabard;
 	};
 
 	enum E_SCENE_DEBUG_PART		//场景的debug信息
@@ -156,35 +156,35 @@
 
 	struct SFileM2
 	{
-		c8		name[DEFAULT_SIZE];
-		c8		longname[256];
-		u32		numVertices;
-		u32		numBoundingVerts;
-		u32		numBoundingTriangles;
-		u32		numTextures;
-		u32		numTexLookup;
-		u32		numAttachments;
-		u32		numAttachLookup;
-		u32		numGlobalSequences;
-		u32		numColors;
-		u32		numTransparencies;
-		u32		numTransparencyLookup;
-		u32		numTexAnim;
-		u32		numAnimations;
-		u32		numBones;
-		u32		numRenderFlags;
-		u32		numParticleSystems;
-		u32		numRibbonEmitters;
+		char		name[DEFAULT_SIZE];
+		char		longname[256];
+		uint32_t		numVertices;
+		uint32_t		numBoundingVerts;
+		uint32_t		numBoundingTriangles;
+		uint32_t		numTextures;
+		uint32_t		numTexLookup;
+		uint32_t		numAttachments;
+		uint32_t		numAttachLookup;
+		uint32_t		numGlobalSequences;
+		uint32_t		numColors;
+		uint32_t		numTransparencies;
+		uint32_t		numTransparencyLookup;
+		uint32_t		numTexAnim;
+		uint32_t		numAnimations;
+		uint32_t		numBones;
+		uint32_t		numRenderFlags;
+		uint32_t		numParticleSystems;
+		uint32_t		numRibbonEmitters;
 
 		//skin
-		u32		numGeosets;
-		u32		numTexUnit;
+		uint32_t		numGeosets;
+		uint32_t		numTexUnit;
 	};
 
 	struct SRenderFlag
 	{
-		u16	flags;
-		u16 blend;
+		uint16_t	flags;
+		uint16_t blend;
 
 		bool lighting;
 		bool zwrite;
@@ -192,15 +192,15 @@
 
 	struct SGeoset 
 	{
-		u32		VCount;
-		u32		ICount;
-		u32		GeoID;
+		uint32_t		VCount;
+		uint32_t		ICount;
+		uint32_t		GeoID;
 
-		s16		TexID;
-		u16		rfIndex;
-		s16		ColorIndex;
-		s16		TransIndex;
-		s16		TexAnimIndex;
+		int16_t		TexID;
+		uint16_t		rfIndex;
+		int16_t		ColorIndex;
+		int16_t		TransIndex;
+		int16_t		TexAnimIndex;
 	};
 
 	struct SM2ChildSceneNodes
@@ -214,33 +214,33 @@
 
 	struct SFileWMO
 	{
-		c8		name[DEFAULT_SIZE];
-		c8		longname[256];
-		u32		numMaterials;
-		u32		numGroups;
-		u32		numPortals;
-		u32		numLights;
-		u32		numModels;
-		u32		numDoodads;
-		u32		numDoodadSets;
-		u32		wmoID;
+		char		name[DEFAULT_SIZE];
+		char		longname[256];
+		uint32_t		numMaterials;
+		uint32_t		numGroups;
+		uint32_t		numPortals;
+		uint32_t		numLights;
+		uint32_t		numModels;
+		uint32_t		numDoodads;
+		uint32_t		numDoodadSets;
+		uint32_t		wmoID;
 	};
 
 	struct SWMOGroup
 	{
-		c8	name[DEFAULT_SIZE];
-		u32 numBatches;
-		u32 numLights;
-		u32 numDoodads;
-		u32 ICount;
-		u32 VCount;
+		char	name[DEFAULT_SIZE];
+		uint32_t numBatches;
+		uint32_t numLights;
+		uint32_t numDoodads;
+		uint32_t ICount;
+		uint32_t VCount;
 		bool Indoor;
 	};
 
 	struct SWMOPortal
 	{
-		u32 frontGroupIndex;
-		u32 backGroupIndex;
+		uint32_t frontGroupIndex;
+		uint32_t backGroupIndex;
 	};
 
  }

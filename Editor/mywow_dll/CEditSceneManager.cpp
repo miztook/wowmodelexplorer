@@ -136,8 +136,8 @@ void CEditSceneManager::onWindowSizeChanged( const dimension2du& size )
 
 void CEditSceneManager::drawAll(bool foreground)
 {
-	u32 timeSinceStart = Timer->getTimeSinceStart();
-	u32 timeSinceLastFrame = Timer->getTimeSinceLastFrame();
+	uint32_t timeSinceStart = Timer->getTimeSinceStart();
+	uint32_t timeSinceLastFrame = Timer->getTimeSinceLastFrame();
 
 	CalcPerf = false;
 	if (timeSinceStart - PerfCalcTime > 1000)
@@ -245,7 +245,7 @@ void CEditSceneManager::renderRT()
 
 	//draw screen texture
 	vector2di upperLeft(0, 0);
-	vector2di lowerRight((s32)FrameRT->getSize().Width, (s32)FrameRT->getSize().Height);
+	vector2di lowerRight((int32_t)FrameRT->getSize().Width, (int32_t)FrameRT->getSize().Height);
 	recti rc = recti(upperLeft, lowerRight);
 
 	//rc.LowerRightCorner = rc.UpperLeftCorner + vector2di(rc.getWidth()/2, rc.getHeight()/2);
@@ -281,7 +281,7 @@ void CEditSceneManager::doRender()
 	drawBackTexture();
 
 	//clip plane for terrain and wmo
-	f32 clip = SceneRenderServices->getClipDistance();
+	float clip = SceneRenderServices->getClipDistance();
 	if (ActiveCamera->getClipDistance() != clip)
 		ActiveCamera->setClipDistance(clip);
 
@@ -400,7 +400,7 @@ void CEditSceneManager::doRender()
 	//drawSceneInfo();
 }
 
-void CEditSceneManager::setBackImage( const c8* filename )
+void CEditSceneManager::setBackImage( const char* filename )
 {	
 	BackImageFileName = filename;
 	
@@ -422,7 +422,7 @@ void CEditSceneManager::setBackImage( const c8* filename )
 		BackTexture = NULL;
 }
 
-void CEditSceneManager::setCenterTexture(const c8* filename)
+void CEditSceneManager::setCenterTexture(const char* filename)
 {
 	if(CenterTexture)
 	{

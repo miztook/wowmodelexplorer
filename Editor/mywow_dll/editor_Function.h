@@ -2,7 +2,7 @@
 
 #include "editor_base.h"
 
-MW_API void Function_getFileDirA(const c8* filename, c8* outfilename, u32 size);
-MW_API void Function_getFileNameA(const c8* filename, c8* outfilename, u32 size);
-MW_API void Function_getFileNameNoExtensionA(const c8* filename, c8* outfilename, u32 size);
-MW_API bool Function_hasFileExtensionA( const c8* filename, const c8* ext );
+MW_API void Function_getFileDirA(const char* filename, char* outfilename, uint32_t size);
+MW_API void Function_getFileNameA(const char* filename, char* outfilename, uint32_t size);
+MW_API void Function_getFileNameNoExtensionA(const char* filename, char* outfilename, uint32_t size);
+MW_API bool Function_hasFileExtensionA( const char* filename, const char* ext );

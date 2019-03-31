@@ -3,7 +3,7 @@
 #include "CEditWDTSceneNode.h"
 #include "CFileWDT.h"
 
-void WDTSceneNode_setCurrentTile( IWDTSceneNode* node, s32 row, s32 col )
+void WDTSceneNode_setCurrentTile( IWDTSceneNode* node, int32_t row, int32_t col )
 {
 	CEditWDTSceneNode* editNode = (CEditWDTSceneNode*)node;
 	editNode->setCurrentTile(row, col);

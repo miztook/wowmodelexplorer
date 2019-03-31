@@ -60,43 +60,43 @@ void  M2SceneNode_updateCharacter(IM2SceneNode* node)
 	node->updateCharacter();
 }
 
-bool  M2SceneNode_updateNpc( IM2SceneNode* node, s32 npcid )
+bool  M2SceneNode_updateNpc( IM2SceneNode* node, int32_t npcid )
 {
 	return node->updateNpc(npcid);
 }
 
-bool  M2SceneNode_setModelCamera( IM2SceneNode* node, s32 cameraIndex )
+bool  M2SceneNode_setModelCamera( IM2SceneNode* node, int32_t cameraIndex )
 {
 	return node->setModelCamera(cameraIndex);
 }
 
-s32  M2SceneNode_getModelCamera( IM2SceneNode* node )
+int32_t  M2SceneNode_getModelCamera( IM2SceneNode* node )
 {
 	return node->getModelCamera();
 }
 
-bool  M2SceneNode_playAnimationByName( IM2SceneNode* node, const c8* name, u32 subIdx, bool loop, s32 timeblend )
+bool  M2SceneNode_playAnimationByName( IM2SceneNode* node, const char* name, uint32_t subIdx, bool loop, int32_t timeblend )
 {
 	return node->playAnimationByName(name, subIdx, loop, timeblend);
 }
 
-bool  M2SceneNode_playAnimationByIndex( IM2SceneNode* node, u32 anim, bool loop, s32 timeblend )
+bool  M2SceneNode_playAnimationByIndex( IM2SceneNode* node, uint32_t anim, bool loop, int32_t timeblend )
 {
 	return node->playAnimationByIndex(anim, loop, timeblend);
 }
 
-u32  M2SceneNode_getAnimationCount( IM2SceneNode* node )
+uint32_t  M2SceneNode_getAnimationCount( IM2SceneNode* node )
 {
 	return node->getFileM2()->NumAnimations;
 }
 
-bool  M2SceneNode_getAnimation( IM2SceneNode* node, u32 index, SAnimation* anim )
+bool  M2SceneNode_getAnimation( IM2SceneNode* node, uint32_t index, SAnimation* anim )
 {
 	const IFileM2* m2 = node->getFileM2();
 	if (index >= m2->NumAnimations)
 		return false;
 
-	const c8* name = g_Engine->getWowDatabase()->getAnimationName(m2->Animations[index].animID);
+	const char* name = g_Engine->getWowDatabase()->getAnimationName(m2->Animations[index].animID);
 	if (name)
 		strcpy_s(anim->name, 64, name);
 	else
@@ -108,7 +108,7 @@ bool  M2SceneNode_getAnimation( IM2SceneNode* node, u32 index, SAnimation* anim 
 	return true;
 }
 
-void  M2SceneNode_resetSlot( IM2SceneNode* node, s32 slot )
+void  M2SceneNode_resetSlot( IM2SceneNode* node, int32_t slot )
 {
 	wow_m2instance* instance = node->getM2Instance();
 
@@ -136,7 +136,7 @@ void  M2SceneNode_stop(IM2SceneNode* node)
 	editNode->stop();
 }
 
-void  M2SceneNode_step(IM2SceneNode* node, f32 frame)
+void  M2SceneNode_step(IM2SceneNode* node, float frame)
 {
 	CEditM2SceneNode* editNode = (CEditM2SceneNode*)node;
 	editNode->step(frame);
@@ -148,17 +148,17 @@ bool  M2SceneNode_isPlaying( IM2SceneNode* node )
 	return editNode->isPlaying();
 }
 
-f32  M2SceneNode_getCurrentFrame( IM2SceneNode* node )
+float  M2SceneNode_getCurrentFrame( IM2SceneNode* node )
 {
 	return node->Animation.getCurrentFrame();
 }
 
-void  M2SceneNode_setCurrentFrame( IM2SceneNode* node, f32 frame )
+void  M2SceneNode_setCurrentFrame( IM2SceneNode* node, float frame )
 {
 	node->Animation.setCurrentFrame(frame);
 }
 
-s32  M2SceneNode_getCurrentAnimationIndex( IM2SceneNode* node )
+int32_t  M2SceneNode_getCurrentAnimationIndex( IM2SceneNode* node )
 {
 	return node->getCurrentAnimationIndex();
 }
@@ -242,7 +242,7 @@ void M2SceneNode_setWireframe( IM2SceneNode* node, editor::E_OVERRIDE_WIREFRAME 
 	editNode->setOverrideWireframe(wireframe);
 }
 
-bool  M2SceneNode_getRenderFlag( IM2SceneNode* node, SRenderFlag* renderflag, u32 index )
+bool  M2SceneNode_getRenderFlag( IM2SceneNode* node, SRenderFlag* renderflag, uint32_t index )
 {
 	const IFileM2* filem2 = node->getFileM2();
 	if (index >= filem2->NumRenderFlags)
@@ -256,7 +256,7 @@ bool  M2SceneNode_getRenderFlag( IM2SceneNode* node, SRenderFlag* renderflag, u3
 	return true;
 }
 
-bool  M2SceneNode_getGeoset( IM2SceneNode* node, u32 index, editor::SGeoset* geoset )
+bool  M2SceneNode_getGeoset( IM2SceneNode* node, uint32_t index, editor::SGeoset* geoset )
 {
 	CFileSkin* skin = node->getFileM2()->Skin;
 	if(index >= skin->NumGeosets)
@@ -275,13 +275,13 @@ bool  M2SceneNode_getGeoset( IM2SceneNode* node, u32 index, editor::SGeoset* geo
 	return true;
 }
 
-void  M2SceneNode_showGeoset( IM2SceneNode* node, u32 index, bool show )
+void  M2SceneNode_showGeoset( IM2SceneNode* node, uint32_t index, bool show )
 {	
 	CEditM2SceneNode* editNode = (CEditM2SceneNode*)node;
 	editNode->showGeoset(index, show);
 }
 
-bool M2SceneNode_isGeosetShow( IM2SceneNode* node, u32 index )
+bool M2SceneNode_isGeosetShow( IM2SceneNode* node, uint32_t index )
 {
 	CEditM2SceneNode* editNode = (CEditM2SceneNode*)node;
 	return editNode->isGeosetShow(index);
@@ -293,31 +293,31 @@ bool M2SceneNode_getChildSceneNodes( IM2SceneNode* node, editor::SM2ChildSceneNo
 	return editNode->getChildSceneNodes(childSceneNodes);
 }
 
-const c8* M2SceneNode_getReplaceTextureFileName( IM2SceneNode* node, editor::E_MODEL_REPLACE_TEXTURE texture )
+const char* M2SceneNode_getReplaceTextureFileName( IM2SceneNode* node, editor::E_MODEL_REPLACE_TEXTURE texture )
 {
 	CEditM2SceneNode* editNode = (CEditM2SceneNode*)node;
 	return editNode->getReplaceTextureFileName(texture);
 }
 
-const c8* M2SceneNode_getTextureFileName( IM2SceneNode* node, u32 index )
+const char* M2SceneNode_getTextureFileName( IM2SceneNode* node, uint32_t index )
 {
 	CEditM2SceneNode* editNode = (CEditM2SceneNode*)node;
 	return editNode->getTextureFileName(index);
 }
 
-const c8* M2SceneNode_getRegionTextureFileName( IM2SceneNode* node, ECharRegions region )
+const char* M2SceneNode_getRegionTextureFileName( IM2SceneNode* node, ECharRegions region )
 {
 	CEditM2SceneNode* editNode = (CEditM2SceneNode*)node;
 	return editNode->getRegionTextureFileName(region);
 }
 
-void M2SceneNode_setModelAlpha( IM2SceneNode* node, f32 val )
+void M2SceneNode_setModelAlpha( IM2SceneNode* node, float val )
 {
 	CEditM2SceneNode* editNode = (CEditM2SceneNode*)node;
 	editNode->setModelAlpha(val < 1.0f, val);
 }
 
-f32 M2SceneNode_getModelAlpha( IM2SceneNode* node )
+float M2SceneNode_getModelAlpha( IM2SceneNode* node )
 {
 	return node->getM2Instance()->ModelAlpha;
 }
@@ -333,13 +333,13 @@ void M2SceneNode_getModelColor( IM2SceneNode* node, SColor* color )
 	*color = node->getM2Instance()->ModelColor;
 }
 
-void M2SceneNode_showAttachment( IM2SceneNode* node, u32 index, bool show )
+void M2SceneNode_showAttachment( IM2SceneNode* node, uint32_t index, bool show )
 {
 	CEditM2SceneNode* editNode = (CEditM2SceneNode*)node;
 	editNode->showAttachment(index, show);
 }
 
-bool M2SceneNode_isAttachmentShow( IM2SceneNode* node, u32 index )
+bool M2SceneNode_isAttachmentShow( IM2SceneNode* node, uint32_t index )
 {
 	CEditM2SceneNode* editNode = (CEditM2SceneNode*)node;
 	return editNode->isAttachmentShow(index);

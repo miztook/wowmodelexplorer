@@ -22,17 +22,17 @@ IWorld* Client_getWorld()
 	return g_Client->getWorld();
 }
 
-void Client_tick( u32 delta )
+void Client_tick( uint32_t delta )
 {
 	g_Client->tick(delta);
 }
 
-void Client_onMouseWheel( f32 fDelta )
+void Client_onMouseWheel( float fDelta )
 {
 	g_Client->onMouseWheel(fDelta);
 }
 
-void Client_onMouseMove( f32 pitchDegree, f32 yawDegree )
+void Client_onMouseMove( float pitchDegree, float yawDegree )
 {
 	g_Client->onMouseMove(pitchDegree, yawDegree);
 }

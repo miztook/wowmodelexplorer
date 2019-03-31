@@ -334,9 +334,6 @@
     <Compile Include="Controls\Settings\VideoSetting.xaml.cs">
       <DependentUpon>VideoSetting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SpellVisualEffectTreeViewSelect.xaml.cs">
-      <DependentUpon>SpellVisualEffectTreeViewSelect.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\StateSelect.xaml.cs">
       <DependentUpon>StateSelect.xaml</DependentUpon>
     </Compile>
@@ -377,9 +374,6 @@
     </Compile>
     <Compile Include="Controls\Common\SliderSelector.xaml.cs">
       <DependentUpon>SliderSelector.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SpellVisualEffectSelect.xaml.cs">
-      <DependentUpon>SpellVisualEffectSelect.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TreeListView.cs" />
     <Compile Include="Converters\LevelToIndentConverter.cs" />
@@ -428,12 +422,7 @@
     <Compile Include="Views\SetContent.xaml.cs">
       <DependentUpon>SetContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SpellVisualEffectContent.xaml.cs">
-      <DependentUpon>SpellVisualEffectContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WeaponContent.xaml.cs">
-      <DependentUpon>WeaponContent.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\WeaponContent.xaml.cs" />
     <Compile Include="Views\WmoContent.xaml.cs">
       <DependentUpon>WmoContent.xaml</DependentUpon>
     </Compile>
@@ -624,10 +613,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SpellVisualEffectTreeViewSelect.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\StateSelect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -681,10 +666,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Common\SliderSelector.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SpellVisualEffectSelect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -762,13 +743,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SpellVisualEffectContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\WeaponContent.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\WmoContent.xaml">
       <SubType>Designer</SubType>

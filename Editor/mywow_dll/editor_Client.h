@@ -8,7 +8,7 @@ MW_API void  Client_destroy();
 MW_API IPlayer*  Client_getPlayer();
 MW_API IWorld*  Client_getWorld();
 
-MW_API void Client_tick(u32 delta);
-MW_API void Client_onMouseWheel(f32 fDelta);
-MW_API void Client_onMouseMove(f32 pitchDegree, f32 yawDegree);
+MW_API void Client_tick(uint32_t delta);
+MW_API void Client_onMouseWheel(float fDelta);
+MW_API void Client_onMouseMove(float pitchDegree, float yawDegree);
 

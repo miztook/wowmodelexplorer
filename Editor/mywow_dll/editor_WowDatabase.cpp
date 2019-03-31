@@ -1,16 +1,17 @@
 #include "stdafx.h"
 #include "editor_WowDatabase.h"
+using namespace WowClassic;
 
-c8 g_wmodbname[DEFAULT_SIZE];
-c8 g_svdbname[DEFAULT_SIZE];
-c8 g_worldmodelname[DEFAULT_SIZE];
+char g_wmodbname[DEFAULT_SIZE];
+char g_svdbname[DEFAULT_SIZE];
+char g_worldmodelname[DEFAULT_SIZE];
 
-u32  WowDatabase_getItemCount()
+uint32_t  WowDatabase_getItemCount()
 {
 	return g_Engine->getWowDatabase()->getItemCount();
 }
 
-bool  WowDatabase_getItem( u32 i, editor::SItem* item )
+bool  WowDatabase_getItem( uint32_t i, editor::SItem* item )
 {
 	const SItemRecord* r = g_Engine->getWowDatabase()->getItem(i);
 	if (!r || strlen(r->name) > 127)
@@ -24,7 +25,7 @@ bool  WowDatabase_getItem( u32 i, editor::SItem* item )
 	return true;
 }
 
-bool WowDatabase_getItemById( s32 id, editor::SItem* item )
+bool WowDatabase_getItemById( int32_t id, editor::SItem* item )
 {
 	const SItemRecord* r = g_Engine->getWowDatabase()->getItemById(id);
 	if (!r || strlen(r->name) > 127)
@@ -38,12 +39,12 @@ bool WowDatabase_getItemById( s32 id, editor::SItem* item )
 	return true;
 }
 
-u32  WowDatabase_getNpcCount()
+uint32_t  WowDatabase_getNpcCount()
 {
 	return g_Engine->getWowDatabase()->getNpcCount();
 }
 
-bool  WowDatabase_getNpc( u32 i, editor::SNpc* npc )
+bool  WowDatabase_getNpc( uint32_t i, editor::SNpc* npc )
 {
 	const SNPCRecord* r = g_Engine->getWowDatabase()->getNPC(i);
 	if (!r || strlen(r->name) > 127)
@@ -59,7 +60,7 @@ bool  WowDatabase_getNpc( u32 i, editor::SNpc* npc )
 	return true;
 }
 
-bool WowDatabase_getNpcById( s32 id, editor::SNpc* npc )
+bool WowDatabase_getNpcById( int32_t id, editor::SNpc* npc )
 {
 	const SNPCRecord* r = g_Engine->getWowDatabase()->getNPCById(id);
 	if (!r || strlen(r->name) > 127)
@@ -75,27 +76,27 @@ bool WowDatabase_getNpcById( s32 id, editor::SNpc* npc )
 	return true;
 }
 
-bool  WowDatabase_getRaceId( const c8* racename, u32* id )
+bool  WowDatabase_getRaceId( const char* racename, uint32_t* id )
 {
 	return g_Engine->getWowDatabase()->getRaceId(racename, *id);
 }
 
-const c8* WowDatabase_getRaceName( u32 id )
+const char* WowDatabase_getRaceName( uint32_t id )
 {
 	return g_Engine->getWowDatabase()->getRaceName(id);
 }
 
-const c8* WowDatabase_getClassShortName( u32 id )
+const char* WowDatabase_getClassShortName( uint32_t id )
 {
 	return g_Engine->getWowDatabase()->getClassShortName(id);
 }
 
-bool WowDatabase_getClassInfo( const c8* shortname, editor::SEntry* entry )
+bool WowDatabase_getClassInfo( const char* shortname, editor::SEntry* entry )
 {
-	u32 id;
+	uint32_t id;
 	bool ret = g_Engine->getWowDatabase()->getClassInfo(shortname, entry->name, DEFAULT_SIZE, &id);
 
-	entry->id = (s32)id;
+	entry->id = (int32_t)id;
 	return ret;
 }
 
@@ -104,7 +105,7 @@ void  WowDatabase_buildItems()
 	g_Engine->getWowDatabase()->buildItems();
 }
 
-bool  WowDatabase_buildNpcs( const c8* filename )
+bool  WowDatabase_buildNpcs( const char* filename )
 {
 	return g_Engine->getWowDatabase()->buildNpcs(filename);
 }
@@ -134,27 +135,27 @@ void WowDatabase_buildTextures()
 	g_Engine->getWowDatabase()->buildTextures();
 }
 
-void WowDatabase_buildRidables(const c8* filename)
+void WowDatabase_buildRidables(const char* filename)
 {
 	g_Engine->getWowDatabase()->buildRidables(filename);
 }
 
-bool  WowDatabase_getCharacterPath( const c8* raceName, bool female, bool isHD, c8* path, u32 size )
+bool  WowDatabase_getCharacterPath( const char* raceName, bool female, bool isHD, char* path, uint32_t size )
 {
 	return g_Engine->getWowDatabase()->getCharacterPath(raceName, female, isHD, path, size);
 }
 
-bool  WowDatabase_itemIsCorrectType( s32 type, s32 slot )
+bool  WowDatabase_itemIsCorrectType( int32_t type, int32_t slot )
 {
 	return isCorrectType(type, slot);
 }
 
-u32  WowDatabase_getStartOutfitCount( u32 race, bool female )
+uint32_t  WowDatabase_getStartOutfitCount( uint32_t race, bool female )
 {
 	return g_Engine->getWowDatabase()->getNumStartOutfits(race, female);
 }
 
-bool  WowDatabase_getStartOutfit( u32 race, bool female, u32 i, editor::SStartOutfit* entry )
+bool  WowDatabase_getStartOutfit( uint32_t race, bool female, uint32_t i, editor::SStartOutfit* entry )
 {
 	const SStartOutfitEntry* ent = g_Engine->getWowDatabase()->getStartOutfit(race, female, i);
 	if (!ent)
@@ -166,25 +167,25 @@ bool  WowDatabase_getStartOutfit( u32 race, bool female, u32 i, editor::SStartOu
 	return true;
 }
 
-u32  WowDatabase_getSetCount()
+uint32_t  WowDatabase_getSetCount()
 {
 	return g_Engine->getWowDatabase()->getItemSetDB()->getNumRecords();
 }
 
-bool  WowDatabase_getSet(u32 i, editor::SEntry* entry)
+bool  WowDatabase_getSet(uint32_t i, editor::SEntry* entry)
 {
 	return g_Engine->getWowDatabase()->getSet(i, entry->id, entry->name, DEFAULT_SIZE);
 }
 
 
-u32  WowDatabase_getMapCount()
+uint32_t  WowDatabase_getMapCount()
 {
 	return g_Engine->getWowDatabase()->getMapDB()->getNumRecords();
 }
 
-bool  WowDatabase_getMap( u32 i, editor::SMap* map )
+bool  WowDatabase_getMap( uint32_t i, editor::SMap* map )
 {
-	dbc::record r = g_Engine->getWowDatabase()->getMapDB()->getRecord(i);
+	auto r = g_Engine->getWowDatabase()->getMapDB()->getRecord(i);
 	if (!r.isValid())
 		return false;
 
@@ -194,14 +195,14 @@ bool  WowDatabase_getMap( u32 i, editor::SMap* map )
 	return true;
 }
 
-u32 WowDatabase_getWmoCount()
+uint32_t WowDatabase_getWmoCount()
 {
 	return g_Engine->getWowDatabase()->getNumWmos();
 }
 
-const c8* WowDatabase_getWMOFileName( u32 index, bool shortname )
+const char* WowDatabase_getWMOFileName( uint32_t index, bool shortname )
 {
-	const c8* filename = g_Engine->getWowDatabase()->getWmoFileName(index);
+	const char* filename = g_Engine->getWowDatabase()->getWmoFileName(index);
 	if (!filename)
 		return "";
 
@@ -216,14 +217,14 @@ const c8* WowDatabase_getWMOFileName( u32 index, bool shortname )
 	}
 }
 
-u32 WowDatabase_getWorldModelCount()
+uint32_t WowDatabase_getWorldModelCount()
 {
 	return g_Engine->getWowDatabase()->getNumWorldModels();
 }
 
-const c8* WowDatabase_getWorldModelFileName(u32 index, bool shortname)
+const char* WowDatabase_getWorldModelFileName(uint32_t index, bool shortname)
 {
-	const c8* filename = g_Engine->getWowDatabase()->getWorldModelFileName(index);
+	const char* filename = g_Engine->getWowDatabase()->getWorldModelFileName(index);
 	if (!filename)
 		return "";
 
@@ -238,41 +239,26 @@ const c8* WowDatabase_getWorldModelFileName(u32 index, bool shortname)
 	}
 }
 
-u32 WowDatabase_getTextureCount()
+uint32_t WowDatabase_getTextureCount()
 {
 	return g_Engine->getWowDatabase()->getNumTextures();
 }
 
-const c8* WowDatabase_getTextureFileName( u32 index )
+const char* WowDatabase_getTextureFileName( uint32_t index )
 {
-	const c8* filename = g_Engine->getWowDatabase()->getTextureFileName(index);
+	const char* filename = g_Engine->getWowDatabase()->getTextureFileName(index);
 	if (!filename)
 		return "";
 
 	return filename;
 }
 
-u32  WowDatabase_getSpellVisualEffectCount()
-{
-	return g_Engine->getWowDatabase()->getSpellVisualEffectNameDB()->getNumRecords();
-}
-
-bool  WowDatabase_getSpellVisualEffectId( u32 i, int* id )
-{
-	dbc::record r = g_Engine->getWowDatabase()->getSpellVisualEffectNameDB()->getRecord(i);
-	if (!r.isValid())
-		return false;
-
-	*id = r.getID();
-	return true;
-}
-
-u32 WowDatabase_getRidableCount()
+uint32_t WowDatabase_getRidableCount()
 {
 	return g_Engine->getWowDatabase()->getNumRidables();
 }
 
-bool WowDatabase_getRidable( u32 i, editor::SRidable* ridable )
+bool WowDatabase_getRidable( uint32_t i, editor::SRidable* ridable )
 {
 	const ::SRidable* r = g_Engine->getWowDatabase()->getRidable(i);
 	if(!r)
@@ -284,7 +270,7 @@ bool WowDatabase_getRidable( u32 i, editor::SRidable* ridable )
 	return true;
 }
 
-void  WowDatabase_getMaxCharFeature( u32 race, bool female, bool isHD, SCharFeature* feature )
+void  WowDatabase_getMaxCharFeature( uint32_t race, bool female, bool isHD, SCharFeature* feature )
 {
 	wowDatabase* wdb = g_Engine->getWowDatabase();
 	feature->skinColor = wdb->getMaxSkinColor(race, female, isHD);
@@ -294,7 +280,7 @@ void  WowDatabase_getMaxCharFeature( u32 race, bool female, bool isHD, SCharFeat
 	feature->facialHair = wdb->getMaxFacialHairStyle(race, female);
 }
 
-bool  WowDatabase_getNpcPath( s32 npcid, bool isHD, c8* path, u32 size )
+bool  WowDatabase_getNpcPath( int32_t npcid, bool isHD, char* path, uint32_t size )
 {
 	bool ret = g_Engine->getWowDatabase()->getNpcPath(npcid, isHD, path, size);
 
@@ -306,34 +292,7 @@ bool  WowDatabase_getNpcPath( s32 npcid, bool isHD, c8* path, u32 size )
 	return ret;
 }
 
-bool  WowDatabase_getItemVisualPath( s32 visualId, c8* path, u32 size )
-{
-	if (visualId == 0)
-		return false;
-
-	return g_Engine->getWowDatabase()->getItemVisualPath(visualId, path, size);
-}
-
-const c8* WowDatabase_getSpellVisualEffectName( s32 visualId )
-{
-	dbc::record r = g_Engine->getWowDatabase()->getSpellVisualEffectNameDB()->getByID(visualId);
-	if (!r.isValid())
-		return "";
-
-	const c8* name = r.getString(spellVisualEffectNameDB::Model);
-	getFileNameNoExtensionA(name, g_svdbname, DEFAULT_SIZE);
-	return g_svdbname;
-}
-
-bool  WowDatabase_getSpellVisualEffectPath( s32 visualId, c8* path, u32 size )
-{
-	if (visualId == 0)
-		return false;
-
-	return g_Engine->getWowDatabase()->getEffectVisualPath(visualId, path, size);
-}
-
-bool WowDatabase_getItemPath(s32 itemid, c8* modelpath, u32 modelSize, c8* texturepath, u32 texSize)
+bool WowDatabase_getItemPath(int32_t itemid, char* modelpath, uint32_t modelSize, char* texturepath, uint32_t texSize)
 {
 	if(itemid == 0)
 		return false;

@@ -11,16 +11,16 @@ CEditWMOSceneNode::CEditWMOSceneNode( IFileWMO* wmo, ISceneNode* parent )
 	OverrideWireframe = editor::EOW_NONE;
 
 	ShowGroups = new bool[Wmo->Header.nGroups];
-	for (u32 i=0; i<Wmo->Header.nGroups; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nGroups; ++i)
 		ShowGroups[i] = true;
 
 	ShowGroupsBoudingBox = new SShowColor[Wmo->Header.nGroups];
-	for (u32 i=0; i<Wmo->Header.nGroups; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nGroups; ++i)
 		ShowGroupsBoudingBox[i].show = false;
 
 	ShowPortals = new SShowColor[Wmo->Header.nPortals];
 	ShowPortalGroups = new bool[Wmo->Header.nPortals];
-	for (u32 i=0; i<Wmo->Header.nPortals; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nPortals; ++i)
 	{
 		ShowPortals[i].show = false;
 		ShowPortalGroups[i] = false;
@@ -40,13 +40,13 @@ void CEditWMOSceneNode::render() const
 	//wmo
 	if (ShowWMO)
 	{
-		for (u32 i=0; i<Wmo->Header.nGroups; ++i)
+		for (uint32_t i=0; i<Wmo->Header.nGroups; ++i)
 		{
 			const CWMOGroup* group = &Wmo->Groups[i];
 			if (!DynGroups[i].visible || !ShowGroups[i])
 				continue;
 
-			for (u32 c=0; c<group->NumBatches; ++c)
+			for (uint32_t c=0; c<group->NumBatches; ++c)
 			{
 				renderWMOGroup(i, c);
 			}
@@ -58,7 +58,7 @@ void CEditWMOSceneNode::render() const
 	//liquid
 }
 
-void CEditWMOSceneNode::renderWMOGroup( u32 groupIndex, u32 batchIndex ) const
+void CEditWMOSceneNode::renderWMOGroup( uint32_t groupIndex, uint32_t batchIndex ) const
 {
 	CSceneRenderServices* sceneRenderServices = static_cast<CSceneRenderServices*>(g_Engine->getSceneRenderServices());
 
@@ -66,7 +66,7 @@ void CEditWMOSceneNode::renderWMOGroup( u32 groupIndex, u32 batchIndex ) const
 	CWMOGroup* group = &Wmo->Groups[groupIndex];
 	SDynGroup* dynGroup = &DynGroups[groupIndex];
 	const SWMOBatch* batch = &group->Batches[batchIndex];
-	u16 matId = batch->matId;
+	uint16_t matId = batch->matId;
 	_ASSERT(matId < Wmo->Header.nMaterials);
 
 	const SWMOMaterial* material = &Wmo->Materials[matId]; 
@@ -121,7 +121,7 @@ void CEditWMOSceneNode::setOverrideWireframe( editor::E_OVERRIDE_WIREFRAME wiref
 	OverrideWireframe = wireframe;
 }
 
-void CEditWMOSceneNode::showGroup( u32 index, bool show )
+void CEditWMOSceneNode::showGroup( uint32_t index, bool show )
 {
 	if (index >= Wmo->Header.nGroups)
 		return;
@@ -129,7 +129,7 @@ void CEditWMOSceneNode::showGroup( u32 index, bool show )
 	ShowGroups[index] = show;
 }
 
-bool CEditWMOSceneNode::isGroupShow( u32 index )
+bool CEditWMOSceneNode::isGroupShow( uint32_t index )
 {
 	if (index >= Wmo->Header.nGroups)
 		return false;
@@ -139,7 +139,7 @@ bool CEditWMOSceneNode::isGroupShow( u32 index )
 
 void CEditWMOSceneNode::drawBoundingBox()
 {
-	for (u32 i=0; i<Wmo->Header.nGroups; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nGroups; ++i)
 	{
 		if (!DynGroups[i].visible || !ShowGroupsBoudingBox[i].show)
 			continue;
@@ -148,7 +148,7 @@ void CEditWMOSceneNode::drawBoundingBox()
 	}
 }
 
-void CEditWMOSceneNode::showGroupBox( u32 index, bool show, SColor color )
+void CEditWMOSceneNode::showGroupBox( uint32_t index, bool show, SColor color )
 {
 	if (index >= Wmo->Header.nGroups)
 		return;
@@ -157,7 +157,7 @@ void CEditWMOSceneNode::showGroupBox( u32 index, bool show, SColor color )
 	ShowGroupsBoudingBox[index].color = color;
 }
 
-bool CEditWMOSceneNode::isGroupBoudingBoxShow( u32 index )
+bool CEditWMOSceneNode::isGroupBoudingBoxShow( uint32_t index )
 {
 	if (index >= Wmo->Header.nGroups)
 		return false;
@@ -165,7 +165,7 @@ bool CEditWMOSceneNode::isGroupBoudingBoxShow( u32 index )
 	return ShowGroupsBoudingBox[index].show;
 }
 
-void CEditWMOSceneNode::showPortal( u32 index, bool show, SColor color )
+void CEditWMOSceneNode::showPortal( uint32_t index, bool show, SColor color )
 {
 	if (index >= Wmo->Header.nPortals)
 		return;
@@ -174,7 +174,7 @@ void CEditWMOSceneNode::showPortal( u32 index, bool show, SColor color )
 	ShowPortals[index].color = color;
 }
 
-bool CEditWMOSceneNode::isPortalShow( u32 index )
+bool CEditWMOSceneNode::isPortalShow( uint32_t index )
 {
 	if (index >= Wmo->Header.nPortals)
 		return false;
@@ -184,7 +184,7 @@ bool CEditWMOSceneNode::isPortalShow( u32 index )
 
 void CEditWMOSceneNode::drawPortals()
 {
-	for (u32 i=0; i<Wmo->Header.nPortals; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nPortals; ++i)
 	{
 		const SDynPortal* portal = &DynPortals[i];
 		if (!portal->visible || !ShowPortals[i].show)
@@ -194,7 +194,7 @@ void CEditWMOSceneNode::drawPortals()
 	}
 }
 
-void CEditWMOSceneNode::showPortalGroups( u32 index, bool show )
+void CEditWMOSceneNode::showPortalGroups( uint32_t index, bool show )
 {
 	if (index >= Wmo->Header.nPortals)
 		return;
@@ -206,7 +206,7 @@ void CEditWMOSceneNode::showPortalGroups( u32 index, bool show )
 	showGroupBox(portal->backGroupIndex, show, SColor(0,0, 255));
 }
 
-bool CEditWMOSceneNode::isPortalGroupsShow( u32 index )
+bool CEditWMOSceneNode::isPortalGroupsShow( uint32_t index )
 {
 	if (index >= Wmo->Header.nPortals)
 		return false;

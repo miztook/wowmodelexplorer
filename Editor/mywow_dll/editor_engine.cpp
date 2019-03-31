@@ -32,7 +32,7 @@ void  Engine_destroy()
 
 	_CrtMemCheckpoint(&newState);
 
-	s32 diff = _CrtMemDifference(&diffState, &oldState, &newState);
+	int32_t diff = _CrtMemDifference(&diffState, &oldState, &newState);
 	_ASSERT(diff == 0);
 
 	CMiniDump::end();
@@ -43,9 +43,9 @@ HWND Engine_getHWnd()
 	return g_Engine->getWindowInfo().hwnd;
 }
 
-bool  Engine_initDriver( E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen, bool vsync, u32 antialias, bool multithread )
+bool  Engine_initDriver( E_DRIVER_TYPE driverType, uint32_t adapter, bool fullscreen, bool vsync, uint32_t antialias, bool multithread )
 {
-	bool ret = g_Engine->initDriver(driverType, adapter, fullscreen, vsync, (u8)antialias, multithread);
+	bool ret = g_Engine->initDriver(driverType, adapter, fullscreen, vsync, (uint8_t)antialias, multithread);
 
 	return ret;
 }
@@ -66,7 +66,7 @@ ISceneManager*  Engine_getSceneManager()
 	return g_Engine->getSceneManager();
 }
 
-wowDatabase*  Engine_getWowDatabase()
+WowClassic::wowDatabase*  Engine_getWowDatabase()
 {
 	return g_Engine->getWowDatabase();
 }
@@ -101,9 +101,9 @@ IFontServices* Engine_getFontServices()
 	return g_Engine->getFontServices();
 }
 
-void Engine_getBaseDirectory(c8* dirname, u32 size)
+void Engine_getBaseDirectory(char* dirname, uint32_t size)
 {
-	const c8* baseDir = g_Engine->getFileSystem()->getBaseDirectory();
+	const char* baseDir = g_Engine->getFileSystem()->getBaseDirectory();
 	g_Engine->getFileSystem()->getAbsolutePath(baseDir, dirname, size);
 }
 

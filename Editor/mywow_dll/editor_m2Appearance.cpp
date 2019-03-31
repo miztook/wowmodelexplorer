@@ -1,17 +1,17 @@
 #include "stdafx.h"
 #include "editor_m2Appearance.h"
 
-bool m2Appearance_takeItem( wow_m2appearance* appearance, s32 itemId )
+bool m2Appearance_takeItem( wow_m2appearance* appearance, int32_t itemId )
 {
 	return appearance->takeItem(itemId);
 }
 
-void m2Appearance_loadStartOutfit( wow_m2appearance* appearance, s32 startId, bool deathknight )
+void m2Appearance_loadStartOutfit( wow_m2appearance* appearance, int32_t startId, bool deathknight )
 {
 	appearance->loadStartOutfit(startId, deathknight);
 }
 
-void m2Appearance_loadSet( wow_m2appearance* appearance, s32 setid )
+void m2Appearance_loadSet( wow_m2appearance* appearance, int32_t setid )
 {
 	appearance->loadSet(setid);
 }

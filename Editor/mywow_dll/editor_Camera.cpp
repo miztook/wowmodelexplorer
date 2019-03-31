@@ -36,7 +36,7 @@ void Camera_getLookat( ICamera* camera, vector3df* lookat )
 	*lookat = camera->getLookat();
 }
 
-void Camera_onKeyMove( ICamera* cam, f32 speed, ICamera::SKeyControl keyControl )
+void Camera_onKeyMove( ICamera* cam, float speed, ICamera::SKeyControl keyControl )
 {
 	cam->onKeyMove(speed, keyControl);
 }
@@ -46,17 +46,17 @@ void Camera_recalculateAll( ICamera* cam )
 	cam->recalculateAll();
 }
 
-void Camera_pitch_yaw_Maya( ICamera* cam, f32 pitchDegree, f32 yawDegree )
+void Camera_pitch_yaw_Maya( ICamera* cam, float pitchDegree, float yawDegree )
 {
 	cam->pitch_yaw_Maya(pitchDegree, yawDegree);
 }
 
-void Camera_move_offset_Maya( ICamera* cam, f32 xOffset, f32 yOffset )
+void Camera_move_offset_Maya( ICamera* cam, float xOffset, float yOffset )
 {
 	cam->move_offset_Maya(xOffset, yOffset);
 }
 
-void Camera_pitch_yaw_FPS( ICamera* cam, f32 pitchDegree, f32 yawDegree )
+void Camera_pitch_yaw_FPS( ICamera* cam, float pitchDegree, float yawDegree )
 {
 	cam->pitch_yaw_FPS(pitchDegree, yawDegree);
 }

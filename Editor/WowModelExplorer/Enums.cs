@@ -21,7 +21,6 @@ namespace WowModelExplorer
         Character,
         Npc,
         Ridable,
-        SpellVisualEffect,
         MapModel,
         Wmo,
         WorldM2,

@@ -27,7 +27,6 @@
         <ad:DockingManager x:Name="_dockManager" IsAnimationEnabled="True">
             <ad:ResizingPanel FocusManager.IsFocusScope="True" Orientation="Horizontal">
                 <ad:DockablePane x:Name="_leftDockablePane" ad:ResizingPanel.ResizeWidth="0">
-                    <v:SpellVisualEffectContent x:Name="_spellVisualEffectContent" />
                     <v:NpcContent x:Name="_npcContent" />
                     <v:CharacterContent x:Name="_characterContent" />
                     <v:MapModelContent x:Name="_mapModelContent" />

@@ -14,19 +14,19 @@ public:
 
 public:
 	void setOverrideWireframe(editor::E_OVERRIDE_WIREFRAME wireframe);
-	void showGroup(u32 index, bool show);
-	bool isGroupShow(u32 index);
+	void showGroup(uint32_t index, bool show);
+	bool isGroupShow(uint32_t index);
 
-	void showGroupBox(u32 index, bool show, SColor color);
-	bool isGroupBoudingBoxShow(u32 index);
+	void showGroupBox(uint32_t index, bool show, SColor color);
+	bool isGroupBoudingBoxShow(uint32_t index);
 	void drawBoundingBox();
 
-	void showPortal(u32 index, bool show, SColor color);
-	bool isPortalShow(u32 index);
+	void showPortal(uint32_t index, bool show, SColor color);
+	bool isPortalShow(uint32_t index);
 	void drawPortals();
 
-	void showPortalGroups(u32 index, bool show);
-	bool isPortalGroupsShow(u32 index);
+	void showPortalGroups(uint32_t index, bool show);
+	bool isPortalGroupsShow(uint32_t index);
 
 public:
 	bool	ShowWMO;
@@ -38,7 +38,7 @@ public:
 	};
 
 private:
-	void renderWMOGroup(u32 groupIndex, u32 batchIndex) const;
+	void renderWMOGroup(uint32_t groupIndex, uint32_t batchIndex) const;
 
 	void setMaterial(const SWMOMaterial* material, SMaterial& mat) const;
 

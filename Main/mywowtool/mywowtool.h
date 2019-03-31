@@ -3,7 +3,6 @@
 #ifdef AUTOMATIC_LINK
 
 #pragma comment(lib, "jsoncpp.lib") 
-#pragma comment(lib, "libfbxsdk-mt.lib")
 
 #endif
 

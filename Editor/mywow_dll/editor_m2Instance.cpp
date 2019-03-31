@@ -34,19 +34,19 @@ bool m2Instance_getCharFeature( wow_m2instance* instance, SCharFeature* feature 
 	return true;
 }
 
-s32 m2Instance_getItemSlot( wow_m2instance* instance, s32 itemid )
+int32_t m2Instance_getItemSlot( wow_m2instance* instance, int32_t itemid )
 {
 	return instance->getItemSlot(itemid);
 }
 
-s32 m2Instance_getSlotItemId( wow_m2instance* instance, s32 slot )
+int32_t m2Instance_getSlotItemId( wow_m2instance* instance, int32_t slot )
 {
 	if (!instance->CharacterInfo)
 		return -1;
 	return instance->CharacterInfo->Equipments[slot];
 }
 
-bool m2Instance_slotHasModel( wow_m2instance* instance, s32 slot )
+bool m2Instance_slotHasModel( wow_m2instance* instance, int32_t slot )
 {
 	return instance->slotHasModel(slot);
 }

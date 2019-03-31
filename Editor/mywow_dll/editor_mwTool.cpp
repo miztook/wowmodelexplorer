@@ -15,12 +15,12 @@ void mwTool_destroy()
 	destroyTool();
 }
 
-bool mwTool_openUrlToJsonFile( const c8* url, const c8* filename )
+bool mwTool_openUrlToJsonFile( const char* url, const char* filename )
 {
 	return CSysUtility::openURLtoJsonFile(url, filename);
 }
 
-bool mwTool_parseCharacterArmoryInfo( const c8* filename, editor::SCharacterArmoryInfo* charInfo )
+bool mwTool_parseCharacterArmoryInfo( const char* filename, editor::SCharacterArmoryInfo* charInfo )
 {
 	SCharArmoryInfo cInfo;
 	if (!g_mwTool->getWowArmory()->parseCharacterArmoryInfo(filename, &cInfo))
@@ -56,7 +56,7 @@ bool mwTool_parseCharacterArmoryInfo( const c8* filename, editor::SCharacterArmo
 	return true;
 }
 
-bool mwTool_exportBlpAsTga(const c8* blpfilename, const c8* tgafilename, bool bAlpha)
+bool mwTool_exportBlpAsTga(const char* blpfilename, const char* tgafilename, bool bAlpha)
 {
 	return AUX_ExportBlpAsTga(blpfilename, tgafilename, bAlpha);
 }
@@ -66,12 +66,12 @@ bool mwTool_exportBlpAsTgaDir(const char* blpfilename, const char* dirname, bool
 	return AUX_ExportBlpAsTgaDir(blpfilename, dirname, bAlpha);
 }
 
-bool mwTool_exportM2SceneNodeToOBJ(IM2SceneNode* node, const c8* dirname)
+bool mwTool_exportM2SceneNodeToOBJ(IM2SceneNode* node, const char* dirname)
 {
 	if(!node || !node->getFileM2())
 		return false;
 
-	c8 filename[MAX_PATH];
+	char filename[MAX_PATH];
 	getFileNameNoExtensionA(node->getFileM2()->getFileName(), filename, MAX_PATH);
 	string512 path = dirname;
 	path.normalizeDir();
@@ -84,12 +84,12 @@ bool mwTool_exportM2SceneNodeToOBJ(IM2SceneNode* node, const c8* dirname)
 	return exporter.exportM2SceneNode(node, path.c_str());
 }
 
-bool mwTool_exportWMOSceneNodeToOBJ(IWMOSceneNode* node, const c8* dirname)
+bool mwTool_exportWMOSceneNodeToOBJ(IWMOSceneNode* node, const char* dirname)
 {
 	if(!node || !node->getFileWMO())
 		return false;
 
-	c8 filename[MAX_PATH];
+	char filename[MAX_PATH];
 	getFileNameNoExtensionA(node->getFileWMO()->getFileName(), filename, MAX_PATH);
 	string512 path = dirname;
 	path.normalizeDir();

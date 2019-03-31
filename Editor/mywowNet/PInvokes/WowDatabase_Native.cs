@@ -190,24 +190,6 @@ namespace mywowNet
              StringBuilder path,
              uint size);
 
-        [DllImport(DllName, EntryPoint = "WowDatabase_getItemVisualPath", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        [return: MarshalAsAttribute(UnmanagedType.I1)]
-        public static extern bool WowDatabase_getItemVisualPath(
-             int visualId,
-             StringBuilder path,
-             uint size);
-
-        [DllImport(DllName, EntryPoint = "WowDatabase_getSpellVisualEffectName", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern IntPtr WowDatabase_getSpellVisualEffectName(
-             int visualId);
-
-        [DllImport(DllName, EntryPoint = "WowDatabase_getSpellVisualEffectPath", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        [return: MarshalAsAttribute(UnmanagedType.I1)]
-        public static extern bool WowDatabase_getSpellVisualEffectPath(
-             int visualId,
-             StringBuilder path,
-             uint size);
-
         [DllImport(DllName, EntryPoint = "WowDatabase_getItemPath", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAsAttribute(UnmanagedType.I1)]
         public static extern bool WowDatabase_getItemPath(

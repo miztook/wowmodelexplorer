@@ -38,9 +38,6 @@ namespace WowModelExplorer.Commands
                 case ModelViewTypes.Ridable:
                     content = ShellService.Instance.RidableContent;
                     break;
-                case ModelViewTypes.SpellVisualEffect:
-                    content = ShellService.Instance.SpellVisualEffectContent;
-                    break;
                 case ModelViewTypes.MapModel:
                     content = ShellService.Instance.MapModelContent;
                     break;

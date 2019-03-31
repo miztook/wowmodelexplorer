@@ -334,29 +334,6 @@ namespace WowModelExplorer.Data
             }
         }
 
-        public static void GetAllSpellVisualEffects(this SpellVisualEffectCollection spellVisualEffects)
-        {
-            WowDatabase wowDatabase = Engine.Instance.WowDatabase;
-
-            uint visualCount = wowDatabase.SpellVisualEffectCount;
-            spellVisualEffects.Clear();
-
-            for (uint i = 0; i < visualCount; ++i)
-            {
-                int? id = wowDatabase.GetSpellVisualEffectId(i);
-                if (id != null)
-                {
-                    string path = Engine.Instance.WowDatabase.GetSpellVisualEffectPath(id.Value);
-                    if (Engine.Instance.WowEnvironment.IsFileExist(path))
-                    {
-                        string name = Engine.Instance.WowDatabase.GetSpellVisualEffectName(id.Value);
-                        if (!name.Contains("zzOLD_"))
-                            spellVisualEffects.Add(new SpellVisualEffect() { Id = id.Value, Name = name });
-                    }
-                }
-            }
-        }
-
         public static void GetAllMaps(this MapCollection maps, Languages language)
         {       
             WowDatabase _wowDatabase = Engine.Instance.WowDatabase;

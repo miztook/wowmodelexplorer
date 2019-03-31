@@ -21,7 +21,7 @@ CEditM2SceneNode::CEditM2SceneNode( IFileM2* mesh, ISceneNode* parent, bool npc 
 	if (skin)
 	{
 		ShowGeosets = new bool[skin->NumGeosets];
-		for (u32 i=0; i<skin->NumGeosets; ++i)
+		for (uint32_t i=0; i<skin->NumGeosets; ++i)
 			ShowGeosets[i] = true;
 
 		IsGeosetsVisible = new bool[skin->NumGeosets];
@@ -36,7 +36,7 @@ CEditM2SceneNode::CEditM2SceneNode( IFileM2* mesh, ISceneNode* parent, bool npc 
 	}
 
 	Attachments = new SAttachment[Mesh->NumAttachments];
-	for (u32 i=0; i<Mesh->NumAttachments; ++i)
+	for (uint32_t i=0; i<Mesh->NumAttachments; ++i)
 	{
 		//meshNode
 		IMeshSceneNode* mNode = g_Engine->getSceneManager()->addMeshSceneNode("$sphere8X4", this);
@@ -62,7 +62,7 @@ CEditM2SceneNode::CEditM2SceneNode( IFileM2* mesh, ISceneNode* parent, bool npc 
 
 CEditM2SceneNode::~CEditM2SceneNode()
 {
-// 	for (u32 i=0; i<Mesh->NumAttachments; ++i)
+// 	for (uint32_t i=0; i<Mesh->NumAttachments; ++i)
 // 	{
 // 		g_Engine->getSceneManager()->removeSceneNode(Attachments[i].coordSceneNode);
 // 	}
@@ -72,7 +72,7 @@ CEditM2SceneNode::~CEditM2SceneNode()
 	delete[] ShowGeosets;
 }
 
-void CEditM2SceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame, bool visible )
+void CEditM2SceneNode::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible )
 {
 	if (Paused)
 	{
@@ -108,7 +108,7 @@ void CEditM2SceneNode::render() const
 
 		for (PLENTRY p = M2Instance->VisibleGeosetList.Flink; p != &M2Instance->VisibleGeosetList; p = p->Flink)
 		{
-			u32 c = (u32)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - M2Instance->DynGeosets);
+			uint32_t c = (uint32_t)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - M2Instance->DynGeosets);
 
 			if (M2Instance->DynGeosets[c].NoAlpha || !ShowGeosets[c])
 				continue;
@@ -121,7 +121,7 @@ void CEditM2SceneNode::render() const
 
 }
 
-void CEditM2SceneNode::renderGeoset( u32 index ) const
+void CEditM2SceneNode::renderGeoset( uint32_t index ) const
 {
 	CSceneRenderServices* sceneRenderServices = static_cast<CSceneRenderServices*>(g_Engine->getSceneRenderServices());
 
@@ -143,7 +143,7 @@ void CEditM2SceneNode::renderGeoset( u32 index ) const
 			if (RenderInstType == ERT_MESH && ModelAlpha)
 				unit.u.priority = RenderPriority + (set->GeoID != 0 ? 1 : 0);	//子模型优先渲染, 身体最后渲染
 			unit.distance = Distance;
-			unit.u.geoset = (u16)index;
+			unit.u.geoset = (uint16_t)index;
 
 			unit.bufferParam.vbuffer0 = skin->GVertexBuffer; 
 			unit.bufferParam.vbuffer1 = skin->AVertexBuffer;
@@ -212,7 +212,7 @@ void CEditM2SceneNode::renderGeoset( u32 index ) const
 		if (RenderInstType == ERT_MESH && ModelAlpha)
 			unit.u.priority = RenderPriority + (set->GeoID != 0 ? 1 : 0);	//子模型优先渲染, 身体最后渲染
 		unit.distance = Distance;
-		unit.u.geoset = (u16)index;
+		unit.u.geoset = (uint16_t)index;
 
 		unit.bufferParam = g_Engine->getMeshDecalServices()->BufferParam;
 		unit.primType = EPT_TRIANGLES;
@@ -324,7 +324,7 @@ void CEditM2SceneNode::showParticles( bool show )
 	}
 }
 
-void CEditM2SceneNode::showGeoset( u32 index, bool show )
+void CEditM2SceneNode::showGeoset( uint32_t index, bool show )
 {
 	CFileSkin* skin = M2Instance->CurrentSkin;
 	if (!skin || index > skin->NumGeosets)
@@ -333,7 +333,7 @@ void CEditM2SceneNode::showGeoset( u32 index, bool show )
 	ShowGeosets[index] = show;
 }
 
-bool CEditM2SceneNode::isGeosetShow( u32 index )
+bool CEditM2SceneNode::isGeosetShow( uint32_t index )
 {
 	CFileSkin* skin = M2Instance->CurrentSkin;
 	if (!skin || index > skin->NumGeosets)
@@ -342,7 +342,7 @@ bool CEditM2SceneNode::isGeosetShow( u32 index )
 	return ShowGeosets[index];
 }
 
-void CEditM2SceneNode::showAttachment( u32 index, bool show )
+void CEditM2SceneNode::showAttachment( uint32_t index, bool show )
 {
 	if (index >= Mesh->NumAttachments)
 		return;
@@ -350,7 +350,7 @@ void CEditM2SceneNode::showAttachment( u32 index, bool show )
 	Attachments[index].show = show;
 }
 
-bool CEditM2SceneNode::isAttachmentShow( u32 index )
+bool CEditM2SceneNode::isAttachmentShow( uint32_t index )
 {
 	if (index >= Mesh->NumAttachments)
 		return false;
@@ -358,13 +358,13 @@ bool CEditM2SceneNode::isAttachmentShow( u32 index )
 	return Attachments[index].show;
 }
 
-void CEditM2SceneNode::getGeosetDebugInfo( c16* msg, u32 size )
+void CEditM2SceneNode::getGeosetDebugInfo( char16_t* msg, uint32_t size )
 {
 	wcscpy_s((wchar_t*)msg, size, L"Visible Geosets:\n");
 
-	u32 numgeosets = Mesh->Skin->NumGeosets;
-	u32 count = 0;
-	for (u32 i=0; i<numgeosets; ++i)
+	uint32_t numgeosets = Mesh->Skin->NumGeosets;
+	uint32_t count = 0;
+	for (uint32_t i=0; i<numgeosets; ++i)
 	{
 		if(IsGeosetsVisible[i])
 		{
@@ -414,9 +414,9 @@ void CEditM2SceneNode::drawCollisionAABox( SColor color )
 		g_Engine->getDrawServices()->addAABB(WorldCollisionAABox, color);
 }
 
-void CEditM2SceneNode::drawBone( u32 idx, SColor color )
+void CEditM2SceneNode::drawBone( uint32_t idx, SColor color )
 {
-	s32 parent = Mesh->Bones[idx].parent;
+	int32_t parent = Mesh->Bones[idx].parent;
 	if (parent == -1 || BonesDrawn[idx])
 		return;
 
@@ -441,7 +441,7 @@ void CEditM2SceneNode::drawBones( SColor color )
 
 		for (PLENTRY p = M2Instance->VisibleGeosetList.Flink; p != &M2Instance->VisibleGeosetList; p = p->Flink)
 		{
-			u32 c = (u32)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - M2Instance->DynGeosets);
+			uint32_t c = (uint32_t)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - M2Instance->DynGeosets);
 
 			if (M2Instance->DynGeosets[c].NoAlpha || !ShowGeosets[c])
 				continue;
@@ -449,9 +449,9 @@ void CEditM2SceneNode::drawBones( SColor color )
 			CGeoset* set = &skin->Geosets[c];
 			for (CGeoset::T_BoneUnits::iterator itr=set->BoneUnits.begin(); itr != set->BoneUnits.end(); ++itr)
 			{
-				for(u8 k=0; k<(*itr).BoneCount; ++k)
+				for(uint8_t k=0; k<(*itr).BoneCount; ++k)
 				{
-					u16 idx = (*itr).local2globalMap[k];
+					uint16_t idx = (*itr).local2globalMap[k];
 					drawBone(idx, color);
 				}
 			}
@@ -471,13 +471,13 @@ void CEditM2SceneNode::drawBones( SColor color )
 void CEditM2SceneNode::updateAttachmentSceneNodes()
 {
 	//attachment scene nodes
-	for (u32 i=0; i<Mesh->NumAttachments; ++i)
+	for (uint32_t i=0; i<Mesh->NumAttachments; ++i)
 	{
 		Attachments[i].attachmentSceneNode->Visible = Attachments[i].show;
 		Attachments[i].coordSceneNode->Visible = Attachments[i].show;
 
 		const SModelAttachment& attachment = Mesh->Attachments[i];
-		s32 idx = Mesh->Attachments[i].boneIndex;
+		int32_t idx = Mesh->Attachments[i].boneIndex;
 		if (idx == -1)
 			continue;
 
@@ -553,7 +553,7 @@ bool CEditM2SceneNode::getChildSceneNodes( editor::SM2ChildSceneNodes* childScen
 	return true;
 }
 
-const c8* CEditM2SceneNode::getReplaceTextureFileName( editor::E_MODEL_REPLACE_TEXTURE texture )
+const char* CEditM2SceneNode::getReplaceTextureFileName( editor::E_MODEL_REPLACE_TEXTURE texture )
 {
 	ETextureTypes textype = (ETextureTypes)0;
 
@@ -590,7 +590,7 @@ const c8* CEditM2SceneNode::getReplaceTextureFileName( editor::E_MODEL_REPLACE_T
 	return "";
 }
 
-const c8* CEditM2SceneNode::getTextureFileName( u32 index )
+const char* CEditM2SceneNode::getTextureFileName( uint32_t index )
 {
 	IFileM2* filem2 = getM2Instance()->getMesh();
 	if (index >= filem2->NumTextures)
@@ -600,7 +600,7 @@ const c8* CEditM2SceneNode::getTextureFileName( u32 index )
 	return tex ? tex->getFileName() : "";
 }
 
-const c8* CEditM2SceneNode::getRegionTextureFileName( ECharRegions region )
+const char* CEditM2SceneNode::getRegionTextureFileName( ECharRegions region )
 {
 	if (getM2Instance()->CharacterInfo)
 	{
