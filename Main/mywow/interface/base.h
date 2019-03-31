@@ -174,7 +174,6 @@ enum E_LOG_TYPE : int32_t
 {
 	ELOG_GX = 0,
 	ELOG_RES,
-	ELOG_SOUND,
 	ELOG_UI,
 };
 

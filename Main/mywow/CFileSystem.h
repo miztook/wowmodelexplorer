@@ -48,7 +48,6 @@ private:
 
 	IWriteFile* LogGxFile;
 	IWriteFile* LogResFile;
-	IWriteFile* LogSoundFile;
 
 	char		LogString[1024];
 };

@@ -11,7 +11,7 @@
 #define  SUBDIR_SHADER		"Shaders/"
 
 CFileSystem::CFileSystem(const char* baseDir, const char* logDir, bool ignoreSetting)
-	: LogGxFile(nullptr), LogResFile(nullptr), LogSoundFile(nullptr)
+	: LogGxFile(nullptr), LogResFile(nullptr)
 {
 	::memset(LogString, 0, sizeof(LogString));
 
@@ -103,7 +103,6 @@ CFileSystem::CFileSystem(const char* baseDir, const char* logDir, bool ignoreSet
 
 CFileSystem::~CFileSystem()
 {
-	delete LogSoundFile;
 	delete LogGxFile;
 	delete LogResFile;
 }
@@ -188,19 +187,7 @@ bool CFileSystem::createLogFiles()
 			//ASSERT(false);
 		}
 	}
-	//engine log
-	{
-		string_path  path = LogDirectory;
-        path.normalizeDir();
-		path.append(getLogFileName(ELOG_SOUND));
-		LogSoundFile = createAndWriteFile(path.c_str(), false, false);
 
-		if (!LogSoundFile)
-		{
-			//ASSERT(false);
-		}
-	}
-	
 	return true;
 }
 
@@ -212,8 +199,6 @@ const char* CFileSystem::getLogFileName( E_LOG_TYPE type ) const
 		return "gx.log";
 	case ELOG_RES:
 		return "resource.log";
-	case ELOG_SOUND:
-		return "sound.log";
 	default:
 		return "";
 	}
@@ -258,15 +243,6 @@ void CFileSystem::writeLog( E_LOG_TYPE type, const char* format, ... )
 
 			LogResFile->writeText(text.c_str(), 1024);
 			LogResFile->flush();
-		}
-		break;
-	case ELOG_SOUND:
-		if(LogResFile)
-		{
-			CSysUtility::outputDebug("****** sound: %s\n", LogString);
-
-			LogSoundFile->writeText(text.c_str(), 1024);
-			LogSoundFile->flush();
 		}
 		break;
 	default:
