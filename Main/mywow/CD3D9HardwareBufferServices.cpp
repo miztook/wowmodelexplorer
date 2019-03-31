@@ -115,7 +115,7 @@ void CD3D9HardwareBufferServices::destroyHardwareBuffers( const SBufferParam& bu
 		destroyHardwareBuffer(bufferParam.vbuffer1);
 }
 
-bool CD3D9HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, u32 size )
+bool CD3D9HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, uint32_t size )
 {
 	if (vbuffer->Size >= 65536 || size > vbuffer->Size || vbuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -123,8 +123,8 @@ bool CD3D9HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, 
 		return false;
 	}
 
-	u32 vertexSize = getStreamPitchFromType(vbuffer->Type);
-	u32 sizeToLock = size * vertexSize;
+	uint32_t vertexSize = getStreamPitchFromType(vbuffer->Type);
+	uint32_t sizeToLock = size * vertexSize;
 	IDirect3DVertexBuffer9* vertexBuffer = (IDirect3DVertexBuffer9*)vbuffer->HWLink;
 
 	bool dynamic = vbuffer->Mapping == EMM_DYNAMIC;
@@ -147,7 +147,7 @@ bool CD3D9HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, 
 	return true;
 }
 
-bool CD3D9HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, u32 size )
+bool CD3D9HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, uint32_t size )
 {
 	if (ibuffer->Size >= 65536 || size > ibuffer->Size || ibuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -155,8 +155,8 @@ bool CD3D9HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, u
 		return false;
 	}
 
-	u32 indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
-	u32 sizeToLock = size * indexSize;
+	uint32_t indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
+	uint32_t sizeToLock = size * indexSize;
 	IDirect3DIndexBuffer9* indexBuffer = (IDirect3DIndexBuffer9*)ibuffer->HWLink;
 	bool dynamic = ibuffer->Mapping == EMM_DYNAMIC;
 
@@ -212,7 +212,7 @@ bool CD3D9HardwareBufferServices::internalCreateIndexBuffer( CIndexBuffer* ibuff
 	}
 
 	ASSERT (ibuffer->Size);
-	u32 indexSize = 2;
+	uint32_t indexSize = 2;
 	D3DFORMAT indexType=D3DFMT_UNKNOWN;
 	switch (ibuffer->Type)
 	{
@@ -284,7 +284,7 @@ bool CD3D9HardwareBufferServices::internalCreateVertexBuffer( CVertexBuffer* vbu
 	ASSERT(vbuffer->Size);
 
 	DWORD FVF = 0;
-	u32 vertexSize = getStreamPitchFromType(vbuffer->Type);
+	uint32_t vertexSize = getStreamPitchFromType(vbuffer->Type);
 	if( FAILED(Driver->pID3DDevice->CreateVertexBuffer( vbuffer->Size * vertexSize, flags, FVF, pool, (IDirect3DVertexBuffer9**)&vbuffer->HWLink, nullptr) ) )
 	{
 		ASSERT(false);
@@ -303,8 +303,8 @@ bool CD3D9HardwareBufferServices::internalCreateVertexBuffer( CVertexBuffer* vbu
 
 bool CD3D9HardwareBufferServices::fillVertexBuffer( CVertexBuffer* vbuffer )
 {
-	u32 vertexSize = getStreamPitchFromType(vbuffer->Type);
-	u32 sizeToLock = vbuffer->Size * vertexSize;
+	uint32_t vertexSize = getStreamPitchFromType(vbuffer->Type);
+	uint32_t sizeToLock = vbuffer->Size * vertexSize;
 
 	IDirect3DVertexBuffer9* vertexBuffer = (IDirect3DVertexBuffer9*)vbuffer->HWLink;
 	void* pLockedBuffer = 0;
@@ -321,8 +321,8 @@ bool CD3D9HardwareBufferServices::fillVertexBuffer( CVertexBuffer* vbuffer )
 
 bool CD3D9HardwareBufferServices::fillIndexBuffer( CIndexBuffer* ibuffer )
 {
-	u32 indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
-	u32 sizeToLock = ibuffer->Size * indexSize;
+	uint32_t indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
+	uint32_t sizeToLock = ibuffer->Size * indexSize;
 
 	IDirect3DIndexBuffer9* indexBuffer = (IDirect3DIndexBuffer9*)ibuffer->HWLink;
 	void* pIndices = 0;
@@ -340,17 +340,17 @@ bool CD3D9HardwareBufferServices::fillIndexBuffer( CIndexBuffer* ibuffer )
 void CD3D9HardwareBufferServices::createStaticIndexBufferQuadList()
 {
 	//index buffer
-	u16* indices = (u16*)Z_AllocateTempMemory(sizeof(u16) * MAX_QUADS() * 6);
-	u32 firstVert = 0;
-	u32 firstIndex = 0;
-	for (u32 i = 0; i < MAX_QUADS(); ++i )
+	uint16_t* indices = (uint16_t*)Z_AllocateTempMemory(sizeof(uint16_t) * MAX_QUADS() * 6);
+	uint32_t firstVert = 0;
+	uint32_t firstIndex = 0;
+	for (uint32_t i = 0; i < MAX_QUADS(); ++i )
 	{
-		indices[firstIndex + 0] = (u16)firstVert + 0;
-		indices[firstIndex + 1] = (u16)firstVert + 1;
-		indices[firstIndex + 2] = (u16)firstVert + 2;
-		indices[firstIndex + 3] = (u16)firstVert + 3;
-		indices[firstIndex + 4] = (u16)firstVert + 2;
-		indices[firstIndex + 5] = (u16)firstVert + 1;
+		indices[firstIndex + 0] = (uint16_t)firstVert + 0;
+		indices[firstIndex + 1] = (uint16_t)firstVert + 1;
+		indices[firstIndex + 2] = (uint16_t)firstVert + 2;
+		indices[firstIndex + 3] = (uint16_t)firstVert + 3;
+		indices[firstIndex + 4] = (uint16_t)firstVert + 2;
+		indices[firstIndex + 5] = (uint16_t)firstVert + 1;
 
 		firstVert += 4; 
 		firstIndex += 6;

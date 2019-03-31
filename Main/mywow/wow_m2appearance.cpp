@@ -24,9 +24,9 @@ void wow_m2appearance::onAnimationEnd()
 	}
 }
 
-bool wow_m2appearance::takeItem( s32 itemid, bool sheath )
+bool wow_m2appearance::takeItem( int32_t itemid, bool sheath )
 {
-	s32 slot = M2Instance->getItemSlot(itemid);
+	int32_t slot = M2Instance->getItemSlot(itemid);
 
 	if (slot == -1)
 		return false;
@@ -46,7 +46,7 @@ bool wow_m2appearance::takeItem( s32 itemid, bool sheath )
 }
 
 
-void wow_m2appearance::takeSlotModelItem( s32 slot, s32 itemid, bool sheath )
+void wow_m2appearance::takeSlotModelItem( int32_t slot, int32_t itemid, bool sheath )
 {
 	if (M2Instance->slotHasModel(slot))
 	{
@@ -61,31 +61,31 @@ void wow_m2appearance::takeSlotModelItem( s32 slot, s32 itemid, bool sheath )
 	}
 }
 
-void wow_m2appearance::loadStartOutfit( s32 startid, bool deathknight, bool sheath )
+void wow_m2appearance::loadStartOutfit( int32_t startid, bool deathknight, bool sheath )
 {
 	if (M2SceneNode->isNpc())
 		return;
 
 	M2Instance->dressStartOutfit(startid);
 
-	for (u32 slot=0; slot<NUM_CHAR_SLOTS; ++slot)
+	for (uint32_t slot=0; slot<NUM_CHAR_SLOTS; ++slot)
 	{
-		s32 id = M2Instance->CharacterInfo->Equipments[slot];
+		int32_t id = M2Instance->CharacterInfo->Equipments[slot];
 		takeSlotModelItem(slot, id, sheath);
 	}
 
 	M2Instance->CharacterInfo->DeathKnight = deathknight;
 }
 
-void wow_m2appearance::loadSet( s32 setid, bool sheath )
+void wow_m2appearance::loadSet( int32_t setid, bool sheath )
 {
 	if (M2SceneNode->isNpc())
 		return;
 
 	M2Instance->dressSet(setid);
-	for (u32 slot=0; slot<NUM_CHAR_SLOTS; ++slot)
+	for (uint32_t slot=0; slot<NUM_CHAR_SLOTS; ++slot)
 	{
-		s32 id = M2Instance->CharacterInfo->Equipments[slot];
+		int32_t id = M2Instance->CharacterInfo->Equipments[slot];
 		takeSlotModelItem(slot, id, sheath);
 	}
 }
@@ -107,7 +107,7 @@ void wow_m2appearance::sheathLeftWeapon( bool sheath )
 		}
 	}
 
-	s32 leftItemId = M2Instance->CharacterInfo->Equipments[CS_HAND_LEFT];
+	int32_t leftItemId = M2Instance->CharacterInfo->Equipments[CS_HAND_LEFT];
 	if (leftItemId)
 	{
 		SAttachmentEntry entry1;
@@ -155,7 +155,7 @@ void wow_m2appearance::sheathRightWeapon( bool sheath )
 		}
 	}
 
-	s32 rightItemId = M2Instance->CharacterInfo->Equipments[CS_HAND_RIGHT];
+	int32_t rightItemId = M2Instance->CharacterInfo->Equipments[CS_HAND_RIGHT];
 	if (rightItemId)
 	{
 		SAttachmentEntry entry1;

@@ -41,7 +41,7 @@ void wow_m2FSM::onAnimationEnd()
 	}
 }
 
-bool wow_m2FSM::playAction( wow_m2Action* action, u32 blendtime )
+bool wow_m2FSM::playAction( wow_m2Action* action, uint32_t blendtime )
 {
 	if (action->getAnimationCount() == 0)
 		return false;
@@ -80,7 +80,7 @@ bool wow_m2FSM::isPlaying( wow_m2Action* action ) const
 	return DynAction.action == action && !DynAction.finished;
 }
 
-void wow_m2FSM::tick( u32 timeSinceStart, u32 timeSinceLastFrame )
+void wow_m2FSM::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame )
 {
 	if (GlobalState)
 		GlobalState->tick(timeSinceStart, timeSinceLastFrame);
@@ -140,9 +140,9 @@ void wow_m2FSM::revertToPreviousState()
 	changeState(PreviousState);
 }
 
-bool wow_m2FSM::playActionSequence( wow_m2Action* action, u32 blendtime /*= 200*/ )
+bool wow_m2FSM::playActionSequence( wow_m2Action* action, uint32_t blendtime /*= 200*/ )
 {
-	s32 animIndex = action->AnimationList[0].animIndex;
+	int32_t animIndex = action->AnimationList[0].animIndex;
 
 	if(!M2SceneNode->playAnimationByIndex(animIndex, false, blendtime))
 	{
@@ -159,12 +159,12 @@ bool wow_m2FSM::playActionSequence( wow_m2Action* action, u32 blendtime /*= 200*
 	return true;
 }
 
-bool wow_m2FSM::playActionRandom( wow_m2Action* action, u32 blendtime /*= 200*/ )
+bool wow_m2FSM::playActionRandom( wow_m2Action* action, uint32_t blendtime /*= 200*/ )
 {
-	u32 r = randint(0, action->TotalLoopTime);
-	u32 t = 0;
-	u32 idx = (u32)action->AnimationList.size();
-	for (u32 i=0; i<(u32)action->AnimationList.size(); ++i)
+	uint32_t r = randint(0, action->TotalLoopTime);
+	uint32_t t = 0;
+	uint32_t idx = (uint32_t)action->AnimationList.size();
+	for (uint32_t i=0; i<(uint32_t)action->AnimationList.size(); ++i)
 	{
 		t += action->AnimationList[i].loopTime;
 		if (r > t)
@@ -177,7 +177,7 @@ bool wow_m2FSM::playActionRandom( wow_m2Action* action, u32 blendtime /*= 200*/ 
 	}
 
 	ASSERT( idx != action->AnimationList.size() );
-	s32 animIndex = action->AnimationList[idx].animIndex;
+	int32_t animIndex = action->AnimationList[idx].animIndex;
 
 	if(!M2SceneNode->playAnimationByIndex(animIndex, false, blendtime))
 	{
@@ -205,7 +205,7 @@ void wow_m2FSM::onAnimationEndSequence()
 	if (animEntry.loopTime == -1)		//infinite
 		return;
 
-	if ((s32)DynAction.currentAnimLoop + 1 < animEntry.loopTime )
+	if ((int32_t)DynAction.currentAnimLoop + 1 < animEntry.loopTime )
 	{
 		++DynAction.currentAnimLoop;
 	}
@@ -256,7 +256,7 @@ bool wow_m2FSM::advanceAnimation()
 	return true;
 }
 
-s16 wow_m2FSM::getCurrentAnimationIndex() const
+int16_t wow_m2FSM::getCurrentAnimationIndex() const
 {
 	return DynAction.action->AnimationList[DynAction.currentIndex].animIndex;
 }
@@ -293,7 +293,7 @@ wow_m2State<IM2SceneNode>* wow_m2FSM::getState( E_M2_STATES state ) const
 
 void wow_m2FSM::clearStates()
 {
-	for (u32 i=0; i<EMS_COUNT; ++i)
+	for (uint32_t i=0; i<EMS_COUNT; ++i)
 	{
 		if (States[i])
 		{

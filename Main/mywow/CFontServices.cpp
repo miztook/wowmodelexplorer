@@ -26,7 +26,7 @@ FT_Error MyFTCFaceRequest(FTC_FaceID  face_id,
 	return error;
 }
 
-CFontServices::CFontServices(int nMaxFontFamilyCountInCache, int nMaxFontStyleInCache, int nMaxCacheSizeBytes, u32 nDefaultFontSize)
+CFontServices::CFontServices(int nMaxFontFamilyCountInCache, int nMaxFontStyleInCache, int nMaxCacheSizeBytes, uint32_t nDefaultFontSize)
 	: IFontServices(nDefaultFontSize)
 {
 	WidestChar = L'W';

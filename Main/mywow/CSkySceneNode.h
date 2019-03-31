@@ -18,13 +18,13 @@ public:
 	//ISceneNode
 	virtual void registerSceneNode(bool frustumcheck, int sequence);
 	virtual aabbox3df getBoundingBox() const { return aabbox3df::Zero(); }
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame, bool visible);
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible);
 	virtual void render() const;
 	virtual bool isNodeEligible() const { return true; }
 
 protected:
 	void createSkyDomeMesh();
-	bool fillSkyDomeMeshVI(SVertex_PC* gVertices, u32 vcount, u16* indices, u32 icount);
+	bool fillSkyDomeMeshVI(SVertex_PC* gVertices, uint32_t vcount, uint16_t* indices, uint32_t icount);
 	void updateMeshColor();
 
 protected:
@@ -32,7 +32,7 @@ protected:
 	CMapEnvironment*		MapEnvironment;
 	//sky dome
 	CMesh*		SkyDomeMesh;
-	f32			SkyRadius;	
+	float			SkyRadius;	
 
 	matrix4		WorldMatrix;
 };

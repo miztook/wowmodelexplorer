@@ -26,7 +26,7 @@ void PlaneParticleEmitter::emitParticle( const wow_m2instance* character, const 
 	}
 	else
 	{
-		u16 d = (sys->flags & 0xf0000) >> 16;
+		uint16_t d = (sys->flags & 0xf0000) >> 16;
 		switch(d)
 		{
 		case 6:
@@ -92,7 +92,7 @@ void SphereParticleEmitter::emitParticle( const wow_m2instance* character, const
 	p->tile = sys->cols - 1;
 }
 
-void ParticleSystem::init( const M2::ModelParticleEmitterDef& mta, const u8* fileData, s32* globalSeq, u32 numGlobalSeq )
+void ParticleSystem::init( const M2::ModelParticleEmitterDef& mta, const uint8_t* fileData, int32_t* globalSeq, uint32_t numGlobalSeq )
 {
 	emissionSpeed.init(&mta.EmissionSpeed, fileData, globalSeq, numGlobalSeq);
 	speedVariation.init(&mta.SpeedVariation, fileData, globalSeq, numGlobalSeq);
@@ -108,10 +108,10 @@ void ParticleSystem::init( const M2::ModelParticleEmitterDef& mta, const u8* fil
 
 	vector3df colors2[3];
 	Q_memcpy(colors2, sizeof(vector3df)*3, &fileData[mta.p.colors.ofsKeys], sizeof(vector3df)*3);
-	for (u32 i=0; i<3; ++i)
+	for (uint32_t i=0; i<3; ++i)
 	{
-		float opacity = *(s16*)(fileData + mta.p.opacity.ofsKeys + i*2);
-		colors[i].set((u32)(opacity/128.0f), (u32)colors2[i].X, (u32)colors2[i].Y, (u32)colors2[i].Z);
+		float opacity = *(int16_t*)(fileData + mta.p.opacity.ofsKeys + i*2);
+		colors[i].set((uint32_t)(opacity/128.0f), (uint32_t)colors2[i].X, (uint32_t)colors2[i].Y, (uint32_t)colors2[i].Z);
 		sizes[i] = (*(vector2df*)(fileData + mta.p.sizes.ofsKeys + i*sizeof(vector2df)));
 	}
 
@@ -151,7 +151,7 @@ void ParticleSystem::init( const M2::ModelParticleEmitterDef& mta, const u8* fil
 	cols = mta.cols ? mta.cols : 1;
 
 	boneIndex = mta.bone;
-	if (boneIndex < 0 || boneIndex > (s32)Mesh->NumBones)
+	if (boneIndex < 0 || boneIndex > (int32_t)Mesh->NumBones)
 		boneIndex = -1;
 
 	billboard = (mta.flags & MODELPARTICLE_FLAGS_DONOTBILLBOARD) == 0;
@@ -179,7 +179,7 @@ void ParticleSystem::init( const M2::ModelParticleEmitterDef& mta, const u8* fil
 	if (NumTiles > 0)
 	{
 		Tiles = new TexCoordSet[NumTiles];
-		for(u32 i=0; i<NumTiles; ++i)
+		for(uint32_t i=0; i<NumTiles; ++i)
 		{
 			TexCoordSet tc;
 			initTile(tc.tc, i);
@@ -193,8 +193,8 @@ void ParticleSystem::initTile( vector2df* tc, int num )
 {
 	vector2df otc[4];
 	vector2df a, b;
-	u32 x = num % cols;
-	u32 y = num / cols;
+	uint32_t x = num % cols;
+	uint32_t y = num / cols;
 
 	a.X = x * ( 1.0f / cols );
 	b.X = (x+1) * ( 1.0f / cols );
@@ -233,7 +233,7 @@ void ParticleSystem::getBoneMatrix( const wow_m2instance* character, const matri
 		mat = mat * world;
 }
 
-void RibbonEmitter::init( const M2::ModelRibbonEmitterDef& mta, const u8* fileData, s32* globalSeq, u32 numGlobalSeq)
+void RibbonEmitter::init( const M2::ModelRibbonEmitterDef& mta, const uint8_t* fileData, int32_t* globalSeq, uint32_t numGlobalSeq)
 {
 	color.init(&mta.color, fileData, globalSeq, numGlobalSeq);
 	opacity.init(&mta.opacity, fileData, globalSeq, numGlobalSeq);

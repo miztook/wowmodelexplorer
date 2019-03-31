@@ -44,17 +44,17 @@ public:
 
 	const SRenderStateBlock& getRenderStateBlock() const { return LastMaterialBlock; }
 
-	ITexture* getSampler_Texture(u32 st) const { return CurrentRenderState.TextureUnits[st].texture; }
-	void setSampler_Texture(u32 st, ITexture* tex);
-	void setTextureWrap(u32 st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap);
-	E_TEXTURE_CLAMP getTextureWrap(u32 st, E_TEXTURE_ADDRESS address) const;
+	ITexture* getSampler_Texture(uint32_t st) const { return CurrentRenderState.TextureUnits[st].texture; }
+	void setSampler_Texture(uint32_t st, ITexture* tex);
+	void setTextureWrap(uint32_t st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap);
+	E_TEXTURE_CLAMP getTextureWrap(uint32_t st, E_TEXTURE_ADDRESS address) const;
 
 public:
 	//bind states to pipeline
 	ID3D11BlendState*  getBlendState();
 	ID3D11RasterizerState* getRasterizerState();
 	ID3D11DepthStencilState* getDepthStencilState();
-	ID3D11SamplerState* getSamplerState(u32 index);
+	ID3D11SamplerState* getSamplerState(uint32_t index);
 
 	//state
 private:
@@ -81,7 +81,7 @@ private:
 	{
 		SRenderState()
 		{
-			for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+			for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 			{
 				TextureUnits[i].texture = nullptr;
 				TextureUnits[i].SamplerDesc.reset();
@@ -129,7 +129,7 @@ private:
 	S2DBlendParam	Last2DBlendParam;
 };
 
-inline void CD3D11MaterialRenderServices::setSampler_Texture( u32 st, ITexture* tex )
+inline void CD3D11MaterialRenderServices::setSampler_Texture( uint32_t st, ITexture* tex )
 {
 	if (st < MATERIAL_MAX_TEXTURES)
 		CurrentRenderState.TextureUnits[st].texture = tex;

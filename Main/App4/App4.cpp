@@ -53,7 +53,7 @@ int main()
 	//g_Engine->getWowDatabase()->buildStartOutfitClass();
 	//g_Engine->getWowDatabase()->buildTextures();
 
-	//u32 num = g_Engine->getWowDatabase()->getNumTextures();
+	//uint32_t num = g_Engine->getWowDatabase()->getNumTextures();
 
 	ISceneManager* sceneMgr = g_Engine->getSceneManager();
 

@@ -106,13 +106,13 @@ void wow_m2Logic::buildStates( IM2SceneNode* m2SceneNode )
 	BUILD_STATE(EMS_READYSPELLDIRECTED);
 }
 
-bool wow_m2Logic::addAction( IFileM2* filem2, E_M2_STATES act, wow_m2Action::E_PLAY_TYPE playType, s32 maxPlayTime, const SAnimationEntries& anims)
+bool wow_m2Logic::addAction( IFileM2* filem2, E_M2_STATES act, wow_m2Action::E_PLAY_TYPE playType, int32_t maxPlayTime, const SAnimationEntries& anims)
 {
-	const c8* name = getActionName(act);
+	const char* name = getActionName(act);
 
 	wow_m2Action* action = new wow_m2Action(filem2, name, playType, maxPlayTime);
 	action->clear();
-	for (u32 i = 0; i < anims.count; ++i)
+	for (uint32_t i = 0; i < anims.count; ++i)
 	{
 		action->pushAnimationEntry(anims.animations[i].strName, anims.animations[i].subIdx, anims.animations[i].loopTime);
 	}
@@ -130,8 +130,8 @@ void wow_m2Logic::buildStandAction( IFileM2* fileM2 )
 {
 #define ADD_STAND_ACTION(arr) addAction(fileM2, EMS_STAND, wow_m2Action::EPT_RANDOM, -1, arr)
 
-	u32 race;
-	u32 gender;
+	uint32_t race;
+	uint32_t gender;
 	bool isHD;
 	bool ret = g_Engine->getWowDatabase()->getRaceGender(fileM2->Name, race, gender, isHD);
 	if (!ret)

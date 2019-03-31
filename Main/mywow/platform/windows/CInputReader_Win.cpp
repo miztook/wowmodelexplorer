@@ -42,7 +42,7 @@ bool CInputReader::capture( E_INPUT_DEVICE device )
 	return true;
 }
 
-bool CInputReader::isKeyPressed( u8 keycode )
+bool CInputReader::isKeyPressed( uint8_t keycode )
 {
 	return ProcessKeyboard && CSysUtility::isKeyPressed(keycode);
 }

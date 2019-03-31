@@ -2,7 +2,7 @@
 #include "CTerrainRenderer.h"
 #include "mywow.h"
 
-CTerrainRenderer::CTerrainRenderer(u32 lowresQuota, u32 highresQuota)
+CTerrainRenderer::CTerrainRenderer(uint32_t lowresQuota, uint32_t highresQuota)
 	: LowResQuota(lowresQuota), HighResQuota(highresQuota)
 {
 	RenderUnits.reserve(LowResQuota + HighResQuota);
@@ -26,7 +26,7 @@ void CTerrainRenderer::addRenderUnit( const SRenderUnit* unit )
 	{
 		LowRenderEntries.clear();
 		HighRenderEntries.clear();
-		for (u32 i=0; i<RenderUnits.size(); ++i)
+		for (uint32_t i=0; i<RenderUnits.size(); ++i)
 		{
 			SEntry entry;
 			entry.unit = &RenderUnits[i];

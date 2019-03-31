@@ -5,7 +5,7 @@
 CImage::CImage( ECOLOR_FORMAT format, const dimension2du& size )
 	: IImage(format, size)
 {
-	Data = new u8[Size.Height * Pitch];
+	Data = new uint8_t[Size.Height * Pitch];
 
 	DeleteData = true;
 }
@@ -13,7 +13,7 @@ CImage::CImage( ECOLOR_FORMAT format, const dimension2du& size )
 CImage::CImage( ECOLOR_FORMAT format, const dimension2du& size, const void* data, bool deletaData )
 	: IImage(format, size)
 {
-	Data = (u8*)data;
+	Data = (uint8_t*)data;
 
 	ASSERT(Data);
 
@@ -31,12 +31,12 @@ CImage::~CImage()
 }
 
 
-void CImage::copyToScaling( void* target, u32 width, u32 height, ECOLOR_FORMAT format/*=ECF_A8R8G8B8*/, u32 pitch/*=0 */ )
+void CImage::copyToScaling( void* target, uint32_t width, uint32_t height, ECOLOR_FORMAT format/*=ECF_A8R8G8B8*/, uint32_t pitch/*=0 */ )
 {
 	if (!target || !width || !height)
 		return;
 
-	const u32 bpp=getBytesPerPixelFromFormat(format);
+	const uint32_t bpp=getBytesPerPixelFromFormat(format);
 	if (0==pitch)
 		pitch = width*bpp;
 
@@ -48,11 +48,11 @@ void CImage::copyToScaling( void* target, u32 width, u32 height, ECOLOR_FORMAT f
 		}
 		else
 		{
-			u8* tgtpos = (u8*) target;
-			u8* srcpos = Data;
-			const u32 bwidth = width*bpp;
-			const u32 rest = pitch-bwidth;
-			for (u32 y=0; y<height; ++y)
+			uint8_t* tgtpos = (uint8_t*) target;
+			uint8_t* srcpos = Data;
+			const uint32_t bwidth = width*bpp;
+			const uint32_t rest = pitch-bwidth;
+			for (uint32_t y=0; y<height; ++y)
 			{
 				// copy scanline
 				memcpy(tgtpos, srcpos, bwidth);
@@ -89,7 +89,7 @@ void CImage::copyToScaling( IImage* target )
 	if (!target)
 		return;
 
-	const dimension2d<u32>& targetSize = target->getDimension();
+	const dimension2d<uint32_t>& targetSize = target->getDimension();
 
 	if (targetSize==Size)
 	{
@@ -112,9 +112,9 @@ void CImage::copyTo( IImage* target, const vector2di& pos /*= core::vector2di(0,
 bool CImage::checkHasAlpha() const
 {
 	bool alpha = false;
-	for (u32 x = 0; x < Size.Width; ++x)
+	for (uint32_t x = 0; x < Size.Width; ++x)
 	{
-		for (u32 y = 0; y < Size.Height; ++y)
+		for (uint32_t y = 0; y < Size.Height; ++y)
 		{
 			SColor color = getPixel(x, y);
 			alpha = (color.getAlpha() != 255);

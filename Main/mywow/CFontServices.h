@@ -18,7 +18,7 @@
 class CFontServices : public IFontServices
 {
 public:
-	CFontServices(int nMaxFontFamilyCountInCache, int nMaxFontStyleInCache, int nMaxCacheSizeBytes, u32 nDefaultFontSize);
+	CFontServices(int nMaxFontFamilyCountInCache, int nMaxFontStyleInCache, int nMaxCacheSizeBytes, uint32_t nDefaultFontSize);
 	~CFontServices();
 
 public:
@@ -37,7 +37,7 @@ public:
 	My_FaceID LookupFaceID(const char *strFontPath, int nFaceIndex, int nFontStyle);
 	void RemoveFaceID(My_FaceID faceId);
 
-	u32 getWidestChar() const { return WidestChar; }
+	uint32_t getWidestChar() const { return WidestChar; }
 
 private:
 	bool init(int nMaxFontFamilyCountInCache, int nMaxFontStyleInCache, int nMaxCacheSizeBytes);
@@ -50,7 +50,7 @@ public:
 	{
 		string256 faceName;
 		int faceIndex;
-		u32 fontSize;
+		uint32_t fontSize;
 		int fontStyle;
 		int outlineWidth;
 	};
@@ -87,7 +87,7 @@ public:
 	{
 		size_t operator()(const FaceID_Key& _Keyval) const
 		{
-			u32 uHash;
+			uint32_t uHash;
 			a_CRC32_InitChecksum(uHash);
 
 			string256 str(_Keyval.file_path);
@@ -119,7 +119,7 @@ public:
 #endif
 	
 private:
-	u32		WidestChar;
+	uint32_t		WidestChar;
 
 	FT_Library FTLibrary;
 	FTC_Manager FTCManager;

@@ -34,7 +34,7 @@ void engineSetting::applyVideoSetting( const SVideoSetting& videosetting )
 {
 	SDriverSetting newSetting;
 	newSetting.fullscreen = videosetting.fullscreen;
-	newSetting.antialias = (u8)videosetting.antialias;
+	newSetting.antialias = (uint8_t)videosetting.antialias;
 	newSetting.vsync = videosetting.vsync;
 	g_Engine->getDriver()->setDriverSetting(newSetting);
 
@@ -87,7 +87,7 @@ void engineSetting::setTextureResolution( E_LEVEL level )
 	{
 	case EL_HIGH:
 		{
-			for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+			for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 			{
 				material.MipMapLodBias[i] = 2;
 			}
@@ -97,7 +97,7 @@ void engineSetting::setTextureResolution( E_LEVEL level )
 		break;
 	case EL_GOOD:
 		{
-			for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+			for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 			{
 				material.MipMapLodBias[i] = 2;
 			}
@@ -107,7 +107,7 @@ void engineSetting::setTextureResolution( E_LEVEL level )
 		break;
 	case EL_FAIR:
 		{
-			for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+			for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 			{
 				material.MipMapLodBias[i] = 2;
 			}
@@ -118,7 +118,7 @@ void engineSetting::setTextureResolution( E_LEVEL level )
 	case EL_LOW:
 	default:
 		{
-			for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+			for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 			{
 				material.MipMapLodBias[i] = 0;
 			}
@@ -134,9 +134,9 @@ void engineSetting::setTextureResolution( E_LEVEL level )
 E_LEVEL engineSetting::getTextureResolution() const
 {
 	ISceneRenderServices* sceneRenderServices = g_Engine->getSceneRenderServices();
-	s32 mipmaplodbias = g_Engine->getDriver()->getOverrideMaterial().MipMapLodBias[0];
-	s32 terrainLodBias = sceneRenderServices->getTerrainLodBias();
-	s32 modelLodBias = sceneRenderServices->getModelLodBias();
+	int32_t mipmaplodbias = g_Engine->getDriver()->getOverrideMaterial().MipMapLodBias[0];
+	int32_t terrainLodBias = sceneRenderServices->getTerrainLodBias();
+	int32_t modelLodBias = sceneRenderServices->getModelLodBias();
 	if (mipmaplodbias == 0)
 	{
 		return EL_LOW;
@@ -155,7 +155,7 @@ E_LEVEL engineSetting::getTextureResolution() const
 void engineSetting::setTextureFiltering( E_TEXTURE_FILTER filter )
 {
 	SOverrideMaterial& material = g_Engine->getDriver()->getOverrideMaterial();
-	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+	for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
 		material.TextureFilters[i] = filter;
 	}
@@ -220,7 +220,7 @@ void engineSetting::setViewDistance( E_LEVEL level )
 E_LEVEL engineSetting::getViewDistance() const
 {
 	ISceneRenderServices* sceneRenderServices = g_Engine->getSceneRenderServices();
-	f32 clipdistance = sceneRenderServices->getClipDistance();
+	float clipdistance = sceneRenderServices->getClipDistance();
 	if (clipdistance >=2200.0f)
 		return EL_ULTRA;
 	else if (clipdistance >= 1900.0f)
@@ -262,7 +262,7 @@ void engineSetting::setEnvironmentDetail( E_LEVEL level )
 E_LEVEL engineSetting::getEnvironmentDetail() const
 {
 	ISceneRenderServices* sceneRenderServices = g_Engine->getSceneRenderServices();
-	f32 objVisibleDistance = sceneRenderServices->getObjectVisibleDistance();
+	float objVisibleDistance = sceneRenderServices->getObjectVisibleDistance();
 	if (objVisibleDistance >= 40)
 		return EL_ULTRA;
 	else if (objVisibleDistance >= 35)
@@ -343,7 +343,7 @@ void engineSetting::setParticleDensity( E_LEVEL level )
 
 E_LEVEL engineSetting::getParticleDensity() const
 {
-	f32 particleDensity = g_Engine->getParticleSystemServices()->getParticleDensity();
+	float particleDensity = g_Engine->getParticleSystemServices()->getParticleDensity();
 	if (particleDensity >= 1.0f)
 		return EL_ULTRA;
 	else if (particleDensity >= 0.8f)
@@ -398,7 +398,7 @@ void engineSetting::load()
 	if (!config->readEngineSetting(g_Engine->getFileSystem()))
 		return;
 
-	s32 v = 0;
+	int32_t v = 0;
 
 	//
 	getValue(config, CONFIG_ANTIALIAS, VideoSetting.antialias);
@@ -447,19 +447,19 @@ void engineSetting::save()
 	setValue(config, CONFIG_VSYNC, VideoSetting.vsync);
 	setValue(config, CONFIG_FULLSCREEN, VideoSetting.fullscreen);
 
-	setValue(config, CONFIG_TEXTURE_RESOLUTION, (s32)VideoSetting.textureResolution);
-	setValue(config, CONFIG_TEXTURE_FILTERING, (s32)VideoSetting.textureFiltering);
+	setValue(config, CONFIG_TEXTURE_RESOLUTION, (int32_t)VideoSetting.textureResolution);
+	setValue(config, CONFIG_TEXTURE_FILTERING, (int32_t)VideoSetting.textureFiltering);
 	setValue(config, CONFIG_TEXTURE_PROJECTION, VideoSetting.textureProjection);
-	setValue(config, CONFIG_VIEW_DISTANCE, (s32)VideoSetting.viewDistance);
-	setValue(config, CONFIG_ENV_DETAIL, (s32)VideoSetting.envDetail);
-	setValue(config, CONFIG_GROUND_CLUTTER, (s32)VideoSetting.groundClutter);
-	setValue(config, CONFIG_SHADOW_QUALITY, (s32)VideoSetting.shadowQuality);
-	setValue(config, CONFIG_LIQUID_DETAIL, (s32)VideoSetting.liquidDetail);
-	setValue(config, CONFIG_SUNSHAFTS, (s32)VideoSetting.sunShafts);
-	setValue(config, CONFIG_PARTICLEDENSITY, (s32)VideoSetting.particleDensity);
-	setValue(config, CONFIG_SSAO, (s32)VideoSetting.SSAO);
+	setValue(config, CONFIG_VIEW_DISTANCE, (int32_t)VideoSetting.viewDistance);
+	setValue(config, CONFIG_ENV_DETAIL, (int32_t)VideoSetting.envDetail);
+	setValue(config, CONFIG_GROUND_CLUTTER, (int32_t)VideoSetting.groundClutter);
+	setValue(config, CONFIG_SHADOW_QUALITY, (int32_t)VideoSetting.shadowQuality);
+	setValue(config, CONFIG_LIQUID_DETAIL, (int32_t)VideoSetting.liquidDetail);
+	setValue(config, CONFIG_SUNSHAFTS, (int32_t)VideoSetting.sunShafts);
+	setValue(config, CONFIG_PARTICLEDENSITY, (int32_t)VideoSetting.particleDensity);
+	setValue(config, CONFIG_SSAO, (int32_t)VideoSetting.SSAO);
 
-	setValue(config, CONFIG_DRIVER_TYPE, (s32)AdvancedSetting.driverType);
+	setValue(config, CONFIG_DRIVER_TYPE, (int32_t)AdvancedSetting.driverType);
 	setValue(config, CONFIG_TRIPLE_BUFFERING, AdvancedSetting.tripleBuffering);
 	setValue(config, CONFIG_REDUCE_INPUT_LAG, AdvancedSetting.reduceInputLag);
 	setValue(config, CONFIG_HARDWARE_CURSOR, AdvancedSetting.hardwareCursor);
@@ -469,23 +469,23 @@ void engineSetting::save()
 	config->writeEngineSetting(g_Engine->getFileSystem());
 }
 
-bool engineSetting::getValue( IConfigs* config, const c8* key, bool& v )
+bool engineSetting::getValue( IConfigs* config, const char* key, bool& v )
 {
-	const c8* s = config->getSetting(ECT_ENGINESETTING, key);
-	s32 len = 0;
+	const char* s = config->getSetting(ECT_ENGINESETTING, key);
+	int32_t len = 0;
 	if (strlen(s) > 0)
 	{
-		s32 r = 0;
+		int32_t r = 0;
 		len = Q_sscanf(s, "%d", &r);
 		v = r != 0;
 	}
 	return len == 1;
 }
 
-bool engineSetting::getValue( IConfigs* config, const c8* key, s32& v )
+bool engineSetting::getValue( IConfigs* config, const char* key, int32_t& v )
 {
-	const c8* s = config->getSetting(ECT_ENGINESETTING, key);
-	s32 len = 0;
+	const char* s = config->getSetting(ECT_ENGINESETTING, key);
+	int32_t len = 0;
 	if (strlen(s) > 0)
 	{
 		len = Q_sscanf(s, "%d", &v);
@@ -493,10 +493,10 @@ bool engineSetting::getValue( IConfigs* config, const c8* key, s32& v )
 	return len == 1;
 }
 
-bool engineSetting::getValue( IConfigs* config, const c8* key, u32& v )
+bool engineSetting::getValue( IConfigs* config, const char* key, uint32_t& v )
 {
-	const c8* s = config->getSetting(ECT_ENGINESETTING, key);
-	s32 len = 0;
+	const char* s = config->getSetting(ECT_ENGINESETTING, key);
+	int32_t len = 0;
 	if (strlen(s) > 0)
 	{
 		len = Q_sscanf(s, "%u", &v);	
@@ -504,10 +504,10 @@ bool engineSetting::getValue( IConfigs* config, const c8* key, u32& v )
 	return len == 1;
 }
 
-bool engineSetting::setValue( IConfigs* config, const c8* key, bool v )
+bool engineSetting::setValue( IConfigs* config, const char* key, bool v )
 {
-	c8 val[64] = {0};
-	s32 len = Q_sprintf(val, 64, "%d", v ? 1 : 0);
+	char val[64] = {0};
+	int32_t len = Q_sprintf(val, 64, "%d", v ? 1 : 0);
 	
 	if (len <= 0)
 		return false;
@@ -517,10 +517,10 @@ bool engineSetting::setValue( IConfigs* config, const c8* key, bool v )
 	return true;
 }
 
-bool engineSetting::setValue( IConfigs* config, const c8* key, s32 v )
+bool engineSetting::setValue( IConfigs* config, const char* key, int32_t v )
 {
-	c8 val[64] = {0};
-	s32 len = Q_sprintf(val, 64, "%d", v);
+	char val[64] = {0};
+	int32_t len = Q_sprintf(val, 64, "%d", v);
 
 	if (len <= 0)
 		return false;
@@ -530,10 +530,10 @@ bool engineSetting::setValue( IConfigs* config, const c8* key, s32 v )
 	return true;
 }
 
-bool engineSetting::setValue( IConfigs* config, const c8* key, u32 v )
+bool engineSetting::setValue( IConfigs* config, const char* key, uint32_t v )
 {
-	c8 val[64] = {0};
-	s32 len = Q_sprintf(val, 64, "%u", v);
+	char val[64] = {0};
+	int32_t len = Q_sprintf(val, 64, "%u", v);
 
 	if (len <= 0)
 		return false;

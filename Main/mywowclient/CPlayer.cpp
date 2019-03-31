@@ -31,19 +31,19 @@ CPlayer::~CPlayer()
 	delete TargetCamera;
 }
 
-void CPlayer::setTargetCamera( f32 nearValue, f32 farValue, f32 fov )
+void CPlayer::setTargetCamera( float nearValue, float farValue, float fov )
 {
 	delete TargetCamera;
 	TargetCamera = new wow_m2TargetCamera(nearValue, farValue, fov);
 }
 
-void CPlayer::setM2AsTarget( IM2SceneNode* node, f32 distance, f32 rad )
+void CPlayer::setM2AsTarget( IM2SceneNode* node, float distance, float rad )
 {
 	TargetCamera->setM2AsTarget(node, distance, rad);
 	MainModel = node;
 }
 
-void CPlayer::tick( u32 delta )
+void CPlayer::tick( uint32_t delta )
 {
 	if (!TargetCamera->getM2Target())
 		return;
@@ -80,21 +80,21 @@ void CPlayer::tick( u32 delta )
 	TargetCamera->tick(delta);
 }
 
-void CPlayer::onMouseWheel( f32 fDelta )
+void CPlayer::onMouseWheel( float fDelta )
 {
 	if (!TargetCamera->getM2Target())
 		return;
 	TargetCamera->onMouseWheel(fDelta);
 }
 
-void CPlayer::onMouseMove( f32 pitchDegree, f32 yawDegree )
+void CPlayer::onMouseMove( float pitchDegree, float yawDegree )
 {
 	if (!TargetCamera->getM2Target())
 		return;
 	TargetCamera->onMouseMove(pitchDegree, yawDegree);
 }
 
-void CPlayer::rideOnModel( s32 npcid, E_M2_STATES state )
+void CPlayer::rideOnModel( int32_t npcid, E_M2_STATES state )
 {
 	if (!MainModel)
 		return;
@@ -119,7 +119,7 @@ void CPlayer::rideOnModel( s32 npcid, E_M2_STATES state )
 	}
 	else
 	{
-		c8 path[256];
+		char path[256];
 		g_Engine->getWowDatabase()->getNpcPath(npcid, false, path, 256);
 		IFileM2* m2Ride = g_Engine->getResourceLoader()->loadM2(path);
 		RideModel = g_Engine->getSceneManager()->addM2SceneNode(m2Ride, NULL, true);
@@ -154,7 +154,7 @@ void CPlayer::rideOnModel( s32 npcid, E_M2_STATES state )
 	}
 }
 
-void CPlayer::onPlayerSpellAction( u32 delta )
+void CPlayer::onPlayerSpellAction( uint32_t delta )
 {
 	IM2SceneNode* node = TargetCamera->getM2Target();
 	wow_m2FSM* fsm = node->getM2FSM();
@@ -179,7 +179,7 @@ void CPlayer::onPlayerSpellAction( u32 delta )
 	}
 }
 
-void CPlayer::onPlayerMoveAction( u32 delta, const SMoveControl& moveControl )
+void CPlayer::onPlayerMoveAction( uint32_t delta, const SMoveControl& moveControl )
 {
 	IM2SceneNode* node = TargetCamera->getM2Target();
 	wow_m2FSM* fsm = node->getM2FSM();
@@ -266,8 +266,8 @@ void CPlayer::onPlayerMoveAction( u32 delta, const SMoveControl& moveControl )
 	}
 	
 	//∏ﬂ∂»µ˜’˚
-	f32 groundHeight = g_Client->getWorld()->getHeightNormal(m2move->getPos().X, m2move->getPos().Z);
-	f32 yoffset = m2move->getDestHeight() + groundHeight - m2move->getPos().Y;
+	float groundHeight = g_Client->getWorld()->getHeightNormal(m2move->getPos().X, m2move->getPos().Z);
+	float yoffset = m2move->getDestHeight() + groundHeight - m2move->getPos().Y;
 	if (yoffset != 0.0f)
 	{
 		vector3df voffset(0, yoffset, 0);
@@ -285,14 +285,14 @@ void CPlayer::onPlayerMoveAction( u32 delta, const SMoveControl& moveControl )
 	case EMS_WALK:
 	case EMS_WALKBACKWARDS:
 		{
-			vector3df offset = moveSpeed * (f32)delta;
+			vector3df offset = moveSpeed * (float)delta;
 			m2move->move(offset);
 			TargetCamera->onTargetMove();
 		}
 		break; 
 	case EMS_JUMP:
 		{
-			vector3df offset = getJumpDir() * (f32)delta;
+			vector3df offset = getJumpDir() * (float)delta;
 			m2move->move(offset);
 			TargetCamera->onTargetMove();
 		}
@@ -301,7 +301,7 @@ void CPlayer::onPlayerMoveAction( u32 delta, const SMoveControl& moveControl )
 	case EMS_TORPEDO:
 	case EMS_SPINNINGKICK:
 		{
-			vector3df offset = moveSpeed * (f32)delta;
+			vector3df offset = moveSpeed * (float)delta;
 			m2move->move(offset);
 			TargetCamera->onTargetMove();
 		}
@@ -336,7 +336,7 @@ vector3df CPlayer::getMoveVector() const
 	}
 }
 
-void CPlayer::onPlayerDirection( u32 delta, const SMoveControl& moveControl )
+void CPlayer::onPlayerDirection( uint32_t delta, const SMoveControl& moveControl )
 {
 	if (moveControl.rightMouse)
 		TargetCamera->makeTargetFollowCamera(delta, moveControl.front, moveControl.back, moveControl.left, moveControl.right);
@@ -344,7 +344,7 @@ void CPlayer::onPlayerDirection( u32 delta, const SMoveControl& moveControl )
 		TargetCamera->makeCameraFollowTarget(delta, moveControl.front, moveControl.back, moveControl.left, moveControl.right);
 }
 
-void CPlayer::setMoveSpeed( f32 walk, f32 run, f32 backwards, f32 roll )
+void CPlayer::setMoveSpeed( float walk, float run, float backwards, float roll )
 {
 	WalkSpeed = walk;
 	RunSpeed = run;
@@ -352,7 +352,7 @@ void CPlayer::setMoveSpeed( f32 walk, f32 run, f32 backwards, f32 roll )
 	RollSpeed = roll;
 }
 
-void CPlayer::getMoveSpeed( f32& walk, f32& run, f32& backwards, f32& roll )
+void CPlayer::getMoveSpeed( float& walk, float& run, float& backwards, float& roll )
 {
 	walk = WalkSpeed;
 	run = RunSpeed;
@@ -446,7 +446,7 @@ bool CPlayer::isStateCanMove(E_M2_STATES state, bool onKey) const
 		wow_m2FSM* fsm = node->getM2FSM();
 		if (fsm)
 		{
-			u32 idx = fsm->getDynAction().currentIndex;
+			uint32_t idx = fsm->getDynAction().currentIndex;
 			if (idx == 1)
 				return true;
 			else if (idx == 0)
@@ -483,7 +483,7 @@ bool CPlayer::isStateInterruptible(E_M2_STATES state) const
 		wow_m2FSM* fsm = node->getM2FSM();
 		if (fsm)
 		{
-			u32 idx = fsm->getDynAction().currentIndex;
+			uint32_t idx = fsm->getDynAction().currentIndex;
 			if (idx > 1)
 				return true;
 		}

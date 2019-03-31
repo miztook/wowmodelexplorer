@@ -15,7 +15,7 @@ public:
 public:
 	virtual void tick() = 0;
 
-	virtual void readTouchInfo(const SGesTouchInfo* arrTouches, u32 count) = 0;
+	virtual void readTouchInfo(const SGesTouchInfo* arrTouches, uint32_t count) = 0;
 
 	virtual bool addGestureToQueue(const SGestureInfo& gesInfo) = 0;
 

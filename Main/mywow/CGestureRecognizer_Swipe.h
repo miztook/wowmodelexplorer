@@ -26,6 +26,6 @@ private:
 	E_SWIPE_DIR calcSwipeDirection();
 
 private:
-	f32 ChangePosX;
-	f32 ChangePosY;
+	float ChangePosX;
+	float ChangePosY;
 };

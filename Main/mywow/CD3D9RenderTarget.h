@@ -24,7 +24,7 @@ public:
 	 IDirect3DSurface9* getRTTDepthSurface() const { return DepthSurface; }
 
 private:
-	bool createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, u32 antialias, u32 quality);
+	bool createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, uint32_t antialias, uint32_t quality);
 	void releaseVideoTexture();
 
 private:

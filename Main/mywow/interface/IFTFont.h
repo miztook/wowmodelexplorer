@@ -11,7 +11,7 @@ class ITexture;
 class IFTFont
 {
 public:
-	explicit IFTFont(const char* faceName, int faceIndex, u32 size, int fontStyle, int outlineWidth) 
+	explicit IFTFont(const char* faceName, int faceIndex, uint32_t size, int fontStyle, int outlineWidth) 
 		: FontFacePath(faceName), FontFaceIndex(faceIndex), FontSize(size), FontStyle(fontStyle), OutlineWidth(outlineWidth)
 	{
 		m_iFontWidth = m_iFontHeight = 0;
@@ -20,7 +20,7 @@ public:
 	virtual ~IFTFont() { }
 
 public:
-	u32 getFontSize() const { return FontSize; }
+	uint32_t getFontSize() const { return FontSize; }
 	const char* getFontFacePath() const { return FontFacePath.c_str(); }
 	int getFontFaceIndex() const { return FontFaceIndex; }
 	int getFontStyle() const { return FontStyle; }
@@ -37,28 +37,28 @@ public:
 
 		recti		UVRect;		//in texture
 		int		TexIndex;
-		s16		offsetX;
-		s16		offsetY;
-		s16		width;
-		s16		height;
+		int16_t		offsetX;
+		int16_t		offsetY;
+		int16_t		width;
+		int16_t		height;
 	};
 
 public:
 	virtual void drawA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr) = 0;
-	virtual void drawW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr) = 0;
+	virtual void drawW(const char16_t* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr) = 0;
 	virtual void addTextA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr, bool bVertical = false) = 0;
-	virtual void addTextW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr, bool bVertical = false) = 0;
+	virtual void addTextW(const char16_t* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr, bool bVertical = false) = 0;
 	virtual void flushText() = 0;
 
 	virtual dimension2du getTextExtent(const char* utf8text, int nCharCount = -1, bool vertical = false) = 0;	
-	virtual dimension2du getWTextExtent(const c16* text, int nCharCount = -1, bool vertical = false) = 0;	
-	virtual dimension2du getWCharExtent(c16 ch, bool vertical = false) = 0;
+	virtual dimension2du getWTextExtent(const char16_t* text, int nCharCount = -1, bool vertical = false) = 0;	
+	virtual dimension2du getWCharExtent(char16_t ch, bool vertical = false) = 0;
 	virtual int GetTextWCount(const char* utf8text) const = 0;
 
 protected:
 	string256	FontFacePath;
 	int FontFaceIndex;
-	u32 FontSize;
+	uint32_t FontSize;
 	int FontStyle;
 	int OutlineWidth;
 

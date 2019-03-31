@@ -19,30 +19,30 @@ public:
 
 	struct SAnimationEntry
 	{
-		c8 strName[DEFAULT_SIZE];
-		u32 subIdx;
-		s32 loopTime;
+		char strName[DEFAULT_SIZE];
+		uint32_t subIdx;
+		int32_t loopTime;
 	};
 
 	struct SAnimEntry 
 	{
-		u16 entryIndex;
-		s16 animIndex;
-		s32 loopTime;
+		uint16_t entryIndex;
+		int16_t animIndex;
+		int32_t loopTime;
 	};
 
 public:
-	wow_m2Action(IFileM2* filem2, const c8* name, E_PLAY_TYPE playType, s32 maxPlayTime = -1);
+	wow_m2Action(IFileM2* filem2, const char* name, E_PLAY_TYPE playType, int32_t maxPlayTime = -1);
 	~wow_m2Action();
 
 public:
-	u32 getAnimationCount() const { return (u32)AnimationList.size(); }
+	uint32_t getAnimationCount() const { return (uint32_t)AnimationList.size(); }
 	
-	bool pushAnimationEntry(const c8* animName, u32 subIdx, s32 loopTime);
+	bool pushAnimationEntry(const char* animName, uint32_t subIdx, int32_t loopTime);
 
 	void clear();
 
-	const c8* getActionName() const { return Name; }
+	const char* getActionName() const { return Name; }
 
 	E_PLAY_TYPE getPlayType() const { return PlayType; }
 
@@ -51,11 +51,11 @@ public:
 	std::vector<SAnimEntry>		AnimationList;
 
 	//random
-	u32 TotalLoopTime;
-	s32	MaxPlayTime;
+	uint32_t TotalLoopTime;
+	int32_t	MaxPlayTime;
 
 private:
-	c8		Name[DEFAULT_SIZE];
+	char		Name[DEFAULT_SIZE];
 	CFileM2* FileM2;
 
 	E_PLAY_TYPE		PlayType;

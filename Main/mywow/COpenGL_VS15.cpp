@@ -46,8 +46,8 @@ static COpenGL_VS15::SVertexShaderEntry g_openglvs15_vertexShaderEntries[] =
 
 void COpenGL_VS15::loadAll(COpenGLShaderServices* shaderServices)
 {
-	u32 num = sizeof(g_openglvs15_vertexShaderEntries) / sizeof(SVertexShaderEntry);
-	for (u32 i=0; i<num; ++i)
+	uint32_t num = sizeof(g_openglvs15_vertexShaderEntries) / sizeof(SVertexShaderEntry);
+	for (uint32_t i=0; i<num; ++i)
 	{
 		loadVShaderHLSL(shaderServices, g_openglvs15_vertexShaderEntries[i].vsType);
 	}
@@ -55,18 +55,18 @@ void COpenGL_VS15::loadAll(COpenGLShaderServices* shaderServices)
 
 bool COpenGL_VS15::loadVShaderHLSL(COpenGLShaderServices* shaderServices, E_VS_TYPE type)
 {
-	const c8* profile = "glvs_1_5";
+	const char* profile = "glvs_1_5";
 
-	c8 basePath[128];
+	char basePath[128];
 	Q_sprintf(basePath, 128, "Vertex\\%s\\", profile);
 
-	s32 index = -1;
-	u32 num = sizeof(g_openglvs15_vertexShaderEntries) / sizeof(SVertexShaderEntry);
-	for (u32 i=0; i<num; ++i)
+	int32_t index = -1;
+	uint32_t num = sizeof(g_openglvs15_vertexShaderEntries) / sizeof(SVertexShaderEntry);
+	for (uint32_t i=0; i<num; ++i)
 	{
 		if(g_openglvs15_vertexShaderEntries[i].vsType == type)
 		{
-			index = (s32)i;
+			index = (int32_t)i;
 			break;
 		}
 	}
@@ -84,7 +84,7 @@ bool COpenGL_VS15::loadVShaderHLSL(COpenGLShaderServices* shaderServices, E_VS_T
 	return shaderServices->loadVShaderHLSL(path.c_str(), "main", profile, g_openglvs15_vertexShaderEntries[index].vsType, g_openglvs15_vertexShaderEntries[index].callback);
 }
 
-void COpenGL_VS15::Default_W_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGL_VS15::Default_W_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLShaderServices* services = static_cast<COpenGLShaderServices*>(driver->getShaderServices());
@@ -96,10 +96,10 @@ void COpenGL_VS15::Default_W_setShaderConst( IVertexShader* vs, const SMaterial&
 	driver->getWVPMatrix(cbuffer.mWorldViewProjection);
 	cbuffer.mWorldViewProjection.transpose();
 
-	services->setShaderUniformF("g_vsbuffer", (const f32*)&cbuffer, sizeof(cbuffer));
+	services->setShaderUniformF("g_vsbuffer", (const float*)&cbuffer, sizeof(cbuffer));
 }
 
-void COpenGL_VS15::Default_WCol_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGL_VS15::Default_WCol_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLShaderServices* services = static_cast<COpenGLShaderServices*>(driver->getShaderServices());
@@ -114,10 +114,10 @@ void COpenGL_VS15::Default_WCol_setShaderConst( IVertexShader* vs, const SMateri
 	//color
 	cbuffer.vColor =  material.Lighting ? SColorf(1.0f, 1.0f, 1.0f) : material.EmissiveColor;
 
-	services->setShaderUniformF("g_vsbuffer", (const f32*)&cbuffer, sizeof(cbuffer));
+	services->setShaderUniformF("g_vsbuffer", (const float*)&cbuffer, sizeof(cbuffer));
 }
 
-void COpenGL_VS15::Default_WColTex_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGL_VS15::Default_WColTex_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLShaderServices* services = static_cast<COpenGLShaderServices*>(driver->getShaderServices());
@@ -141,11 +141,11 @@ void COpenGL_VS15::Default_WColTex_setShaderConst( IVertexShader* vs, const SMat
 		cbuffer.mTexture.transpose();
 	}
 
-	u32 size = useAnimTex ? sizeof(SParamWColTex) : sizeof(SParamWColTex) - sizeof(matrix4);
-	services->setShaderUniformF("g_vsbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = useAnimTex ? sizeof(SParamWColTex) : sizeof(SParamWColTex) - sizeof(matrix4);
+	services->setShaderUniformF("g_vsbuffer", (const float*)&cbuffer, size);
 }
 
-void COpenGL_VS15::Default_WTex_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGL_VS15::Default_WTex_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLShaderServices* services = static_cast<COpenGLShaderServices*>(driver->getShaderServices());
@@ -166,11 +166,11 @@ void COpenGL_VS15::Default_WTex_setShaderConst( IVertexShader* vs, const SMateri
 		cbuffer.mTexture.transpose();
 	}
 
-	u32 size = useAnimTex ? sizeof(SParamWTex) : sizeof(SParamWTex) - sizeof(matrix4);
-	services->setShaderUniformF("g_vsbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = useAnimTex ? sizeof(SParamWTex) : sizeof(SParamWTex) - sizeof(matrix4);
+	services->setShaderUniformF("g_vsbuffer", (const float*)&cbuffer, size);
 }
 
-void COpenGL_VS15::CDiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGL_VS15::CDiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLShaderServices* services = static_cast<COpenGLShaderServices*>(driver->getShaderServices());
@@ -206,11 +206,11 @@ void COpenGL_VS15::CDiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial
 		cbuffer.mTexture.transpose();
 	}
 
-	u32 size = useAnimTex ? sizeof(SCDiffuse) : sizeof(SCDiffuse) - sizeof(cbuffer.mTexture);
-	services->setShaderUniformF("g_vsbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = useAnimTex ? sizeof(SCDiffuse) : sizeof(SCDiffuse) - sizeof(cbuffer.mTexture);
+	services->setShaderUniformF("g_vsbuffer", (const float*)&cbuffer, size);
 }
 
-void COpenGL_VS15::DiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGL_VS15::DiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLShaderServices* services = static_cast<COpenGLShaderServices*>(driver->getShaderServices());
@@ -251,14 +251,14 @@ void COpenGL_VS15::DiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial&
 		cbuffer.mTexture.transpose();
 	}
 
-	u32 size = sizeof(SDiffuseT) - sizeof(cbuffer.boneMatrices);
+	uint32_t size = sizeof(SDiffuseT) - sizeof(cbuffer.boneMatrices);
 
 	//matrix array
 	if(unit->u.useBoneMatrix)
 	{
 		ASSERT(boneMats->count <= MAX_BONE_NUM);
 
-		for(u32 i=0; i<boneMats->count; ++i)
+		for(uint32_t i=0; i<boneMats->count; ++i)
 		{
 			matrix4 m = boneMats->matrices[i];
 			m.transpose();
@@ -268,10 +268,10 @@ void COpenGL_VS15::DiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial&
 		size += boneMats->count * 12 * sizeof(float);
 	}
 
-	services->setShaderUniformF("g_vsbuffer", (const f32*)&cbuffer, size);
+	services->setShaderUniformF("g_vsbuffer", (const float*)&cbuffer, size);
 }
 
-void COpenGL_VS15::DiffuseEnv_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGL_VS15::DiffuseEnv_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLShaderServices* services = static_cast<COpenGLShaderServices*>(driver->getShaderServices());
@@ -306,14 +306,14 @@ void COpenGL_VS15::DiffuseEnv_setShaderConst( IVertexShader* vs, const SMaterial
 	cbuffer.Params[1] = 0.0f;
 	cbuffer.Params[2] = material.FogEnable ? 1.0f : 0.0f;
 
-	u32 size = sizeof(SDiffuseEnv) - sizeof(cbuffer.boneMatrices);
+	uint32_t size = sizeof(SDiffuseEnv) - sizeof(cbuffer.boneMatrices);
 
 	//matrix array
 	if(unit->u.useBoneMatrix)
 	{
 		ASSERT(boneMats->count <= MAX_BONE_NUM);
 
-		for(u32 i=0; i<boneMats->count; ++i)
+		for(uint32_t i=0; i<boneMats->count; ++i)
 		{
 			matrix4 m = boneMats->matrices[i];
 			m.transpose();
@@ -323,10 +323,10 @@ void COpenGL_VS15::DiffuseEnv_setShaderConst( IVertexShader* vs, const SMaterial
 		size += boneMats->count * 12 * sizeof(float);
 	}
 
-	services->setShaderUniformF("g_vsbuffer", (const f32*)&cbuffer, size);
+	services->setShaderUniformF("g_vsbuffer", (const float*)&cbuffer, size);
 }
 
-void COpenGL_VS15::Terrain_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGL_VS15::Terrain_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLShaderServices* services = static_cast<COpenGLShaderServices*>(driver->getShaderServices());
@@ -380,11 +380,11 @@ void COpenGL_VS15::Terrain_setShaderConst( IVertexShader* vs, const SMaterial& m
 		cbuffer.mTexture.transpose();
 	}
 
-	u32 size = useAnimTex ? sizeof(SParamTerrain) : sizeof(SParamTerrain) - sizeof(cbuffer.mTexture);
-	services->setShaderUniformF("g_vsbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = useAnimTex ? sizeof(SParamTerrain) : sizeof(SParamTerrain) - sizeof(cbuffer.mTexture);
+	services->setShaderUniformF("g_vsbuffer", (const float*)&cbuffer, size);
 }
 
-void COpenGL_VS15::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGL_VS15::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLShaderServices* services = static_cast<COpenGLShaderServices*>(driver->getShaderServices());
@@ -438,11 +438,11 @@ void COpenGL_VS15::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMater
 		cbuffer.mTexture.transpose();
 	}
 
-	u32 size = useAnimTex ? sizeof(SParamMapObjDiffuse) : sizeof(SParamMapObjDiffuse) - sizeof(cbuffer.mTexture);
-	services->setShaderUniformF("g_vsbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = useAnimTex ? sizeof(SParamMapObjDiffuse) : sizeof(SParamMapObjDiffuse) - sizeof(cbuffer.mTexture);
+	services->setShaderUniformF("g_vsbuffer", (const float*)&cbuffer, size);
 }
 
-void COpenGL_VS15::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGL_VS15::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	COpenGLDriver* driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	COpenGLShaderServices* services = static_cast<COpenGLShaderServices*>(driver->getShaderServices());
@@ -496,8 +496,8 @@ void COpenGL_VS15::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMate
 		cbuffer.mTexture.transpose();
 	}
 
-	u32 size = useAnimTex ? sizeof(SParamMapObjSpecular) : sizeof(SParamMapObjSpecular) - sizeof(cbuffer.mTexture);
-	services->setShaderUniformF("g_vsbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = useAnimTex ? sizeof(SParamMapObjSpecular) : sizeof(SParamMapObjSpecular) - sizeof(cbuffer.mTexture);
+	services->setShaderUniformF("g_vsbuffer", (const float*)&cbuffer, size);
 }
 
 #endif

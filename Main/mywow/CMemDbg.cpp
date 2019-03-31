@@ -5,7 +5,7 @@
 
 #include "CSysUtility.h"
 
-u32 g_maxAlloc = 1000;
+uint32_t g_maxAlloc = 1000;
 
 int __cdecl MyAllocHook(
 	int      nAllocType,
@@ -45,17 +45,17 @@ bool CMemDbg::endCheckPoint()
 {
 	_CrtMemCheckpoint(&NewState);
 
-	s32 diff = _CrtMemDifference(&DiffState, &OldState, &NewState);
+	int32_t diff = _CrtMemDifference(&DiffState, &OldState, &NewState);
 	return diff == 0;
 }
 
-void CMemDbg::outputDifference( const c8* funcname )
+void CMemDbg::outputDifference( const char* funcname )
 {
 	CSysUtility::outputDebug("%s memory used: %0.2f M\n", funcname,
 		DiffState.lSizes[_NORMAL_BLOCK] / 1048576.f);
 }
 
-void CMemDbg::setAllocHook( bool enable, u32 nMaxAlloc /*= 1000*/ )
+void CMemDbg::setAllocHook( bool enable, uint32_t nMaxAlloc /*= 1000*/ )
 {
 	if (enable)
 	{

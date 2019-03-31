@@ -32,7 +32,7 @@ public:
 
 	bool drop()
 	{
-		s32 refCount;
+		int32_t refCount;
 
 		ASSERT( ReferenceCounter>0 );
 		--ReferenceCounter;
@@ -51,17 +51,17 @@ public:
 	}
 
 	//
-	s32 getReferenceCount() const 
+	int32_t getReferenceCount() const 
 	{ 
-		s32 refCount;
+		int32_t refCount;
 
 		refCount = ReferenceCounter;
 
 		return refCount; 
 	}
 
-	const c8* getFileName() const { return FileName.c_str(); }
-	void setFileName(const c8* filename) 
+	const char* getFileName() const { return FileName.c_str(); }
+	void setFileName(const char* filename) 
 	{
 		ASSERT(!isAbsoluteFileName(filename) && isNormalized(filename) && isLowerFileName(filename));
 		FileName = filename; 
@@ -90,8 +90,8 @@ public:
 	void addToCache( T* item );
 	void removeFromCache( T* item );
 	void flushCache();
-	void setCacheLimit(u32 limit);
-	u32 getCacheLimit() const { return CacheLimit; }
+	void setCacheLimit(uint32_t limit);
+	uint32_t getCacheLimit() const { return CacheLimit; }
 
 protected:
 	typedef std::list<T*, qzone_allocator<T*>  > T_FreeList;
@@ -105,12 +105,12 @@ protected:
 
 	T_UseMap UseMap;
 
-	volatile u32 CacheLimit;		//空闲列表大小
+	volatile uint32_t CacheLimit;		//空闲列表大小
 	lock_type cs;
 };
 
 template <class T>
-void IResourceCache<T>::setCacheLimit( u32 limit )
+void IResourceCache<T>::setCacheLimit( uint32_t limit )
 {
 	BEGIN_LOCK(&cs);
 	CacheLimit = limit;
@@ -137,7 +137,7 @@ T* IResourceCache<T>::tryLoadFromCache( const char* filename )
 	for ( auto itr = FreeList.begin(); itr != FreeList.end(); ++itr )
 	{
 		T* t = (*itr);
-		const c8* fname = t->getFileName();
+		const char* fname = t->getFileName();
 		if ( Q_stricmp(fname, filename) == 0 )			//找到，移到use cache
 		{
 			t->grab();
@@ -156,7 +156,7 @@ T* IResourceCache<T>::tryLoadFromCache( const char* filename )
 template <class T>
 void IResourceCache<T>::addToCache(T* item)
 {
-	const c8* filename = item->getFileName();
+	const char* filename = item->getFileName();
 	ASSERT(!isAbsoluteFileName(filename) && isNormalized(filename) && isLowerFileName(filename));
 
 	BEGIN_LOCK(&cs);
@@ -172,7 +172,7 @@ void IResourceCache<T>::addToCache(T* item)
 template <class T>
 void IResourceCache<T>::removeFromCache( T* item )
 {
-	const c8* filename = item->getFileName();
+	const char* filename = item->getFileName();
 	ASSERT(!isAbsoluteFileName(filename) && isNormalized(filename) && isLowerFileName(filename));
 	
 	BEGIN_LOCK(&cs);
@@ -216,7 +216,7 @@ void IResourceCache<T>::flushCache()
 		ASSERT(t->getReferenceCount() == 1);
 		if (t->getReferenceCount() > 1)
 		{
-			c8 tmp[512];
+			char tmp[512];
 			Q_sprintf(tmp, 512, "Resource Cache Leaked! %s", itr->first.c_str());
 			CSysUtility::messageBoxWarning(tmp);
 		}

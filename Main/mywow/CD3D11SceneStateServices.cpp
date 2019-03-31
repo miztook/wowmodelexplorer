@@ -28,7 +28,7 @@ void CD3D11SceneStateServices::deleteAllDynamicLights()
 	SceneState.resetLights();
 }
 
-bool CD3D11SceneStateServices::setDynamicLight( u32 index, const SLight& light )
+bool CD3D11SceneStateServices::setDynamicLight( uint32_t index, const SLight& light )
 {
 	if(index >= SceneState.MAX_LIGTHTS)
 		return false;
@@ -37,7 +37,7 @@ bool CD3D11SceneStateServices::setDynamicLight( u32 index, const SLight& light )
 	return true;
 }
 
-void CD3D11SceneStateServices::turnLightOn( u32 lightIndex, bool turnOn )
+void CD3D11SceneStateServices::turnLightOn( uint32_t lightIndex, bool turnOn )
 {
 	if(lightIndex >= SceneState.MAX_LIGTHTS)
 		return;
@@ -45,7 +45,7 @@ void CD3D11SceneStateServices::turnLightOn( u32 lightIndex, bool turnOn )
 	SceneState.LightsOn[lightIndex] = turnOn;
 }
 
-const SLight* CD3D11SceneStateServices::getDynamicLight( u32 index ) const
+const SLight* CD3D11SceneStateServices::getDynamicLight( uint32_t index ) const
 {
 	if(index >= SceneState.MAX_LIGTHTS)
 		return nullptr;
@@ -58,7 +58,7 @@ void CD3D11SceneStateServices::setFog( const SFogParam& fogParam )
 	SceneState.FogParam = fogParam;
 }
 
-bool CD3D11SceneStateServices::setClipPlane( u32 index, const plane3df& plane )
+bool CD3D11SceneStateServices::setClipPlane( uint32_t index, const plane3df& plane )
 {
 	if (index >= SSceneState::MAX_CLIPPLANES)
 	{
@@ -70,7 +70,7 @@ bool CD3D11SceneStateServices::setClipPlane( u32 index, const plane3df& plane )
 	return true;
 }
 
-void CD3D11SceneStateServices::enableClipPlane( u32 index, bool enable )
+void CD3D11SceneStateServices::enableClipPlane( uint32_t index, bool enable )
 {
 	if (index >= SSceneState::MAX_CLIPPLANES)
 	{
@@ -81,7 +81,7 @@ void CD3D11SceneStateServices::enableClipPlane( u32 index, bool enable )
 	SceneState.enableclips[index] = enable;
 }
 
-bool CD3D11SceneStateServices::isClipPlaneEnable( u32 index ) const
+bool CD3D11SceneStateServices::isClipPlaneEnable( uint32_t index ) const
 {
 	if (index >= SSceneState::MAX_CLIPPLANES)
 	{
@@ -92,7 +92,7 @@ bool CD3D11SceneStateServices::isClipPlaneEnable( u32 index ) const
 	return SceneState.enableclips[index];
 }
 
-bool CD3D11SceneStateServices::getClipPlane( u32 index, plane3df& plane ) const
+bool CD3D11SceneStateServices::getClipPlane( uint32_t index, plane3df& plane ) const
 {
 	if (index >= SSceneState::MAX_CLIPPLANES)
 	{

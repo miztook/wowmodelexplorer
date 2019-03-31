@@ -45,7 +45,7 @@ typedef std::set<string512, std::less<string512>, qzone_allocator<string512> > T
 
 void exportMapTextures(const char* dirname)
 {
-	wowDatabase* database = g_Engine->getWowDatabase();
+	WowClassic::wowDatabase* database = g_Engine->getWowDatabase();
 	IFileSystem* fs = g_Engine->getFileSystem();
 
 	for(u32 iMap = 0; iMap < database->getNumMaps(); ++iMap)
@@ -128,7 +128,7 @@ void exportMapTextures(const char* dirname)
 
 void exportWmoTextures(const char* dirname)
 {
-	wowDatabase* database = g_Engine->getWowDatabase();
+	WowClassic::wowDatabase* database = g_Engine->getWowDatabase();
 	IFileSystem* fs = g_Engine->getFileSystem();
 
 	for (u32 iWmo = 0; iWmo < database->getNumWmos(); ++iWmo)

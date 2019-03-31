@@ -10,7 +10,7 @@
 #include "CD3D11Helper.h"
 #include "CD3D11Texture.h"
 
-CD3D11TextureWriter::CD3D11TextureWriter( const dimension2du& size, ECOLOR_FORMAT format, u32 numMipmap )
+CD3D11TextureWriter::CD3D11TextureWriter( const dimension2du& size, ECOLOR_FORMAT format, uint32_t numMipmap )
 	: ITextureWriter(numMipmap)
 {
 	Driver = static_cast<CD3D11Driver*>(g_Engine->getDriver());
@@ -44,7 +44,7 @@ CD3D11TextureWriter::~CD3D11TextureWriter()
 	SAFE_RELEASE_STRICT(SrcTexture);
 }
 
-void* CD3D11TextureWriter::lock( u32 level, u32& pitch )
+void* CD3D11TextureWriter::lock( uint32_t level, uint32_t& pitch )
 {
 	D3D11_MAPPED_SUBRESOURCE mappedData;
 
@@ -63,7 +63,7 @@ void* CD3D11TextureWriter::lock( u32 level, u32& pitch )
 	return pData;
 }
 
-void CD3D11TextureWriter::unlock( u32 level )
+void CD3D11TextureWriter::unlock( uint32_t level )
 {
 	//ImmediateContext
 	Driver->ImmediateContext->Unmap(SrcTexture, level);
@@ -98,7 +98,7 @@ bool CD3D11TextureWriter::copyToTexture( ITexture* texture, const recti* descRec
 
 void CD3D11TextureWriter::initEmptyData()
 {
-	u32 pitch;
+	uint32_t pitch;
 	void* dest = lock(0, pitch);
 	memset(dest, 0, pitch * TextureSize.Height);
 	unlock(0);
@@ -122,7 +122,7 @@ ITextureWriter* CD3D11TextureWriteServices::createTextureWriter( ITexture* textu
 {
 	ECOLOR_FORMAT format = texture->getColorFormat();
 	dimension2du size = texture->getSize();
-	u32 numMipmap = texture->getNumMipmaps();
+	uint32_t numMipmap = texture->getNumMipmaps();
 
 	T_TextureWriterMap::iterator itr = TextureWriterMap.find(texture);
 	if (itr != TextureWriterMap.end())

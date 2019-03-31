@@ -17,26 +17,26 @@ struct S2DBlendParam;
 class CFTFont : public IFTFont
 {
 public:
-	CFTFont(const char* faceName, int faceIndex, u32 size, int fontStyle, int outlineWidth);
+	CFTFont(const char* faceName, int faceIndex, uint32_t size, int fontStyle, int outlineWidth);
 	~CFTFont();
 
 public:
 	virtual void drawA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr);
-	virtual void drawW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr);
+	virtual void drawW(const char16_t* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr);
 	virtual void addTextA(const char* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr, bool bVertical = false);
-	virtual void addTextW(const c16* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr, bool bVertical = false);
+	virtual void addTextW(const char16_t* text, SColor color, vector2di position, int nCharCount = -1, recti* pClip = nullptr, bool bVertical = false);
 	virtual void flushText();
 
 	virtual dimension2du getTextExtent(const char* utf8text, int nCharCount = -1, bool vertical = false);	
-	virtual dimension2du getWTextExtent(const c16* text, int nCharCount = -1, bool vertical = false) ;	
-	virtual dimension2du getWCharExtent(c16 ch, bool vertical = false);
+	virtual dimension2du getWTextExtent(const char16_t* text, int nCharCount = -1, bool vertical = false) ;	
+	virtual dimension2du getWCharExtent(char16_t ch, bool vertical = false);
 	virtual int GetTextWCount(const char* utf8text) const;
 
-	FT_BitmapGlyph getCharExtent(u32 ch, int& offsetX, int& offsetY, int& chWidth, int& chHeight, int& chBmpW, int& chBmpH);
-	const SCharInfo* getCharInfo(c16 ch) const;
-	const SCharInfo* addChar(c16 ch);	
-	ITexture* getTexture(u32 idx);
-	u32 getTextureCount() const { return (u32)FontTextures.size(); }
+	FT_BitmapGlyph getCharExtent(uint32_t ch, int& offsetX, int& offsetY, int& chWidth, int& chHeight, int& chBmpW, int& chBmpH);
+	const SCharInfo* getCharInfo(char16_t ch) const;
+	const SCharInfo* addChar(char16_t ch);	
+	ITexture* getTexture(uint32_t idx);
+	uint32_t getTextureCount() const { return (uint32_t)FontTextures.size(); }
 
 public:
 	bool init();
@@ -51,8 +51,8 @@ public:
 private:
 	struct SDrawText
 	{
-		u32		offset;
-		u32		length;
+		uint32_t		offset;
+		uint32_t		length;
 		SColor color;
 		vector2di position;
 		recti		rcClip;
@@ -63,17 +63,17 @@ private:
 
 private:
 	bool addFontTexture();
-	FT_BitmapGlyph RenderChar(u32 ch);
+	FT_BitmapGlyph RenderChar(uint32_t ch);
 	void drawTextWBatch();
 
-	void drawText(const SDrawText& d, const c16* txt, float fInv, const S2DBlendParam& blendParam);
-	void drawTextVertical(const SDrawText& d, const c16* txt, float fInv, const S2DBlendParam& blendParam);
+	void drawText(const SDrawText& d, const char16_t* txt, float fInv, const S2DBlendParam& blendParam);
+	void drawTextVertical(const SDrawText& d, const char16_t* txt, float fInv, const S2DBlendParam& blendParam);
 
 private:
 #ifdef USE_QALLOCATOR
-	typedef std::map<c16, SCharInfo, std::less<c16>, qzone_allocator<std::pair<c16, SCharInfo>>>	T_CharacterMap;
+	typedef std::map<char16_t, SCharInfo, std::less<char16_t>, qzone_allocator<std::pair<char16_t, SCharInfo>>>	T_CharacterMap;
 #else
-	typedef std::unordered_map<c16, SCharInfo>	T_CharacterMap;
+	typedef std::unordered_map<char16_t, SCharInfo>	T_CharacterMap;
 #endif
 
 	T_CharacterMap		CharacterMap;
@@ -99,6 +99,6 @@ private:
 	int  MaxY;
 
 	//
-	std::vector<c16>		Texts;
+	std::vector<char16_t>		Texts;
 	std::vector<SDrawText>	DrawTexts;
 };

@@ -25,8 +25,8 @@ public:
 	virtual void destroyHardwareBuffers(const SBufferParam& bufferParam);
 	virtual void destroyHardwareBuffer(CVertexBuffer* vbuffer);
 	virtual void destroyHardwareBuffer(CIndexBuffer* ibuffer);
-	virtual bool updateHardwareBuffer(CVertexBuffer* vbuffer, u32 size);
-	virtual bool updateHardwareBuffer(CIndexBuffer* ibuffer, u32 size);
+	virtual bool updateHardwareBuffer(CVertexBuffer* vbuffer, uint32_t size);
+	virtual bool updateHardwareBuffer(CIndexBuffer* ibuffer, uint32_t size);
 
 private:
 	bool internalCreateVertexBuffer( CVertexBuffer* vbuffer );

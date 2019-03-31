@@ -24,7 +24,7 @@ public:
 	struct SBoneVertEntry
 	{
 		SVertex_A*		aVertices;
-		u32		num;
+		uint32_t		num;
 	};
 
 	struct STexCoord
@@ -41,16 +41,16 @@ public:
 
 	typedef std::list<SBoneVertEntry, qzone_allocator<SBoneVertEntry> >		T_BoneVerticesList;
 
-	static const u32 MAX_BONE_BLEND = 4;
+	static const uint32_t MAX_BONE_BLEND = 4;
 
 public:
-	u32		NumGeosets;
-	u32		NumTexUnit;
-	u32		NumIndices;
-	u32		NumBoneVertices;
+	uint32_t		NumGeosets;
+	uint32_t		NumTexUnit;
+	uint32_t		NumIndices;
+	uint32_t		NumBoneVertices;
 
 	CGeoset*		Geosets;
-	u16*		Indices;
+	uint16_t*		Indices;
 	SVertex_A*		AVertices;
 	
 	//vm
@@ -80,13 +80,13 @@ public:
 
 	virtual void clearAllActions();
 	virtual bool addAction(wow_m2Action* action);
-	virtual wow_m2Action* getAction(const c8* name) const;
+	virtual wow_m2Action* getAction(const char* name) const;
 
 	const aabbox3df& getBoundingBox() const { return BoundingBox; }
-	s16 getAnimationIndex(const c8* name, u32 subIdx = 0) const;
-	u32 getAnimationCount(const c8* name) const;
+	int16_t getAnimationIndex(const char* name, uint32_t subIdx = 0) const;
+	uint32_t getAnimationCount(const char* name) const;
 
-	u8* getFileData() const { return FileData; }
+	uint8_t* getFileData() const { return FileData; }
 
 private:
 	bool loadFileMD20(IMemFile* file);
@@ -109,23 +109,23 @@ private:
 	void loadRibbonEmitters();
 	void loadModelCameras();
 
-	bool loadSkin(u32 idx);
+	bool loadSkin(uint32_t idx);
 
-	void setBoneType(s16 boneIdx);
+	void setBoneType(int16_t boneIdx);
 
-	u32 getSkinIndex(u32 race, u32 gender, bool isHD);
+	uint32_t getSkinIndex(uint32_t race, uint32_t gender, bool isHD);
 
 private:
 #ifdef USE_QALLOCATOR
-	typedef std::map<string64, s16, std::less<string64>, qzone_allocator<std::pair<string64, s16>>> T_AnimationLookup;
+	typedef std::map<string64, int16_t, std::less<string64>, qzone_allocator<std::pair<string64, int16_t>>> T_AnimationLookup;
 	typedef std::map<string64, wow_m2Action*, std::less<string64>, qzone_allocator<std::pair<string64, wow_m2Action*>>> T_ActionMap;
 #else
-	typedef std::unordered_map<string64, s16, string64::string_hash> T_AnimationLookup;
+	typedef std::unordered_map<string64, int16_t, string64::string_hash> T_AnimationLookup;
 	typedef std::unordered_map<string64, wow_m2Action*, string64::string_hash> T_ActionMap;
 #endif
 
 private:
-	u8*			FileData;
+	uint8_t*			FileData;
 
 	T_AnimationLookup	AnimationNameLookup;
 

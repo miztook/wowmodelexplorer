@@ -7,10 +7,10 @@
 class MPQArchive
 {
 public:
-	explicit MPQArchive(const c8* filename);
+	explicit MPQArchive(const char* filename);
 	~MPQArchive();
 public:
-	bool openPatch(const c8* patchname);
+	bool openPatch(const char* patchname);
 	bool applyPatch(MPQArchive* patchArchive);
 	void close(bool freepatch);
 

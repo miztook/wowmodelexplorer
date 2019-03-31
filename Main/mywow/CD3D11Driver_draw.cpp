@@ -44,7 +44,7 @@ void CD3D11Driver::setRenderState2DMode( E_VERTEX_TYPE vType, const S2DBlendPara
 
 		matrix4 matProject(true);
 		const dimension2du& renderTargetSize = ScreenSize;
-		matProject.buildProjectionMatrixOrthoLH(f32(renderTargetSize.Width), f32(-(s32)(renderTargetSize.Height)), -1.0, 1.0);
+		matProject.buildProjectionMatrixOrthoLH(float(renderTargetSize.Width), float(-(int32_t)(renderTargetSize.Height)), -1.0, 1.0);
 		matProject.setTranslation(vector3df(-1,1,0));
 
 		Matrices[ETS_WORLD] = matrix4::Identity();
@@ -74,14 +74,14 @@ void CD3D11Driver::setRenderState2DMode( E_VERTEX_TYPE vType, const S2DBlendPara
 	ResetRenderStates = false;
 }
 
-void CD3D11Driver::draw3DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, u32 primCount, const SDrawParam& drawParam )
+void CD3D11Driver::draw3DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, uint32_t primCount, const SDrawParam& drawParam )
 {
 	setRenderState3DMode(bufferParam.vType);
 
 	//draw
-	u32 cPasses = MaterialRenderer->getNumPasses();
+	uint32_t cPasses = MaterialRenderer->getNumPasses();
 
-	for ( u32 iPass = 0; iPass < cPasses; ++iPass )
+	for ( uint32_t iPass = 0; iPass < cPasses; ++iPass )
 	{
 		MaterialRenderer->OnRender(Material, iPass);	
 		
@@ -98,7 +98,7 @@ void CD3D11Driver::draw3DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE
 	}
 }
 
-void CD3D11Driver::draw2DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, u32 primCount, const SDrawParam& drawParam, const S2DBlendParam& blendParam, bool zTest )
+void CD3D11Driver::draw2DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, uint32_t primCount, const SDrawParam& drawParam, const S2DBlendParam& blendParam, bool zTest )
 {
 	SMaterial& material = zTest ? InitMaterial2DZTest : InitMaterial2D;
 
@@ -116,7 +116,7 @@ void CD3D11Driver::draw2DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE
 		drawPrimitive(bufferParam, material.VertexShader, primType, primCount, drawParam);
 }
 
-void CD3D11Driver::drawIndexedPrimitive( const SBufferParam& bufferParam, IVertexShader* vs, E_PRIMITIVE_TYPE primType, u32 primCount, const SDrawParam& drawParam )
+void CD3D11Driver::drawIndexedPrimitive( const SBufferParam& bufferParam, IVertexShader* vs, E_PRIMITIVE_TYPE primType, uint32_t primCount, const SDrawParam& drawParam )
 {
 	if (!drawParam.numVertices || drawParam.numVertices >= 65536 || !primCount)
 	{	
@@ -132,9 +132,9 @@ void CD3D11Driver::drawIndexedPrimitive( const SBufferParam& bufferParam, IVerte
 	if (CurrentDeviceState.vBuffer0 != bufferParam.vbuffer0 ||
 		CurrentDeviceState.vOffset0 != drawParam.voffset0)
 	{
-		u32 stride = getStreamPitchFromType(bufferParam.vbuffer0->Type);
+		uint32_t stride = getStreamPitchFromType(bufferParam.vbuffer0->Type);
 		ID3D11Buffer* buffers[1] = { static_cast<ID3D11Buffer*>(bufferParam.vbuffer0->HWLink) };
-		u32 offset = drawParam.voffset0 * stride;
+		uint32_t offset = drawParam.voffset0 * stride;
 
 		ImmediateContext->IASetVertexBuffers(0, 1, buffers, &stride, &offset);
 
@@ -145,14 +145,14 @@ void CD3D11Driver::drawIndexedPrimitive( const SBufferParam& bufferParam, IVerte
 	//stream 1
 	if (bufferParam.vbuffer1)
 	{
-		u32 stride = getStreamPitchFromType(bufferParam.vbuffer1->Type);
+		uint32_t stride = getStreamPitchFromType(bufferParam.vbuffer1->Type);
 
 		if (CurrentDeviceState.vBuffer1 != bufferParam.vbuffer1 ||
 			CurrentDeviceState.vOffset1 != drawParam.voffset1)
 		{
 			//ImmediateContext
 			ID3D11Buffer* buffers[1] = { static_cast<ID3D11Buffer*>(bufferParam.vbuffer1->HWLink) };
-			u32 offset = drawParam.voffset1 * stride;
+			uint32_t offset = drawParam.voffset1 * stride;
 
 			ImmediateContext->IASetVertexBuffers(1, 1, buffers, &stride, &offset);
 
@@ -182,7 +182,7 @@ void CD3D11Driver::drawIndexedPrimitive( const SBufferParam& bufferParam, IVerte
 	++DrawCall;
 }
 
-void CD3D11Driver::drawPrimitive( const SBufferParam& bufferParam, IVertexShader* vs, E_PRIMITIVE_TYPE primType, u32 primCount, const SDrawParam& drawParam )
+void CD3D11Driver::drawPrimitive( const SBufferParam& bufferParam, IVertexShader* vs, E_PRIMITIVE_TYPE primType, uint32_t primCount, const SDrawParam& drawParam )
 {
 	IFileSystem* fs = g_Engine->getFileSystem();
 
@@ -199,10 +199,10 @@ void CD3D11Driver::drawPrimitive( const SBufferParam& bufferParam, IVertexShader
 	if (CurrentDeviceState.vBuffer0 != bufferParam.vbuffer0 ||
 		CurrentDeviceState.vOffset0 != drawParam.voffset0)
 	{
-		u32 stride = getStreamPitchFromType(bufferParam.vbuffer0->Type);
+		uint32_t stride = getStreamPitchFromType(bufferParam.vbuffer0->Type);
 
 		ID3D11Buffer* buffers[1] = { static_cast<ID3D11Buffer*>(bufferParam.vbuffer0->HWLink) };
-		u32 offset = drawParam.voffset0 * stride;
+		uint32_t offset = drawParam.voffset0 * stride;
 
 		ImmediateContext->IASetVertexBuffers(0, 1, buffers, &stride, &offset);
 
@@ -213,13 +213,13 @@ void CD3D11Driver::drawPrimitive( const SBufferParam& bufferParam, IVertexShader
 	//stream 1
 	if (bufferParam.vbuffer1)
 	{
-		u32 stride = getStreamPitchFromType(bufferParam.vbuffer1->Type);
+		uint32_t stride = getStreamPitchFromType(bufferParam.vbuffer1->Type);
 
 		if (CurrentDeviceState.vBuffer1 != bufferParam.vbuffer1 ||
 			CurrentDeviceState.vOffset1 != drawParam.voffset1)
 		{
 			ID3D11Buffer* buffers[1] = { static_cast<ID3D11Buffer*>(bufferParam.vbuffer1->HWLink) };
-			u32 offset = drawParam.voffset1 * stride;
+			uint32_t offset = drawParam.voffset1 * stride;
 
 			ImmediateContext->IASetVertexBuffers(1, 1, buffers, &stride, &offset);
 
@@ -240,11 +240,11 @@ void CD3D11Driver::drawPrimitive( const SBufferParam& bufferParam, IVertexShader
 	++DrawCall;
 }
 
-void CD3D11Driver::drawDebugInfo( const c8* strMsg )
+void CD3D11Driver::drawDebugInfo( const char* strMsg )
 {
 	vector2di pos = vector2di(5,5);
 
-	f32 fps = g_Engine->getSceneManager()->getFPS();
+	float fps = g_Engine->getSceneManager()->getFPS();
 	// 	sprintf_s(DebugMsg, 512, "显卡: %s\n分辨率: %d X %d\nFPS: %0.1f\n三角形数: %d\n三角形Draw次数: %d\n小区域内存剩余(%%): %0.1f\n区域内存剩余(%%): %0.1f\n", 
 	// 		DeviceDescription, present.BackBufferWidth, present.BackBufferHeight, getFPS(), PrimitivesDrawn, DrawCall,
 	// 		Z_AvailableSmallMemoryPercent() * 100,
@@ -253,10 +253,10 @@ void CD3D11Driver::drawDebugInfo( const c8* strMsg )
 	Q_sprintf(DebugMsg, 512, "Dev: %s\nGraphics: %s\nRes: %d X %d\nFPS: %0.1f\nTriangles: %d\nDraw Call: %d\n", 
 		AdapterInfo.description, 
 		getEnumString(EDT_DIRECT3D11),
-		(s32)Present.BufferDesc.Width, (s32)Present.BufferDesc.Height, 
+		(int32_t)Present.BufferDesc.Width, (int32_t)Present.BufferDesc.Height, 
 		fps, 
-		(s32)PrimitivesDrawn, 
-		(s32)DrawCall);
+		(int32_t)PrimitivesDrawn, 
+		(int32_t)DrawCall);
 
 	Q_strcat(DebugMsg, 512, strMsg);
 

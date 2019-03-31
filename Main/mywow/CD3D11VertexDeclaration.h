@@ -39,7 +39,7 @@ private:
 	T_LayoutMap LayoutMap;
 
 	D3D11_INPUT_ELEMENT_DESC* IAElements;
-	u32 Size;
+	uint32_t Size;
 	E_VERTEX_TYPE VertexType;
 };
 

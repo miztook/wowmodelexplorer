@@ -22,11 +22,11 @@ inline  T interpolateHermite(const float r, const T &v1, const T &v2, const T &i
 }
 
 template<class T>
- inline void heapsink(T* array, s32 element, s32 max)
+ inline void heapsink(T* array, int32_t element, int32_t max)
 {
 	while ((element<<1) < max) // there is a left child
 	{
-		s32 j = (element<<1);
+		int32_t j = (element<<1);
 
 		if (j+1 < max && array[j] < array[j+1])
 			j = j+1; // take right child
@@ -45,15 +45,15 @@ template<class T>
 
 
 template<class T>
- inline void heapsort(T* array_, s32 size)
+ inline void heapsort(T* array_, int32_t size)
 {
 	// for heapsink we pretent this is not c++, where
 	// arrays start with index 0. So we decrease the array pointer,
 	// the maximum always +2 and the element always +1
 
 	T* virtualArray = array_ - 1;
-	s32 virtualSize = size + 2;
-	s32 i;
+	int32_t virtualSize = size + 2;
+	int32_t i;
 
 	// build heap
 
@@ -72,17 +72,17 @@ template<class T>
 }
 
 
-inline static u32 generateHashValue( const c8 *fname, const int size ) {
+inline static uint32_t generateHashValue( const char *fname, const int size ) {
 	int		i;
-	u32	hash;
+	uint32_t	hash;
 
 	hash = 0;
 	i = 0;
 	while (fname[i] != '\0') {
-		char letter = (c8)tolower(fname[i]);
+		char letter = (char)tolower(fname[i]);
 		if (letter =='.') break;				// don't include extension
 		if (letter =='\\') letter = '/';		// damn path names
-		hash+=(u32)(letter)*(i+119);
+		hash+=(uint32_t)(letter)*(i+119);
 		++i;
 	}
 	hash = (hash ^ (hash >> 10) ^ (hash >> 20));
@@ -90,19 +90,19 @@ inline static u32 generateHashValue( const c8 *fname, const int size ) {
 	return hash;
 }
 
-inline static f32 KernelBSpline(const f32 x)
+inline static float KernelBSpline(const float x)
 {
 	if (x > 2.0f)
 		return 0.0f;
 
-	f32 xm1 = x - 1.0f;
-	f32 xp1 = x + 1.0f;
-	f32 xp2 = x + 2.0f;
+	float xm1 = x - 1.0f;
+	float xp1 = x + 1.0f;
+	float xp2 = x + 2.0f;
 
-	f32 a = (xp2 <= 0.0f) ? 0.0f : (xp2*xp2*xp2);
-	f32 b = (xp1 <= 0.0f) ? 0.0f : (xp1*xp1*xp1);
-	f32 c = (x <= 0) ? 0.0f : (x*x*x);
-	f32 d = (xm1 <= 0.0f) ? 0.0f : (xm1*xm1*xm1);
+	float a = (xp2 <= 0.0f) ? 0.0f : (xp2*xp2*xp2);
+	float b = (xp1 <= 0.0f) ? 0.0f : (xp1*xp1*xp1);
+	float c = (x <= 0) ? 0.0f : (x*x*x);
+	float d = (xm1 <= 0.0f) ? 0.0f : (xm1*xm1*xm1);
 
 	return (0.16666666666666666667f * (a - (4.0f * b) + (6.0f * c) - (4.0f * d)));
 }

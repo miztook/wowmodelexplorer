@@ -6,7 +6,7 @@
 class CTerrainRenderer : public ISceneRenderer
 {
 public:
-	CTerrainRenderer(u32 lowresQuota, u32 highresQuota);
+	CTerrainRenderer(uint32_t lowresQuota, uint32_t highresQuota);
 	~CTerrainRenderer();
 
 public:
@@ -42,8 +42,8 @@ private:
 	std::vector<SEntry>			LowRenderEntries;
 	std::vector<SEntry>			HighRenderEntries;
 
-	u32		LowResQuota;
-	u32		HighResQuota;
+	uint32_t		LowResQuota;
+	uint32_t		HighResQuota;
 
 
 	friend class CD3D9Driver;

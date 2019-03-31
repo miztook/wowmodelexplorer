@@ -18,8 +18,8 @@ public:
 	~CD3D11ManualTextureServices();
 
 public:
-	virtual ITexture* addTexture( const c8* name, const dimension2du& size, IImage* img, bool mipmap);
-	virtual void removeTexture(const c8* name);
+	virtual ITexture* addTexture( const char* name, const dimension2du& size, IImage* img, bool mipmap);
+	virtual void removeTexture(const char* name);
 
 	virtual IRenderTarget* addRenderTarget( const dimension2du& size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt );
 	virtual void removeRenderTarget( IRenderTarget* texture );

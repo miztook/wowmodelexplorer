@@ -125,13 +125,13 @@ void CD3D11MaterialRenderer_Transparent_Alpha_Blend::OnSetMaterial( E_VERTEX_TYP
 	services->applyMaterialBlock(MaterialBlock, resetAllRenderStates);
 }
 
-void CD3D11MaterialRenderer_Transparent_Alpha_Blend::OnRender( const SMaterial& material, u32 pass )
+void CD3D11MaterialRenderer_Transparent_Alpha_Blend::OnRender( const SMaterial& material, uint32_t pass )
 {
 	if (material.MaterialType == EMT_TRANSAPRENT_ALPHA_BLEND_TEST)
 	{
 		CD3D11MaterialRenderServices* services = static_cast<CD3D11MaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 
-		MaterialBlock.alphaTestRef = (u8)(200 * material.getMaterialAlpha());
+		MaterialBlock.alphaTestRef = (uint8_t)(200 * material.getMaterialAlpha());
 		services->applyMaterialBlock(MaterialBlock, false);
 	}
 }
@@ -157,11 +157,11 @@ void CD3D11MaterialRenderer_Transparent_Alpha_Test::OnSetMaterial( E_VERTEX_TYPE
 	services->applyMaterialBlock(MaterialBlock, resetAllRenderStates);
 }
 
-void CD3D11MaterialRenderer_Transparent_Alpha_Test::OnRender( const SMaterial& material, u32 pass )
+void CD3D11MaterialRenderer_Transparent_Alpha_Test::OnRender( const SMaterial& material, uint32_t pass )
 {
 	CD3D11MaterialRenderServices* services = static_cast<CD3D11MaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 
-	MaterialBlock.alphaTestRef = (u8)(200 * material.getMaterialAlpha());
+	MaterialBlock.alphaTestRef = (uint8_t)(200 * material.getMaterialAlpha());
 	services->applyMaterialBlock(MaterialBlock, false);
 }
 
@@ -196,7 +196,7 @@ void CD3D11MaterialRenderer_Terrain_MultiPass::OnSetMaterial( E_VERTEX_TYPE vTyp
 	services->setTextureWrap(0, ETA_U, ETC_CLAMP);
 	services->setTextureWrap(0, ETA_V, ETC_CLAMP);
 
-	for (u32 i=1; i<5; ++i)				//base textures
+	for (uint32_t i=1; i<5; ++i)				//base textures
 	{
 		services->setTextureWrap(i, ETA_U, ETC_REPEAT);
 		services->setTextureWrap(i, ETA_V, ETC_REPEAT);

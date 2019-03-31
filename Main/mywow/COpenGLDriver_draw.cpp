@@ -49,7 +49,7 @@ void COpenGLDriver::setRenderState2DMode( E_VERTEX_TYPE vType, const S2DBlendPar
 
 		matrix4 matProject(true);
 		const dimension2du& renderTargetSize = ScreenSize;
-		matProject.buildProjectionMatrixOrthoLH(f32(renderTargetSize.Width), f32(-(s32)(renderTargetSize.Height)), -1.0, 1.0);
+		matProject.buildProjectionMatrixOrthoLH(float(renderTargetSize.Width), float(-(int32_t)(renderTargetSize.Height)), -1.0, 1.0);
 		matProject.setTranslation(vector3df(-1,1,0));
 
 		Matrices[ETS_WORLD] = matrix4::Identity();
@@ -98,14 +98,14 @@ void COpenGLDriver::setRenderState2DMode( E_VERTEX_TYPE vType, const S2DBlendPar
 	ResetRenderStates = false;
 }
 
-void COpenGLDriver::draw3DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, u32 primCount, const SDrawParam& drawParam )
+void COpenGLDriver::draw3DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, uint32_t primCount, const SDrawParam& drawParam )
 {
 	setRenderState3DMode(bufferParam.vType);
 
 	//draw
-	u32 cPasses = MaterialRenderer->getNumPasses();
+	uint32_t cPasses = MaterialRenderer->getNumPasses();
 
-	for ( u32 iPass = 0; iPass < cPasses; ++iPass )
+	for ( uint32_t iPass = 0; iPass < cPasses; ++iPass )
 	{	
 		MaterialRenderer->OnRender(Material, iPass);
 
@@ -121,7 +121,7 @@ void COpenGLDriver::draw3DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYP
 	}
 }
 
-void COpenGLDriver::draw2DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, u32 primCount, const SDrawParam& drawParam, const S2DBlendParam& blendParam, bool zTest )
+void COpenGLDriver::draw2DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, uint32_t primCount, const SDrawParam& drawParam, const S2DBlendParam& blendParam, bool zTest )
 {
 	SMaterial& material = zTest ? InitMaterial2DZTest : InitMaterial2D;
 
@@ -136,19 +136,19 @@ void COpenGLDriver::draw2DMode( const SBufferParam& bufferParam, E_PRIMITIVE_TYP
 	drawIndexedPrimitive(bufferParam, primType, primCount, drawParam);
 }
 
-void COpenGLDriver::drawDebugInfo( const c8* strMsg )
+void COpenGLDriver::drawDebugInfo( const char* strMsg )
 {
 	vector2di pos = vector2di(5,5);
 
-	f32 fps = g_Engine->getSceneManager()->getFPS();
+	float fps = g_Engine->getSceneManager()->getFPS();
 
 	Q_sprintf(DebugMsg, 512, "Dev: %s\nGraphics: %s\nRes: %d X %d\nFPS: %0.1f\nTriangles: %d\nDraw Call: %d\n", 
 		AdapterInfo.description, 
 		AdapterInfo.name,
 		Viewport.getWidth(), Viewport.getHeight(), 
 		fps, 
-		(s32)PrimitivesDrawn, 
-		(s32)DrawCall);
+		(int32_t)PrimitivesDrawn, 
+		(int32_t)DrawCall);
 
 	Q_strcat(DebugMsg, 512, strMsg);
 
@@ -157,7 +157,7 @@ void COpenGLDriver::drawDebugInfo( const c8* strMsg )
 
 #ifdef USE_WITH_GLES2
 
-void COpenGLDriver::drawIndexedPrimitive( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, u32 primCount, const SDrawParam& drawParam )
+void COpenGLDriver::drawIndexedPrimitive( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, uint32_t primCount, const SDrawParam& drawParam )
 {
 	if (!drawParam.numVertices || drawParam.numVertices >= 65536 || !primCount || drawParam.baseVertIndex)
 	{	
@@ -169,7 +169,7 @@ void COpenGLDriver::drawIndexedPrimitive( const SBufferParam& bufferParam, E_PRI
 
 	GLenum mode = COpenGLHelper::getGLTopology(primType);
 	GLenum type = 0;
-	u32 indexSize = 0;
+	uint32_t indexSize = 0;
 	if (bufferParam.ibuffer)
 	{
 		switch (bufferParam.ibuffer->Type)
@@ -217,7 +217,7 @@ void COpenGLDriver::drawIndexedPrimitive( const SBufferParam& bufferParam, E_PRI
 
 #else
 
-void COpenGLDriver::drawIndexedPrimitive( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, u32 primCount, const SDrawParam& drawParam )
+void COpenGLDriver::drawIndexedPrimitive( const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, uint32_t primCount, const SDrawParam& drawParam )
 {
 	if (!drawParam.numVertices || drawParam.numVertices >= 65536 || !primCount)
 	{
@@ -229,7 +229,7 @@ void COpenGLDriver::drawIndexedPrimitive( const SBufferParam& bufferParam, E_PRI
 
 	GLenum mode = COpenGLHelper::getGLTopology(primType);
 	GLenum type = 0;
-	u32 indexSize = 0;
+	uint32_t indexSize = 0;
 	if (bufferParam.ibuffer)
 	{
 		switch (bufferParam.ibuffer->Type)

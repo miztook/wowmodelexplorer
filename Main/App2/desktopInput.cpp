@@ -16,8 +16,8 @@ public:
 	virtual void onKeyMessage(window_type hwnd, E_INPUT_MESSAGE message, int key);
 
 private:
-	f32		LastX;
-	f32		LastY;
+	float		LastX;
+	float		LastY;
 	bool		LCapture;
 	bool		RCapture;
 };
@@ -157,10 +157,10 @@ void destroyInput()
 
 void processInput()
 {
-	static u32 startTime = g_Engine->getTimer()->getTimeSinceStart();
+	static uint32_t startTime = g_Engine->getTimer()->getTimeSinceStart();
 
-	u32 now = g_Engine->getTimer()->getTimeSinceStart();
-	u32 time =  min_(now - startTime, 500u);
+	uint32_t now = g_Engine->getTimer()->getTimeSinceStart();
+	uint32_t time =  min_(now - startTime, 500u);
 	startTime = now;
 
 	IInputReader* inputReader = g_Engine->getInputReader();

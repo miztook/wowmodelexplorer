@@ -189,7 +189,7 @@ void CD3D9MaterialRenderServices::setBasicRenderStates( const SMaterial& materia
 	}
 
 	//texture address mode
-	for (u32 st=0; st<MATERIAL_MAX_TEXTURES; ++st)
+	for (uint32_t st=0; st<MATERIAL_MAX_TEXTURES; ++st)
 	{	
 		if (resetAllRenderstates || 
 			material.TextureLayer[st].TextureWrapU != lastMaterial.TextureLayer[st].TextureWrapU ||
@@ -228,17 +228,17 @@ void CD3D9MaterialRenderServices::setBasicRenderStates( const SMaterial& materia
 void CD3D9MaterialRenderServices::setOverrideRenderStates( const SOverrideMaterial& overrideMaterial,
 	bool resetAllRenderStates )
 {
-	for (u32 st=0; st<MATERIAL_MAX_TEXTURES; ++st)
+	for (uint32_t st=0; st<MATERIAL_MAX_TEXTURES; ++st)
 	{
 		if (resetAllRenderStates || overrideMaterial.TextureFilters[st] != LastOverrideMaterial.TextureFilters[st])
 		{
 			D3DTEXTUREFILTERTYPE tftMag, tftMin, tftMip;
 
 			// Bilinear, trilinear, and anisotropic filter	
-			u32 maxAnisotropy = 1;
+			uint32_t maxAnisotropy = 1;
 			if (overrideMaterial.TextureFilters[st] != ETF_NONE)
 			{
-				u8 anisotropic = getAnisotropic(overrideMaterial.TextureFilters[st]);
+				uint8_t anisotropic = getAnisotropic(overrideMaterial.TextureFilters[st]);
 				tftMag = ((Driver->Caps.TextureFilterCaps & D3DPTFILTERCAPS_MAGFANISOTROPIC) &&
 					anisotropic) ? D3DTEXF_ANISOTROPIC : D3DTEXF_LINEAR;
 				tftMin = ((Driver->Caps.TextureFilterCaps & D3DPTFILTERCAPS_MINFANISOTROPIC) &&
@@ -337,7 +337,7 @@ void CD3D9MaterialRenderServices::set2DPixelShaderMaterialBlock( SRenderStateBlo
 
 void CD3D9MaterialRenderServices::applyMaterialBlock( const SRenderStateBlock& block, bool resetAllRenderStates )
 {
-	for (u32 st=0; st<MATERIAL_MAX_TEXTURES; ++st)
+	for (uint32_t st=0; st<MATERIAL_MAX_TEXTURES; ++st)
 	{	
 		//color op, alpha op, FFP only
 #ifdef FIXPIPELINE
@@ -377,7 +377,7 @@ void CD3D9MaterialRenderServices::applyMaterialBlock( const SRenderStateBlock& b
 		//tex coord index
 		if (resetAllRenderStates || block.textureUnits[st].texcoordIndex != LastMaterialBlock.textureUnits[st].texcoordIndex)
 		{
-			CurrentRenderState.TextureUnits[st].texcoordIndex = (u32)block.textureUnits[st].texcoordIndex;
+			CurrentRenderState.TextureUnits[st].texcoordIndex = (uint32_t)block.textureUnits[st].texcoordIndex;
 		}
 	}
 
@@ -415,7 +415,7 @@ void CD3D9MaterialRenderServices::applyMaterialBlock( const SRenderStateBlock& b
 
 	if (resetAllRenderStates || block.alphaTestRef != LastMaterialBlock.alphaTestRef)
 	{
-		CurrentRenderState.AlphaRef = (DWORD)min_(block.alphaTestRef, (u8)255);
+		CurrentRenderState.AlphaRef = (DWORD)min_(block.alphaTestRef, (uint8_t)255);
 	}
 
 	/*
@@ -471,7 +471,7 @@ void CD3D9MaterialRenderServices::resetRSCache()
 	pID3DDevice->GetRenderState(D3DRS_ADAPTIVETESS_Y, &RsCache.AdaptivetessY);
 	pID3DDevice->GetRenderState(D3DRS_POINTSIZE, &RsCache.PointSize);
 
-	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+	for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
 		RsCache.TextureUnits[i].texture = nullptr;
 
@@ -498,7 +498,7 @@ void CD3D9MaterialRenderServices::resetRSCache()
 
 }
 
-void CD3D9MaterialRenderServices::setTextureWrap( u32 st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap )
+void CD3D9MaterialRenderServices::setTextureWrap( uint32_t st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap )
 {
 	D3DTEXTUREADDRESS v = CD3D9Helper::getD3DTextureAddress(wrap);
 	switch (address)
@@ -520,7 +520,7 @@ void CD3D9MaterialRenderServices::setTextureWrap( u32 st, E_TEXTURE_ADDRESS addr
 	}
 }
 
-E_TEXTURE_CLAMP CD3D9MaterialRenderServices::getTextureWrap( u32 st, E_TEXTURE_ADDRESS address ) const
+E_TEXTURE_CLAMP CD3D9MaterialRenderServices::getTextureWrap( uint32_t st, E_TEXTURE_ADDRESS address ) const
 {
 	DWORD v = 0;
 	switch (address)
@@ -541,15 +541,15 @@ E_TEXTURE_CLAMP CD3D9MaterialRenderServices::getTextureWrap( u32 st, E_TEXTURE_A
 	return CD3D9Helper::getTextureAddressMode((D3DTEXTUREADDRESS)v);
 }
 
-void CD3D9MaterialRenderServices::setDepthBias( f32 depthbias )
+void CD3D9MaterialRenderServices::setDepthBias( float depthbias )
 {
 	bool enable =  depthbias != 0.0f;
-	static f32 fSlope = 0.1f;
+	static float fSlope = 0.1f;
 	CurrentRenderState.SlopeScaleDepthBias = enable ? F32_AS_DWORD(fSlope) : 0;
 	CurrentRenderState.DepthBias = enable ? F32_AS_DWORD(depthbias) : 0;
 }
 
-f32 CD3D9MaterialRenderServices::getDepthBias() const
+float CD3D9MaterialRenderServices::getDepthBias() const
 {
 	return DWORD_AS_F32(CurrentRenderState.DepthBias);
 }
@@ -742,7 +742,7 @@ void CD3D9MaterialRenderServices::applyMaterialChanges()
 	DEVICE_SET_RENDER_STATE(MultiSampleAntiAlias, D3DRS_MULTISAMPLEANTIALIAS, CurrentRenderState.MultiSampleAntiAlias);
 	DEVICE_SET_RENDER_STATE(AntiAliasedLineEnable, D3DRS_ANTIALIASEDLINEENABLE, CurrentRenderState.AntiAliasedLineEnable);
 
-	for (u32 st = 0; st < MATERIAL_MAX_TEXTURES; ++st)
+	for (uint32_t st = 0; st < MATERIAL_MAX_TEXTURES; ++st)
 	{
 		const SRenderStateCache::STextureUnit& texunit = CurrentRenderState.TextureUnits[st];
 

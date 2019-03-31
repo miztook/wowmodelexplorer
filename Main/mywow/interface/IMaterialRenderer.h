@@ -16,14 +16,14 @@ public:
 	virtual void OnSetMaterial( E_VERTEX_TYPE vType, const SMaterial& material, bool resetAllRenderStates) = 0;
 
 	//for fp
-	u32 getNumPasses() const { return NumPass; }
+	uint32_t getNumPasses() const { return NumPass; }
 
-	virtual void OnRender(const SMaterial& material, u32 pass) {}
+	virtual void OnRender(const SMaterial& material, uint32_t pass) {}
 
 public:
 	SRenderStateBlock		MaterialBlock;
 
 protected:
-	u32		NumPass;
+	uint32_t		NumPass;
 };
 

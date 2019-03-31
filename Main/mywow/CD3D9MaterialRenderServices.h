@@ -43,14 +43,14 @@ public:
 
 	const SRenderStateBlock& getRenderStateBlock() const { return LastMaterialBlock; }
 
-	ITexture* getSampler_Texture(u32 st) const { return CurrentRenderState.TextureUnits[st].texture; }
-	void setSampler_Texture(u32 st, ITexture* tex);
-	void setTextureWrap(u32 st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap);
-	E_TEXTURE_CLAMP getTextureWrap(u32 st, E_TEXTURE_ADDRESS address) const;
+	ITexture* getSampler_Texture(uint32_t st) const { return CurrentRenderState.TextureUnits[st].texture; }
+	void setSampler_Texture(uint32_t st, ITexture* tex);
+	void setTextureWrap(uint32_t st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap);
+	E_TEXTURE_CLAMP getTextureWrap(uint32_t st, E_TEXTURE_ADDRESS address) const;
 
 	//render states
-	void setDepthBias(f32 depthbias);
-	f32 getDepthBias() const;
+	void setDepthBias(float depthbias);
+	float getDepthBias() const;
 
 private:
 	void resetRSCache();
@@ -135,7 +135,7 @@ private:
 	S2DBlendParam	Last2DBlendParam;
 };
 
-inline void CD3D9MaterialRenderServices::setSampler_Texture( u32 st, ITexture* tex )
+inline void CD3D9MaterialRenderServices::setSampler_Texture( uint32_t st, ITexture* tex )
 {
 	if (st < MATERIAL_MAX_TEXTURES)
 		CurrentRenderState.TextureUnits[st].texture = tex;

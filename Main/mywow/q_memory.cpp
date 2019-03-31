@@ -321,7 +321,7 @@ void *Z_TagMalloc( size_t size, int tag ) {
 	base->d.label = label;
 	base->d.file = file;
 	base->d.line = line;
-	base->d.allocSize = (u32)allocSize;
+	base->d.allocSize = (uint32_t)allocSize;
 #endif
 
 	// marker for memory trash testing

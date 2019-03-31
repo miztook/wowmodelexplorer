@@ -62,7 +62,7 @@ CD3D11Driver::CD3D11Driver()
 	InitMaterial2D.ZWriteEnable = false;
 	InitMaterial2D.AntiAliasing = EAAM_OFF;
 	InitMaterial2D.ZBuffer = ECFN_NEVER;
-	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+	for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
 		InitMaterial2D.TextureLayer[i].TextureWrapU=ETC_CLAMP;
 		InitMaterial2D.TextureLayer[i].TextureWrapV=ETC_CLAMP;
@@ -123,7 +123,7 @@ CD3D11Driver::~CD3D11Driver()
 		FreeLibrary(HLibD3D);
 }
 
-bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread )
+bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, uint32_t adapter, bool fullscreen, bool vsync, uint8_t antialias, bool multithread )
 {
 	ASSERT(::IsWindow(wndInfo.hwnd));
 
@@ -133,7 +133,7 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 
 	RECT rc;
 	::GetClientRect(wndInfo.hwnd, &rc);
-	dimension2du windowSize((u32)rc.right-rc.left, (u32)rc.bottom-rc.top);
+	dimension2du windowSize((uint32_t)rc.right-rc.left, (uint32_t)rc.bottom-rc.top);
 
 	HLibDXGI = ::LoadLibraryA("dxgi.dll");
 	HLibD3D = ::LoadLibraryA("d3d11.dll");
@@ -159,7 +159,7 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 		D3D_FEATURE_LEVEL_9_2,
 		D3D_FEATURE_LEVEL_9_1,
 	};
-	u32 RequestedLevelsSize = sizeof( RequestedLevels ) / sizeof( RequestedLevels[0] );
+	uint32_t RequestedLevelsSize = sizeof( RequestedLevels ) / sizeof( RequestedLevels[0] );
 
 	UINT flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
@@ -223,8 +223,8 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 	::ZeroMemory( &outputDesc, sizeof(DXGI_OUTPUT_DESC) );
 	DXGIOutput->GetDesc(&outputDesc);
 
-	utf16to8( (const c16*)adapDesc.Description, AdapterInfo.description, 512 );
-	utf16to8( (const c16*)outputDesc.DeviceName, AdapterInfo.name, DEFAULT_SIZE);
+	utf16to8( (const char16_t*)adapDesc.Description, AdapterInfo.description, 512 );
+	utf16to8( (const char16_t*)outputDesc.DeviceName, AdapterInfo.name, DEFAULT_SIZE);
 
 	AdapterInfo.vendorID = adapDesc.VendorId;
 	switch (adapDesc.VendorId)
@@ -241,18 +241,18 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 	}
 
 	// set present params...
-	u32 numModes = 0;
+	uint32_t numModes = 0;
 	hr = DXGIOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_SCALING, &numModes, nullptr);
 	ASSERT(SUCCEEDED(hr));
 
 	DXGI_MODE_DESC* pDesc = new DXGI_MODE_DESC[numModes];
 	hr = DXGIOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_SCALING, &numModes, pDesc);
 	ASSERT(SUCCEEDED(hr));
-	for (u32 i=0; i<numModes; ++i)
+	for (uint32_t i=0; i<numModes; ++i)
 	{
 		SDisplayMode displayMode;
-		displayMode.width = (u16)pDesc[i].Width;
-		displayMode.height = (u16)pDesc[i].Height;
+		displayMode.width = (uint16_t)pDesc[i].Width;
+		displayMode.height = (uint16_t)pDesc[i].Height;
 		displayMode.refreshrate = 60;
 		AdapterInfo.addDisplayMode(displayMode);
 	}
@@ -326,7 +326,7 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 			if(SUCCEEDED(pID3DDevice11->CheckMultisampleQualityLevels(Present.BufferDesc.Format,
 				antialias * 2, &qualityLevels)) && qualityLevels)
 			{
-				u32 quality = min_((u32)(qualityLevels-1), 1u);
+				uint32_t quality = min_((uint32_t)(qualityLevels-1), 1u);
 				Present.SampleDesc.Count	= (UINT)antialias * 2;
 				Present.SampleDesc.Quality = quality;
 				Present.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;		//requies discard
@@ -336,7 +336,7 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 		}
 	}
 	DriverSetting.antialias = antialias;
-	DriverSetting.quality = (u8)Present.SampleDesc.Quality;
+	DriverSetting.quality = (uint8_t)Present.SampleDesc.Quality;
 
 	DXGIFactory->MakeWindowAssociation(HWnd, 0);
 
@@ -402,7 +402,7 @@ bool CD3D11Driver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool ful
 	return true;
 }
 
-void CD3D11Driver::recreateDepthStencilView( dimension2du size, ECOLOR_FORMAT depthFmt, u32 antialias, u32 quality )
+void CD3D11Driver::recreateDepthStencilView( dimension2du size, ECOLOR_FORMAT depthFmt, uint32_t antialias, uint32_t quality )
 {
 	SAFE_RELEASE_STRICT(DefaultDepthBuffer);
 	SAFE_RELEASE_STRICT(DefaultDepthTexture);
@@ -725,7 +725,7 @@ void CD3D11Driver::setTransform( E_TRANSFORMATION_STATE state, const matrix4& ma
 		break;
 	default:		//texture
 		{
-			s32 index = state - ETS_TEXTURE_0;
+			int32_t index = state - ETS_TEXTURE_0;
 			if (index >= 0 && index < MATERIAL_MAX_TEXTURES)
 			{
 				Matrices[index] = mat;
@@ -735,7 +735,7 @@ void CD3D11Driver::setTransform( E_TRANSFORMATION_STATE state, const matrix4& ma
 	}
 }
 
-void CD3D11Driver::setTexture( u32 stage, ITexture* texture )
+void CD3D11Driver::setTexture( uint32_t stage, ITexture* texture )
 {
 	D3D11MaterialRenderServices->setSampler_Texture(stage, texture);
 }
@@ -751,7 +751,7 @@ void CD3D11Driver::setTransform(const matrix4& matView, const matrix4& matProjec
 	CurrentRenderMode = ERM_3D;
 }
 
-void CD3D11Driver::setTransform_Material_Textures( const matrix4& matWorld, const SMaterial& material, ITexture* const textures[], u32 numTextures )
+void CD3D11Driver::setTransform_Material_Textures( const matrix4& matWorld, const SMaterial& material, ITexture* const textures[], uint32_t numTextures )
 {
 	Matrices[ETS_WORLD] = matWorld;
 
@@ -762,14 +762,14 @@ void CD3D11Driver::setTransform_Material_Textures( const matrix4& matWorld, cons
 
 	Material = material;
 
-	u32 n = min_(numTextures, (u32)MATERIAL_MAX_TEXTURES);
-	for (u32 i=0; i<n; ++i)
+	uint32_t n = min_(numTextures, (uint32_t)MATERIAL_MAX_TEXTURES);
+	for (uint32_t i=0; i<n; ++i)
 	{
 		D3D11MaterialRenderServices->setSampler_Texture(i, textures[i]);
 	}
 }
 
-void CD3D11Driver::setTransform_Material_Textures( const matrix4& matWorld, const matrix4& matView, const matrix4& matProjection, const SMaterial& material, ITexture* const textures[], u32 numTextures )
+void CD3D11Driver::setTransform_Material_Textures( const matrix4& matWorld, const matrix4& matView, const matrix4& matProjection, const SMaterial& material, ITexture* const textures[], uint32_t numTextures )
 {
 	Matrices[ETS_WORLD] = matWorld;
 	Matrices[ETS_VIEW] = matView;
@@ -782,14 +782,14 @@ void CD3D11Driver::setTransform_Material_Textures( const matrix4& matWorld, cons
 
 	Material = material;
 
-	u32 n = min_(numTextures, (u32)MATERIAL_MAX_TEXTURES);
-	for (u32 i=0; i<n; ++i)
+	uint32_t n = min_(numTextures, (uint32_t)MATERIAL_MAX_TEXTURES);
+	for (uint32_t i=0; i<n; ++i)
 	{
 		D3D11MaterialRenderServices->setSampler_Texture(i, textures[i]);
 	}
 }
 
-ITexture* CD3D11Driver::getTexture( u32 index ) const
+ITexture* CD3D11Driver::getTexture( uint32_t index ) const
 {
 	return D3D11MaterialRenderServices->getSampler_Texture(index);
 }
@@ -860,7 +860,7 @@ bool CD3D11Driver::setDriverSetting( const SDriverSetting& setting )
 {
 	bool change = false;
 	bool vsync = setting.vsync;
-	u8 antialias = setting.antialias;
+	uint8_t antialias = setting.antialias;
 	bool fullscreen = setting.fullscreen;
 
 	if (vsync != DriverSetting.vsync)
@@ -879,7 +879,7 @@ bool CD3D11Driver::setDriverSetting( const SDriverSetting& setting )
 	{
 		RECT rc;
 		::GetClientRect(HWnd, &rc);
-		dimension2du windowSize((u32)rc.right-rc.left, (u32)rc.bottom-rc.top);
+		dimension2du windowSize((uint32_t)rc.right-rc.left, (uint32_t)rc.bottom-rc.top);
 
 		if (fullscreen)
 		{
@@ -936,7 +936,7 @@ bool CD3D11Driver::setDriverSetting( const SDriverSetting& setting )
 			if(SUCCEEDED(pID3DDevice11->CheckMultisampleQualityLevels(Present.BufferDesc.Format,
 				antialias * 2, &qualityLevels)) && qualityLevels)
 			{
-				u8 quality = min_((u32)(qualityLevels-1), 1u);
+				uint8_t quality = min_((uint32_t)(qualityLevels-1), 1u);
 				Present.SampleDesc.Count	= antialias * 2;
 				Present.SampleDesc.Quality = quality;
 				Present.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;		//requies discard
@@ -965,7 +965,7 @@ bool CD3D11Driver::setDriverSetting( const SDriverSetting& setting )
 		{ 	
 			g_Engine->getFileSystem()->writeLog(ELOG_GX, "Driver Setting Changed. Vsync: %s, Antialias: %d, %s", 
 				Present.BufferDesc.RefreshRate.Numerator == 60 ? "Off" : "On",
-				(s32)DriverSetting.antialias, 
+				(int32_t)DriverSetting.antialias, 
 				Present.Windowed ? "Window" : "FullScreen");
 		}
 	}
@@ -974,7 +974,7 @@ bool CD3D11Driver::setDriverSetting( const SDriverSetting& setting )
 
 void CD3D11Driver::createVertexDecl()
 {
-	for (u32 i=0; i<EVT_COUNT; ++i)
+	for (uint32_t i=0; i<EVT_COUNT; ++i)
 	{
 		VertexDeclarations[i] = new CD3D11VertexDeclaration((E_VERTEX_TYPE)i);
 	}
@@ -982,7 +982,7 @@ void CD3D11Driver::createVertexDecl()
 
 void CD3D11Driver::releaseVertexDecl()
 {
-	for (u32 i=0; i<EVT_COUNT; ++i)
+	for (uint32_t i=0; i<EVT_COUNT; ++i)
 	{
 		delete VertexDeclarations[i];
 	}

@@ -13,7 +13,7 @@ wowFbxExporter::~wowFbxExporter()
 
 }
 
-bool wowFbxExporter::exportM2SceneNode( IM2SceneNode* node, const c8* filename )
+bool wowFbxExporter::exportM2SceneNode( IM2SceneNode* node, const char* filename )
 {
 	FbxManager* lSdkManager = NULL;
 	FbxScene* lScene = NULL;
@@ -46,7 +46,7 @@ bool wowFbxExporter::exportM2SceneNode( IM2SceneNode* node, const c8* filename )
 	return lResult == 0;
 }
 
-bool wowFbxExporter::exportWMOSceneNode( IWMOSceneNode* node, const c8* filename )
+bool wowFbxExporter::exportWMOSceneNode( IWMOSceneNode* node, const char* filename )
 {
 	FbxManager* lSdkManager = NULL;
 	FbxScene* lScene = NULL;
@@ -61,7 +61,7 @@ bool wowFbxExporter::exportWMOSceneNode( IWMOSceneNode* node, const c8* filename
 	return lResult == 0;
 }
 
-bool wowFbxExporter::createM2Scene( FbxManager* pSdkManager, FbxScene* pScene, IM2SceneNode* node, const c8* filename )
+bool wowFbxExporter::createM2Scene( FbxManager* pSdkManager, FbxScene* pScene, IM2SceneNode* node, const char* filename )
 {
 	if (!createM2Materials(pSdkManager, pScene, node))
 	{
@@ -89,11 +89,11 @@ bool wowFbxExporter::createM2Materials( FbxManager* pSdkManager, FbxScene* pScen
 	return true;
 }
 
-bool wowFbxExporter::createM2Mesh( FbxManager* pSdkManager, FbxScene* pScene, IM2SceneNode* m2Node, const c8* filename )
+bool wowFbxExporter::createM2Mesh( FbxManager* pSdkManager, FbxScene* pScene, IM2SceneNode* m2Node, const char* filename )
 {
 	FbxNode* root_node = pScene->GetRootNode();
 
-	c8 outfilename[DEFAULT_SIZE];
+	char outfilename[DEFAULT_SIZE];
 	getFileNameA(filename, outfilename, DEFAULT_SIZE);
 	FbxNode* node = FbxNode::Create(pSdkManager, outfilename);
 

@@ -16,7 +16,7 @@ public:
 	};
 
 public:
-	ICamera( const vector3df& position, const vector3df& lookat, const vector3df& up, f32 nearValue, f32 farValue, f32 fov ) : Dir((lookat - position).normalize()), Up(up), LookAt(lookat)
+	ICamera( const vector3df& position, const vector3df& lookat, const vector3df& up, float nearValue, float farValue, float fov ) : Dir((lookat - position).normalize()), Up(up), LookAt(lookat)
 	{
 		IsOrthogonal = false;
 		AspectRatio = 1.0f;
@@ -48,26 +48,26 @@ public:
 	const vector3df& getUp() const { return Up; }
 	void setLookat(const vector3df& lookat) { LookAt = lookat; }
 	const vector3df& getLookat() const { return LookAt; }
-	f32 getClipDistance() const  { return ClipDistance; }
-	void setClipDistance(f32 distance);
+	float getClipDistance() const  { return ClipDistance; }
+	void setClipDistance(float distance);
 	void makeClipPlane( const plane3df& plane, plane3df& clip );
 
-	virtual void onKeyMove(f32 speed, const SKeyControl& keycontrol) = 0;
+	virtual void onKeyMove(float speed, const SKeyControl& keycontrol) = 0;
 
 	virtual void recalculateAll() = 0;
-	virtual void pitch_yaw_Maya(f32 pitchDegree, f32 yawDegree) = 0;
-	virtual void move_offset_Maya(f32 xOffset, f32 yOffset) = 0;
-	virtual void pitch_yaw_FPS(f32 pitchDegree, f32 yawDegree) = 0;
+	virtual void pitch_yaw_Maya(float pitchDegree, float yawDegree) = 0;
+	virtual void move_offset_Maya(float xOffset, float yOffset) = 0;
+	virtual void pitch_yaw_FPS(float pitchDegree, float yawDegree) = 0;
 
 	virtual vector2di getScreenPositionFrom3DPosition(const vector3df& pos, const recti& screensize) = 0;
 	virtual line3df getRayFromScreenPosition(const vector2di& pos, const recti& screensize) = 0;
-	virtual vector3df get3DPositionFromScreenPosition(const vector2di& pos, const recti& screensize, f32 distance) = 0;
+	virtual vector3df get3DPositionFromScreenPosition(const vector2di& pos, const recti& screensize, float distance) = 0;
 
 public:
-	f32		NearValue;
-	f32		FarValue;
-	f32		AspectRatio;
-	f32		FOV;
+	float		NearValue;
+	float		FarValue;
+	float		AspectRatio;
+	float		FOV;
 
 protected:
 	matrix4		ViewMatrix;
@@ -84,12 +84,12 @@ protected:
 	vector3df		Up;
 	vector3df		Right;
 	vector3df		LookAt;
-	f32		ClipDistance;
+	float		ClipDistance;
 
 	bool		IsOrthogonal;
 };
 
-inline void ICamera::setClipDistance( f32 distance )
+inline void ICamera::setClipDistance( float distance )
 {
 	ClipDistance = min_(FarValue, distance);
 	recalculateAll();

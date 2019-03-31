@@ -22,39 +22,39 @@ public:
 	virtual ~CResourceLoader();
 
 public:
-	virtual IImage* loadJPGAsImage(const c8* filename);
-	virtual IImage* loadPNGAsImage(const c8* filename);
-	virtual IImage* loadBLPAsImage(const c8* filename, bool changeRB = false);
-	virtual IBLPImage* loadBLP(const c8* filename);
-	virtual IImage* loadPVRAsImage(const c8* filename);
-	virtual IPVRImage* loadPVR(const c8* filename);
-	virtual IImage* loadKTXAsImage(const c8* filename);
-	virtual IKTXImage* loadKTX(const c8* filename);
+	virtual IImage* loadJPGAsImage(const char* filename);
+	virtual IImage* loadPNGAsImage(const char* filename);
+	virtual IImage* loadBLPAsImage(const char* filename, bool changeRB = false);
+	virtual IBLPImage* loadBLP(const char* filename);
+	virtual IImage* loadPVRAsImage(const char* filename);
+	virtual IPVRImage* loadPVR(const char* filename);
+	virtual IImage* loadKTXAsImage(const char* filename);
+	virtual IKTXImage* loadKTX(const char* filename);
 
-	virtual IFileM2* loadM2(const c8* filename, bool videobuild = true);
-	virtual IFileWDT* loadWDT(const c8* filename, s32 mapid, bool simple = false);
-	virtual IFileADT* loadADT(const c8* filename, bool simple, bool videobuild = true);
-	virtual IFileADT* loadADTTextures(const c8* filename);
-	virtual IFileWMO* loadWMO(const c8* filename, bool videobuild = true);
+	virtual IFileM2* loadM2(const char* filename, bool videobuild = true);
+	virtual IFileWDT* loadWDT(const char* filename, int32_t mapid, bool simple = false);
+	virtual IFileADT* loadADT(const char* filename, bool simple, bool videobuild = true);
+	virtual IFileADT* loadADTTextures(const char* filename);
+	virtual IFileWMO* loadWMO(const char* filename, bool videobuild = true);
 
 	virtual void registerM2Loaded(IM2LoadCallback* callback);
 	virtual void removeM2Loaded(IM2LoadCallback* callback);
 
 	virtual void clearCurrentTask();
 
-	virtual void setCacheLimit(E_CACHE_TYPE type, u32 limit);
-	virtual u32 getCacheLimit(E_CACHE_TYPE type) const;
+	virtual void setCacheLimit(E_CACHE_TYPE type, uint32_t limit);
+	virtual uint32_t getCacheLimit(E_CACHE_TYPE type) const;
 
 	//m2 async loading
-	virtual void beginLoadM2(const c8* filename, const SParamBlock& param);
+	virtual void beginLoadM2(const char* filename, const SParamBlock& param);
 	virtual bool m2LoadCompleted();
 
 	//wmo async loading
-	virtual void beginLoadWMO(const c8* filename, const SParamBlock& param);
+	virtual void beginLoadWMO(const char* filename, const SParamBlock& param);
 	virtual bool wmoLoadCompleted();
 
 	//adt async loading
-	virtual void beginLoadADT(const c8* filename, const SParamBlock& param);
+	virtual void beginLoadADT(const char* filename, const SParamBlock& param);
 	virtual bool adtLoadCompleted();
 
 	virtual void beginLoading();
@@ -69,7 +69,7 @@ protected:
 		CResourceLoader* loader;
 	} ;
 
-	IResourceCache<IFileM2>* getM2Cache(const c8* filename);
+	IResourceCache<IFileM2>* getM2Cache(const char* filename);
 
 	void clearLoadedFiles();
 

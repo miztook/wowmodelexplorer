@@ -49,7 +49,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-bool CSysUtility::isKeyPressed( u8 vk )
+bool CSysUtility::isKeyPressed( uint8_t vk )
 {
 	return ( GetAsyncKeyState(vk) & 0x8000 ) != 0;
 }
@@ -59,14 +59,14 @@ bool CSysUtility::getCursorPosition( vector2di& pos )
 	POINT pt;
 	if( ::GetCursorPos(&pt) )
 	{
-		pos.X = (s32)pt.x;
-		pos.Y = (s32)pt.y;
+		pos.X = (int32_t)pt.x;
+		pos.Y = (int32_t)pt.y;
 		return true;
 	}
 	return false;
 }
 
-bool CSysUtility::openURLtoJsonFile( const c8* url, const c8* filename )
+bool CSysUtility::openURLtoJsonFile( const char* url, const char* filename )
 {
 	string_path path = g_Engine->getFileSystem()->getBaseDirectory();
 	path.append(filename);
@@ -76,15 +76,15 @@ bool CSysUtility::openURLtoJsonFile( const c8* url, const c8* filename )
 	{
 		string1024 strUrl = url;
 
-		u32 startPos = 0;
-		s32 find = -1;
+		uint32_t startPos = 0;
+		int32_t find = -1;
 		if (!strUrl.beginWith("http://"))
 		{
 			strFinal = "http://";
 		}
 		else
 		{
-			startPos = (u32)strlen("http://");
+			startPos = (uint32_t)strlen("http://");
 		}
 
 		find = strUrl.findNext('/', startPos);
@@ -101,7 +101,7 @@ bool CSysUtility::openURLtoJsonFile( const c8* url, const c8* filename )
 
 		strFinal.append("api/wow/character/");
 
-		for (u32 i=0; i<3; ++i)
+		for (uint32_t i=0; i<3; ++i)
 		{			
 			find = strUrl.findNext('/', startPos);
 			if (find == -1)
@@ -110,7 +110,7 @@ bool CSysUtility::openURLtoJsonFile( const c8* url, const c8* filename )
 			startPos = find + 1;
 		}
 		
-		u32 pos = startPos;
+		uint32_t pos = startPos;
 
 		//realm
 		find = strUrl.findNext('/', startPos);
@@ -140,7 +140,7 @@ bool CSysUtility::openURLtoJsonFile( const c8* url, const c8* filename )
 	bool ret = false;
 
 	//request
-	c8 buffer[1024];
+	char buffer[1024];
 
 	HINTERNET hSession = InternetOpen("mywowUrl", INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
 	if(hSession != nullptr)
@@ -178,14 +178,14 @@ bool CSysUtility::openURLtoJsonFile( const c8* url, const c8* filename )
 	return ret;
 }
 
-void CSysUtility::messageBoxWarning( const c8* msg )
+void CSysUtility::messageBoxWarning( const char* msg )
 {
 	MessageBoxA(nullptr, msg, "warning", MB_ICONEXCLAMATION);
 }
 
-void CSysUtility::outputDebug( const c8* format, ... )
+void CSysUtility::outputDebug( const char* format, ... )
 {
-	c8 str[1024];
+	char str[1024];
 
 	va_list va;
 	va_start( va, format );
@@ -201,7 +201,7 @@ void CSysUtility::exitProcess( int ret )
 	::ExitProcess(ret);
 }
 
-SWindowInfo CSysUtility::createWindow( const char* caption, const dimension2du& windowSize, f32 scale, bool fullscreen, bool hide )
+SWindowInfo CSysUtility::createWindow( const char* caption, const dimension2du& windowSize, float scale, bool fullscreen, bool hide )
 {
 	if (fullscreen)
 		hide = false;
@@ -246,11 +246,11 @@ SWindowInfo CSysUtility::createWindow( const char* caption, const dimension2du& 
 
 	AdjustWindowRect(&clientSize, style, FALSE);
 
-	s32 width = clientSize.right - clientSize.left;
-	s32 height = clientSize.bottom - clientSize.top;
+	int32_t width = clientSize.right - clientSize.left;
+	int32_t height = clientSize.bottom - clientSize.top;
 
-	s32 windowLeft = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
-	s32 windowTop = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
+	int32_t windowLeft = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
+	int32_t windowTop = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
 
 	if ( windowLeft < 0 )
 		windowLeft = 0;
@@ -272,8 +272,8 @@ SWindowInfo CSysUtility::createWindow( const char* caption, const dimension2du& 
 	}
 
 	SWindowInfo windowInfo;
-	windowInfo.width = (u32)width;
-	windowInfo.height = (u32)height;
+	windowInfo.width = (uint32_t)width;
+	windowInfo.height = (uint32_t)height;
 	windowInfo.scale = scale;
 	windowInfo.hwnd = hwnd;
 

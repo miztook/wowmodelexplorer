@@ -6,17 +6,17 @@
 class CMeshDecalServices : public IMeshDecalServices
 {
 public:
-	explicit CMeshDecalServices(u32 bufferQuota);
+	explicit CMeshDecalServices(uint32_t bufferQuota);
 	~CMeshDecalServices();
 
 public:
-	void updateVertices(u32 numVertices);
-	u32 getMaxVertexCount() const { return BufferQuota * 4; }
-	u32 getBufferQuota() const { return BufferQuota; }
+	void updateVertices(uint32_t numVertices);
+	uint32_t getMaxVertexCount() const { return BufferQuota * 4; }
+	uint32_t getBufferQuota() const { return BufferQuota; }
 
 private:
 	void createBuffer();
 
 private:
-	u32		BufferQuota;
+	uint32_t		BufferQuota;
 };

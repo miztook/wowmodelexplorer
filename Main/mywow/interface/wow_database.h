@@ -17,70 +17,70 @@ namespace WowClassic
 		bool init();
 
 		void buildItems();
-		bool buildNpcs(const c8* filename);
+		bool buildNpcs(const char* filename);
 		void buildStartOutfitClass();
 		void buildMaps();
 		void buildWmos();
 		void buildWorldModels();
 		void buildTextures();
-		bool buildRidables(const c8* filename);
+		bool buildRidables(const char* filename);
 
 	public:			//Êý¾Ý²éÑ¯
-		bool getRaceGender(const c8* filename, u32& race, u32& gender, bool& isHD);
-		bool getRaceId(const c8* raceName, u32& race);
-		const c8* getRaceName(u32 race);
-		bool getCharacterPath(const c8* name, bool female, bool isHD, c8* path, u32 size);
-		bool getNpcPath(s32 npcid, bool isHD, c8* path, u32 size);
-		s32 getNpcModelId(s32 npcid);
-		const c8* getAnimationName(u32 id);
-		void getSubClassName(s32 id, s32 subid, c16* outname, u32 size);
-		void getNpcTypeName(s32 id, c16* outname, u32 size);
-		const c8* getClassShortName(u32 classId);
-		bool getClassInfo(const c8* shortname, c16* classname, u32 size, u32* id);
+		bool getRaceGender(const char* filename, uint32_t& race, uint32_t& gender, bool& isHD);
+		bool getRaceId(const char* raceName, uint32_t& race);
+		const char* getRaceName(uint32_t race);
+		bool getCharacterPath(const char* name, bool female, bool isHD, char* path, uint32_t size);
+		bool getNpcPath(int32_t npcid, bool isHD, char* path, uint32_t size);
+		int32_t getNpcModelId(int32_t npcid);
+		const char* getAnimationName(uint32_t id);
+		void getSubClassName(int32_t id, int32_t subid, char16_t* outname, uint32_t size);
+		void getNpcTypeName(int32_t id, char16_t* outname, uint32_t size);
+		const char* getClassShortName(uint32_t classId);
+		bool getClassInfo(const char* shortname, char16_t* classname, uint32_t size, uint32_t* id);
 
-		u32 getMaxSkinColor(u32 race, bool female, bool isHD);
-		u32 getMaxFaceType(u32 race, bool female, bool isHD);
-		u32 getMaxHairColor(u32 race, bool female, bool isHD);
-		u32 getMaxHairStyle(u32 race, bool female, bool isHD);
-		u32 getMaxFacialHairStyle(u32 race, bool female);
+		uint32_t getMaxSkinColor(uint32_t race, bool female, bool isHD);
+		uint32_t getMaxFaceType(uint32_t race, bool female, bool isHD);
+		uint32_t getMaxHairColor(uint32_t race, bool female, bool isHD);
+		uint32_t getMaxHairStyle(uint32_t race, bool female, bool isHD);
+		uint32_t getMaxFacialHairStyle(uint32_t race, bool female);
 
-		bool getSet(u32 index, s32& setid, c16* outname, u32 size);
+		bool getSet(uint32_t index, int32_t& setid, char16_t* outname, uint32_t size);
 
-		u32 getNumMaps() const { return (u32)mapCollections.maps.size(); }
-		const SMapRecord* getMap(u32 idx) const;
-		const SMapRecord* getMapById(s32 id) const { return mapCollections.getMapById(id); }
-		s32 getItemDisplayId(s32 itemid) const;
-		void getFilePath(s32 fileId, string256& path) const;
-		void getFilePath(s32 fileId, c8* path, u32 size) const;
-		void getTextureFilePath(s32 texId, string256& path) const;
-		void getTextureFilePath(s32 texId, c8* path, u32 size) const;
-		void getModelFilePath(s32 modelId, string256& path) const;
-		void getModelFilePath(s32 modelId, c8* path, u32 size) const;
+		uint32_t getNumMaps() const { return (uint32_t)mapCollections.maps.size(); }
+		const SMapRecord* getMap(uint32_t idx) const;
+		const SMapRecord* getMapById(int32_t id) const { return mapCollections.getMapById(id); }
+		int32_t getItemDisplayId(int32_t itemid) const;
+		void getFilePath(int32_t fileId, string256& path) const;
+		void getFilePath(int32_t fileId, char* path, uint32_t size) const;
+		void getTextureFilePath(int32_t texId, string256& path) const;
+		void getTextureFilePath(int32_t texId, char* path, uint32_t size) const;
+		void getModelFilePath(int32_t modelId, string256& path) const;
+		void getModelFilePath(int32_t modelId, char* path, uint32_t size) const;
 
-		bool isRaceHasHD(u32 race);
+		bool isRaceHasHD(uint32_t race);
 
 #ifdef MW_EDITOR
-		u32 getItemCount() const { return (u32)itemCollections.items.size(); }
-		u32 getNpcCount() const { return (u32)npcCollections.npcs.size(); }
-		const SItemRecord* getItemById(s32 id) const { return itemCollections.getById(id); }
-		const SNPCRecord* getNPCById(s32 id) const { return npcCollections.getById(id); }
-		const SItemRecord* getItem(u32 idx) const;
-		const SNPCRecord* getNPC(u32 idx) const;
+		uint32_t getItemCount() const { return (uint32_t)itemCollections.items.size(); }
+		uint32_t getNpcCount() const { return (uint32_t)npcCollections.npcs.size(); }
+		const SItemRecord* getItemById(int32_t id) const { return itemCollections.getById(id); }
+		const SNPCRecord* getNPCById(int32_t id) const { return npcCollections.getById(id); }
+		const SItemRecord* getItem(uint32_t idx) const;
+		const SNPCRecord* getNPC(uint32_t idx) const;
 
-		u32 getNumStartOutfits(u32 race, bool female);
-		const SStartOutfitEntry* getStartOutfit(u32 race, bool female, u32 idx);
+		uint32_t getNumStartOutfits(uint32_t race, bool female);
+		const SStartOutfitEntry* getStartOutfit(uint32_t race, bool female, uint32_t idx);
 
-		u32 getNumWmos() const { return (u32)wmoCollections.wmos.size(); }
-		const c8* getWmoFileName(u32 index) const;
-		u32 getNumWorldModels() const { return (u32)worldModelCollections.models.size(); }
-		const c8* getWorldModelFileName(u32 index) const;
-		u32 getNumTextures() const { return (u32)textureCollections.textures.size(); }
-		const c8* getTextureFileName(u32 index) const;
+		uint32_t getNumWmos() const { return (uint32_t)wmoCollections.wmos.size(); }
+		const char* getWmoFileName(uint32_t index) const;
+		uint32_t getNumWorldModels() const { return (uint32_t)worldModelCollections.models.size(); }
+		const char* getWorldModelFileName(uint32_t index) const;
+		uint32_t getNumTextures() const { return (uint32_t)textureCollections.textures.size(); }
+		const char* getTextureFileName(uint32_t index) const;
 
-		u32 getNumRidables() const { return (u32)ridableCollections.ridables.size(); }
-		const SRidable* getRidable(u32 idx) const;
+		uint32_t getNumRidables() const { return (uint32_t)ridableCollections.ridables.size(); }
+		const SRidable* getRidable(uint32_t idx) const;
 
-		bool getItemPath(s32 itemid, c8* modelpath, u32 modelSize, c8* texturepath, u32 texSize);
+		bool getItemPath(int32_t itemid, char* modelpath, uint32_t modelSize, char* texturepath, uint32_t texSize);
 
 #endif
 

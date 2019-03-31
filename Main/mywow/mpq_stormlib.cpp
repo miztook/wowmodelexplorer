@@ -5,7 +5,7 @@
 
 #include "StormLib.h"
 
-MPQArchive::MPQArchive( const c8* filename )
+MPQArchive::MPQArchive( const char* filename )
 	: archivename(filename)
 {
 	bool result = SFileOpenArchive(filename, 0, MPQ_OPEN_FORCE_MPQ_V1|MPQ_OPEN_READ_ONLY, &mpq_a );
@@ -20,9 +20,9 @@ MPQArchive::~MPQArchive()
 	
 }
 
-bool MPQArchive::openPatch( const c8* patchname )
+bool MPQArchive::openPatch( const char* patchname )
 {
-	c8 dir[QMAX_PATH];
+	char dir[QMAX_PATH];
 	getFileDirA(archivename.c_str(), dir, QMAX_PATH);
 
 	string256 path = dir;

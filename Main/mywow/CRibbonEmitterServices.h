@@ -7,16 +7,16 @@
 class CRibbonEmitterServices : public IRibbonEmitterServices
 {
 public:
-	CRibbonEmitterServices(u32 poolQuota, u32 bufferQuota);
+	CRibbonEmitterServices(uint32_t poolQuota, uint32_t bufferQuota);
 	~CRibbonEmitterServices();
 
 public:
-	virtual u32 getActiveSegmentsCount() const { return SegmentPool.getUsedSize(); }
+	virtual uint32_t getActiveSegmentsCount() const { return SegmentPool.getUsedSize(); }
 	
-	void updateVertices(u32 numVertices);
+	void updateVertices(uint32_t numVertices);
 	RibbonSegment* getSegment();
 	void putSegment(RibbonSegment* s);
-	u32 getMaxVertexCount() const  { return BufferQuota * 2; }
+	uint32_t getMaxVertexCount() const  { return BufferQuota * 2; }
 
 private:
 	void createBuffer();
@@ -24,6 +24,6 @@ private:
 private:
 	IResourcePool<RibbonSegment>			SegmentPool;
 
-	u32		PoolQuota;
-	u32		BufferQuota;
+	uint32_t		PoolQuota;
+	uint32_t		BufferQuota;
 };

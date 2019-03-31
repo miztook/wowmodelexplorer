@@ -30,17 +30,17 @@ public:
 
 	static D3DFORMAT	getD3DFormatFromColorFormat( ECOLOR_FORMAT format );
 
-	static const c8* getD3DFormatString(D3DFORMAT format);
+	static const char* getD3DFormatString(D3DFORMAT format);
 
-	static u32 getD3DBlend( E_BLEND_FACTOR factor );
+	static uint32_t getD3DBlend( E_BLEND_FACTOR factor );
 
-	static u32 getD3DBlendOp( E_BLEND_OP op );
+	static uint32_t getD3DBlendOp( E_BLEND_OP op );
 
-	static u32 getD3DTextureOp( E_TEXTURE_OP op );
+	static uint32_t getD3DTextureOp( E_TEXTURE_OP op );
 
-	static u32 getD3DTextureArg( E_TEXTURE_ARG arg );
+	static uint32_t getD3DTextureArg( E_TEXTURE_ARG arg );
 
-	static u32 getD3DCompare( E_COMPARISON_FUNC comp );
+	static uint32_t getD3DCompare( E_COMPARISON_FUNC comp );
 
 	static D3DFORMAT getD3DIndexType(E_INDEX_TYPE type);
 
@@ -49,7 +49,7 @@ public:
 
 inline D3DCOLORVALUE CD3D9Helper::colorToD3D( const SColor& col )
 {
-	const f32 f = 1.0f / 255.0f;
+	const float f = 1.0f / 255.0f;
 	D3DCOLORVALUE v;
 	v.r = col.getRed() * f;
 	v.g = col.getGreen() * f;
@@ -182,9 +182,9 @@ inline D3DFORMAT CD3D9Helper::getD3DFormatFromColorFormat( ECOLOR_FORMAT format 
 	return D3DFMT_UNKNOWN;
 }
 
-inline u32 CD3D9Helper::getD3DBlend(E_BLEND_FACTOR factor)
+inline uint32_t CD3D9Helper::getD3DBlend(E_BLEND_FACTOR factor)
 {
-	u32 r = 0;
+	uint32_t r = 0;
 	switch ( factor )
 	{
 	case EBF_ZERO:	
@@ -215,9 +215,9 @@ inline u32 CD3D9Helper::getD3DBlend(E_BLEND_FACTOR factor)
 	return r;
 }
 
-inline u32 CD3D9Helper::getD3DBlendOp(E_BLEND_OP op)
+inline uint32_t CD3D9Helper::getD3DBlendOp(E_BLEND_OP op)
 {
-	u32 r = D3DBLENDOP_ADD;
+	uint32_t r = D3DBLENDOP_ADD;
 	switch(op)
 	{
 	case EBO_ADD:
@@ -232,9 +232,9 @@ inline u32 CD3D9Helper::getD3DBlendOp(E_BLEND_OP op)
 	return r;
 }
 
-inline u32 CD3D9Helper::getD3DTextureOp( E_TEXTURE_OP op )
+inline uint32_t CD3D9Helper::getD3DTextureOp( E_TEXTURE_OP op )
 {
-	u32 r = D3DTOP_DISABLE;
+	uint32_t r = D3DTOP_DISABLE;
 	switch(op)
 	{
 	case ETO_DISABLE:
@@ -253,9 +253,9 @@ inline u32 CD3D9Helper::getD3DTextureOp( E_TEXTURE_OP op )
 	return r;
 }
 
-inline u32 CD3D9Helper::getD3DTextureArg( E_TEXTURE_ARG arg )
+inline uint32_t CD3D9Helper::getD3DTextureArg( E_TEXTURE_ARG arg )
 {
-	u32 r = D3DTA_CURRENT;
+	uint32_t r = D3DTA_CURRENT;
 	switch(arg)
 	{
 	case ETA_CURRENT:
@@ -270,9 +270,9 @@ inline u32 CD3D9Helper::getD3DTextureArg( E_TEXTURE_ARG arg )
 	return r;
 }
 
-inline u32 CD3D9Helper::getD3DCompare( E_COMPARISON_FUNC comp )
+inline uint32_t CD3D9Helper::getD3DCompare( E_COMPARISON_FUNC comp )
 {
-	u32 r = D3DCMP_NEVER;
+	uint32_t r = D3DCMP_NEVER;
 	switch(comp)
 	{
 	case ECFN_NEVER:

@@ -262,7 +262,7 @@ void COpenGLTexture::copyTexture( ITextureWriter* writer, IBLPImage* blpimage )
 {
 	ASSERT(blpimage);
 
-	u32 pitch;
+	uint32_t pitch;
 	void* destData = writer->lock(0, pitch);
 
 	bool result = blpimage->copyMipmapData(0, destData, pitch, TextureSize.Width, TextureSize.Height);
@@ -275,7 +275,7 @@ void COpenGLTexture::copyTexture( ITextureWriter* writer, IImage* image )
 {
 	ASSERT(image);
 
-	u32 pitch;
+	uint32_t pitch;
 	void* destData = writer->lock(0, pitch);
 
 	image->copyToScaling(destData, TextureSize.Width, TextureSize.Height, ColorFormat, pitch);
@@ -283,7 +283,7 @@ void COpenGLTexture::copyTexture( ITextureWriter* writer, IImage* image )
 	writer->unlock(0);
 }
 
-bool COpenGLTexture::copyBlpMipMaps( ITextureWriter* writer, IBLPImage* blpimage, u32 level /*= 1*/ )
+bool COpenGLTexture::copyBlpMipMaps( ITextureWriter* writer, IBLPImage* blpimage, uint32_t level /*= 1*/ )
 {
 	if (!HasMipMaps || !blpimage)
 		return false;
@@ -294,7 +294,7 @@ bool COpenGLTexture::copyBlpMipMaps( ITextureWriter* writer, IBLPImage* blpimage
 	dimension2du size = TextureSize.getMipLevelSize(level);
 
 	//lock
-	u32 pitch;
+	uint32_t pitch;
 	void* destData = writer->lock(level, pitch);
 
 	bool result = blpimage->copyMipmapData(level, destData, pitch, size.Width, size.Height);
@@ -309,7 +309,7 @@ bool COpenGLTexture::copyBlpMipMaps( ITextureWriter* writer, IBLPImage* blpimage
 	return copyBlpMipMaps(writer, blpimage, level+1);
 }
 
-bool COpenGLTexture::createMipMaps( ITextureWriter* writer, u32 level /*= 1 */ )
+bool COpenGLTexture::createMipMaps( ITextureWriter* writer, uint32_t level /*= 1 */ )
 {
 	ASSERT(HasMipMaps);
 
@@ -320,9 +320,9 @@ bool COpenGLTexture::createMipMaps( ITextureWriter* writer, u32 level /*= 1 */ )
 	dimension2du lowerSize = TextureSize.getMipLevelSize(level);
 
 	// lock upper surface
-	u32 upperPitch, lowerPitch;
-	const u8* upperDest = (const u8*)writer->lock(level - 1, upperPitch);
-	u8*	lowerDest = (u8*)writer->lock(level, lowerPitch);
+	uint32_t upperPitch, lowerPitch;
+	const uint8_t* upperDest = (const uint8_t*)writer->lock(level - 1, upperPitch);
+	uint8_t*	lowerDest = (uint8_t*)writer->lock(level, lowerPitch);
 
 if (ColorFormat == ECF_R5G6B5 || ColorFormat == ECF_A1R5G5B5)
 		CBlit::copy16BitMipMap(upperDest, lowerDest,

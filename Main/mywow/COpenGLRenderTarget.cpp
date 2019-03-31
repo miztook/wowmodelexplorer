@@ -62,7 +62,7 @@ bool COpenGLRenderTarget::writeToRTTexture()
 	return true;
 }
 
-bool COpenGLRenderTarget::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, u8 antialias )
+bool COpenGLRenderTarget::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, uint8_t antialias )
 {
 	if (VideoBuilt)
 		return false;

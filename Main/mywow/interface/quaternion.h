@@ -5,10 +5,10 @@ class quaternion
 public:
 	//
 	 quaternion() : X(0), Y(0), Z(0), W(0) {}
-	 quaternion(f32 x, f32 y, f32 z, f32 w) : X(x), Y(y), Z(z), W(w) { }
-	 quaternion(f32 pitch, f32 yaw, f32 roll) { fromEuler( pitch, yaw, roll ); }
+	 quaternion(float x, float y, float z, float w) : X(x), Y(y), Z(z), W(w) { }
+	 quaternion(float pitch, float yaw, float roll) { fromEuler( pitch, yaw, roll ); }
 	 explicit quaternion(const vector3df& vec) { fromEuler( vec ); }
-	 quaternion(f32 angle, const vector3df& axis) { fromAngleAxis( angle, axis ); }
+	 quaternion(float angle, const vector3df& axis) { fromAngleAxis( angle, axis ); }
 	 quaternion(const quaternion& other) { *this = other; }
 	//
 	quaternion& operator=(const quaternion& other)
@@ -21,7 +21,7 @@ public:
 		return *this;
 	}
 
-	bool equals(const quaternion& other, const f32 tolerance=(f32)ROUNDING_ERROR_f32) const { return equals_(X, other.X, tolerance) && equals_(Y, other.Y, tolerance) && equals_(Z, other.Z, tolerance) && equals_(W, other.W, tolerance);}
+	bool equals(const quaternion& other, const float tolerance=(float)ROUNDING_ERROR_f32) const { return equals_(X, other.X, tolerance) && equals_(Y, other.Y, tolerance) && equals_(Z, other.Z, tolerance) && equals_(W, other.W, tolerance);}
 	bool operator==(const quaternion& other) const 
 	{
 		if ( this == &other ) return true;
@@ -30,33 +30,33 @@ public:
 	 bool operator!=(const quaternion& other) const { return !(*this == other ); }
 	 quaternion operator+(const quaternion& other) const { return quaternion(X+other.X, Y+other.Y, Z+other.Z, W+other.W); }
 	 quaternion operator*(const quaternion& other) const;
-	 quaternion operator*(f32 s) const { return quaternion(s*X, s*Y, s*Z, s*W); }
-	 quaternion& operator*=(f32 s) { X*=s; Y*=s; Z*=s; W*=s; return *this; }
+	 quaternion operator*(float s) const { return quaternion(s*X, s*Y, s*Z, s*W); }
+	 quaternion& operator*=(float s) { X*=s; Y*=s; Z*=s; W*=s; return *this; }
 	 vector3df operator*(const vector3df& v) const;
 	 matrix4 operator*(const matrix4& v) const;
 	 quaternion& operator*=(const quaternion& other) { return (*this = other * (*this)); }
 
 	//
-	 quaternion& set(f32 x, f32 y, f32 z, f32 w) { X = x; Y = y; Z = z; W = w; return *this; }
-	 f32 dotProduct(const quaternion& other) const { return (X * other.X) + (Y * other.Y) + (Z * other.Z) + (W * other.W); }
-	quaternion& fromAngleAxis (f32 angle, const vector3df& axis);
-	void toAngleAxis (f32 &angle, vector3df& axis) const;
-	quaternion& fromEuler( f32 pitch, f32 yaw, f32 roll );
+	 quaternion& set(float x, float y, float z, float w) { X = x; Y = y; Z = z; W = w; return *this; }
+	 float dotProduct(const quaternion& other) const { return (X * other.X) + (Y * other.Y) + (Z * other.Z) + (W * other.W); }
+	quaternion& fromAngleAxis (float angle, const vector3df& axis);
+	void toAngleAxis (float &angle, vector3df& axis) const;
+	quaternion& fromEuler( float pitch, float yaw, float roll );
 	 quaternion& fromEuler( const vector3df& vec ) { return fromEuler(vec.X, vec.Y, vec.Z); }
 	void toEuler(vector3df& euler) const;
 	 quaternion& makeIdentity()	{ W = 1.f; X = 0.f; Y = 0.f; Z = 0.f; return *this; }
 	quaternion& normalize();
 	quaternion& fromMatrix(const matrix4& m);
 	void getMatrix( matrix4& dest ) const;				//
-	static quaternion slerp( quaternion q1, quaternion q2, f32 interpolate );
+	static quaternion slerp( quaternion q1, quaternion q2, float interpolate );
 	quaternion& rotationFromTo(const vector3df& from, const vector3df& to, const vector3df& axisOpposite);
 	void transformVect( vector3df& vect) const;
 
 public:
-	f32 X;		//imaginary
-	f32 Y;
-	f32 Z;
-	f32 W;		//real
+	float X;		//imaginary
+	float Y;
+	float Z;
+	float W;		//real
 };
 
 inline quaternion quaternion::operator*(const quaternion& other) const
@@ -90,10 +90,10 @@ inline matrix4 quaternion::operator*( const matrix4& v ) const
 	return m * v;
 }
 
-inline quaternion& quaternion::fromAngleAxis (f32 angle, const vector3df& axis)
+inline quaternion& quaternion::fromAngleAxis (float angle, const vector3df& axis)
 {
-	const f32 fHalfAngle = 0.5f*angle;
-	const f32 fSin = sinf(fHalfAngle);
+	const float fHalfAngle = 0.5f*angle;
+	const float fSin = sinf(fHalfAngle);
 	W = cosf(fHalfAngle);
 	X = fSin*axis.X;
 	Y = fSin*axis.Y;
@@ -101,9 +101,9 @@ inline quaternion& quaternion::fromAngleAxis (f32 angle, const vector3df& axis)
 	return *this;
 }
 
-inline void quaternion::toAngleAxis (f32 &angle, vector3df& axis) const
+inline void quaternion::toAngleAxis (float &angle, vector3df& axis) const
 {
-	const f32 scale = sqrtf(X*X + Y*Y + Z*Z);
+	const float scale = sqrtf(X*X + Y*Y + Z*Z);
 
 	if (iszero_(scale) || W > 1.0f || W < -1.0f)
 	{
@@ -114,7 +114,7 @@ inline void quaternion::toAngleAxis (f32 &angle, vector3df& axis) const
 	}
 	else
 	{
-		const f32 invscale = reciprocal_(scale);
+		const float invscale = reciprocal_(scale);
 		angle = 2.0f * acosf(W);
 		axis.X = X * invscale;
 		axis.Y = Y * invscale;
@@ -122,31 +122,31 @@ inline void quaternion::toAngleAxis (f32 &angle, vector3df& axis) const
 	}
 }
 
-inline quaternion& quaternion::fromEuler( f32 pitch, f32 yaw, f32 roll )
+inline quaternion& quaternion::fromEuler( float pitch, float yaw, float roll )
 {
-	f32 angle;
+	float angle;
 
 	angle = pitch * 0.5f;
-	const f32 sr = sin(angle);
-	const f32 cr = cos(angle);
+	const float sr = sin(angle);
+	const float cr = cos(angle);
 
 	angle = yaw * 0.5f;
-	const f32 sp = sin(angle);
-	const f32 cp = cos(angle);
+	const float sp = sin(angle);
+	const float cp = cos(angle);
 
 	angle = roll * 0.5f;
-	const f32 sy = sin(angle);
-	const f32 cy = cos(angle);
+	const float sy = sin(angle);
+	const float cy = cos(angle);
 
-	const f32 cpcy = cp * cy;
-	const f32 spcy = sp * cy;
-	const f32 cpsy = cp * sy;
-	const f32 spsy = sp * sy;
+	const float cpcy = cp * cy;
+	const float spcy = sp * cy;
+	const float cpsy = cp * sy;
+	const float spsy = sp * sy;
 
-	X = (f32)(sr * cpcy - cr * spsy);
-	Y = (f32)(cr * spcy + sr * cpsy);
-	Z = (f32)(cr * cpsy - sr * spcy);
-	W = (f32)(cr * cpcy + sr * spsy);
+	X = (float)(sr * cpcy - cr * spsy);
+	Y = (float)(cr * spcy + sr * cpsy);
+	Z = (float)(cr * cpsy - sr * spcy);
+	W = (float)(cr * cpcy + sr * spsy);
 
 	return normalize();
 }
@@ -154,16 +154,16 @@ inline quaternion& quaternion::fromEuler( f32 pitch, f32 yaw, f32 roll )
 
 inline void quaternion::toEuler( vector3df& euler ) const
 {
-	const f32 sqw = W*W;
-	const f32 sqx = X*X;
-	const f32 sqy = Y*Y;
-	const f32 sqz = Z*Z;
+	const float sqw = W*W;
+	const float sqx = X*X;
+	const float sqy = Y*Y;
+	const float sqz = Z*Z;
 
 	// heading = rotation about z-axis
-	euler.Z = (f32) (atan2(2.0f * (X*Y +Z*W),(sqx - sqy - sqz + sqw)));
+	euler.Z = (float) (atan2(2.0f * (X*Y +Z*W),(sqx - sqy - sqz + sqw)));
 
 	// bank = rotation about x-axis
-	euler.X = (f32) (atan2(2.0f * (Y*Z +X*W),(-sqx - sqy + sqz + sqw)));
+	euler.X = (float) (atan2(2.0f * (Y*Z +X*W),(-sqx - sqy + sqz + sqw)));
 
 	// attitude = rotation about y-axis
 	euler.Y = asinf( clamp_(-2.0f * (X*Z - Y*W), -1.0f, 1.0f) );
@@ -172,7 +172,7 @@ inline void quaternion::toEuler( vector3df& euler ) const
 
 inline quaternion& quaternion::normalize()
 {
-	const f32 n = reciprocal_squareroot_( X*X + Y*Y + Z*Z + W*W );
+	const float n = reciprocal_squareroot_( X*X + Y*Y + Z*Z + W*W );
 
 	if (n == 1)
 		return *this;
@@ -187,7 +187,7 @@ inline quaternion& quaternion::normalize()
 
 inline void quaternion::getMatrix( matrix4& dest ) const
 {
-	f32 * m = dest.pointer();
+	float * m = dest.pointer();
 
 	m[0] = 1.0f - 2.0f*Y*Y - 2.0f*Z*Z;
 	m[1] = 2.0f*X*Y + 2.0f*Z*W;
@@ -210,9 +210,9 @@ inline void quaternion::getMatrix( matrix4& dest ) const
 	m[15] = 1.f;
 }
 
-inline quaternion quaternion::slerp(quaternion q1, quaternion q2, f32 time)
+inline quaternion quaternion::slerp(quaternion q1, quaternion q2, float time)
 {
-	f32 angle = q1.dotProduct(q2);
+	float angle = q1.dotProduct(q2);
 
 	if (angle < 0.0f)
 	{
@@ -220,15 +220,15 @@ inline quaternion quaternion::slerp(quaternion q1, quaternion q2, f32 time)
 		angle *= -1.0f;
 	}
 
-	f32 scale;
-	f32 invscale;
+	float scale;
+	float invscale;
 
 	if ((angle + 1.0f) > 0.05f)
 	{
 		if ((1.0f - angle) >= 0.05f) // spherical interpolation
 		{
-			const f32 theta = acosf(angle);
-			const f32 invsintheta = reciprocal_(sinf(theta));
+			const float theta = acosf(angle);
+			const float invsintheta = reciprocal_(sinf(theta));
 			scale = sinf(theta * (1.0f-time)) * invsintheta;
 			invscale = sinf(theta * time) * invsintheta;
 		}
@@ -250,11 +250,11 @@ inline quaternion quaternion::slerp(quaternion q1, quaternion q2, f32 time)
 
 inline quaternion& quaternion::fromMatrix( const matrix4& m )
 {
-	const f32 diag = m(0,0) + m(1,1) + m(2,2) + 1;
+	const float diag = m(0,0) + m(1,1) + m(2,2) + 1;
 
 	if( diag > 0.0f )
 	{
-		const f32 scale = sqrtf(diag) * 2.0f; // get scale from diagonal
+		const float scale = sqrtf(diag) * 2.0f; // get scale from diagonal
 
 		X = ( m(2,1) - m(1,2)) / scale;
 		Y = ( m(0,2) - m(2,0)) / scale;
@@ -267,7 +267,7 @@ inline quaternion& quaternion::fromMatrix( const matrix4& m )
 		{
 			// 1st element of diag is greatest value
 			// find scale according to 1st element, and double it
-			const f32 scale = sqrtf( 1.0f + m(0,0) - m(1,1) - m(2,2)) * 2.0f;
+			const float scale = sqrtf( 1.0f + m(0,0) - m(1,1) - m(2,2)) * 2.0f;
 
 			X = 0.25f * scale;
 			Y = (m(0,1) + m(1,0)) / scale;
@@ -278,7 +278,7 @@ inline quaternion& quaternion::fromMatrix( const matrix4& m )
 		{
 			// 2nd element of diag is greatest value
 			// find scale according to 2nd element, and double it
-			const f32 scale = sqrtf( 1.0f + m(1,1) - m(0,0) - m(2,2)) * 2.0f;
+			const float scale = sqrtf( 1.0f + m(1,1) - m(0,0) - m(2,2)) * 2.0f;
 
 			X = (m(0,1) + m(1,0) ) / scale;
 			Y = 0.25f * scale;
@@ -289,7 +289,7 @@ inline quaternion& quaternion::fromMatrix( const matrix4& m )
 		{
 			// 3rd element of diag is greatest value
 			// find scale according to 3rd element, and double it
-			const f32 scale = sqrtf( 1.0f + m(2,2) - m(0,0) - m(1,1)) * 2.0f;
+			const float scale = sqrtf( 1.0f + m(2,2) - m(0,0) - m(1,1)) * 2.0f;
 
 			X = (m(0,2) + m(2,0)) / scale;
 			Y = (m(1,2) + m(2,1)) / scale;
@@ -310,7 +310,7 @@ inline quaternion& quaternion::rotationFromTo( const vector3df& from, const vect
 	v0.normalize();
 	v1.normalize();
 
-	const f32 d = v0.dotProduct(v1);
+	const float d = v0.dotProduct(v1);
 	if (d >= 1.0f) // If dot == 1, vectors are the same
 	{
 		return makeIdentity();
@@ -321,8 +321,8 @@ inline quaternion& quaternion::rotationFromTo( const vector3df& from, const vect
 		return fromAngleAxis(PI, axis);
 	}
 
-	const f32 s = squareroot_( (1+d)*2 ); // optimize inv_sqrt
-	const f32 invs = 1.f / s;
+	const float s = squareroot_( (1+d)*2 ); // optimize inv_sqrt
+	const float invs = 1.f / s;
 	const vector3df c = v0.crossProduct(v1)*invs;
 	X = c.X;
 	Y = c.Y;
@@ -334,7 +334,7 @@ inline quaternion& quaternion::rotationFromTo( const vector3df& from, const vect
 
 inline void quaternion::transformVect( vector3df& vect ) const
 {
-	f32 m[16];
+	float m[16];
 	m[0] = 1.0f - 2.0f*Y*Y - 2.0f*Z*Z;
 	m[1] = 2.0f*X*Y + 2.0f*Z*W;
 	m[2] = 2.0f*X*Z - 2.0f*Y*W;
@@ -355,7 +355,7 @@ inline void quaternion::transformVect( vector3df& vect ) const
 	m[14] = 0;
 	m[15] = 1.f;
 
-	f32 vector[3];
+	float vector[3];
 
 	vector[0] = vect.X*m[0] + vect.Y*m[4] + vect.Z*m[8] + m[12];
 	vector[1] = vect.X*m[1] + vect.Y*m[5] + vect.Z*m[9] + m[13];

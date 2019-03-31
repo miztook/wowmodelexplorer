@@ -2,7 +2,7 @@
 
 #include "base.h"
 
-static const u16 g_aabboxLineIndex[] = { 5,1, 1,3, 3,7, 7,5, 
+static const uint16_t g_aabboxLineIndex[] = { 5,1, 1,3, 3,7, 7,5, 
 		0,2, 2,6, 6,4, 4,0, 
 		1,0, 3,2, 7,6, 5,4 };
 
@@ -44,7 +44,7 @@ public:
 	 vector3d<T> getCenter() const { return (MinEdge + MaxEdge)*0.5f; }
 	 vector3d<T> getExtent() const { return MaxEdge - MinEdge; }
 	 T getVolume() const { const vector3d<T> e = getExtent(); return e.X * e.Y * e.Z; }
-	 aabbox3d<T>	getInterpolated( const aabbox3d<T>& other, f32 d ) const;
+	 aabbox3d<T>	getInterpolated( const aabbox3d<T>& other, float d ) const;
 
 	bool isPointInside(const vector3d<T>& p) const
 	{
@@ -71,7 +71,7 @@ public:
 	static const aabbox3d<T>& Zero() { static aabbox3d<T> m; return m; }
 
 	void makePoints(vector3d<T>* points) const;
-	void getVertices(vector3d<T>* points, u16* aIndices, bool bWire) const;
+	void getVertices(vector3d<T>* points, uint16_t* aIndices, bool bWire) const;
 
 public:
 	vector3d<T>	MinEdge;			//a
@@ -79,7 +79,7 @@ public:
 };
 
 template <class T>
-void aabbox3d<T>::getVertices(vector3d<T>* points, u16* aIndices, bool bWire) const
+void aabbox3d<T>::getVertices(vector3d<T>* points, uint16_t* aIndices, bool bWire) const
 {
 	obbox3d<T> obb;
 
@@ -172,9 +172,9 @@ inline EIntersectionRelation3D aabbox3d<T>::classifyPlaneRelation( const plane3d
 }
 
 template <class T>
-inline aabbox3d<T> aabbox3d<T>::getInterpolated( const aabbox3d<T>& other, f32 d ) const
+inline aabbox3d<T> aabbox3d<T>::getInterpolated( const aabbox3d<T>& other, float d ) const
 {
-	f32 inv = 1.0f - d;
+	float inv = 1.0f - d;
 	return aabbox3d<T>((other.MinEdge*inv) + (MinEdge*d),
 		(other.MaxEdge*inv) + (MaxEdge*d));
 }
@@ -205,7 +205,7 @@ inline bool aabbox3d<T>::intersectsWithLine( const vector3d<T>& linemiddle, cons
 	return true;
 }
 
-typedef aabbox3d<f32> aabbox3df;
-typedef aabbox3d<s32> aabbox3di;
+typedef aabbox3d<float> aabbox3df;
+typedef aabbox3d<int32_t> aabbox3di;
 
 	

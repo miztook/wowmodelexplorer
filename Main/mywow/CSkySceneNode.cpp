@@ -36,7 +36,7 @@ void CSkySceneNode::registerSceneNode( bool frustumcheck, int sequence )
 	g_Engine->getSceneManager()->registerNodeForRendering(this, true, sequence);
 }
 
-void CSkySceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame, bool visible )
+void CSkySceneNode::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible )
 {
 	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 	WorldMatrix.setTranslation(cam->getPosition());
@@ -66,11 +66,11 @@ void CSkySceneNode::render() const
 
 void CSkySceneNode::createSkyDomeMesh()
 {
-	u32 vcount = (HORIZ_RES + 1) * (VERT_RES + 1);
-	u32 icount = 3 * (2*VERT_RES -1) * HORIZ_RES;
+	uint32_t vcount = (HORIZ_RES + 1) * (VERT_RES + 1);
+	uint32_t icount = 3 * (2*VERT_RES -1) * HORIZ_RES;
 
 	SVertex_PC* vertices = new SVertex_PC[vcount];
-	u16* indices = new u16[icount];
+	uint16_t* indices = new uint16_t[icount];
 	fillSkyDomeMeshVI(vertices, vcount, indices, icount);
 
 	SBufferParam bufferParam = {0};
@@ -86,10 +86,10 @@ void CSkySceneNode::createSkyDomeMesh()
 }
 
 
-bool CSkySceneNode::fillSkyDomeMeshVI(  SVertex_PC* gVertices, u32 vcount, u16* indices, u32 icount )
+bool CSkySceneNode::fillSkyDomeMeshVI(  SVertex_PC* gVertices, uint32_t vcount, uint16_t* indices, uint32_t icount )
 {
-	u32 vLimit = (HORIZ_RES + 1) * (VERT_RES + 1);
-	u32 iLimit = 3 * (2*VERT_RES -1) * HORIZ_RES;
+	uint32_t vLimit = (HORIZ_RES + 1) * (VERT_RES + 1);
+	uint32_t iLimit = 3 * (2*VERT_RES -1) * HORIZ_RES;
 
 	if (vcount < vLimit || icount < iLimit)
 		return false;
@@ -98,25 +98,25 @@ bool CSkySceneNode::fillSkyDomeMeshVI(  SVertex_PC* gVertices, u32 vcount, u16* 
 	vcount = 0;
 	icount = 0;
 
-	f32 azimuth;
-	u32 k;
+	float azimuth;
+	uint32_t k;
 
-	const f32 azimuth_step = (PI * 2.f) / HORIZ_RES;
-	const f32 elevations[] = { PI/2, PI/6, PI/12, PI/18, PI/36, 0, -PI/6, -PI/2};
-	const u32 skycolors[] = {2, 3, 4, 5, 6, 7, 7, 7};
+	const float azimuth_step = (PI * 2.f) / HORIZ_RES;
+	const float elevations[] = { PI/2, PI/6, PI/12, PI/18, PI/36, 0, -PI/6, -PI/2};
+	const uint32_t skycolors[] = {2, 3, 4, 5, 6, 7, 7, 7};
 
 	for (k = 0, azimuth = 0; k <= HORIZ_RES; ++k)
 	{
-		const f32 sinA = sinf(azimuth);
-		const f32 cosA = cosf(azimuth);
-		for (u32 j = 0; j <= VERT_RES; ++j)
+		const float sinA = sinf(azimuth);
+		const float cosA = cosf(azimuth);
+		for (uint32_t j = 0; j <= VERT_RES; ++j)
 		{
-			f32 elevation = elevations[j];
+			float elevation = elevations[j];
 			vector3df v = MapEnvironment->ColorSet[skycolors[j]];
 			SColorf color;
 			color.set(v.X, v.Y, v.Z);
 
-			const f32 cosEr = SkyRadius * cosf(elevation);
+			const float cosEr = SkyRadius * cosf(elevation);
 			gVertices[vcount].Pos.set(cosEr*sinA, SkyRadius*sinf(elevation), cosEr*cosA);
 			gVertices[vcount].Color = color.toSColor();
 
@@ -127,19 +127,19 @@ bool CSkySceneNode::fillSkyDomeMeshVI(  SVertex_PC* gVertices, u32 vcount, u16* 
 
 	for (k = 0; k < HORIZ_RES; ++k)
 	{
-		indices[icount++] = (u16)(VERT_RES + 2 + (VERT_RES + 1)*k);
-		indices[icount++] = (u16)(1 + (VERT_RES + 1)*k);
-		indices[icount++] = (u16)(0 + (VERT_RES + 1)*k);
+		indices[icount++] = (uint16_t)(VERT_RES + 2 + (VERT_RES + 1)*k);
+		indices[icount++] = (uint16_t)(1 + (VERT_RES + 1)*k);
+		indices[icount++] = (uint16_t)(0 + (VERT_RES + 1)*k);
 
-		for (u32 j = 1; j < VERT_RES; ++j)
+		for (uint32_t j = 1; j < VERT_RES; ++j)
 		{
-			indices[icount++] = (u16)(VERT_RES + 2 + (VERT_RES + 1)*k + j);
-			indices[icount++] = (u16)(1 + (VERT_RES + 1)*k + j);
-			indices[icount++] = (u16)(0 + (VERT_RES + 1)*k + j);
+			indices[icount++] = (uint16_t)(VERT_RES + 2 + (VERT_RES + 1)*k + j);
+			indices[icount++] = (uint16_t)(1 + (VERT_RES + 1)*k + j);
+			indices[icount++] = (uint16_t)(0 + (VERT_RES + 1)*k + j);
 
-			indices[icount++] = (u16)(VERT_RES + 1 + (VERT_RES + 1)*k + j);
-			indices[icount++] = (u16)(VERT_RES + 2 + (VERT_RES + 1)*k + j);
-			indices[icount++] = (u16)(0 + (VERT_RES + 1)*k + j);
+			indices[icount++] = (uint16_t)(VERT_RES + 1 + (VERT_RES + 1)*k + j);
+			indices[icount++] = (uint16_t)(VERT_RES + 2 + (VERT_RES + 1)*k + j);
+			indices[icount++] = (uint16_t)(0 + (VERT_RES + 1)*k + j);
 		}
 	}
 
@@ -151,13 +151,13 @@ bool CSkySceneNode::fillSkyDomeMeshVI(  SVertex_PC* gVertices, u32 vcount, u16* 
 
 void CSkySceneNode::updateMeshColor()
 {
-	const u32 skycolors[] = {2, 3, 4, 5, 6, 7, 7, 7};
+	const uint32_t skycolors[] = {2, 3, 4, 5, 6, 7, 7, 7};
 	SVertex_PC* vertices = (SVertex_PC*)SkyDomeMesh->BufferParam.vbuffer0->Vertices;
 
-	u32 vcount = 0;
-	for (u32 k = 0; k <= HORIZ_RES; ++k)
+	uint32_t vcount = 0;
+	for (uint32_t k = 0; k <= HORIZ_RES; ++k)
 	{
-		for (u32 j = 0; j <= VERT_RES; ++j)
+		for (uint32_t j = 0; j <= VERT_RES; ++j)
 		{
 			vector3df v = MapEnvironment->ColorSet[skycolors[j]];
 			SColorf color;

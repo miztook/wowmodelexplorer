@@ -39,7 +39,7 @@ CGLES2Platform::~CGLES2Platform()
 		::ReleaseDC(HWnd, Hdc);
 }
 
-bool CGLES2Platform::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread )
+bool CGLES2Platform::initDriver( const SWindowInfo& wndInfo, uint32_t adapter, bool fullscreen, bool vsync, uint8_t antialias, bool multithread )
 {
 	ASSERT(::IsWindow(wndInfo.hwnd));
 
@@ -56,7 +56,7 @@ bool CGLES2Platform::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool f
 	{
 		RECT rc;
 		::GetClientRect(HWnd, &rc);
-		WindowSize =  dimension2du((u32)rc.right-rc.left, (u32)rc.bottom-rc.top);
+		WindowSize =  dimension2du((uint32_t)rc.right-rc.left, (uint32_t)rc.bottom-rc.top);
 	}
 
 	Hdc = ::GetDC(HWnd);
@@ -81,8 +81,8 @@ bool CGLES2Platform::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool f
 		return false;
 	}
 
-	const u8 depthBits = 24;
-	const u8 stencilBits = 8;
+	const uint8_t depthBits = 24;
+	const uint8_t stencilBits = 8;
 
 	//step 4 choose format
 	const EGLint pi32ConfigAttribs[] =

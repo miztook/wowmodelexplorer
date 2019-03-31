@@ -6,8 +6,8 @@
 #define PVR_TEXTURE_FLAG_TYPE_MASK	0xff
 
 #define PVR_GEN_PIXEL_ID4(C1Name, C2Name, C3Name, C4Name, C1Bits, C2Bits, C3Bits, C4Bits) \
-	( ( (u64)C1Name) + ( (u64)C2Name<<8) + ( (u64)C3Name<<16) + ( (u64)C4Name<<24) + \
-	( (u64)C1Bits<<32) + ( (u64)C2Bits<<40) + ( (u64)C3Bits<<48) + ( (u64)C4Bits<<56) )
+	( ( (uint64_t)C1Name) + ( (uint64_t)C2Name<<8) + ( (uint64_t)C3Name<<16) + ( (uint64_t)C4Name<<24) + \
+	( (uint64_t)C1Bits<<32) + ( (uint64_t)C2Bits<<40) + ( (uint64_t)C3Bits<<48) + ( (uint64_t)C4Bits<<56) )
 
 class CPVRImage : public IPVRImage
 {
@@ -20,17 +20,17 @@ public:
 
 public:
 	virtual bool loadFile(IMemFile* file);
-	virtual bool fromImageData(const u8* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap);
-	virtual const void* getMipmapData(u32 level) const;  
-	virtual bool copyMipmapData(u32 level, void* dest, u32 pitch, u32 width, u32 height);
+	virtual bool fromImageData(const uint8_t* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap);
+	virtual const void* getMipmapData(uint32_t level) const;  
+	virtual bool copyMipmapData(uint32_t level, void* dest, uint32_t pitch, uint32_t width, uint32_t height);
 
 private:
-	void copy32BitMipMap(const u8* src, u8* tgt,
-		u32 width, u32 height,  u32 pitchsrc, u32 pitchtgt) const;
+	void copy32BitMipMap(const uint8_t* src, uint8_t* tgt,
+		uint32_t width, uint32_t height,  uint32_t pitchsrc, uint32_t pitchtgt) const;
 
 private:
-	u8*			FileData;
-	u32			MipmapOffset[16];
+	uint8_t*			FileData;
+	uint32_t			MipmapOffset[16];
 
 public:
 
@@ -134,18 +134,18 @@ enum EPVRTVariableType
 
 struct PVRTextureHeaderV3
 {
-	u32	u32Version;			//Version of the file header, used to identify it.
-	u32	u32Flags;			//Various format flags.
-	u64	u64PixelFormat;		//The pixel format, 8cc value storing the 4 channel identifiers and their respective sizes.
-	u32	u32ColourSpace;		//The Colour Space of the texture, currently either linear RGB or sRGB.
-	u32	u32ChannelType;		//Variable type that the channel is stored in. Supports signed/unsigned int/short/byte or float for now.
-	u32	u32Height;			//Height of the texture.
-	u32	u32Width;			//Width of the texture.
-	u32	u32Depth;			//Depth of the texture. (Z-slices)
-	u32	u32NumSurfaces;		//Number of members in a Texture Array.
-	u32	u32NumFaces;		//Number of faces in a Cube Map. Maybe be a value other than 6.
-	u32	u32MIPMapCount;		//Number of MIP Maps in the texture - NB: Includes top level.
-	u32	u32MetaDataSize;	//Size of the accompanying meta data.
+	uint32_t	u32Version;			//Version of the file header, used to identify it.
+	uint32_t	u32Flags;			//Various format flags.
+	uint64_t	u64PixelFormat;		//The pixel format, 8cc value storing the 4 channel identifiers and their respective sizes.
+	uint32_t	u32ColourSpace;		//The Colour Space of the texture, currently either linear RGB or sRGB.
+	uint32_t	u32ChannelType;		//Variable type that the channel is stored in. Supports signed/unsigned int/short/byte or float for now.
+	uint32_t	u32Height;			//Height of the texture.
+	uint32_t	u32Width;			//Width of the texture.
+	uint32_t	u32Depth;			//Depth of the texture. (Z-slices)
+	uint32_t	u32NumSurfaces;		//Number of members in a Texture Array.
+	uint32_t	u32NumFaces;		//Number of faces in a Cube Map. Maybe be a value other than 6.
+	uint32_t	u32MIPMapCount;		//Number of MIP Maps in the texture - NB: Includes top level.
+	uint32_t	u32MetaDataSize;	//Size of the accompanying meta data.
 };
 
 /*!***************************************************************************
@@ -153,19 +153,19 @@ Describes the Version 2 header of a PVR texture header.
 *****************************************************************************/
 struct PVR_Texture_Header
 {
-	u32 dwHeaderSize;		/*!< size of the structure */
-	u32 dwHeight;			/*!< height of surface to be created */
-	u32 dwWidth;				/*!< width of input surface */
-	u32 dwMipMapCount;		/*!< number of mip-map levels requested */
-	u32 dwpfFlags;			/*!< pixel format flags */
-	u32 dwTextureDataSize;	/*!< Total size in bytes */
-	u32 dwBitCount;			/*!< number of bits per pixel  */
-	u32 dwRBitMask;			/*!< mask for red bit */
-	u32 dwGBitMask;			/*!< mask for green bits */
-	u32 dwBBitMask;			/*!< mask for blue bits */
-	u32 dwAlphaBitMask;		/*!< mask for alpha channel */
-	u32 dwPVR;				/*!< magic number identifying pvr file */
-	u32 dwNumSurfs;			/*!< the number of surfaces present in the pvr */
+	uint32_t dwHeaderSize;		/*!< size of the structure */
+	uint32_t dwHeight;			/*!< height of surface to be created */
+	uint32_t dwWidth;				/*!< width of input surface */
+	uint32_t dwMipMapCount;		/*!< number of mip-map levels requested */
+	uint32_t dwpfFlags;			/*!< pixel format flags */
+	uint32_t dwTextureDataSize;	/*!< Total size in bytes */
+	uint32_t dwBitCount;			/*!< number of bits per pixel  */
+	uint32_t dwRBitMask;			/*!< mask for red bit */
+	uint32_t dwGBitMask;			/*!< mask for green bits */
+	uint32_t dwBBitMask;			/*!< mask for blue bits */
+	uint32_t dwAlphaBitMask;		/*!< mask for alpha channel */
+	uint32_t dwPVR;				/*!< magic number identifying pvr file */
+	uint32_t dwNumSurfs;			/*!< the number of surfaces present in the pvr */
 } ;
 
 #	pragma pack ()

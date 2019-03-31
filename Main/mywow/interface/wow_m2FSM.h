@@ -14,9 +14,9 @@ struct SDynAction
 	}
 	wow_m2Action* action;
 
-	u32 currentIndex;			//current anim in action	
-	u32 currentAnimLoop;
-	s32 playedTime;		//播放次数
+	uint32_t currentIndex;			//current anim in action	
+	uint32_t currentAnimLoop;
+	int32_t playedTime;		//播放次数
 	bool finished;
 };
 
@@ -29,7 +29,7 @@ public:
 public:
 	void onAnimationEnd();
 
-	bool playAction(wow_m2Action* action, u32 blendtime = 200);
+	bool playAction(wow_m2Action* action, uint32_t blendtime = 200);
 
 	const SDynAction& getDynAction() const { return DynAction; }
 	SDynAction& getDynAction() { return DynAction; }
@@ -37,7 +37,7 @@ public:
 	bool isPlaying(wow_m2Action* action) const;
 
 	//state management
-	void tick(u32 timeSinceStart, u32 timeSinceLastFrame);
+	void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame);
 
 	//states
 	void resetState();
@@ -52,13 +52,13 @@ public:
 
 	void finishAction();
 	bool advanceAnimation();
-	s16 getCurrentAnimationIndex() const;
+	int16_t getCurrentAnimationIndex() const;
 
 private:
 	bool changeState(wow_m2State<IM2SceneNode>* newstate, bool restart = true);
 
-	bool playActionSequence(wow_m2Action* action, u32 blendtime = 200);
-	bool playActionRandom(wow_m2Action* action, u32 blendtime = 200);
+	bool playActionSequence(wow_m2Action* action, uint32_t blendtime = 200);
+	bool playActionRandom(wow_m2Action* action, uint32_t blendtime = 200);
 
 	void onAnimationEndSequence();
 	void onAnimationEndRandom();

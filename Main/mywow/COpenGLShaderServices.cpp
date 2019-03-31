@@ -32,21 +32,21 @@ COpenGLShaderServices::~COpenGLShaderServices()
 		Extension->extGlDeleteObject(i->second.program);
 	}
 
-	for (u32 i=0; i < EVST_COUNT; ++i)
+	for (uint32_t i=0; i < EVST_COUNT; ++i)
 	{
 		delete VertexShaders[i];
 	}
 
-	for (u32 i=0; i < EPST_COUNT; ++i)
+	for (uint32_t i=0; i < EPST_COUNT; ++i)
 	{
-		for (u32 k=PS_Macro_None; k<PS_Macro_Num; ++k)
+		for (uint32_t k=PS_Macro_None; k<PS_Macro_Num; ++k)
 			delete PixelShaders[i][k];
 	}
 }
 
 void COpenGLShaderServices::loadAll()
 {
-	const c8* profile = "";
+	const char* profile = "";
 
 	//vs
 	g_Engine->getFileSystem()->writeLog(ELOG_GX, "begin loading shaders ...");
@@ -99,7 +99,7 @@ IPixelShader* COpenGLShaderServices::getPixelShader( E_PS_TYPE type, E_PS_MACRO 
 	return PixelShaders[type][macro];
 }
 
-bool COpenGLShaderServices::loadVShader( const c8* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool COpenGLShaderServices::loadVShader( const char* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	/*
 	string256 absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
@@ -123,8 +123,8 @@ bool COpenGLShaderServices::loadVShader( const c8* filename, E_VS_TYPE type, VSH
 	else
 		ASSERT(false);
 
-	c8* buffer = (c8*)Z_AllocateTempMemory(rfile->getSize());
-	u32 size = rfile->read(buffer, rfile->getSize());
+	char* buffer = (char*)Z_AllocateTempMemory(rfile->getSize());
+	uint32_t size = rfile->read(buffer, rfile->getSize());
 
 	// compile
 	if (Extension->queryOpenGLFeature(IRR_ARB_vertex_program))
@@ -155,7 +155,7 @@ bool COpenGLShaderServices::loadVShader( const c8* filename, E_VS_TYPE type, VSH
 	return false;
 }
 
-bool COpenGLShaderServices::loadPShader( const c8* filename, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
+bool COpenGLShaderServices::loadPShader( const char* filename, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
 {
 	/*
 	string256 absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
@@ -179,8 +179,8 @@ bool COpenGLShaderServices::loadPShader( const c8* filename, E_PS_TYPE type, E_P
 	else
 		ASSERT(false);
 
-	c8* buffer = (c8*)Z_AllocateTempMemory(rfile->getSize());
-	u32 size = rfile->read(buffer, rfile->getSize());
+	char* buffer = (char*)Z_AllocateTempMemory(rfile->getSize());
+	uint32_t size = rfile->read(buffer, rfile->getSize());
 
 	// compile
 	if (Extension->queryOpenGLFeature(IRR_ARB_vertex_program))
@@ -211,7 +211,7 @@ bool COpenGLShaderServices::loadPShader( const c8* filename, E_PS_TYPE type, E_P
 	return false;
 }
 
-bool COpenGLShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool COpenGLShaderServices::loadVShaderHLSL( const char* filename, const char* entry, const char* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	string_path absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
@@ -224,13 +224,13 @@ bool COpenGLShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry
 		return false;
 	}
 
-	c8* buffer = (c8*)Z_AllocateTempMemory(rfile->getSize());
+	char* buffer = (char*)Z_AllocateTempMemory(rfile->getSize());
 	rfile->seek(0);
 
-	c8* p = buffer;
+	char* p = buffer;
 	while(!rfile->isEof())
 	{
-		u32 size = rfile->readText(p, rfile->getSize() - (u32)(p - buffer));
+		uint32_t size = rfile->readText(p, rfile->getSize() - (uint32_t)(p - buffer));
 
 		if(size>1 && !isComment(p))			//skip comment
 			p += size;
@@ -258,7 +258,7 @@ bool COpenGLShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry
 	return true;
 }
 
-bool COpenGLShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
+bool COpenGLShaderServices::loadPShaderHLSL( const char* filename, const char* entry, const char* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
 {
 	string_path absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
@@ -275,7 +275,7 @@ bool COpenGLShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry
 	string1024 macroString;
 	makeMacroString(macroString, getPSMacroString(macro));
 
-	u32 macroLength = macroString.length();
+	uint32_t macroLength = macroString.length();
 
 	//log
 	if (macroLength)
@@ -283,16 +283,16 @@ bool COpenGLShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry
 		CSysUtility::outputDebug("compiling shader with macro: %s, macro: %s", filename, getPSMacroString(macro));
 	}
 
-	c8* buffer = (c8*)Z_AllocateTempMemory(macroLength + rfile->getSize());
+	char* buffer = (char*)Z_AllocateTempMemory(macroLength + rfile->getSize());
 	rfile->seek(0);
 
-	c8* p = buffer;
+	char* p = buffer;
 
 	bool version = false;
 	bool macroAdd = false;
 	while(!rfile->isEof())
 	{
-		u32 size = rfile->readText(p, rfile->getSize() - (u32)(p - buffer));
+		uint32_t size = rfile->readText(p, rfile->getSize() - (uint32_t)(p - buffer));
 
 		if(size>1 && !isComment(p))			//skip comment
 		{
@@ -353,9 +353,9 @@ void COpenGLShaderServices::applyShaders()
 		{
 			Extension->extGlUseProgramObject(CurrentProgram->program);
 
-			for (u32 i=0; i<CurrentProgram->samplerCount; ++i)
+			for (uint32_t i=0; i<CurrentProgram->samplerCount; ++i)
 			{
-				c8 name[16];
+				char name[16];
 				Q_sprintf(name, 16, "g_TexSampler%u", i);
 				setTextureUniform(name, i);
 			}
@@ -370,7 +370,7 @@ void COpenGLShaderServices::applyShaders()
 	ResetShaders = false;
 }
 
-void COpenGLShaderServices::setShaderConstants( IVertexShader* vs, const SMaterial& material, u32 pass )
+void COpenGLShaderServices::setShaderConstants( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 #ifndef FIXPIPELINE
 	ASSERT(vs);
@@ -379,7 +379,7 @@ void COpenGLShaderServices::setShaderConstants( IVertexShader* vs, const SMateri
 		vs->ShaderConstCallback(vs, material, pass);
 }
 
-void COpenGLShaderServices::setShaderConstants( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGLShaderServices::setShaderConstants( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 #ifndef FIXPIPELINE
 	ASSERT(ps);
@@ -447,7 +447,7 @@ IPixelShader* COpenGLShaderServices::getDefaultPixelShader( E_VERTEX_TYPE vType,
 
 SGLProgram* COpenGLShaderServices::getGlProgram( IVertexShader* vshader, IPixelShader* pshader )
 {
-	u32 key = makeKey(vshader, pshader);
+	uint32_t key = makeKey(vshader, pshader);
 	T_ProgramMap::iterator itr = ProgramMap.find(key);
 	if (itr == ProgramMap.end())
 	{
@@ -456,7 +456,7 @@ SGLProgram* COpenGLShaderServices::getGlProgram( IVertexShader* vshader, IPixelS
 	return &itr->second;
 }
 
-u32 COpenGLShaderServices::makeKey( IVertexShader* vs, IPixelShader* ps )
+uint32_t COpenGLShaderServices::makeKey( IVertexShader* vs, IPixelShader* ps )
 {
 	return ((vs->getType() & 0xff)<<24) | ((ps->getType() & 0xff)<<8) | (ps->getMacro() & 0xff);
 }
@@ -473,7 +473,7 @@ SGLProgram* COpenGLShaderServices::createGlProgram( IVertexShader* vshader, IPix
 		return nullptr;
 	}
 
-	u32 key = makeKey(vs, ps);
+	uint32_t key = makeKey(vs, ps);
 	
 	ASSERT(ProgramMap.find(key) == ProgramMap.end());
 
@@ -540,7 +540,7 @@ bool COpenGLShaderServices::linkGlProgram( SGLProgram* p )
 
 		GLcharARB *infoLog = (GLcharARB*)Z_AllocateTempMemory(sizeof(GLcharARB) * maxLength);
 		Extension->extGlGetInfoLog(p->program, maxLength, &length, infoLog);
-		g_Engine->getFileSystem()->writeLog(ELOG_GX, reinterpret_cast<const c8*>(infoLog));
+		g_Engine->getFileSystem()->writeLog(ELOG_GX, reinterpret_cast<const char*>(infoLog));
 		Z_FreeTempMemory(infoLog);
 		ASSERT(false);
 
@@ -576,9 +576,9 @@ bool COpenGLShaderServices::getGlProgramUniformInfo( SGLProgram* p )
 	++maxlen;
 
 	p->samplerCount = 0;
-	c8 *buf = (c8*)Z_AllocateTempMemory(maxlen);
+	char *buf = (char*)Z_AllocateTempMemory(maxlen);
 
-	for (u32 i=0; i < (u32)num; ++i)
+	for (uint32_t i=0; i < (uint32_t)num; ++i)
 	{
 		SGLUniformInfo ui;
 
@@ -588,7 +588,7 @@ bool COpenGLShaderServices::getGlProgramUniformInfo( SGLProgram* p )
 		Extension->extGlGetActiveUniformARB(p->program, i, maxlen, &length, &size, &type, reinterpret_cast<GLcharARB*>(buf));
 		buf[length] = '\0';
 		string_cs32 name = buf;
-		ui.dimension = (u8)size;
+		ui.dimension = (uint8_t)size;
 		ui.type = type;
 
 		if (type == GL_SAMPLER_1D_ARB || type == GL_SAMPLER_2D_ARB || type == GL_SAMPLER_3D_ARB)
@@ -600,7 +600,7 @@ bool COpenGLShaderServices::getGlProgramUniformInfo( SGLProgram* p )
 
 		//delete "[]" in array names
 		string_cs32 out;
-		s32 index = name.findNext('[', 0);
+		int32_t index = name.findNext('[', 0);
 		if (index >= 0)
 		{
 			name.subString(0, index, out);
@@ -617,7 +617,7 @@ bool COpenGLShaderServices::getGlProgramUniformInfo( SGLProgram* p )
 	return true;
 }
 
-bool COpenGLShaderServices::checkError( const c8* type )
+bool COpenGLShaderServices::checkError( const char* type )
 {
 #if defined(GL_ARB_vertex_program) || defined(GL_NV_vertex_program) || defined(GL_ARB_fragment_program) || defined(GL_NV_fragment_program)
 	GLenum g = glGetError();
@@ -670,7 +670,7 @@ GLhandleARB COpenGLShaderServices::createHLShader( GLenum shaderType, const char
 
 		GLcharARB* infoLog = (GLcharARB*)Z_AllocateTempMemory(sizeof(GLcharARB) * maxLength);
 		Extension->extGlGetInfoLog(shaderHandle, maxLength, &length, infoLog);
-		g_Engine->getFileSystem()->writeLog(ELOG_GX, reinterpret_cast<const c8*>(infoLog));
+		g_Engine->getFileSystem()->writeLog(ELOG_GX, reinterpret_cast<const char*>(infoLog));
 		Z_FreeTempMemory(infoLog);
 
 		shaderHandle = 0;
@@ -679,7 +679,7 @@ GLhandleARB COpenGLShaderServices::createHLShader( GLenum shaderType, const char
 	return shaderHandle;
 }
 
-void COpenGLShaderServices::setTextureUniform( s32 location, GLenum type, u32 index )
+void COpenGLShaderServices::setTextureUniform( int32_t location, GLenum type, uint32_t index )
 {
 	switch(type)
 	{

@@ -11,13 +11,13 @@ public:
 public:
 	//IMeshSceneNode
 	virtual IMesh* getMesh() const { return Mesh; }
-	virtual void setTexture(u32 i, ITexture* texture);
+	virtual void setTexture(uint32_t i, ITexture* texture);
 	virtual SMaterial& getMaterial() { return Material; }
 
 	//ISceneNode
 	virtual void registerSceneNode(bool frustumcheck, int sequence);
 	virtual aabbox3df getBoundingBox() const;
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame, bool visible);
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible);
 	virtual void render() const;
 	virtual bool isNodeEligible() const;
 

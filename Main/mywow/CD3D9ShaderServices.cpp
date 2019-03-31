@@ -21,21 +21,21 @@ CD3D9ShaderServices::CD3D9ShaderServices()
 
 CD3D9ShaderServices::~CD3D9ShaderServices()
 {
-	for (u32 i=0; i < EVST_COUNT; ++i)
+	for (uint32_t i=0; i < EVST_COUNT; ++i)
 	{
 		delete VertexShaders[i];
 	}
 
-	for (u32 i=0; i < EPST_COUNT; ++i)
+	for (uint32_t i=0; i < EPST_COUNT; ++i)
 	{
-		for (u32 k=PS_Macro_None; k<PS_Macro_Num; ++k)
+		for (uint32_t k=PS_Macro_None; k<PS_Macro_Num; ++k)
 			delete PixelShaders[i][k];
 	}
 }
 
 void CD3D9ShaderServices::loadAll()
 {
-	const c8* profile = "";
+	const char* profile = "";
 
 	//vs
 	g_Engine->getFileSystem()->writeLog(ELOG_GX, "begin loading shaders ...");
@@ -82,19 +82,19 @@ void CD3D9ShaderServices::loadAll()
 
 #ifdef DIRECTX_USE_COMPILED_SHADER
 
-bool CD3D9ShaderServices::loadVShader( const c8* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool CD3D9ShaderServices::loadVShader( const char* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	ASSERT(false);
 	return false;
 }
 
-bool CD3D9ShaderServices::loadPShader( const c8* filename, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
+bool CD3D9ShaderServices::loadPShader( const char* filename, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
 {
 	ASSERT(false);
 	return false;
 }
 
-bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool CD3D9ShaderServices::loadVShaderHLSL( const char* filename, const char* entry, const char* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	string_path absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
@@ -108,7 +108,7 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 	}
 
 	IDirect3DVertexShader9* vertexShader = nullptr;
-	u32 len = 0;
+	uint32_t len = 0;
 
 	//read bls file
 	BlsHeader header;
@@ -124,8 +124,8 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 	ASSERT(blockHeader.codeSize);
 
 	//const
-	u8* constBuffer = (u8*)Z_AllocateTempMemory(blockHeader.constSize);
-	u8* codeBuffer = (u8*)Z_AllocateTempMemory(blockHeader.codeSize);
+	uint8_t* constBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.constSize);
+	uint8_t* codeBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.codeSize);
 
 	len = rfile->read(constBuffer, blockHeader.constSize);
 	ASSERT(len == blockHeader.constSize);
@@ -152,7 +152,7 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 	{
 		CD3D9VertexShader::T_ConstList& constList = shader->getConstList();
 
-		const u8* p = constBuffer;
+		const uint8_t* p = constBuffer;
 		while (p < constBuffer + blockHeader.constSize)
 		{
 			BlsConst* constEntry = (BlsConst*)p;
@@ -163,7 +163,7 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 			constList.emplace_back(desc);
 
 			p += (sizeof(BlsConst) -1);
-			p+= (strlen((const c8*)p)+1);
+			p+= (strlen((const char*)p)+1);
 		}
 		ASSERT(p == constBuffer + blockHeader.constSize);
 		constList.sort();
@@ -176,7 +176,7 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 	return true;
 }
 
-bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
+bool CD3D9ShaderServices::loadPShaderHLSL( const char* filename, const char* entry, const char* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
 {
 	string_path absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
@@ -190,7 +190,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 	}
 
 	IDirect3DPixelShader9* pixelShader = nullptr;
-	u32 len = 0;
+	uint32_t len = 0;
 
 	//read bls file
 	BlsHeader header;
@@ -198,7 +198,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 
 	ASSERT(len == sizeof(header));
 
-	if (header.shaderCount <= (u32)macro)
+	if (header.shaderCount <= (uint32_t)macro)
 	{
 		delete rfile;
 		ASSERT(false);
@@ -206,7 +206,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 	}
 
 	//seek to block that correspond to macro
-	for (u32 i = 0; i < (u32)macro; ++i)
+	for (uint32_t i = 0; i < (uint32_t)macro; ++i)
 	{
 		BlsBlockHeader blockHeader;
 		len = rfile->read(&blockHeader, sizeof(blockHeader));
@@ -230,8 +230,8 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 	ASSERT(blockHeader.codeSize);
 
 	//const
-	u8* constBuffer = (u8*)Z_AllocateTempMemory(blockHeader.constSize);
-	u8* codeBuffer = (u8*)Z_AllocateTempMemory(blockHeader.codeSize);
+	uint8_t* constBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.constSize);
+	uint8_t* codeBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.codeSize);
 
 	len = rfile->read(constBuffer, blockHeader.constSize);
 	ASSERT(len == blockHeader.constSize);
@@ -258,7 +258,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 	{
 		CD3D9VertexShader::T_ConstList& constList = shader->getConstList();
 
-		const u8* p = constBuffer;
+		const uint8_t* p = constBuffer;
 		while (p < constBuffer + blockHeader.constSize)
 		{
 			BlsConst* constEntry = (BlsConst*)p;
@@ -269,7 +269,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 			constList.emplace_back(desc);
 
 			p += (sizeof(BlsConst) -1);
-			p+= (strlen((const c8*)p)+1);
+			p+= (strlen((const char*)p)+1);
 		}
 		ASSERT(p == constBuffer + blockHeader.constSize);
 		constList.sort();
@@ -285,11 +285,11 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 
 #else
 /*
-bool CD3D9ShaderServices::loadVShader( const c8* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool CD3D9ShaderServices::loadVShader( const char* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	string256 absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
-	c16	absFileNameW[MAX_PATH];
+	char16_t	absFileNameW[MAX_PATH];
 	str8to16(absFileName.c_str(), absFileNameW, MAX_PATH);
 
 	DWORD dwShaderFlags;
@@ -325,11 +325,11 @@ bool CD3D9ShaderServices::loadVShader( const c8* filename, E_VS_TYPE type, VSHAD
 	return true;
 }
 
-bool CD3D9ShaderServices::loadPShader( const c8* filename, E_PS_TYPE type, PSHADERCONSTCALLBACK callback )
+bool CD3D9ShaderServices::loadPShader( const char* filename, E_PS_TYPE type, PSHADERCONSTCALLBACK callback )
 {
 	string256 absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
-	c16	absFileNameW[MAX_PATH];
+	char16_t	absFileNameW[MAX_PATH];
 	str8to16(absFileName.c_str(), absFileNameW, MAX_PATH);
 
 	DWORD dwShaderFlags;
@@ -366,11 +366,11 @@ bool CD3D9ShaderServices::loadPShader( const c8* filename, E_PS_TYPE type, PSHAD
 	return true;
 }
 
-bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool CD3D9ShaderServices::loadVShaderHLSL( const char* filename, const char* entry, const char* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	string256 absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
-	c16	absFileNameW[MAX_PATH];
+	char16_t	absFileNameW[MAX_PATH];
 	str8to16(absFileName.c_str(), absFileNameW, MAX_PATH);
 
 	DWORD dwShaderFlags;
@@ -413,7 +413,7 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 
 		D3DXCONSTANTTABLE_DESC table_desc;
 		constantsTable->GetDesc(&table_desc);
-		for (u32 i=0; i<table_desc.Constants; ++i)
+		for (uint32_t i=0; i<table_desc.Constants; ++i)
 		{
 			D3DXCONSTANT_DESC desc;
 			D3DXHANDLE handle = constantsTable->GetConstant(nullptr, i);
@@ -436,11 +436,11 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, 
 	return true;
 }
 
-bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_PS_TYPE type, PSHADERCONSTCALLBACK callback )
+bool CD3D9ShaderServices::loadPShaderHLSL( const char* filename, const char* entry, const char* profile, E_PS_TYPE type, PSHADERCONSTCALLBACK callback )
 {
 	string256 absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
-	c16	absFileNameW[MAX_PATH];
+	char16_t	absFileNameW[MAX_PATH];
 	str8to16(absFileName.c_str(), absFileNameW, MAX_PATH);
 
 	DWORD dwShaderFlags;
@@ -482,7 +482,7 @@ bool CD3D9ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, 
 
 		D3DXCONSTANTTABLE_DESC table_desc;
 		constantsTable->GetDesc(&table_desc);
-		for (u32 i=0; i<table_desc.Constants; ++i)
+		for (uint32_t i=0; i<table_desc.Constants; ++i)
 		{
 			D3DXCONSTANT_DESC desc;
 			D3DXHANDLE handle = constantsTable->GetConstant(nullptr, i);
@@ -543,14 +543,14 @@ void CD3D9ShaderServices::applyShaders()
 	LastShaderState = ShaderState;
 }
 
-void CD3D9ShaderServices::setShaderConstants( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D9ShaderServices::setShaderConstants( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	ASSERT(vs);
 	if (vs && vs->ShaderConstCallback)
 		vs->ShaderConstCallback(vs, material, pass);
 }
 
-void CD3D9ShaderServices::setShaderConstants( IPixelShader* ps, const SMaterial& material, u32 pass)
+void CD3D9ShaderServices::setShaderConstants( IPixelShader* ps, const SMaterial& material, uint32_t pass)
 {
 	ASSERT(ps);
 	if (ps && ps->ShaderConstCallback)

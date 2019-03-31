@@ -79,7 +79,7 @@ void g_callbackDBC1(const c8* filename, void* param)
 	if(!((wowEnvironment*)param)->exists(filename))
 		return;
 
-	dbc* db = new dbc((wowEnvironment*)param, filename, true);
+	WowClassic::dbc* db = new WowClassic::dbc((wowEnvironment*)param, filename, true);
 
 	if (db->getStringSize() <= 1)
 	{

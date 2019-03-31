@@ -18,16 +18,16 @@ void MyMessageHandler::onSize(window_type hwnd, int width, int height)
 		g_bBackMode = false;
 		IVideoDriver* driver = g_Engine->getDriver();
 		if (driver)
-			driver->setDisplayMode( dimension2du((u32)width, (u32)height) );
+			driver->setDisplayMode( dimension2du((uint32_t)width, (uint32_t)height) );
 
 		IFontServices* fontServices = g_Engine->getFontServices();
 		if (fontServices)
-			fontServices->onWindowSizeChanged( dimension2du((u32)width, (u32)height) );
+			fontServices->onWindowSizeChanged( dimension2du((uint32_t)width, (uint32_t)height) );
 
 		ISceneManager* smgr = g_Engine->getSceneManager();
 		if(smgr)
 		{
-			smgr->onWindowSizeChanged( dimension2du((u32)width, (u32)height) );
+			smgr->onWindowSizeChanged( dimension2du((uint32_t)width, (uint32_t)height) );
 
 			ICamera* cam = smgr->getActiveCamera();
 			if(cam)
@@ -47,7 +47,7 @@ void createScene()
 
 	const SMapRecord* mapRecord = g_Engine->getWowDatabase()->getMap(1);
 
-// 	for (u32 i=0; i<mapRecord->areaList.size(); ++i)
+// 	for (uint32_t i=0; i<mapRecord->areaList.size(); ++i)
 // 	{
 // 		SArea* area = g_Engine->getWowDatabase()->getAreaById(mapRecord->areaList[i]);
 //  		if (area->parentId == 0)
@@ -57,7 +57,7 @@ void createScene()
 
 	g_Engine->getEngineSetting()->setViewDistance(EL_FAIR);
 
-	c8 mapname[MAX_PATH];
+	char mapname[MAX_PATH];
 	sprintf_s(mapname, MAX_PATH, "World\\Maps\\%s\\%s.wdt", mapRecord->name, mapRecord->name);
 	//sprintf_s(mapname, MAX_PATH, "World\\Maps\\%s\\%s.wdt", "StormwindJail", "StormwindJail");
 	fileWDT = g_Engine->getResourceLoader()->loadWDT(mapname, mapRecord->id);

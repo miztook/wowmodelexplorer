@@ -54,10 +54,10 @@ bool CGestureRecognizerBase::changeState( E_RECOGNIZER_STATE state )
 	return true;
 }
 
-s32 CGestureRecognizerBase::findTouchInfo( ptr_t fingerId, const std::vector<SGesTouchInfo>& touchInfos )
+int32_t CGestureRecognizerBase::findTouchInfo( uintptr_t fingerId, const std::vector<SGesTouchInfo>& touchInfos )
 {
-	s32 index = -1;
-	for (s32 i=0; i<(s32)touchInfos.size(); ++i)
+	int32_t index = -1;
+	for (int32_t i=0; i<(int32_t)touchInfos.size(); ++i)
 	{
 		const SGesTouchInfo& info = touchInfos[i];
 		if (!info.skip && info.fingerID == fingerId)
@@ -70,64 +70,64 @@ s32 CGestureRecognizerBase::findTouchInfo( ptr_t fingerId, const std::vector<SGe
 	return index;
 }
 
-f32 CGestureRecognizerBase::getThreshold_Pan2TouchSepDist()
+float CGestureRecognizerBase::getThreshold_Pan2TouchSepDist()
 {
 	//return 500.0f * g_pAWindow->m_fScale;
 	return g_Engine->getWindowInfo().width * 0.8f;
 }
 
-f32 CGestureRecognizerBase::getThreshold_Tap2TouchSepDist()
+float CGestureRecognizerBase::getThreshold_Tap2TouchSepDist()
 {
 //	return 200.0f * g_pAWindow->m_fScale;
 	return g_Engine->getWindowInfo().width * 0.3f;
 }
 
-f32 CGestureRecognizerBase::getThreshold_MoveDist()
+float CGestureRecognizerBase::getThreshold_MoveDist()
 {
 	return 15.0f * g_Engine->getWindowInfo().scale;
 }
 
-f32 CGestureRecognizerBase::getThreshold_PanMoveDist()
+float CGestureRecognizerBase::getThreshold_PanMoveDist()
 {
 	return 2.0f * g_Engine->getWindowInfo().scale;
 }
 
-f32 CGestureRecognizerBase::getThreshold_Pan2MoveDist()
+float CGestureRecognizerBase::getThreshold_Pan2MoveDist()
 {
 	return 0.0f * g_Engine->getWindowInfo().scale;
 }
 
-f32 CGestureRecognizerBase::getThreshold_PinchDist()
+float CGestureRecognizerBase::getThreshold_PinchDist()
 {
 	return 3.0f * g_Engine->getWindowInfo().scale;
 }
 
-f32 CGestureRecognizerBase::getThreshold_SwipeDist()
+float CGestureRecognizerBase::getThreshold_SwipeDist()
 {
 	return 10.0f * g_Engine->getWindowInfo().scale;
 }
 
-f32 CGestureRecognizerBase::getThreshold_SwipeSpeedDist()
+float CGestureRecognizerBase::getThreshold_SwipeSpeedDist()
 {
 	return 100.0f * g_Engine->getWindowInfo().scale;
 }
 
-f32 CGestureRecognizerBase::getThreshold_PanMaxSpeedDist()
+float CGestureRecognizerBase::getThreshold_PanMaxSpeedDist()
 {
 	return 2500.0f * g_Engine->getWindowInfo().scale;
 }
 
-f32 CGestureRecognizerBase::getThreshold_CalcAngleDist()
+float CGestureRecognizerBase::getThreshold_CalcAngleDist()
 {
 	return 4.0f * g_Engine->getWindowInfo().scale;
 }
 
-f32 CGestureRecognizerBase::getThreshold_Pan2MoveDir()
+float CGestureRecognizerBase::getThreshold_Pan2MoveDir()
 {
 	return cosf(DEGTORAD * 45.0f);
 }
 
-f32 CGestureRecognizerBase::getThreshold_SwipeDirValid()
+float CGestureRecognizerBase::getThreshold_SwipeDirValid()
 {
 	return cosf(DEGTORAD * 22.5f);
 }

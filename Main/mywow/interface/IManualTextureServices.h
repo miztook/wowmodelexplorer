@@ -14,9 +14,9 @@ public:
 	virtual ~IManualTextureServices() {}
 
 public:
-	ITexture* getManualTexture(const c8* name);
-	virtual ITexture* addTexture(const c8* name, const dimension2du& size, IImage* img, bool mipmap) = 0;
-	virtual void removeTexture(const c8* name) = 0;
+	ITexture* getManualTexture(const char* name);
+	virtual ITexture* addTexture(const char* name, const dimension2du& size, IImage* img, bool mipmap) = 0;
+	virtual void removeTexture(const char* name) = 0;
 
 	virtual IRenderTarget* addRenderTarget( const dimension2du& size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt ) = 0;
 	virtual void removeRenderTarget( IRenderTarget* texture ) = 0;
@@ -31,7 +31,7 @@ protected:
 	T_TextureMap TextureMap;
 };
 
-inline ITexture* IManualTextureServices::getManualTexture( const c8* name )
+inline ITexture* IManualTextureServices::getManualTexture( const char* name )
 {
 	T_TextureMap::const_iterator itr = TextureMap.find(name);
 	if (itr == TextureMap.end())

@@ -8,12 +8,12 @@
 
 #include "CD3D11Driver.h"
 
-CD3D11VertexShader::CD3D11VertexShader( E_VS_TYPE type, ID3D11VertexShader* vs, VSHADERCONSTCALLBACK callback, const void* codeBuffer, u32 codeSize )
+CD3D11VertexShader::CD3D11VertexShader( E_VS_TYPE type, ID3D11VertexShader* vs, VSHADERCONSTCALLBACK callback, const void* codeBuffer, uint32_t codeSize )
 	: IVertexShader(type, callback), VertexShader(vs), CodeSize(codeSize)
 {
 	Driver = static_cast<CD3D11Driver*>(g_Engine->getDriver());
 
-	CodeBuffer = new u8[CodeSize];
+	CodeBuffer = new uint8_t[CodeSize];
 	Q_memcpy(CodeBuffer, CodeSize, codeBuffer, CodeSize);
 }
 
@@ -23,7 +23,7 @@ CD3D11VertexShader::~CD3D11VertexShader()
 	SAFE_RELEASE_STRICT(VertexShader); 
 }
 
-const SDx11ConstDesc* CD3D11VertexShader::getConstantDesc( const c8* name ) const
+const SDx11ConstDesc* CD3D11VertexShader::getConstantDesc( const char* name ) const
 {
 	for (T_BufferList::const_iterator itr = CBufferList.begin(); itr != CBufferList.end(); ++itr)
 	{
@@ -40,7 +40,7 @@ const SDx11ConstDesc* CD3D11VertexShader::getConstantDesc( const c8* name ) cons
 	return nullptr;
 }
 
-SDx11ConstDesc* CD3D11VertexShader::getConstantDesc( u32 index )
+SDx11ConstDesc* CD3D11VertexShader::getConstantDesc( uint32_t index )
 {
 	if (index >= getConstantCount())
 		return nullptr;
@@ -67,7 +67,7 @@ SDx11ConstDesc* CD3D11VertexShader::getConstantDesc( u32 index )
 	}
 }
 
-const STextureDesc11* CD3D11VertexShader::getTextureDesc( const c8* name ) const
+const STextureDesc11* CD3D11VertexShader::getTextureDesc( const char* name ) const
 {
 	for (T_TextureList::const_iterator itr = TextureList.begin(); itr != TextureList.end(); ++itr)
 	{
@@ -77,7 +77,7 @@ const STextureDesc11* CD3D11VertexShader::getTextureDesc( const c8* name ) const
 	return nullptr;
 }
 
-void CD3D11VertexShader::setShaderConstant( const c8* name, const void* srcData, u32 size )
+void CD3D11VertexShader::setShaderConstant( const char* name, const void* srcData, uint32_t size )
 {
 	const SDx11ConstDesc* desc = getConstantDesc(name);
 	ASSERT(desc);
@@ -87,7 +87,7 @@ void CD3D11VertexShader::setShaderConstant( const c8* name, const void* srcData,
 	}
 }
 
-const SSamplerDesc11* CD3D11VertexShader::getSamplerDesc( const c8* name ) const
+const SSamplerDesc11* CD3D11VertexShader::getSamplerDesc( const char* name ) const
 {
 	for (T_SamplerList::const_iterator itr = SamplerList.begin(); itr != SamplerList.end(); ++itr)
 	{
@@ -97,7 +97,7 @@ const SSamplerDesc11* CD3D11VertexShader::getSamplerDesc( const c8* name ) const
 	return nullptr;
 }
 
-void CD3D11VertexShader::setShaderConstant( const SDx11ConstDesc* desc, const void* srcData, u32 size )
+void CD3D11VertexShader::setShaderConstant( const SDx11ConstDesc* desc, const void* srcData, uint32_t size )
 {
 	ASSERT(size % 16 == 0);
 	
@@ -125,13 +125,13 @@ void CD3D11VertexShader::onShaderUsed()
 	if (!CBufferList.empty())
 	{
 		ID3D11Buffer** buffers = (ID3D11Buffer**)Z_AllocateTempMemory(sizeof(ID3D11Buffer*) * CBufferList.size());
-		u32 count = 0;
+		uint32_t count = 0;
 		for (T_BufferList::const_iterator itr = CBufferList.begin(); itr != CBufferList.end(); ++itr)
 		{
 			buffers[count] = itr->constBuffer;
 			++count;
 		}
-		u32 start = CBufferList.front().index;
+		uint32_t start = CBufferList.front().index;
 
 		//ImmediateContext
 		Driver->ImmediateContext->VSSetConstantBuffers(start, count, buffers);
@@ -142,13 +142,13 @@ void CD3D11VertexShader::onShaderUsed()
 	if (!TBufferList.empty())
 	{
 		ID3D11ShaderResourceView** shaderRVs = (ID3D11ShaderResourceView**)Z_AllocateTempMemory(sizeof(ID3D11ShaderResourceView*) * TBufferList.size());
-		u32 count = 0;
+		uint32_t count = 0;
 		for (T_BufferList::const_iterator itr = TBufferList.begin(); itr != TBufferList.end(); ++itr)
 		{
 			shaderRVs[count] = itr->shaderResourceView;
 			++count;
 		}
-		u32 start = TBufferList.front().index;
+		uint32_t start = TBufferList.front().index;
 
 		//ImmediateContext
 		Driver->ImmediateContext->VSSetShaderResources(start, count, shaderRVs);
@@ -168,7 +168,7 @@ CD3D11PixelShader::~CD3D11PixelShader()
 	SAFE_RELEASE_STRICT(PixelShader);
 }
 
-const SDx11ConstDesc* CD3D11PixelShader::getConstantDesc( const c8* name ) const
+const SDx11ConstDesc* CD3D11PixelShader::getConstantDesc( const char* name ) const
 {
 	for (T_BufferList::const_iterator itr = CBufferList.begin(); itr != CBufferList.end(); ++itr)
 	{
@@ -185,7 +185,7 @@ const SDx11ConstDesc* CD3D11PixelShader::getConstantDesc( const c8* name ) const
 	return nullptr;
 }
 
-SDx11ConstDesc* CD3D11PixelShader::getConstantDesc( u32 index )
+SDx11ConstDesc* CD3D11PixelShader::getConstantDesc( uint32_t index )
 {
 	if (index >= getConstantCount())
 		return nullptr;
@@ -212,7 +212,7 @@ SDx11ConstDesc* CD3D11PixelShader::getConstantDesc( u32 index )
 	}
 }
 
-const STextureDesc11* CD3D11PixelShader::getTextureDesc( const c8* name ) const
+const STextureDesc11* CD3D11PixelShader::getTextureDesc( const char* name ) const
 {
 	for (T_TextureList::const_iterator itr = TextureList.begin(); itr != TextureList.end(); ++itr)
 	{
@@ -222,7 +222,7 @@ const STextureDesc11* CD3D11PixelShader::getTextureDesc( const c8* name ) const
 	return nullptr;
 }
 
-const SSamplerDesc11* CD3D11PixelShader::getSamplerDesc( const c8* name ) const
+const SSamplerDesc11* CD3D11PixelShader::getSamplerDesc( const char* name ) const
 {
 	for (T_SamplerList::const_iterator itr = SamplerList.begin(); itr != SamplerList.end(); ++itr)
 	{
@@ -232,7 +232,7 @@ const SSamplerDesc11* CD3D11PixelShader::getSamplerDesc( const c8* name ) const
 	return nullptr;
 }
 
-void CD3D11PixelShader::setShaderConstant( const SDx11ConstDesc* desc, const void* srcData, u32 size )
+void CD3D11PixelShader::setShaderConstant( const SDx11ConstDesc* desc, const void* srcData, uint32_t size )
 {
 	ASSERT(size <= desc->size);
 	ASSERT(size % 16 == 0);
@@ -256,7 +256,7 @@ void CD3D11PixelShader::setShaderConstant( const SDx11ConstDesc* desc, const voi
 	Driver->ImmediateContext->Unmap(desc->constBuffer, 0);
 }
 
-void CD3D11PixelShader::setShaderConstant( const c8* name, const void* srcData, u32 size )
+void CD3D11PixelShader::setShaderConstant( const char* name, const void* srcData, uint32_t size )
 {
 	const SDx11ConstDesc* desc = getConstantDesc(name);
 	//ASSERT(desc);
@@ -266,7 +266,7 @@ void CD3D11PixelShader::setShaderConstant( const c8* name, const void* srcData, 
 	}
 }
 
-void CD3D11PixelShader::setTextureConstant( const c8* name, ITexture* texture )
+void CD3D11PixelShader::setTextureConstant( const char* name, ITexture* texture )
 {
 	const STextureDesc11* desc = getTextureDesc(name);
 	ASSERT(desc);
@@ -281,13 +281,13 @@ void CD3D11PixelShader::onShaderUsed()
 	if (!CBufferList.empty())
 	{
 		ID3D11Buffer** buffers = (ID3D11Buffer**)Z_AllocateTempMemory(sizeof(ID3D11Buffer*) * CBufferList.size());
-		u32 count = 0;
+		uint32_t count = 0;
 		for (T_BufferList::const_iterator itr = CBufferList.begin(); itr != CBufferList.end(); ++itr)
 		{
 			buffers[count] = itr->constBuffer;
 			++count;
 		}
-		u32 start = CBufferList.front().index;
+		uint32_t start = CBufferList.front().index;
 
 		//ImmediateContext
 		Driver->ImmediateContext->PSSetConstantBuffers(start, count, buffers);
@@ -298,13 +298,13 @@ void CD3D11PixelShader::onShaderUsed()
 	if (!TBufferList.empty())
 	{
 		ID3D11ShaderResourceView** shaderRVs = (ID3D11ShaderResourceView**)Z_AllocateTempMemory(sizeof(ID3D11ShaderResourceView*) * TBufferList.size());
-		u32 count = 0;
+		uint32_t count = 0;
 		for (T_BufferList::const_iterator itr = TBufferList.begin(); itr != TBufferList.end(); ++itr)
 		{
 			shaderRVs[count] = itr->shaderResourceView;
 			++count;
 		}
-		u32 start = TBufferList.front().index;
+		uint32_t start = TBufferList.front().index;
 
 		//ImmediateContext
 		Driver->ImmediateContext->PSSetShaderResources(start, count, shaderRVs);

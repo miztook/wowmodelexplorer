@@ -13,8 +13,8 @@ class CMapEnvironment;
 struct STile	
 {
 	STile() : fileAdt(nullptr){ row = col = 0 ; }
-	u8  row;
-	u8  col;
+	uint8_t  row;
+	uint8_t  col;
 	IFileADT*	fileAdt;
 };
 
@@ -47,39 +47,39 @@ public:
 public:
 	struct SWmoInstance
 	{
-		u32 wmoIndex;
-		s32 id;
+		uint32_t wmoIndex;
+		int32_t id;
 		vector3df pos;
 		vector3df dir;
 		matrix4		mat;
 		aabbox3df		box;
-		f32		scale;
+		float		scale;
 	};
 
 public:
-	virtual bool loadFile(IMemFile* file, s32 mapid) = 0;
-	virtual bool loadFileSimple(IMemFile* file, s32 mapid) = 0;		//only tiles
+	virtual bool loadFile(IMemFile* file, int32_t mapid) = 0;
+	virtual bool loadFileSimple(IMemFile* file, int32_t mapid) = 0;		//only tiles
 
 	virtual CMapEnvironment*	 getMapEnvironment() const  = 0;
-	virtual STile* getTile(u8 row, u8 col) = 0;
+	virtual STile* getTile(uint8_t row, uint8_t col) = 0;
 
 public:
 	//wmo
-	u32		NumWmoFileNames;
-	u32		NumWmoInstance;
-	u32		NumTextures;
+	uint32_t		NumWmoFileNames;
+	uint32_t		NumWmoInstance;
+	uint32_t		NumTextures;
 
-	u32*		WmoFileNameIndices;
-	c8*		WmoFileNameBlock;
+	uint32_t*		WmoFileNameIndices;
+	char*		WmoFileNameBlock;
 	
 	SWmoInstance*		WmoInstances;
-	s32*		TileOffsets;
+	int32_t*		TileOffsets;
 	 
 	//tex
 	ADT::TXBT*	TextureInfos;
-	c8* TextureFileNameBlock;
+	char* TextureFileNameBlock;
 
-	c8		GlobalWmoFileName[QMAX_PATH];
+	char		GlobalWmoFileName[QMAX_PATH];
 	SWmoInstance		GlobalWmoInstance;
 
 	std::vector<STile>	Tiles;

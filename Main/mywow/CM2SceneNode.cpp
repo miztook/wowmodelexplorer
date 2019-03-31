@@ -39,14 +39,14 @@ CM2SceneNode::CM2SceneNode( IFileM2* mesh, ISceneNode* parent, bool npc )
 		M2Move = nullptr;
 	}
 
-	for (u32 i=0; i<Mesh->NumParticleSystems; ++i)
+	for (uint32_t i=0; i<Mesh->NumParticleSystems; ++i)
 	{
 		IParticleSystemSceneNode* psNode = addParticleSystemSceneNode(&Mesh->ParticleSystems[i]);
 		ParticleSystemNodes.push_back(psNode);
 	}
 
 	/*
-	for (u32 i=0; i<Mesh->NumRibbonEmitters; ++i)
+	for (uint32_t i=0; i<Mesh->NumRibbonEmitters; ++i)
 	{
 		IRibbonSceneNode* reNode = addRibbonEmitterSceneNode(&Mesh->RibbonEmitters[i]);
 		RibbonEmitterNodes.push_back(reNode);
@@ -103,7 +103,7 @@ aabbox3df CM2SceneNode::getBoundingBox() const
 	return Mesh->getBoundingBox();
 }
 
-void CM2SceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame, bool visible )
+void CM2SceneNode::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible )
 {
 	if(visible)
 		tickVisible(timeSinceStart, timeSinceLastFrame);
@@ -111,9 +111,9 @@ void CM2SceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame, bool visibl
 		tickInvisible(timeSinceStart, timeSinceLastFrame);
 }
 
-void CM2SceneNode::tickInvisible( u32 timeSinceStart, u32 timeSinceLastFrame )
+void CM2SceneNode::tickInvisible( uint32_t timeSinceStart, uint32_t timeSinceLastFrame )
 {
-	s32 limit = 100;
+	int32_t limit = 100;
 
 	if (!checkFrameLimit(timeSinceLastFrame, limit))
 		return;
@@ -136,22 +136,22 @@ void CM2SceneNode::tickInvisible( u32 timeSinceStart, u32 timeSinceLastFrame )
 		M2FSM->tick(timeSinceStart, timeSinceLastFrame);
 }
 
-void CM2SceneNode::tickVisible( u32 timeSinceStart, u32 timeSinceLastFrame )
+void CM2SceneNode::tickVisible( uint32_t timeSinceStart, uint32_t timeSinceLastFrame )
 {
-	s32 limit = -1;
-	f32 portion = 1.0f;
+	int32_t limit = -1;
+	float portion = 1.0f;
 
-	f32 distance = Distance / WorldRadius;
-	f32 end = g_Engine->getSceneRenderServices()->getM2InvisibleTickDistance();
-	f32 begin = g_Engine->getSceneRenderServices()->getM2SlowTickBegin() * end;
+	float distance = Distance / WorldRadius;
+	float end = g_Engine->getSceneRenderServices()->getM2InvisibleTickDistance();
+	float begin = g_Engine->getSceneRenderServices()->getM2SlowTickBegin() * end;
 
-	f32 delta = distance - begin;
+	float delta = distance - begin;
 	if (delta > 0)
 	{	
 		if (distance < end)
 		{
 			portion = clamp_(delta / (end - begin), 0.0f, 1.0f);
-			limit = (s32)(100 * portion);
+			limit = (int32_t)(100 * portion);
 		}
 		else
 		{
@@ -166,7 +166,7 @@ void CM2SceneNode::tickVisible( u32 timeSinceStart, u32 timeSinceLastFrame )
 	}
 
 	bool animEnd = false;
-	f32 deltaFrame = Animation.buildFrameNumber(timeSinceLastFrame, &animEnd);
+	float deltaFrame = Animation.buildFrameNumber(timeSinceLastFrame, &animEnd);
 
 	//在最后一帧时触发一次
 	if (animEnd)
@@ -182,7 +182,7 @@ void CM2SceneNode::tickVisible( u32 timeSinceStart, u32 timeSinceLastFrame )
 	if (M2FSM)
 		M2FSM->tick(timeSinceStart, timeSinceLastFrame);
 
-	u32 lastingFrame = (u32)(timeSinceStart * Animation.getAnimationSpeed());
+	uint32_t lastingFrame = (uint32_t)(timeSinceStart * Animation.getAnimationSpeed());
 	lastingFrame %= 38400;
 
 	//
@@ -190,13 +190,13 @@ void CM2SceneNode::tickVisible( u32 timeSinceStart, u32 timeSinceLastFrame )
 	{
 		if ( fabs(deltaFrame) > 0.0f )			//在播放动画，动画运行
 		{
-			u32 currentFrame = (u32)(Animation.getCurrentFrame() * Animation.getAnimationSpeed());
+			uint32_t currentFrame = (uint32_t)(Animation.getCurrentFrame() * Animation.getAnimationSpeed());
 
-			f32 blend = 1.0f;
+			float blend = 1.0f;
 			if (AnimTimeBlend > 0)
 			{
-				AnimTimeBlend = max_(AnimTimeBlend - (s32)timeSinceLastFrame, 0);
-				blend = 1.0f - AnimTimeBlend / (f32)TimeBlend;
+				AnimTimeBlend = max_(AnimTimeBlend - (int32_t)timeSinceLastFrame, 0);
+				blend = 1.0f - AnimTimeBlend / (float)TimeBlend;
 			}
 
 			M2Instance->animateColors(CurrentAnim, currentFrame);
@@ -268,7 +268,7 @@ void CM2SceneNode::render() const
 
 	for (PLENTRY p = M2Instance->VisibleGeosetList.Flink; p != &M2Instance->VisibleGeosetList;)
 	{
-		u32 c = (u32)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - M2Instance->DynGeosets);
+		uint32_t c = (uint32_t)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - M2Instance->DynGeosets);
 		p = p->Flink;
 		
 		if (M2Instance->DynGeosets[c].NoAlpha)
@@ -284,7 +284,7 @@ void CM2SceneNode::render() const
   	//g_Engine->getDrawServices()->draw2DImage(M2Instance->ReplaceTextures[TEXTURE_BODY], vector2di(300,0), nullptr, SColor(), 1.0f, false);
 }
 
-void CM2SceneNode::renderGeoset( u32 index ) const
+void CM2SceneNode::renderGeoset( uint32_t index ) const
 {
 	CSceneRenderServices* sceneRenderServices = static_cast<CSceneRenderServices*>(g_Engine->getSceneRenderServices());
 
@@ -307,7 +307,7 @@ void CM2SceneNode::renderGeoset( u32 index ) const
 			if (RenderInstType == ERT_MESH && ModelAlpha)
 				unit.u.priority = RenderPriority + (set->GeoID != 0 ? 1 : 0);	//子模型优先渲染, 身体最后渲染
 			unit.distance = Distance;
-			unit.u.geoset = (u16)index;
+			unit.u.geoset = (uint16_t)index;
 
 			unit.bufferParam.vbuffer0 = skin->GVertexBuffer; 
 			unit.bufferParam.vbuffer1 = skin->AVertexBuffer;
@@ -359,7 +359,7 @@ void CM2SceneNode::renderGeoset( u32 index ) const
 		if (RenderInstType == ERT_MESH && ModelAlpha)
 			unit.u.priority = RenderPriority + (set->GeoID != 0 ? 1 : 0);	//子模型优先渲染, 身体最后渲染
 		unit.distance = Distance;
-		unit.u.geoset = (u16)index;
+		unit.u.geoset = (uint16_t)index;
 
 		unit.bufferParam = g_Engine->getMeshDecalServices()->BufferParam;
 		unit.primType = EPT_TRIANGLES;
@@ -392,7 +392,7 @@ void CM2SceneNode::renderGeoset( u32 index ) const
 	}
 }
 
-u32 CM2SceneNode::onFillVertexBuffer( u32 geoset, SVertex_PCT* vertices, u32 vcount ) const
+uint32_t CM2SceneNode::onFillVertexBuffer( uint32_t geoset, SVertex_PCT* vertices, uint32_t vcount ) const
 {
 	CFileSkin* skin = M2Instance->CurrentSkin;
 	CGeoset* set = &skin->Geosets[geoset];
@@ -408,9 +408,9 @@ u32 CM2SceneNode::onFillVertexBuffer( u32 geoset, SVertex_PCT* vertices, u32 vco
 	vector3df up( view[1], view[5], view[9] );
 	vector3df dir( view[2], view[6], view[10]);
 
-	u32 vCount = 0;
+	uint32_t vCount = 0;
 
-	for (u32 i=0; i<(u32)(set->VCount/4); ++i)
+	for (uint32_t i=0; i<(uint32_t)(set->VCount/4); ++i)
 	{
 		if (vCount + 4 > vcount)
 			break;
@@ -454,7 +454,7 @@ bool CM2SceneNode::isNodeEligible() const
 	return cam->getViewFrustum().isInFrustum(box);
 }
 
-bool CM2SceneNode::playAnimationByIndex( u32 anim, bool loop, s32 timeblend /*= 200*/ )
+bool CM2SceneNode::playAnimationByIndex( uint32_t anim, bool loop, int32_t timeblend /*= 200*/ )
 {
 	if (Mesh->NumAnimations == 0)
 	{
@@ -465,12 +465,12 @@ bool CM2SceneNode::playAnimationByIndex( u32 anim, bool loop, s32 timeblend /*= 
 	anim = anim % Mesh->NumAnimations;
 	SModelAnimation* a = &Mesh->Animations[anim];
 
-	Animation.setMaxFrame((s32)a->timeLength);
-	Animation.setFrameLoop( 0, (s32)a->timeLength);
+	Animation.setMaxFrame((int32_t)a->timeLength);
+	Animation.setFrameLoop( 0, (int32_t)a->timeLength);
 	Animation.setLoopMode(loop);
 	Animation.setCurrentFrame(0);
 
-	CurrentAnim = (s32)anim;
+	CurrentAnim = (int32_t)anim;
 	AnimTimeBlend = TimeBlend = timeblend;
 
 	if (M2Instance->CharacterInfo)
@@ -481,19 +481,19 @@ bool CM2SceneNode::playAnimationByIndex( u32 anim, bool loop, s32 timeblend /*= 
 	return true;
 }
 
-bool CM2SceneNode::playAnimationByName( const c8* name, u32 subIndx, bool loop, s32 timeblend /*= 200*/ )
+bool CM2SceneNode::playAnimationByName( const char* name, uint32_t subIndx, bool loop, int32_t timeblend /*= 200*/ )
 {
-	s16 idx = Mesh->getAnimationIndex(name, subIndx);
+	int16_t idx = Mesh->getAnimationIndex(name, subIndx);
 	if(idx == -1)
 	{
 		CurrentAnim = -1;
 		return false;
 	}
 
-	return playAnimationByIndex((u32)idx, loop, timeblend);
+	return playAnimationByIndex((uint32_t)idx, loop, timeblend);
 }
 
-void CM2SceneNode::setM2ModelEquipment( s32 slot, s32 itemid, bool sheath )
+void CM2SceneNode::setM2ModelEquipment( int32_t slot, int32_t itemid, bool sheath )
 {
 	removeM2ModelEquipment(slot);
 
@@ -612,7 +612,7 @@ bool CM2SceneNode::setMountM2SceneNode( IM2SceneNode* m2Node )
 	return ret;
 }
 
-void CM2SceneNode::removeM2ModelEquipment( s32 slot )
+void CM2SceneNode::removeM2ModelEquipment( int32_t slot )
 {
 	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end();)
 	{
@@ -699,7 +699,7 @@ void CM2SceneNode::removeAllM2Attachments()
 
 void CM2SceneNode::setParticleSpeed(float speed)
 {
-	f32 particleSpeed = Animation.getAnimationSpeed() * speed;
+	float particleSpeed = Animation.getAnimationSpeed() * speed;
 	for (T_ParticleSystemNodes::const_iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 	{
 		(*i)->setSpeed(particleSpeed);
@@ -710,7 +710,7 @@ void CM2SceneNode::setParticleSpeed(float speed)
 void CM2SceneNode::updateAttachmentEntry( const SAttachmentEntry* entry )
 {
 	const SModelAttachment& attachment = Mesh->Attachments[entry->attachIndex];
-	s32 bIdx = attachment.boneIndex;
+	int32_t bIdx = attachment.boneIndex;
 	if(bIdx == -1)
 		return;
 
@@ -730,7 +730,7 @@ void CM2SceneNode::updateAttachmentEntry( const SAttachmentEntry* entry )
 void CM2SceneNode::updateSpellEffectEntry( const SAttachmentEntry* entry )
 {
 	const SModelAttachment& attachment = Mesh->Attachments[entry->attachIndex];
-	s32 bIdx = attachment.boneIndex;
+	int32_t bIdx = attachment.boneIndex;
 	if(bIdx == -1)
 		return;
 
@@ -787,16 +787,16 @@ void CM2SceneNode::buildVisibleGeosets()
 	M2Instance->buildVisibleGeosets();
 }
 
-bool CM2SceneNode::updateNpc( s32 npcid )
+bool CM2SceneNode::updateNpc( int32_t npcid )
 {
 	if (M2Instance->CharacterInfo && IsNpc)
 	{
 		bool success = M2Instance->updateNpc(npcid);
 		if (success)
 		{
-			for (u32 slot=0; slot<NUM_CHAR_SLOTS; ++slot)
+			for (uint32_t slot=0; slot<NUM_CHAR_SLOTS; ++slot)
 			{
-				s32 id = M2Instance->CharacterInfo->Equipments[slot];
+				int32_t id = M2Instance->CharacterInfo->Equipments[slot];
 				if (M2Instance->slotHasModel(slot))
 					setM2ModelEquipment(slot, id, false);
 			}
@@ -812,9 +812,9 @@ bool CM2SceneNode::updateNpc( s32 npcid )
 	return false;
 }
 
-bool CM2SceneNode::setModelCamera( s32 index )
+bool CM2SceneNode::setModelCamera( int32_t index )
 {
-	if (index < 0 || index >= (s32)Mesh->NumModelCameras)
+	if (index < 0 || index >= (int32_t)Mesh->NumModelCameras)
 	{
 		CurrentCamera = -1;
 
@@ -839,10 +839,10 @@ bool CM2SceneNode::setModelCamera( s32 index )
 	CurrentCamera = index;
 
 	SModelCamera& cam = Mesh->ModelCameras[index];
-	f32 nearValue = cam.nearclip;
-	f32 farValue = cam.farclip;
+	float nearValue = cam.nearclip;
+	float farValue = cam.farclip;
 	//recti viewport = g_Engine->getDriver()->getViewPort();
-	f32 aspectRatio = 1.6667f; //(f32)viewport.getWidth() / (f32)viewport.getHeight();
+	float aspectRatio = 1.6667f; //(float)viewport.getWidth() / (float)viewport.getHeight();
 
 	CurrentProjection.buildProjectionMatrixPerspectiveFovLH(PI/4.0f, aspectRatio, nearValue, farValue);
 	vector3df pos = cam.position;
@@ -921,9 +921,9 @@ void CM2SceneNode::onUpdated()
 		AbsoluteTransformation.transformBox(WorldCollisionAABox);
 }
 
-void CM2SceneNode::setModelAlpha( bool enable, f32 val )
+void CM2SceneNode::setModelAlpha( bool enable, float val )
 {
-	f32 v = clamp_(val, 0.0f, 1.0f);
+	float v = clamp_(val, 0.0f, 1.0f);
 	M2Instance->EnableModelAlpha = enable;
 	M2Instance->ModelAlpha = v;
 
@@ -976,14 +976,14 @@ void CM2SceneNode::setModelColor( bool enable, SColor color )
 	}
 }
 
-bool CM2SceneNode::checkFrameLimit( u32& timeSinceLastFrame, s32 limit )
+bool CM2SceneNode::checkFrameLimit( uint32_t& timeSinceLastFrame, int32_t limit )
 {
 	if (limit <= -1)
 		return true;
 
 	FrameInterval += timeSinceLastFrame;
 
-	if (FrameInterval < (u32)limit)		//use limit
+	if (FrameInterval < (uint32_t)limit)		//use limit
 	{
 		return false;
 	}

@@ -18,8 +18,8 @@ bool CBLPImage::loadFile( IMemFile* file, bool abgr )
 {
 	IsABGR = abgr;
 
-	u32 filesize = file->getSize();
-	FileData = new u8[filesize];
+	uint32_t filesize = file->getSize();
+	FileData = new uint8_t[filesize];
 	Q_memcpy(FileData, filesize, file->getBuffer(), filesize);
 
 	SBLPHeader* header = reinterpret_cast<SBLPHeader*>(FileData);
@@ -63,7 +63,7 @@ bool CBLPImage::loadFile( IMemFile* file, bool abgr )
 	}
 
 	NumMipMaps = 0;
-	for (u32 i=0; i<16; ++i)
+	for (uint32_t i=0; i<16; ++i)
 	{
 		if(!header->_mipmapOfs[i])
 			break;
@@ -71,10 +71,10 @@ bool CBLPImage::loadFile( IMemFile* file, bool abgr )
 	}
 
 	//check mipsize
-	for (u32 i=0; i<NumMipMaps; ++i)
+	for (uint32_t i=0; i<NumMipMaps; ++i)
 	{
 		dimension2du mipsize = Size.getMipLevelSize(i);
-		u32 bytes;
+		uint32_t bytes;
 		getImagePitchAndBytes(Format, mipsize.Width, mipsize.Height, MipmapPitch[i], bytes);
 
 // 		if(Format != ECF_A8R8G8B8)			//compressed
@@ -85,7 +85,7 @@ bool CBLPImage::loadFile( IMemFile* file, bool abgr )
 }
 
 
-bool CBLPImage::fromImageData( const u8* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap )
+bool CBLPImage::fromImageData( const uint8_t* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap )
 {
 	if (size.Width % 4 != 0 || size.Height % 4 != 0 || format != ECF_A8R8G8B8)
 	{
@@ -114,13 +114,13 @@ bool CBLPImage::fromImageData( const u8* src, const dimension2du& size, ECOLOR_F
 		return false;
 	}
 
-	u32 offset = sizeof(SBLPHeader);
-	for (u32 i=0; i<NumMipMaps; ++i)
+	uint32_t offset = sizeof(SBLPHeader);
+	for (uint32_t i=0; i<NumMipMaps; ++i)
 	{
 		dimension2du mipsize = Size.getMipLevelSize(i);
 		header._mipmapOfs[i] = offset;
 
-		u32 bytes;
+		uint32_t bytes;
 		getImagePitchAndBytes(Format, mipsize.Width, mipsize.Height, MipmapPitch[i], bytes);
 
 		header._mipmapSize[i] = bytes;
@@ -129,14 +129,14 @@ bool CBLPImage::fromImageData( const u8* src, const dimension2du& size, ECOLOR_F
 
 	Q_memcpy(MipmapDataSize, sizeof(MipmapDataSize), header._mipmapSize, sizeof(header._mipmapSize));
 
-	FileData = new u8[offset];
+	FileData = new uint8_t[offset];
 	Q_memcpy(FileData, sizeof(SBLPHeader), &header, sizeof(SBLPHeader));
 
 	//
-	u32 mipmapOfs[16] = {0};
+	uint32_t mipmapOfs[16] = {0};
 	offset = 0;
-	u32 bpp = getBytesPerPixelFromFormat(ECF_R5G6B5);
-	for (u32 i=0; i<NumMipMaps; ++i)
+	uint32_t bpp = getBytesPerPixelFromFormat(ECF_R5G6B5);
+	for (uint32_t i=0; i<NumMipMaps; ++i)
 	{
 		dimension2du s = Size.getMipLevelSize(i);
 		mipmapOfs[i] = offset;
@@ -149,14 +149,14 @@ bool CBLPImage::fromImageData( const u8* src, const dimension2du& size, ECOLOR_F
 		return false;
 	}
     
-	u8* tmpdata = (u8*)Z_AllocateTempMemory(offset);
+	uint8_t* tmpdata = (uint8_t*)Z_AllocateTempMemory(offset);
 	
 	//mip 0 data
 	CBlit::resizeBilinearA8R8G8B8(src, Size.Width, Size.Height, tmpdata, Size.Width, Size.Height, ECF_R5G6B5);
 	//CBlit::resizeBicubicA8R8G8B8(src, Size.Width, Size.Height, tmpdata, Size.Width, Size.Height, ECF_R5G6B5);
 
 	//mip 0 data -> dxt1
-	u8* dst0 = FileData + header._mipmapOfs[0];
+	uint8_t* dst0 = FileData + header._mipmapOfs[0];
 	if (header._mipmapSize[0] != DDSCompressRGB565ToDXT1(tmpdata, Size.Width, Size.Height, dst0))
 	{
 		ASSERT(false);
@@ -164,18 +164,18 @@ bool CBLPImage::fromImageData( const u8* src, const dimension2du& size, ECOLOR_F
 		return false;
 	}
 
-	for (u32 i=1; i<NumMipMaps; ++i)
+	for (uint32_t i=1; i<NumMipMaps; ++i)
 	{
 		dimension2du upper = Size.getMipLevelSize(i-1);
 		dimension2du lower = Size.getMipLevelSize(i);
-		const u8* s = tmpdata + mipmapOfs[i-1];
-		u8* tgt = tmpdata + mipmapOfs[i];
+		const uint8_t* s = tmpdata + mipmapOfs[i-1];
+		uint8_t* tgt = tmpdata + mipmapOfs[i];
 
 		//mip i data
 		copy16BitMipMap(s, tgt, lower.Width, lower.Height, bpp * upper.Width, bpp * lower.Width);
 
 		//mip i data -> dxt1
-		u8* dst = FileData + header._mipmapOfs[i];
+		uint8_t* dst = FileData + header._mipmapOfs[i];
 		if (header._mipmapSize[i] != DDSCompressRGB565ToDXT1(tgt, lower.Width, lower.Height, dst))
 		{
 			ASSERT(false);
@@ -189,7 +189,7 @@ bool CBLPImage::fromImageData( const u8* src, const dimension2du& size, ECOLOR_F
 	return true;
 }
 
-const void* CBLPImage::getMipmapData( u32 level ) const
+const void* CBLPImage::getMipmapData( uint32_t level ) const
 {
 	if (level >= 16)
 		return nullptr;
@@ -201,10 +201,10 @@ const void* CBLPImage::getMipmapData( u32 level ) const
 	return nullptr;
 }
 
-bool CBLPImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32 height )
+bool CBLPImage::copyMipmapData( uint32_t level, void* dest, uint32_t pitch, uint32_t width, uint32_t height )
 {
-	u32 limit = getMipmapDataSize(level);
-	const u8* src = static_cast<const u8*>(getMipmapData(level));
+	uint32_t limit = getMipmapDataSize(level);
+	const uint8_t* src = static_cast<const uint8_t*>(getMipmapData(level));
 	if (!src || !limit )
 	{
 		ASSERT(false);
@@ -213,16 +213,16 @@ bool CBLPImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32
 
 	if (Format != ECF_A8R8G8B8)
 	{
-		u32 xblock = (width + 3) / 4;
-		u32 yblock = (height + 3) / 4;
+		uint32_t xblock = (width + 3) / 4;
+		uint32_t yblock = (height + 3) / 4;
 
-		u8* target = (u8*)dest;
-		u32 blocksize = getBytesPerPixelFromFormat(Format);
+		uint8_t* target = (uint8_t*)dest;
+		uint32_t blocksize = getBytesPerPixelFromFormat(Format);
 
 		ASSERT(blocksize * xblock >= pitch);
 
-		const u8* p = src;
-		for (u32 i = 0; i < yblock; ++i)
+		const uint8_t* p = src;
+		for (uint32_t i = 0; i < yblock; ++i)
 		{
 			Q_memcpy(target, pitch, p, xblock * blocksize);
 			target += pitch;
@@ -233,15 +233,15 @@ bool CBLPImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32
 	}
 	else
 	{
-		u32* target = (u32*)dest;
-		u32* palette = (u32*)(FileData + sizeof(SBLPHeader));
-		u32	size = width * height;
+		uint32_t* target = (uint32_t*)dest;
+		uint32_t* palette = (uint32_t*)(FileData + sizeof(SBLPHeader));
+		uint32_t	size = width * height;
 		SColor c;
-		for (u32 i=0; i<height; ++i)
+		for (uint32_t i=0; i<height; ++i)
 		{
-			for(u32 k=0; k<width; ++k)
+			for(uint32_t k=0; k<width; ++k)
 			{
-				u32 idx = k + width * i;
+				uint32_t idx = k + width * i;
 			
 				switch (AlphaDepth)
 				{
@@ -252,14 +252,14 @@ bool CBLPImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32
 				case 1:
 					{
 						c = palette[src[idx]];
-						u32 a = (src[(size + idx/8)] >> (idx%8)) & 1;
+						uint32_t a = (src[(size + idx/8)] >> (idx%8)) & 1;
 						c.setAlpha( a ? 0xff : 0);
 					}
 					break;
 				case 4:
 					{
 						c = palette[src[idx]];
-						u32 a;
+						uint32_t a;
 						if (i%2)
 							a = (src[(size+idx/2)] >> 4) & 0x000f;
 						else
@@ -279,29 +279,29 @@ bool CBLPImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32
 					c.set(c.getAlpha(), c.getBlue(), c.getGreen(), c.getRed());
 				target[k] = c.color;
 			}
-			target += (pitch / sizeof(u32));
+			target += (pitch / sizeof(uint32_t));
 		}
 	}
 
 	return true;
 }
 
-void CBLPImage::copy16BitMipMap( const u8* src, u8* tgt, u32 width, u32 height, u32 pitchsrc, u32 pitchtgt ) const
+void CBLPImage::copy16BitMipMap( const uint8_t* src, uint8_t* tgt, uint32_t width, uint32_t height, uint32_t pitchsrc, uint32_t pitchtgt ) const
 {
-	for (u32 y=0; y<height; ++y)
+	for (uint32_t y=0; y<height; ++y)
 	{
-		for (u32 x=0; x<width; ++x)
+		for (uint32_t x=0; x<width; ++x)
 		{
-			u32 a=0, r=0, g=0, b=0;
+			uint32_t a=0, r=0, g=0, b=0;
 
-			for (s32 dy=0; dy<2; ++dy)
+			for (int32_t dy=0; dy<2; ++dy)
 			{
-				const s32 tgy = (y*2)+dy;
-				for (s32 dx=0; dx<2; ++dx)
+				const int32_t tgy = (y*2)+dy;
+				for (int32_t dx=0; dx<2; ++dx)
 				{
-					const s32 tgx = (x*2)+dx;
+					const int32_t tgx = (x*2)+dx;
 
-					SColor c = SColor::R5G6B5toA8R8G8B8(*(u16*)(&src[(tgx*2)+(tgy*pitchsrc)]));
+					SColor c = SColor::R5G6B5toA8R8G8B8(*(uint16_t*)(&src[(tgx*2)+(tgy*pitchsrc)]));
 
 					a += c.getAlpha();
 					r += c.getRed();
@@ -315,9 +315,9 @@ void CBLPImage::copy16BitMipMap( const u8* src, u8* tgt, u32 width, u32 height, 
 			g /= 4;
 			b /= 4;
 
-			u16 c;
+			uint16_t c;
 			c = SColor::A8R8G8B8toR5G6B5(SColor(a,r,g,b).color);
-			*(u16*)(&tgt[(x*2)+(y*pitchtgt)]) = c;
+			*(uint16_t*)(&tgt[(x*2)+(y*pitchtgt)]) = c;
 		}
 	}
 }

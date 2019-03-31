@@ -10,39 +10,39 @@ private:
 	DISALLOW_COPY_AND_ASSIGN(CFileSystem);
 
 public:
-	CFileSystem(const c8* baseDir, const c8* logDir, bool ignoreSetting);
+	CFileSystem(const char* baseDir, const char* logDir, bool ignoreSetting);
 	~CFileSystem();
 
 public:
-	virtual IReadFile* createAndOpenFile( const c8* filename, bool binary );
-	virtual IWriteFile* createAndWriteFile( const c8* filename, bool binary, bool append = false);
+	virtual IReadFile* createAndOpenFile( const char* filename, bool binary );
+	virtual IWriteFile* createAndWriteFile( const char* filename, bool binary, bool append = false);
 
-	virtual bool createDirectory(const c8* dirname);
-	virtual bool deleteDirectory(const c8* dirname);
+	virtual bool createDirectory(const char* dirname);
+	virtual bool deleteDirectory(const char* dirname);
 
-	virtual void getAbsolutePath(const c8* filename, c8* outfilename, u32 size );
+	virtual void getAbsolutePath(const char* filename, char* outfilename, uint32_t size );
 
-	virtual const c8* getBaseDirectory() const { return BaseDirectory; }
-	virtual const c8* getDataDirectory() const { return DataDirectory; }
-	virtual const c8* getMpqDirectory() const { return MpqDirectory; }
-	virtual bool isFileExists(const c8* filename);
-	virtual const c8* getShaderBaseDirectory() const { return ShaderBaseDirectory; }
+	virtual const char* getBaseDirectory() const { return BaseDirectory; }
+	virtual const char* getDataDirectory() const { return DataDirectory; }
+	virtual const char* getMpqDirectory() const { return MpqDirectory; }
+	virtual bool isFileExists(const char* filename);
+	virtual const char* getShaderBaseDirectory() const { return ShaderBaseDirectory; }
 
-	virtual void writeLog(E_LOG_TYPE type, const c8* format, ...);
+	virtual void writeLog(E_LOG_TYPE type, const char* format, ...);
 
 	virtual IConfigs* getConfigs() const { return (IConfigs*)&Configs; }
 
 private:
 	bool createLogFiles();
 
-	const c8* getLogFileName(E_LOG_TYPE type) const;
+	const char* getLogFileName(E_LOG_TYPE type) const;
 
 private:
-	c8		BaseDirectory[QMAX_PATH];
-	c8		DataDirectory[QMAX_PATH];
-	c8		MpqDirectory[QMAX_PATH];
-	c8		ShaderBaseDirectory[QMAX_PATH];
-	c8		LogDirectory[QMAX_PATH];
+	char		BaseDirectory[QMAX_PATH];
+	char		DataDirectory[QMAX_PATH];
+	char		MpqDirectory[QMAX_PATH];
+	char		ShaderBaseDirectory[QMAX_PATH];
+	char		LogDirectory[QMAX_PATH];
 
 	CConfigs		Configs;
 
@@ -50,5 +50,5 @@ private:
 	IWriteFile* LogResFile;
 	IWriteFile* LogSoundFile;
 
-	c8		LogString[1024];
+	char		LogString[1024];
 };

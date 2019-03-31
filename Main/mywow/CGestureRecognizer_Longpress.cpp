@@ -18,8 +18,8 @@ void CGestureRecognizer_Longpress::tick()
 
 	if (State == RecognizerState_None && !TouchInfoArray.empty())
 	{
-		u32 now = g_Engine->getTimer()->getMillisecond();
-		if (now - TimeStamp > (u32)(getfLongPressTrigInterval() * 1000))
+		uint32_t now = g_Engine->getTimer()->getMillisecond();
+		if (now - TimeStamp > (uint32_t)(getfLongPressTrigInterval() * 1000))
 			changeState(RecognizerState_Begin);
 	}
 }
@@ -47,10 +47,10 @@ void CGestureRecognizer_Longpress::onTouchMove( const std::vector<SGesTouchInfo>
 	{
 		if (!TouchInfoArray.empty())
 		{
-			s32 index = findTouchInfo(TouchInfoArray.front().fingerID, touchInfos);
+			int32_t index = findTouchInfo(TouchInfoArray.front().fingerID, touchInfos);
 			if (index != -1)
 			{
-				f32 distance = getTouchDistance(TouchInfoArray.front(), touchInfos[index]);
+				float distance = getTouchDistance(TouchInfoArray.front(), touchInfos[index]);
 				if (distance > getThreshold_MoveDist())
 					changeState(RecognizerState_Fail);
 			}
@@ -67,7 +67,7 @@ void CGestureRecognizer_Longpress::onTouchMove( const std::vector<SGesTouchInfo>
 		return;
 
 	SGesTouchInfo& head = TouchInfoArray.front();
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index != -1)
 	{
 		head = touchInfos[index];
@@ -90,7 +90,7 @@ void CGestureRecognizer_Longpress::onTouchEnd( const std::vector<SGesTouchInfo>&
 		return;
 
 	SGesTouchInfo& head = TouchInfoArray.front();
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index != -1)
 	{
 		head = touchInfos[index];
@@ -112,7 +112,7 @@ void CGestureRecognizer_Longpress::onTouchCancel( const std::vector<SGesTouchInf
 		return;
 
 	SGesTouchInfo& head = TouchInfoArray.front();
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index != -1)
 	{
 		head = touchInfos[index];

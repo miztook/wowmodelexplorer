@@ -84,7 +84,7 @@ public:
 	E_SCENENODE_TYPE getType() const { return (E_SCENENODE_TYPE)Type; }
 
 	virtual void registerSceneNode(bool frustumcheck,  int sequence);
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame, bool visible) {}
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible) {}
 	virtual void render() const = 0;
 	virtual aabbox3df getBoundingBox() const  = 0;
 	const aabbox3df& getWorldBoundingBox() const { return WorldBoundingBox; }
@@ -99,7 +99,7 @@ public:
 	LENTRY		Link;
 	LENTRY		ChildNodeList;			//child lists
 	ISceneNode*			Parent;
-	f32  Distance;		//和摄像机的距离
+	float  Distance;		//和摄像机的距离
 
 protected:
 	matrix4			RelativeRotateMatrix;
@@ -110,8 +110,8 @@ protected:
 public:
 	bool		NeedUpdate;
 	bool		Visible;
-	u8	Type;
-	u8	Generation;
+	uint8_t	Type;
+	uint8_t	Generation;
 };
 
 inline void ISceneNode::update( bool includeChildren /*= true*/ )

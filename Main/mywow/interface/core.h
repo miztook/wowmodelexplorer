@@ -26,12 +26,12 @@
 
 struct  SDrawParam
 {
-	u16		voffset0;
-	u16		voffset1;
-	s32		baseVertIndex;
-	u32		minVertIndex;
-	u32		numVertices;
-	u32		startIndex;
+	uint16_t		voffset0;
+	uint16_t		voffset1;
+	int32_t		baseVertIndex;
+	uint32_t		minVertIndex;
+	uint32_t		numVertices;
+	uint32_t		startIndex;
 };
 
 struct S2DBlendParam
@@ -107,11 +107,11 @@ struct S2DBlendParam
 
 struct SBoneMatrixArray
 {
-	SBoneMatrixArray(matrix4* mats, u8 size, u16 weights) : matrices(mats), count(size)
+	SBoneMatrixArray(matrix4* mats, uint8_t size, uint16_t weights) : matrices(mats), count(size)
 	{
-		maxWeights = clamp_(weights, (u16)1, (u16)4);
+		maxWeights = clamp_(weights, (uint16_t)1, (uint16_t)4);
 	}
 	matrix4*		matrices;
-	u8		count;
-	u16		maxWeights;
+	uint8_t		count;
+	uint16_t		maxWeights;
 };

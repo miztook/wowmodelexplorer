@@ -13,12 +13,12 @@ CD3D11ResourceLoader::CD3D11ResourceLoader( )
 	
 }
 
-ITexture* CD3D11ResourceLoader::loadTexture( const c8* filename, bool mipmap /*= true*/ )
+ITexture* CD3D11ResourceLoader::loadTexture( const char* filename, bool mipmap /*= true*/ )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 

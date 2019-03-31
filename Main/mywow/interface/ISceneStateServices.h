@@ -6,9 +6,9 @@
 
 struct SFogParam
 {
-	f32 FogStart;
-	f32 FogEnd;
-	f32 FogDensity;
+	float FogStart;
+	float FogEnd;
+	float FogDensity;
 	SColor	FogColor;
 	E_FOG_TYPE FogType;
 	bool PixelFog;
@@ -28,8 +28,8 @@ struct SSceneState
 		resetLights();
 	}
 
-	static const u32 MAX_LIGTHTS = 8;
-	static const u32 MAX_CLIPPLANES = 2;
+	static const uint32_t MAX_LIGTHTS = 8;
+	static const uint32_t MAX_CLIPPLANES = 2;
 
 	void resetLights()
 	{
@@ -54,9 +54,9 @@ public:
 	virtual ~ISceneStateServices() {}
 
 public:	
-	virtual void setLight_Fog(u32 lightIndex, bool enable, const SLight& dirLight, 
+	virtual void setLight_Fog(uint32_t lightIndex, bool enable, const SLight& dirLight, 
 		SColor color, const SFogParam& fogParam) = 0;
 
-	virtual void setLight(u32 lightIndex, bool enable, const SLight& dirLight, SColor color) = 0;
+	virtual void setLight(uint32_t lightIndex, bool enable, const SLight& dirLight, SColor color) = 0;
 
 };

@@ -46,7 +46,7 @@ ITexture* CD3D11RenderTarget::getRTTexture() const
 	return RTCopyTexture;
 }
 
-bool CD3D11RenderTarget::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, u32 antialias, u32 quality )
+bool CD3D11RenderTarget::createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, uint32_t antialias, uint32_t quality )
 {
 	if (VideoBuilt)
 		return false;

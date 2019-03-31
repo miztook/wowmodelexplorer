@@ -41,7 +41,7 @@ wow_wdtScene::~wow_wdtScene()
 	}
 }
 
-void wow_wdtScene::setCurrentTile(s32 row, s32 col)
+void wow_wdtScene::setCurrentTile(int32_t row, int32_t col)
 {
 	Row = row;
 	Col = col;
@@ -61,11 +61,11 @@ void wow_wdtScene::setCurrentTile(s32 row, s32 col)
 
 	TilesMap.clear();
 
-	u32 num = getNumBlocks();
-	for (u32 i = 0; i < num; ++i)
+	uint32_t num = getNumBlocks();
+	for (uint32_t i = 0; i < num; ++i)
 	{
-		u8 r = (u8)Coords[i].X;
-		u8 c = (u8)Coords[i].Y;
+		uint8_t r = (uint8_t)Coords[i].X;
+		uint8_t c = (uint8_t)Coords[i].Y;
 		STile* newTile = FileWDT->getTile(r, c);
 		WdtSceneNode->MapBlocks[i].tile = newTile;
 		if (newTile && !newTile->fileAdt && !isLoading(newTile))
@@ -84,7 +84,7 @@ void wow_wdtScene::startLoadADT(STile* tile)
 	if (!tile || tile->fileAdt)
 		return;
 
-	c8 adtname[QMAX_PATH];
+	char adtname[QMAX_PATH];
 	FileWDT->getADTFileName(tile->row, tile->col, adtname, QMAX_PATH);
 
 	IResourceLoader::SParamBlock block = { 0 };
@@ -133,7 +133,7 @@ bool wow_wdtScene::processADT()
 bool wow_wdtScene::updateBlocksByCamera()
 {
 	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
-	s32 row, col;
+	int32_t row, col;
 	if (!WdtSceneNode->getTileByPosition(cam->getPosition(), row, col))
 		return false;
 
@@ -145,11 +145,11 @@ bool wow_wdtScene::updateBlocksByCamera()
 		if (TileChangeTick > TIME_DELAY_TILE_CHANGED)			//在tile发生改变5tick后再发起请求
 		{
 			//当前所在格子发生变化，更新tile
-			u32 num = getNumBlocks();
-			for (u32 i = 0; i < num; ++i)
+			uint32_t num = getNumBlocks();
+			for (uint32_t i = 0; i < num; ++i)
 			{
-				u8 r = (u8)Coords[i].X;
-				u8 c = (u8)Coords[i].Y;
+				uint8_t r = (uint8_t)Coords[i].X;
+				uint8_t c = (uint8_t)Coords[i].Y;
 				STile* newTile = FileWDT->getTile(r, c);
 				WdtSceneNode->MapBlocks[i].tile = newTile;
 				if (newTile && !newTile->fileAdt && !isLoading(newTile))
@@ -190,8 +190,8 @@ void wow_wdtScene::updateTileTransform(STile* tile)
 	ASSERT(itr != TilesMap.end());
 	itr->second = true;
 
-	u32 num = getNumBlocks();
-	for (u32 i = 0; i < num; ++i)
+	uint32_t num = getNumBlocks();
+	for (uint32_t i = 0; i < num; ++i)
 	{
 		if (WdtSceneNode->MapBlocks[i].tile == tile)
 			WdtSceneNode->updateMapBlock(i);
@@ -221,9 +221,9 @@ void wow_wdtScene::unloadOutBlocks()
 	}
 }
 
-void wow_wdtScene::recalculateTilesNeeded(s32 row, s32 col)
+void wow_wdtScene::recalculateTilesNeeded(int32_t row, int32_t col)
 {
-	u32 count = 0;
+	uint32_t count = 0;
 
 	if (AdtLoadSize == EAL_3X3 || AdtLoadSize == EAL_5X5 /*|| AdtLoadSize == EAL_7X7*/)
 	{
@@ -304,20 +304,20 @@ bool wow_wdtScene::isTileNeeded(STile* tile) const
 {
 	if (AdtLoadSize == EAL_3X3)
 	{
-		return abs((s32)tile->row - Row) <= 1 && abs((s32)tile->col - Col) <= 1;
+		return abs((int32_t)tile->row - Row) <= 1 && abs((int32_t)tile->col - Col) <= 1;
 	}
 	else if (AdtLoadSize == EAL_5X5)
 	{
-		return abs((s32)tile->row - Row) <= 2 && abs((s32)tile->col - Col) <= 2;
+		return abs((int32_t)tile->row - Row) <= 2 && abs((int32_t)tile->col - Col) <= 2;
 	}
 	// 	else if (AdtLoadSize == EAL_7X7)
 	// 	{
-	// 		return abs((s32)tile->row - Row) <= 3 && abs((s32)tile->col - Col) <= 3;
+	// 		return abs((int32_t)tile->row - Row) <= 3 && abs((int32_t)tile->col - Col) <= 3;
 	// 	}
 	return false;
 }
 
-u32 wow_wdtScene::getNumBlocks() const
+uint32_t wow_wdtScene::getNumBlocks() const
 {
 	switch (AdtLoadSize)
 	{

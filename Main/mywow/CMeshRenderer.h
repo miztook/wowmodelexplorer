@@ -8,7 +8,7 @@ class CMeshDecalServices;
 class CMeshRenderer : public ISceneRenderer
 {
 public:
-	explicit CMeshRenderer(u32 quota);
+	explicit CMeshRenderer(uint32_t quota);
 	~CMeshRenderer();
 
 public:
@@ -20,7 +20,7 @@ public:
 	void end_setupLightFog() const;
 
 private:
-	bool isDecalExceed( u32 vcount ) const;
+	bool isDecalExceed( uint32_t vcount ) const;
 
 private:
 	struct SEntry
@@ -52,7 +52,7 @@ private:
 
 	CMeshDecalServices*	MeshDecalServices;
 
-	u32		Quota;
+	uint32_t		Quota;
 
 	friend class CD3D9Driver;
 	friend class CD3D11Driver;

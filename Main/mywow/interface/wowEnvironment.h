@@ -18,28 +18,28 @@ public:
 	~wowEnvironment();
 
 public:
-	IMemFile* openFile(const c8* filename, bool tempfile = true) const;
+	IMemFile* openFile(const char* filename, bool tempfile = true) const;
 
-	bool exists(const c8* filename) const;
+	bool exists(const char* filename) const;
 
-	const c8* getLocale() const { return Locale.c_str(); }
-	const c8* getLocalePath() const { return LocalePath; }
+	const char* getLocale() const { return Locale.c_str(); }
+	const char* getLocalePath() const { return LocalePath; }
 	IFileSystem* getFileSystem() const { return FileSystem; }
-	u32 getCascFileCount() const { return (u32)CascListFiles.size(); }
-	const c8* getCascFile(int index) const { return CascListFiles[index].c_str(); }
+	uint32_t getCascFileCount() const { return (uint32_t)CascListFiles.size(); }
+	const char* getCascFile(int index) const { return CascListFiles[index].c_str(); }
 
-	typedef void (*MPQFILECALLBACK)(const c8* filename, void* param);
+	typedef void (*MPQFILECALLBACK)(const char* filename, void* param);
 
-	void iterateFiles(const c8* ext, MPQFILECALLBACK callback, void* param) const;
-	void iterateFiles(const c8* path, const c8* ext, MPQFILECALLBACK callback, void* param) const;
+	void iterateFiles(const char* ext, MPQFILECALLBACK callback, void* param) const;
+	void iterateFiles(const char* path, const char* ext, MPQFILECALLBACK callback, void* param) const;
 
 	//
 	void clearOwnCascFiles();
-	void addOwnCascFile(const c8* filename);
+	void addOwnCascFile(const char* filename);
 	void finishOwnCascFiles();
 
-	void getFiles(const c8* baseDir, const c8* ext, std::vector<string_cs256>& files, bool useOwn);
-	void getDirectories(const c8* baseDir, std::vector<string_cs256>& dirs, bool useOwn);
+	void getFiles(const char* baseDir, const char* ext, std::vector<string_cs256>& files, bool useOwn);
+	void getDirectories(const char* baseDir, std::vector<string_cs256>& dirs, bool useOwn);
 	const char* getFileNameByFileDataId(int filedataId);
 
 private:
@@ -73,8 +73,8 @@ private:
 	T_DirIndexMap		OwnDirIndexMap;
 
 	string32		Locale;
-	c8		LocalePath[QMAX_PATH];
-	u32		CascLocale;
+	char		LocalePath[QMAX_PATH];
+	uint32_t		CascLocale;
 	HANDLE	hStorage;
 
 	bool		UseAlternate;

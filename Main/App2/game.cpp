@@ -17,16 +17,16 @@ void MyMessageHandler::onSize(window_type hwnd, int width, int height)
 		g_bBackMode = false;
 		IVideoDriver* driver = g_Engine->getDriver();
 		if (driver)
-			driver->setDisplayMode( dimension2du((u32)width, (u32)height) );
+			driver->setDisplayMode( dimension2du((uint32_t)width, (uint32_t)height) );
 
 		IFontServices* fontServices = g_Engine->getFontServices();
 		if (fontServices)
-			fontServices->onWindowSizeChanged( dimension2du((u32)width, (u32)height) );
+			fontServices->onWindowSizeChanged( dimension2du((uint32_t)width, (uint32_t)height) );
 
 		ISceneManager* smgr = g_Engine->getSceneManager();
 		if(smgr)
 		{
-			smgr->onWindowSizeChanged( dimension2du((u32)width, (u32)height) );
+			smgr->onWindowSizeChanged( dimension2du((uint32_t)width, (uint32_t)height) );
 
 			ICamera* cam = smgr->getActiveCamera();
 			if(cam)

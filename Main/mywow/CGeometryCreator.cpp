@@ -2,24 +2,24 @@
 #include "CGeometryCreator.h"
 #include "mywow.h"
 
-void CGeometryCreator::getCubeMeshVICount( u32& vcount, u32& icount )
+void CGeometryCreator::getCubeMeshVICount( uint32_t& vcount, uint32_t& icount )
 {
 	vcount = 12;
 	icount = 36;
 }
 
-bool CGeometryCreator::fillCubeMeshVI( SVertex_PCT* vertices, u32 vcount, u16* indices, u32 icount, const vector3df& size, SColor color /*= SColor()*/ )
+bool CGeometryCreator::fillCubeMeshVI( SVertex_PCT* vertices, uint32_t vcount, uint16_t* indices, uint32_t icount, const vector3df& size, SColor color /*= SColor()*/ )
 {
-	u32 vLimit, iLimit;
+	uint32_t vLimit, iLimit;
 	getCubeMeshVICount(vLimit, iLimit);
 
 	if (vcount < vLimit || icount < iLimit)
 		return false;
 
-	const u16 u[36] = {  0,2,1,   0,3,2,   1,5,4,   1,2,5,   4,6,7,   4,5,6, 
+	const uint16_t u[36] = {  0,2,1,   0,3,2,   1,5,4,   1,2,5,   4,6,7,   4,5,6, 
 		7,3,0,   7,6,3,   9,5,2,   9,8,5,   0,11,10,   0,10,7 };
 
-	Q_memcpy(indices, sizeof(u16)*36, u, sizeof(u));
+	Q_memcpy(indices, sizeof(uint16_t)*36, u, sizeof(u));
 
 	vertices[0].set(vector3df(0,0,0), color, vector2df(0, 1));
 	vertices[1].set(vector3df(1,0,0), color, vector2df(1, 1));
@@ -34,7 +34,7 @@ bool CGeometryCreator::fillCubeMeshVI( SVertex_PCT* vertices, u32 vcount, u16* i
 	vertices[10].set(vector3df(1,0,1), color, vector2df(1, 0));
 	vertices[11].set(vector3df(1,0,0), color, vector2df(0,0));
 
-	for (u32 i=0; i<12; ++i)
+	for (uint32_t i=0; i<12; ++i)
 	{
 		vertices[i].Pos -= vector3df(0.5f, 0.5f, 0.5f);
 		vertices[i].Pos *= size;
@@ -43,38 +43,38 @@ bool CGeometryCreator::fillCubeMeshVI( SVertex_PCT* vertices, u32 vcount, u16* i
 	return false;
 }
 
-void CGeometryCreator::getSphereMeshVICount( u32& vcount, u32& icount, u32 polyCountX, u32 polyCountY )
+void CGeometryCreator::getSphereMeshVICount( uint32_t& vcount, uint32_t& icount, uint32_t polyCountX, uint32_t polyCountY )
 {
 	if (polyCountX < 2)
 		polyCountX = 2;
 	if (polyCountY < 2)
 		polyCountY = 2;
-	while (polyCountX * polyCountY > 32767) // prevent u16 overflow
+	while (polyCountX * polyCountY > 32767) // prevent uint16_t overflow
 	{
 		polyCountX /= 2;
 		polyCountY /= 2;
 	}
 
-	const u32 polyCountXPitch = polyCountX+1; // get to same vertex on next level
+	const uint32_t polyCountXPitch = polyCountX+1; // get to same vertex on next level
 
 	vcount = polyCountXPitch * polyCountY + 2;
 	icount = (polyCountX * polyCountY) * 6;
 }
 
-bool CGeometryCreator::fillSphereMeshVI( SVertex_PCT* vertices, u32 vcount, u16* indices, u32 icount, f32 radius /*= 5.f*/, u32 polyCountX /*= 16*/, u32 polyCountY /*= 16*/, SColor color /*= SColor()*/ )
+bool CGeometryCreator::fillSphereMeshVI( SVertex_PCT* vertices, uint32_t vcount, uint16_t* indices, uint32_t icount, float radius /*= 5.f*/, uint32_t polyCountX /*= 16*/, uint32_t polyCountY /*= 16*/, SColor color /*= SColor()*/ )
 {
-	u32 vLimit, iLimit;
+	uint32_t vLimit, iLimit;
 	if (polyCountX < 2)
 		polyCountX = 2;
 	if (polyCountY < 2)
 		polyCountY = 2;
-	while (polyCountX * polyCountY > 32767) // prevent u16 overflow
+	while (polyCountX * polyCountY > 32767) // prevent uint16_t overflow
 	{
 		polyCountX /= 2;
 		polyCountY /= 2;
 	}
 
-	const u32 polyCountXPitch = polyCountX+1; // get to same vertex on next level
+	const uint32_t polyCountXPitch = polyCountX+1; // get to same vertex on next level
 
 	vLimit = polyCountXPitch * polyCountY + 2;
 	iLimit = (polyCountX * polyCountY) * 6;
@@ -86,97 +86,97 @@ bool CGeometryCreator::fillSphereMeshVI( SVertex_PCT* vertices, u32 vcount, u16*
 	vcount = 0;
 	icount = 0;
 
-	u32 level = 0;
+	uint32_t level = 0;
 
-	for (u32 p1 = 0; p1 < polyCountY-1; ++p1)
+	for (uint32_t p1 = 0; p1 < polyCountY-1; ++p1)
 	{
 		//main quads, top to bottom
-		for (u32 p2 = 0; p2 < polyCountX - 1; ++p2)
+		for (uint32_t p2 = 0; p2 < polyCountX - 1; ++p2)
 		{
-			u32 curr = level + p2;
-			indices[icount++] = (u16)(curr + polyCountXPitch);
-			indices[icount++] = (u16)(curr);
-			indices[icount++] = (u16)(curr + 1);
-			indices[icount++] = (u16)(curr + polyCountXPitch);
-			indices[icount++] = (u16)(curr+1);
-			indices[icount++] = (u16)(curr + 1 + polyCountXPitch);
+			uint32_t curr = level + p2;
+			indices[icount++] = (uint16_t)(curr + polyCountXPitch);
+			indices[icount++] = (uint16_t)(curr);
+			indices[icount++] = (uint16_t)(curr + 1);
+			indices[icount++] = (uint16_t)(curr + polyCountXPitch);
+			indices[icount++] = (uint16_t)(curr+1);
+			indices[icount++] = (uint16_t)(curr + 1 + polyCountXPitch);
 		}
 
 		// the connectors from front to end
-		indices[icount++] = (u16)(level + polyCountX - 1 + polyCountXPitch);
-		indices[icount++] = (u16)(level + polyCountX - 1);
-		indices[icount++] = (u16)(level + polyCountX);
+		indices[icount++] = (uint16_t)(level + polyCountX - 1 + polyCountXPitch);
+		indices[icount++] = (uint16_t)(level + polyCountX - 1);
+		indices[icount++] = (uint16_t)(level + polyCountX);
 
-		indices[icount++] = (u16)(level + polyCountX - 1 + polyCountXPitch);
-		indices[icount++] = (u16)(level + polyCountX);
-		indices[icount++] = (u16)(level + polyCountX + polyCountXPitch);
+		indices[icount++] = (uint16_t)(level + polyCountX - 1 + polyCountXPitch);
+		indices[icount++] = (uint16_t)(level + polyCountX);
+		indices[icount++] = (uint16_t)(level + polyCountX + polyCountXPitch);
 		level += polyCountXPitch;
 	}
 
-	const u32 polyCountSq = polyCountXPitch * polyCountY; // top point
-	const u32 polyCountSq1 = polyCountSq + 1; // bottom point
-	const u32 polyCountSqM1 = (polyCountY - 1) * polyCountXPitch; // last row's first vertex
+	const uint32_t polyCountSq = polyCountXPitch * polyCountY; // top point
+	const uint32_t polyCountSq1 = polyCountSq + 1; // bottom point
+	const uint32_t polyCountSqM1 = (polyCountY - 1) * polyCountXPitch; // last row's first vertex
 
-	for (u32 p2 = 0; p2 < polyCountX - 1; ++p2)
+	for (uint32_t p2 = 0; p2 < polyCountX - 1; ++p2)
 	{
 		// create triangles which are at the top of the sphere
 
-		indices[icount++] = (u16)(polyCountSq);
-		indices[icount++] = (u16)(p2 + 1);
-		indices[icount++] = (u16)(p2);
+		indices[icount++] = (uint16_t)(polyCountSq);
+		indices[icount++] = (uint16_t)(p2 + 1);
+		indices[icount++] = (uint16_t)(p2);
 
 		// create triangles which are at the bottom of the sphere
 
-		indices[icount++] = (u16)(polyCountSqM1 + p2);
-		indices[icount++] = (u16)(polyCountSqM1 + p2 + 1);
-		indices[icount++] = (u16)(polyCountSq1);
+		indices[icount++] = (uint16_t)(polyCountSqM1 + p2);
+		indices[icount++] = (uint16_t)(polyCountSqM1 + p2 + 1);
+		indices[icount++] = (uint16_t)(polyCountSq1);
 	}
 
 	// create final triangle which is at the top of the sphere
-	indices[icount++] = (u16)(polyCountSq);
-	indices[icount++] = (u16)(polyCountX);
-	indices[icount++] = (u16)(polyCountX-1);
+	indices[icount++] = (uint16_t)(polyCountSq);
+	indices[icount++] = (uint16_t)(polyCountX);
+	indices[icount++] = (uint16_t)(polyCountX-1);
 
 	// create final triangle which is at the bottom of the sphere
-	indices[icount++] = (u16)(polyCountSqM1 + polyCountX - 1);
-	indices[icount++] = (u16)(polyCountSqM1);
-	indices[icount++] = (u16)(polyCountSq1);
+	indices[icount++] = (uint16_t)(polyCountSqM1 + polyCountX - 1);
+	indices[icount++] = (uint16_t)(polyCountSqM1);
+	indices[icount++] = (uint16_t)(polyCountSq1);
 
 	// calculate the angle which separates all points in a circle
-	const f32 AngleX = 2 * PI / polyCountX;
-	const f32 AngleY = PI / polyCountY;
+	const float AngleX = 2 * PI / polyCountX;
+	const float AngleY = PI / polyCountY;
 
-	f32 axz;
+	float axz;
 
 	// we don't start at 0.
 
-	f32 ay = 0;//AngleY / 2;
+	float ay = 0;//AngleY / 2;
 
-	for (u32 y = 0; y < polyCountY; ++y)
+	for (uint32_t y = 0; y < polyCountY; ++y)
 	{
 		ay += AngleY;
-		const f32 sinay = sin(ay);
+		const float sinay = sin(ay);
 		axz = 0;
 
 		// calculate the necessary vertices without the doubled one
-		for (u32 xz = 0;xz < polyCountX; ++xz)
+		for (uint32_t xz = 0;xz < polyCountX; ++xz)
 		{
 			// calculate points position
 
-			const vector3df pos(static_cast<f32>(radius * cos(axz) * sinay),
-				static_cast<f32>(radius * cos(ay)),
-				static_cast<f32>(radius * sin(axz) * sinay));
+			const vector3df pos(static_cast<float>(radius * cos(axz) * sinay),
+				static_cast<float>(radius * cos(ay)),
+				static_cast<float>(radius * sin(axz) * sinay));
 			// for spheres the normal is the position
 			vector3df normal(pos);
 			normal.normalize();
 
 			// calculate texture coordinates via sphere mapping
 			// tu is the same on each level, so only calculate once
-			f32 tu = 0.5f;
+			float tu = 0.5f;
 			if (y==0)
 			{
 				if (normal.Y != -1.0f && normal.Y != 1.0f)
-					tu = acos(clamp_((f32)(normal.X/sinay), -1.0f, 1.0f)) * 0.5f *reciprocal_(PI);
+					tu = acos(clamp_((float)(normal.X/sinay), -1.0f, 1.0f)) * 0.5f *reciprocal_(PI);
 				if (normal.Z < 0.0f)
 					tu=1-tu;
 			}
@@ -207,16 +207,16 @@ bool CGeometryCreator::fillSphereMeshVI( SVertex_PCT* vertices, u32 vcount, u16*
 	return true;
 }
 
-void CGeometryCreator::getSkyDomeMeshVICount( u32& vcount, u32& icount, u32 horiRes, u32 vertRes )
+void CGeometryCreator::getSkyDomeMeshVICount( uint32_t& vcount, uint32_t& icount, uint32_t horiRes, uint32_t vertRes )
 {
 	vcount = (horiRes + 1) * (vertRes + 1);
 	icount = 3 * (2*vertRes -1) * horiRes;
 }
 
-bool CGeometryCreator::fillSkyDomeMeshVI( SVertex_PCT* vertices, u32 vcount, u16* indices, u32 icount, u32 horiRes, u32 vertRes, f32 texturePercentage, f32 spherePercentage, f32 radius, SColor color /*= SColor()*/ )
+bool CGeometryCreator::fillSkyDomeMeshVI( SVertex_PCT* vertices, uint32_t vcount, uint16_t* indices, uint32_t icount, uint32_t horiRes, uint32_t vertRes, float texturePercentage, float spherePercentage, float radius, SColor color /*= SColor()*/ )
 {
-	u32 vLimit = (horiRes + 1) * (vertRes + 1);
-	u32 iLimit = 3 * (2*vertRes -1) * horiRes;
+	uint32_t vLimit = (horiRes + 1) * (vertRes + 1);
+	uint32_t iLimit = 3 * (2*vertRes -1) * horiRes;
 
 	if (vcount < vLimit || icount < iLimit)
 		return false;
@@ -225,26 +225,26 @@ bool CGeometryCreator::fillSkyDomeMeshVI( SVertex_PCT* vertices, u32 vcount, u16
 	vcount = 0;
 	icount = 0;
 
-	f32 azimuth;
-	u32 k;
+	float azimuth;
+	uint32_t k;
 
-	const f32 azimuth_step = (PI * 2.f) / horiRes;
+	const float azimuth_step = (PI * 2.f) / horiRes;
 	if (spherePercentage < 0.f)
 		spherePercentage = -spherePercentage;
 	if (spherePercentage > 2.f)
 		spherePercentage = 2.f;
-	const f32 elevation_step = spherePercentage * PI * 0.5f / (f32)vertRes;
+	const float elevation_step = spherePercentage * PI * 0.5f / (float)vertRes;
 
-	const f32 tcV = texturePercentage / vertRes;
+	const float tcV = texturePercentage / vertRes;
 	for (k = 0, azimuth = 0; k <= horiRes; ++k)
 	{
-		f32 elevation = PI/2;
-		const f32 tcU = (f32)k / (f32)horiRes;
-		const f32 sinA = sinf(azimuth);
-		const f32 cosA = cosf(azimuth);
-		for (u32 j = 0; j <= vertRes; ++j)
+		float elevation = PI/2;
+		const float tcU = (float)k / (float)horiRes;
+		const float sinA = sinf(azimuth);
+		const float cosA = cosf(azimuth);
+		for (uint32_t j = 0; j <= vertRes; ++j)
 		{
-			const f32 cosEr = radius * cosf(elevation);
+			const float cosEr = radius * cosf(elevation);
 			vertices[vcount].Pos.set(cosEr*sinA, radius*sinf(elevation), cosEr*cosA);
 			vertices[vcount].TCoords.set(tcU, j*tcV);
 			vertices[vcount].Color = color;
@@ -258,19 +258,19 @@ bool CGeometryCreator::fillSkyDomeMeshVI( SVertex_PCT* vertices, u32 vcount, u16
 
 	for (k = 0; k < horiRes; ++k)
 	{
-		indices[icount++] = (u16)(vertRes + 2 + (vertRes + 1)*k);
-		indices[icount++] = (u16)(1 + (vertRes + 1)*k);
-		indices[icount++] = (u16)(0 + (vertRes + 1)*k);
+		indices[icount++] = (uint16_t)(vertRes + 2 + (vertRes + 1)*k);
+		indices[icount++] = (uint16_t)(1 + (vertRes + 1)*k);
+		indices[icount++] = (uint16_t)(0 + (vertRes + 1)*k);
 
-		for (u32 j = 1; j < vertRes; ++j)
+		for (uint32_t j = 1; j < vertRes; ++j)
 		{
-			indices[icount++] = (u16)(vertRes + 2 + (vertRes + 1)*k + j);
-			indices[icount++] = (u16)(1 + (vertRes + 1)*k + j);
-			indices[icount++] = (u16)(0 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(vertRes + 2 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(1 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(0 + (vertRes + 1)*k + j);
 
-			indices[icount++] = (u16)(vertRes + 1 + (vertRes + 1)*k + j);
-			indices[icount++] = (u16)(vertRes + 2 + (vertRes + 1)*k + j);
-			indices[icount++] = (u16)(0 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(vertRes + 1 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(vertRes + 2 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(0 + (vertRes + 1)*k + j);
 		}
 	}
 
@@ -280,10 +280,10 @@ bool CGeometryCreator::fillSkyDomeMeshVI( SVertex_PCT* vertices, u32 vcount, u16
 	return true;
 }
 
-bool CGeometryCreator::fillSkyDomeMeshVI( SVertex_PC* vertices, u32 vcount, u16* indices, u32 icount, u32 horiRes, u32 vertRes, f32 spherePercentage, f32 radius, SColor color/*=SColor()*/ )
+bool CGeometryCreator::fillSkyDomeMeshVI( SVertex_PC* vertices, uint32_t vcount, uint16_t* indices, uint32_t icount, uint32_t horiRes, uint32_t vertRes, float spherePercentage, float radius, SColor color/*=SColor()*/ )
 {
-	u32 vLimit = (horiRes + 1) * (vertRes + 1);
-	u32 iLimit = 3 * (2*vertRes -1) * horiRes;
+	uint32_t vLimit = (horiRes + 1) * (vertRes + 1);
+	uint32_t iLimit = 3 * (2*vertRes -1) * horiRes;
 
 	if (vcount < vLimit || icount < iLimit)
 		return false;
@@ -292,24 +292,24 @@ bool CGeometryCreator::fillSkyDomeMeshVI( SVertex_PC* vertices, u32 vcount, u16*
 	vcount = 0;
 	icount = 0;
 
-	f32 azimuth;
-	u32 k;
+	float azimuth;
+	uint32_t k;
 
-	const f32 azimuth_step = (PI * 2.f) / horiRes;
+	const float azimuth_step = (PI * 2.f) / horiRes;
 	if (spherePercentage < 0.f)
 		spherePercentage = -spherePercentage;
 	if (spherePercentage > 2.f)
 		spherePercentage = 2.f;
-	const f32 elevation_step = spherePercentage * PI * 0.5f / (f32)vertRes;
+	const float elevation_step = spherePercentage * PI * 0.5f / (float)vertRes;
 
 	for (k = 0, azimuth = 0; k <= horiRes; ++k)
 	{
-		f32 elevation = PI/2;
-		const f32 sinA = sinf(azimuth);
-		const f32 cosA = cosf(azimuth);
-		for (u32 j = 0; j <= vertRes; ++j)
+		float elevation = PI/2;
+		const float sinA = sinf(azimuth);
+		const float cosA = cosf(azimuth);
+		for (uint32_t j = 0; j <= vertRes; ++j)
 		{
-			const f32 cosEr = radius * cosf(elevation);
+			const float cosEr = radius * cosf(elevation);
 			vertices[vcount].Pos.set(cosEr*sinA, radius*sinf(elevation), cosEr*cosA);
 			vertices[vcount].Color = color;
 
@@ -322,19 +322,19 @@ bool CGeometryCreator::fillSkyDomeMeshVI( SVertex_PC* vertices, u32 vcount, u16*
 
 	for (k = 0; k < horiRes; ++k)
 	{
-		indices[icount++] = (u16)(vertRes + 2 + (vertRes + 1)*k);
-		indices[icount++] = (u16)(1 + (vertRes + 1)*k);
-		indices[icount++] = (u16)(0 + (vertRes + 1)*k);
+		indices[icount++] = (uint16_t)(vertRes + 2 + (vertRes + 1)*k);
+		indices[icount++] = (uint16_t)(1 + (vertRes + 1)*k);
+		indices[icount++] = (uint16_t)(0 + (vertRes + 1)*k);
 
-		for (u32 j = 1; j < vertRes; ++j)
+		for (uint32_t j = 1; j < vertRes; ++j)
 		{
-			indices[icount++] = (u16)(vertRes + 2 + (vertRes + 1)*k + j);
-			indices[icount++] = (u16)(1 + (vertRes + 1)*k + j);
-			indices[icount++] = (u16)(0 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(vertRes + 2 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(1 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(0 + (vertRes + 1)*k + j);
 
-			indices[icount++] = (u16)(vertRes + 1 + (vertRes + 1)*k + j);
-			indices[icount++] = (u16)(vertRes + 2 + (vertRes + 1)*k + j);
-			indices[icount++] = (u16)(0 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(vertRes + 1 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(vertRes + 2 + (vertRes + 1)*k + j);
+			indices[icount++] = (uint16_t)(0 + (vertRes + 1)*k + j);
 		}
 	}
 
@@ -344,29 +344,29 @@ bool CGeometryCreator::fillSkyDomeMeshVI( SVertex_PC* vertices, u32 vcount, u16*
 	return true;
 }
 
-aabbox3df CGeometryCreator::getSkyDomeMeshAABBox( u32 horiRes, u32 vertRes, f32 spherePercentage, f32 radius )
+aabbox3df CGeometryCreator::getSkyDomeMeshAABBox( uint32_t horiRes, uint32_t vertRes, float spherePercentage, float radius )
 {
 	//
 	aabbox3df box;
 
-	f32 azimuth;
-	u32 k;
+	float azimuth;
+	uint32_t k;
 
-	const f32 azimuth_step = (PI * 2.f) / horiRes;
+	const float azimuth_step = (PI * 2.f) / horiRes;
 	if (spherePercentage < 0.f)
 		spherePercentage = -spherePercentage;
 	if (spherePercentage > 2.f)
 		spherePercentage = 2.f;
-	const f32 elevation_step = spherePercentage * PI * 0.5f / (f32)vertRes;
+	const float elevation_step = spherePercentage * PI * 0.5f / (float)vertRes;
 
 	for (k = 0, azimuth = 0; k <= horiRes; ++k)
 	{
-		f32 elevation = PI/2;
-		const f32 sinA = sinf(azimuth);
-		const f32 cosA = cosf(azimuth);
-		for (u32 j = 0; j <= vertRes; ++j)
+		float elevation = PI/2;
+		const float sinA = sinf(azimuth);
+		const float cosA = cosf(azimuth);
+		for (uint32_t j = 0; j <= vertRes; ++j)
 		{
-			const f32 cosEr = radius * cosf(elevation);
+			const float cosEr = radius * cosf(elevation);
 			box.addInternalPoint(vector3df(cosEr*sinA, radius*sinf(elevation), cosEr*cosA));
 
 			elevation -= elevation_step;
@@ -378,24 +378,24 @@ aabbox3df CGeometryCreator::getSkyDomeMeshAABBox( u32 horiRes, u32 vertRes, f32 
 }
 
 
-bool CGeometryCreator::fillGridLineMeshV( SVertex_PC* vertices, u32 vcount, u32 xzCount, f32 gridSize, SColor color )
+bool CGeometryCreator::fillGridLineMeshV( SVertex_PC* vertices, uint32_t vcount, uint32_t xzCount, float gridSize, SColor color )
 {
-	u32 vLimit = (2*xzCount+1) * 4;
+	uint32_t vLimit = (2*xzCount+1) * 4;
 	if (vcount < vLimit)
 		return false;
 
 	//
 	vcount = 0;
 
-	f32 halfWidth = xzCount * gridSize;
+	float halfWidth = xzCount * gridSize;
 
 	//x
 	vertices[vcount++].set(vector3df(-halfWidth, 0, 0), color);
 	vertices[vcount++].set(vector3df(halfWidth, 0, 0), color);
 
-	for (u32 i=1; i<=xzCount; ++i)
+	for (uint32_t i=1; i<=xzCount; ++i)
 	{
-		f32 offset = i * gridSize;
+		float offset = i * gridSize;
 		vertices[vcount++].set(vector3df(-halfWidth, 0, offset) , color);
 		vertices[vcount++].set(vector3df(halfWidth, 0, offset) , color);
 		vertices[vcount++].set(vector3df(-halfWidth, 0, -offset) , color);
@@ -406,9 +406,9 @@ bool CGeometryCreator::fillGridLineMeshV( SVertex_PC* vertices, u32 vcount, u32 
 	vertices[vcount++].set(vector3df(0, 0, -halfWidth), color);
 	vertices[vcount++].set(vector3df(0, 0, halfWidth), color);
 
-	for (u32 i=1; i<=xzCount; ++i)
+	for (uint32_t i=1; i<=xzCount; ++i)
 	{
-		f32 offset = i * gridSize;
+		float offset = i * gridSize;
 		vertices[vcount++].set(vector3df(offset, 0, -halfWidth) , color);
 		vertices[vcount++].set(vector3df(offset, 0, halfWidth) , color);
 		vertices[vcount++].set(vector3df(-offset, 0, -halfWidth) , color);

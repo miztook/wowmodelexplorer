@@ -14,22 +14,22 @@ class COpenGLDriver;
 class COpenGLTextureWriter : public ITextureWriter
 {
 private:
-	COpenGLTextureWriter(const dimension2du& size, ECOLOR_FORMAT format, u32 numMipmap, bool bTempMemory);
+	COpenGLTextureWriter(const dimension2du& size, ECOLOR_FORMAT format, uint32_t numMipmap, bool bTempMemory);
 	~COpenGLTextureWriter();
 
 	friend class COpenGLTextureWriteServices;
 
 public:
-	virtual void* lock(u32 level, u32& pitch);
-	virtual void unlock(u32 level);
+	virtual void* lock(uint32_t level, uint32_t& pitch);
+	virtual void unlock(uint32_t level);
 	virtual bool copyToTexture(ITexture* texture, const recti* descRect = nullptr);
 	virtual void initEmptyData();
 
 private:
 	struct SMipData
 	{
-		u32 pitch;
-		u8* data;
+		uint32_t pitch;
+		uint8_t* data;
 	};
 
 private:

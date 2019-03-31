@@ -3,7 +3,7 @@
 #include "mywow.h"
 #include "CMeshDecalServices.h"
 
-CMeshRenderer::CMeshRenderer(u32 quota)
+CMeshRenderer::CMeshRenderer(uint32_t quota)
 	: Quota(quota)
 {
 	RenderUnits.reserve(Quota);
@@ -29,7 +29,7 @@ void CMeshRenderer::addRenderUnit( const SRenderUnit* unit )
 	if (needRealloc)
 	{
 		RenderEntries.resize(RenderUnits.size());
-		for (u32 i=0; i<RenderUnits.size(); ++i)
+		for (uint32_t i=0; i<RenderUnits.size(); ++i)
 		{
 			RenderEntries[i].unit = &RenderUnits[i];
 		}
@@ -78,7 +78,7 @@ void CMeshRenderer::end_setupLightFog() const
 	
 }
 
-bool CMeshRenderer::isDecalExceed( u32 vcount ) const
+bool CMeshRenderer::isDecalExceed( uint32_t vcount ) const
 {
 	return vcount > MeshDecalServices->getMaxVertexCount();
 }

@@ -20,15 +20,15 @@ public:
 	~wowFbxExporter();
 
 public:
-	virtual bool exportM2SceneNode( IM2SceneNode* node, const c8* filename );
-	virtual bool exportWMOSceneNode( IWMOSceneNode* node, const c8* filename );
+	virtual bool exportM2SceneNode( IM2SceneNode* node, const char* filename );
+	virtual bool exportWMOSceneNode( IWMOSceneNode* node, const char* filename );
 
 private:
-	bool createM2Scene(FbxManager* pSdkManager, FbxScene* pScene, IM2SceneNode* node, const c8* filename);
+	bool createM2Scene(FbxManager* pSdkManager, FbxScene* pScene, IM2SceneNode* node, const char* filename);
 
 	bool createM2Materials(FbxManager* pSdkManager, FbxScene* pScene, IM2SceneNode* node);
 
-	bool createM2Mesh(FbxManager* pSdkManager, FbxScene* pScene, IM2SceneNode* node, const c8* filename);
+	bool createM2Mesh(FbxManager* pSdkManager, FbxScene* pScene, IM2SceneNode* node, const char* filename);
 
 	bool createM2Skeleton(FbxManager* pSdkManager, FbxScene* pScene, IM2SceneNode* node);
 

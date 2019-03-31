@@ -23,12 +23,12 @@ public:
 	}
 
 public:
-	void allocateAll(u32 quota);
+	void allocateAll(uint32_t quota);
 
 	T* get();
 	void put(T* t);
 
-	u32	getUsedSize() const { return Quota - FreeCount; }
+	uint32_t	getUsedSize() const { return Quota - FreeCount; }
 
 private:
 	struct SEntry
@@ -39,8 +39,8 @@ private:
 
 private:
 
-	u32		Quota;
-	u32		FreeCount;
+	uint32_t		Quota;
+	uint32_t		FreeCount;
 	SEntry*		Entries;
 	LENTRY		FreeList;
 };
@@ -69,7 +69,7 @@ T* IResourcePool<T>::get()
 }
 
 template<typename T>
-void IResourcePool<T>::allocateAll( u32 quota )
+void IResourcePool<T>::allocateAll( uint32_t quota )
 {
 	if(Entries)
 		return;
@@ -78,7 +78,7 @@ void IResourcePool<T>::allocateAll( u32 quota )
 
 	Entries = new SEntry[Quota];
 
-	for (u32 i=0; i<Quota; ++i)
+	for (uint32_t i=0; i<Quota; ++i)
 	{
 		InsertTailList(&FreeList, &Entries[i].Link);
 	}

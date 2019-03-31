@@ -63,7 +63,7 @@ int main()
 
 	createInput();
 
-	u32 startTime = g_Engine->getTimer()->getTimeSinceStart();
+	uint32_t startTime = g_Engine->getTimer()->getTimeSinceStart();
 
 	MSG msg;
 	while (!g_bExit)	

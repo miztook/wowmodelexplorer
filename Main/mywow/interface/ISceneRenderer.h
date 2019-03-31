@@ -15,9 +15,9 @@ struct SRenderUnit
 		struct		//mesh
 		{
 			const SBoneMatrixArray*		boneMatrixArray;				//¹Ç÷À¾ØÕó		
-			u16		geoset;
+			uint16_t		geoset;
 			bool	useBoneMatrix;
-			s8		priority;
+			int8_t		priority;
 		};
 
 		struct			//for terrain
@@ -29,8 +29,8 @@ struct SRenderUnit
 
 		struct		//for decal
 		{
-			s32		decalType;			//E_DECAL_TYPE
-			s32		fontTextureIndex;		//font 1,2,3
+			int32_t		decalType;			//E_DECAL_TYPE
+			int32_t		fontTextureIndex;		//font 1,2,3
 		};
 	};
 
@@ -42,8 +42,8 @@ struct SRenderUnit
 	const matrix4*		matView;
 	const matrix4*		matProjection;
 	const ISceneNode*			sceneNode;
-	u32		primCount;
-	f32		distance;
+	uint32_t		primCount;
+	float		distance;
 	E_PRIMITIVE_TYPE	primType;
 
 	URender	u;

@@ -41,7 +41,7 @@ COpenGLVertexDeclaration::~COpenGLVertexDeclaration()
 	VaoMap.clear();
 }
 
-void COpenGLVertexDeclaration::apply(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1)
+void COpenGLVertexDeclaration::apply(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0, CVertexBuffer* vbuffer1, uint32_t offset1)
 {
 	if (Extension->canUseVAO())
 	{
@@ -158,14 +158,14 @@ GLuint COpenGLVertexDeclaration::getVao( const SVAOParam& param )
 	return itr->second;
 }
 
-void COpenGLVertexDeclaration::createVao_P( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_P( const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
 
 	//position
-	s32 posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
+	int32_t posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
 	if (posIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(posIndex);
@@ -175,14 +175,14 @@ void COpenGLVertexDeclaration::createVao_P( const SGLProgram* program, CVertexBu
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PC( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PC( const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
 
 	//position
-	s32 posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
+	int32_t posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
 	if (posIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(posIndex);
@@ -190,7 +190,7 @@ void COpenGLVertexDeclaration::createVao_PC( const SGLProgram* program, CVertexB
 	}
 
 	//color
-	s32 colorIndex = ShaderServices->getAttribLocation(program, NAME_COLOR0);
+	int32_t colorIndex = ShaderServices->getAttribLocation(program, NAME_COLOR0);
 	if (colorIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(colorIndex);
@@ -200,14 +200,14 @@ void COpenGLVertexDeclaration::createVao_PC( const SGLProgram* program, CVertexB
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PCT( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PCT( const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
 
 	//position
-	s32 posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
+	int32_t posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
 	if (posIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(posIndex);
@@ -215,7 +215,7 @@ void COpenGLVertexDeclaration::createVao_PCT( const SGLProgram* program, CVertex
 	}
 
 	//color
-	s32 colorIndex = ShaderServices->getAttribLocation(program, NAME_COLOR0);
+	int32_t colorIndex = ShaderServices->getAttribLocation(program, NAME_COLOR0);
 	if (colorIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(colorIndex);
@@ -223,7 +223,7 @@ void COpenGLVertexDeclaration::createVao_PCT( const SGLProgram* program, CVertex
 	}
 
 	//tex0
-	s32 tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
+	int32_t tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
 	if (tex0Index >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(tex0Index);
@@ -233,14 +233,14 @@ void COpenGLVertexDeclaration::createVao_PCT( const SGLProgram* program, CVertex
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PN( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PN( const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
 
 	//position
-	s32 posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
+	int32_t posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
 	if (posIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(posIndex);
@@ -248,7 +248,7 @@ void COpenGLVertexDeclaration::createVao_PN( const SGLProgram* program, CVertexB
 	}
 
 	//normal
-	s32 normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
+	int32_t normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
 	if (normalIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(normalIndex);
@@ -258,14 +258,14 @@ void COpenGLVertexDeclaration::createVao_PN( const SGLProgram* program, CVertexB
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PNC( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PNC( const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
 
 	//position
-	s32 posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
+	int32_t posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
 	if (posIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(posIndex);
@@ -273,7 +273,7 @@ void COpenGLVertexDeclaration::createVao_PNC( const SGLProgram* program, CVertex
 	}
 
 	//normal
-	s32 normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
+	int32_t normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
 	if (normalIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(normalIndex);
@@ -281,7 +281,7 @@ void COpenGLVertexDeclaration::createVao_PNC( const SGLProgram* program, CVertex
 	}
 
 	//color
-	s32 colorIndex = ShaderServices->getAttribLocation(program, NAME_COLOR0);
+	int32_t colorIndex = ShaderServices->getAttribLocation(program, NAME_COLOR0);
 	if (colorIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(colorIndex);
@@ -291,14 +291,14 @@ void COpenGLVertexDeclaration::createVao_PNC( const SGLProgram* program, CVertex
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PNT( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PNT( const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
 
 	//position
-	s32 posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
+	int32_t posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
 	if (posIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(posIndex);
@@ -306,7 +306,7 @@ void COpenGLVertexDeclaration::createVao_PNT( const SGLProgram* program, CVertex
 	}
 
 	//normal
-	s32 normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
+	int32_t normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
 	if (normalIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(normalIndex);
@@ -314,7 +314,7 @@ void COpenGLVertexDeclaration::createVao_PNT( const SGLProgram* program, CVertex
 	}
 
 	//tex0
-	s32 tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
+	int32_t tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
 	if (tex0Index >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(tex0Index);
@@ -324,14 +324,14 @@ void COpenGLVertexDeclaration::createVao_PNT( const SGLProgram* program, CVertex
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PT( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PT( const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
 
 	//position
-	s32 posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
+	int32_t posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
 	if (posIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(posIndex);
@@ -339,7 +339,7 @@ void COpenGLVertexDeclaration::createVao_PT( const SGLProgram* program, CVertexB
 	}
 
 	//tex0
-	s32 tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
+	int32_t tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
 	if (tex0Index >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(tex0Index);
@@ -349,14 +349,14 @@ void COpenGLVertexDeclaration::createVao_PT( const SGLProgram* program, CVertexB
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PNCT( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PNCT( const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
 
 	//position
-	s32 posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
+	int32_t posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
 	if (posIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(posIndex);
@@ -364,7 +364,7 @@ void COpenGLVertexDeclaration::createVao_PNCT( const SGLProgram* program, CVerte
 	}
 
 	//normal
-	s32 normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
+	int32_t normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
 	if (normalIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(normalIndex);
@@ -372,7 +372,7 @@ void COpenGLVertexDeclaration::createVao_PNCT( const SGLProgram* program, CVerte
 	}
 
 	//color
-	s32 colorIndex = ShaderServices->getAttribLocation(program, NAME_COLOR0);
+	int32_t colorIndex = ShaderServices->getAttribLocation(program, NAME_COLOR0);
 	if (colorIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(colorIndex);
@@ -380,7 +380,7 @@ void COpenGLVertexDeclaration::createVao_PNCT( const SGLProgram* program, CVerte
 	}
 
 	//tex0
-	s32 tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
+	int32_t tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
 	if (tex0Index >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(tex0Index);
@@ -390,14 +390,14 @@ void COpenGLVertexDeclaration::createVao_PNCT( const SGLProgram* program, CVerte
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PNCT2( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0 )
+void COpenGLVertexDeclaration::createVao_PNCT2( const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
 
 	//position
-	s32 posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
+	int32_t posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
 	if (posIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(posIndex);
@@ -405,7 +405,7 @@ void COpenGLVertexDeclaration::createVao_PNCT2( const SGLProgram* program, CVert
 	}
 
 	//normal
-	s32 normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
+	int32_t normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
 	if (normalIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(normalIndex);
@@ -413,7 +413,7 @@ void COpenGLVertexDeclaration::createVao_PNCT2( const SGLProgram* program, CVert
 	}
 
 	//color
-	s32 colorIndex = ShaderServices->getAttribLocation(program, NAME_COLOR0);
+	int32_t colorIndex = ShaderServices->getAttribLocation(program, NAME_COLOR0);
 	if (colorIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(colorIndex);
@@ -421,7 +421,7 @@ void COpenGLVertexDeclaration::createVao_PNCT2( const SGLProgram* program, CVert
 	}
 
 	//tex0
-	s32 tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
+	int32_t tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
 	if (tex0Index >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(tex0Index);
@@ -429,7 +429,7 @@ void COpenGLVertexDeclaration::createVao_PNCT2( const SGLProgram* program, CVert
 	}
 
 	//tex1
-	s32 tex1Index = ShaderServices->getAttribLocation(program, NAME_TEX1);
+	int32_t tex1Index = ShaderServices->getAttribLocation(program, NAME_TEX1);
 	if (tex1Index >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(tex1Index);
@@ -439,13 +439,13 @@ void COpenGLVertexDeclaration::createVao_PNCT2( const SGLProgram* program, CVert
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void COpenGLVertexDeclaration::createVao_PNT2W( const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1 )
+void COpenGLVertexDeclaration::createVao_PNT2W( const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0, CVertexBuffer* vbuffer1, uint32_t offset1 )
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer0->HWLink);
 
 	//position
-	s32 posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
+	int32_t posIndex = ShaderServices->getAttribLocation(program, NAME_POS);
 	if (posIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(posIndex);
@@ -453,7 +453,7 @@ void COpenGLVertexDeclaration::createVao_PNT2W( const SGLProgram* program, CVert
 	}
 
 	//normal
-	s32 normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
+	int32_t normalIndex = ShaderServices->getAttribLocation(program, NAME_NORMAL);
 	if (normalIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(normalIndex);
@@ -461,7 +461,7 @@ void COpenGLVertexDeclaration::createVao_PNT2W( const SGLProgram* program, CVert
 	}
 
 	//tex0
-	s32 tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
+	int32_t tex0Index = ShaderServices->getAttribLocation(program, NAME_TEX0);
 	if (tex0Index >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(tex0Index);
@@ -469,7 +469,7 @@ void COpenGLVertexDeclaration::createVao_PNT2W( const SGLProgram* program, CVert
 	}
 
 	//tex1
-	s32 tex1Index = ShaderServices->getAttribLocation(program, NAME_TEX1);
+	int32_t tex1Index = ShaderServices->getAttribLocation(program, NAME_TEX1);
 	if (tex1Index >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(tex1Index);
@@ -477,7 +477,7 @@ void COpenGLVertexDeclaration::createVao_PNT2W( const SGLProgram* program, CVert
 	}
 
 	//weight
-	s32 weightIndex = ShaderServices->getAttribLocation(program, NAME_WEIGHT);
+	int32_t weightIndex = ShaderServices->getAttribLocation(program, NAME_WEIGHT);
 	if (weightIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(weightIndex);
@@ -488,7 +488,7 @@ void COpenGLVertexDeclaration::createVao_PNT2W( const SGLProgram* program, CVert
 	Extension->extGlBindBuffer(GL_ARRAY_BUFFER, (GLuint)vbuffer1->HWLink);
 
 	//blendindices
-	s32 blendIndex = ShaderServices->getAttribLocation(program, NAME_BLENDINDICES);
+	int32_t blendIndex = ShaderServices->getAttribLocation(program, NAME_BLENDINDICES);
 	if (blendIndex >= 0)
 	{
 		Extension->extGlEnableVertexAttribArrayARB(blendIndex);
@@ -512,7 +512,7 @@ void COpenGLVertexDeclaration::deleteVao( CVertexBuffer* vbuffer0 )
 	}
 }
 
-void COpenGLVertexDeclaration::setDecl_P(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_P(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0)
 {	
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -525,7 +525,7 @@ void COpenGLVertexDeclaration::setDecl_P(const SGLProgram* program, CVertexBuffe
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PC(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PC(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -544,7 +544,7 @@ void COpenGLVertexDeclaration::setDecl_PC(const SGLProgram* program, CVertexBuff
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PCT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PCT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -570,7 +570,7 @@ void COpenGLVertexDeclaration::setDecl_PCT(const SGLProgram* program, CVertexBuf
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PN(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PN(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -589,7 +589,7 @@ void COpenGLVertexDeclaration::setDecl_PN(const SGLProgram* program, CVertexBuff
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PNC(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PNC(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -614,7 +614,7 @@ void COpenGLVertexDeclaration::setDecl_PNC(const SGLProgram* program, CVertexBuf
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PNT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PNT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -640,7 +640,7 @@ void COpenGLVertexDeclaration::setDecl_PNT(const SGLProgram* program, CVertexBuf
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -660,7 +660,7 @@ void COpenGLVertexDeclaration::setDecl_PT(const SGLProgram* program, CVertexBuff
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PNCT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PNCT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -692,7 +692,7 @@ void COpenGLVertexDeclaration::setDecl_PNCT(const SGLProgram* program, CVertexBu
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PNCT2(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0)
+void COpenGLVertexDeclaration::setDecl_PNCT2(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 
@@ -731,7 +731,7 @@ void COpenGLVertexDeclaration::setDecl_PNCT2(const SGLProgram* program, CVertexB
 	ASSERT_OPENGL_SUCCESS();
 }
 
-void COpenGLVertexDeclaration::setDecl_PNT2W(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1)
+void COpenGLVertexDeclaration::setDecl_PNT2W(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0, CVertexBuffer* vbuffer1, uint32_t offset1)
 {
 	ASSERT(vbuffer0 && vbuffer0->HWLink);
 

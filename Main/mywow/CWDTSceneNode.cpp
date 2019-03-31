@@ -36,7 +36,7 @@ CWDTSceneNode::~CWDTSceneNode()
 	FileWDT->drop();
 }
 
-void CWDTSceneNode::setCurrentTile( s32 row, s32 col )
+void CWDTSceneNode::setCurrentTile( int32_t row, int32_t col )
 {
 	WdtScene->setCurrentTile(row, col);
 }
@@ -60,10 +60,10 @@ vector3df CWDTSceneNode::getCenter() const
 	return position;
 }
 
-bool CWDTSceneNode::getHeightNormal( f32 x, f32 z, f32* height, vector3df* normal ) const
+bool CWDTSceneNode::getHeightNormal( float x, float z, float* height, vector3df* normal ) const
 {
 	vector3df v(x, 0, z);
-	s32 row, col;
+	int32_t row, col;
 	if (!getTileByPosition(v, row, col))
 		return false;
 
@@ -71,14 +71,14 @@ bool CWDTSceneNode::getHeightNormal( f32 x, f32 z, f32* height, vector3df* norma
 	mat.makeInverse();
 	mat.transformVect(v);
 
-	u32 num = WdtScene->getNumBlocks();				//在已加载的block中找高度
-	for (u32 i=0; i<num; ++i)
+	uint32_t num = WdtScene->getNumBlocks();				//在已加载的block中找高度
+	for (uint32_t i=0; i<num; ++i)
 	{
 		const CMapBlock* block = &MapBlocks[i];
 		CFileADT* adt = static_cast<CFileADT*>(block->tile->fileAdt);
-		if (block->tile->row == (u8)row && block->tile->col == (u8)col)
+		if (block->tile->row == (uint8_t)row && block->tile->col == (uint8_t)col)
 		{
-			f32 h;
+			float h;
 			if (normal && !adt->getNormal(v.X, v.Z, *normal))			//don't transform normal
 				return false;
 
@@ -99,7 +99,7 @@ bool CWDTSceneNode::getHeightNormal( f32 x, f32 z, f32* height, vector3df* norma
 	return false;
 }
 
-vector3df CWDTSceneNode::getPositionByTile( s32 row, s32 col ) const
+vector3df CWDTSceneNode::getPositionByTile( int32_t row, int32_t col ) const
 {
 	vector3df position(0,0,0);
 
@@ -109,7 +109,7 @@ vector3df CWDTSceneNode::getPositionByTile( s32 row, s32 col ) const
 	return position;
 }
 
-bool CWDTSceneNode::getTileByPosition( vector3df pos, s32& row, s32& col ) const
+bool CWDTSceneNode::getTileByPosition( vector3df pos, int32_t& row, int32_t& col ) const
 {
 	matrix4 mat;
 	if(!AbsoluteTransformation.getInverse(mat))
@@ -136,17 +136,17 @@ void CWDTSceneNode::registerSceneNode( bool frustumcheck, int sequence )
 	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 
 	WdtScene->setCameraChunk(nullptr);
-	u32 num = WdtScene->getNumBlocks();
-	for (u32 i=0; i<num; ++i)
+	uint32_t num = WdtScene->getNumBlocks();
+	for (uint32_t i=0; i<num; ++i)
 	{
 		registerVisibleChunks(i, cam);
 	}
 }
 
-void CWDTSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame, bool visible)
+void CWDTSceneNode::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible)
 {
-	u32 num = WdtScene->getNumBlocks();
-	for (u32 i=0; i<num; ++i)
+	uint32_t num = WdtScene->getNumBlocks();
+	for (uint32_t i=0; i<num; ++i)
 	{
 		collectBlockRenderList(i);	
 	}
@@ -159,8 +159,8 @@ void CWDTSceneNode::render() const
 // 	g_Engine->getDrawServices()->draw2DImage(tex, vector2di(0,0), true);
 // 	return; 
 
-	u32 num = WdtScene->getNumBlocks();
-	for (u32 i=0; i<num; ++i)
+	uint32_t num = WdtScene->getNumBlocks();
+	for (uint32_t i=0; i<num; ++i)
 	{
 		renderMapBlock(i);	
 	}
@@ -175,14 +175,14 @@ void CWDTSceneNode::onUpdated()
 {
 	IWDTSceneNode::onUpdated();
 
-	u32 num = WdtScene->getNumBlocks();
-	for (u32 i=0; i<num; ++i)
+	uint32_t num = WdtScene->getNumBlocks();
+	for (uint32_t i=0; i<num; ++i)
 	{
 		updateMapBlock(i);
 	}
 }
 
-void CWDTSceneNode::registerVisibleChunks( u32 blockIndex, ICamera* cam )
+void CWDTSceneNode::registerVisibleChunks( uint32_t blockIndex, ICamera* cam )
 {
 	CMapBlock* block = &MapBlocks[blockIndex];
 
@@ -194,9 +194,9 @@ void CWDTSceneNode::registerVisibleChunks( u32 blockIndex, ICamera* cam )
 	plane3df clipPlane = cam->getTerrainClipPlane();
 
 	//chunk
-	for (u8 i=0; i<16; ++i)
+	for (uint8_t i=0; i<16; ++i)
 	{
-		for (u8 j=0; j<16; ++j)
+		for (uint8_t j=0; j<16; ++j)
 		{
 			const CMapChunk* chunk = adt->getChunk(i, j);
 			SDynChunk* dynChunk = &block->DynChunks[i][j];
@@ -239,7 +239,7 @@ void CWDTSceneNode::registerVisibleChunks( u32 blockIndex, ICamera* cam )
 	}
 }
 
-void CWDTSceneNode::updateMapBlock( u32 blockIndex )
+void CWDTSceneNode::updateMapBlock( uint32_t blockIndex )
 {
 	CMapBlock* block = &MapBlocks[blockIndex];
 
@@ -247,9 +247,9 @@ void CWDTSceneNode::updateMapBlock( u32 blockIndex )
 	if (!block->tile || !(adt = static_cast<CFileADT*>(block->tile->fileAdt)))
 		return;
 
-	for (u8 i=0; i<16; ++i)
+	for (uint8_t i=0; i<16; ++i)
 	{
-		for (u8 j=0; j<16; ++j)
+		for (uint8_t j=0; j<16; ++j)
 		{
 			const CMapChunk* chunk = adt->getChunk(i, j);
 			SDynChunk* dynChunk = &block->DynChunks[i][j];
@@ -259,7 +259,7 @@ void CWDTSceneNode::updateMapBlock( u32 blockIndex )
 	}
 }
 
-void CWDTSceneNode::collectBlockRenderList(u32 blockIndex)
+void CWDTSceneNode::collectBlockRenderList(uint32_t blockIndex)
 {
 	CMapBlock* block = &MapBlocks[blockIndex];
 
@@ -274,9 +274,9 @@ void CWDTSceneNode::collectBlockRenderList(u32 blockIndex)
 	if (adt->getNumTextures() == 0)
 		return;
 
-	for (u8 row=0; row<16; ++row)
+	for (uint8_t row=0; row<16; ++row)
 	{
-		for (u8 col=0; col<16; ++col)
+		for (uint8_t col=0; col<16; ++col)
 		{
 			const SDynChunk& dynChunk = block->DynChunks[row][col];
 
@@ -293,26 +293,26 @@ void CWDTSceneNode::collectBlockRenderList(u32 blockIndex)
 	}
 }
 
-void CWDTSceneNode::renderMapBlock( u32 blockIndex ) const
+void CWDTSceneNode::renderMapBlock( uint32_t blockIndex ) const
 {
 	renderChunkRenderList(blockIndex, true);
 	renderChunkRenderList(blockIndex, false);
 }
 
-void CWDTSceneNode::addChunkRenderList( u32 blockIndex, bool high, u8 row, u8 col )
+void CWDTSceneNode::addChunkRenderList( uint32_t blockIndex, bool high, uint8_t row, uint8_t col )
 {
 	CMapBlock* block = &MapBlocks[blockIndex];
 	CFileADT* adt = static_cast<CFileADT*>(block->tile->fileAdt);
 
 	const CMapChunk* chunk = adt->getChunk(row, col);
-	u8 k = row * 16 + col;
+	uint8_t k = row * 16 + col;
 		
 	CMapBlock::T_ChunkRenderList& renderList = high ? block->HighResChunkRenderList : block->LowResChunkRenderList;
 
 	bool find = false;
 	for (CMapBlock::T_ChunkRenderList::iterator itr = renderList.begin(); itr != renderList.end(); ++itr)
 	{
-		u8 num = itr->row * 16 + itr->col + itr->chunkCount;
+		uint8_t num = itr->row * 16 + itr->col + itr->chunkCount;
 		if (num == k)		//连续并且纹理相同，可以合并
 		{
 			const CMapChunk* srcChunk = adt->getChunk(itr->row, itr->col);
@@ -334,7 +334,7 @@ void CWDTSceneNode::addChunkRenderList( u32 blockIndex, bool high, u8 row, u8 co
 	}
 }
 
-void CWDTSceneNode::renderChunkRenderList( u32 blockIndex, bool high ) const
+void CWDTSceneNode::renderChunkRenderList( uint32_t blockIndex, bool high ) const
 {
 	const CMapBlock* block = &MapBlocks[blockIndex];
 	CFileADT* adt = static_cast<CFileADT*>(block->tile->fileAdt);

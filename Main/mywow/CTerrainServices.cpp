@@ -24,10 +24,10 @@ void CTerrainServices::createLowResIndexBuffer()
 {
 	//低精度的存在lod缝隙问题
 	/*
-	u32 isize = 4 * 3;
-	u16* indices = (u16*)Hunk_AllocateTempMemory(sizeof(u16) * isize);
+	uint32_t isize = 4 * 3;
+	uint16_t* indices = (uint16_t*)Hunk_AllocateTempMemory(sizeof(uint16_t) * isize);
 	
-	u16* out =indices;
+	uint16_t* out =indices;
 
 
 	*out++ = 0;
@@ -48,23 +48,23 @@ void CTerrainServices::createLowResIndexBuffer()
 
 	ASSERT(out == indices + isize);
 	*/
-	u32 vcount = 9 * 9 + 8 * 8;
-	u32 isize = 8 * 8 * 2 * 3;
-	u32 totalSize = isize * 16 * 16;
+	uint32_t vcount = 9 * 9 + 8 * 8;
+	uint32_t isize = 8 * 8 * 2 * 3;
+	uint32_t totalSize = isize * 16 * 16;
 
-	u16* indices = (u16*)Z_AllocateTempMemory(sizeof(u16) * totalSize);
-	u16* tmp = (u16*)Z_AllocateTempMemory(sizeof(u16) * isize);
-	for (u16 i=0; i<isize; ++i)
+	uint16_t* indices = (uint16_t*)Z_AllocateTempMemory(sizeof(uint16_t) * totalSize);
+	uint16_t* tmp = (uint16_t*)Z_AllocateTempMemory(sizeof(uint16_t) * isize);
+	for (uint16_t i=0; i<isize; ++i)
 		tmp[i] = i;
 
-	u16* out = indices;
+	uint16_t* out = indices;
 
-	for (u32 i=0; i<16 * 16; ++i)
+	for (uint32_t i=0; i<16 * 16; ++i)
 	{
-		u32 add = i * vcount;
+		uint32_t add = i * vcount;
 		for (int row=0; row<8; ++row) {
-			u16* thisrow = &tmp[indexMapBuf(0,row*2)];
-			u16* nextrow = &tmp[indexMapBuf(0,(row+1)*2)];
+			uint16_t* thisrow = &tmp[indexMapBuf(0,row*2)];
+			uint16_t* nextrow = &tmp[indexMapBuf(0,(row+1)*2)];
 
 			for (int col=0; col<8; ++col)
 			{
@@ -91,24 +91,24 @@ void CTerrainServices::createLowResIndexBuffer()
 
 void CTerrainServices::createHighResIndexBuffer()
 {
-	u32 vcount = 9 * 9 + 8 * 8;
-	u32 isize = (8 * 8 * 4) * 3;		
-	u32 totalSize = isize * 16 * 16;
+	uint32_t vcount = 9 * 9 + 8 * 8;
+	uint32_t isize = (8 * 8 * 4) * 3;		
+	uint32_t totalSize = isize * 16 * 16;
 
-	u16* indices = (u16*)Z_AllocateTempMemory(sizeof(u16) * totalSize);
-	u16* tmp = (u16*)Z_AllocateTempMemory(sizeof(u16) * isize);
-	for (u16 i=0; i<isize; ++i)
+	uint16_t* indices = (uint16_t*)Z_AllocateTempMemory(sizeof(uint16_t) * totalSize);
+	uint16_t* tmp = (uint16_t*)Z_AllocateTempMemory(sizeof(uint16_t) * isize);
+	for (uint16_t i=0; i<isize; ++i)
 		tmp[i] = i;
 
-	u16* out = indices;
+	uint16_t* out = indices;
 
-	for (u32 i=0; i<16 * 16; ++i)
+	for (uint32_t i=0; i<16 * 16; ++i)
 	{
-		u32 add = i * vcount;
+		uint32_t add = i * vcount;
 		for (int row=0; row<8; ++row) { 
-			u16* thisrow = &tmp[indexMapBuf(0,row*2)];
-			u16* nextrow = &tmp[indexMapBuf(0,row*2+1)];
-			u16* overrow = &tmp[indexMapBuf(0,(row+1)*2)];
+			uint16_t* thisrow = &tmp[indexMapBuf(0,row*2)];
+			uint16_t* nextrow = &tmp[indexMapBuf(0,row*2+1)];
+			uint16_t* overrow = &tmp[indexMapBuf(0,(row+1)*2)];
 
 			for (int col=0; col<8; ++col)
 			{

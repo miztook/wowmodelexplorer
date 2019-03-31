@@ -12,7 +12,7 @@ CMeshSceneNode::CMeshSceneNode( IMesh* mesh, ISceneNode* parent )
 	Material.AntiAliasing = EAAM_LINE_SMOOTH;
 	Material.Lighting = false;
 
-	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+	for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
 		Textures[i] = nullptr;
 		Material.TextureLayer[i].TextureWrapU =
@@ -30,7 +30,7 @@ CMeshSceneNode::~CMeshSceneNode()
 
 }
 
-void CMeshSceneNode::setTexture( u32 i, ITexture* texture )
+void CMeshSceneNode::setTexture( uint32_t i, ITexture* texture )
 {
 	if(i >= MATERIAL_MAX_TEXTURES)
 		return;
@@ -58,7 +58,7 @@ aabbox3df CMeshSceneNode::getBoundingBox() const
 	return Mesh->getBoundingBox();
 }
 
-void CMeshSceneNode::tick(u32 timeSinceStart, u32 timeSinceLastFrame, bool visible)
+void CMeshSceneNode::tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible)
 {
 	if (visible)
 	{

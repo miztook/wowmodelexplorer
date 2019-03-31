@@ -15,7 +15,7 @@ public:
 	CD3D9ResourceLoader();
 
 public:
-	virtual ITexture* loadTexture(const c8* filename, bool mipmap = true);
+	virtual ITexture* loadTexture(const char* filename, bool mipmap = true);
 };
 
 #endif

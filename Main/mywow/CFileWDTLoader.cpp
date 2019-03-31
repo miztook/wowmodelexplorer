@@ -2,7 +2,7 @@
 #include "CFileWDTLoader.h"
 #include "CFileWDT.h"
 
-IFileWDT* CWDTLoader::loadWDT( IMemFile* file, s32 mapid, bool simple )
+IFileWDT* CWDTLoader::loadWDT( IMemFile* file, int32_t mapid, bool simple )
 {
 	CFileWDT* wdtFile = new CFileWDT;
 	if (simple)

@@ -46,22 +46,22 @@ public:
 
 	const SRenderStateBlock& getRenderStateBlock() const { return LastMaterialBlock; }
 
-	ITexture* getSampler_Texture(u32 st) const { return CurrentRenderState.TextureUnits[st].texture; }
-	void setSampler_Texture(u32 st, ITexture* tex);
-	void setTextureWrap(u32 st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap);
-	E_TEXTURE_CLAMP getTextureWrap(u32 st, E_TEXTURE_ADDRESS address) const;
+	ITexture* getSampler_Texture(uint32_t st) const { return CurrentRenderState.TextureUnits[st].texture; }
+	void setSampler_Texture(uint32_t st, ITexture* tex);
+	void setTextureWrap(uint32_t st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap);
+	E_TEXTURE_CLAMP getTextureWrap(uint32_t st, E_TEXTURE_ADDRESS address) const;
 	
 	//
 	void setZWriteEnable(bool enable);
 	bool getZWriteEnable() const;
-	void setActiveTexture(u32 st);
-	void setTextureEnable(u32 st, bool enable);
+	void setActiveTexture(uint32_t st);
+	void setTextureEnable(uint32_t st, bool enable);
 
-	void applyTextureFilter(u32 st, E_TEXTURE_FILTER filter);
-	void applyTextureMipMap(u32 st, bool mipmap);
-	void applySamplerTexture(u32 st, ITexture* tex);
-	void applySamplerTextureMultiSample(u32 st, ITexture* tex);
-	void applyTextureWrap(u32 st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap);
+	void applyTextureFilter(uint32_t st, E_TEXTURE_FILTER filter);
+	void applyTextureMipMap(uint32_t st, bool mipmap);
+	void applySamplerTexture(uint32_t st, ITexture* tex);
+	void applySamplerTextureMultiSample(uint32_t st, ITexture* tex);
+	void applyTextureWrap(uint32_t st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap);
 
 private:
 	void resetRSCache();
@@ -153,7 +153,7 @@ private:
 
 };
 
-inline void COpenGLMaterialRenderServices::setSampler_Texture( u32 st, ITexture* tex )
+inline void COpenGLMaterialRenderServices::setSampler_Texture( uint32_t st, ITexture* tex )
 {
 	if (st < MATERIAL_MAX_TEXTURES)
 		CurrentRenderState.TextureUnits[st].texture = tex;

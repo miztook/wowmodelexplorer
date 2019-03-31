@@ -5,7 +5,7 @@
 class CAlphaTestWmoRenderer : public ISceneRenderer
 {
 public:
-	explicit CAlphaTestWmoRenderer(u32 quota);
+	explicit CAlphaTestWmoRenderer(uint32_t quota);
 	~CAlphaTestWmoRenderer();
 
 public:
@@ -42,7 +42,7 @@ private:
 	std::vector<SRenderUnit>		RenderUnits;
 	std::vector<SEntry>			RenderEntries;
 
-	u32		Quota;
+	uint32_t		Quota;
 
 
 	friend class CD3D9Driver;

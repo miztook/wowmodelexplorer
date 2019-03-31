@@ -20,16 +20,16 @@ public:
 	vector3df getScale() const;
 	void setScale( const vector3df& scale );
 
-	void rotateAxisY(f32 radians);
+	void rotateAxisY(float radians);
 	void move( const vector3df& offset );
 
-	f32 getDestHeight() const { return Height; }				//目标高度
-	void setDestHeight(f32 height) { Height = height; }
+	float getDestHeight() const { return Height; }				//目标高度
+	void setDestHeight(float height) { Height = height; }
 
 private:
 	void rotate(const quaternion& q);
 
 private:
 	IM2SceneNode*			M2SceneNode;
-	f32		Height;
+	float		Height;
 };

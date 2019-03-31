@@ -3,7 +3,7 @@
 #include "mywow.h"
 
 
-CMeshDecalServices::CMeshDecalServices( u32 bufferQuota )
+CMeshDecalServices::CMeshDecalServices( uint32_t bufferQuota )
 {
 	BufferQuota = min_(bufferQuota, IHardwareBufferServices::MAX_QUADS());
 
@@ -16,7 +16,7 @@ CMeshDecalServices::~CMeshDecalServices()
 	BufferParam.destroy();
 }
 
-void CMeshDecalServices::updateVertices( u32 numVertices )
+void CMeshDecalServices::updateVertices( uint32_t numVertices )
 {
 	if (!numVertices)
 		return;
@@ -29,7 +29,7 @@ void CMeshDecalServices::createBuffer()
 	BufferParam.clear();
 	BufferParam.vType = EVT_PCT;
 
-	u32 vsize = BufferQuota * 4;
+	uint32_t vsize = BufferQuota * 4;
 
 	//vertex buffer
 	Vertices.resize(vsize);

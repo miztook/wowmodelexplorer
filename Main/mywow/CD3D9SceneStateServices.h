@@ -18,7 +18,7 @@ public:
 	~CD3D9SceneStateServices();
 
 public:
-	virtual void setLight_Fog(u32 lightIndex, bool enable, const SLight& dirLight, 
+	virtual void setLight_Fog(uint32_t lightIndex, bool enable, const SLight& dirLight, 
 		SColor color, const SFogParam& fogParam)
 	{
 		turnLightOn(lightIndex, enable);
@@ -27,7 +27,7 @@ public:
 		setFog(fogParam);
 	}
 
-	virtual void setLight(u32 lightIndex, bool enable, const SLight& dirLight, SColor color)
+	virtual void setLight(uint32_t lightIndex, bool enable, const SLight& dirLight, SColor color)
 	{
 		turnLightOn(lightIndex, enable);
 		setDynamicLight(lightIndex, dirLight);
@@ -35,20 +35,20 @@ public:
 	}
 
 public:
-	bool setClipPlane( u32 index, const plane3df& plane );
-	void enableClipPlane( u32 index, bool enable );
+	bool setClipPlane( uint32_t index, const plane3df& plane );
+	void enableClipPlane( uint32_t index, bool enable );
 	SColor getAmbientLight() const { return SceneState.AmbientLightColor; }
 	void setAmbientLight( SColor color );
 	void deleteAllDynamicLights();
-	bool setDynamicLight( u32 index, const SLight& light );
-	const SLight* getDynamicLight(u32 index) const;
-	void turnLightOn(u32 lightIndex, bool turnOn);
+	bool setDynamicLight( uint32_t index, const SLight& light );
+	const SLight* getDynamicLight(uint32_t index) const;
+	void turnLightOn(uint32_t lightIndex, bool turnOn);
 
 	void setFog(const SFogParam& fogParam);
 	const SFogParam& getFog() const { return SceneState.FogParam; }
 
-	bool isClipPlaneEnable( u32 index ) const;
-	bool getClipPlane( u32 index, plane3df& plane ) const;
+	bool isClipPlaneEnable( uint32_t index ) const;
+	bool getClipPlane( uint32_t index, plane3df& plane ) const;
 	bool reset();
 
 private:

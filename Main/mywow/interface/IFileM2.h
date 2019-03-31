@@ -41,12 +41,12 @@ inline quaternion fixQuat(const quaternion& q)
 
 struct SModelAnimation
 {
-	u32	animID;
-	u32  animSubID;
-	u32	timeLength;
+	uint32_t	animID;
+	uint32_t  animSubID;
+	uint32_t	timeLength;
 
-	s16	NextAnimation;
-	s16	Index;
+	int16_t	NextAnimation;
+	int16_t	Index;
 };
 
 #define	RENDERFLAGS_UNLIT		1
@@ -72,13 +72,13 @@ struct SModelBone
 	SWowAnimationVec3		scale;
 
 	vector3df	pivot;
-	s32		parent;
-	u32		flags;
-	s16		geosetId;
+	int32_t		parent;
+	uint32_t		flags;
+	int16_t		geosetId;
 	E_BONE_TYPE  bonetype;			//from bone lookup table
 	bool		billboard;
 
-	void		init(const u8* filedata, s32* globalSeq, u32 numGlobalSeq, const M2::bone& b, SAnimFile* animFiles)
+	void		init(const uint8_t* filedata, int32_t* globalSeq, uint32_t numGlobalSeq, const M2::bone& b, SAnimFile* animFiles)
 	{
 		parent = b._ParentBone;
 		billboard = (b._Flags & 8) != 0;
@@ -97,7 +97,7 @@ struct SModelColor
 	SWowAnimation<vector3df>	colorAnim;
 	SWowAnimationShort		opacityAnim;
 
-	void init(const u8* filedata, s32* globalSeq, u32 numGlobalSeq, const M2::colorDef& cd)
+	void init(const uint8_t* filedata, int32_t* globalSeq, uint32_t numGlobalSeq, const M2::colorDef& cd)
 	{
 		colorAnim.init(&cd.color, filedata, globalSeq, numGlobalSeq);
 		opacityAnim.init(&cd.opacity, filedata, globalSeq, numGlobalSeq);
@@ -106,9 +106,9 @@ struct SModelColor
 
 struct SModelTransparency
 {
-	SWowAnimation<u16>	tranAnim;
+	SWowAnimation<uint16_t>	tranAnim;
 
-	void init(const u8* filedata, s32* globalSeq, u32 numGlobalSeq, const M2::transDef& td)
+	void init(const uint8_t* filedata, int32_t* globalSeq, uint32_t numGlobalSeq, const M2::transDef& td)
 	{
 		tranAnim.init(&td.trans, filedata, globalSeq, numGlobalSeq);
 	}
@@ -118,7 +118,7 @@ struct SModelTextureAnim
 {
 	SWowAnimation<vector3df>	trans, rot, scale;
 
-	void init(const u8* filedata, s32* globalSeq, u32 numGlobalSeq, const M2::texanimDef& t)
+	void init(const uint8_t* filedata, int32_t* globalSeq, uint32_t numGlobalSeq, const M2::texanimDef& t)
 	{
 		trans.init(&t.trans, filedata, globalSeq, numGlobalSeq);
 		rot.init(&t.rot, filedata, globalSeq, numGlobalSeq);
@@ -129,19 +129,19 @@ struct SModelTextureAnim
 struct SModelAttachment			//挂点
 {
 	SModelAttachment() : id(0), boneIndex(-1) {}
-	s32 id;
-	s32 boneIndex;
+	int32_t id;
+	int32_t boneIndex;
 	vector3df position;
 };
 
 struct SModelCamera
 {
 	vector3df	position, target;
-	f32	nearclip, farclip;
+	float	nearclip, farclip;
  //	SWowAnimationVec3		positionAnim, targetAnim;
- //	SWowAnimation<f32>		rotationAnim;
-//	SWowAnimation<f32>		fovAnim;
-	void init(const M2::ModelCameraDefV10& mcd, const u8* filedata, s32* globalSeq)
+ //	SWowAnimation<float>		rotationAnim;
+//	SWowAnimation<float>		fovAnim;
+	void init(const M2::ModelCameraDefV10& mcd, const uint8_t* filedata, int32_t* globalSeq)
 	{
 		position = fixCoordinate(mcd.pos);
 		target = fixCoordinate(mcd.target);
@@ -161,40 +161,40 @@ class CBoneUnit
 public:
 	CBoneUnit() : BoneVStart(0), TCount(0),  StartIndex(0), BoneCount(0), Index(-1) { }
 
-	u32		BoneVStart;				//在skin bone顶点中的偏移
-	u16		TCount;
-	u16		StartIndex;				//在skin 中index偏移
-	u8	BoneCount;
-	s8		Index;
+	uint32_t		BoneVStart;				//在skin bone顶点中的偏移
+	uint16_t		TCount;
+	uint16_t		StartIndex;				//在skin 中index偏移
+	uint8_t	BoneCount;
+	int8_t		Index;
 
-	typedef std::unordered_set<u8> T_BoneIndices;
+	typedef std::unordered_set<uint8_t> T_BoneIndices;
 	T_BoneIndices			BoneIndices;
 
-	typedef std::unordered_map<u8, u8>	T_bone2boneMap;	 
-	std::vector<u8>	local2globalMap;					//local -> global
+	typedef std::unordered_map<uint8_t, uint8_t>	T_bone2boneMap;	 
+	std::vector<uint8_t>	local2globalMap;					//local -> global
 };
 
 struct STexUnit
 {
-	s16	TexID;				//使用纹理编号
-	s16	rfIndex;				//render flag索引
-	s16	ColorIndex;
-	s16  TransIndex;
-	s16	TexAnimIndex;
-	u16	Mode;
-	u16	Shading;		//shader?
+	int16_t	TexID;				//使用纹理编号
+	int16_t	rfIndex;				//render flag索引
+	int16_t	ColorIndex;
+	int16_t  TransIndex;
+	int16_t	TexAnimIndex;
+	uint16_t	Mode;
+	uint16_t	Shading;		//shader?
 	bool	WrapX;
 	bool	WrapY;
-	u32  TexFlags;
+	uint32_t  TexFlags;
 };
 
 struct SBRect
 {
 	vector3df center;
 	vector2df texcoords[4];
-	f32 width;
-	f32 height;
-	u16 boneIndex;
+	float width;
+	float height;
+	uint16_t boneIndex;
 };
 
 class	CGeoset 
@@ -212,7 +212,7 @@ public:
 		delete[] BillboardRects;
 	}
 
-	u32		GeoID;	
+	uint32_t		GeoID;	
 	
 	//tex unit
 	typedef std::vector<STexUnit> T_TexUnits;
@@ -224,15 +224,15 @@ public:
 
 	SBRect*		BillboardRects;
 
-	u16		VStart;
-	u16		VCount;
-	u16		IStart;
-	u16		ICount;
-	u16		MaxWeights;
+	uint16_t		VStart;
+	uint16_t		VCount;
+	uint16_t		IStart;
+	uint16_t		ICount;
+	uint16_t		MaxWeights;
 	bool		BillBoard;
 
-	u32 getTexUnitCount() const { return (u32)TexUnits.size(); }
-	const STexUnit* getTexUnit(u8 index) const 
+	uint32_t getTexUnitCount() const { return (uint32_t)TexUnits.size(); }
+	const STexUnit* getTexUnit(uint8_t index) const 
 	{
 		if (index >= TexUnits.size())
 			return nullptr;
@@ -317,8 +317,8 @@ public:
 	struct SRenderFlag
 	{
 		//raw
-		u16	flags;
-		u16	blend;
+		uint16_t	flags;
+		uint16_t	blend;
 		
 		bool lighting;
 		bool zwrite;
@@ -332,18 +332,18 @@ public:
 	virtual bool isCharacter() const = 0;
 	virtual bool isHD() const = 0;
 
-	virtual s16 getAnimationIndex(const c8* name, u32 subIdx = 0) const= 0;
-	virtual u32 getAnimationCount(const c8* name) const = 0;
+	virtual int16_t getAnimationIndex(const char* name, uint32_t subIdx = 0) const= 0;
+	virtual uint32_t getAnimationCount(const char* name) const = 0;
 
 	virtual bool buildVideoResources() = 0;
 	virtual void releaseVideoResources() = 0;
 
 	virtual void clearAllActions() = 0;
 	virtual bool addAction(wow_m2Action* action) = 0;
-	virtual wow_m2Action* getAction(const c8* name) const = 0;
+	virtual wow_m2Action* getAction(const char* name) const = 0;
 
 	vector3df getBoundingAACenter() const { return BoundingAABBox.getCenter(); }
-	ITexture* getTexture(u32 idx) const
+	ITexture* getTexture(uint32_t idx) const
 	{ 
 		if( idx >= NumTextures) 
 			return nullptr; 
@@ -351,31 +351,31 @@ public:
 	}
 
 public:
-	c8		Name[DEFAULT_SIZE];
-	c8		Dir[QMAX_PATH];
-	c8		FileName[DEFAULT_SIZE];
+	char		Name[DEFAULT_SIZE];
+	char		Dir[QMAX_PATH];
+	char		FileName[DEFAULT_SIZE];
 
 	E_M2_VER	M2Version;
-	u32		NumVertices;
-	u32		NumBoundingVerts;
-	u32		NumBoundingTriangles;
-	u32		NumTextures;
-	u32		NumTexLookup;
-	u32		NumAttachments;
-	u32		NumAttachLookup;
-	u32		NumGlobalSequences;
-	u32		NumColors;
-	u32		NumTransparencies;
-	u32		NumTranparencyLookukp;
-	u32		NumTexAnim;
-	u32		NumAnimations;
-	u32		NumAnimationLookup;
-	u32		NumBones;
-	u32		NumBoneLookup;
-	u32		NumRenderFlags;
-	u32		NumParticleSystems;
-	u32		NumRibbonEmitters;
-	u32		NumModelCameras;
+	uint32_t		NumVertices;
+	uint32_t		NumBoundingVerts;
+	uint32_t		NumBoundingTriangles;
+	uint32_t		NumTextures;
+	uint32_t		NumTexLookup;
+	uint32_t		NumAttachments;
+	uint32_t		NumAttachLookup;
+	uint32_t		NumGlobalSequences;
+	uint32_t		NumColors;
+	uint32_t		NumTransparencies;
+	uint32_t		NumTranparencyLookukp;
+	uint32_t		NumTexAnim;
+	uint32_t		NumAnimations;
+	uint32_t		NumAnimationLookup;
+	uint32_t		NumBones;
+	uint32_t		NumBoneLookup;
+	uint32_t		NumRenderFlags;
+	uint32_t		NumParticleSystems;
+	uint32_t		NumRibbonEmitters;
+	uint32_t		NumModelCameras;
 
 	aabbox3df		CollisionAABBox;			//和周围的潜在场景碰撞
 	float		CollisionRadius;
@@ -391,32 +391,32 @@ public:
 
 	//bounds
 	vector3df*		Bounds;
-	u16*		BoundTris;
+	uint16_t*		BoundTris;
 
 	//texture
-	u32*		TextureFlags;
+	uint32_t*		TextureFlags;
 	ETextureTypes*		TextureTypes;							//是否是可替换的纹理，这样的纹理不在mesh中
 	ITexture**		Textures;					//常规纹理，由mesh指定的路径加载
-	s16*		TexLookup;
+	int16_t*		TexLookup;
 
 	//attachment
 	SModelAttachment*			Attachments;	
-	s16*		AttachLookup;
+	int16_t*		AttachLookup;
 	
 	//anim
-	s32*		GlobalSequences;
+	int32_t*		GlobalSequences;
 	SModelColor*		Colors;
 	SModelTransparency*		Transparencies;
-	s16*		TransparencyLookup;
+	int16_t*		TransparencyLookup;
 	SModelTextureAnim*		TextureAnim;
 	
 	//actions
 	SModelAnimation*		Animations;
-	s16*		AnimationLookup;
+	int16_t*		AnimationLookup;
 	
 	//bones
 	SModelBone*		Bones;
-	s16*		BoneLookup;
+	int16_t*		BoneLookup;
 	
 	SRenderFlag*		RenderFlags;
 

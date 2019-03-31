@@ -8,7 +8,7 @@ class IImage;
 class CImageLoaderPNG
 {
 public:
-	static bool isALoadableFileExtension( const c8* filename ) { return hasFileExtensionA(filename, "png"); }
+	static bool isALoadableFileExtension( const char* filename ) { return hasFileExtensionA(filename, "png"); }
 
 	IImage* loadAsImage( IMemFile* file);
 };

@@ -80,30 +80,30 @@ static CD3D11_PS40::SPixelShaderEntry g_d3d11ps40_pixelShaderEntries[] =
 
 void CD3D11_PS40::loadAll(CD3D11ShaderServices* shaderServices)
 {
-	u32 num = sizeof(g_d3d11ps40_pixelShaderEntries) / sizeof(SPixelShaderEntry);
-	for (u32 i=0; i<num; ++i)
+	uint32_t num = sizeof(g_d3d11ps40_pixelShaderEntries) / sizeof(SPixelShaderEntry);
+	for (uint32_t i=0; i<num; ++i)
 	{
-		for (u32 k=PS_Macro_None; k<PS_Macro_Num; ++k)
+		for (uint32_t k=PS_Macro_None; k<PS_Macro_Num; ++k)
 			loadPShaderHLSL(shaderServices, g_d3d11ps40_pixelShaderEntries[i].psType, (E_PS_MACRO)k);
 	}
 }
 
 bool CD3D11_PS40::loadPShaderHLSL( CD3D11ShaderServices* shaderServices, E_PS_TYPE type, E_PS_MACRO macro )
 {
-	const c8* profile = "ps_4_0";
+	const char* profile = "ps_4_0";
 
 	//load
 
-	c8 basePath[128];
+	char basePath[128];
 	Q_sprintf(basePath, 128, "Pixel\\%s\\", profile);
 
-	s32 index = -1;
-	u32 num = sizeof(g_d3d11ps40_pixelShaderEntries) / sizeof(SPixelShaderEntry);
-	for (u32 i=0; i<num; ++i)
+	int32_t index = -1;
+	uint32_t num = sizeof(g_d3d11ps40_pixelShaderEntries) / sizeof(SPixelShaderEntry);
+	for (uint32_t i=0; i<num; ++i)
 	{
 		if (g_d3d11ps40_pixelShaderEntries[i].psType == type)
 		{
-			index = (s32)i;
+			index = (int32_t)i;
 			break;
 		}
 	}
@@ -127,7 +127,7 @@ bool CD3D11_PS40::loadPShaderHLSL( CD3D11ShaderServices* shaderServices, E_PS_TY
 	return true;
 }
 
-void CD3D11_PS40::Terrain_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::Terrain_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);
 	ISceneRenderServices* sceneRenderServices = g_Engine->getSceneRenderServices();
@@ -164,7 +164,7 @@ void CD3D11_PS40::Terrain_setShaderConst( IPixelShader* ps, const SMaterial& mat
 	}
 }
 
-void CD3D11_PS40::UI_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::UI_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);
 	CD3D11MaterialRenderServices* materialRenderServices = static_cast<CD3D11MaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
@@ -172,7 +172,7 @@ void CD3D11_PS40::UI_setShaderConst( IPixelShader* ps, const SMaterial& material
 	d3d11ps->setTextureConstant("g_Tex0", materialRenderServices->getSampler_Texture(0));
 }
 
-void CD3D11_PS40::Default_setShaderConst_T1( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::Default_setShaderConst_T1( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	//texture
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);
@@ -192,7 +192,7 @@ void CD3D11_PS40::Default_setShaderConst_T1( IPixelShader* ps, const SMaterial& 
 	d3d11ps->setTextureConstant("g_Tex0", renderUnit->textures[0]);
 }
 
-void CD3D11_PS40::Default_setShaderConst_T2( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::Default_setShaderConst_T2( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	//texture
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);
@@ -214,7 +214,7 @@ void CD3D11_PS40::Default_setShaderConst_T2( IPixelShader* ps, const SMaterial& 
 	d3d11ps->setTextureConstant("g_Tex1", renderUnit->textures[1]);
 }
 
-void CD3D11_PS40::MapObjOpaque_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::MapObjOpaque_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);
 	CD3D11SceneStateServices* sceneStateServices = static_cast<CD3D11SceneStateServices*>(g_Engine->getDriver()->getSceneStateServices());
@@ -232,7 +232,7 @@ void CD3D11_PS40::MapObjOpaque_setShaderConst( IPixelShader* ps, const SMaterial
 	d3d11ps->setTextureConstant("g_Tex0", renderUnit->textures[0]);
 }
 
-void CD3D11_PS40::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);
 	CD3D11MaterialRenderServices* materialRenderServices = static_cast<CD3D11MaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
@@ -255,7 +255,7 @@ void CD3D11_PS40::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& mate
 	d3d11ps->setTextureConstant("g_Tex0", renderUnit->textures[0]);
 }
 
-void CD3D11_PS40::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);
 	CD3D11MaterialRenderServices* materialRenderServices = static_cast<CD3D11MaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
@@ -280,7 +280,7 @@ void CD3D11_PS40::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMateri
 	d3d11ps->setTextureConstant("g_Tex1", renderUnit->textures[1]);
 }
 
-void CD3D11_PS40::MapObjTwoLayerOpaque_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::MapObjTwoLayerOpaque_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);
 	CD3D11SceneStateServices* sceneStateServices = static_cast<CD3D11SceneStateServices*>(g_Engine->getDriver()->getSceneStateServices());
@@ -301,7 +301,7 @@ void CD3D11_PS40::MapObjTwoLayerOpaque_setShaderConst( IPixelShader* ps, const S
 
 }
 
-void CD3D11_PS40::DiffuseT1_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::DiffuseT1_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	//texture
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);
@@ -324,7 +324,7 @@ void CD3D11_PS40::DiffuseT1_setShaderConst( IPixelShader* ps, const SMaterial& m
 	d3d11ps->setTextureConstant("g_Tex0", renderUnit->textures[0]);
 }
 
-void CD3D11_PS40::DiffuseT2_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::DiffuseT2_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	//texture
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);
@@ -349,7 +349,7 @@ void CD3D11_PS40::DiffuseT2_setShaderConst( IPixelShader* ps, const SMaterial& m
 	d3d11ps->setTextureConstant("g_Tex1", renderUnit->textures[1]);
 }
 
-void CD3D11_PS40::DiffuseT3_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11_PS40::DiffuseT3_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	//texture
 	CD3D11PixelShader* d3d11ps = static_cast<CD3D11PixelShader*>(ps);

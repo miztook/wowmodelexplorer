@@ -17,9 +17,9 @@ public:
 
 	bool endCheckPoint();
 
-	void outputDifference(const c8* funcname);
+	void outputDifference(const char* funcname);
 
-	void setAllocHook(bool enable, u32 nMaxAlloc = 1000);
+	void setAllocHook(bool enable, uint32_t nMaxAlloc = 1000);
 
 	void outputMaxMemoryUsed();
 

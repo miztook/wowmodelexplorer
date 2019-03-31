@@ -27,7 +27,7 @@ void CVertexBuffer::releaseVideoResources()
 	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(this);
 }
 
-bool CVertexBuffer::updateHWBuffer(u32 size)
+bool CVertexBuffer::updateHWBuffer(uint32_t size)
 {
 	return g_Engine->getHardwareBufferServices()->updateHardwareBuffer(this, size);
 }
@@ -57,7 +57,7 @@ void CIndexBuffer::releaseVideoResources()
 	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(this);
 }
 
-bool CIndexBuffer::updateHWBuffer(u32 size)
+bool CIndexBuffer::updateHWBuffer(uint32_t size)
 {
 	return g_Engine->getHardwareBufferServices()->updateHardwareBuffer(this, size);
 }

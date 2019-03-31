@@ -114,7 +114,7 @@ void CD3D11HardwareBufferServices::destroyHardwareBuffers( const SBufferParam& b
 		destroyHardwareBuffer(bufferParam.vbuffer1);
 }
 
-bool CD3D11HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, u32 size )
+bool CD3D11HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, uint32_t size )
 {
 	if (vbuffer->Size >= 65536 || size > vbuffer->Size || vbuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -122,9 +122,9 @@ bool CD3D11HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer,
 		return false;
 	}
 
-	u32 vertexSize = getStreamPitchFromType(vbuffer->Type);
+	uint32_t vertexSize = getStreamPitchFromType(vbuffer->Type);
 
-	u32 sizeToLock = size * vertexSize;
+	uint32_t sizeToLock = size * vertexSize;
 	ID3D11Buffer* vertexBuffer = (ID3D11Buffer*)vbuffer->HWLink;
 
 	D3D11_MAP maptype = D3D11_MAP_WRITE_DISCARD;
@@ -141,9 +141,9 @@ bool CD3D11HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer,
 			return false;
 		}
 
-		void* destData = (u8*)mapOut.pData;
+		void* destData = (uint8_t*)mapOut.pData;
 
-		const void* srcData = (u8*)vbuffer->Vertices; 
+		const void* srcData = (uint8_t*)vbuffer->Vertices; 
 		Q_memcpy(destData, sizeToLock, (const void*)srcData, sizeToLock);
 
 		//ImmediateContext
@@ -153,7 +153,7 @@ bool CD3D11HardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer,
 	return true;
 }
 
-bool CD3D11HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, u32 size )
+bool CD3D11HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, uint32_t size )
 {
 	if (ibuffer->Size >= 65536 || size > ibuffer->Size || ibuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -161,9 +161,9 @@ bool CD3D11HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, 
 		return false;
 	}
 
-	u32 indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
+	uint32_t indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
 
-	u32 sizeToLock = size * indexSize;
+	uint32_t sizeToLock = size * indexSize;
 
 	ID3D11Buffer* indexBuffer = (ID3D11Buffer*)ibuffer->HWLink;
 
@@ -181,9 +181,9 @@ bool CD3D11HardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, 
 			return false;
 		}
 
-		void* destData = (u8*)mapOut.pData;
+		void* destData = (uint8_t*)mapOut.pData;
 	
-		const void* srcData = (u8*)ibuffer->Indices; 
+		const void* srcData = (uint8_t*)ibuffer->Indices; 
 		Q_memcpy(destData, sizeToLock, (const void*)srcData, sizeToLock);
 
 		//ImmediateContext
@@ -291,7 +291,7 @@ bool CD3D11HardwareBufferServices::internalCreateIndexBuffer( CIndexBuffer* ibuf
 		break;
 	}
 
-	u32 indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
+	uint32_t indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
 
 	D3D11_BUFFER_DESC desc = {0};
 	desc.Usage = usage;
@@ -326,17 +326,17 @@ bool CD3D11HardwareBufferServices::internalCreateIndexBuffer( CIndexBuffer* ibuf
 void CD3D11HardwareBufferServices::createStaticIndexBufferQuadList()
 {
 	//index buffer
-	u16* indices = (u16*)Z_AllocateTempMemory(sizeof(u16) * MAX_QUADS() * 6);
-	u32 firstVert = 0;
-	u32 firstIndex = 0;
-	for (u32 i = 0; i < MAX_QUADS(); ++i )
+	uint16_t* indices = (uint16_t*)Z_AllocateTempMemory(sizeof(uint16_t) * MAX_QUADS() * 6);
+	uint32_t firstVert = 0;
+	uint32_t firstIndex = 0;
+	for (uint32_t i = 0; i < MAX_QUADS(); ++i )
 	{
-		indices[firstIndex + 0] = (u16)firstVert + 0;
-		indices[firstIndex + 1] = (u16)firstVert + 1;
-		indices[firstIndex + 2] = (u16)firstVert + 2;
-		indices[firstIndex + 3] = (u16)firstVert + 3;
-		indices[firstIndex + 4] = (u16)firstVert + 2;
-		indices[firstIndex + 5] = (u16)firstVert + 1;
+		indices[firstIndex + 0] = (uint16_t)firstVert + 0;
+		indices[firstIndex + 1] = (uint16_t)firstVert + 1;
+		indices[firstIndex + 2] = (uint16_t)firstVert + 2;
+		indices[firstIndex + 3] = (uint16_t)firstVert + 3;
+		indices[firstIndex + 4] = (uint16_t)firstVert + 2;
+		indices[firstIndex + 5] = (uint16_t)firstVert + 1;
 
 		firstVert += 4; 
 		firstIndex += 6;

@@ -13,9 +13,9 @@ public:
 	~CWorld();
 
 public:
-	virtual f32 getHeightNormal(f32 x, f32 z, vector3df* normal = NULL) const;
+	virtual float getHeightNormal(float x, float z, vector3df* normal = NULL) const;
 
-	virtual void tick(u32 delta);
+	virtual void tick(uint32_t delta);
 
 	virtual void setWorldSceneNode(IMapTileSceneNode* node);
 

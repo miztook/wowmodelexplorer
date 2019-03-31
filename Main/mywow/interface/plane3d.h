@@ -65,16 +65,16 @@ public:
 		if (equals_(lensq, 1.0f))
 			return;
 
-		f32 len;
+		float len;
 		if (equals_(lensq, 0.0f))			//avoid div by 0
 		{
-			s32 f = 1;
+			int32_t f = 1;
 			do
 			{
 				f *= 100;
 				lensq *= f;
 			} while (equals_(lensq, 0.0f));
-			len = squareroot_((f32)f) * squareroot_(lensq);
+			len = squareroot_((float)f) * squareroot_(lensq);
 		}
 		else
 		{
@@ -116,5 +116,5 @@ public:
 	T D;
 };
 
-typedef plane3d<f32> plane3df;
-typedef plane3d<s32> plane3di;
+typedef plane3d<float> plane3df;
+typedef plane3d<int32_t> plane3di;

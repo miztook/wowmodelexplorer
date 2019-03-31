@@ -22,15 +22,15 @@ public:
 	virtual void onEnterState(E_RECOGNIZER_STATE state);
 
 private:
-	bool checkPan2MoveDelta(f32 deltaX1, f32 deltaY1, f32 deltaX2, f32 deltaY2);
+	bool checkPan2MoveDelta(float deltaX1, float deltaY1, float deltaX2, float deltaY2);
 	bool checkPan2TouchDistance(const SGesTouchInfo& touch1, const SGesTouchInfo& touch2);
 	void outputPan2Gesture(E_GESTURE_STATE state);
 
 private:
-	f32 BeginPosX;
-	f32 BeginPosY;
-	f32 LastPosX;
-	f32 LastPosY;
-	f32 LastVelocityX;
-	f32 LastVelocityY;
+	float BeginPosX;
+	float BeginPosY;
+	float LastPosX;
+	float LastPosY;
+	float LastVelocityX;
+	float LastVelocityY;
 };

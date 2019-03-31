@@ -20,11 +20,11 @@ bool CBlit::Blit( CImage* dest, const vector2di& destPos, const dimension2du& de
 
 	job.srcPitch = src->getPitch();
 	job.srcPixelMul = src->getBytesPerPixel();
-	job.src = ( (u8*)src->lock() + job.srcPitch * srcPos.Y + job.srcPixelMul * srcPos.X );
+	job.src = ( (uint8_t*)src->lock() + job.srcPitch * srcPos.Y + job.srcPixelMul * srcPos.X );
 
 	job.dstPitch = dest->getPitch();
 	job.dstPixelMul = dest->getBytesPerPixel();
-	job.dst = ( (u8*)dest->lock() + job.dstPitch * destPos.Y + job.dstPixelMul * destPos.X );
+	job.dst = ( (uint8_t*)dest->lock() + job.dstPitch * destPos.Y + job.dstPixelMul * destPos.X );
 
 	ECOLOR_FORMAT srcFormat = src->getColorFormat();
 	ECOLOR_FORMAT destFormat = dest->getColorFormat();
@@ -93,68 +93,68 @@ void CBlit::executeBlit_TextureCopy_x_to_x( const SBlitJob * job )
 	const void *src = (void*) job->src;
 	void *dst = (void*) job->dst;
 
-	const u32 widthPitch = job->width * job->dstPixelMul;
-	for ( s32 dy = 0; dy != job->height; ++dy )
+	const uint32_t widthPitch = job->width * job->dstPixelMul;
+	for ( int32_t dy = 0; dy != job->height; ++dy )
 	{
 		memcpy( dst, src, widthPitch );
 
-		src = (void*) ( (u8*) (src) + job->srcPitch );
-		dst = (void*) ( (u8*) (dst) + job->dstPitch );
+		src = (void*) ( (uint8_t*) (src) + job->srcPitch );
+		dst = (void*) ( (uint8_t*) (dst) + job->dstPitch );
 	}
 }
 
 void CBlit::executeBlit_TextureCopy_16_to_32( const SBlitJob * job )
 {
-	const u16 *src = (u16*) job->src;
-	u32 *dst = (u32*) job->dst;
+	const uint16_t *src = (uint16_t*) job->src;
+	uint32_t *dst = (uint32_t*) job->dst;
 
-	for ( s32 dy = 0; dy != job->height; ++dy )
+	for ( int32_t dy = 0; dy != job->height; ++dy )
 	{
-		for ( s32 dx = 0; dx != job->width; ++dx )
+		for ( int32_t dx = 0; dx != job->width; ++dx )
 		{
 			dst[dx] = SColor::A1R5G5B5toA8R8G8B8( src[dx] );
 		}
 
-		src = (u16*) ( (u8*) (src) + job->srcPitch );
-		dst = (u32*) ( (u8*) (dst) + job->dstPitch );
+		src = (uint16_t*) ( (uint8_t*) (src) + job->srcPitch );
+		dst = (uint32_t*) ( (uint8_t*) (dst) + job->dstPitch );
 	}
 }
 
 void CBlit::executeBlit_TextureCopy_32_to_16( const SBlitJob * job )
 {
-	const u32 *src = static_cast<const u32*>(job->src);
-	u16 *dst = static_cast<u16*>(job->dst);
+	const uint32_t *src = static_cast<const uint32_t*>(job->src);
+	uint16_t *dst = static_cast<uint16_t*>(job->dst);
 
-	for ( s32 dy = 0; dy != job->height; ++dy )
+	for ( int32_t dy = 0; dy != job->height; ++dy )
 	{
-		for ( s32 dx = 0; dx != job->width; ++dx )
+		for ( int32_t dx = 0; dx != job->width; ++dx )
 		{
-			const u32 s = src[dx];
+			const uint32_t s = src[dx];
 			dst[dx] = SColor::A8R8G8B8toA1R5G5B5( s );
 		}
 
-		src = (u32*) ( (u8*) (src) + job->srcPitch );
-		dst = (u16*) ( (u8*) (dst) + job->dstPitch );
+		src = (uint32_t*) ( (uint8_t*) (src) + job->srcPitch );
+		dst = (uint16_t*) ( (uint8_t*) (dst) + job->dstPitch );
 	}
 }
 
 void CBlit::executeBlit_TextureCopy_16_to_24( const SBlitJob * job )
 {
-	const u16 *src = (u16*) job->src;
-	u8 *dst = (u8*) job->dst;
+	const uint16_t *src = (uint16_t*) job->src;
+	uint8_t *dst = (uint8_t*) job->dst;
 
-	for ( s32 dy = 0; dy != job->height; ++dy )
+	for ( int32_t dy = 0; dy != job->height; ++dy )
 	{
-		for ( s32 dx = 0; dx != job->width; ++dx )
+		for ( int32_t dx = 0; dx != job->width; ++dx )
 		{
-			u32 colour = SColor::A1R5G5B5toA8R8G8B8( src[dx] );
-			u8 * writeTo = &dst[dx * 3];
+			uint32_t colour = SColor::A1R5G5B5toA8R8G8B8( src[dx] );
+			uint8_t * writeTo = &dst[dx * 3];
 			*writeTo++ = (colour >> 16)& 0xFF;
 			*writeTo++ = (colour >> 8) & 0xFF;
 			*writeTo++ = colour & 0xFF;
 		}
 
-		src = (u16*) ( (u8*) (src) + job->srcPitch );
+		src = (uint16_t*) ( (uint8_t*) (src) + job->srcPitch );
 		dst += job->dstPitch;
 	}
 }
@@ -162,64 +162,64 @@ void CBlit::executeBlit_TextureCopy_16_to_24( const SBlitJob * job )
 void CBlit::executeBlit_TextureCopy_24_to_16( const SBlitJob * job )
 {
 	const void *src = (void*) job->src;
-	u16 *dst = (u16*) job->dst;
+	uint16_t *dst = (uint16_t*) job->dst;
 
-	for ( s32 dy = 0; dy != job->height; ++dy )
+	for ( int32_t dy = 0; dy != job->height; ++dy )
 	{
-		u8 * s = (u8*) src;
+		uint8_t * s = (uint8_t*) src;
 
-		for ( s32 dx = 0; dx != job->width; ++dx )
+		for ( int32_t dx = 0; dx != job->width; ++dx )
 		{
 			dst[dx] = SColor::RGB16(s[0], s[1], s[2]);
 			s += 3;
 		}
 
-		src = (void*) ( (u8*) (src) + job->srcPitch );
-		dst = (u16*) ( (u8*) (dst) + job->dstPitch );
+		src = (void*) ( (uint8_t*) (src) + job->srcPitch );
+		dst = (uint16_t*) ( (uint8_t*) (dst) + job->dstPitch );
 	}
 }
 
 void CBlit::executeBlit_TextureCopy_24_to_32( const SBlitJob * job )
 {
 	void *src = (void*) job->src;
-	u32 *dst = (u32*) job->dst;
+	uint32_t *dst = (uint32_t*) job->dst;
 
-	for ( s32 dy = 0; dy != job->height; ++dy )
+	for ( int32_t dy = 0; dy != job->height; ++dy )
 	{
-		u8 * s = (u8*) src;
+		uint8_t * s = (uint8_t*) src;
 
-		for ( s32 dx = 0; dx != job->width; ++dx )
+		for ( int32_t dx = 0; dx != job->width; ++dx )
 		{
 			dst[dx] = 0xFF000000 | s[0] << 16 | s[1] << 8 | s[2];
 			s += 3;
 		}
 
-		src = (void*) ( (u8*) (src) + job->srcPitch );
-		dst = (u32*) ( (u8*) (dst) + job->dstPitch );
+		src = (void*) ( (uint8_t*) (src) + job->srcPitch );
+		dst = (uint32_t*) ( (uint8_t*) (dst) + job->dstPitch );
 	}
 }
 
 void CBlit::executeBlit_TextureCopy_32_to_24( const SBlitJob * job )
 {
-	const u32 * src = (u32*) job->src;
-	u8 * dst = (u8*) job->dst;
+	const uint32_t * src = (uint32_t*) job->src;
+	uint8_t * dst = (uint8_t*) job->dst;
 
-	for ( s32 dy = 0; dy != job->height; ++dy )
+	for ( int32_t dy = 0; dy != job->height; ++dy )
 	{
-		for ( s32 dx = 0; dx != job->width; ++dx )
+		for ( int32_t dx = 0; dx != job->width; ++dx )
 		{
-			u8 * writeTo = &dst[dx * 3];
+			uint8_t * writeTo = &dst[dx * 3];
 			*writeTo++ = (src[dx] >> 16)& 0xFF;
 			*writeTo++ = (src[dx] >> 8) & 0xFF;
 			*writeTo++ = src[dx] & 0xFF;
 		}
 
-		src = (u32*) ( (u8*) (src) + job->srcPitch );
+		src = (uint32_t*) ( (uint8_t*) (src) + job->srcPitch );
 		dst += job->dstPitch ;
 	}
 }
 
-void CBlit::convert_viaFormat( const void* sP, ECOLOR_FORMAT sF, s32 sN, void* dP, ECOLOR_FORMAT dF )
+void CBlit::convert_viaFormat( const void* sP, ECOLOR_FORMAT sF, int32_t sN, void* dP, ECOLOR_FORMAT dF )
 {
 	switch (sF)
 	{
@@ -309,67 +309,67 @@ void CBlit::convert_viaFormat( const void* sP, ECOLOR_FORMAT sF, s32 sN, void* d
 	}
 }
 
-void CBlit::convert_A1R5G5B5toR8G8B8( const void* sP, s32 sN, void* dP )
+void CBlit::convert_A1R5G5B5toR8G8B8( const void* sP, int32_t sN, void* dP )
 {
-	u16* sB = (u16*)sP;
-	u8 * dB = (u8 *)dP;
+	uint16_t* sB = (uint16_t*)sP;
+	uint8_t * dB = (uint8_t *)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
-		dB[2] = (u8)((*sB & 0x7c00) >> 7);
-		dB[1] = (u8)((*sB & 0x03e0) >> 2);
-		dB[0] = (u8)((*sB & 0x1f) << 3);
+		dB[2] = (uint8_t)((*sB & 0x7c00) >> 7);
+		dB[1] = (uint8_t)((*sB & 0x03e0) >> 2);
+		dB[0] = (uint8_t)((*sB & 0x1f) << 3);
 
 		sB += 1;
 		dB += 3;
 	}
 }
 
-void CBlit::convert_A1R5G5B5toB8G8R8(const void* sP, s32 sN, void* dP)
+void CBlit::convert_A1R5G5B5toB8G8R8(const void* sP, int32_t sN, void* dP)
 {
-	u16* sB = (u16*)sP;
-	u8 * dB = (u8 *)dP;
+	uint16_t* sB = (uint16_t*)sP;
+	uint8_t * dB = (uint8_t *)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
-		dB[0] = (u8)((*sB & 0x7c00) >> 7);
-		dB[1] = (u8)((*sB & 0x03e0) >> 2);
-		dB[2] = (u8)((*sB & 0x1f) << 3);
+		dB[0] = (uint8_t)((*sB & 0x7c00) >> 7);
+		dB[1] = (uint8_t)((*sB & 0x03e0) >> 2);
+		dB[2] = (uint8_t)((*sB & 0x1f) << 3);
 
 		sB += 1;
 		dB += 3;
 	}
 }
 
-void CBlit::convert_A1R5G5B5toA8R8G8B8( const void* sP, s32 sN, void* dP )
+void CBlit::convert_A1R5G5B5toA8R8G8B8( const void* sP, int32_t sN, void* dP )
 {
-	u16* sB = (u16*)sP;
-	u32* dB = (u32*)dP;
+	uint16_t* sB = (uint16_t*)sP;
+	uint32_t* dB = (uint32_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 		*dB++ = SColor::A1R5G5B5toA8R8G8B8(*sB++);
 }
 
-void CBlit::convert_A1R5G5B5toA1R5G5B5( const void* sP, s32 sN, void* dP )
+void CBlit::convert_A1R5G5B5toA1R5G5B5( const void* sP, int32_t sN, void* dP )
 {
 	memcpy(dP, sP, sN * 2);
 }
 
-void CBlit::convert_A1R5G5B5toR5G6B5(const void* sP, s32 sN, void* dP)
+void CBlit::convert_A1R5G5B5toR5G6B5(const void* sP, int32_t sN, void* dP)
 {
-	u16* sB = (u16*)sP;
-	u16* dB = (u16*)dP;
+	uint16_t* sB = (uint16_t*)sP;
+	uint16_t* dB = (uint16_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 		*dB++ = SColor::A1R5G5B5toR5G6B5(*sB++);
 }
 
-void CBlit::convert_A8R8G8B8toA8B8G8R8( const void* sP, s32 sN, void* dP )
+void CBlit::convert_A8R8G8B8toA8B8G8R8( const void* sP, int32_t sN, void* dP )
 {
-	u8* sB = (u8*)sP;
-	u8* dB = (u8*)dP;
+	uint8_t* sB = (uint8_t*)sP;
+	uint8_t* dB = (uint8_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
 		// sB[3] is alpha
 		dB[0] = sB[2];
@@ -381,12 +381,12 @@ void CBlit::convert_A8R8G8B8toA8B8G8R8( const void* sP, s32 sN, void* dP )
 	}
 }
 
-void CBlit::convert_A8R8G8B8toR8G8B8( const void* sP, s32 sN, void* dP )
+void CBlit::convert_A8R8G8B8toR8G8B8( const void* sP, int32_t sN, void* dP )
 {
-	u8* sB = (u8*)sP;
-	u8* dB = (u8*)dP;
+	uint8_t* sB = (uint8_t*)sP;
+	uint8_t* dB = (uint8_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
 		// sB[3] is alpha
 		dB[0] = sB[2];
@@ -398,12 +398,12 @@ void CBlit::convert_A8R8G8B8toR8G8B8( const void* sP, s32 sN, void* dP )
 	}
 }
 
-void CBlit::convert_A8R8G8B8toB8G8R8(const void* sP, s32 sN, void* dP)
+void CBlit::convert_A8R8G8B8toB8G8R8(const void* sP, int32_t sN, void* dP)
 {
-	u8* sB = (u8*)sP;
-	u8* dB = (u8*)dP;
+	uint8_t* sB = (uint8_t*)sP;
+	uint8_t* dB = (uint8_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
 		// sB[3] is alpha
 		dB[0] = sB[0];
@@ -415,49 +415,49 @@ void CBlit::convert_A8R8G8B8toB8G8R8(const void* sP, s32 sN, void* dP)
 	}
 }
 
-void CBlit::convert_A8R8G8B8toA8R8G8B8( const void* sP, s32 sN, void* dP )
+void CBlit::convert_A8R8G8B8toA8R8G8B8( const void* sP, int32_t sN, void* dP )
 {
 	memcpy(dP, sP, sN * 4);
 }
 
-void CBlit::convert_A8R8G8B8toA1R5G5B5( const void* sP, s32 sN, void* dP )
+void CBlit::convert_A8R8G8B8toA1R5G5B5( const void* sP, int32_t sN, void* dP )
 {
-	u32* sB = (u32*)sP;
-	u16* dB = (u16*)dP;
+	uint32_t* sB = (uint32_t*)sP;
+	uint16_t* dB = (uint16_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 		*dB++ = SColor::A8R8G8B8toA1R5G5B5(*sB++);
 }
 
-void CBlit::convert_A8R8G8B8toR5G6B5(const void* sP, s32 sN, void* dP)
+void CBlit::convert_A8R8G8B8toR5G6B5(const void* sP, int32_t sN, void* dP)
 {
-	u8 * sB = (u8 *)sP;
-	u16* dB = (u16*)dP;
+	uint8_t * sB = (uint8_t *)sP;
+	uint16_t* dB = (uint16_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
-		s32 r = sB[2] >> 3;
-		s32 g = sB[1] >> 2;
-		s32 b = sB[0] >> 3;
+		int32_t r = sB[2] >> 3;
+		int32_t g = sB[1] >> 2;
+		int32_t b = sB[0] >> 3;
 
-		dB[0] = (u16)((r << 11) | (g << 5) | (b));
+		dB[0] = (uint16_t)((r << 11) | (g << 5) | (b));
 
 		sB += 4;
 		dB += 1;
 	}
 }
 
-void CBlit::convert_R8G8B8toR8G8B8( const void* sP, s32 sN, void* dP )
+void CBlit::convert_R8G8B8toR8G8B8( const void* sP, int32_t sN, void* dP )
 {
 	memcpy(dP, sP, sN * 3);
 }
 
-void CBlit::convert_R8G8B8toA8R8G8B8( const void* sP, s32 sN, void* dP )
+void CBlit::convert_R8G8B8toA8R8G8B8( const void* sP, int32_t sN, void* dP )
 {
-	u8*  sB = (u8* )sP;
-	u32* dB = (u32*)dP;
+	uint8_t*  sB = (uint8_t* )sP;
+	uint32_t* dB = (uint32_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
 		*dB = 0xff000000 | (sB[0]<<16) | (sB[1]<<8) | sB[2];
 
@@ -466,103 +466,103 @@ void CBlit::convert_R8G8B8toA8R8G8B8( const void* sP, s32 sN, void* dP )
 	}
 }
 
-void CBlit::convert_R8G8B8toA1R5G5B5( const void* sP, s32 sN, void* dP )
+void CBlit::convert_R8G8B8toA1R5G5B5( const void* sP, int32_t sN, void* dP )
 {
-	u8 * sB = (u8 *)sP;
-	u16* dB = (u16*)dP;
+	uint8_t * sB = (uint8_t *)sP;
+	uint16_t* dB = (uint16_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
-		s32 r = sB[0] >> 3;
-		s32 g = sB[1] >> 3;
-		s32 b = sB[2] >> 3;
+		int32_t r = sB[0] >> 3;
+		int32_t g = sB[1] >> 3;
+		int32_t b = sB[2] >> 3;
 
-		dB[0] = (u16)((0x8000) | (r << 10) | (g << 5) | (b));
+		dB[0] = (uint16_t)((0x8000) | (r << 10) | (g << 5) | (b));
 
 		sB += 3;
 		dB += 1;
 	}
 }
 
-void CBlit::convert_R8G8B8toR5G6B5(const void* sP, s32 sN, void* dP)
+void CBlit::convert_R8G8B8toR5G6B5(const void* sP, int32_t sN, void* dP)
 {
-	u8 * sB = (u8 *)sP;
-	u16* dB = (u16*)dP;
+	uint8_t * sB = (uint8_t *)sP;
+	uint16_t* dB = (uint16_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
-		s32 r = sB[0] >> 3;
-		s32 g = sB[1] >> 2;
-		s32 b = sB[2] >> 3;
+		int32_t r = sB[0] >> 3;
+		int32_t g = sB[1] >> 2;
+		int32_t b = sB[2] >> 3;
 
-		dB[0] = (u16)((r << 11) | (g << 5) | (b));
+		dB[0] = (uint16_t)((r << 11) | (g << 5) | (b));
 
 		sB += 3;
 		dB += 1;
 	}
 }
 
-void CBlit::convert_R5G6B5toR5G6B5(const void* sP, s32 sN, void* dP)
+void CBlit::convert_R5G6B5toR5G6B5(const void* sP, int32_t sN, void* dP)
 {
 	memcpy(dP, sP, sN * 2);
 }
 
-void CBlit::convert_R5G6B5toR8G8B8(const void* sP, s32 sN, void* dP)
+void CBlit::convert_R5G6B5toR8G8B8(const void* sP, int32_t sN, void* dP)
 {
-	u16* sB = (u16*)sP;
-	u8 * dB = (u8 *)dP;
+	uint16_t* sB = (uint16_t*)sP;
+	uint8_t * dB = (uint8_t *)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
-		dB[0] = (u8)((*sB & 0xf800) << 8);
-		dB[1] = (u8)((*sB & 0x07e0) << 2);
-		dB[2] = (u8)((*sB & 0x001f) << 3);
+		dB[0] = (uint8_t)((*sB & 0xf800) << 8);
+		dB[1] = (uint8_t)((*sB & 0x07e0) << 2);
+		dB[2] = (uint8_t)((*sB & 0x001f) << 3);
 
 		sB += 4;
 		dB += 3;
 	}
 }
 
-void CBlit::convert_R5G6B5toB8G8R8(const void* sP, s32 sN, void* dP)
+void CBlit::convert_R5G6B5toB8G8R8(const void* sP, int32_t sN, void* dP)
 {
-	u16* sB = (u16*)sP;
-	u8 * dB = (u8 *)dP;
+	uint16_t* sB = (uint16_t*)sP;
+	uint8_t * dB = (uint8_t *)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
-		dB[2] = (u8)((*sB & 0xf800) << 8);
-		dB[1] = (u8)((*sB & 0x07e0) << 2);
-		dB[0] = (u8)((*sB & 0x001f) << 3);
+		dB[2] = (uint8_t)((*sB & 0xf800) << 8);
+		dB[1] = (uint8_t)((*sB & 0x07e0) << 2);
+		dB[0] = (uint8_t)((*sB & 0x001f) << 3);
 
 		sB += 4;
 		dB += 3;
 	}
 }
 
-void CBlit::convert_R5G6B5toA8R8G8B8(const void* sP, s32 sN, void* dP)
+void CBlit::convert_R5G6B5toA8R8G8B8(const void* sP, int32_t sN, void* dP)
 {
-	u16* sB = (u16*)sP;
-	u32* dB = (u32*)dP;
+	uint16_t* sB = (uint16_t*)sP;
+	uint32_t* dB = (uint32_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 		*dB++ = SColor::R5G6B5toA8R8G8B8(*sB++);
 }
 
-void CBlit::convert_R5G6B5toA1R5G5B5(const void* sP, s32 sN, void* dP)
+void CBlit::convert_R5G6B5toA1R5G5B5(const void* sP, int32_t sN, void* dP)
 {
-	u16* sB = (u16*)sP;
-	u16* dB = (u16*)dP;
+	uint16_t* sB = (uint16_t*)sP;
+	uint16_t* dB = (uint16_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 		*dB++ = SColor::R5G6B5toA1R5G5B5(*sB++);
 }
 
-void CBlit::convert_B8G8R8toA8R8G8B8(const void* sP, s32 sN, void* dP)
+void CBlit::convert_B8G8R8toA8R8G8B8(const void* sP, int32_t sN, void* dP)
 {
-	u8*  sB = (u8* )sP;
-	u32* dB = (u32*)dP;
+	uint8_t*  sB = (uint8_t* )sP;
+	uint32_t* dB = (uint32_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
 		*dB = 0xff000000 | (sB[2]<<16) | (sB[1]<<8) | sB[0];
 
@@ -571,12 +571,12 @@ void CBlit::convert_B8G8R8toA8R8G8B8(const void* sP, s32 sN, void* dP)
 	}
 }
 
-void CBlit::convert_B8G8R8A8toA8R8G8B8(const void* sP, s32 sN, void* dP)
+void CBlit::convert_B8G8R8A8toA8R8G8B8(const void* sP, int32_t sN, void* dP)
 {
-	u8* sB = (u8*)sP;
-	u8* dB = (u8*)dP;
+	uint8_t* sB = (uint8_t*)sP;
+	uint8_t* dB = (uint8_t*)dP;
 
-	for (s32 x = 0; x < sN; ++x)
+	for (int32_t x = 0; x < sN; ++x)
 	{
 		dB[0] = sB[3];
 		dB[1] = sB[2];
@@ -588,7 +588,7 @@ void CBlit::convert_B8G8R8A8toA8R8G8B8(const void* sP, s32 sN, void* dP)
 	}
 }
 
-void CBlit::convert1BitTo16Bit( const u8* in, u16* out, s32 width, s32 height, s32 linepad/*=0*/, bool flip/*=false*/ )
+void CBlit::convert1BitTo16Bit( const uint8_t* in, uint16_t* out, int32_t width, int32_t height, int32_t linepad/*=0*/, bool flip/*=false*/ )
 {
 	if (!in || !out)
 	{
@@ -599,15 +599,15 @@ void CBlit::convert1BitTo16Bit( const u8* in, u16* out, s32 width, s32 height, s
 	if (flip)
 		out += width * height;
 
-	for (s32 y=0; y<height; ++y)
+	for (int32_t y=0; y<height; ++y)
 	{
-		s32 shift = 7;
+		int32_t shift = 7;
 		if (flip)
 			out -= width;
 
-		for (s32 x=0; x<width; ++x)
+		for (int32_t x=0; x<width; ++x)
 		{
-			out[x] = *in>>shift & 0x01 ? (u16)0xffff : (u16)0x8000;
+			out[x] = *in>>shift & 0x01 ? (uint16_t)0xffff : (uint16_t)0x8000;
 
 			if ((--shift)<0) // 8 pixel done
 			{
@@ -625,7 +625,7 @@ void CBlit::convert1BitTo16Bit( const u8* in, u16* out, s32 width, s32 height, s
 	}
 }
 
-void CBlit::convert4BitTo16Bit( const u8* in, u16* out, s32 width, s32 height, const s32* palette, s32 linepad/*=0*/, bool flip/*=false*/ )
+void CBlit::convert4BitTo16Bit( const uint8_t* in, uint16_t* out, int32_t width, int32_t height, const int32_t* palette, int32_t linepad/*=0*/, bool flip/*=false*/ )
 {
 	if (!in || !out || !palette)
 	{
@@ -636,15 +636,15 @@ void CBlit::convert4BitTo16Bit( const u8* in, u16* out, s32 width, s32 height, c
 	if (flip)
 		out += width*height;
 
-	for (s32 y=0; y<height; ++y)
+	for (int32_t y=0; y<height; ++y)
 	{
-		s32 shift = 4;
+		int32_t shift = 4;
 		if (flip)
 			out -= width;
 
-		for (s32 x=0; x<width; ++x)
+		for (int32_t x=0; x<width; ++x)
 		{
-			out[x] = SColor::X8R8G8B8toA1R5G5B5(palette[(u8)((*in >> shift) & 0xf)]);
+			out[x] = SColor::X8R8G8B8toA1R5G5B5(palette[(uint8_t)((*in >> shift) & 0xf)]);
 
 			if (shift==0)
 			{
@@ -664,7 +664,7 @@ void CBlit::convert4BitTo16Bit( const u8* in, u16* out, s32 width, s32 height, c
 	}
 }
 
-void CBlit::convert8BitTo16Bit( const u8* in, u16* out, s32 width, s32 height, const s32* palette, s32 linepad/*=0*/, bool flip/*=false*/ )
+void CBlit::convert8BitTo16Bit( const uint8_t* in, uint16_t* out, int32_t width, int32_t height, const int32_t* palette, int32_t linepad/*=0*/, bool flip/*=false*/ )
 {
 	if (!in || !out || !palette)
 	{
@@ -675,13 +675,13 @@ void CBlit::convert8BitTo16Bit( const u8* in, u16* out, s32 width, s32 height, c
 	if (flip)
 		out += width * height;
 
-	for (s32 y=0; y<height; ++y)
+	for (int32_t y=0; y<height; ++y)
 	{
 		if (flip)
 			out -= width; // one line back
-		for (s32 x=0; x<width; ++x)
+		for (int32_t x=0; x<width; ++x)
 		{
-			out[x] = SColor::X8R8G8B8toA1R5G5B5(palette[(u8)(*in)]);
+			out[x] = SColor::X8R8G8B8toA1R5G5B5(palette[(uint8_t)(*in)]);
 			++in;
 		}
 		if (!flip)
@@ -690,7 +690,7 @@ void CBlit::convert8BitTo16Bit( const u8* in, u16* out, s32 width, s32 height, c
 	}
 }
 
-void CBlit::convert16BitTo16Bit( const u16* in, u16* out, s32 width, s32 height, s32 linepad/*=0*/, bool flip/*=false*/ )
+void CBlit::convert16BitTo16Bit( const uint16_t* in, uint16_t* out, int32_t width, int32_t height, int32_t linepad/*=0*/, bool flip/*=false*/ )
 {
 	if (!in || !out)
 	{
@@ -701,12 +701,12 @@ void CBlit::convert16BitTo16Bit( const u16* in, u16* out, s32 width, s32 height,
 	if (flip)
 		out += width * height;
 
-	for (s32 y=0; y<height; ++y)
+	for (int32_t y=0; y<height; ++y)
 	{
 		if (flip)
 			out -= width;
 
-		memcpy(out, in, width*sizeof(u16));
+		memcpy(out, in, width*sizeof(uint16_t));
 
 		if (!flip)
 			out += width;
@@ -715,7 +715,7 @@ void CBlit::convert16BitTo16Bit( const u16* in, u16* out, s32 width, s32 height,
 	}
 }
 
-void CBlit::convert24BitTo24Bit( const u8* in, u8* out, s32 width, s32 height, s32 linepad/*=0*/, bool flip/*=false*/, bool changeRB /*= false*/ )
+void CBlit::convert24BitTo24Bit( const uint8_t* in, uint8_t* out, int32_t width, int32_t height, int32_t linepad/*=0*/, bool flip/*=false*/, bool changeRB /*= false*/ )
 {
 	if (!in || !out)
 	{
@@ -723,18 +723,18 @@ void CBlit::convert24BitTo24Bit( const u8* in, u8* out, s32 width, s32 height, s
 		return;
 	}
 
-	const s32 lineWidth = 3 * width;
+	const int32_t lineWidth = 3 * width;
 	if (flip)
 		out += lineWidth * height;
 
-	for (s32 y=0; y<height; ++y)
+	for (int32_t y=0; y<height; ++y)
 	{
 		if (flip)
 			out -= lineWidth;
 
 		if (changeRB)
 		{
-			for (s32 x=0; x<lineWidth; x+=3)
+			for (int32_t x=0; x<lineWidth; x+=3)
 			{
 				out[x+0] = in[x+2];
 				out[x+1] = in[x+1];
@@ -753,7 +753,7 @@ void CBlit::convert24BitTo24Bit( const u8* in, u8* out, s32 width, s32 height, s
 	}
 }
 
-void CBlit::convert32BitTo32Bit( const s32* in, s32* out, s32 width, s32 height, s32 linepad, bool flip/*=false*/, bool changeRB /*= false*/ )
+void CBlit::convert32BitTo32Bit( const int32_t* in, int32_t* out, int32_t width, int32_t height, int32_t linepad, bool flip/*=false*/, bool changeRB /*= false*/ )
 {
 	if (!in || !out)
 	{
@@ -764,16 +764,16 @@ void CBlit::convert32BitTo32Bit( const s32* in, s32* out, s32 width, s32 height,
 	if (flip)
 		out += width * height;
 
-	for (s32 y=0; y<height; ++y)
+	for (int32_t y=0; y<height; ++y)
 	{
 		if (flip)
 			out -= width;
 
 		if (changeRB)
 		{
-			u8* pOut = (u8*)out;
-			u8* pIn = (u8*)in;
-			for (s32 x=0; x<4*width; x+=4)
+			uint8_t* pOut = (uint8_t*)out;
+			uint8_t* pIn = (uint8_t*)in;
+			for (int32_t x=0; x<4*width; x+=4)
 			{
 				pOut[x] = pIn[x+2];
 				pOut[x+1] = pIn[x+1];
@@ -783,7 +783,7 @@ void CBlit::convert32BitTo32Bit( const s32* in, s32* out, s32 width, s32 height,
 		}
 		else
 		{
-			memcpy(out, in, width*sizeof(s32));
+			memcpy(out, in, width*sizeof(int32_t));
 		}
 
 		if (!flip)
@@ -794,21 +794,21 @@ void CBlit::convert32BitTo32Bit( const s32* in, s32* out, s32 width, s32 height,
 }
 
 
-void CBlit::resizeBilinearA8R8G8B8( const void* src, u32 w1, u32 h1, void* target, u32 w2, u32 h2, ECOLOR_FORMAT format )
+void CBlit::resizeBilinearA8R8G8B8( const void* src, uint32_t w1, uint32_t h1, void* target, uint32_t w2, uint32_t h2, ECOLOR_FORMAT format )
 {
-	u32 bpp = getBytesPerPixelFromFormat(format);
-	u32* pixels = (u32*)src;
+	uint32_t bpp = getBytesPerPixelFromFormat(format);
+	uint32_t* pixels = (uint32_t*)src;
 	int w = (int)w1;
 	int h = (int)h1;
 
-	u32 a, b, c, d;
+	uint32_t a, b, c, d;
 	int x, y, index;
-	u32 gray, red, blue, green;
+	uint32_t gray, red, blue, green;
 	float x_ratio = ((float)(w-1))/w2 ;
 	float y_ratio = ((float)(h-1))/h2 ;
 	float x_diff, y_diff;
-	for (u32 i=0;i<h2;i++) {
-		for (u32 j=0;j<w2;j++) {
+	for (uint32_t i=0;i<h2;i++) {
+		for (uint32_t j=0;j<w2;j++) {
 			x = (int)(x_ratio * j) ;
 			y = (int)(y_ratio * i) ;
 			x_diff = (x_ratio * j) - x ;
@@ -821,45 +821,45 @@ void CBlit::resizeBilinearA8R8G8B8( const void* src, u32 w1, u32 h1, void* targe
 			c = pixels[index+w];
 			d = pixels[index+w+1];
 			
-			gray = (u32) (((a>>24)&0xff)*(1-x_diff)*(1-y_diff) + ((b>>24)&0xff)*(x_diff)*(1-y_diff) +
+			gray = (uint32_t) (((a>>24)&0xff)*(1-x_diff)*(1-y_diff) + ((b>>24)&0xff)*(x_diff)*(1-y_diff) +
 				((c>>24)&0xff)*(y_diff)*(1-x_diff)   + ((d>>24)&0xff)*(x_diff*y_diff));
 
 			// blue element
 			// Yb = Ab(1-w)(1-h) + Bb(w)(1-h) + Cb(h)(1-w) + Db(wh)
-			blue = (u32) ((a&0xff)*(1-x_diff)*(1-y_diff) + (b&0xff)*(x_diff)*(1-y_diff) +
+			blue = (uint32_t) ((a&0xff)*(1-x_diff)*(1-y_diff) + (b&0xff)*(x_diff)*(1-y_diff) +
 				(c&0xff)*(y_diff)*(1-x_diff)   + (d&0xff)*(x_diff*y_diff));
 
 			// green element
 			// Yg = Ag(1-w)(1-h) + Bg(w)(1-h) + Cg(h)(1-w) + Dg(wh)
-			green = (u32) (((a>>8)&0xff)*(1-x_diff)*(1-y_diff) + ((b>>8)&0xff)*(x_diff)*(1-y_diff) +
+			green = (uint32_t) (((a>>8)&0xff)*(1-x_diff)*(1-y_diff) + ((b>>8)&0xff)*(x_diff)*(1-y_diff) +
 				((c>>8)&0xff)*(y_diff)*(1-x_diff)   + ((d>>8)&0xff)*(x_diff*y_diff));
 
 			// red element
 			// Yr = Ar(1-w)(1-h) + Br(w)(1-h) + Cr(h)(1-w) + Dr(wh)
-			red = (u32) (((a>>16)&0xff)*(1-x_diff)*(1-y_diff) + ((b>>16)&0xff)*(x_diff)*(1-y_diff) +
+			red = (uint32_t) (((a>>16)&0xff)*(1-x_diff)*(1-y_diff) + ((b>>16)&0xff)*(x_diff)*(1-y_diff) +
 				((c>>16)&0xff)*(y_diff)*(1-x_diff)   + ((d>>16)&0xff)*(x_diff*y_diff));
 
 			SColor color(gray, red, green, blue);
-			convert_viaFormat(&color, ECF_A8R8G8B8, 1, (u8*)target + bpp * (i * w2 + j), format);                                
+			convert_viaFormat(&color, ECF_A8R8G8B8, 1, (uint8_t*)target + bpp * (i * w2 + j), format);                                
 		}
 	}
 }
 
-void CBlit::resizeBilinearR8G8B8( const void* src, u32 w1, u32 h1, void* target, u32 w2, u32 h2, ECOLOR_FORMAT format )
+void CBlit::resizeBilinearR8G8B8( const void* src, uint32_t w1, uint32_t h1, void* target, uint32_t w2, uint32_t h2, ECOLOR_FORMAT format )
 {
-	u32 bpp = getBytesPerPixelFromFormat(format);
-	u8* pixels = (u8*)src;
+	uint32_t bpp = getBytesPerPixelFromFormat(format);
+	uint8_t* pixels = (uint8_t*)src;
 	int w = (int)w1;
 	int h = (int)h1;
 
-	u8 a[3], b[3], c[3], d[3];
+	uint8_t a[3], b[3], c[3], d[3];
 	int x, y, index;
-	u8 red, blue, green;
+	uint8_t red, blue, green;
 	float x_ratio = ((float)(w-1))/w2 ;
 	float y_ratio = ((float)(h-1))/h2 ;
 	float x_diff, y_diff;
-	for (u32 i=0;i<h2;i++) {
-		for (u32 j=0;j<w2;j++) {
+	for (uint32_t i=0;i<h2;i++) {
+		for (uint32_t j=0;j<w2;j++) {
 			x = (int)(x_ratio * j) ;
 			y = (int)(y_ratio * i) ;
 			x_diff = (x_ratio * j) - x ;
@@ -882,58 +882,58 @@ void CBlit::resizeBilinearR8G8B8( const void* src, u32 w1, u32 h1, void* target,
 
 			// blue element
 			// Yb = Ab(1-w)(1-h) + Bb(w)(1-h) + Cb(h)(1-w) + Db(wh)
-			blue = (u8) (a[2]*(1-x_diff)*(1-y_diff) + b[2]*(x_diff)*(1-y_diff) +
+			blue = (uint8_t) (a[2]*(1-x_diff)*(1-y_diff) + b[2]*(x_diff)*(1-y_diff) +
 				c[2]*(y_diff)*(1-x_diff)  + d[2]*(x_diff*y_diff));
 
 			// green element
 			// Yg = Ag(1-w)(1-h) + Bg(w)(1-h) + Cg(h)(1-w) + Dg(wh)
-			green = (u8) (a[1]*(1-x_diff)*(1-y_diff) + b[1]*(x_diff)*(1-y_diff) +
+			green = (uint8_t) (a[1]*(1-x_diff)*(1-y_diff) + b[1]*(x_diff)*(1-y_diff) +
 				c[1]*(y_diff)*(1-x_diff)  + d[1]*(x_diff*y_diff));
 
 			// red element
 			// Yr = Ar(1-w)(1-h) + Br(w)(1-h) + Cr(h)(1-w) + Dr(wh)
-			red = (u8) (a[0]*(1-x_diff)*(1-y_diff) + b[0]*(x_diff)*(1-y_diff) +
+			red = (uint8_t) (a[0]*(1-x_diff)*(1-y_diff) + b[0]*(x_diff)*(1-y_diff) +
 				c[0]*(y_diff)*(1-x_diff)  + d[0]*(x_diff*y_diff));
 
 			SColor color(red, green, blue);
-			convert_viaFormat(&color, ECF_R8G8B8, 1, (u8*)target + bpp * (i * w2 + j), format);                                
+			convert_viaFormat(&color, ECF_R8G8B8, 1, (uint8_t*)target + bpp * (i * w2 + j), format);                                
 		}
 	}
 }
 
-void CBlit::resizeBicubicA8R8G8B8( const void* src, u32 w1, u32 h1, void* target, u32 w2, u32 h2, ECOLOR_FORMAT format )
+void CBlit::resizeBicubicA8R8G8B8( const void* src, uint32_t w1, uint32_t h1, void* target, uint32_t w2, uint32_t h2, ECOLOR_FORMAT format )
 {
-	u32 bpp = getBytesPerPixelFromFormat(format);
-	u32* pixels = (u32*)src;
+	uint32_t bpp = getBytesPerPixelFromFormat(format);
+	uint32_t* pixels = (uint32_t*)src;
 	int w = (int)w1;
 	int h = (int)h1;
 
-	f32 xscale = (f32)w1/(f32)w2;
-	f32 yscale = (f32)h1/(f32)h2;
+	float xscale = (float)w1/(float)w2;
+	float yscale = (float)h1/(float)h2;
 
 	int index;
-	f32 gray, red, blue, green;
-	f32 f_x, f_y, a, b, r1, r2;
+	float gray, red, blue, green;
+	float f_x, f_y, a, b, r1, r2;
 	int i_x, i_y, xx, yy;
 
-	for (u32 y=0; y<h2; ++y)
+	for (uint32_t y=0; y<h2; ++y)
 	{
 		f_y = y * yscale - 0.5f;
 		i_y = (int)floor32_(f_y);
-		a = f_y - (f32)floor32_(f_y);
+		a = f_y - (float)floor32_(f_y);
 
-		for (u32 x=0; x<w2; ++x)
+		for (uint32_t x=0; x<w2; ++x)
 		{
 			f_x = x * xscale - 0.5f;
 			i_x = (int)floor32_(f_x);
-			b = f_x - (f32)floor32_(f_x);
+			b = f_x - (float)floor32_(f_x);
 
 			//clear
 			gray = red = green = blue = 0;
 
 			for (int m=-1; m<3; ++m)
 			{
-				r1 = KernelBSpline((f32)m - a);
+				r1 = KernelBSpline((float)m - a);
 				yy = i_y + m;
 
 				if (yy < 0)
@@ -943,7 +943,7 @@ void CBlit::resizeBicubicA8R8G8B8( const void* src, u32 w1, u32 h1, void* target
 				
 				for (int n=-1; n<3; ++n)
 				{
-					r2 = r1 * KernelBSpline(b - (f32)n);
+					r2 = r1 * KernelBSpline(b - (float)n);
 					xx = i_x + n;
 					if (xx < 0)
 						xx = 0;
@@ -963,77 +963,77 @@ void CBlit::resizeBicubicA8R8G8B8( const void* src, u32 w1, u32 h1, void* target
 			}
 
 			// set to dest
-			SColor color((u32)(u8)gray, (u32)(u8)red, (u32)(u8)green, (u32)(u8)blue);
-			convert_viaFormat(&color, ECF_A8R8G8B8, 1, (u8*)target + bpp * (y * w2 + x), format); 
+			SColor color((uint32_t)(uint8_t)gray, (uint32_t)(uint8_t)red, (uint32_t)(uint8_t)green, (uint32_t)(uint8_t)blue);
+			convert_viaFormat(&color, ECF_A8R8G8B8, 1, (uint8_t*)target + bpp * (y * w2 + x), format); 
 		}
 	}
 }
 
-void CBlit::resizeNearest( const void* src, u32 w1, u32 h1, ECOLOR_FORMAT srcFormat, void* target, u32 w2, u32 h2, ECOLOR_FORMAT targetFormat )
+void CBlit::resizeNearest( const void* src, uint32_t w1, uint32_t h1, ECOLOR_FORMAT srcFormat, void* target, uint32_t w2, uint32_t h2, ECOLOR_FORMAT targetFormat )
 {
-	u32 bytesPerPixel = getBytesPerPixelFromFormat(srcFormat);
-	const u32 bpp=getBytesPerPixelFromFormat(targetFormat);
+	uint32_t bytesPerPixel = getBytesPerPixelFromFormat(srcFormat);
+	const uint32_t bpp=getBytesPerPixelFromFormat(targetFormat);
 
-	u32 srcPitch = bytesPerPixel * w1;
-	u32 targetPitch = bpp * w2;
+	uint32_t srcPitch = bytesPerPixel * w1;
+	uint32_t targetPitch = bpp * w2;
 
-	const f32 sourceXStep = (f32)w1 / (f32)w2;
-	const f32 sourceYStep = (f32)h1 / (f32)h2;
-	s32 yval=0, syval=0;
-	f32 sy = 0.0f;
-	for (u32 y=0; y<h2; ++y)
+	const float sourceXStep = (float)w1 / (float)w2;
+	const float sourceYStep = (float)h1 / (float)h2;
+	int32_t yval=0, syval=0;
+	float sy = 0.0f;
+	for (uint32_t y=0; y<h2; ++y)
 	{
-		f32 sx = 0.0f;
-		for (u32 x=0; x<w2; ++x)
+		float sx = 0.0f;
+		for (uint32_t x=0; x<w2; ++x)
 		{
-			convert_viaFormat((u8*)src+ syval + (s32)sx*bytesPerPixel, srcFormat, 1, ((u8*)target)+ yval + (x*bpp), targetFormat);
+			convert_viaFormat((uint8_t*)src+ syval + (int32_t)sx*bytesPerPixel, srcFormat, 1, ((uint8_t*)target)+ yval + (x*bpp), targetFormat);
 			sx+=sourceXStep;
 		}
 		sy+=sourceYStep;
-		syval=(s32)sy*srcPitch;
+		syval=(int32_t)sy*srcPitch;
 		yval+=targetPitch;
 	}
 }
 
-void CBlit::resizeNearest( const void* src, u32 w1, u32 h1, u32 srcPitch, ECOLOR_FORMAT srcFormat, void* target, u32 w2, u32 h2, u32 targetPitch, ECOLOR_FORMAT targetFormat )
+void CBlit::resizeNearest( const void* src, uint32_t w1, uint32_t h1, uint32_t srcPitch, ECOLOR_FORMAT srcFormat, void* target, uint32_t w2, uint32_t h2, uint32_t targetPitch, ECOLOR_FORMAT targetFormat )
 {
-	u32 bytesPerPixel = getBytesPerPixelFromFormat(srcFormat);
-	const u32 bpp=getBytesPerPixelFromFormat(targetFormat);
+	uint32_t bytesPerPixel = getBytesPerPixelFromFormat(srcFormat);
+	const uint32_t bpp=getBytesPerPixelFromFormat(targetFormat);
 
-	const f32 sourceXStep = (f32)w1 / (f32)w2;
-	const f32 sourceYStep = (f32)h1 / (f32)h2;
-	s32 yval=0, syval=0;
-	f32 sy = 0.0f;
-	for (u32 y=0; y<h2; ++y)
+	const float sourceXStep = (float)w1 / (float)w2;
+	const float sourceYStep = (float)h1 / (float)h2;
+	int32_t yval=0, syval=0;
+	float sy = 0.0f;
+	for (uint32_t y=0; y<h2; ++y)
 	{
-		f32 sx = 0.0f;
-		for (u32 x=0; x<w2; ++x)
+		float sx = 0.0f;
+		for (uint32_t x=0; x<w2; ++x)
 		{
-			convert_viaFormat((u8*)src+ syval + (s32)sx*bytesPerPixel, srcFormat, 1, ((u8*)target)+ yval + (x*bpp), targetFormat);
+			convert_viaFormat((uint8_t*)src+ syval + (int32_t)sx*bytesPerPixel, srcFormat, 1, ((uint8_t*)target)+ yval + (x*bpp), targetFormat);
 			sx+=sourceXStep;
 		}
 		sy+=sourceYStep;
-		syval=(s32)sy*srcPitch;
+		syval=(int32_t)sy*srcPitch;
 		yval+=targetPitch;
 	}
 }
 
-void CBlit::copyA8L8MipMap( const u8* src, u8* tgt, u32 width, u32 height, u32 pitchsrc, u32 pitchtgt )
+void CBlit::copyA8L8MipMap( const uint8_t* src, uint8_t* tgt, uint32_t width, uint32_t height, uint32_t pitchsrc, uint32_t pitchtgt )
 {
-	for (u32 y=0; y<height; ++y)
+	for (uint32_t y=0; y<height; ++y)
 	{
-		for (u32 x=0; x<width; ++x)
+		for (uint32_t x=0; x<width; ++x)
 		{
-			u32 a=0, l = 0;
+			uint32_t a=0, l = 0;
 
-			for (s32 dy=0; dy<2; ++dy)
+			for (int32_t dy=0; dy<2; ++dy)
 			{
-				const s32 tgy = (y*2)+dy;
-				for (s32 dx=0; dx<2; ++dx)
+				const int32_t tgy = (y*2)+dy;
+				for (int32_t dx=0; dx<2; ++dx)
 				{
-					const s32 tgx = (x*2)+dx;
+					const int32_t tgx = (x*2)+dx;
 
-					u16 c = *(u16*)(&src[(tgx*2)+(tgy*pitchsrc)]);
+					uint16_t c = *(uint16_t*)(&src[(tgx*2)+(tgy*pitchsrc)]);
 
 					a += (c & 0xff00) >> 8;
 					l += (c & 0xff);
@@ -1043,34 +1043,34 @@ void CBlit::copyA8L8MipMap( const u8* src, u8* tgt, u32 width, u32 height, u32 p
 			a /= 4;
 			l /= 4;
 
-			u16 c = a<<8 | l; 
-			*(u16*)(&tgt[(x*2)+(y*pitchtgt)]) = c;
+			uint16_t c = a<<8 | l; 
+			*(uint16_t*)(&tgt[(x*2)+(y*pitchtgt)]) = c;
 		}
 	}
 }
 
-void CBlit::copy16BitMipMap( const u8* src, u8* tgt, u32 width, u32 height, u32 pitchsrc, u32 pitchtgt, ECOLOR_FORMAT format )
+void CBlit::copy16BitMipMap( const uint8_t* src, uint8_t* tgt, uint32_t width, uint32_t height, uint32_t pitchsrc, uint32_t pitchtgt, ECOLOR_FORMAT format )
 {
 	ASSERT(format == ECF_A1R5G5B5 || format == ECF_R5G6B5);
 
-	for (u32 y=0; y<height; ++y)
+	for (uint32_t y=0; y<height; ++y)
 	{
-		for (u32 x=0; x<width; ++x)
+		for (uint32_t x=0; x<width; ++x)
 		{
-			u32 a=0, r=0, g=0, b=0;
+			uint32_t a=0, r=0, g=0, b=0;
 
-			for (s32 dy=0; dy<2; ++dy)
+			for (int32_t dy=0; dy<2; ++dy)
 			{
-				const s32 tgy = (y*2)+dy;
-				for (s32 dx=0; dx<2; ++dx)
+				const int32_t tgy = (y*2)+dy;
+				for (int32_t dx=0; dx<2; ++dx)
 				{
-					const s32 tgx = (x*2)+dx;
+					const int32_t tgx = (x*2)+dx;
 
 					SColor c;
 					if (format == ECF_A1R5G5B5)
-						c = SColor::A1R5G5B5toA8R8G8B8(*(u16*)(&src[(tgx*2)+(tgy*pitchsrc)]));
+						c = SColor::A1R5G5B5toA8R8G8B8(*(uint16_t*)(&src[(tgx*2)+(tgy*pitchsrc)]));
 					else
-						c = SColor::R5G6B5toA8R8G8B8(*(u16*)(&src[(tgx*2)+(tgy*pitchsrc)]));
+						c = SColor::R5G6B5toA8R8G8B8(*(uint16_t*)(&src[(tgx*2)+(tgy*pitchsrc)]));
 
 					a += c.getAlpha();
 					r += c.getRed();
@@ -1084,35 +1084,35 @@ void CBlit::copy16BitMipMap( const u8* src, u8* tgt, u32 width, u32 height, u32 
 			g /= 4;
 			b /= 4;
 
-			u16 c;
+			uint16_t c;
 			if (format == ECF_A1R5G5B5)
 				c = SColor::RGBA16(r,g,b,a);
 			else
 				c = SColor::A8R8G8B8toR5G6B5(SColor(a,r,g,b).color);
-			*(u16*)(&tgt[(x*2)+(y*pitchtgt)]) = c;
+			*(uint16_t*)(&tgt[(x*2)+(y*pitchtgt)]) = c;
 		}
 	}
 }
 
-void CBlit::copy32BitMipMap( const u8* src, u8* tgt, u32 width, u32 height, u32 pitchsrc, u32 pitchtgt, ECOLOR_FORMAT format )
+void CBlit::copy32BitMipMap( const uint8_t* src, uint8_t* tgt, uint32_t width, uint32_t height, uint32_t pitchsrc, uint32_t pitchtgt, ECOLOR_FORMAT format )
 {
 	ASSERT(format == ECF_A8R8G8B8);
 
-	for (u32 y=0; y<height; ++y)
+	for (uint32_t y=0; y<height; ++y)
 	{
-		for (u32 x=0; x<width; ++x)
+		for (uint32_t x=0; x<width; ++x)
 		{
-			u32 a=0, r=0, g=0, b=0;
+			uint32_t a=0, r=0, g=0, b=0;
 			SColor c;
 
-			for (s32 dy=0; dy<2; ++dy)
+			for (int32_t dy=0; dy<2; ++dy)
 			{
-				const s32 tgy = (y*2)+dy;
-				for (s32 dx=0; dx<2; ++dx)
+				const int32_t tgy = (y*2)+dy;
+				for (int32_t dx=0; dx<2; ++dx)
 				{
-					const s32 tgx = (x*2)+dx;
+					const int32_t tgx = (x*2)+dx;
 
-					c = *(u32*)(&src[(tgx*4)+(tgy*pitchsrc)]);
+					c = *(uint32_t*)(&src[(tgx*4)+(tgy*pitchsrc)]);
 
 					a += c.getAlpha();
 					r += c.getRed();
@@ -1131,27 +1131,27 @@ void CBlit::copy32BitMipMap( const u8* src, u8* tgt, u32 width, u32 height, u32 
 			else
 				c.set(a, b, g, r);
 
-			*(u32*)(&tgt[(x*4)+(y*pitchtgt)]) = c.color;
+			*(uint32_t*)(&tgt[(x*4)+(y*pitchtgt)]) = c.color;
 		}
 	}
 }
 
-void CBlit::copyR8G8B8BitMipMap( const u8* src, u8* tgt, u32 width, u32 height, u32 pitchsrc, u32 pitchtgt )
+void CBlit::copyR8G8B8BitMipMap( const uint8_t* src, uint8_t* tgt, uint32_t width, uint32_t height, uint32_t pitchsrc, uint32_t pitchtgt )
 {
-	for (u32 y=0; y<height; ++y)
+	for (uint32_t y=0; y<height; ++y)
 	{
-		for (u32 x=0; x<width; ++x)
+		for (uint32_t x=0; x<width; ++x)
 		{
-			u32 r=0, g=0, b=0;
+			uint32_t r=0, g=0, b=0;
 
-			for (s32 dy=0; dy<2; ++dy)
+			for (int32_t dy=0; dy<2; ++dy)
 			{
-				const s32 tgy = (y*2)+dy;
-				for (s32 dx=0; dx<2; ++dx)
+				const int32_t tgy = (y*2)+dy;
+				for (int32_t dx=0; dx<2; ++dx)
 				{
-					const s32 tgx = (x*2)+dx;
+					const int32_t tgx = (x*2)+dx;
 
-					const u8* s = &src[(tgx*3)+(tgy*pitchsrc)];
+					const uint8_t* s = &src[(tgx*3)+(tgy*pitchsrc)];
 
 					r += s[0];
 					g += s[1];
@@ -1163,7 +1163,7 @@ void CBlit::copyR8G8B8BitMipMap( const u8* src, u8* tgt, u32 width, u32 height, 
 			g /= 4;
 			b /= 4;
 
-			u8* t = &tgt[(x*3)+(y*pitchtgt)];
+			uint8_t* t = &tgt[(x*3)+(y*pitchtgt)];
 			t[0] = r;
 			t[1] = g;
 			t[2] = b;

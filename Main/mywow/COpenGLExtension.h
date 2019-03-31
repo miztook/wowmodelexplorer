@@ -466,7 +466,7 @@ public:
 private:
 	bool initExtFunctions();
 
-	void* getProcAddress(const c8* funcname);
+	void* getProcAddress(const char* funcname);
 
 private:
 	PFNGLACTIVETEXTUREARBPROC pGlActiveTextureARB;
@@ -564,22 +564,22 @@ private:
 
 public:
 
-	f32 MaxTextureLODBias;
+	float MaxTextureLODBias;
 	GLfloat DimAliasedLine[2];
 	GLfloat DimAliasedPoint[2];
 
-	u32 MaxVertexShaderConst;
-	u32 MaxPixelShaderConst;
-	u32 MaxTextureSize;
+	uint32_t MaxVertexShaderConst;
+	uint32_t MaxPixelShaderConst;
+	uint32_t MaxTextureSize;
 
-	u16 Version;
-	u16 ShaderLanguageVersion;
+	uint16_t Version;
+	uint16_t ShaderLanguageVersion;
 
-	u8 MaxLights;
-	u8 MaxUserClipPlanes;
-	u8 MaxTextureUnits;
-	u8 MaxAnisotropy;
-	u8 MaxMultiSample;
+	uint8_t MaxLights;
+	uint8_t MaxUserClipPlanes;
+	uint8_t MaxTextureUnits;
+	uint8_t MaxAnisotropy;
+	uint8_t MaxMultiSample;
 
 	bool TextureCompressionS3;
 	bool TextureCompressionPVR;

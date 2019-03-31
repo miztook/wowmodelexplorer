@@ -20,8 +20,8 @@ void CGestureRecognizer_Circle::tick()
 	if ((State == RecognizerState_None && !TouchInfoArray.empty()) ||
 		State == RecognizerState_Begin)
 	{
-		u32 now = g_Engine->getTimer()->getMillisecond();
-		if (now - TimeStamp > (u32)(getfRecognizerFailInterval() * 1000))
+		uint32_t now = g_Engine->getTimer()->getMillisecond();
+		if (now - TimeStamp > (uint32_t)(getfRecognizerFailInterval() * 1000))
 		{
 			if (State == RecognizerState_Begin)
 				outputCircleGesture(GestureState_End);
@@ -56,7 +56,7 @@ void CGestureRecognizer_Circle::onTouchMove( const std::vector<SGesTouchInfo>& t
 		return;
 
 	const SGesTouchInfo& head = TouchInfoArray.front();
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index != -1 &&
 		getTouchDistance(head, touchInfos[index]) > getThreshold_MoveDist())
 	{
@@ -72,7 +72,7 @@ void CGestureRecognizer_Circle::onTouchMove( const std::vector<SGesTouchInfo>& t
 			return;
 		}
 
-		u32 curSize = (u32)TouchInfoArray.size();
+		uint32_t curSize = (uint32_t)TouchInfoArray.size();
 		if (curSize == 1)
 		{
 			TouchInfoArray.push_back(touch);
@@ -121,7 +121,7 @@ void CGestureRecognizer_Circle::onTouchEnd( const std::vector<SGesTouchInfo>& to
 
 	const SGesTouchInfo& head = TouchInfoArray.front();
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)
 		return;
 
@@ -155,7 +155,7 @@ void CGestureRecognizer_Circle::onTouchCancel( const std::vector<SGesTouchInfo>&
 
 	const SGesTouchInfo& head = TouchInfoArray.front();
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)
 		return;
 
@@ -199,7 +199,7 @@ void CGestureRecognizer_Circle::onEnterState( E_RECOGNIZER_STATE state )
 
 E_CICLE_DIR CGestureRecognizer_Circle::calcNewTouchDir( const SGesTouchInfo& touchInfo )
 {
-	u32 curSize = (u32)TouchInfoArray.size();
+	uint32_t curSize = (uint32_t)TouchInfoArray.size();
 	if (curSize < 2)
 		return CircleDir_None;
 
@@ -223,8 +223,8 @@ E_CICLE_DIR CGestureRecognizer_Circle::calcNewTouchDir( const SGesTouchInfo& tou
 
 bool CGestureRecognizer_Circle::checkNewTouchSpeed( const SGesTouchInfo& touchInfo )
 {
-	f32 speedX = touchInfo.deltaTime > 0.0f ? touchInfo.deltaX / touchInfo.deltaTime : 0.0f;
-	f32 speedY = touchInfo.deltaTime > 0.0f ? touchInfo.deltaY / touchInfo.deltaTime : 0.0f;
+	float speedX = touchInfo.deltaTime > 0.0f ? touchInfo.deltaX / touchInfo.deltaTime : 0.0f;
+	float speedY = touchInfo.deltaTime > 0.0f ? touchInfo.deltaY / touchInfo.deltaTime : 0.0f;
 	vector2df v(speedX, speedY);
 	if (v.getLength() < getThreshold_PanMaxSpeedDist())
 		return false;
@@ -234,7 +234,7 @@ bool CGestureRecognizer_Circle::checkNewTouchSpeed( const SGesTouchInfo& touchIn
 
 bool CGestureRecognizer_Circle::checkGestureComplete()
 {
-	u32 curSize = (u32)TouchInfoArray.size();
+	uint32_t curSize = (uint32_t)TouchInfoArray.size();
 	// at least 4 samples required to complete
 	if (curSize < 4 || Direction == CircleDir_None)
 		return false;

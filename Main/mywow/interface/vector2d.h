@@ -58,7 +58,7 @@ public:
 
 	 vector2d<T>& normalize()
 	{
-		f32 length = (f32)(X*X + Y*Y);
+		float length = (float)(X*X + Y*Y);
 		if (equals_(length, 0.f))
 			return *this;
 		length = reciprocal_squareroot_( length );
@@ -67,19 +67,19 @@ public:
 		return *this;
 	}
 
-	 static vector2d<T> interpolate(const vector2d<T>& a, const vector2d<T>& b, f32 d)
+	 static vector2d<T> interpolate(const vector2d<T>& a, const vector2d<T>& b, float d)
 	{
-		f32 inv = 1.0f - d;
+		float inv = 1.0f - d;
 		return vector2d<T>((a.X*inv + b.X*d), (a.Y*inv + b.Y*d));
 	}
 
-	 vector2d<T> getInterpolated_quadratic(const vector2d<T>& v2, const vector2d<T>& v3, f32 d) const
+	 vector2d<T> getInterpolated_quadratic(const vector2d<T>& v2, const vector2d<T>& v3, float d) const
 	{
 		// this*(1-d)*(1-d) + 2 * v2 * (1-d) + v3 * d * d;
-		const f32 inv = 1.0f - d;
-		const f32 mul0 = inv * inv;
-		const f32 mul1 = 2.0f * d * inv;
-		const f32 mul2 = d * d;
+		const float inv = 1.0f - d;
+		const float mul0 = inv * inv;
+		const float mul1 = 2.0f * d * inv;
+		const float mul2 = d * d;
 
 		return vector2d<T> ( (T)(X * mul0 + v2.X * mul1 + v3.X * mul2),
 			(T)(Y * mul0 + v2.Y * mul1 + v3.Y * mul2));
@@ -91,5 +91,5 @@ public:
 	T Y;
 };
 
-typedef vector2d<f32> vector2df;
-typedef vector2d<s32> vector2di;
+typedef vector2d<float> vector2df;
+typedef vector2d<int32_t> vector2di;

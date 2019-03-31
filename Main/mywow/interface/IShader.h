@@ -26,37 +26,37 @@
 struct BlsHeader
 {
 	char    _magic[4];  /// shader type,must be "SPXG" or "SVXG"
-	u16  _minor;        /// minor version
-	u16  _major;			/// major version
-	u32  shaderCount;    /// shader count in each shader block
+	uint16_t  _minor;        /// minor version
+	uint16_t  _major;			/// major version
+	uint32_t  shaderCount;    /// shader count in each shader block
 };
 
 struct BlsBlockHeader
 {
-	u32 constSize;
-	u32 samplerSize;
-	u32 textureSize;
-	u32 codeSize;
+	uint32_t constSize;
+	uint32_t samplerSize;
+	uint32_t textureSize;
+	uint32_t codeSize;
 };
 
 struct BlsConst
 {
-	u32 index;
-	u32 size;
-	u32 tbuffer;
-	c8 name[1];
+	uint32_t index;
+	uint32_t size;
+	uint32_t tbuffer;
+	char name[1];
 };
 
 struct BlsSampler 
 {
-	u32 index;
-	c8 name[1];
+	uint32_t index;
+	char name[1];
 };
 
 struct BlsTexture
 {
-	u32 index;
-	c8 name[1];
+	uint32_t index;
+	char name[1];
 };
 
 #	pragma pack ()
@@ -69,7 +69,7 @@ enum E_PS_MACRO
 	PS_Macro_Num,
 };
 
-inline const c8* getPSMacroString(E_PS_MACRO macro)
+inline const char* getPSMacroString(E_PS_MACRO macro)
 {
 	switch(macro)
 	{
@@ -84,8 +84,8 @@ class IVertexShader;
 class IPixelShader;
 struct SMaterial;
 
-typedef void (*VSHADERCONSTCALLBACK)(IVertexShader* vshader, const SMaterial& material, u32 pass);
-typedef void (*PSHADERCONSTCALLBACK)(IPixelShader* pshader, const SMaterial& material, u32 pass);
+typedef void (*VSHADERCONSTCALLBACK)(IVertexShader* vshader, const SMaterial& material, uint32_t pass);
+typedef void (*PSHADERCONSTCALLBACK)(IPixelShader* pshader, const SMaterial& material, uint32_t pass);
 
 class IVertexShader
 {

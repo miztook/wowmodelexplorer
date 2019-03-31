@@ -8,7 +8,7 @@ class IMemFile;
 class CWDTLoader
 {
 public:
-	static bool isALoadableFileExtension( const c8* filename ) { return hasFileExtensionA(filename, "wdt"); }
+	static bool isALoadableFileExtension( const char* filename ) { return hasFileExtensionA(filename, "wdt"); }
 
-	IFileWDT* loadWDT( IMemFile* file, s32 mapid, bool simple );
+	IFileWDT* loadWDT( IMemFile* file, int32_t mapid, bool simple );
 };

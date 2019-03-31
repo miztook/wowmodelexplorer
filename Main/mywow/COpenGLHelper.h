@@ -42,7 +42,7 @@ public:
 	static bool init();
 
 public:
-	static const GLvoid* buffer_offset(u32 offset) { return (const GLvoid*)((char*)nullptr + offset); }
+	static const GLvoid* buffer_offset(uint32_t offset) { return (const GLvoid*)((char*)nullptr + offset); }
 
 	static void colorToGLfloat4(const SColor& col, GLfloat v[]);
 
@@ -129,7 +129,7 @@ inline GLint COpenGLHelper::getGLTextureOp( E_TEXTURE_OP op, GLfloat& scale )
 
 inline void COpenGLHelper::colorToGLfloat4( const SColor& col, GLfloat v[] )
 {
-	const f32 f = 1.0f / 255.0f;
+	const float f = 1.0f / 255.0f;
 	v[0] = col.getRed() * f;
 	v[1] = col.getGreen() * f;
 	v[2] = col.getBlue() * f;
@@ -206,7 +206,7 @@ inline GLint COpenGLHelper::getGLBlend( E_BLEND_FACTOR factor )
 
 inline void COpenGLHelper::getGLMatrixFromD3D( GLfloat gl_matrix[16], const matrix4& m )
 {
-	Q_memcpy(gl_matrix, sizeof(GLfloat) * 16, m.pointer(), sizeof(f32) * 16);
+	Q_memcpy(gl_matrix, sizeof(GLfloat) * 16, m.pointer(), sizeof(float) * 16);
 	gl_matrix[12] = -gl_matrix[12];
 }
 

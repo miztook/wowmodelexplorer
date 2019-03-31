@@ -137,7 +137,6 @@ Engine::~Engine()
 
 	delete EngineSetting;
 	delete WowDatabase;
-	delete WowDatabase70;
 	delete WowEnvironment;
 	delete FileSystem;
 	delete Timer;
@@ -154,12 +153,12 @@ Engine::~Engine()
 	*/
 }
 
-SWindowInfo Engine::createWindow(const char* caption, const dimension2du& windowSize, f32 scale, bool fullscreen, bool hide)
+SWindowInfo Engine::createWindow(const char* caption, const dimension2du& windowSize, float scale, bool fullscreen, bool hide)
 {
 	return CSysUtility::createWindow(caption, windowSize, scale, fullscreen, hide);
 }
 
-bool Engine::initDriver(E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread)
+bool Engine::initDriver(E_DRIVER_TYPE driverType, uint32_t adapter, bool fullscreen, bool vsync, uint8_t antialias, bool multithread)
 {
 	if (WindowInfo.width == 0 || WindowInfo.height == 0)
 	{
@@ -307,7 +306,7 @@ IFTFont* Engine::getDefaultFont()
 	return FontServices->getDefaultFont();
 }
 
-IFTFont* Engine::getFont(u32 fontSize, int fontStyle, int outlineWidth)
+IFTFont* Engine::getFont(uint32_t fontSize, int fontStyle, int outlineWidth)
 {
 	return FontServices->getFont(fontSize, fontStyle, outlineWidth);
 }

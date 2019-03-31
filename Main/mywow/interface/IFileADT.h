@@ -13,26 +13,26 @@ struct MHDR {
 		mhdr_MFBO = 1,                // contains a MFBO chunk.
 		mhdr_northrend = 2,           // is set for some northrend ones.
 	};
-	u32 flags;
-	u32* mcin;
-	u32* mtex;
-	u32* mmdx;
-	u32* mmid;
-	u32* mwmo;
-	u32* mwid;
-	u32* mddf;
-	u32* modf;
-	u32* mfbo;                     // this is only set if flags & mhdr_MFBO.
-	u32* mh2o;
-	u32* mtfx;
-	u32 unused[4];
+	uint32_t flags;
+	uint32_t* mcin;
+	uint32_t* mtex;
+	uint32_t* mmdx;
+	uint32_t* mmid;
+	uint32_t* mwmo;
+	uint32_t* mwid;
+	uint32_t* mddf;
+	uint32_t* modf;
+	uint32_t* mfbo;                     // this is only set if flags & mhdr_MFBO.
+	uint32_t* mh2o;
+	uint32_t* mtfx;
+	uint32_t unused[4];
 };
 
 struct SChunkSound
 {
 	SChunkSound() : soundID(-1) {}
 
-	s32 soundID;			//SoundEntriesAdvanced.dbc
+	int32_t soundID;			//SoundEntriesAdvanced.dbc
 	vector3df pos;
 	vector3df range;
 };
@@ -54,13 +54,13 @@ public:
 #ifdef FIXPIPELINE
 		shadowmap = nullptr;
 		memset(alphamap, 0, sizeof(alphamap));
-		data_shadowmap = new u8[64 * 64];
-		for (u32 k=0; k<3; ++k)
+		data_shadowmap = new uint8_t[64 * 64];
+		for (uint32_t k=0; k<3; ++k)
 		{
-			data_alphamap[k] = new u8[64 * 64];
+			data_alphamap[k] = new uint8_t[64 * 64];
 		}
 #endif
-		data_blendmap = new u8[64 * 64 * 4];
+		data_blendmap = new uint8_t[64 * 64 * 4];
 		memset(data_blendmap, 0, 64 * 64 * 4);
 
 	}
@@ -71,7 +71,7 @@ public:
 
 #ifdef FIXPIPELINE
 		delete[] data_shadowmap;
-		for (u32 k=0; k<3; ++k)
+		for (uint32_t k=0; k<3; ++k)
 		{
 			delete[] data_alphamap[k];
 		}
@@ -80,20 +80,20 @@ public:
 	}
 
 public:
-	u32	areaID;
-	u32		numTextures;
-	u32		numAlphaMap;
+	uint32_t	areaID;
+	uint32_t		numTextures;
+	uint32_t		numAlphaMap;
 
 	aabbox3df	box;
-	f32	xbase, ybase, zbase;
+	float	xbase, ybase, zbase;
 		
-	u8*		data_blendmap;
+	uint8_t*		data_blendmap;
 
 	ITexture*	textures[4];
 
 #ifdef FIXPIPELINE
-	u8*		data_shadowmap;
-	u8*		data_alphamap[3];
+	uint8_t*		data_shadowmap;
+	uint8_t*		data_alphamap[3];
 	ITexture*	shadowmap;
 	ITexture*	alphamap[3];
 #endif
@@ -147,23 +147,23 @@ public:
 public:
 	struct SWmoInstance
 	{
-		u32 wmoIndex;
-		s32 id;
+		uint32_t wmoIndex;
+		int32_t id;
 		vector3df pos;
 		vector3df dir;
 		aabbox3df		box;
-		f32		scale;
-		u16		doodadset;
-		u16		nameset;
+		float		scale;
+		uint16_t		doodadset;
+		uint16_t		nameset;
 	};
 
 	struct SM2Instance
 	{
-		u32 m2Index;
-		u32 id;
+		uint32_t m2Index;
+		uint32_t id;
 		vector3df	dir;
 		vector3df	position;
-		f32	scale;
+		float	scale;
 	};
 
 public:
@@ -171,7 +171,7 @@ public:
 	virtual bool loadFileSimple(IMemFile* file) = 0;
 	virtual bool loadFileTextures(IMemFile* file) = 0;	
 
-	void SetPosition(u8 row, u8 col) { Row = row; Col = col; }
+	void SetPosition(uint8_t row, uint8_t col) { Row = row; Col = col; }
 
 	virtual bool buildVideoResources() = 0;
 	virtual void releaseVideoResources() = 0;
@@ -180,25 +180,25 @@ protected:
 	SM2Instance*		M2Instances;
 	SWmoInstance*		WmoInstances;
 
-	u32* M2FileNameIndices;
-	c8*	M2FileNameBlock;	
+	uint32_t* M2FileNameIndices;
+	char*	M2FileNameBlock;	
 
-	u32*  WmoFileNameIndices;
-	c8*	WmoFileNameBlock;
+	uint32_t*  WmoFileNameIndices;
+	char*	WmoFileNameBlock;
 
 public:
-	u32 NumWmoInstance;
+	uint32_t NumWmoInstance;
 	
-	u32 NumM2Instance;
+	uint32_t NumM2Instance;
 	
-	u32 NumM2FileNames;
+	uint32_t NumM2FileNames;
 	
-	u32 NumWmoFileNames;		
+	uint32_t NumWmoFileNames;		
 	
 protected:
-	c8			Name[QMAX_PATH];
-	u8		Row;
-	u8		Col;
+	char			Name[QMAX_PATH];
+	uint8_t		Row;
+	uint8_t		Col;
 
 	//
 	bool		VideoBuilt;

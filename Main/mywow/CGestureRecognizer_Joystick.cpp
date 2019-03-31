@@ -24,11 +24,11 @@ void CGestureRecognizer_Joystick::onTouchBegin( const std::vector<SGesTouchInfo>
 		return;
 	}
 
-	s32 index = -1;
-	for (s32 i=0; i<(s32)touchInfos.size(); ++i)
+	int32_t index = -1;
+	for (int32_t i=0; i<(int32_t)touchInfos.size(); ++i)
 	{
 		const SGesTouchInfo& info = touchInfos[i];
-		if (!info.skip && FnIsValidPosition((s32)info.posX, (s32)info.posY))
+		if (!info.skip && FnIsValidPosition((int32_t)info.posX, (int32_t)info.posY))
 		{
 			index = i;
 			break;
@@ -50,7 +50,7 @@ void CGestureRecognizer_Joystick::onTouchMove( const std::vector<SGesTouchInfo>&
 
 	const SGesTouchInfo& head = TouchInfoArray.front();
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)			//not valid touch finger id
 		return;
 
@@ -73,7 +73,7 @@ void CGestureRecognizer_Joystick::onTouchMove( const std::vector<SGesTouchInfo>&
 	}
 	else
 	{
-		f32 distance = getTouchDistanceSQ(head, touch);			//有距离偏移，由begin变move
+		float distance = getTouchDistanceSQ(head, touch);			//有距离偏移，由begin变move
 		if (!equals_(distance, 0.0f))
 		{
 			ASSERT(State == RecognizerState_Begin);
@@ -102,7 +102,7 @@ void CGestureRecognizer_Joystick::onTouchEnd( const std::vector<SGesTouchInfo>& 
 
 	const SGesTouchInfo& head = TouchInfoArray.front();
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)			//not valid touch finger id
 		return;
 
@@ -133,7 +133,7 @@ void CGestureRecognizer_Joystick::onTouchCancel( const std::vector<SGesTouchInfo
 
 	const SGesTouchInfo& head = TouchInfoArray[0];
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)			//not valid touch finger id
 		return;
 

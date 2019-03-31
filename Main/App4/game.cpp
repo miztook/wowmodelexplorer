@@ -14,16 +14,16 @@ void MyMessageHandler::onSize(window_type hwnd, int width, int height)
 		g_bBackMode = false;
 		IVideoDriver* driver = g_Engine->getDriver();
 		if (driver)
-			driver->setDisplayMode( dimension2du((u32)width, (u32)height) );
+			driver->setDisplayMode( dimension2du((uint32_t)width, (uint32_t)height) );
 
 		IFontServices* fontServices = g_Engine->getFontServices();
 		if (fontServices)
-			fontServices->onWindowSizeChanged( dimension2du((u32)width, (u32)height) );
+			fontServices->onWindowSizeChanged( dimension2du((uint32_t)width, (uint32_t)height) );
 
 		ISceneManager* smgr = g_Engine->getSceneManager();
 		if(smgr)
 		{
-			smgr->onWindowSizeChanged( dimension2du((u32)width, (u32)height) );
+			smgr->onWindowSizeChanged( dimension2du((uint32_t)width, (uint32_t)height) );
 
 			ICamera* cam = smgr->getActiveCamera();
 			if(cam)
@@ -64,6 +64,7 @@ void createScene()
 	}
 	*/
 
+	/*
 	{
 		IFileM2* m2PandarenMale = g_Engine->getResourceLoader()->loadM2("Character\\SCOURGE\\MALE\\ScourgeMale_HD.m2");
 		IM2SceneNode*  pandarenMaleNode = g_Engine->getSceneManager()->addM2SceneNode(m2PandarenMale, NULL);	
@@ -88,7 +89,7 @@ void createScene()
 	//	cpptext_to_utf8("ÎÒ", tmp, 512);
 	//	decalSceneNode->TextLine1 = tmp;
 	}
-
+	*/
 	/*
 	int filedataid = 1 * 256 * 256 + 200 * 256 + 186;
 	char tmp[20];
@@ -129,12 +130,12 @@ void createScene()
 	}
 	*/
 
-// 	const c8* path = "World\\wmo\\Northrend\\Dalaran\\ND_Dalaran.wmo";
-// 	IFileWMO* wmo = g_Engine->getResourceLoader()->loadWMO(path);
-// 	IWMOSceneNode* wmoSceneNode = g_Engine->getSceneManager()->addWMOSceneNode(wmo, NULL);
-// 	matrix4 mat;
-// 	mat.setScale(0.5f);
-// 	wmoSceneNode->setRelativeTransformation(mat);
+	const char* path = "World\\wmo\\Northrend\\Dalaran\\ND_Dalaran.wmo";
+	IFileWMO* wmo = g_Engine->getResourceLoader()->loadWMO(path);
+	IWMOSceneNode* wmoSceneNode = g_Engine->getSceneManager()->addWMOSceneNode(wmo, NULL);
+	matrix4 mat;
+	mat.setScale(0.5f);
+	wmoSceneNode->setRelativeTransformation(mat);
 }
 
 void destroyScene()

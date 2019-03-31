@@ -10,24 +10,24 @@ struct TextureAnimKey
 {
 	TextureAnimKey() 
 		: frame(0), offsetU(0), offsetV(0), scaleU(1.0f), scaleV(1.0f), rotate(0.0f) {}
-	u32  frame;
-	f32   offsetU;
-	f32   offsetV;
-	f32	scaleU;
-	f32   scaleV;
-	f32   rotate;
+	uint32_t  frame;
+	float   offsetU;
+	float   offsetV;
+	float	scaleU;
+	float   scaleV;
+	float   rotate;
 };
 
 struct STrackTexture
 {
 	TextureAnimKey Begin, End;
 
-	void getValue(f32 frame, f32& offsetU, f32& offsetV, f32& scaleU, f32& scaleV, f32& rotate) const;
+	void getValue(float frame, float& offsetU, float& offsetV, float& scaleU, float& scaleV, float& rotate) const;
 
-	void getTextureMatrix(f32 frame, matrix4& mat);
+	void getTextureMatrix(float frame, matrix4& mat);
 };
 
-inline void STrackTexture::getValue( f32 frame, f32& offsetU, f32& offsetV, f32& scaleU, f32& scaleV, f32& rotate ) const
+inline void STrackTexture::getValue( float frame, float& offsetU, float& offsetV, float& scaleU, float& scaleV, float& rotate ) const
 {
 	if (frame <= Begin.frame)
 	{
@@ -49,7 +49,7 @@ inline void STrackTexture::getValue( f32 frame, f32& offsetU, f32& offsetV, f32&
 		return;
 	}
 
-	f32 t  = (f32)(End.frame - frame) / (End.frame - Begin.frame);
+	float t  = (float)(End.frame - frame) / (End.frame - Begin.frame);
 
 	offsetU = t * Begin.offsetU + (1-t) * End.offsetU;
 	offsetV = t * Begin.offsetV + (1-t) * End.offsetV;
@@ -59,11 +59,11 @@ inline void STrackTexture::getValue( f32 frame, f32& offsetU, f32& offsetV, f32&
 }
 
 //×óÊÖ
-inline void STrackTexture::getTextureMatrix( f32 frame, matrix4& mat )
+inline void STrackTexture::getTextureMatrix( float frame, matrix4& mat )
 {
 	mat.makeIdentity();
 
-	f32 offsetU, offsetV, scaleU, scaleV, rotate;
+	float offsetU, offsetV, scaleU, scaleV, rotate;
 
 	getValue(frame, offsetU, offsetV, scaleU, scaleV, rotate);
 
@@ -95,9 +95,9 @@ inline void STrackTexture::getTextureMatrix( f32 frame, matrix4& mat )
 	{
 		matrix4 rot;
 
-		f32 theta = DEGTORAD * rotate;
-		f32 cosTheta = cos(theta);
-		f32 sinTheta = sin(theta);
+		float theta = DEGTORAD * rotate;
+		float cosTheta = cos(theta);
+		float sinTheta = sin(theta);
 
 		// set the rotation portion of the matrix
 		rot.m00 = cosTheta;

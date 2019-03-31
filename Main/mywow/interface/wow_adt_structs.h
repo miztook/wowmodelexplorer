@@ -8,81 +8,81 @@ namespace ADT
 #	pragma pack (1)
 
 	struct chunkHeader {
-		u32 flags;
-		u32 ix;
-		u32 iy;
-		u32 nLayers;
-		u32 nDoodadRefs;
-		u32 ofsHeight; // MCVT
-		u32 ofsNormal; // MCNR
-		u32 ofsLayer; // MCLY
-		u32 ofsRefs; // MCRF
-		u32 ofsAlpha; // MCAL
-		u32 sizeAlpha;
-		u32 ofsShadow; // MCSH
-		u32 sizeShadow;
-		u32 areaid;
-		u32 nMapObjRefs;
-		u32 holes;
-		u16 s1; // UINT2[8][8] ReallyLowQualityTextureingMap;	// the content is the layer being on top, I guess.
-		u16 s2;
-		u32 d1;
-		u32 d2;
-		u32 d3;
-		u32 predTex;
-		u32 nEffectDoodad;
-		u32 ofsSndEmitters; // MCSE
-		u32 nSndEmitters; // will be set to 0 in the client if ofsSndEmitters doesn't point to MCSE!
-		u32 ofsLiquid; // MCLQ
-		u32 sizeLiquid; // 8 when not used; only read if >8.
+		uint32_t flags;
+		uint32_t ix;
+		uint32_t iy;
+		uint32_t nLayers;
+		uint32_t nDoodadRefs;
+		uint32_t ofsHeight; // MCVT
+		uint32_t ofsNormal; // MCNR
+		uint32_t ofsLayer; // MCLY
+		uint32_t ofsRefs; // MCRF
+		uint32_t ofsAlpha; // MCAL
+		uint32_t sizeAlpha;
+		uint32_t ofsShadow; // MCSH
+		uint32_t sizeShadow;
+		uint32_t areaid;
+		uint32_t nMapObjRefs;
+		uint32_t holes;
+		uint16_t s1; // UINT2[8][8] ReallyLowQualityTextureingMap;	// the content is the layer being on top, I guess.
+		uint16_t s2;
+		uint32_t d1;
+		uint32_t d2;
+		uint32_t d3;
+		uint32_t predTex;
+		uint32_t nEffectDoodad;
+		uint32_t ofsSndEmitters; // MCSE
+		uint32_t nSndEmitters; // will be set to 0 in the client if ofsSndEmitters doesn't point to MCSE!
+		uint32_t ofsLiquid; // MCLQ
+		uint32_t sizeLiquid; // 8 when not used; only read if >8.
 		float  zpos;
 		float  xpos;
 		float  ypos;
-		u32 textureId; // MCCV, only with flags&0x40, had UINT32 textureId; in ObscuR's structure.
-		u32 props;
-		u32 effectId;
+		uint32_t textureId; // MCCV, only with flags&0x40, had UINT32 textureId; in ObscuR's structure.
+		uint32_t props;
+		uint32_t effectId;
 	};
 
 
 	struct SSoundEmitter
 	{
-		s32 SoundEntriesAdvancedId;
+		int32_t SoundEntriesAdvancedId;
 		vector3df position;
 		vector3df size; 		
 	};
 
 	struct SM2Placement
 	{
-		u32 m2Index;
-		u32 id;
+		uint32_t m2Index;
+		uint32_t id;
 		vector3df pos;
 		vector3df dir;
-		u16 scale;
-		u16 unknown;
+		uint16_t scale;
+		uint16_t unknown;
 	};
 
 	struct SWMOPlacement 
 	{
-		u32 wmoIndex;
-		u32 id;
+		uint32_t wmoIndex;
+		uint32_t id;
 		vector3df pos;
 		vector3df dir;
 		vector3df pos2;
 		vector3df pos3;
-		u16 flags;
-		u16 doodadset;
-		u16 nameset;
-		u16 unknown;
+		uint16_t flags;
+		uint16_t doodadset;
+		uint16_t nameset;
+		uint16_t unknown;
 	};
 
 	struct TXBT 
 	{
-		u32 filenameoffset;
-		u32 txmdoffset;
-		u8 sizex;
-		u8 sizey;
-		u8 type;
-		u8 flags;
+		uint32_t filenameoffset;
+		uint32_t txmdoffset;
+		uint8_t sizex;
+		uint8_t sizey;
+		uint8_t type;
+		uint8_t flags;
 	};
 
 #define	MCLY_USE_ALPHAMAP		0x100
@@ -90,11 +90,11 @@ namespace ADT
 
 	struct MCLY
 	{
-		u32 textureId;
-		u32 flags;
-		u32 offsetInMCAL;
-		u16 effectId;
-		u16 padding;
+		uint32_t textureId;
+		uint32_t flags;
+		uint32_t offsetInMCAL;
+		uint16_t effectId;
+		uint16_t padding;
 	};
 
 #	pragma pack ()

@@ -36,7 +36,7 @@ struct SD3D11_BLEND_DESC : public D3D11_BLEND_DESC
 		RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 		RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-		for (u32 i=1; i<8; ++i)
+		for (uint32_t i=1; i<8; ++i)
 		{
 			RenderTarget[i] = RenderTarget[0];
 		}

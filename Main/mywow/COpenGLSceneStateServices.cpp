@@ -33,8 +33,8 @@ COpenGLSceneStateServices::COpenGLSceneStateServices()
 	Driver = static_cast<COpenGLDriver*>(g_Engine->getDriver());
 	Extension = Driver->getGLExtension();
 
-	MaxLights = min_((u32)Extension->MaxLights, SSceneState::MAX_LIGTHTS);
-	MaxClipPlanes = min_((u32)Extension->MaxUserClipPlanes, SSceneState::MAX_CLIPPLANES);
+	MaxLights = min_((uint32_t)Extension->MaxLights, SSceneState::MAX_LIGTHTS);
+	MaxClipPlanes = min_((uint32_t)Extension->MaxUserClipPlanes, SSceneState::MAX_CLIPPLANES);
 
 	resetSceneStateCache();
 
@@ -70,7 +70,7 @@ void COpenGLSceneStateServices::setAmbientLight( SColor color )
 void COpenGLSceneStateServices::deleteAllDynamicLights()
 {
 #ifdef FIXPIPELINE
-	for (u32 i=0; i<MaxLights; ++i)
+	for (uint32_t i=0; i<MaxLights; ++i)
 	{
 		if (ResetRenderStates || SceneState.LightsOn[i] != false)
 		{
@@ -83,7 +83,7 @@ void COpenGLSceneStateServices::deleteAllDynamicLights()
 	SceneState.resetLights();
 }
 
-bool COpenGLSceneStateServices::setDynamicLight( u32 index, const SLight& light )
+bool COpenGLSceneStateServices::setDynamicLight( uint32_t index, const SLight& light )
 {
 	if (index >= MaxLights)
 		return false;
@@ -162,7 +162,7 @@ bool COpenGLSceneStateServices::setDynamicLight( u32 index, const SLight& light 
 	return true;
 }
 
-const SLight* COpenGLSceneStateServices::getDynamicLight( u32 index ) const
+const SLight* COpenGLSceneStateServices::getDynamicLight( uint32_t index ) const
 {
 	if(index >= MaxLights)
 		return nullptr;
@@ -170,7 +170,7 @@ const SLight* COpenGLSceneStateServices::getDynamicLight( u32 index ) const
 	return &SceneState.Lights[index];
 }
 
-void COpenGLSceneStateServices::turnLightOn( u32 lightIndex, bool turnOn )
+void COpenGLSceneStateServices::turnLightOn( uint32_t lightIndex, bool turnOn )
 {
 	if(lightIndex >= MaxLights)
 		return;
@@ -257,7 +257,7 @@ void COpenGLSceneStateServices::setFog( const SFogParam& fogParam )
 	SceneState.FogParam = fogParam;
 }
 
-bool COpenGLSceneStateServices::setClipPlane( u32 index, const plane3df& plane )
+bool COpenGLSceneStateServices::setClipPlane( uint32_t index, const plane3df& plane )
 {
 	if (index >= MaxClipPlanes)
 	{
@@ -287,7 +287,7 @@ bool COpenGLSceneStateServices::setClipPlane( u32 index, const plane3df& plane )
 	return true;
 }
 
-void COpenGLSceneStateServices::enableClipPlane( u32 index, bool enable )
+void COpenGLSceneStateServices::enableClipPlane( uint32_t index, bool enable )
 {
 	if (index >= MaxClipPlanes)
 	{
@@ -303,7 +303,7 @@ void COpenGLSceneStateServices::enableClipPlane( u32 index, bool enable )
 	}
 }
 
-bool COpenGLSceneStateServices::isClipPlaneEnable( u32 index ) const
+bool COpenGLSceneStateServices::isClipPlaneEnable( uint32_t index ) const
 {
 	if (index >= MaxClipPlanes)
 	{
@@ -314,7 +314,7 @@ bool COpenGLSceneStateServices::isClipPlaneEnable( u32 index ) const
 	return SceneState.enableclips[index];
 }
 
-bool COpenGLSceneStateServices::getClipPlane( u32 index, plane3df& plane ) const
+bool COpenGLSceneStateServices::getClipPlane( uint32_t index, plane3df& plane ) const
 {
 	if (index >= MaxClipPlanes)
 	{
@@ -336,13 +336,13 @@ bool COpenGLSceneStateServices::reset()
 
 	//restore scene states
 	setAmbientLight(lastSceneState.AmbientLightColor);
-	for (u32 i=0; i<SSceneState::MAX_LIGTHTS; ++i)
+	for (uint32_t i=0; i<SSceneState::MAX_LIGTHTS; ++i)
 	{
 		setDynamicLight(i, lastSceneState.Lights[i]);
 		turnLightOn(i, lastSceneState.LightsOn[i]);
 	}
 	setFog(lastSceneState.FogParam);
-	for (u32 i=0; i<SSceneState::MAX_CLIPPLANES; ++i)
+	for (uint32_t i=0; i<SSceneState::MAX_CLIPPLANES; ++i)
 	{
 		setClipPlane(i, lastSceneState.clipplanes[i]);
 		enableClipPlane(i, lastSceneState.enableclips[i]);
@@ -367,7 +367,7 @@ void COpenGLSceneStateServices::resetSceneStateCache()
 	glGetIntegerv(GL_FOG_HINT, &SSCache.PixelFogEnable);
 #endif
 
-	for (u32 i=0; i<MaxClipPlanes; ++i)
+	for (uint32_t i=0; i<MaxClipPlanes; ++i)
 	{
 		glGetIntegerv(GL_CLIP_PLANE0 + i, &SSCache.ClipPlaneEnable[i]);
 		glGetClipPlane(GL_CLIP_PLANE0 + i, (GLdouble*)&SSCache.Planes[i]);

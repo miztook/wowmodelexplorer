@@ -19,7 +19,7 @@ CD3D9VertexShader::~CD3D9VertexShader()
 	SAFE_RELEASE(VertexShader); 
 }
 
-void CD3D9VertexShader::setShaderConstant( const c8* name, const void* srcData, u32 size )
+void CD3D9VertexShader::setShaderConstant( const char* name, const void* srcData, uint32_t size )
 {
 	const SDx9ConstDesc* desc = getConstantDesc(name);
 	ASSERT(desc);
@@ -29,7 +29,7 @@ void CD3D9VertexShader::setShaderConstant( const c8* name, const void* srcData, 
 	}
 }
 
-const SDx9ConstDesc* CD3D9VertexShader::getConstantDesc( const c8* name ) const
+const SDx9ConstDesc* CD3D9VertexShader::getConstantDesc( const char* name ) const
 {
 	for (T_ConstList::const_iterator itr = ConstList.begin(); itr != ConstList.end(); ++itr)
 	{
@@ -39,7 +39,7 @@ const SDx9ConstDesc* CD3D9VertexShader::getConstantDesc( const c8* name ) const
 	return nullptr;
 }
 
-void CD3D9VertexShader::setShaderConstant( const SDx9ConstDesc* desc, const void* srcData, u32 size )
+void CD3D9VertexShader::setShaderConstant( const SDx9ConstDesc* desc, const void* srcData, uint32_t size )
 {
 	//if(desc->index == 0)			//骨骼矩阵例外，sizeof(matrix4X3) != desc.size(列优先)
 	//	ASSERT(size <= desc->size);
@@ -61,7 +61,7 @@ CD3D9PixelShader::~CD3D9PixelShader()
 	SAFE_RELEASE(PixelShader);
 }
 
-void CD3D9PixelShader::setShaderConstant( const c8* name, const void* srcData, u32 size )
+void CD3D9PixelShader::setShaderConstant( const char* name, const void* srcData, uint32_t size )
 {
 	const SDx9ConstDesc* desc = getConstantDesc(name);
 	ASSERT(desc);
@@ -71,7 +71,7 @@ void CD3D9PixelShader::setShaderConstant( const c8* name, const void* srcData, u
 	}
 }
 
-void CD3D9PixelShader::setTextureConstant( const c8* name, ITexture* texture )
+void CD3D9PixelShader::setTextureConstant( const char* name, ITexture* texture )
 {
 	const SDx9ConstDesc* desc = getConstantDesc(name);
 	ASSERT(desc);
@@ -81,7 +81,7 @@ void CD3D9PixelShader::setTextureConstant( const c8* name, ITexture* texture )
 	}
 }
 
-const SDx9ConstDesc* CD3D9PixelShader::getConstantDesc(const c8* name) const
+const SDx9ConstDesc* CD3D9PixelShader::getConstantDesc(const char* name) const
 {
 	for (T_ConstList::const_iterator itr = ConstList.begin(); itr != ConstList.end(); ++itr)
 	{
@@ -91,7 +91,7 @@ const SDx9ConstDesc* CD3D9PixelShader::getConstantDesc(const c8* name) const
 	return nullptr;
 }
 
-void CD3D9PixelShader::setShaderConstant( const SDx9ConstDesc* desc, const void* srcData, u32 size )
+void CD3D9PixelShader::setShaderConstant( const SDx9ConstDesc* desc, const void* srcData, uint32_t size )
 {
 	ASSERT(size <= desc->size);
 	ASSERT(size % 16 == 0);

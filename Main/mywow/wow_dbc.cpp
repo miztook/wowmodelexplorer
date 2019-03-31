@@ -4,7 +4,7 @@
 
 namespace WowClassic
 {
-	dbc::dbc(const wowEnvironment* env, const c8* filename, bool tmp)
+	dbc::dbc(const wowEnvironment* env, const char* filename, bool tmp)
 		: DBType(WowDBType::Unknown)
 		, minorVersion(0)
 	{
@@ -38,7 +38,7 @@ namespace WowClassic
 			return;
 		}
 
-		const c8* magic = (const c8*)file->getBuffer();
+		const char* magic = (const char*)file->getBuffer();
 		if (strncmp(magic, "WDBC", 4) == 0)
 			DBType = WowDBType::WDBC;
 		else if (strncmp(magic, "WDB2", 4) == 0)
@@ -86,9 +86,9 @@ namespace WowClassic
 		fs->writeLog(ELOG_RES, "db file %s: field num %d, record size %d, record num %d, string size %d",
 			file->getFileName(), nFields, RecordSize, nActualRecords, StringSize);
 
-		u32 current = file->getPos();
-		_recordStart = new u8[RecordSize * nActualRecords];
-		_stringStart = new u8[StringSize];
+		uint32_t current = file->getPos();
+		_recordStart = new uint8_t[RecordSize * nActualRecords];
+		_stringStart = new uint8_t[StringSize];
 
 		file->read(_recordStart, RecordSize * nActualRecords);			//records
 		file->seek(current + RecordSize * nRecords);
@@ -99,9 +99,9 @@ namespace WowClassic
 		//build map
 		if (!tmp)		//临时文件不写map
 		{
-			for (u32 i = 0; i < nActualRecords; ++i)
+			for (uint32_t i = 0; i < nActualRecords; ++i)
 			{
-				u32 id = *reinterpret_cast<u32*>(_recordStart + i * RecordSize);
+				uint32_t id = *reinterpret_cast<uint32_t*>(_recordStart + i * RecordSize);
 				RecordLookup32[id] = i;
 			}
 		}
@@ -127,9 +127,9 @@ namespace WowClassic
 		if (isSparse)
 		{
 			nActualRecords = 0;
-			for (u32 i = header.min_id; i <= header.max_id; ++i)
+			for (uint32_t i = header.min_id; i <= header.max_id; ++i)
 			{
-				u32 avail;
+				uint32_t avail;
 				file->read(&avail, 4);
 				if (avail == 0)
 					continue;
@@ -147,9 +147,9 @@ namespace WowClassic
 		fs->writeLog(ELOG_RES, "db file %s: field num %d, record size %d, record num %d, string size %d",
 			file->getFileName(), nFields, RecordSize, nActualRecords, StringSize);
 
-		u32 current = file->getPos();
-		_recordStart = new u8[RecordSize * nActualRecords];
-		_stringStart = new u8[StringSize];
+		uint32_t current = file->getPos();
+		_recordStart = new uint8_t[RecordSize * nActualRecords];
+		_stringStart = new uint8_t[StringSize];
 
 		file->read(_recordStart, RecordSize * nActualRecords);			//records
 		file->seek(current + RecordSize * nRecords);
@@ -160,9 +160,9 @@ namespace WowClassic
 		//build map
 		if (!isSparse && !tmp)		//临时文件不写map
 		{
-			for (u32 i = 0; i < nActualRecords; ++i)
+			for (uint32_t i = 0; i < nActualRecords; ++i)
 			{
-				u32 id = *reinterpret_cast<u32*>(_recordStart + i * RecordSize);
+				uint32_t id = *reinterpret_cast<uint32_t*>(_recordStart + i * RecordSize);
 				RecordLookup32[id] = i;
 			}
 		}
@@ -190,12 +190,12 @@ namespace WowClassic
 	HasCopyData = header.copydatasize > 0;
 
 	Fields = new SField[nFields];
-	for (u32 i=0; i<nFields; ++i)
+	for (uint32_t i=0; i<nFields; ++i)
 	{
-	s16 size;
-	file->read(&size, (u32)sizeof(s16));
-	u16 offset;
-	file->read(&offset, (u32)sizeof(u16));
+	int16_t size;
+	file->read(&size, (uint32_t)sizeof(int16_t));
+	uint16_t offset;
+	file->read(&offset, (uint32_t)sizeof(uint16_t));
 
 	Fields[i].size = (32 - size) / 8;
 	Fields[i].position = offset;
@@ -203,12 +203,12 @@ namespace WowClassic
 
 	if (HasDataOffsetBlock)
 	{
-	u32 curPos = file->getPos();
+	uint32_t curPos = file->getPos();
 	file->seek(header._stringsize);
 
 	nActualRecords = 0;
-	u32 nTotalSize = 0;
-	for (u32 i = header.min_id; i <= header.max_id; ++i)
+	uint32_t nTotalSize = 0;
+	for (uint32_t i = header.min_id; i <= header.max_id; ++i)
 	{
 	SOffsetMapEntry entry;
 	file->read(&entry, sizeof(SOffsetMapEntry));
@@ -225,9 +225,9 @@ namespace WowClassic
 	}
 
 	//整合recordstart
-	const u32 indexDataStart = file->getPos();
-	_recordStart = new u8[nTotalSize];
-	u32 curOffset = 0;
+	const uint32_t indexDataStart = file->getPos();
+	_recordStart = new uint8_t[nTotalSize];
+	uint32_t curOffset = 0;
 	for (auto& entry : OffsetMaps)
 	{
 	file->seek(entry.offset);
@@ -241,9 +241,9 @@ namespace WowClassic
 	}
 	else   //no dataoffset
 	{
-	u32 current = file->getPos();
-	_recordStart = new u8[RecordSize * nRecords];
-	_stringStart = new u8[StringSize];
+	uint32_t current = file->getPos();
+	_recordStart = new uint8_t[RecordSize * nRecords];
+	_stringStart = new uint8_t[StringSize];
 
 	file->read(_recordStart, RecordSize * nRecords);			//records
 	file->read(_stringStart, StringSize);		//string
@@ -252,13 +252,13 @@ namespace WowClassic
 	if (HasIndex)
 	{
 	IDs.resize(nRecords);
-	file->read(IDs.data(), nRecords * sizeof(u32));
+	file->read(IDs.data(), nRecords * sizeof(uint32_t));
 	}
 	else
 	{
-	u16 indexPos = Fields[header.idindex].position;
-	u16 indexSize = Fields[header.idindex].size;
-	u32 indexMask = 0xFFFFFFFF;
+	uint16_t indexPos = Fields[header.idindex].position;
+	uint16_t indexSize = Fields[header.idindex].size;
+	uint32_t indexMask = 0xFFFFFFFF;
 	if (indexSize == 1)
 	indexMask = 0x000000FF;
 	else if (indexSize == 2)
@@ -266,17 +266,17 @@ namespace WowClassic
 	else if (indexSize == 3)
 	indexMask = 0x00FFFFFF;
 
-	for (u32 i = 0; i < nRecords; ++i)
+	for (uint32_t i = 0; i < nRecords; ++i)
 	{
-	u8* ofs = _recordStart + i * RecordSize;
-	u32 val;
+	uint8_t* ofs = _recordStart + i * RecordSize;
+	uint32_t val;
 	memcpy(&val, ofs + indexPos, indexSize);
 	val &= indexMask;
 	IDs.push_back(val);
 	};
 	}
 
-	for (u32 i = 0; i < nActualRecords; ++i)
+	for (uint32_t i = 0; i < nActualRecords; ++i)
 	{
 	SOffsetMapEntry entry;
 	entry.offset = i * RecordSize;
@@ -288,25 +288,25 @@ namespace WowClassic
 	//relationship
 	if (HasRelationshipData)
 	{
-	s32 relationshipDataSize = nRecords * sizeof(s32);
-	file->seek(nRecords * sizeof(s32), true);
+	int32_t relationshipDataSize = nRecords * sizeof(int32_t);
+	file->seek(nRecords * sizeof(int32_t), true);
 	}
 
 	//copy table
 	if (HasCopyData)
 	{
 	ASSERT(header.copydatasize % sizeof(SCopyTableEntry) == 0);
-	u32 nbEntries = (u32)(header.copydatasize / sizeof(SCopyTableEntry));
+	uint32_t nbEntries = (uint32_t)(header.copydatasize / sizeof(SCopyTableEntry));
 
 	std::vector<SCopyTableEntry> copyTables;
 	copyTables.resize(nbEntries);
-	file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
+	file->read(copyTables.data(), (uint32_t)(copyTables.size() * sizeof(SCopyTableEntry)));
 
 	IDs.reserve(nActualRecords + nbEntries);
 	OffsetMaps.reserve(nActualRecords + nbEntries);
 
-	std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
-	for (u32 i = 0; i < nActualRecords; ++i)
+	std::map<uint32_t, uint32_t, std::less<uint32_t>, qzone_allocator<std::pair<uint32_t, uint32_t>>> IdToIndexMap;
+	for (uint32_t i = 0; i < nActualRecords; ++i)
 	{
 	IdToIndexMap[IDs[i]] = i;
 	}
@@ -314,7 +314,7 @@ namespace WowClassic
 	for (const auto& entry : copyTables)
 	{
 	IDs.push_back(entry.id_new_row);
-	u32 idx = IdToIndexMap[entry.id_copied_row];
+	uint32_t idx = IdToIndexMap[entry.id_copied_row];
 	OffsetMaps.push_back(OffsetMaps[idx]);
 	}
 
@@ -326,9 +326,9 @@ namespace WowClassic
 	//build map
 	if (!tmp)		//临时文件不写map
 	{
-	for (u32 i = 0; i < (u32)IDs.size(); ++i)
+	for (uint32_t i = 0; i < (uint32_t)IDs.size(); ++i)
 	{
-	u32 id = IDs[i];
+	uint32_t id = IDs[i];
 	RecordLookup32[id] = i;
 	}
 	}
@@ -354,12 +354,12 @@ namespace WowClassic
 	HasIndex = (header.fileflags & WDB5_FLAG_INDEX) != 0;
 
 	Fields = new SField[nFields];
-	for (u32 i = 0; i < nFields; ++i)
+	for (uint32_t i = 0; i < nFields; ++i)
 	{
-	s16 size;
-	file->read(&size, (u32)sizeof(s16));
-	u16 offset;
-	file->read(&offset, (u32)sizeof(u16));
+	int16_t size;
+	file->read(&size, (uint32_t)sizeof(int16_t));
+	uint16_t offset;
+	file->read(&offset, (uint32_t)sizeof(uint16_t));
 
 	Fields[i].size = (32 - size) / 8;
 	Fields[i].position = offset;
@@ -367,12 +367,12 @@ namespace WowClassic
 
 	if (HasDataOffsetBlock)
 	{
-	u32 curPos = file->getPos();
+	uint32_t curPos = file->getPos();
 	file->seek(header._stringsize);
 
 	nActualRecords = 0;
-	u32 nTotalSize = 0;
-	for (u32 i = header.min_id; i <= header.max_id; ++i)
+	uint32_t nTotalSize = 0;
+	for (uint32_t i = header.min_id; i <= header.max_id; ++i)
 	{
 	SOffsetMapEntry entry;
 	file->read(&entry, sizeof(SOffsetMapEntry));
@@ -389,9 +389,9 @@ namespace WowClassic
 	}
 
 	//整合recordstart
-	const u32 indexDataStart = file->getPos();
-	_recordStart = new u8[nTotalSize];
-	u32 curOffset = 0;
+	const uint32_t indexDataStart = file->getPos();
+	_recordStart = new uint8_t[nTotalSize];
+	uint32_t curOffset = 0;
 	for (auto& entry : OffsetMaps)
 	{
 	file->seek(entry.offset);
@@ -405,9 +405,9 @@ namespace WowClassic
 	}
 	else   //no dataoffset
 	{
-	u32 current = file->getPos();
-	_recordStart = new u8[RecordSize * nRecords];
-	_stringStart = new u8[StringSize];
+	uint32_t current = file->getPos();
+	_recordStart = new uint8_t[RecordSize * nRecords];
+	_stringStart = new uint8_t[StringSize];
 
 	file->read(_recordStart, RecordSize * nRecords);			//records
 	file->read(_stringStart, StringSize);		//string
@@ -416,13 +416,13 @@ namespace WowClassic
 	if (HasIndex)
 	{
 	IDs.resize(nRecords);
-	file->read(IDs.data(), nRecords * sizeof(u32));
+	file->read(IDs.data(), nRecords * sizeof(uint32_t));
 	}
 	else
 	{
-	u16 indexPos = Fields[header.idindex].position;
-	u16 indexSize = Fields[header.idindex].size;
-	u32 indexMask = 0xFFFFFFFF;
+	uint16_t indexPos = Fields[header.idindex].position;
+	uint16_t indexSize = Fields[header.idindex].size;
+	uint32_t indexMask = 0xFFFFFFFF;
 	if (indexSize == 1)
 	indexMask = 0x000000FF;
 	else if (indexSize == 2)
@@ -430,17 +430,17 @@ namespace WowClassic
 	else if (indexSize == 3)
 	indexMask = 0x00FFFFFF;
 
-	for (u32 i = 0; i < nRecords; ++i)
+	for (uint32_t i = 0; i < nRecords; ++i)
 	{
-	u8* ofs = _recordStart + i * RecordSize;
-	u32 val;
+	uint8_t* ofs = _recordStart + i * RecordSize;
+	uint32_t val;
 	memcpy(&val, ofs + indexPos, indexSize);
 	val &= indexMask;
 	IDs.push_back(val);
 	};
 	}
 
-	for (u32 i = 0; i < nRecords; ++i)
+	for (uint32_t i = 0; i < nRecords; ++i)
 	{
 	SOffsetMapEntry entry;
 	entry.offset = i * RecordSize;
@@ -452,25 +452,25 @@ namespace WowClassic
 	//relationship
 	if (HasRelationshipData)
 	{
-	s32 relationshipDataSize = nRecords * sizeof(s32);
-	file->seek(nRecords * sizeof(s32), true);
+	int32_t relationshipDataSize = nRecords * sizeof(int32_t);
+	file->seek(nRecords * sizeof(int32_t), true);
 	}
 
 	//copy table
 	if (HasCopyData)
 	{
 	ASSERT(header.copydatasize % sizeof(SCopyTableEntry) == 0);
-	u32 nbEntries = (u32)(header.copydatasize / sizeof(SCopyTableEntry));
+	uint32_t nbEntries = (uint32_t)(header.copydatasize / sizeof(SCopyTableEntry));
 
 	std::vector<SCopyTableEntry> copyTables;
 	copyTables.resize(nbEntries);
-	file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
+	file->read(copyTables.data(), (uint32_t)(copyTables.size() * sizeof(SCopyTableEntry)));
 
 	IDs.reserve(nActualRecords + nbEntries);
 	OffsetMaps.reserve(nActualRecords + nbEntries);
 
-	std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
-	for (u32 i = 0; i < nActualRecords; ++i)
+	std::map<uint32_t, uint32_t, std::less<uint32_t>, qzone_allocator<std::pair<uint32_t, uint32_t>>> IdToIndexMap;
+	for (uint32_t i = 0; i < nActualRecords; ++i)
 	{
 	IdToIndexMap[IDs[i]] = i;
 	}
@@ -478,7 +478,7 @@ namespace WowClassic
 	for (const auto& entry : copyTables)
 	{
 	IDs.push_back(entry.id_new_row);
-	u32 idx = IdToIndexMap[entry.id_copied_row];
+	uint32_t idx = IdToIndexMap[entry.id_copied_row];
 	OffsetMaps.push_back(OffsetMaps[idx]);
 	}
 
@@ -487,34 +487,34 @@ namespace WowClassic
 
 	if (header.nonzero_column_table_size > 0)
 	{
-	u32 ncolumns;
+	uint32_t ncolumns;
 	file->read(&ncolumns, sizeof(ncolumns));
 
 	CommonColumns = new SCommonColumn[ncolumns];
-	for (u32 c = 0; c < ncolumns; ++c)
+	for (uint32_t c = 0; c < ncolumns; ++c)
 	{
-	u32 nrecs;
+	uint32_t nrecs;
 	file->read(&nrecs, sizeof(nrecs));
 
-	u8 type;
+	uint8_t type;
 	file->read(&type, sizeof(type));
 
 	if (nrecs == 0)
 	continue;
 
-	u32 size = 4;
+	uint32_t size = 4;
 	if (type == 1)
 	size = 2;
 	else if (type == 2)
 	size = 1;
 
-	std::map < u32, u32> recmap;
-	for (u32 i = 0; i < nrecs; ++i)
+	std::map < uint32_t, uint32_t> recmap;
+	for (uint32_t i = 0; i < nrecs; ++i)
 	{
-	u32 id;
+	uint32_t id;
 	file->read(&id, sizeof(id));
 
-	u32 val;
+	uint32_t val;
 	file->read(&val, size);
 
 	recmap[id] = val;
@@ -532,9 +532,9 @@ namespace WowClassic
 	//build map
 	if (!tmp && HasIndex)		//临时文件不写map
 	{
-	for (u32 i = 0; i < nRecords; ++i)
+	for (uint32_t i = 0; i < nRecords; ++i)
 	{
-	u32 id = IDs[i];
+	uint32_t id = IDs[i];
 	RecordLookup32[id] = i;
 	}
 	}
@@ -569,26 +569,26 @@ namespace WowClassic
 	file->read(Fields, nFields * sizeof(SField));
 
 	//field_storage_info
-	u32 nFieldStorage = header.field_storage_info_size / sizeof(SFieldStorageInfo);
+	uint32_t nFieldStorage = header.field_storage_info_size / sizeof(SFieldStorageInfo);
 	FieldStorageInfos = new SFieldStorageInfo[nFieldStorage];
 	file->read(FieldStorageInfos, nFieldStorage * sizeof(SFieldStorageInfo));
 
 	//
-	u32 palletBlockOffset = file->getPos();
-	u32 commonBlockOffset = palletBlockOffset + header.pallet_data_size;
+	uint32_t palletBlockOffset = file->getPos();
+	uint32_t commonBlockOffset = palletBlockOffset + header.pallet_data_size;
 
-	u32 stringSize = HasDataOffsetBlock ? 0 : header._stringsize;
-	u32 IdBlockOffset = file->getPos() + nRecords * RecordSize;
-	u32 copyBlockOffset = IdBlockOffset + sectionHeaders[0].id_list_size;
-	u32 relationshipDataOffset = copyBlockOffset + sectionHeaders[0].copy_table_size;
+	uint32_t stringSize = HasDataOffsetBlock ? 0 : header._stringsize;
+	uint32_t IdBlockOffset = file->getPos() + nRecords * RecordSize;
+	uint32_t copyBlockOffset = IdBlockOffset + sectionHeaders[0].id_list_size;
+	uint32_t relationshipDataOffset = copyBlockOffset + sectionHeaders[0].copy_table_size;
 
 	if (HasDataOffsetBlock)
 	{
 	file->seek(sectionHeaders[0].offset_map_offset);
 
 	nActualRecords = 0;
-	u32 nTotalSize = 0;
-	for (u32 i = header.min_id; i <= header.max_id; ++i)
+	uint32_t nTotalSize = 0;
+	for (uint32_t i = header.min_id; i <= header.max_id; ++i)
 	{
 	SOffsetMapEntry entry;
 	file->read(&entry, sizeof(SOffsetMapEntry));
@@ -604,9 +604,9 @@ namespace WowClassic
 	}
 
 	//整合recordstart
-	const u32 indexDataStart = file->getPos();
-	_recordStart = new u8[nTotalSize];
-	u32 curOffset = 0;
+	const uint32_t indexDataStart = file->getPos();
+	_recordStart = new uint8_t[nTotalSize];
+	uint32_t curOffset = 0;
 	for (auto& entry : OffsetMaps)
 	{
 	file->seek(entry.offset);
@@ -620,9 +620,9 @@ namespace WowClassic
 	}
 	else
 	{
-	u32 current = file->getPos();
-	_recordStart = new u8[RecordSize * nRecords];
-	_stringStart = new u8[StringSize];
+	uint32_t current = file->getPos();
+	_recordStart = new uint8_t[RecordSize * nRecords];
+	_stringStart = new uint8_t[StringSize];
 
 	file->read(_recordStart, RecordSize * nRecords);			//records
 	file->read(_stringStart, StringSize);		//string
@@ -631,38 +631,38 @@ namespace WowClassic
 	if (HasIndex)
 	{
 	IDs.resize(nRecords);
-	file->read(IDs.data(), nRecords * sizeof(u32));
+	file->read(IDs.data(), nRecords * sizeof(uint32_t));
 	}
 	else
 	{
 	ASSERT(StringSize == 0);
 
 	const SFieldStorageInfo& info = FieldStorageInfos[header.idindex];
-	const u8* data = file->getPointer();
+	const uint8_t* data = file->getPointer();
 
-	for (u32 i = 0; i < nRecords; ++i)
+	for (uint32_t i = 0; i < nRecords; ++i)
 	{
-	const u8* recordOffset = data + i * RecordSize;
+	const uint8_t* recordOffset = data + i * RecordSize;
 	switch (info.storage_type)
 	{
 	case FIELD_COMPRESSION::NONE:
 	{
-	u8* val = new u8[info.field_size_bits / 8];
+	uint8_t* val = new uint8_t[info.field_size_bits / 8];
 	memcpy(&val, recordOffset + info.field_offset_bits / 8, info.field_size_bits / 8);
-	IDs.push_back((*reinterpret_cast<u32*>(val)));
+	IDs.push_back((*reinterpret_cast<uint32_t*>(val)));
 	delete[] val;
 	}
 	break;
 	case FIELD_COMPRESSION::BITPACKED:
 	{
-	u32 id = readBitpackedValue(info, recordOffset);
+	uint32_t id = readBitpackedValue(info, recordOffset);
 	IDs.push_back(id);
 	}
 	break;
 	case FIELD_COMPRESSION::BITPACKED_INDEXED:
 	case FIELD_COMPRESSION::BITPACKED_SIGNED:
 	{
-	u32 id = readBitpackedValue2(info, recordOffset);
+	uint32_t id = readBitpackedValue2(info, recordOffset);
 	IDs.push_back(id);
 	}
 	break;
@@ -675,7 +675,7 @@ namespace WowClassic
 	}
 	}
 
-	for (u32 i = 0; i < nRecords; ++i)
+	for (uint32_t i = 0; i < nRecords; ++i)
 	{
 	SOffsetMapEntry entry;
 	entry.offset = i * RecordSize;
@@ -687,17 +687,17 @@ namespace WowClassic
 	if (sectionHeaders[0].copy_table_size > 0)
 	{
 	file->seek(copyBlockOffset);
-	u32 nbEntries = (u32)(sectionHeaders[0].copy_table_size / sizeof(SCopyTableEntry));
+	uint32_t nbEntries = (uint32_t)(sectionHeaders[0].copy_table_size / sizeof(SCopyTableEntry));
 
 	std::vector<SCopyTableEntry> copyTables;
 	copyTables.resize(nbEntries);
-	file->read(copyTables.data(), (u32)(copyTables.size() * sizeof(SCopyTableEntry)));
+	file->read(copyTables.data(), (uint32_t)(copyTables.size() * sizeof(SCopyTableEntry)));
 
 	IDs.reserve(nActualRecords + nbEntries);
 	OffsetMaps.reserve(nActualRecords + nbEntries);
 
-	std::map<u32, u32, std::less<u32>, qzone_allocator<std::pair<u32, u32>>> IdToIndexMap;
-	for (u32 i = 0; i < nActualRecords; ++i)
+	std::map<uint32_t, uint32_t, std::less<uint32_t>, qzone_allocator<std::pair<uint32_t, uint32_t>>> IdToIndexMap;
+	for (uint32_t i = 0; i < nActualRecords; ++i)
 	{
 	IdToIndexMap[IDs[i]] = i;
 	}
@@ -705,7 +705,7 @@ namespace WowClassic
 	for (const auto& entry : copyTables)
 	{
 	IDs.push_back(entry.id_new_row);
-	u32 idx = IdToIndexMap[entry.id_copied_row];
+	uint32_t idx = IdToIndexMap[entry.id_copied_row];
 	OffsetMaps.push_back(OffsetMaps[idx]);
 	}
 
@@ -717,9 +717,9 @@ namespace WowClassic
 	//build map
 	if (!tmp && HasIndex)		//临时文件不写map
 	{
-	for (u32 i = 0; i < nRecords; ++i)
+	for (uint32_t i = 0; i < nRecords; ++i)
 	{
-	u32 id = IDs[i];
+	uint32_t id = IDs[i];
 	RecordLookup32[id] = i;
 	}
 	}
@@ -731,7 +731,7 @@ namespace WowClassic
 
 	dbc::record charFacialHairDB::getByParams(unsigned int race, unsigned int gender, unsigned int style) const
 	{
-		for (u32 i = 0; i < nRecords; ++i)
+		for (uint32_t i = 0; i < nRecords; ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (r.getUInt(RaceV400) == race &&
@@ -742,11 +742,11 @@ namespace WowClassic
 		return dbc::record::EMPTY();
 	}
 
-	u32 charFacialHairDB::getStylesFor(unsigned int race, unsigned int gender) const
+	uint32_t charFacialHairDB::getStylesFor(unsigned int race, unsigned int gender) const
 	{
-		u32 n = 0;
+		uint32_t n = 0;
 
-		for (u32 i = 0; i < nRecords; ++i)
+		for (uint32_t i = 0; i < nRecords; ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (r.getUInt(RaceV400) == race &&
@@ -758,7 +758,7 @@ namespace WowClassic
 
 	dbc::record charHairGeosetsDB::getByParams(unsigned int race, unsigned int gender, unsigned int section) const
 	{
-		for (u32 i = 0; i < nRecords; ++i)
+		for (uint32_t i = 0; i < nRecords; ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (r.getUInt(Race) == race &&
@@ -769,11 +769,11 @@ namespace WowClassic
 		return dbc::record::EMPTY();
 	}
 
-	u32 charHairGeosetsDB::getGeosetsFor(unsigned int race, unsigned int gender) const
+	uint32_t charHairGeosetsDB::getGeosetsFor(unsigned int race, unsigned int gender) const
 	{
-		u32 n = 0;
+		uint32_t n = 0;
 
-		for (u32 i = 0; i < nRecords; ++i)
+		for (uint32_t i = 0; i < nRecords; ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (r.getUInt(Race) == race &&
@@ -783,9 +783,9 @@ namespace WowClassic
 		return n;
 	}
 
-	dbc::record charRacesDB::getByName(const c8* name)
+	dbc::record charRacesDB::getByName(const char* name)
 	{
-		for (u32 i = 0; i < nRecords; ++i)
+		for (uint32_t i = 0; i < nRecords; ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (Q_stricmp(r.getString(Name), name) == 0)
@@ -794,9 +794,9 @@ namespace WowClassic
 		return dbc::record::EMPTY();
 	}
 
-	dbc::record charSectionsDB::getByParams(u32 race, u32 gender, u32 type, u32 section, u32 color) const
+	dbc::record charSectionsDB::getByParams(uint32_t race, uint32_t gender, uint32_t type, uint32_t section, uint32_t color) const
 	{
-		for (u32 i = 0; i < nRecords; ++i)
+		for (uint32_t i = 0; i < nRecords; ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (r.getUInt(Race) == race &&
@@ -809,11 +809,11 @@ namespace WowClassic
 		return dbc::record::EMPTY();
 	}
 
-	u32 charSectionsDB::getColorsFor(u32 race, u32 gender, u32 type, u32 section) const
+	uint32_t charSectionsDB::getColorsFor(uint32_t race, uint32_t gender, uint32_t type, uint32_t section) const
 	{
-		u32 n = 0;
+		uint32_t n = 0;
 
-		for (u32 i = 0; i < nRecords; ++i)
+		for (uint32_t i = 0; i < nRecords; ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (r.getUInt(Race) == race &&
@@ -825,11 +825,11 @@ namespace WowClassic
 		return n;
 	}
 
-	u32 charSectionsDB::getSectionsFor(u32 race, u32 gender, u32 type, u32 color) const
+	uint32_t charSectionsDB::getSectionsFor(uint32_t race, uint32_t gender, uint32_t type, uint32_t color) const
 	{
-		u32 n = 0;
+		uint32_t n = 0;
 
-		for (u32 i = 0; i < nRecords; ++i)
+		for (uint32_t i = 0; i < nRecords; ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (r.getUInt(Race) == race &&
@@ -843,7 +843,7 @@ namespace WowClassic
 
 	dbc::record itemSubClassDB::getById(int id, int subid)
 	{
-		for (u32 i = 0; i < nRecords; ++i)
+		for (uint32_t i = 0; i < nRecords; ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (r.getInt(ClassIDV400) == id && r.getInt(SubClassIDV400) == subid)
@@ -854,9 +854,9 @@ namespace WowClassic
 
 	void itemModifiedAppearanceDB::buildItemLookup()
 	{
-		for (u32 i = 0; i < nActualRecords; ++i)
+		for (uint32_t i = 0; i < nActualRecords; ++i)
 		{
-			u32 itemid = getRecord(i).getUInt(itemModifiedAppearanceDB::ItemId);
+			uint32_t itemid = getRecord(i).getUInt(itemModifiedAppearanceDB::ItemId);
 			ItemLookup32[itemid] = i;
 		}
 	}
@@ -867,7 +867,7 @@ namespace WowClassic
 		if (!file)
 			return;
 
-		for (u32 i = 0; i < getNumActualRecords(); ++i)
+		for (uint32_t i = 0; i < getNumActualRecords(); ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (!r.isValid())
@@ -884,9 +884,9 @@ namespace WowClassic
 		fclose(file);
 	}
 
-	dbc::record itemDisplayInfoMaterialResDB::getByItemDisplayInfoIDAndSlot(u32 itemDisplayId, u32 slot) const
+	dbc::record itemDisplayInfoMaterialResDB::getByItemDisplayInfoIDAndSlot(uint32_t itemDisplayId, uint32_t slot) const
 	{
-		for (u32 i = 0; i < nRecords; ++i)
+		for (uint32_t i = 0; i < nRecords; ++i)
 		{
 			dbc::record r = getRecord(i);
 			if (r.getUInt(itemDisplayInfoMaterialResDB::ItemDisplayInfoID) == itemDisplayId &&
@@ -896,7 +896,7 @@ namespace WowClassic
 		return dbc::record::EMPTY();
 	}
 
-	void itemDisplayInfoMaterialResDB::getTexturePath(u32 itemDisplayId, u32 slot, c8* path, u32 size) const
+	void itemDisplayInfoMaterialResDB::getTexturePath(uint32_t itemDisplayId, uint32_t slot, char* path, uint32_t size) const
 	{
 		dbc::record r = getByItemDisplayInfoIDAndSlot(itemDisplayId, slot);
 		if (!r.isValid())
@@ -910,11 +910,11 @@ namespace WowClassic
 
 	void buildItemCollections(ItemCollections& itemCollections, const itemDB* itemDb, const itemSparseDB* itemSparseDb)
 	{
-		u32 numRecords = itemSparseDb->getNumActualRecords();
+		uint32_t numRecords = itemSparseDb->getNumActualRecords();
 		itemCollections.items.clear();
 		itemCollections.items.reserve(numRecords);
 
-		for (u32 i = 0; i < numRecords; ++i)
+		for (uint32_t i = 0; i < numRecords; ++i)
 		{
 			dbc::record rs = itemSparseDb->getRecord(i);
 			if (!rs.isValid())
@@ -941,20 +941,20 @@ namespace WowClassic
 #if WOW_VER >= 70
 			Q_sprintf(rec.name, DEFAULT_SIZE * 2, "Item-%d", rec.id);
 #else
-			const c8* str = rs.getString(itemSparseDb->getItemNameField());
+			const char* str = rs.getString(itemSparseDb->getItemNameField());
 			Q_strcpy(rec.name, DEFAULT_SIZE * 2, str);
 #endif
 
 			itemCollections.items.emplace_back(rec);
-			itemCollections.itemLookup[rec.id] = (s32)(itemCollections.items.size() - 1);
+			itemCollections.itemLookup[rec.id] = (int32_t)(itemCollections.items.size() - 1);
 		}
 
 		/*
 		//未翻译的
-		for (u32 i=0; i<itemDb->getNumRecords(); ++i)
+		for (uint32_t i=0; i<itemDb->getNumRecords(); ++i)
 		{
 		dbc::record r = itemDb->getRecord(i);
-		s32 id = r.getInt(itemDB::ID);
+		int32_t id = r.getInt(itemDB::ID);
 		if (itemLookup.find(id)!=itemLookup.end())
 		continue;
 
@@ -977,7 +977,7 @@ namespace WowClassic
 		Q_sprintf(rec.name, DEFAULT_SIZE, "%d", id);
 
 		items.emplace_back(rec);
-		itemLookup[rec.id] = (s32)(items.size() -1);
+		itemLookup[rec.id] = (int32_t)(items.size() -1);
 		}
 		*/
 	}

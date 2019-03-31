@@ -6,22 +6,22 @@
 #define SKYMUL		36.0f
 #define GLOBALS_SEQEUNCE		2880
 
-s32 SSkyLight::getColor( u32 row, u32 time, vector3df& v, s32 hint )
+int32_t SSkyLight::getColor( uint32_t row, uint32_t time, vector3df& v, int32_t hint )
 {
 	if (row >= COLOR_COUNT)
 		return -1;
 
-	s32 pos = -1;
+	int32_t pos = -1;
 	const SSkyColor* entry = colorRows[row];
-	u32 numKeys = colorNums[row];
+	uint32_t numKeys = colorNums[row];
 	if (numKeys > 1)
 	{
-		s32 last = numKeys - 1;
+		int32_t last = numKeys - 1;
 
 		if (time <= entry[0].time)		//小于最小帧
 		{
-			u32 t1 = entry[0].time + GLOBALS_SEQEUNCE;
-			u32 t2 = entry[last].time;
+			uint32_t t1 = entry[0].time + GLOBALS_SEQEUNCE;
+			uint32_t t2 = entry[last].time;
 			time += GLOBALS_SEQEUNCE;
 			float r = (time-t2)/(float)(t1-t2);
 
@@ -31,15 +31,15 @@ s32 SSkyLight::getColor( u32 row, u32 time, vector3df& v, s32 hint )
 
 		if (time >= entry[last].time)		//大于最大帧
 		{
-			u32 t1 = entry[0].time + GLOBALS_SEQEUNCE;
-			u32 t2 = entry[last].time;
+			uint32_t t1 = entry[0].time + GLOBALS_SEQEUNCE;
+			uint32_t t2 = entry[last].time;
 			float r = (time-t2)/(float)(t1-t2);
 
 			v = interpolate<vector3df>(r, entry[last].color, entry[0].color);	
 			return last;
 		}
 
-		u32 i = 1;
+		uint32_t i = 1;
 		if (hint >1 && time > entry[hint-1].time)					//加速
 			i = hint;			
 
@@ -54,8 +54,8 @@ s32 SSkyLight::getColor( u32 row, u32 time, vector3df& v, s32 hint )
 
 		if (pos != -1)
 		{
-			u32 t1 = entry[pos].time;
-			u32 t2 = entry[pos-1].time;
+			uint32_t t1 = entry[pos].time;
+			uint32_t t2 = entry[pos-1].time;
 			float r = (time-t2)/(float)(t1-t2);
 
 			v = interpolate<vector3df>(r, entry[pos-1].color, entry[pos].color);	
@@ -70,7 +70,7 @@ s32 SSkyLight::getColor( u32 row, u32 time, vector3df& v, s32 hint )
 	return pos;
 }
 
-CMapEnvironment::CMapEnvironment( s32 mapid )
+CMapEnvironment::CMapEnvironment( int32_t mapid )
 	: MapId(mapid)
 {
 	GlobalLight = nullptr;
@@ -82,7 +82,7 @@ CMapEnvironment::CMapEnvironment( s32 mapid )
 
 CMapEnvironment::~CMapEnvironment()
 {
-	for (u32 i=0; i<LocalSkyLights.size(); ++i)
+	for (uint32_t i=0; i<LocalSkyLights.size(); ++i)
 		delete LocalSkyLights[i].light;
 
 	delete GlobalLight;
@@ -93,7 +93,7 @@ void CMapEnvironment::initSkyLights()
 	/*
 	const lightDB* db = g_Engine->getWowDatabase()->getLightDB();
 
-	for (u32 i=0; i<db->getNumRecords(); ++i)
+	for (uint32_t i=0; i<db->getNumRecords(); ++i)
 	{
 		dbc::record r = db->getRecord(i);
 		if (MapId != r.getInt(lightDB::Map))
@@ -108,21 +108,21 @@ void CMapEnvironment::initSkyLights()
 		light->radiusInner = r.getFloat(lightDB::RadiusInner) / SKYMUL;
 		light->radiusOuter = r.getFloat(lightDB::RadiusOuter) / SKYMUL;
 
-		for (u32 k=0; k<COLOR_COUNT; ++k)
+		for (uint32_t k=0; k<COLOR_COUNT; ++k)
 		{
 			//dbc::record r = bandDB->getByID(firstId + k);
-			s32 entries= 1; //r.getInt(lightIntBandDB::Entries);
+			int32_t entries= 1; //r.getInt(lightIntBandDB::Entries);
 			if (entries < 0)
 				continue;
 				
-			light->colorNums[k] = (u32)entries;
+			light->colorNums[k] = (uint32_t)entries;
 
 			light->colorRows[k] = new SSkyColor[entries];
 			
-			for (s32 n=0; n<entries; ++n)
+			for (int32_t n=0; n<entries; ++n)
 			{
-				u32 t = 0; //r.getUInt(lightIntBandDB::Times + n);
-				u32 c = 0xff000000; //r.getUInt(lightIntBandDB::Values + n);
+				uint32_t t = 0; //r.getUInt(lightIntBandDB::Times + n);
+				uint32_t c = 0xff000000; //r.getUInt(lightIntBandDB::Values + n);
 				light->colorRows[k][n].set(t, c);
 			}
 		}
@@ -155,10 +155,10 @@ void CMapEnvironment::initSkyLights()
 bool CMapEnvironment::findSkyWeights(vector3df pos)
 {
 	bool weight = false;
-	for (s32 i=(s32)LocalSkyLights.size()-1; i>=0; --i)
+	for (int32_t i=(int32_t)LocalSkyLights.size()-1; i>=0; --i)
 	{
 		SSkyLight* light = LocalSkyLights[i].light;
-		f32 dist = (pos - light->position).getLength();
+		float dist = (pos - light->position).getLength();
 		if (dist < light->radiusInner)
 		{
 			LocalSkyLights[i].weight = 1.0f;
@@ -166,7 +166,7 @@ bool CMapEnvironment::findSkyWeights(vector3df pos)
 		}
 		else if(dist < light->radiusOuter)
 		{
-			f32 r = (dist - light->radiusInner) / (light->radiusOuter - light->radiusInner);
+			float r = (dist - light->radiusInner) / (light->radiusOuter - light->radiusInner);
 			LocalSkyLights[i].weight = 1.0f - r;
 			weight = true;
 		}
@@ -179,12 +179,12 @@ bool CMapEnvironment::findSkyWeights(vector3df pos)
 	return weight;
 }
 
-void CMapEnvironment::computeSkyLights( vector3df pos, s32 time )
+void CMapEnvironment::computeSkyLights( vector3df pos, int32_t time )
 {
 	if(LocalSkyLights.empty())
 		return;
 
-	for (u32 k=0; k<COLOR_COUNT; ++k)
+	for (uint32_t k=0; k<COLOR_COUNT; ++k)
 	{
 		vector3df v;
 		GlobalLight->getColor(k, time, v);
@@ -194,11 +194,11 @@ void CMapEnvironment::computeSkyLights( vector3df pos, s32 time )
 	if(!findSkyWeights(pos))
 		return;
 
-	for (u32 i=0; i<LocalSkyLights.size(); ++i)
+	for (uint32_t i=0; i<LocalSkyLights.size(); ++i)
 	{
 		if (LocalSkyLights[i].weight > 0)
 		{
-			for (u32 k=0; k<18; ++k)
+			for (uint32_t k=0; k<18; ++k)
 			{
 				vector3df v;
 				LocalSkyLights[k].light->getColor(k, time, v);

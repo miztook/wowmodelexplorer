@@ -66,7 +66,7 @@ void wow_m2Move::rotate( const quaternion& q )
 	M2SceneNode->setDir(vDir);
 }
 
-void wow_m2Move::rotateAxisY( f32 radians )
+void wow_m2Move::rotateAxisY( float radians )
 {
 	quaternion q(radians, vector3df::UnitY());
 	rotate(q);

@@ -14,16 +14,16 @@ void MyMessageHandler::onSize(window_type hwnd, int width, int height)
 		g_bBackMode = false;
 		IVideoDriver* driver = g_Engine->getDriver();
 		if (driver)
-			driver->setDisplayMode( dimension2du((u32)width, (u32)height) );
+			driver->setDisplayMode( dimension2du((uint32_t)width, (uint32_t)height) );
 
 		IFontServices* fontServices = g_Engine->getFontServices();
 		if (fontServices)
-			fontServices->onWindowSizeChanged( dimension2du((u32)width, (u32)height) );
+			fontServices->onWindowSizeChanged( dimension2du((uint32_t)width, (uint32_t)height) );
 
 		ISceneManager* smgr = g_Engine->getSceneManager();
 		if(smgr)
 		{
-			smgr->onWindowSizeChanged( dimension2du((u32)width, (u32)height) );
+			smgr->onWindowSizeChanged( dimension2du((uint32_t)width, (uint32_t)height) );
 
 			ICamera* cam = smgr->getActiveCamera();
 			if(cam)
@@ -66,7 +66,7 @@ void createScene()
  		for (int k = -10; k < 10; k+=4)
 		{
 			int npcid = 17765; //1405; //525; //8783; //17765;//11460; 
-			c8 path[256];
+			char path[256];
 			g_Engine->getWowDatabase()->getNpcPath(npcid, false, path, 256);
 			IFileM2* m2Lich = g_Engine->getResourceLoader()->loadM2(path);
 			IM2SceneNode*  lichNode = g_Engine->getSceneManager()->addM2SceneNode(m2Lich, NULL, true);

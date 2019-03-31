@@ -26,7 +26,7 @@ public:
 
 	static D3D11_COMPARISON_FUNC getD3DCompare( E_COMPARISON_FUNC comp );
 
-	static const c8* getD3DFormatString(DXGI_FORMAT format);
+	static const char* getD3DFormatString(DXGI_FORMAT format);
 
 	static D3D11_BLEND getD3DBlend( E_BLEND_FACTOR factor );
 
@@ -157,7 +157,7 @@ inline D3D11_COMPARISON_FUNC CD3D11Helper::getD3DCompare( E_COMPARISON_FUNC comp
 	return r;
 }
 
-inline const c8* CD3D11Helper::getD3DFormatString( DXGI_FORMAT format )
+inline const char* CD3D11Helper::getD3DFormatString( DXGI_FORMAT format )
 {
 	switch(format)
 	{

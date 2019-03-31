@@ -41,7 +41,7 @@ public:
 	frustum& operator=(const frustum& other)
 	{
 		ASSERT(this != &other);
-		for (u32 i = 0; i < VF_PLANE_COUNT; ++i)
+		for (uint32_t i = 0; i < VF_PLANE_COUNT; ++i)
 			planes[i] = other.planes[i];
 		return *this;
 	}
@@ -74,7 +74,7 @@ private:
 
 inline void frustum::transform(const matrix4& mat)
 {
-	for (u32 i = 0; i < VF_PLANE_COUNT; ++i)
+	for (uint32_t i = 0; i < VF_PLANE_COUNT; ++i)
 		mat.transformPlane(planes[i]);
 }
 
@@ -117,7 +117,7 @@ inline void frustum::setFrom(const matrix4& mat)
 	planes[VF_NEAR_PLANE].D = mat[14];
 
 	// normalize normals
-	u32 i;
+	uint32_t i;
 	for (i = 0; i != VF_PLANE_COUNT; ++i)
 	{
 		planes[i].normalize();

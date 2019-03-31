@@ -16,7 +16,7 @@ wowObjExporter::~wowObjExporter()
 
 }
 
-bool wowObjExporter::exportM2SceneNode( IM2SceneNode* node, const c8* filename )
+bool wowObjExporter::exportM2SceneNode( IM2SceneNode* node, const char* filename )
 {
 	const CFileM2* pFile = static_cast<const CFileM2*>(node->getFileM2());
 	if (!pFile)
@@ -62,7 +62,7 @@ bool wowObjExporter::exportM2SceneNode( IM2SceneNode* node, const c8* filename )
 	return true;
 }
 
-bool wowObjExporter::exportWMOSceneNode( IWMOSceneNode* node, const c8* filename )
+bool wowObjExporter::exportWMOSceneNode( IWMOSceneNode* node, const char* filename )
 {
 	const CFileWMO* pFile = static_cast<const CFileWMO*>(node->getFileWMO());
 	if (!pFile)
@@ -101,7 +101,7 @@ bool wowObjExporter::exportWMOSceneNode( IWMOSceneNode* node, const c8* filename
 	return true;
 }
 
-bool wowObjExporter::exportWMOSceneNodeGroups(IWMOSceneNode* node, const c8* filename)
+bool wowObjExporter::exportWMOSceneNodeGroups(IWMOSceneNode* node, const char* filename)
 {
 	const CFileWMO* pFile = static_cast<const CFileWMO*>(node->getFileWMO());
 	if (!pFile)
@@ -116,8 +116,8 @@ bool wowObjExporter::exportWMOSceneNodeGroups(IWMOSceneNode* node, const c8* fil
 	AUX_CreateDirectory(strExportFolder.c_str());
 
 	//Create Group SubFolder
-	u32 numGroup = pFile->getNumGroups();
-	for (u32 i=0; i<numGroup; ++i)
+	uint32_t numGroup = pFile->getNumGroups();
+	for (uint32_t i=0; i<numGroup; ++i)
 	{
 		string512 strGroupFolder;
 		strGroupFolder.format("%sgroup%u", strExportFolder.c_str(), i);
@@ -177,12 +177,12 @@ bool wowObjExporter::exportFileM2Vertices(IWriteFile* pFile, const CFileM2* pFil
 	if (!pFileSkin)
 		return false;
 
-	for (u32 i=0; i<pFileSkin->NumGeosets; ++i)
+	for (uint32_t i=0; i<pFileSkin->NumGeosets; ++i)
 	{
 		CGeoset* pGeoSet = &pFileSkin->Geosets[i];
 
 		const STexUnit* texUnit = pGeoSet->getTexUnit(0);
-		s16 rfIndex = texUnit->rfIndex;
+		int16_t rfIndex = texUnit->rfIndex;
 		if (rfIndex == -1 || pFileM2->RenderFlags[rfIndex].invisible)
 			continue;
 
@@ -261,12 +261,12 @@ bool wowObjExporter::exportFileM2Materials(IWriteFile* pFile, const CFileM2* pFi
 	if (!pFileSkin)
 		return false;
 
-	for (u32 i=0; i<pFileSkin->NumGeosets; ++i)
+	for (uint32_t i=0; i<pFileSkin->NumGeosets; ++i)
 	{
 		CGeoset* pGeoSet = &pFileSkin->Geosets[i];
 
 		const STexUnit* texUnit = pGeoSet->getTexUnit(0);
-		s16 rfIndex = texUnit->rfIndex;
+		int16_t rfIndex = texUnit->rfIndex;
 		if (rfIndex == -1 || pFileM2->RenderFlags[rfIndex].invisible)
 			continue;
 
@@ -305,7 +305,7 @@ bool wowObjExporter::exportFileM2Materials(IWriteFile* pFile, const CFileM2* pFi
 
 		ITexture* tex = NULL;		//get texture 0
 		{
-			s16 texID = pGeoSet->getTexUnit(0)->TexID;
+			int16_t texID = pGeoSet->getTexUnit(0)->TexID;
 
 			if (texID != -1)
 			{
@@ -313,7 +313,7 @@ bool wowObjExporter::exportFileM2Materials(IWriteFile* pFile, const CFileM2* pFi
 				if (texType == TEXTURE_FILENAME)
 					tex = pFileM2->getTexture(texID);
 				else
-					tex = pM2Instance->ReplaceTextures[(u32)texType];
+					tex = pM2Instance->ReplaceTextures[(uint32_t)texType];
 			}
 		}
 
@@ -387,10 +387,10 @@ bool wowObjExporter::exportWMOVertices(IWriteFile* pFile, const CFileWMO* Wmo)
 {
 	char	szLine[AFILE_LINEMAXLEN]; 
 
-	for (u32 i=0; i<Wmo->Header.nGroups; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nGroups; ++i)
 	{
 		const CWMOGroup* group = &Wmo->Groups[i];
-		for (u32 c=0; c<group->NumBatches; ++c)
+		for (uint32_t c=0; c<group->NumBatches; ++c)
 		{
 			const SWMOBatch* batch = &group->Batches[c];
 			const SWMOMaterial* material = &Wmo->Materials[batch->matId]; 
@@ -467,10 +467,10 @@ bool wowObjExporter::exportWMOMaterials(IWriteFile* pFile, const CFileWMO* Wmo)
 {
 	char	szLine[AFILE_LINEMAXLEN]; 
 
-	for (u32 i=0; i<Wmo->Header.nGroups; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nGroups; ++i)
 	{
 		const CWMOGroup* group = &Wmo->Groups[i];
-		for (u32 c=0; c<group->NumBatches; ++c)
+		for (uint32_t c=0; c<group->NumBatches; ++c)
 		{
 			const SWMOBatch* batch = &group->Batches[c];
 			const SWMOMaterial* material = &Wmo->Materials[batch->matId]; 
@@ -539,7 +539,7 @@ bool wowObjExporter::exportWMOMaterials(IWriteFile* pFile, const CFileWMO* Wmo)
 	return true;
 }
 
-bool wowObjExporter::exportFileWMOGroup(const c8* filename, const CFileWMO* Wmo, u32 iGroup)
+bool wowObjExporter::exportFileWMOGroup(const char* filename, const CFileWMO* Wmo, uint32_t iGroup)
 {
 	IWriteFile* pFileObj = g_Engine->getFileSystem()->createAndWriteFile(filename, false);
 	if (!pFileObj)
@@ -594,12 +594,12 @@ bool wowObjExporter::exportFileWMOGroup(const c8* filename, const CFileWMO* Wmo,
 	return true;
 }
 
-bool wowObjExporter::exportWMOGroupVertices(IWriteFile* pFile, const CFileWMO* Wmo, u32 iGroup)
+bool wowObjExporter::exportWMOGroupVertices(IWriteFile* pFile, const CFileWMO* Wmo, uint32_t iGroup)
 {
 	char	szLine[AFILE_LINEMAXLEN]; 
 
 	const CWMOGroup* group = &Wmo->Groups[iGroup];
-	for (u32 c=0; c<group->NumBatches; ++c)
+	for (uint32_t c=0; c<group->NumBatches; ++c)
 	{
 		const SWMOBatch* batch = &group->Batches[c];
 		const SWMOMaterial* material = &Wmo->Materials[batch->matId]; 
@@ -671,12 +671,12 @@ bool wowObjExporter::exportWMOGroupVertices(IWriteFile* pFile, const CFileWMO* W
 	return true;
 }
 
-bool wowObjExporter::exportWMOGroupMaterials(IWriteFile* pFile, const CFileWMO* Wmo, u32 iGroup)
+bool wowObjExporter::exportWMOGroupMaterials(IWriteFile* pFile, const CFileWMO* Wmo, uint32_t iGroup)
 {
 	char	szLine[AFILE_LINEMAXLEN]; 
 
 	const CWMOGroup* group = &Wmo->Groups[iGroup];
-	for (u32 c=0; c<group->NumBatches; ++c)
+	for (uint32_t c=0; c<group->NumBatches; ++c)
 	{
 		const SWMOBatch* batch = &group->Batches[c];
 		const SWMOMaterial* material = &Wmo->Materials[batch->matId]; 

@@ -5,7 +5,7 @@
 class CWmoRenderer : public ISceneRenderer
 {
 public:
-	explicit CWmoRenderer(u32 quota);
+	explicit CWmoRenderer(uint32_t quota);
 	~CWmoRenderer();
 
 public:
@@ -44,7 +44,7 @@ private:
 	std::vector<SRenderUnit>		RenderUnits;
 	std::vector<SEntry>			RenderEntries;
 
-	u32		Quota;
+	uint32_t		Quota;
 
 
 	friend class CD3D9Driver;

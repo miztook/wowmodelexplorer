@@ -6,29 +6,29 @@
 
 struct SWMOBatch
 {
-	u32 indexStart;
-	u16 indexCount;
-	u16 vertexStart;
-	u16 vertexEnd;
-	u16 matId;
+	uint32_t indexStart;
+	uint16_t indexCount;
+	uint16_t vertexStart;
+	uint16_t vertexEnd;
+	uint16_t matId;
 
 	aabbox3df box;
 
-	u16 getVertexCount() const { return vertexEnd - vertexStart + 1; }
+	uint16_t getVertexCount() const { return vertexEnd - vertexStart + 1; }
 };
 
 struct SWMOBspNode 
 {
-	u16 planetype;		//4: leaf, 0 for YZ-plane, 1 for XZ-plane, 2 for XY-plane?
-	s16 left;
-	s16 right;
-	u16 numfaces;
-	u16 firstface;
-	f32 distance;
+	uint16_t planetype;		//4: leaf, 0 for YZ-plane, 1 for XZ-plane, 2 for XY-plane?
+	int16_t left;
+	int16_t right;
+	uint16_t numfaces;
+	uint16_t firstface;
+	float distance;
 
-	u16 startIndex;
-	u16 minVertex;
-	u16 maxVertex;
+	uint16_t startIndex;
+	uint16_t minVertex;
+	uint16_t maxVertex;
 };
 
 class IFileWMO;
@@ -46,34 +46,34 @@ public:
 
 public:
 
-	bool loadFile(u32 index, IFileWMO* wmo);
+	bool loadFile(uint32_t index, IFileWMO* wmo);
 
-	u32		flags;
-	u32		NumBatches;
-	u32		NumLights;
-	u32		NumDoodads;
-	u32		NumBspNodes;
-	u32		NumBspTriangles;
-	u32		ICount;
-	u32		VCount;
+	uint32_t		flags;
+	uint32_t		NumBatches;
+	uint32_t		NumLights;
+	uint32_t		NumDoodads;
+	uint32_t		NumBspNodes;
+	uint32_t		NumBspTriangles;
+	uint32_t		ICount;
+	uint32_t		VCount;
 
-	u32		VStart;
-	u32		IStart;
-	c8		name[DEFAULT_SIZE];
+	uint32_t		VStart;
+	uint32_t		IStart;
+	char		name[DEFAULT_SIZE];
 
 	aabbox3df		box;
 	SWMOBatch*	Batches;
-	u16*		Lights;
-	u16*		Doodads;
-	u16*		Indices;
+	uint16_t*		Lights;
+	uint16_t*		Doodads;
+	uint16_t*		Indices;
 	SVertex_PNCT2*	 Vertices;
-	u16*		BspTriangles;			//for collide
+	uint16_t*		BspTriangles;			//for collide
 	SWMOBspNode*		BspNodes;
 
 	//bsp
 	SVertex_P*	BspVertices;
 	CVertexBuffer*	BspVertexBuffer;
-	u16*		BspIndices;
+	uint16_t*		BspIndices;
 	CIndexBuffer*		BspIndexbuffer;		//for bsp nodes
 
 	//
@@ -99,15 +99,15 @@ public:
 	virtual bool buildVideoResources();
 	virtual void releaseVideoResources();
 
-	u8* getFileData() const { return FileData; }
+	uint8_t* getFileData() const { return FileData; }
 	aabbox3df getBoundingBox() const { return Box; }
 	//portal
-	u32 getPortalCountAsFront(u32 frontGroupIndex) const;
-	s32 getPortalIndexAsFront(u32 frontGroupIndex, u32 index) const;
-	u32 getPortalCountAsBack(u32 backGroupIndex) const;
-	s32 getPortalIndexAsBack(u32 backGroupIndex, u32 index) const;
+	uint32_t getPortalCountAsFront(uint32_t frontGroupIndex) const;
+	int32_t getPortalIndexAsFront(uint32_t frontGroupIndex, uint32_t index) const;
+	uint32_t getPortalCountAsBack(uint32_t backGroupIndex) const;
+	int32_t getPortalIndexAsBack(uint32_t backGroupIndex, uint32_t index) const;
 
-	u32 getNumGroups() const { return Header.nGroups; }
+	uint32_t getNumGroups() const { return Header.nGroups; }
 
 private:
 	void clear();
@@ -119,12 +119,12 @@ private:
 	void buildPortalEntries();
 
 public:
-	u8*			FileData;
+	uint8_t*			FileData;
 	aabbox3df	Box;
 
 	CVertexBuffer*	PortalVertexBuffer;
 
-	u32*		Indices;
+	uint32_t*		Indices;
 	SVertex_PNCT2*	 Vertices;
 	CVertexBuffer*	VertexBuffer;			//groups vertex buffer
 	CIndexBuffer*		IndexBuffer;			//groups index buffer
@@ -132,8 +132,8 @@ public:
 private:
 	struct SPortalEntry
 	{
-		s32 group0;
-		u32 portalIndex;
+		int32_t group0;
+		uint32_t portalIndex;
 
 		bool operator<(const SPortalEntry& other) const
 		{
@@ -146,14 +146,14 @@ private:
 
 	struct SGroupRef			//reference in portalentries
 	{
-		u32 start;
-		u32 count;
+		uint32_t start;
+		uint32_t count;
 	};
 
 #ifdef USE_QALLOCATOR
-	typedef std::map<s16, SGroupRef, std::less<s16>, qzone_allocator<std::pair<s16, SGroupRef>>> T_GroupRefMap;
+	typedef std::map<int16_t, SGroupRef, std::less<int16_t>, qzone_allocator<std::pair<int16_t, SGroupRef>>> T_GroupRefMap;
 #else
-	typedef std::unordered_map<s16, SGroupRef> T_GroupRefMap;
+	typedef std::unordered_map<int16_t, SGroupRef> T_GroupRefMap;
 #endif
 
 	T_GroupRefMap	FrontGroupRefMap;

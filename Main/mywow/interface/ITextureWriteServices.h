@@ -9,19 +9,19 @@ class ITexture;
 class ITextureWriter
 {
 public:
-	explicit ITextureWriter(u32 numMipmap) : NumMipmaps(numMipmap), ColorFormat(ECF_UNKNOWN) {}
+	explicit ITextureWriter(uint32_t numMipmap) : NumMipmaps(numMipmap), ColorFormat(ECF_UNKNOWN) {}
 	virtual ~ITextureWriter() {}
 
 public:
-	virtual void* lock(u32 level, u32& pitch) = 0;
-	virtual void unlock(u32 level) = 0;
+	virtual void* lock(uint32_t level, uint32_t& pitch) = 0;
+	virtual void unlock(uint32_t level) = 0;
 	virtual bool copyToTexture(ITexture* texture, const recti* descRect = nullptr) = 0;
 	virtual void initEmptyData() = 0;
 
 public:
 	dimension2du	TextureSize;
 	ECOLOR_FORMAT	ColorFormat;
-	u32	NumMipmaps;
+	uint32_t	NumMipmaps;
 };
 
 class ITextureWriteServices

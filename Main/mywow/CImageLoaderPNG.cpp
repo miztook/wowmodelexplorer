@@ -20,16 +20,16 @@ void PNGAPI user_read_data_fcn(png_structp png_ptr, png_bytep data, png_size_t l
 {
 	// changed by zola {
 	IMemFile* file=(IMemFile*)png_get_io_ptr(png_ptr);
-	u32 dwRead = file->read((void*)data, (u32)length);
+	uint32_t dwRead = file->read((void*)data, (uint32_t)length);
 	// }
 
-	if (dwRead != (u32)length)
+	if (dwRead != (uint32_t)length)
 		png_error(png_ptr, "Read Error");
 }
 
 IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 {
-	u8** RowPointers = nullptr;
+	uint8_t** RowPointers = nullptr;
 
 	png_byte buffer[8];
 	if(file->read(buffer, 8) != 8)
@@ -78,8 +78,8 @@ IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 
 	png_read_info(png_ptr, info_ptr); // Read the info section of the png file
 
-	u32 Width;
-	u32 Height;
+	uint32_t Width;
+	uint32_t Height;
 	int BitDepth;
 	int ColorType;
 	{
@@ -151,10 +151,10 @@ IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 		png_set_bgr(png_ptr);
 	}
 
-	u32 dataSize = 0;
-	u8* pImageData = nullptr;
+	uint32_t dataSize = 0;
+	uint8_t* pImageData = nullptr;
 	IImage* image = new CImage(ECF_A8R8G8B8, dimension2du(Width, Height));
-	u32 pitch = 0;
+	uint32_t pitch = 0;
 
 	if (ColorType==PNG_COLOR_TYPE_RGB_ALPHA)
 	{
@@ -167,14 +167,14 @@ IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 		dataSize =  pitch * Height;
 	}
 
-	pImageData = new u8[dataSize];
+	pImageData = new uint8_t[dataSize];
 
 	// Create array of pointers to rows in image data
 	RowPointers = new png_bytep[Height];
 
 	// Fill array of pointers to rows in image data
 	unsigned char* data = (unsigned char*)pImageData;
-	for (u32 i=0; i<Height; ++i)
+	for (uint32_t i=0; i<Height; ++i)
 	{
 		RowPointers[i]=data;
 		data += pitch;
@@ -195,21 +195,21 @@ IImage* CImageLoaderPNG::loadAsImage( IMemFile* file )
 	if (ColorType==PNG_COLOR_TYPE_RGB_ALPHA)
 	{
 		bool argb = g_Engine->isDXFamily();
-		CBlit::convert32BitTo32Bit((s32*)pImageData, (s32*)image->lock(), Width, Height, 0, false, !argb);
+		CBlit::convert32BitTo32Bit((int32_t*)pImageData, (int32_t*)image->lock(), Width, Height, 0, false, !argb);
 	}
 	else
 	{
 		bool argb = g_Engine->isDXFamily();
-		u8* src = pImageData;
-		u8* target = (u8*)image->lock();
-		for (u32 i=0; i<Height; ++i)
+		uint8_t* src = pImageData;
+		uint8_t* target = (uint8_t*)image->lock();
+		for (uint32_t i=0; i<Height; ++i)
 		{
-			for(u32 k=0; k<Width; ++k)
+			for(uint32_t k=0; k<Width; ++k)
 			{
-				u32 idx = k + i * Width;
+				uint32_t idx = k + i * Width;
 
-				const u8* srcPixel = src + 3 * idx;
-				u8* dstPixel = target + 4 * idx;
+				const uint8_t* srcPixel = src + 3 * idx;
+				uint8_t* dstPixel = target + 4 * idx;
 
 				if(argb)
 				{

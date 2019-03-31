@@ -18,8 +18,8 @@ public:
 	virtual ~IConfigs() {}
 
 public:
-	virtual const c8* getSetting(E_CONFIG_TYPE type, const c8* key) const = 0;
-	virtual void setSetting(E_CONFIG_TYPE type, const c8* key, const c8* val) = 0;
+	virtual const char* getSetting(E_CONFIG_TYPE type, const char* key) const = 0;
+	virtual void setSetting(E_CONFIG_TYPE type, const char* key, const char* val) = 0;
 
 	virtual bool readBaseSetting(IFileSystem* fs) = 0;
 	virtual bool readEngineSetting(IFileSystem* fs) = 0;

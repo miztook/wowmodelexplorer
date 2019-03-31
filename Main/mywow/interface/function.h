@@ -28,19 +28,19 @@
 //		math
 //
 
-#define IR(x)                           ((u32&)(x))
-#define FR(x)                           ((f32&)(x))
+#define IR(x)                           ((uint32_t&)(x))
+#define FR(x)                           ((float&)(x))
 
-const s32 ROUNDING_ERROR_S32 = 0;
-const f32 ROUNDING_ERROR_f32 =  0.000001f;
+const int32_t ROUNDING_ERROR_S32 = 0;
+const float ROUNDING_ERROR_f32 =  0.000001f;
 
-const f32 PI = 3.14159265358979324f;
+const float PI = 3.14159265358979324f;
 
-const f32 DEGTORAD = 0.01745329251994329577f;
-const f32 RADTODEG = 57.2957795130823208768f;
+const float DEGTORAD = 0.01745329251994329577f;
+const float RADTODEG = 57.2957795130823208768f;
 
-inline f32 radToDeg( f32 radians ){ return RADTODEG*radians; }
-inline f32 degToRad( f32 degrees ){ return DEGTORAD*degrees; }
+inline float radToDeg( float radians ){ return RADTODEG*radians; }
+inline float degToRad( float degrees ){ return DEGTORAD*degrees; }
 
 template<class T>
 inline const T& min_(const T& a, const T& b)
@@ -58,7 +58,7 @@ inline T abs_(const T& a)
 	return a < (T)0.f ? -a : a;
 }
 template<class T>
-inline T lerp_(const T& a, const T& b, const f32 t)
+inline T lerp_(const T& a, const T& b, const float t)
 {
 	return (T)(a*(1.f-t)) + (b*t);
 }
@@ -74,28 +74,28 @@ inline void swap_(T& a, T& b)
 	a = b;
 	b = c;
 }
-inline bool equals_(const f32 a, const f32 b, const f32 tolerance = ROUNDING_ERROR_f32)
+inline bool equals_(const float a, const float b, const float tolerance = ROUNDING_ERROR_f32)
 {
 	return (a + tolerance >= b) && (a - tolerance <= b);
 }
-inline bool equals_(const s32 a, const s32 b, const s32 tolerance = ROUNDING_ERROR_S32)
+inline bool equals_(const int32_t a, const int32_t b, const int32_t tolerance = ROUNDING_ERROR_S32)
 {
 	return (a + tolerance >= b) && (a - tolerance <= b);
 }
-inline bool equals_(const u32 a, const u32 b, const s32 tolerance = ROUNDING_ERROR_S32)
+inline bool equals_(const uint32_t a, const uint32_t b, const int32_t tolerance = ROUNDING_ERROR_S32)
 {
 	return (a + tolerance >= b) && (a - tolerance <= b);
 }
-inline bool iszero_(const f32 a, const f32 tolerance = ROUNDING_ERROR_f32)
+inline bool iszero_(const float a, const float tolerance = ROUNDING_ERROR_f32)
 {
 	return fabsf(a) <= tolerance;
 }
-inline f32 squareroot_(const f32 f)
+inline float squareroot_(const float f)
 {
 	return sqrtf(f);
 }
 
-inline f32 reciprocal_squareroot_(const f32 f)
+inline float reciprocal_squareroot_(const float f)
 {
 	if (equals_(f, 0.0f))
 	{
@@ -106,7 +106,7 @@ inline f32 reciprocal_squareroot_(const f32 f)
 		return 1.f / sqrtf(f);
 }
 
-inline f32 reciprocal_( const f32 f )
+inline float reciprocal_( const float f )
 {
 	if (equals_(f, 0.0f))
 	{
@@ -116,23 +116,23 @@ inline f32 reciprocal_( const f32 f )
 	else
 		return 1.f / f;
 }
-inline s32 floor32_(f32 x)
+inline int32_t floor32_(float x)
 {
-	return (s32) floorf ( x );
+	return (int32_t) floorf ( x );
 }
-inline s32 ceil32_( f32 x )
+inline int32_t ceil32_( float x )
 {
-	return (s32) ceilf ( x );
+	return (int32_t) ceilf ( x );
 }
-inline f32 round_( f32 x )
+inline float round_( float x )
 {
 	return floorf( x + 0.5f );
 }
-inline s32 round32_(f32 x)
+inline int32_t round32_(float x)
 {
-	return (s32)round_(x);
+	return (int32_t)round_(x);
 }
-inline  f32 fract_ ( f32 x )
+inline  float fract_ ( float x )
 {
 	return x - floorf ( x );
 }
@@ -150,19 +150,19 @@ inline  int		rand_( void ) {
 
 inline float random_0_to_1() {
 	union {
-		u32 d;
+		uint32_t d;
 		float f;
 	} u;
-	u.d = (((u32)rand_() & 0x7fff) << 8) | 0x3f800000;
+	u.d = (((uint32_t)rand_() & 0x7fff) << 8) | 0x3f800000;
 	return u.f - 1.0f;
 }
 
 inline float random_minus1_to_1() {
 	union {
-		u32 d;
+		uint32_t d;
 		float f;
 	} u;
-	u.d = (((u32)rand_() & 0x7fff) << 8) | 0x40000000;
+	u.d = (((uint32_t)rand_() & 0x7fff) << 8) | 0x40000000;
 	return u.f - 3.0f;
 }
 
@@ -171,7 +171,7 @@ inline  int	randint( int lower, int upper)
 	return lower + (int)((upper + 1 - lower) * random_0_to_1());
 }
 
-inline bool isPOT(u32 x)
+inline bool isPOT(uint32_t x)
 {
 	return (x > 0) && ((x & (x-1)) == 0);
 }
@@ -187,7 +187,7 @@ inline void flipcc(char fcc[4])
 	fcc[2]=t;
 }
 
-inline void* Q_malloc(size_t size, u32 align)
+inline void* Q_malloc(size_t size, size_t align)
 {
 	return malloc(ROUND_N_BYTES(size, align));
 }
@@ -273,13 +273,13 @@ inline void Q_strupr(char * dst, size_t count)
 #endif
 }
 
-// inline void Q_utf16cpy(c16* dst, size_t count, const c16* src)
+// inline void Q_utf16cpy(char16_t* dst, size_t count, const char16_t* src)
 // {
 // #ifdef MW_PLATFORM_WINDOWS
 // 	wcscpy_s((wchar_t*)dst, count, (const wchar_t*)src);
 // #else
-// 	const c16* cs = src;
-// 	c16* ct = dst;
+// 	const char16_t* cs = src;
+// 	char16_t* ct = dst;
 // 	size_t c = 0;
 // 	while (*cs && c + 1< count)
 // 	{
@@ -339,14 +339,14 @@ inline int Q_strnicmp(const char * src, const char * dst, size_t len)
 #endif
 }
 
-// inline int Q_wcsicmp(const c16 * src,
-// 	const c16 * dst)
+// inline int Q_wcsicmp(const char16_t * src,
+// 	const char16_t * dst)
 // {
 // #ifdef MW_PLATFORM_WINDOWS
 // 	return _wcsicmp((const wchar_t*)src, (const wchar_t*)dst);
 // #else
-// 	const c16* cs = src;
-// 	const c16* ct = dst;
+// 	const char16_t* cs = src;
+// 	const char16_t* ct = dst;
 // 	
 // 	while (towlower((wchar_t)*cs) == towlower((wchar_t)*ct))
 // 	{
@@ -376,9 +376,9 @@ inline int Q_sprintf( char *string, size_t sizeInBytes, const char *format, ...)
 	return ret;
 }
 
-inline size_t utf16len(const c16* utf16)
+inline size_t utf16len(const char16_t* utf16)
 {
-	const c16* p = utf16;
+	const char16_t* p = utf16;
 	if (p == 0)
 		return 0;
 	while(*p) ++p;
@@ -407,7 +407,7 @@ struct UTF8_EncodedChar
 			char byte4;
 			char byte5;
 			char byte6; // always null
-			u8 len;
+			uint8_t len;
 		};
 	};
 };
@@ -467,9 +467,9 @@ inline UTF8_EncodedChar Q_EncodeUTF8(int ch)
 	return ch8;
 }
 
-inline int Q_ParseUnicodeFromUTF8Str(const char* szUTF8, int* pnAdvancedInUtf8Str = 0, u32 nUtf8StrMaxLen = A_MAX_UINT32)
+inline int Q_ParseUnicodeFromUTF8Str(const char* szUTF8, int* pnAdvancedInUtf8Str = 0, uint32_t nUtf8StrMaxLen = A_MAX_UINT32)
 {
-	u32 nAdv = 0;
+	uint32_t nAdv = 0;
 	int nResult = 0;
 	if(pnAdvancedInUtf8Str != 0)
 		*pnAdvancedInUtf8Str = 0;
@@ -524,7 +524,7 @@ inline int Q_ParseUnicodeFromUTF8Str(const char* szUTF8, int* pnAdvancedInUtf8St
 	else
 	{
 		nResult = ch & (0xFF >> (nAdv + 1));
-		for(u32 i = 1; i < nAdv; ++i)
+		for(uint32_t i = 1; i < nAdv; ++i)
 		{
 			ch = szUTF8[i];
 			if((ch & 0xC0) != 0x80)
@@ -538,25 +538,25 @@ inline int Q_ParseUnicodeFromUTF8Str(const char* szUTF8, int* pnAdvancedInUtf8St
 	return nResult;
 }
 
-inline size_t Q_UTF16Len(const c16* utf16)
+inline size_t Q_UTF16Len(const char16_t* utf16)
 {
-	const c16* p = utf16;
+	const char16_t* p = utf16;
 	if (p == 0)
 		return 0;
 	while(*p) ++p;
 	return (size_t)(p - utf16);
 }
 
-inline void utf8to16( const c8* utf8, c16* utf16, u32 size)
+inline void utf8to16( const char* utf8, char16_t* utf16, uint32_t size)
 {
 	/*
-	std::wstring_convert<std::codecvt_utf8<c16>, c16> conv;
+	std::wstring_convert<std::codecvt_utf8<char16_t>, char16_t> conv;
 	auto ret = conv.from_bytes( utf8 );
-	u32 len = (u32)ret.length();
+	uint32_t len = (uint32_t)ret.length();
 	//ASSERT(size > len);
-	u32 count = min_(size-1, len);
+	uint32_t count = min_(size-1, len);
 	ret.copy(utf16, count, 0);		//clip
-	utf16[count] = (c16)'\0';
+	utf16[count] = (char16_t)'\0';
 	*/
 
 	if(utf8 == 0)
@@ -564,7 +564,7 @@ inline void utf8to16( const c8* utf8, c16* utf16, u32 size)
 		*utf16 = 0;
 		return;
 	}
-	u32 count = 0;
+	uint32_t count = 0;
 	while (*utf8 != 0)
 	{
 		int nAdv;
@@ -586,7 +586,7 @@ inline void utf8to16( const c8* utf8, c16* utf16, u32 size)
 				*(utf16++) = value;
 			else
 			{
-				u32 ch322 = value - 0x10000;
+				uint32_t ch322 = value - 0x10000;
 				*(utf16++) = ((ch322 & 0xFFC00) >> 10) | 0xD800;
 				*(utf16++) = (ch322 & 0x3FF) | 0xDC00;
 			}
@@ -596,23 +596,23 @@ inline void utf8to16( const c8* utf8, c16* utf16, u32 size)
 		*utf16 = 0;
 }
 
-inline void utf16to8( const c16* utf16, c8* utf8, u32 size )
+inline void utf16to8( const char16_t* utf16, char* utf8, uint32_t size )
 {
 	/*
-	std::wstring_convert<std::codecvt_utf8<c16>, c16> conv;
+	std::wstring_convert<std::codecvt_utf8<char16_t>, char16_t> conv;
 	auto ret = conv.to_bytes( utf16 );
-	u32 len = (u32)ret.length();
+	uint32_t len = (uint32_t)ret.length();
 	//ASSERT(size > len);
-	u32 count = min_(size-1, len);
+	uint32_t count = min_(size-1, len);
 	ret.copy(utf8, count, 0);
-	utf8[count] = (c8)'\0';
+	utf8[count] = (char)'\0';
 	*/
 	if(utf16 == 0)
 	{
 		*utf8 = 0;
 		return;
 	}
-	u32 count = 0;
+	uint32_t count = 0;
 	// 	if(*sz16 == (auint16)0xFEFF)
 	// 	{
 	// 		++sz16;
@@ -624,7 +624,7 @@ inline void utf16to8( const c16* utf16, c8* utf8, u32 size )
 		int ch32 = ch;
 		if(ch >= 0xD800 && ch <= 0xDBFF)
 		{
-			c16 ch2 = *(utf16++);
+			char16_t ch2 = *(utf16++);
 			if(ch2 >= 0xDC00 && ch2 <= 0xDFFF)
 			{
 				ch32 = ch & 0xD800;
@@ -651,7 +651,7 @@ inline void utf16to8( const c16* utf16, c8* utf8, u32 size )
 		*utf8 = 0;
 }
 
-inline void utf16_to_gbk(const c16* utf16, c8* gbk, u32 size)
+inline void utf16_to_gbk(const char16_t* utf16, char* gbk, uint32_t size)
 {
 #ifdef MW_PLATFORM_WINDOWS
 	if (utf16)
@@ -673,7 +673,7 @@ inline void utf16_to_gbk(const c16* utf16, c8* gbk, u32 size)
 			return;
 		}
 
-		size_t	sourceLength	= utf16len(utf16) * sizeof(c16);
+		size_t	sourceLength	= utf16len(utf16) * sizeof(char16_t);
 		size_t	destLength		= size - 1;
 		char*	pSource 		= const_cast<char*>(reinterpret_cast<const char*>(utf16));
 		char*	pDest			= gbk;
@@ -688,18 +688,18 @@ inline void utf16_to_gbk(const c16* utf16, c8* gbk, u32 size)
 #endif
 }
 
-inline void gbk_to_utf16(const c8* gbk, c16* utf16, u32 size)
+inline void gbk_to_utf16(const char* gbk, char16_t* utf16, uint32_t size)
 {
 #ifdef MW_PLATFORM_WINDOWS				//windowsÏÂgbk±àÂë
 	if (gbk)
 	{
 		//gbk - unicode
 		MultiByteToWideChar(936, 0, gbk, -1, (LPWSTR)utf16, size);
-		utf16[size - 1] = (c16)'\0';
+		utf16[size - 1] = (char16_t)'\0';
 	}
 	else
 	{
-		utf16[0] = (c16)'\0';
+		utf16[0] = (char16_t)'\0';
 	}
 #else							//android ºÍ iosÏÂutf8±àÂë
 	if(gbk)
@@ -708,12 +708,12 @@ inline void gbk_to_utf16(const c8* gbk, c16* utf16, u32 size)
 		if (cd == reinterpret_cast<iconv_t>(-1))
 		{
 			assert(false);
-			utf16[0] = (c16)'\0';
+			utf16[0] = (char16_t)'\0';
 			return;
 		}
 
 		size_t	sourceLength	= strlen(gbk);
-		size_t	destLength		= (size - 1) * sizeof(c16);
+		size_t	destLength		= (size - 1) * sizeof(char16_t);
 		char*	pSource 		= const_cast<char*>(gbk);
 		char*	pDest			= reinterpret_cast<char*>(utf16);
 
@@ -746,7 +746,7 @@ inline int Q_access(const char * filename, int mode)
 #endif
 }
 
-inline void Q_getLocalTime(c8* timebuf, size_t size)
+inline void Q_getLocalTime(char* timebuf, size_t size)
 {
 #ifdef MW_PLATFORM_WINDOWS
 	SYSTEMTIME time;
@@ -809,9 +809,9 @@ inline char* Q_getcwd(char* dstbuf, int sizebytes)
 #endif
 }
 
-inline bool isAbsoluteFileName(const c8* filename)
+inline bool isAbsoluteFileName(const char* filename)
 {
-	u32 len = (u32)strlen(filename);
+	uint32_t len = (uint32_t)strlen(filename);
 #ifdef  MW_PLATFORM_WINDOWS
 	if (len >= 2)
 		return filename[1] == ':';
@@ -823,11 +823,11 @@ inline bool isAbsoluteFileName(const c8* filename)
 	return false;
 }
 
-inline void normalizeFileName(const c8* filename, c8* outfilename, u32 size)
+inline void normalizeFileName(const char* filename, char* outfilename, uint32_t size)
 {
 	ASSERT(size >= strlen(filename)+1);
-	u32 len = (u32)strlen(filename);
-	for (u32 i=0; i<len; ++i)
+	uint32_t len = (uint32_t)strlen(filename);
+	for (uint32_t i=0; i<len; ++i)
 	{
 		if(filename[i] == '\\')
 			outfilename[i] = '/';
@@ -837,10 +837,10 @@ inline void normalizeFileName(const c8* filename, c8* outfilename, u32 size)
 	outfilename[len] = '\0';
 }
 
-inline void normalizeDirName(c8* dirName)
+inline void normalizeDirName(char* dirName)
 {
-	u32 len = (u32)strlen(dirName);
-	for (u32 i=0; i<len; ++i)
+	uint32_t len = (uint32_t)strlen(dirName);
+	for (uint32_t i=0; i<len; ++i)
 	{
 		if(dirName[i] == '\\')
 			dirName[i] = '/';
@@ -848,26 +848,26 @@ inline void normalizeDirName(c8* dirName)
 
 	if (len > 0)
 	{
-		c8 last = dirName[len -1];
+		char last = dirName[len -1];
 		if (last != '/' && last != '\\' )
 			Q_strcat(dirName, len + 2, "/");
 	}
 }
 
-inline void normalizeFileName(c8* filename)
+inline void normalizeFileName(char* filename)
 {
-	u32 len = (u32)strlen(filename);
-	for (u32 i=0; i<len; ++i)
+	uint32_t len = (uint32_t)strlen(filename);
+	for (uint32_t i=0; i<len; ++i)
 	{
 		if(filename[i] == '\\')
 			filename[i] = '/';
 	}
 }
 
-inline bool isNormalized(const c8* filename)
+inline bool isNormalized(const char* filename)
 {
-	u32 len = (u32)strlen(filename);
-	for (u32 i=0; i<len; ++i)
+	uint32_t len = (uint32_t)strlen(filename);
+	for (uint32_t i=0; i<len; ++i)
 	{
 		if(filename[i] == '\\')
 			return false;	
@@ -875,10 +875,10 @@ inline bool isNormalized(const c8* filename)
 	return true;
 }
 
-inline bool isLowerFileName(const c8* filename)
+inline bool isLowerFileName(const char* filename)
 {
-	u32 len = (u32)strlen(filename);
-	for (u32 i=0; i<len; ++i)
+	uint32_t len = (uint32_t)strlen(filename);
+	for (uint32_t i=0; i<len; ++i)
 	{
 		if(isupper((unsigned char)filename[i]))
 			return false;	
@@ -886,17 +886,17 @@ inline bool isLowerFileName(const c8* filename)
 	return true;
 }
 
-typedef void (*ITERATEFILECALLBACK)(const c8* filename, void* args);
+typedef void (*ITERATEFILECALLBACK)(const char* filename, void* args);
 
-inline bool Q_iterateFiles(const c8* dirname, const c8* ext, ITERATEFILECALLBACK callback, void* args, const c8* initdir = "")
+inline bool Q_iterateFiles(const char* dirname, const char* ext, ITERATEFILECALLBACK callback, void* args, const char* initdir = "")
 {	
-	c8 path[QMAX_PATH];
+	char path[QMAX_PATH];
 	Q_strcpy(path, QMAX_PATH, dirname);
 	normalizeDirName(path);
 	Q_strcat(path, QMAX_PATH, ext);
 
 
-	c8 initdirname[QMAX_PATH];
+	char initdirname[QMAX_PATH];
 	Q_strcpy(initdirname, QMAX_PATH, initdir);
 	normalizeDirName(initdirname);
 
@@ -914,7 +914,7 @@ inline bool Q_iterateFiles(const c8* dirname, const c8* ext, ITERATEFILECALLBACK
 		if (finddata.attrib & (_A_HIDDEN | _A_SYSTEM))
 			continue;
 
-		c8 subpath[QMAX_PATH];
+		char subpath[QMAX_PATH];
 		Q_strcpy(subpath, QMAX_PATH, dirname);
 		normalizeDirName(subpath);
 		Q_strcat(subpath, QMAX_PATH, finddata.name);
@@ -931,9 +931,9 @@ inline bool Q_iterateFiles(const c8* dirname, const c8* ext, ITERATEFILECALLBACK
 			}
 			else
 			{
-				c8 shortpath[QMAX_PATH];
-				const c8* start = strstr(subpath, initdirname);
-				u32 len = (u32)strlen(initdir);
+				char shortpath[QMAX_PATH];
+				const char* start = strstr(subpath, initdirname);
+				uint32_t len = (uint32_t)strlen(initdir);
 				if (initdirname[len-1] != '\\' && initdirname[len -1] != '/')
 					++len;
 				Q_strcpy(shortpath, QMAX_PATH, start ? start + len : subpath);
@@ -967,7 +967,7 @@ inline bool Q_iterateFiles(const c8* dirname, const c8* ext, ITERATEFILECALLBACK
 		if (pdata->d_name[0] == 0)
 			continue;
 
-		c8 subpath[QMAX_PATH];
+		char subpath[QMAX_PATH];
 		Q_strcpy(subpath, QMAX_PATH, dirname);
 		normalizeDirName(subpath);
 		Q_strcat(subpath, QMAX_PATH, pdata->d_name);
@@ -993,9 +993,9 @@ inline bool Q_iterateFiles(const c8* dirname, const c8* ext, ITERATEFILECALLBACK
 			}
 			else
 			{
-				c8 shortpath[QMAX_PATH];
-				const c8* start = strstr(subpath, initdirname);
-				u32 len = (u32)strlen(initdir);
+				char shortpath[QMAX_PATH];
+				const char* start = strstr(subpath, initdirname);
+				uint32_t len = (uint32_t)strlen(initdir);
 				if (initdirname[len-1] != '\\' && initdirname[len -1] != '/')
 					++len;
 				Q_strcpy(shortpath, QMAX_PATH, start ? start + len : subpath);
@@ -1010,10 +1010,10 @@ inline bool Q_iterateFiles(const c8* dirname, const c8* ext, ITERATEFILECALLBACK
 #endif
 }
 
-inline void getFileDirA(const c8* filename, c8* outfilename, u32 size )
+inline void getFileDirA(const char* filename, char* outfilename, uint32_t size )
 {
-	const c8* lastSlash =strrchr( filename, ('/') );
-	const c8* lastBackSlash = strrchr( filename, ('\\') );
+	const char* lastSlash =strrchr( filename, ('/') );
+	const char* lastBackSlash = strrchr( filename, ('\\') );
 	if ( !lastSlash || lastSlash < lastBackSlash )
 		lastSlash = lastBackSlash;
 
@@ -1026,10 +1026,10 @@ inline void getFileDirA(const c8* filename, c8* outfilename, u32 size )
 	}
 }
 
-inline void getFileNameA(const c8* filename, c8* outfilename, u32 size )
+inline void getFileNameA(const char* filename, char* outfilename, uint32_t size )
 {
-	const c8* lastSlash = strrchr( filename, '/' );
-	const c8* lastBackSlash = strrchr( filename, '\\' );
+	const char* lastSlash = strrchr( filename, '/' );
+	const char* lastBackSlash = strrchr( filename, '\\' );
 	if ( lastSlash < lastBackSlash )
 		lastSlash = lastBackSlash;
 
@@ -1040,13 +1040,13 @@ inline void getFileNameA(const c8* filename, c8* outfilename, u32 size )
 		Q_strcpy( outfilename, size, lastSlash+1 );
 }
 
-inline void getFileNameNoExtensionA(const c8* filename, c8* outfilename, u32 size)
+inline void getFileNameNoExtensionA(const char* filename, char* outfilename, uint32_t size)
 {
-	const c8* lastSlash = strrchr( filename, '/' );
-	const c8* lastBackSlash = strrchr( filename, '\\' );
+	const char* lastSlash = strrchr( filename, '/' );
+	const char* lastBackSlash = strrchr( filename, '\\' );
 	if ( lastSlash < lastBackSlash )
 		lastSlash = lastBackSlash;
-	const c8* p = strrchr(filename, '.' );
+	const char* p = strrchr(filename, '.' );
 	if (p < lastSlash)
 	{
 		Q_strcpy(outfilename, size, filename);
@@ -1071,14 +1071,14 @@ inline void getFileNameNoExtensionA(const c8* filename, c8* outfilename, u32 siz
     }
 }
 
-inline void getFileExtensionA(const c8* filename, c8* outfilename, u32 size )
+inline void getFileExtensionA(const char* filename, char* outfilename, uint32_t size )
 {
-	const c8* lastSlash = strrchr( filename, '/' );
-	const c8* lastBackSlash = strrchr( filename, '\\' );
+	const char* lastSlash = strrchr( filename, '/' );
+	const char* lastBackSlash = strrchr( filename, '\\' );
 	if ( lastSlash < lastBackSlash )
 		lastSlash = lastBackSlash;
 	
-	const c8* p = strrchr(filename, '.' );
+	const char* p = strrchr(filename, '.' );
 	if (p < lastSlash)
 	{
 		Q_strcpy(outfilename, size, "");
@@ -1091,14 +1091,14 @@ inline void getFileExtensionA(const c8* filename, c8* outfilename, u32 size )
 		Q_strcpy( outfilename, size, p+1 );
 }
 
-inline void getFullFileNameNoExtensionA(const c8* filename, c8* outfilename, u32 size)
+inline void getFullFileNameNoExtensionA(const char* filename, char* outfilename, uint32_t size)
 {
-	const c8* lastSlash = strrchr( filename, '/' );
-	const c8* lastBackSlash = strrchr( filename, '\\' );
+	const char* lastSlash = strrchr( filename, '/' );
+	const char* lastBackSlash = strrchr( filename, '\\' );
 	if ( lastSlash < lastBackSlash )
 		lastSlash = lastBackSlash;
 
-	const c8* p = strrchr(filename, '.' );
+	const char* p = strrchr(filename, '.' );
 	if (p && p < lastSlash)
 	{
 		Q_strcpy(outfilename, size, "");
@@ -1114,12 +1114,12 @@ inline void getFullFileNameNoExtensionA(const c8* filename, c8* outfilename, u32
     }
 }
 
-inline bool hasFileExtensionA( const c8* filename, const c8* ext )
+inline bool hasFileExtensionA( const char* filename, const char* ext )
 {
 	if (*ext == '*')
 		return true;
 
-	c8 extension[32];
+	char extension[32];
 	getFileExtensionA(filename, extension, 32);
 
 	if (  Q_stricmp(extension, ext) != 0 )
@@ -1127,9 +1127,9 @@ inline bool hasFileExtensionA( const c8* filename, const c8* ext )
 	return true;
 }
 
-inline void makeHDFileName(c8* name, u32 size, const c8* filename)
+inline void makeHDFileName(char* name, uint32_t size, const char* filename)
 {
-	const c8* p = strrchr(filename, '.' );
+	const char* p = strrchr(filename, '.' );
 	if (p)
 	{
 		Q_strncpy(name, size, filename, p-filename);
@@ -1142,19 +1142,19 @@ inline void makeHDFileName(c8* name, u32 size, const c8* filename)
 	}
 }
 
-inline bool Q_MakeDirForFileName(const c8* filename)
+inline bool Q_MakeDirForFileName(const char* filename)
 {
 	//create directory if not exist
-	c8 dir[QMAX_PATH];
+	char dir[QMAX_PATH];
 	getFileDirA(filename, dir, QMAX_PATH);
 	normalizeFileName(dir);
 	Q_strcat(dir, QMAX_PATH, "/");
 
-	const c8* p = strchr(dir, '/');
+	const char* p = strchr(dir, '/');
 
 	while(p)
 	{
-		c8 tmp[QMAX_PATH];
+		char tmp[QMAX_PATH];
 		Q_strncpy(tmp, QMAX_PATH, dir, p-dir+1);
         tmp[p-dir+1] = '\0';
 		if (Q_access(tmp, 0) != 0)
@@ -1168,36 +1168,36 @@ inline bool Q_MakeDirForFileName(const c8* filename)
 	return true;
 }
 
-inline bool getBitH2L(u8* data, u32 bit)
+inline bool getBitH2L(uint8_t* data, uint32_t bit)
 {
-	u8	byte = data[bit/8];
-	u8	pos = bit % 8;
-	u8	mask = 0x80;
+	uint8_t	byte = data[bit/8];
+	uint8_t	pos = bit % 8;
+	uint8_t	mask = 0x80;
 	mask >>= pos;
 	return (byte & mask) == mask;
 }
 
-inline bool getBitL2H(u8* data, u32 bit)
+inline bool getBitL2H(uint8_t* data, uint32_t bit)
 {
-	u8	byte = data[bit/8];
-	u8	pos = bit % 8;
-	u8	mask = 0x1;
+	uint8_t	byte = data[bit/8];
+	uint8_t	pos = bit % 8;
+	uint8_t	mask = 0x1;
 	mask <<= pos;
 
 	return (byte & mask) == mask;
 }
 
-inline void trim(const c8* str, c8* outstring, u32 size)
+inline void trim(const char* str, char* outstring, uint32_t size)
 {
-	u32 len = (u32)strlen(str);
+	uint32_t len = (uint32_t)strlen(str);
 	if (len == 0)
 	{
 		Q_strcpy(outstring, size, "");
 		return;
 	}
-	u32 left = 0;
-	u32 right = len;
-	for (u32 i=0; i<len; ++i)
+	uint32_t left = 0;
+	uint32_t right = len;
+	for (uint32_t i=0; i<len; ++i)
 	{
 		if (str[i] == ' ' || str[i] == '\n')
 			++left;
@@ -1205,7 +1205,7 @@ inline void trim(const c8* str, c8* outstring, u32 size)
 			break;
 	}
 
-	for (s32 i=(s32)len-1; i>=0; --i)
+	for (int32_t i=(int32_t)len-1; i>=0; --i)
 	{
 		if (str[i] == ' ' || str[i] == '\n')
 			--right;
@@ -1219,23 +1219,23 @@ inline void trim(const c8* str, c8* outstring, u32 size)
 	}
 	else
 	{
-        u32 copysize = min_(size-1, right- left);
+        uint32_t copysize = min_(size-1, right- left);
 		Q_strncpy(outstring, size, &str[left], copysize);
         outstring[copysize] = '\0';
 	}
 }
 
-inline void trim(const c8* str, u32 count, c8* outstring, u32 size)
+inline void trim(const char* str, uint32_t count, char* outstring, uint32_t size)
 {
-	u32 len = count;
+	uint32_t len = count;
 	if (len == 0)
 	{
 		Q_strcpy(outstring, size, "");
 		return;
 	}
-	u32 left = 0;
-	u32 right = len;
-	for (u32 i=0; i<len; ++i)
+	uint32_t left = 0;
+	uint32_t right = len;
+	for (uint32_t i=0; i<len; ++i)
 	{
 		if (str[i] == ' ' || str[i] == '\n')
 			++left;
@@ -1243,7 +1243,7 @@ inline void trim(const c8* str, u32 count, c8* outstring, u32 size)
 			break;
 	}
 
-	for (s32 i=(s32)len-1; i>=0; --i)
+	for (int32_t i=(int32_t)len-1; i>=0; --i)
 	{
 		if (str[i] == ' ' || str[i] == '\n')
 			--right;
@@ -1257,7 +1257,7 @@ inline void trim(const c8* str, u32 count, c8* outstring, u32 size)
 	}
 	else
 	{
-		u32 copysize = min_(size-1, right- left);
+		uint32_t copysize = min_(size-1, right- left);
 		Q_strncpy(outstring, size, &str[left], copysize);
         outstring[copysize] = '\0';
 	}
@@ -1291,8 +1291,8 @@ const float fast_atof_table[17] = {
 //! \param[out] out: (optional) If provided, it will be set to point at the first
 //!					 character not used in the calculation.
 //! \return The signed integer value of the digits. If the string specifies too many
-//!			digits to encode in an s32 then +INT_MAX or -INT_MAX will be returned.
-inline s32 strtol10(const char* in, const char** out=0)
+//!			digits to encode in an int32_t then +INT_MAX or -INT_MAX will be returned.
+inline int32_t strtol10(const char* in, const char** out=0)
 {
 	if(!in)
 		return 0;
@@ -1306,16 +1306,16 @@ inline s32 strtol10(const char* in, const char** out=0)
 	else if('+' == *in)
 		++in;
 
-	u32 unsignedValue = 0;
+	uint32_t unsignedValue = 0;
 
 	while ( ( *in >= '0') && ( *in <= '9' ))
 	{
 		unsignedValue = ( unsignedValue * 10 ) + ( *in - '0' );
 		++in;
 
-		if(unsignedValue > (u32)INT_MAX)
+		if(unsignedValue > (uint32_t)INT_MAX)
 		{
-			unsignedValue = (u32)INT_MAX;
+			unsignedValue = (uint32_t)INT_MAX;
 			break;
 		}
 	}
@@ -1323,9 +1323,9 @@ inline s32 strtol10(const char* in, const char** out=0)
 		*out = in;
 
 	if(negative)
-		return -((s32)unsignedValue);
+		return -((int32_t)unsignedValue);
 	else
-		return (s32)unsignedValue;
+		return (int32_t)unsignedValue;
 }
 
 //! Converts a sequence of digits into a whole positive floating point value.
@@ -1334,7 +1334,7 @@ inline s32 strtol10(const char* in, const char** out=0)
 //! \param in: the sequence of digits to convert.
 //! \param out: (optional) will be set to point at the first non-converted character.
 //! \return The whole positive floating point representation of the digit sequence.
-inline f32 strtof10(const char* in, const char * * out = 0)
+inline float strtof10(const char* in, const char * * out = 0)
 {
 	if(out)
 		*out = in;
@@ -1342,9 +1342,9 @@ inline f32 strtof10(const char* in, const char * * out = 0)
 	if(!in)
 		return 0.f;
 
-	static const u32 MAX_SAFE_U32_VALUE = UINT_MAX / 10 - 10;
-	f32 floatValue = 0.f;
-	u32 intValue = 0;
+	static const uint32_t MAX_SAFE_U32_VALUE = UINT_MAX / 10 - 10;
+	float floatValue = 0.f;
+	uint32_t intValue = 0;
 
 	// Use integer arithmetic for as long as possible, for speed
 	// and precision.
@@ -1359,13 +1359,13 @@ inline f32 strtof10(const char* in, const char * * out = 0)
 		++in;
 	}
 
-	floatValue = (f32)intValue;
+	floatValue = (float)intValue;
 
 	// If there are any digits left to parse, then we need to use 
 	// floating point arithmetic from here.
 	while ( ( *in >= '0') && ( *in <= '9' ) )
 	{
-		floatValue = ( floatValue * 10.f ) + (f32)( *in - '0' );
+		floatValue = ( floatValue * 10.f ) + (float)( *in - '0' );
 		++in;
 		if(floatValue > FLT_MAX) // Just give up.
 			break;
@@ -1384,7 +1384,7 @@ inline f32 strtof10(const char* in, const char * * out = 0)
 //! \param[out] out: The resultant float will be written here.
 //! \return A pointer to the first character in the string that wasn't
 //!         use to create the float value.
-inline const char* fast_atof_move( const char * in, f32 & out)
+inline const char* fast_atof_move( const char * in, float & out)
 {
 
 	out = 0.f;
@@ -1398,14 +1398,14 @@ inline const char* fast_atof_move( const char * in, f32 & out)
 		++in;
 	}
 
-	f32 value = strtof10 ( in, &in );
+	float value = strtof10 ( in, &in );
 
 	if (*in == '.')
 	{
 		++in;
 
 		const char * afterDecimal = in;
-		f32 decimal = strtof10 ( in, &afterDecimal );
+		float decimal = strtof10 ( in, &afterDecimal );
 		decimal *= fast_atof_table[afterDecimal - in];
 
 		value += decimal;
@@ -1418,8 +1418,8 @@ inline const char* fast_atof_move( const char * in, f32 & out)
 		++in;
 		// Assume that the exponent is a whole number.
 		// strtol10() will deal with both + and - signs,
-		// but cast to (f32) to prevent overflow at FLT_MAX
-		value *= (f32)pow(10.0f, (f32)strtol10(in, &in));
+		// but cast to (float) to prevent overflow at FLT_MAX
+		value *= (float)pow(10.0f, (float)strtol10(in, &in));
 	}
 
 	if(negative)
@@ -1442,12 +1442,12 @@ inline float fast_atof(const char* floatAsString)
 // random noise [-1;1]
 struct Noiser
 {
-	static f32 get ()
+	static float get ()
 	{
-		static u32 RandomSeed = 0x69666966;
+		static uint32_t RandomSeed = 0x69666966;
 		RandomSeed = (RandomSeed * 3631 + 1);
 
-		f32 value = ( (f32) (RandomSeed & 0x7FFF ) * (1.0f / (f32)(0x7FFF >> 1) ) ) - 1.f;
+		float value = ( (float) (RandomSeed & 0x7FFF ) * (1.0f / (float)(0x7FFF >> 1) ) ) - 1.f;
 		return value;
 	}
 };
@@ -1457,7 +1457,7 @@ struct Noiser
 #define CRC32_INIT_VALUE	0xffffffffL
 #define CRC32_XOR_VALUE		0xffffffffL
 
-static const u32 l_aCRC32Table[] =
+static const uint32_t l_aCRC32Table[] =
 {
 	0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
 	0x706af48fL, 0xe963a535L, 0x9e6495a3L, 0x0edb8832L, 0x79dcb8a4L,
@@ -1513,20 +1513,20 @@ static const u32 l_aCRC32Table[] =
 	0x2d02ef8dL
 };
 
-inline void a_CRC32_InitChecksum(u32& uCrcvalue)
+inline void a_CRC32_InitChecksum(uint32_t& uCrcvalue)
 {
 	uCrcvalue = CRC32_INIT_VALUE;
 }
 
-inline void a_CRC32_Update(u32& uCrcvalue, u8 data)
+inline void a_CRC32_Update(uint32_t& uCrcvalue, uint8_t data)
 {
 	uCrcvalue = l_aCRC32Table[(uCrcvalue ^ data) & 0xff] ^ (uCrcvalue >> 8);
 }
 
-inline void a_CRC32_UpdateChecksum(u32 &uCrcvalue, const void* pData, size_t uLength)
+inline void a_CRC32_UpdateChecksum(uint32_t &uCrcvalue, const void* pData, size_t uLength)
 {
-	u32 uCrc;
-	const u8 *pBuf = (const u8*)pData;
+	uint32_t uCrc;
+	const uint8_t *pBuf = (const uint8_t*)pData;
 
 	uCrc = uCrcvalue;
 	while (uLength--)
@@ -1536,14 +1536,14 @@ inline void a_CRC32_UpdateChecksum(u32 &uCrcvalue, const void* pData, size_t uLe
 	uCrcvalue = uCrc;
 }
 
-inline void a_CRC32_FinishChecksum(u32& uCrcvalue)
+inline void a_CRC32_FinishChecksum(uint32_t& uCrcvalue)
 {
 	uCrcvalue ^= CRC32_XOR_VALUE;
 }
 
-inline u32 CRC32_BlockChecksum(const void* pData, size_t length)
+inline uint32_t CRC32_BlockChecksum(const void* pData, size_t length)
 {
-	u32 uCrc;
+	uint32_t uCrc;
 	a_CRC32_InitChecksum(uCrc);
 	a_CRC32_UpdateChecksum(uCrc, pData, length);
 	a_CRC32_FinishChecksum(uCrc);
@@ -1551,12 +1551,12 @@ inline u32 CRC32_BlockChecksum(const void* pData, size_t length)
 }
 
 template<class T>
-void Hash(u32& uHash, const T& val)
+void Hash(uint32_t& uHash, const T& val)
 {
 	a_CRC32_UpdateChecksum(uHash, &val, sizeof(T));
 }
 
-inline void HashString(u32& uHash, const char* str)
+inline void HashString(uint32_t& uHash, const char* str)
 {
 	a_CRC32_UpdateChecksum(uHash, (const char*)str, strlen(str));
 }

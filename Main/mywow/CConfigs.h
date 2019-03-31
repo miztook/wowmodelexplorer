@@ -14,17 +14,17 @@ public:
 	CConfigs();
 
 public:
-	virtual const c8* getSetting(E_CONFIG_TYPE type, const c8* key) const;
-	virtual void setSetting(E_CONFIG_TYPE type, const c8* key, const c8* val);
+	virtual const char* getSetting(E_CONFIG_TYPE type, const char* key) const;
+	virtual void setSetting(E_CONFIG_TYPE type, const char* key, const char* val);
 
 	virtual bool readBaseSetting(IFileSystem* fs);
 	virtual bool readEngineSetting(IFileSystem* fs);
 	virtual bool writeEngineSetting(IFileSystem* fs);
 
 private:
-	bool readSetting(IFileSystem* fs, const c8* path, E_CONFIG_TYPE type);
+	bool readSetting(IFileSystem* fs, const char* path, E_CONFIG_TYPE type);
 
-	bool writeSetting(IFileSystem* fs, const c8* path, E_CONFIG_TYPE type);
+	bool writeSetting(IFileSystem* fs, const char* path, E_CONFIG_TYPE type);
 
 private:
 #ifdef USE_QALLOCATOR

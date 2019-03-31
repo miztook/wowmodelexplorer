@@ -22,7 +22,7 @@ public:
 public:
 	//IMapTileSceneNode
 	virtual IFileADT*	getFileADT() const;
-	virtual bool getHeightNormal(f32 x, f32 z, f32* height, vector3df* normal) const;
+	virtual bool getHeightNormal(float x, float z, float* height, vector3df* normal) const;
 	virtual vector3df getCenter() const;
 
 	virtual void addM2SceneNodes();
@@ -34,7 +34,7 @@ public:
 	//ISceneNode
 	virtual void registerSceneNode(bool frustumcheck, int sequence);
 	virtual aabbox3df getBoundingBox() const;
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame, bool visible);
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible);
 	virtual void render() const;
 	virtual bool isNodeEligible() const;
 	virtual void onUpdated();
@@ -51,9 +51,9 @@ protected:
 	{
 		SChunkRenderUnit() : row(0), col(0), chunkCount(0) {}
 
-		u8 row;		//start
-		u8 col;
-		u16 chunkCount;
+		uint8_t row;		//start
+		uint8_t col;
+		uint16_t chunkCount;
 	};
 
 	class CMapBlock
@@ -78,7 +78,7 @@ protected:
 
 protected:
 	void registerVisibleChunks(ICamera* cam);
-	void addChunkRenderList(bool high, u8 row, u8 col);
+	void addChunkRenderList(bool high, uint8_t row, uint8_t col);
 	void renderChunkRenderList(bool high) const;
 
 protected:

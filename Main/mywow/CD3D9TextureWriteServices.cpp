@@ -10,7 +10,7 @@
 #include "CD3D9Helper.h"
 #include "CD3D9Texture.h"
 
-CD3D9TextureWriter::CD3D9TextureWriter(const dimension2du& size, ECOLOR_FORMAT format, u32 numMipmap)
+CD3D9TextureWriter::CD3D9TextureWriter(const dimension2du& size, ECOLOR_FORMAT format, uint32_t numMipmap)
 	: ITextureWriter(numMipmap), NeedCreate(true)
 {
 	Driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -53,7 +53,7 @@ void CD3D9TextureWriter::setSourceTexture( ITexture* texture )
 	NumMipmaps = texture->getNumMipmaps();
 }
 
-void* CD3D9TextureWriter::lock(u32 level, u32& pitch)
+void* CD3D9TextureWriter::lock(uint32_t level, uint32_t& pitch)
 {
 	D3DLOCKED_RECT rect;
 	if (FAILED(SrcTexture->LockRect(level, &rect, nullptr, 0)))
@@ -67,7 +67,7 @@ void* CD3D9TextureWriter::lock(u32 level, u32& pitch)
 	return rect.pBits;
 }
 
-void CD3D9TextureWriter::unlock(u32 level)
+void CD3D9TextureWriter::unlock(uint32_t level)
 {
 	SrcTexture->UnlockRect(level);
 }
@@ -102,7 +102,7 @@ bool CD3D9TextureWriter::copyToTexture( ITexture* texture, const recti* descRect
 
 void CD3D9TextureWriter::initEmptyData()
 {
-	u32 pitch;
+	uint32_t pitch;
 	void* dest = lock(0, pitch);
 	memset(dest, 0, pitch * TextureSize.Height);
 	unlock(0);
@@ -134,7 +134,7 @@ ITextureWriter* CD3D9TextureWriteServices::createTextureWriter( ITexture* textur
 
 	ECOLOR_FORMAT format = texture->getColorFormat();
 	dimension2du size = texture->getSize();
-	u32 numMipmap = texture->getNumMipmaps();
+	uint32_t numMipmap = texture->getNumMipmaps();
 
 	T_TextureWriterMap::iterator itr = TextureWriterMap.find(texture);
 	if (itr != TextureWriterMap.end())

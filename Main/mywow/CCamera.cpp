@@ -2,7 +2,7 @@
 #include "CCamera.h"
 #include "mywow.h"
 
-CCamera::CCamera(const vector3df& position, const vector3df& lookat, const vector3df& up, f32 nearValue, f32 farValue, f32 fov) : ICamera(position, lookat, up, nearValue, farValue, fov)
+CCamera::CCamera(const vector3df& position, const vector3df& lookat, const vector3df& up, float nearValue, float farValue, float fov) : ICamera(position, lookat, up, nearValue, farValue, fov)
 {
 	recalculateAll();
 }
@@ -10,7 +10,7 @@ CCamera::CCamera(const vector3df& position, const vector3df& lookat, const vecto
 void CCamera::recalculateAll()
 {
 	recti viewport = g_Engine->getDriver()->getViewPort();
-	AspectRatio = (f32)viewport.getWidth() / (f32)viewport.getHeight();
+	AspectRatio = (float)viewport.getWidth() / (float)viewport.getHeight();
 
 	recalculateViewMatrix();
 	recalculateProjectionMatrix();
@@ -48,7 +48,7 @@ void CCamera::recalculateFrustum()
 	frustum::makePlane(ViewMatrix * ClipProjectionMatrix, VF_FAR_PLANE, ClipPlane);
 }
 
-void CCamera::onKeyMove(f32 speed, const SKeyControl& keycontrol)
+void CCamera::onKeyMove(float speed, const SKeyControl& keycontrol)
 {
 	//不改变摄像机方向
 	if (keycontrol.front || keycontrol.back || keycontrol.left ||
@@ -72,7 +72,7 @@ void CCamera::onKeyMove(f32 speed, const SKeyControl& keycontrol)
 	}
 }
 
-void CCamera::pitch_yaw_Maya(f32 pitchDegree, f32 yawDegree)
+void CCamera::pitch_yaw_Maya(float pitchDegree, float yawDegree)
 {
 	vector3df right(ViewMatrix[0], ViewMatrix[4], ViewMatrix[8]);
 
@@ -83,7 +83,7 @@ void CCamera::pitch_yaw_Maya(f32 pitchDegree, f32 yawDegree)
 	vector3df oppDir = -Dir;
 	oppDir = q * oppDir;
 
-	f32 d = -oppDir.dotProduct(vector3df::UnitY());
+	float d = -oppDir.dotProduct(vector3df::UnitY());
 	if (abs_(d) > 0.99f)
 	{
 		q = quatY;
@@ -98,7 +98,7 @@ void CCamera::pitch_yaw_Maya(f32 pitchDegree, f32 yawDegree)
 	recalculateFrustum();
 }
 
-void CCamera::move_offset_Maya(f32 xOffset, f32 yOffset)
+void CCamera::move_offset_Maya(float xOffset, float yOffset)
 {
 	vector3df up(ViewMatrix[1], ViewMatrix[5], ViewMatrix[9]);
 	vector3df right(ViewMatrix[0], ViewMatrix[4], ViewMatrix[8]);
@@ -110,7 +110,7 @@ void CCamera::move_offset_Maya(f32 xOffset, f32 yOffset)
 	recalculateFrustum();
 }
 
-void CCamera::pitch_yaw_FPS(f32 pitchDegree, f32 yawDegree)
+void CCamera::pitch_yaw_FPS(float pitchDegree, float yawDegree)
 {
 	vector3df right(ViewMatrix[0], ViewMatrix[4], ViewMatrix[8]);
 
@@ -119,7 +119,7 @@ void CCamera::pitch_yaw_FPS(f32 pitchDegree, f32 yawDegree)
 	quaternion q = (quatX * quatY);
 
 	vector3df v = q * Dir;
-	f32 d = v.dotProduct(vector3df::UnitY());
+	float d = v.dotProduct(vector3df::UnitY());
 	if (abs_(d) > 0.99f)
 	{
 		v = quatY * Dir;
@@ -139,12 +139,12 @@ vector2di CCamera::getScreenPositionFrom3DPosition(const vector3df& pos, const r
 
 	const matrix4& trans = getViewProjectionMatrix();
 	vector3df transformedPos = pos;
-	f32 z;
+	float z;
 	trans.transformVect(transformedPos, z);
 	if (z < 0)
 		return vector2di(-1, -1);
 
-	const f32 zDiv = z == 0.0f ? 1.0f : reciprocal_(z);
+	const float zDiv = z == 0.0f ? 1.0f : reciprocal_(z);
 
 	return vector2di(
 		round32_(dim.Width * transformedPos.X * zDiv) + dim.Width,
@@ -155,10 +155,10 @@ line3df CCamera::getRayFromScreenPosition(const vector2di& pos, const recti& scr
 {
 	const matrix4& m = getInverseViewMatrix();
 
-	f32 y = tan(FOV*0.5f);
-	f32 x = AspectRatio*y;
-	f32 fary = y * FarValue;
-	f32 farx = x * FarValue;
+	float y = tan(FOV*0.5f);
+	float x = AspectRatio*y;
+	float fary = y * FarValue;
+	float farx = x * FarValue;
 
 	vector3df vLeftUp(-farx, fary, FarValue);
 	m.transformVect(vLeftUp);
@@ -171,8 +171,8 @@ line3df CCamera::getRayFromScreenPosition(const vector2di& pos, const recti& scr
 	vector3df left2right = vRightUp - farLeftUp;
 	vector3df up2down = vLeftDown - farLeftUp;
 
-	f32 dx = pos.X / (f32)screensize.getWidth();
-	f32 dy = pos.Y / (f32)screensize.getHeight();
+	float dx = pos.X / (float)screensize.getWidth();
+	float dy = pos.Y / (float)screensize.getHeight();
 
 	line3df ln;
 
@@ -186,11 +186,11 @@ line3df CCamera::getRayFromScreenPosition(const vector2di& pos, const recti& scr
 	return ln;
 }
 
-vector3df CCamera::get3DPositionFromScreenPosition(const vector2di& pos, const recti& screensize, f32 distance)
+vector3df CCamera::get3DPositionFromScreenPosition(const vector2di& pos, const recti& screensize, float distance)
 {
 	line3df ln = getRayFromScreenPosition(pos, screensize);
 
-	f32 len = ln.getLength();
+	float len = ln.getLength();
 
 	return (ln.end - ln.start) * (distance / len) + ln.start;
 }

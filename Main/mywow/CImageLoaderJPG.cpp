@@ -7,7 +7,7 @@ IImage* CImageLoaderJPG::loadAsImage( IMemFile* file )
 {
 	bool revert = !g_Engine->isDXFamily();
 
-	u8* buffer = (u8*)file->getBuffer();
+	uint8_t* buffer = (uint8_t*)file->getBuffer();
 
 	struct jpeg_decompress_struct cinfo;
 	struct irr_jpeg_error_mgr jerr;
@@ -54,19 +54,19 @@ IImage* CImageLoaderJPG::loadAsImage( IMemFile* file )
 	jpeg_start_decompress(&cinfo);
 
 	// Get image data
-	u16 rowspan = cinfo.image_width * cinfo.out_color_components;
-	u32 width = cinfo.image_width;
-	u32 height = cinfo.image_height;
+	uint16_t rowspan = cinfo.image_width * cinfo.out_color_components;
+	uint32_t width = cinfo.image_width;
+	uint32_t height = cinfo.image_height;
 
 	// Allocate memory for buffer
-	u8* output = new u8[rowspan * height];
+	uint8_t* output = new uint8_t[rowspan * height];
 
-	u8** rowPtr = (u8**)Z_AllocateTempMemory(sizeof(u8*) * height);
+	uint8_t** rowPtr = (uint8_t**)Z_AllocateTempMemory(sizeof(uint8_t*) * height);
 
-	for( u32 i = 0; i < height; i++ )
+	for( uint32_t i = 0; i < height; i++ )
 		rowPtr[i] = &output[ i * rowspan ];
 
-	u32 rowsRead = 0;
+	uint32_t rowsRead = 0;
 	while( cinfo.output_scanline < cinfo.output_height )
 		rowsRead += jpeg_read_scanlines( &cinfo, &rowPtr[rowsRead], cinfo.output_height - rowsRead );
 
@@ -81,51 +81,51 @@ IImage* CImageLoaderJPG::loadAsImage( IMemFile* file )
 	{
 		if (revert)
 		{
-			u32 size = 4*width*height;
-			u8* data = new u8[size];
-			for (u32 i=0,j=0; i<size; i+=4, j+=4)
+			uint32_t size = 4*width*height;
+			uint8_t* data = new uint8_t[size];
+			for (uint32_t i=0,j=0; i<size; i+=4, j+=4)
 			{
-				data[i+0] = (u8)(output[j+2]);
-				data[i+1] = (u8)(output[j+1]);
-				data[i+2] = (u8)(output[j+0]);
-				data[i+3] = (u8)(output[j+3]);
+				data[i+0] = (uint8_t)(output[j+2]);
+				data[i+1] = (uint8_t)(output[j+1]);
+				data[i+2] = (uint8_t)(output[j+0]);
+				data[i+3] = (uint8_t)(output[j+3]);
 			}
 			delete[] output;
-			image = new CImage(ECF_A8R8G8B8, dimension2d<u32>(width, height), data, true);
+			image = new CImage(ECF_A8R8G8B8, dimension2d<uint32_t>(width, height), data, true);
 		}
 		else
 		{
-			image = new CImage(ECF_A8R8G8B8, dimension2d<u32>(width, height), output, true);
+			image = new CImage(ECF_A8R8G8B8, dimension2d<uint32_t>(width, height), output, true);
 		}
 	}
 	else
 	{
-		u32 size = 4*width*height;
-		u8* data = new u8[size];
+		uint32_t size = 4*width*height;
+		uint8_t* data = new uint8_t[size];
 
 		if (revert)
 		{
-			for (u32 i=0,j=0; i<size; i+=4, j+=3)
+			for (uint32_t i=0,j=0; i<size; i+=4, j+=3)
 			{
-				data[i+0] = (u8)(output[j+0]);
-				data[i+1] = (u8)(output[j+1]);
-				data[i+2] = (u8)(output[j+2]);
+				data[i+0] = (uint8_t)(output[j+0]);
+				data[i+1] = (uint8_t)(output[j+1]);
+				data[i+2] = (uint8_t)(output[j+2]);
 				data[i+3] = 255;
 			}
 		}
 		else
 		{
-			for (u32 i=0,j=0; i<size; i+=4, j+=3)
+			for (uint32_t i=0,j=0; i<size; i+=4, j+=3)
 			{
-				data[i+0] = (u8)(output[j+2]);
-				data[i+1] = (u8)(output[j+1]);
-				data[i+2] = (u8)(output[j+0]);
+				data[i+0] = (uint8_t)(output[j+2]);
+				data[i+1] = (uint8_t)(output[j+1]);
+				data[i+2] = (uint8_t)(output[j+0]);
 				data[i+3] = 255;
 			}
 		}
 		delete[] output;
 
-		image = new CImage(ECF_A8R8G8B8, dimension2d<u32>(width, height), data, true);
+		image = new CImage(ECF_A8R8G8B8, dimension2d<uint32_t>(width, height), data, true);
 	}
 
 	return image;

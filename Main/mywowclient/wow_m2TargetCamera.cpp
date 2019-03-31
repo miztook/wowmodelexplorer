@@ -7,7 +7,7 @@
 #define WHEEL_SPEED 0.5f
 #define LOOK_POINT	0.7f
 
-wow_m2TargetCamera::wow_m2TargetCamera(f32 nearValue, f32 farValue, f32 fov)
+wow_m2TargetCamera::wow_m2TargetCamera(float nearValue, float farValue, float fov)
 	: M2Node(NULL), 
 	CurrentDistance(0), CurrentHeight(0), 
 	MaxDistance(35), MinDistance(1), 
@@ -22,13 +22,13 @@ wow_m2TargetCamera::~wow_m2TargetCamera()
 	g_Engine->getSceneManager()->removeCamera(Camera);
 }
 
-void wow_m2TargetCamera::setMinMaxDistance( f32 minDistance, f32 maxDistance )
+void wow_m2TargetCamera::setMinMaxDistance( float minDistance, float maxDistance )
 {
 	MaxDistance = maxDistance;
 	MinDistance = minDistance;
 }
 
-void wow_m2TargetCamera::setM2AsTarget( IM2SceneNode* node, f32 distance, f32 rad )
+void wow_m2TargetCamera::setM2AsTarget( IM2SceneNode* node, float distance, float rad )
 {
 	M2Node = node;
 
@@ -41,8 +41,8 @@ void wow_m2TargetCamera::setM2AsTarget( IM2SceneNode* node, f32 distance, f32 ra
 
 	CurrentHeight = M2Node->getWorldBoundingBox().getExtent().Y * LOOK_POINT;
 
-	f32 horizon = distance * cosf(rad);
-	f32 vertical = distance * sinf(rad);
+	float horizon = distance * cosf(rad);
+	float vertical = distance * sinf(rad);
 
 	vector3df camRelative = -move->getDir() * horizon + vector3df::UnitY() * vertical;
 	Camera->setPosition(move->getPos() + vector3df(0, CurrentHeight, 0) + camRelative);
@@ -81,7 +81,7 @@ void wow_m2TargetCamera::setM2AsTarget( IM2SceneNode* node )
 	NeedAdjustDir = false;
 }
 
-void wow_m2TargetCamera::tick(u32 delta)
+void wow_m2TargetCamera::tick(uint32_t delta)
 {
 	_ASSERT(M2Node);
 
@@ -89,7 +89,7 @@ void wow_m2TargetCamera::tick(u32 delta)
 	if (NeedAdjustDir)
 	{
 		vector3df dir = M2Node->getM2Move()->getDir();
-		f32 dot = DestDir.dotProduct(dir);
+		float dot = DestDir.dotProduct(dir);
 		if ( dot > 0.9995f)		//same
 		{
 			M2Node->getM2Move()->setDir(DestDir);
@@ -121,7 +121,7 @@ void wow_m2TargetCamera::tick(u32 delta)
 	}
 	
 	//height adjust
-	f32 height = M2Node->getWorldBoundingBox().getExtent().Y * LOOK_POINT;
+	float height = M2Node->getWorldBoundingBox().getExtent().Y * LOOK_POINT;
 	if (height != CurrentHeight)
 	{
 		Camera->setPosition(Camera->getPosition() + vector3df(0, height - CurrentHeight, 0));
@@ -132,10 +132,10 @@ void wow_m2TargetCamera::tick(u32 delta)
 
 }
 
-void wow_m2TargetCamera::onMouseWheel( f32 fDelta )
+void wow_m2TargetCamera::onMouseWheel( float fDelta )
 {
-	f32 distance = CurrentDistance;
-	f32 delta = WHEEL_SPEED * fabs(fDelta);
+	float distance = CurrentDistance;
+	float delta = WHEEL_SPEED * fabs(fDelta);
 	if (fDelta > 0)
 		distance -= delta;
 	else
@@ -153,7 +153,7 @@ void wow_m2TargetCamera::onMouseWheel( f32 fDelta )
 	}
 }
 
-void wow_m2TargetCamera::makeTargetFollowCamera(u32 deltaTime, bool front, bool back, bool left, bool right)
+void wow_m2TargetCamera::makeTargetFollowCamera(uint32_t deltaTime, bool front, bool back, bool left, bool right)
 {
 	vector3df dir = Camera->getDir();
 
@@ -203,7 +203,7 @@ void wow_m2TargetCamera::makeTargetFollowCamera(u32 deltaTime, bool front, bool 
 	setDestDir(vector3df(dir.X, 0, dir.Z));
 }
 
-void wow_m2TargetCamera::makeCameraFollowTarget(u32 deltaTime, bool front, bool back, bool left, bool right)
+void wow_m2TargetCamera::makeCameraFollowTarget(uint32_t deltaTime, bool front, bool back, bool left, bool right)
 {
 	if ((front && back) || (left && right))
 		return;
@@ -236,7 +236,7 @@ void wow_m2TargetCamera::makeCameraFollowTarget(u32 deltaTime, bool front, bool 
 	setDestDir(vector3df(Camera->getDir().X, 0, Camera->getDir().Z));
 }
 
-void wow_m2TargetCamera::onMouseMove( f32 pitchDegree, f32 yawDegree )
+void wow_m2TargetCamera::onMouseMove( float pitchDegree, float yawDegree )
 {
 	vector3df right = Camera->getRight();
 	vector3df dir = Camera->getDir();
@@ -249,7 +249,7 @@ void wow_m2TargetCamera::onMouseMove( f32 pitchDegree, f32 yawDegree )
 	vector3df oppDir = -dir;
 	oppDir = q * oppDir;
 
-	f32 d = -oppDir.dotProduct(vector3df::UnitY());
+	float d = -oppDir.dotProduct(vector3df::UnitY());
 	if (abs_(d) > 0.99f)
 	{
 		q = quatY;
@@ -271,7 +271,7 @@ void wow_m2TargetCamera::setDestDir( const vector3df& dir )
 
 	vector3df m2Dir = M2Node->getM2Move()->getDir();
 
-	f32 dot = DestDir.dotProduct(m2Dir);
+	float dot = DestDir.dotProduct(m2Dir);
 	if ( dot > 0.9995f)		//same
 	{
 		M2Node->getM2Move()->setDir(DestDir);

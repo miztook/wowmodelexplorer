@@ -16,18 +16,18 @@ public:
 public:
 
 #ifdef FULL_INTERFACE
-	virtual u32 onFillVertexBuffer(SVertex_PCT* vertices, u32 vcount) = 0;
+	virtual uint32_t onFillVertexBuffer(SVertex_PCT* vertices, uint32_t vcount) = 0;
 #endif
 
 	virtual void setEmitting(bool on) = 0;
-	virtual void setAnimationFrame(u32 anim, u32 frame) = 0;
-	virtual void setSpeed(f32 speed) = 0;
+	virtual void setAnimationFrame(uint32_t anim, uint32_t frame) = 0;
+	virtual void setSpeed(float speed) = 0;
 
 	virtual void setOwnView(matrix4* view) = 0;
 	virtual void setOwnProjection(matrix4* projection) = 0;
 
-	virtual void setWholeAlpha(bool enable, f32 val) = 0;
+	virtual void setWholeAlpha(bool enable, float val) = 0;
 	virtual void setWholeColor(bool enable, SColor color) = 0;
 
-	virtual void setEmitDensity(f32 density) = 0;
+	virtual void setEmitDensity(float density) = 0;
 };

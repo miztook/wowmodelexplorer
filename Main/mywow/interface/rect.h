@@ -92,5 +92,5 @@ inline void rect<T>::clipAgainst(const rect<T>& other)
 		UpperLeftCorner.X = LowerRightCorner.X;
 }
 
-typedef rect<f32> rectf;
-typedef rect<s32> recti;
+typedef rect<float> rectf;
+typedef rect<int32_t> recti;

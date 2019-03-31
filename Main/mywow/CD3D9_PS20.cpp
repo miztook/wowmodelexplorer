@@ -79,30 +79,30 @@ static CD3D9_PS20::SPixelShaderEntry g_d3d9ps20_pixelShaderEntries[] =
 
 void CD3D9_PS20::loadAll(CD3D9ShaderServices* shaderServices)
 {
-	u32 num = sizeof(g_d3d9ps20_pixelShaderEntries) / sizeof(SPixelShaderEntry);
-	for (u32 i=0; i<num; ++i)
+	uint32_t num = sizeof(g_d3d9ps20_pixelShaderEntries) / sizeof(SPixelShaderEntry);
+	for (uint32_t i=0; i<num; ++i)
 	{
-		for (u32 k=PS_Macro_None; k<PS_Macro_Num; ++k)
+		for (uint32_t k=PS_Macro_None; k<PS_Macro_Num; ++k)
 			loadPShaderHLSL(shaderServices, g_d3d9ps20_pixelShaderEntries[i].psType, (E_PS_MACRO)k);
 	}
 }
 
 bool CD3D9_PS20::loadPShaderHLSL( CD3D9ShaderServices* shaderServices, E_PS_TYPE type, E_PS_MACRO macro )
 {
-	const c8* profile = "ps_2_0";
+	const char* profile = "ps_2_0";
 
 	//load
 
-	c8 basePath[128];
+	char basePath[128];
 	Q_sprintf(basePath, 128, "Pixel\\%s\\", profile);
 
-	s32 index = -1;
-	u32 num = sizeof(g_d3d9ps20_pixelShaderEntries) / sizeof(SPixelShaderEntry);
-	for (u32 i=0; i<num; ++i)
+	int32_t index = -1;
+	uint32_t num = sizeof(g_d3d9ps20_pixelShaderEntries) / sizeof(SPixelShaderEntry);
+	for (uint32_t i=0; i<num; ++i)
 	{
 		if (g_d3d9ps20_pixelShaderEntries[i].psType == type)
 		{
-			index = (s32)i;
+			index = (int32_t)i;
 			break;
 		}
 	}
@@ -126,7 +126,7 @@ bool CD3D9_PS20::loadPShaderHLSL( CD3D9ShaderServices* shaderServices, E_PS_TYPE
 	return true;
 }
 
-void CD3D9_PS20::Terrain_setShaderConst(IPixelShader* ps, const SMaterial& material, u32 pass)
+void CD3D9_PS20::Terrain_setShaderConst(IPixelShader* ps, const SMaterial& material, uint32_t pass)
 {
 	CD3D9PixelShader* d3d9ps = static_cast<CD3D9PixelShader*>(ps);
 	ISceneRenderServices* sceneRenderServices = g_Engine->getSceneRenderServices();
@@ -163,7 +163,7 @@ void CD3D9_PS20::Terrain_setShaderConst(IPixelShader* ps, const SMaterial& mater
 	}
 }
 
-void CD3D9_PS20::UI_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D9_PS20::UI_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D9PixelShader* d3d9ps = static_cast<CD3D9PixelShader*>(ps);
 	CD3D9MaterialRenderServices* services = static_cast<CD3D9MaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
@@ -171,7 +171,7 @@ void CD3D9_PS20::UI_setShaderConst( IPixelShader* ps, const SMaterial& material,
 	d3d9ps->setTextureConstant("g_TexSampler0", services->getSampler_Texture(0));
 }
 
-void CD3D9_PS20::Default_setShaderConst_T1( IPixelShader* ps, const SMaterial& material, u32 pass)
+void CD3D9_PS20::Default_setShaderConst_T1( IPixelShader* ps, const SMaterial& material, uint32_t pass)
 {
 	//texture
 	CD3D9PixelShader* d3d9ps = static_cast<CD3D9PixelShader*>(ps);
@@ -180,7 +180,7 @@ void CD3D9_PS20::Default_setShaderConst_T1( IPixelShader* ps, const SMaterial& m
 	d3d9ps->setTextureConstant("g_TexSampler0", renderUnit->textures[0]);
 }
 
-void CD3D9_PS20::Default_setShaderConst_T2( IPixelShader* ps, const SMaterial& material, u32 pass)
+void CD3D9_PS20::Default_setShaderConst_T2( IPixelShader* ps, const SMaterial& material, uint32_t pass)
 {
 	//texture
 	CD3D9PixelShader* d3d9ps = static_cast<CD3D9PixelShader*>(ps);
@@ -191,7 +191,7 @@ void CD3D9_PS20::Default_setShaderConst_T2( IPixelShader* ps, const SMaterial& m
 	d3d9ps->setTextureConstant("g_TexSampler1", renderUnit->textures[1]);
 }
 
-void CD3D9_PS20::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D9_PS20::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D9PixelShader* d3d9ps = static_cast<CD3D9PixelShader*>(ps);
 	CD3D9SceneStateServices* sceneStateServices = static_cast<CD3D9SceneStateServices*>(g_Engine->getDriver()->getSceneStateServices());
@@ -209,7 +209,7 @@ void CD3D9_PS20::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& mater
 	d3d9ps->setTextureConstant("g_TexSampler0", renderUnit->textures[0]);
 }
 
-void CD3D9_PS20::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D9_PS20::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D9PixelShader* d3d9ps = static_cast<CD3D9PixelShader*>(ps);
 	CD3D9SceneStateServices* sceneStateServices = static_cast<CD3D9SceneStateServices*>(g_Engine->getDriver()->getSceneStateServices());
@@ -229,7 +229,7 @@ void CD3D9_PS20::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMateria
 	d3d9ps->setTextureConstant("g_TexSampler1", renderUnit->textures[1]);
 }
 
-void CD3D9_PS20::DiffuseT1_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D9_PS20::DiffuseT1_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D9PixelShader* d3d9ps = static_cast<CD3D9PixelShader*>(ps);
 	CD3D9SceneStateServices* sceneStateServices = static_cast<CD3D9SceneStateServices*>(g_Engine->getDriver()->getSceneStateServices());
@@ -246,7 +246,7 @@ void CD3D9_PS20::DiffuseT1_setShaderConst( IPixelShader* ps, const SMaterial& ma
 	d3d9ps->setTextureConstant("g_TexSampler0", renderUnit->textures[0]);
 }
 
-void CD3D9_PS20::DiffuseT2_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D9_PS20::DiffuseT2_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D9PixelShader* d3d9ps = static_cast<CD3D9PixelShader*>(ps);
 	CD3D9SceneStateServices* sceneStateServices = static_cast<CD3D9SceneStateServices*>(g_Engine->getDriver()->getSceneStateServices());
@@ -265,7 +265,7 @@ void CD3D9_PS20::DiffuseT2_setShaderConst( IPixelShader* ps, const SMaterial& ma
 	d3d9ps->setTextureConstant("g_TexSampler1", renderUnit->textures[1]);
 }
 
-void CD3D9_PS20::DiffuseT3_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D9_PS20::DiffuseT3_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	CD3D9PixelShader* d3d9ps = static_cast<CD3D9PixelShader*>(ps);
 	CD3D9SceneStateServices* sceneStateServices = static_cast<CD3D9SceneStateServices*>(g_Engine->getDriver()->getSceneStateServices());

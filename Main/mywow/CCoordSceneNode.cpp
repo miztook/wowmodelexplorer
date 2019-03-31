@@ -30,7 +30,7 @@ void CCoordSceneNode::registerSceneNode( bool frustumcheck, int sequence  )
 	g_Engine->getSceneManager()->registerNodeForRendering(this, true, sequence);
 }
 
-void CCoordSceneNode::tick(u32 timeSinceStart, u32 timeSinceLastFrame, bool visible)
+void CCoordSceneNode::tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible)
 {
 	if (Position2D != EP2D_NONE)
 	{
@@ -43,50 +43,50 @@ void CCoordSceneNode::tick(u32 timeSinceStart, u32 timeSinceLastFrame, bool visi
 		{
 		case EP2D_TOPLEFT:
 			{
-				pos2d.X += (s32)(screenSize.getWidth() * 0.1f);
-				pos2d.Y += (s32)(screenSize.getHeight() * 0.1f);
+				pos2d.X += (int32_t)(screenSize.getWidth() * 0.1f);
+				pos2d.Y += (int32_t)(screenSize.getHeight() * 0.1f);
 			}
 			break;
 		case EP2D_TOPRIGHT:
 			{
-				pos2d.X += (s32)(screenSize.getWidth() * 0.9f);
-				pos2d.Y += (s32)(screenSize.getHeight() * 0.1f);
+				pos2d.X += (int32_t)(screenSize.getWidth() * 0.9f);
+				pos2d.Y += (int32_t)(screenSize.getHeight() * 0.1f);
 			}
 			break;
 		case EP2D_BOTTOMLEFT:
 			{
-				pos2d.X += (s32)(screenSize.getWidth() * 0.1f);
-				pos2d.Y += (s32)(screenSize.getHeight() * 0.9f);
+				pos2d.X += (int32_t)(screenSize.getWidth() * 0.1f);
+				pos2d.Y += (int32_t)(screenSize.getHeight() * 0.9f);
 			}
 			break;
 		case EP2D_BOTTOMRIGHT:
 			{
-				pos2d.X += (s32)(screenSize.getWidth() * 0.9f);
-				pos2d.Y += (s32)(screenSize.getHeight() * 0.9f);
+				pos2d.X += (int32_t)(screenSize.getWidth() * 0.9f);
+				pos2d.Y += (int32_t)(screenSize.getHeight() * 0.9f);
 			}
 			break;
 		case EP2D_TOPCENTER:
 			{
-				pos2d.X += (s32)(screenSize.getWidth() * 0.5f);
-				pos2d.Y += (s32)(screenSize.getHeight() * 0.1f);
+				pos2d.X += (int32_t)(screenSize.getWidth() * 0.5f);
+				pos2d.Y += (int32_t)(screenSize.getHeight() * 0.1f);
 			}
 			break;
 		case EP2D_BOTTOMCENTER:
 			{
-				pos2d.X += (s32)(screenSize.getWidth() * 0.5f);
-				pos2d.Y += (s32)(screenSize.getHeight() * 0.9f);
+				pos2d.X += (int32_t)(screenSize.getWidth() * 0.5f);
+				pos2d.Y += (int32_t)(screenSize.getHeight() * 0.9f);
 			}
 			break;
 		case EP2D_CENTERLEFT:
 			{
-				pos2d.X += (s32)(screenSize.getWidth() * 0.1f);
-				pos2d.Y += (s32)(screenSize.getHeight() * 0.5f);
+				pos2d.X += (int32_t)(screenSize.getWidth() * 0.1f);
+				pos2d.Y += (int32_t)(screenSize.getHeight() * 0.5f);
 			}
 			break;
 		case EP2D_CENTERRIGHT:
 			{
-				pos2d.X += (s32)(screenSize.getWidth() * 0.9f);
-				pos2d.Y += (s32)(screenSize.getHeight() * 0.5f);
+				pos2d.X += (int32_t)(screenSize.getWidth() * 0.9f);
+				pos2d.Y += (int32_t)(screenSize.getHeight() * 0.5f);
 			}
 			break;
         default:
@@ -142,22 +142,22 @@ void CCoordSceneNode::calculateAxisParam(SAxisParam& param)
 void CCoordSceneNode::drawArrows(const SAxisParam& param) const
 {
 	vector3df vscale = AbsoluteTransformation.getScale();
-	f32 scale = vscale.getLength();
+	float scale = vscale.getLength();
 
 	//arrow
-	const f32 arrowLength = Length * ArrowLength * scale;
-	const f32 arrowWidth = Length * ArrowRadius * scale;
-	const f32 angle = 2 * PI / NUM_ARROW_POINTS;
-	u32 vcount = NUM_ARROW_POINTS + 2;
-	u32 icount = NUM_ARROW_POINTS * 6;
+	const float arrowLength = Length * ArrowLength * scale;
+	const float arrowWidth = Length * ArrowRadius * scale;
+	const float angle = 2 * PI / NUM_ARROW_POINTS;
+	uint32_t vcount = NUM_ARROW_POINTS + 2;
+	uint32_t icount = NUM_ARROW_POINTS * 6;
 	vector3df* vertices = (vector3df*)Z_AllocateTempMemory(sizeof(vector3df) * vcount);
-	u16* indices = (u16*)Z_AllocateTempMemory(sizeof(u16) * icount);
+	uint16_t* indices = (uint16_t*)Z_AllocateTempMemory(sizeof(uint16_t) * icount);
 
 	if (VisibleX)
 	{
 		vector3df center = param.xPos - param.xDir * arrowLength;
 
-		for (u32 i=0; i<NUM_ARROW_POINTS; ++i)
+		for (uint32_t i=0; i<NUM_ARROW_POINTS; ++i)
 		{
 			vector3df v = center + param.yDir * arrowWidth * cos(angle * i) +  param.zDir * arrowWidth * sin(angle * i);
 			vertices[i] = v;
@@ -165,7 +165,7 @@ void CCoordSceneNode::drawArrows(const SAxisParam& param) const
 		vertices[NUM_ARROW_POINTS] = center;
 		vertices[NUM_ARROW_POINTS+1] = param.xPos;
 
-		for (u32 i=0; i<NUM_ARROW_POINTS; ++i)
+		for (uint32_t i=0; i<NUM_ARROW_POINTS; ++i)
 		{
 			indices[i*6] = i;
 			indices[i*6+1] = (i == (NUM_ARROW_POINTS-1) ? 0 : (i+1));
@@ -183,7 +183,7 @@ void CCoordSceneNode::drawArrows(const SAxisParam& param) const
 	{
 		vector3df center = param.yPos - param.yDir * arrowLength;
 
-		for (u32 i=0; i<NUM_ARROW_POINTS; ++i)
+		for (uint32_t i=0; i<NUM_ARROW_POINTS; ++i)
 		{
 			vector3df v = center + param.xDir * arrowWidth * cos(angle * i) +  param.zDir * arrowWidth * sin(angle * i);
 			vertices[i] = v;
@@ -191,7 +191,7 @@ void CCoordSceneNode::drawArrows(const SAxisParam& param) const
 		vertices[NUM_ARROW_POINTS] = center;
 		vertices[NUM_ARROW_POINTS+1] = param.yPos;
 
-		for (u32 i=0; i<NUM_ARROW_POINTS; ++i)
+		for (uint32_t i=0; i<NUM_ARROW_POINTS; ++i)
 		{
 			indices[i*6] = i;
 			indices[i*6+1] = (i == (NUM_ARROW_POINTS-1) ? 0 : (i+1));
@@ -209,7 +209,7 @@ void CCoordSceneNode::drawArrows(const SAxisParam& param) const
 	{
 		vector3df center = param.zPos - param.zDir * arrowLength;
 
-		for (u32 i=0; i<NUM_ARROW_POINTS; ++i)
+		for (uint32_t i=0; i<NUM_ARROW_POINTS; ++i)
 		{
 			vector3df v = center + param.xDir * arrowWidth * cos(angle * i) +  param.yDir * arrowWidth * sin(angle * i);
 			vertices[i] = v;
@@ -217,7 +217,7 @@ void CCoordSceneNode::drawArrows(const SAxisParam& param) const
 		vertices[NUM_ARROW_POINTS] = center;
 		vertices[NUM_ARROW_POINTS+1] = param.zPos;
 
-		for (u32 i=0; i<NUM_ARROW_POINTS; ++i)
+		for (uint32_t i=0; i<NUM_ARROW_POINTS; ++i)
 		{
 			indices[i*6] = i;
 			indices[i*6+1] = (i == (NUM_ARROW_POINTS-1) ? 0 : (i+1));
@@ -249,7 +249,7 @@ void CCoordSceneNode::drawAxis(const SAxisParam& param) const
 
 void CCoordSceneNode::drawText(const SAxisParam& param) const
 {
-	f32 len = Length * 1.4f;
+	float len = Length * 1.4f;
 	vector3df posX(len, 0, 0);
 	vector3df posY(0, len, 0);
 	vector3df posZ(0, 0, len);
@@ -332,7 +332,7 @@ vector3df CCoordSceneNode::getDir( E_AXIS axis ) const
 	}
 }
 
-void CCoordSceneNode::pitch_yaw_FPS( f32 pitchDegree, f32 yawDegree )
+void CCoordSceneNode::pitch_yaw_FPS( float pitchDegree, float yawDegree )
 {
 	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 

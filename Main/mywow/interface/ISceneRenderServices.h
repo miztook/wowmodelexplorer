@@ -24,30 +24,30 @@ public:
 	virtual ~ISceneRenderServices() 	{}
 
 	//整个场景缩放比例： 地形，建筑，物体，天空
-	const f32 SCENE_SCALE;
+	const float SCENE_SCALE;
 
 public:
 	const SRenderUnit* getCurrentUnit() const { return CurrentUnit; }
 
 	//scene
-	void setModelLodBias(s32 lodbias) { ModelLodBias = lodbias; }
-	s32 getModelLodBias() const { return ModelLodBias; }
+	void setModelLodBias(int32_t lodbias) { ModelLodBias = lodbias; }
+	int32_t getModelLodBias() const { return ModelLodBias; }
 
-	void setTerrainLodBias(s32 lodbias) { TerrainLodBias = lodbias; }
-	s32 getTerrainLodBias() const { return TerrainLodBias; }
+	void setTerrainLodBias(int32_t lodbias) { TerrainLodBias = lodbias; }
+	int32_t getTerrainLodBias() const { return TerrainLodBias; }
 
 	//地形上小物体由可见 -> alpha ->不可见
-	void setObjectVisibleDistance(f32 distance) { ObjectVisibleDistance = distance; }
-	f32 getObjectVisibleDistance() const { return ObjectVisibleDistance; }
-	f32 getObjectAlphaDistance() const { return ObjectVisibleDistance * 0.8f; }
+	void setObjectVisibleDistance(float distance) { ObjectVisibleDistance = distance; }
+	float getObjectVisibleDistance() const { return ObjectVisibleDistance; }
+	float getObjectAlphaDistance() const { return ObjectVisibleDistance * 0.8f; }
 
-	void setM2InvisibleTickDistance(f32 distance) { M2InvisibleTickDistance = distance; }
-	f32 getM2InvisibleTickDistance() const { return M2InvisibleTickDistance; }
-	f32 getM2SlowTickBegin() const { return M2SlowTickStart; }
+	void setM2InvisibleTickDistance(float distance) { M2InvisibleTickDistance = distance; }
+	float getM2InvisibleTickDistance() const { return M2InvisibleTickDistance; }
+	float getM2SlowTickBegin() const { return M2SlowTickStart; }
 
 	//被雾的clip距离
-	f32 getClipDistance() const { return ClipDistance; }
-	void setClipDistance(f32 distance) { ClipDistance = distance; }
+	float getClipDistance() const { return ClipDistance; }
+	void setClipDistance(float distance) { ClipDistance = distance; }
 
 	E_ADT_LOAD getAdtLoadSize() const { return AdtLoadSize; }
 	void setAdtLoadSize(E_ADT_LOAD adt);
@@ -56,12 +56,12 @@ public:
 	void removeAdtLoadSizeChanged(IAdtLoadSizeChangedCallback* callback);
 
 protected:
-	s32		ModelLodBias;
-	s32		TerrainLodBias;
-	f32		ObjectVisibleDistance;		//距离/半径比例，超过此值时物体不可见
-	f32		M2SlowTickStart;				//
-	f32		M2InvisibleTickDistance;		//距离/半径比例, 超过此值时m2最慢tick
-	f32		ClipDistance;
+	int32_t		ModelLodBias;
+	int32_t		TerrainLodBias;
+	float		ObjectVisibleDistance;		//距离/半径比例，超过此值时物体不可见
+	float		M2SlowTickStart;				//
+	float		M2InvisibleTickDistance;		//距离/半径比例, 超过此值时m2最慢tick
+	float		ClipDistance;
 	E_ADT_LOAD		AdtLoadSize;
 
 	const SRenderUnit*			CurrentUnit;

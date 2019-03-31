@@ -26,9 +26,9 @@ private:
 	void outputPanGesture(E_GESTURE_STATE state);
 
 private:
-	f32		BeginPosX;
-	f32		BeginPosY;
-	f32		LastVelocityX;
-	f32		LastVelocityY;
+	float		BeginPosX;
+	float		BeginPosY;
+	float		LastVelocityX;
+	float		LastVelocityY;
 	bool		Moving;
 };

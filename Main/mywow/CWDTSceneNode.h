@@ -17,17 +17,17 @@ public:
 	virtual ~CWDTSceneNode();
 
 public:
-	virtual void setCurrentTile(s32 row, s32 col);
+	virtual void setCurrentTile(int32_t row, int32_t col);
 	virtual vector3df getCenter() const;
-	virtual bool getHeightNormal(f32 x, f32 z, f32* height, vector3df* normal) const;
-	virtual vector3df getPositionByTile(s32 row, s32 col) const;
-	virtual bool getTileByPosition(vector3df pos, s32& row, s32& col) const;
+	virtual bool getHeightNormal(float x, float z, float* height, vector3df* normal) const;
+	virtual vector3df getPositionByTile(int32_t row, int32_t col) const;
+	virtual bool getTileByPosition(vector3df pos, int32_t& row, int32_t& col) const;
 	virtual void setAdtLoadSize(E_ADT_LOAD size);
 
 	//ISceneNode
 	virtual void registerSceneNode(bool frustumcheck, int sequence);
 	virtual aabbox3df getBoundingBox() const { return aabbox3df::Zero(); }
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame, bool visible);
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible);
 	virtual void render() const;
 	virtual bool isNodeEligible() const { return true; }
 	virtual void onUpdated();
@@ -44,9 +44,9 @@ protected:
 	{
 		SChunkRenderUnit() : row(0), col(0), chunkCount(0) {}
 
-		u8 row;		//start
-		u8 col;
-		u16 chunkCount;
+		uint8_t row;		//start
+		uint8_t col;
+		uint16_t chunkCount;
 	};
 
 	class CMapBlock
@@ -70,13 +70,13 @@ protected:
 	};
 
 protected:
-	void registerVisibleChunks(u32 blockIndex, ICamera* cam);
-	void updateMapBlock(u32 blockIndex);
+	void registerVisibleChunks(uint32_t blockIndex, ICamera* cam);
+	void updateMapBlock(uint32_t blockIndex);
 	
-	void collectBlockRenderList(u32 blockIndex);
-	void renderMapBlock(u32 blockIndex) const;
-	void addChunkRenderList(u32 blockIndex, bool high, u8 row, u8 col);
-	void renderChunkRenderList(u32 blockIndex, bool high) const;
+	void collectBlockRenderList(uint32_t blockIndex);
+	void renderMapBlock(uint32_t blockIndex) const;
+	void addChunkRenderList(uint32_t blockIndex, bool high, uint8_t row, uint8_t col);
+	void renderChunkRenderList(uint32_t blockIndex, bool high) const;
 
 protected:
 	SMaterial		Material;

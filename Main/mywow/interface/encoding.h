@@ -18,7 +18,7 @@ enum u78
 	ascii8bits=2
 };
 
-static const c8* g_uniModeTextString[uniEnd] = 
+static const char* g_uniModeTextString[uniEnd] = 
 {
 	("ANSI"),
 	("UTF-8"),
@@ -28,14 +28,14 @@ static const c8* g_uniModeTextString[uniEnd] =
 	("ANSI7"),
 };
 
-inline const c8* getEncodingString(E_UniMode mode)
+inline const char* getEncodingString(E_UniMode mode)
 {
 	if (mode < uniEnd)
 		return g_uniModeTextString[mode];
 	return "Unknown";
 }
 
-static const u8 k_Boms[uniEnd][3] =
+static const uint8_t k_Boms[uniEnd][3] =
 {
 	{0x00, 0x00, 0x00},  // Unknown
 	{0xEF, 0xBB, 0xBF},  // UTF8
@@ -43,12 +43,12 @@ static const u8 k_Boms[uniEnd][3] =
 	{0xFF, 0xFE, 0x00},  // Little endian
 };
 
-inline u78 utf8_7bits_8bits(const u8* buf, u32 bufLen)
+inline u78 utf8_7bits_8bits(const uint8_t* buf, uint32_t bufLen)
 {
 	int rv = 1;
 	int ASCII7only = 1;
-	u8* sx	= (u8*)buf;
-	u8* endx	= sx + bufLen;
+	uint8_t* sx	= (uint8_t*)buf;
+	uint8_t* endx	= sx + bufLen;
 
 	while (sx<endx)
 	{
@@ -102,7 +102,7 @@ inline u78 utf8_7bits_8bits(const u8* buf, u32 bufLen)
 	return ascii8bits;
 }
 
-inline E_UniMode determineEncoding(const u8* buf, u32 bufLen)
+inline E_UniMode determineEncoding(const uint8_t* buf, uint32_t bufLen)
 {
 	// detect UTF-16 big-endian with BOM
 	if (bufLen > 1 && buf[0] == k_Boms[uni16BE][0] && buf[1] == k_Boms[uni16BE][1])

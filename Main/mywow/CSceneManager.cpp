@@ -83,7 +83,7 @@ bool CSceneManager::beginFrame(bool foreground)
 	const engineSetting::SAdvancedSetting& setting = g_Engine->getEngineSetting()->getAdvcanedSetting();
 
 	//frame limit
-	s32 limit = foreground ? setting.maxForegroundFPS : setting.maxBackgroundFPS;
+	int32_t limit = foreground ? setting.maxForegroundFPS : setting.maxBackgroundFPS;
 	if (limit > 0 && !Timer->checkFrameLimit(limit))
 		return false;
 #endif
@@ -98,8 +98,8 @@ void CSceneManager::endFrame()
 
 void CSceneManager::drawAll(bool foreground)
 {
-	u32 timeSinceStart = Timer->getTimeSinceStart();
-	u32 timeSinceLastFrame = Timer->getTimeSinceLastFrame();
+	uint32_t timeSinceStart = Timer->getTimeSinceStart();
+	uint32_t timeSinceLastFrame = Timer->getTimeSinceLastFrame();
 
 	CalcPerf = false;
 	if (timeSinceStart - PerfCalcTime > 1000)
@@ -202,7 +202,7 @@ void CSceneManager::renderRT()
 
 	//draw screen texture
 	vector2di upperLeft(0, 0);
-	vector2di lowerRight((s32)FrameRT->getSize().Width, (s32)FrameRT->getSize().Height);
+	vector2di lowerRight((int32_t)FrameRT->getSize().Width, (int32_t)FrameRT->getSize().Height);
 	recti rc = recti(upperLeft, lowerRight);
 
 	E_DRIVER_TYPE dType = Driver->getDriverType();
@@ -219,7 +219,7 @@ void CSceneManager::renderRT()
 void CSceneManager::doRender()
 {
 	//clip plane for terrain and wmo
-	f32 clip = SceneRenderServices->getClipDistance();
+	float clip = SceneRenderServices->getClipDistance();
 	if (ActiveCamera->getClipDistance() != clip)
 		ActiveCamera->setClipDistance(clip);
 
@@ -365,7 +365,7 @@ void CSceneManager::removeAllCameras()
 	}
 }
 
-ICamera* CSceneManager::addCamera( const vector3df& position, const vector3df& lookat, const vector3df& up, f32 nearValue, f32 farValue, f32 fov )
+ICamera* CSceneManager::addCamera( const vector3df& position, const vector3df& lookat, const vector3df& up, float nearValue, float farValue, float fov )
 {
 	ICamera* camera = new CCamera(position, lookat, up, nearValue, farValue, fov);
 	Cameras.push_back(camera);
@@ -393,7 +393,7 @@ ICoordSceneNode* CSceneManager::addCoordSceneNode(ISceneNode* parent)
 	return node;
 }
 
-IMeshSceneNode* CSceneManager::addMeshSceneNode( const c8* name, ISceneNode* parent)
+IMeshSceneNode* CSceneManager::addMeshSceneNode( const char* name, ISceneNode* parent)
 {
 	IMesh* m = g_Engine->getManualMeshServices()->getMesh(name);
 	if (!m)
@@ -457,10 +457,10 @@ void CSceneManager::drawAreaInfo()
 
 	CFTFont* ftFont = static_cast<CFTFont*>(g_Engine->getDefaultFont());
 
-	c16 str16[MAX_TEXT_LENGTH/4];
+	char16_t str16[MAX_TEXT_LENGTH/4];
 	utf8to16(AreaName, str16, MAX_TEXT_LENGTH/4);
 
-	s32 center = Driver->getViewPort().getWidth() / 2;
+	int32_t center = Driver->getViewPort().getWidth() / 2;
 	dimension2du szAreaName = ftFont->getWTextExtent(str16);
 	ftFont->drawW(str16, SColor(255,255,0), vector2di(center - szAreaName.Width/2, 0));
 }
@@ -472,7 +472,7 @@ void CSceneManager::drawDebugText()
 
 	CFTFont* ftFont = static_cast<CFTFont*>(g_Engine->getDefaultFont());
 
-	s32 center = Driver->getViewPort().getWidth() / 2;
+	int32_t center = Driver->getViewPort().getWidth() / 2;
 	dimension2du szDebugText = ftFont->getWTextExtent(DebugText);
 	ftFont->drawW(DebugText, SColor(255,255,0), vector2di(center - szDebugText.Width/2, 0));
 }
@@ -490,7 +490,7 @@ void CSceneManager::drawSceneInfo()
 		g_Engine->getParticleSystemServices()->getActiveParticlesCount(),
 		Z_AvailableMainMemoryPercent(), Z_AvailableSmallMemoryPercent(), Z_AvailableTempMemoryPercent() );
 
-	s32 right = Driver->getViewPort().getWidth() - 300;
+	int32_t right = Driver->getViewPort().getWidth() - 300;
 	g_Engine->getDefaultFont()->drawA(SceneInfo, SColor(255,255,0), vector2di(right, 0));
 }
 

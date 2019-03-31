@@ -17,7 +17,7 @@ CWMOSceneNode::CWMOSceneNode( IFileWMO* wmo, ISceneNode* parent )
 	DynGroups = new SDynGroup[Wmo->Header.nGroups];
 	memset(DynGroups, 0, sizeof(SDynGroup) * Wmo->Header.nGroups);
 
-	for (u32 i=0; i<Wmo->Header.nGroups; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nGroups; ++i)
 	{
 		DynGroups[i].batches = new SDynBatch[Wmo->Groups[i].NumBatches];
 		memset(DynGroups[i].batches, 0, sizeof(SDynBatch) * Wmo->Groups[i].NumBatches);
@@ -65,7 +65,7 @@ void CWMOSceneNode::registerSceneNode(bool frustumcheck, int sequence)
 	f.setFarPlane(cam->getTerrainClipPlane());
 
 	//find visible group & batch
-	for (u32 i=0; i<Wmo->Header.nGroups; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nGroups; ++i)
 	{
 		aabbox3df box = DynGroups[i].worldbox;
 			
@@ -78,7 +78,7 @@ void CWMOSceneNode::registerSceneNode(bool frustumcheck, int sequence)
 		DynGroups[i].visible = true;
 		DynGroups[i].distancesq = cam->getPosition().getDistanceFromSQ(DynGroups[i].worldbox.getCenter());
 
-		for (u32 k=0; k<Wmo->Groups[i].NumBatches; ++k)
+		for (uint32_t k=0; k<Wmo->Groups[i].NumBatches; ++k)
 		{
 			SDynBatch* batch = &DynGroups[i].batches[k];
 			box = batch->worldbox;
@@ -88,7 +88,7 @@ void CWMOSceneNode::registerSceneNode(bool frustumcheck, int sequence)
 	}
 
 	//find visible portals
-	for (u32 i=0; i<Wmo->Header.nPortals; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nPortals; ++i)
 	{
 		SDynPortal* dynPortal = &DynPortals[i];
 
@@ -104,13 +104,13 @@ aabbox3df CWMOSceneNode::getBoundingBox() const
 
 void CWMOSceneNode::render() const
 {
-	for (u32 i=0; i<Wmo->Header.nGroups; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nGroups; ++i)
 	{
 		const CWMOGroup* group = &Wmo->Groups[i];
 		if (!DynGroups[i].visible)
 			continue;
 	
-		for (u32 c=0; c<group->NumBatches; ++c)
+		for (uint32_t c=0; c<group->NumBatches; ++c)
 		{
 			if (DynGroups[i].batches[c].visible)
 				renderWMOGroup(i, c);
@@ -124,7 +124,7 @@ void CWMOSceneNode::render() const
 
 	/*
 	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
-	for (u32 i=0; i<Wmo->Header.nPortals; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nPortals; ++i)
 	{
 		const SWMOPortal* portal = &Wmo->Portals[i];
 		const SDynPortal* dynPortal = &DynPortals[i];
@@ -140,12 +140,12 @@ void CWMOSceneNode::render() const
 	}
 	*/
 	/*
-	for (u32 i=1; i<2; ++i)
+	for (uint32_t i=1; i<2; ++i)
 	{
 		const CWMOGroup* group = &Wmo->Groups[i];
 		if (!DynGroups[i].visible)
 			continue;
-		for (u32 c=0; c<group->NumBspNodes; ++c)
+		for (uint32_t c=0; c<group->NumBspNodes; ++c)
 			drawBspNode(i, c, SColor(255,255,0));
 
 		g_Engine->getDrawServices()->add3DBox(DynGroups[i].worldbox, SColor(255,0,0));
@@ -153,7 +153,7 @@ void CWMOSceneNode::render() const
 	*/
 }
 
-void CWMOSceneNode::renderWMOGroup( u32 groupIndex, u32 batchIndex ) const
+void CWMOSceneNode::renderWMOGroup( uint32_t groupIndex, uint32_t batchIndex ) const
 {
 	CSceneRenderServices* sceneRenderServices = static_cast<CSceneRenderServices*>(g_Engine->getSceneRenderServices());
 
@@ -161,7 +161,7 @@ void CWMOSceneNode::renderWMOGroup( u32 groupIndex, u32 batchIndex ) const
 	CWMOGroup* group = &Wmo->Groups[groupIndex];
 	SDynGroup* dynGroup = &DynGroups[groupIndex];
 	const SWMOBatch* batch = &group->Batches[batchIndex];
-	u16 matId = batch->matId;
+	uint16_t matId = batch->matId;
 	ASSERT(matId < Wmo->Header.nMaterials);
 
 	const SWMOMaterial* material = &Wmo->Materials[matId]; 
@@ -203,13 +203,13 @@ void CWMOSceneNode::onUpdated()
 	IWMOSceneNode::onUpdated();
 
 	//group
-	for (u32 i=0; i<Wmo->Header.nGroups; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nGroups; ++i)
 	{
 		const CWMOGroup* group = &Wmo->Groups[i];
 		SDynGroup* dynGroup = &DynGroups[i];
 		dynGroup->worldbox =	group->box;
 		AbsoluteTransformation.transformBox(dynGroup->worldbox);
-		for (u32 k=0; k<group->NumBatches; ++k)
+		for (uint32_t k=0; k<group->NumBatches; ++k)
 		{
 			dynGroup->batches[k].worldbox = group->Batches[k].box;
 			AbsoluteTransformation.transformBox(dynGroup->batches[k].worldbox);
@@ -217,7 +217,7 @@ void CWMOSceneNode::onUpdated()
 	}
 
 	//portal
-	for (u32 i=0; i<Wmo->Header.nPortals; ++i)
+	for (uint32_t i=0; i<Wmo->Header.nPortals; ++i)
 	{
 		const SWMOPortal* portal = &Wmo->Portals[i];
 		SDynPortal* dynPortal = &DynPortals[i];
@@ -372,7 +372,7 @@ void CWMOSceneNode::unloadDoodadSceneNodes()
 	WmoScene->unloadDoodadSceneNodes();
 }
 
-void CWMOSceneNode::drawPortal( u32 index, SColor color )
+void CWMOSceneNode::drawPortal( uint32_t index, SColor color )
 {
 	ASSERT(index < Wmo->Header.nPortals);
 	const SWMOPortal* portal = &Wmo->Portals[index];
@@ -410,7 +410,7 @@ void CWMOSceneNode::drawPortal( u32 index, SColor color )
 	sceneRenderServices->addRenderUnit(&unit, ERT_WIRE);	
 }
 
-void CWMOSceneNode::drawBspNode( u32 groupIndex, u32 nodeIndex, SColor color )
+void CWMOSceneNode::drawBspNode( uint32_t groupIndex, uint32_t nodeIndex, SColor color )
 {
 	if (groupIndex >= Wmo->Header.nGroups ||
 		nodeIndex >= Wmo->Groups[groupIndex].NumBspNodes ||
@@ -423,7 +423,7 @@ void CWMOSceneNode::drawBspNode( u32 groupIndex, u32 nodeIndex, SColor color )
 	const SWMOBspNode* node = &group->BspNodes[nodeIndex];
 
 	ASSERT(node->left == -1 && node->right == -1);
-	ASSERT(node->firstface + node->numfaces <= (u16)group->NumBspTriangles);
+	ASSERT(node->firstface + node->numfaces <= (uint16_t)group->NumBspTriangles);
 
 	SRenderUnit unit = {0};
 
@@ -448,7 +448,7 @@ void CWMOSceneNode::drawBspNode( u32 groupIndex, u32 nodeIndex, SColor color )
 	sceneRenderServices->addRenderUnit(&unit, ERT_WIRE);	
 }
 
-void CWMOSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame, bool visible )
+void CWMOSceneNode::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible )
 {
 	WmoScene->tick(timeSinceStart, timeSinceLastFrame);
 }

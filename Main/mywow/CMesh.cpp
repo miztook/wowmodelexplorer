@@ -2,7 +2,7 @@
 #include "CMesh.h"
 #include "mywow.h"
 
-CMesh::CMesh(const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, u32 primCount, const aabbox3df& box ) 
+CMesh::CMesh(const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, uint32_t primCount, const aabbox3df& box ) 
 	: Box(box)
 {
 	BufferParam = bufferParam;
@@ -23,7 +23,7 @@ CMesh::~CMesh()
 	BufferParam.destroy();
 }
 
-void CMesh::updateVertexBuffer(u32 index)
+void CMesh::updateVertexBuffer(uint32_t index)
 {
 	CVertexBuffer* vbuffer = BufferParam.getVBuffer(index);
 	if(vbuffer && vbuffer->Mapping != EMM_STATIC)

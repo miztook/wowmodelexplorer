@@ -29,17 +29,17 @@ public:
 	virtual IPixelShader* getPixelShader(E_PS_TYPE type, E_PS_MACRO macro = PS_Macro_None) { return PixelShaders[type][PS_Macro_None]; }
 
 public:
-	bool loadVShader( const c8* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback );
-	bool loadPShader( const c8* filename, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback );
+	bool loadVShader( const char* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback );
+	bool loadPShader( const char* filename, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback );
 
-	bool loadVShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback );
-	bool loadPShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback );
+	bool loadVShaderHLSL( const char* filename, const char* entry, const char* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback );
+	bool loadPShaderHLSL( const char* filename, const char* entry, const char* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback );
 
 	void useVertexShader(IVertexShader* vshader) { ShaderState.vshader = vshader; }
 	void usePixelShader(IPixelShader* pshader) { ShaderState.pshader = pshader; }
 	void applyShaders();
-	void setShaderConstants(IVertexShader* vs, const SMaterial& material, u32 pass);
-	void setShaderConstants(IPixelShader* ps, const SMaterial& material, u32 pass);
+	void setShaderConstants(IVertexShader* vs, const SMaterial& material, uint32_t pass);
+	void setShaderConstants(IPixelShader* ps, const SMaterial& material, uint32_t pass);
 
 public:
 	IVertexShader* getDefaultVertexShader(E_VERTEX_TYPE vType) const;

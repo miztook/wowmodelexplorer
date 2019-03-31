@@ -122,7 +122,7 @@ void COpenGLHardwareBufferServices::destroyHardwareBuffer( CIndexBuffer* ibuffer
 	}
 }
 
-bool COpenGLHardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, u32 size )
+bool COpenGLHardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer, uint32_t size )
 {
 	if (vbuffer->Size >= 65536 || size > vbuffer->Size || vbuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -132,8 +132,8 @@ bool COpenGLHardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer
 
 	GLenum usage = vbuffer->Mapping == EMM_DYNAMIC ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
 
-	u32 vertexSize = getStreamPitchFromType(vbuffer->Type);
-	u32 sizeToLock = size * vertexSize;
+	uint32_t vertexSize = getStreamPitchFromType(vbuffer->Type);
+	uint32_t sizeToLock = size * vertexSize;
 
 	GLuint vertexBuffer = (GLuint)PTR_TO_UINT32(vbuffer->HWLink);
 
@@ -151,7 +151,7 @@ bool COpenGLHardwareBufferServices::updateHardwareBuffer( CVertexBuffer* vbuffer
 	return true;
 }
 
-bool COpenGLHardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, u32 size )
+bool COpenGLHardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer, uint32_t size )
 {
 	if (ibuffer->Size >= 65536 || size > ibuffer->Size || ibuffer->Mapping == EMM_STATIC || !size)
 	{
@@ -160,9 +160,9 @@ bool COpenGLHardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer,
 	}
 
 	GLenum usage = ibuffer->Mapping == EMM_DYNAMIC ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
-	u32 indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
+	uint32_t indexSize = ibuffer->Type == EIT_16BIT ? 2 : 4;
 
-	u32 sizeToLock = size * indexSize;
+	uint32_t sizeToLock = size * indexSize;
 
 	GLuint indexBuffer = (GLuint)PTR_TO_UINT32(ibuffer->HWLink);
 
@@ -183,17 +183,17 @@ bool COpenGLHardwareBufferServices::updateHardwareBuffer( CIndexBuffer* ibuffer,
 void COpenGLHardwareBufferServices::createStaticIndexBufferQuadList()
 {
 	//index buffer
-	u16* indices = (u16*)Z_AllocateTempMemory(sizeof(u16) * MAX_QUADS() * 6);
-	u32 firstVert = 0;
-	u32 firstIndex = 0;
-	for (u32 i = 0; i < MAX_QUADS(); ++i )
+	uint16_t* indices = (uint16_t*)Z_AllocateTempMemory(sizeof(uint16_t) * MAX_QUADS() * 6);
+	uint32_t firstVert = 0;
+	uint32_t firstIndex = 0;
+	for (uint32_t i = 0; i < MAX_QUADS(); ++i )
 	{
-		indices[firstIndex + 0] = (u16)firstVert + 0;
-		indices[firstIndex + 1] = (u16)firstVert + 1;
-		indices[firstIndex + 2] = (u16)firstVert + 2;
-		indices[firstIndex + 3] = (u16)firstVert + 3;
-		indices[firstIndex + 4] = (u16)firstVert + 2;
-		indices[firstIndex + 5] = (u16)firstVert + 1;
+		indices[firstIndex + 0] = (uint16_t)firstVert + 0;
+		indices[firstIndex + 1] = (uint16_t)firstVert + 1;
+		indices[firstIndex + 2] = (uint16_t)firstVert + 2;
+		indices[firstIndex + 3] = (uint16_t)firstVert + 3;
+		indices[firstIndex + 4] = (uint16_t)firstVert + 2;
+		indices[firstIndex + 5] = (uint16_t)firstVert + 1;
 
 		firstVert += 4; 
 		firstIndex += 6;
@@ -241,8 +241,8 @@ bool COpenGLHardwareBufferServices::internalCreateVertexBuffer( CVertexBuffer* v
 		break;
 	}
 
-	u32 stride = getStreamPitchFromType(vbuffer->Type);
-	u32 byteWidth = stride * vbuffer->Size;
+	uint32_t stride = getStreamPitchFromType(vbuffer->Type);
+	uint32_t byteWidth = stride * vbuffer->Size;
 
 	GLuint hwLink;
 	Driver->getGLExtension()->extGlGenBuffers(1, &hwLink);
@@ -284,7 +284,7 @@ bool COpenGLHardwareBufferServices::internalCreateIndexBuffer( CIndexBuffer* ibu
 		break;
 	}
 
-	u32 byteWidth = (ibuffer->Type == EIT_16BIT ? 2 : 4) * ibuffer->Size;
+	uint32_t byteWidth = (ibuffer->Type == EIT_16BIT ? 2 : 4) * ibuffer->Size;
 
 	GLuint hwLink;
 	Driver->getGLExtension()->extGlGenBuffers(1, &hwLink);

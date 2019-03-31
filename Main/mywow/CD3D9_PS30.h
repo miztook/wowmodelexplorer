@@ -19,18 +19,18 @@ private:
 public:
 	CD3D9_PS30() {}
 
-	static void Terrain_setShaderConst(IPixelShader* ps, const SMaterial& material, u32 pass);
+	static void Terrain_setShaderConst(IPixelShader* ps, const SMaterial& material, uint32_t pass);
 	
-	static void UI_setShaderConst(IPixelShader* ps, const SMaterial& material, u32 pass);
-	static void Default_setShaderConst_T1(IPixelShader* ps, const SMaterial& material, u32 pass);
-	static void Default_setShaderConst_T2(IPixelShader* ps, const SMaterial& material, u32 pass);
+	static void UI_setShaderConst(IPixelShader* ps, const SMaterial& material, uint32_t pass);
+	static void Default_setShaderConst_T1(IPixelShader* ps, const SMaterial& material, uint32_t pass);
+	static void Default_setShaderConst_T2(IPixelShader* ps, const SMaterial& material, uint32_t pass);
 
-	static void DiffuseT1_setShaderConst(IPixelShader* ps, const SMaterial& material, u32 pass);
-	static void DiffuseT2_setShaderConst(IPixelShader* ps, const SMaterial& material, u32 pass);
-	static void DiffuseT3_setShaderConst(IPixelShader* ps, const SMaterial& material, u32 pass);
+	static void DiffuseT1_setShaderConst(IPixelShader* ps, const SMaterial& material, uint32_t pass);
+	static void DiffuseT2_setShaderConst(IPixelShader* ps, const SMaterial& material, uint32_t pass);
+	static void DiffuseT3_setShaderConst(IPixelShader* ps, const SMaterial& material, uint32_t pass);
 
-	static void MapObj_setShaderConst(IPixelShader* ps, const SMaterial& material, u32 pass);
-	static void MapObjTwoLayer_setShaderConst(IPixelShader* ps, const SMaterial& material, u32 pass);
+	static void MapObj_setShaderConst(IPixelShader* ps, const SMaterial& material, uint32_t pass);
+	static void MapObjTwoLayer_setShaderConst(IPixelShader* ps, const SMaterial& material, uint32_t pass);
 
 public:
 	void loadAll(CD3D9ShaderServices* shaderServices);

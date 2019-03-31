@@ -15,28 +15,28 @@ private:
 	friend class CWDTLoader;
 
 public:
-	virtual bool loadFile(IMemFile* file, s32 mapid);
-	virtual bool loadFileSimple(IMemFile* file, s32 mapid);
+	virtual bool loadFile(IMemFile* file, int32_t mapid);
+	virtual bool loadFileSimple(IMemFile* file, int32_t mapid);
 	
-	virtual STile* getTile(u8 row, u8 col);
+	virtual STile* getTile(uint8_t row, uint8_t col);
 
-	u8* getFileData() const { return FileData; }
+	uint8_t* getFileData() const { return FileData; }
 
-	s32 getMapId() const { return MapId; }
-	const c8* getMapName() const { return MapName; }
+	int32_t getMapId() const { return MapId; }
+	const char* getMapName() const { return MapName; }
 	CMapEnvironment*	 getMapEnvironment() const { return MapEnvironment; }
 
-	bool getPositionByTile(s32 row, s32 col, vector3df& pos);
-	bool getTileByPosition(vector3df pos, s32& row, s32& col);
-	STile* getTile(u32 index);
-	u32 getTileCount() const { return (u32)Tiles.size(); }
+	bool getPositionByTile(int32_t row, int32_t col, vector3df& pos);
+	bool getTileByPosition(vector3df pos, int32_t& row, int32_t& col);
+	STile* getTile(uint32_t index);
+	uint32_t getTileCount() const { return (uint32_t)Tiles.size(); }
 
 	bool loadADT(STile* tile, bool simple = false);
 	bool loadADTTextures(STile* tile);
 	bool unloadADT(STile* tile);
 
-	void getADTFileName(u8 row, u8 col, c8* name, u32 size) const;
-	const c8* getWMOFileName(u32 index) const;
+	void getADTFileName(uint8_t row, uint8_t col, char* name, uint32_t size) const;
+	const char* getWMOFileName(uint32_t index) const;
 
 private:
 	bool loadADTData(STile* tile);		//no video data
@@ -47,29 +47,29 @@ private:
 
 private:
 #ifdef USE_QALLOCATOR
-	typedef std::map<u16, u32, std::less<u16>, qzone_allocator<std::pair<u16, u32>>> T_TileLookup;
+	typedef std::map<uint16_t, uint32_t, std::less<uint16_t>, qzone_allocator<std::pair<uint16_t, uint32_t>>> T_TileLookup;
 #else
-	typedef std::unordered_map<u16, u32> T_TileLookup;
+	typedef std::unordered_map<uint16_t, uint32_t> T_TileLookup;
 #endif
 	
-	u8*			FileData;
+	uint8_t*			FileData;
 	CMapEnvironment*		MapEnvironment;
 
-	s32			MapId;
+	int32_t			MapId;
 
 	//1st adt
 	vector3df		AdtPosition;
-	s32		AdtRow, AdtCol;
+	int32_t		AdtRow, AdtCol;
 
-	c8		MapName[DEFAULT_SIZE];
-	c8		Name[QMAX_PATH];
+	char		MapName[DEFAULT_SIZE];
+	char		Name[QMAX_PATH];
 
 	//hibyte: row, lowbyte: col
 	T_TileLookup		TileLookup;
 
 };
 
-inline STile* CFileWDT::getTile( u32 index )
+inline STile* CFileWDT::getTile( uint32_t index )
 {
 	if (index >= Tiles.size())
 		return nullptr;

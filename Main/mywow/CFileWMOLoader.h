@@ -8,7 +8,7 @@ class IMemFile;
 class CWMOLoader
 {
 public:
-	static bool isALoadableFileExtension( const c8* filename ) { return hasFileExtensionA(filename, "wmo"); }
+	static bool isALoadableFileExtension( const char* filename ) { return hasFileExtensionA(filename, "wmo"); }
 
 	IFileWMO* loadWMO( IMemFile* file );
 };

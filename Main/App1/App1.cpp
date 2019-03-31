@@ -64,7 +64,7 @@ int main()
 
 	createInput();
 
-	u32 lastTime = g_Engine->getTimer()->getTimeSinceStart();
+	uint32_t lastTime = g_Engine->getTimer()->getTimeSinceStart();
 
 	MSG msg;
 	while (!g_bExit)	
@@ -76,8 +76,8 @@ int main()
 		}
 		else
 		{
-			u32 now = g_Engine->getTimer()->getTimeSinceStart();
-			u32 time =  min_(now - lastTime, 500u);
+			uint32_t now = g_Engine->getTimer()->getTimeSinceStart();
+			uint32_t time =  min_(now - lastTime, 500u);
 			lastTime = now;
 
 			bool active = !g_bBackMode && ::GetActiveWindow() == hwnd;

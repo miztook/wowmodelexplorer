@@ -7,11 +7,11 @@
 
 IImage* CImageLoaderPVR::loadAsImage( IMemFile* file )
 {
-	u8* buffer = (u8*)file->getBuffer();
+	uint8_t* buffer = (uint8_t*)file->getBuffer();
 
-	u32 width = 0;
-	u32 height = 0;
-	u32 offset = 0;
+	uint32_t width = 0;
+	uint32_t height = 0;
+	uint32_t offset = 0;
 
 	ECOLOR_FORMAT format = ECF_UNKNOWN;
 
@@ -24,9 +24,9 @@ IImage* CImageLoaderPVR::loadAsImage( IMemFile* file )
 		width = headerV3->u32Width;
 		height = headerV3->u32Height;
 
-		static const u64 PVRTEX_PFHIGHMASK=0xffffffff00000000ull;
+		static const uint64_t PVRTEX_PFHIGHMASK=0xffffffff00000000ull;
 
-		u32 formatFlags = (u32)((headerV3->u64PixelFormat & PVRTEX_PFHIGHMASK) >> 32);
+		uint32_t formatFlags = (uint32_t)((headerV3->u64PixelFormat & PVRTEX_PFHIGHMASK) >> 32);
 		if (formatFlags == 0)
 		{
 			switch (headerV3->u64PixelFormat)
@@ -94,7 +94,7 @@ IImage* CImageLoaderPVR::loadAsImage( IMemFile* file )
 		width = headerV2->dwWidth;
 		height = headerV2->dwHeight;
 
-		const u32 formatFlags = headerV2->dwpfFlags & PVR_TEXTURE_FLAG_TYPE_MASK;
+		const uint32_t formatFlags = headerV2->dwpfFlags & PVR_TEXTURE_FLAG_TYPE_MASK;
 		switch (formatFlags)
 		{
 		case CPVRImage::OGL_PVRTC2:
@@ -125,28 +125,28 @@ IImage* CImageLoaderPVR::loadAsImage( IMemFile* file )
 		}
 	}
 
-	u8* src = buffer + offset;
+	uint8_t* src = buffer + offset;
 
 	dimension2du dim(width, height);
-	u32* decompressed = new u32[width * height];
+	uint32_t* decompressed = new uint32_t[width * height];
 
 	switch(format)
 	{
 	case ECF_PVRTC1_RGB_2BPP:
-		PVRDecompressRGB_2bpp(src, width, height, (u8*)decompressed);
+		PVRDecompressRGB_2bpp(src, width, height, (uint8_t*)decompressed);
 		break;
 	case ECF_PVRTC1_RGBA_2BPP:
-		PVRDecompressRGBA_2bpp(src, width, height, (u8*)decompressed);
+		PVRDecompressRGBA_2bpp(src, width, height, (uint8_t*)decompressed);
 		break;
 	case ECF_PVRTC1_RGB_4BPP:
-		PVRDecompressRGB_4bpp(src, width, height, (u8*)decompressed);
+		PVRDecompressRGB_4bpp(src, width, height, (uint8_t*)decompressed);
 		break;
 	case ECF_PVRTC1_RGBA_4BPP:
-		PVRDecompressRGBA_4bpp(src, width, height, (u8*)decompressed);
+		PVRDecompressRGBA_4bpp(src, width, height, (uint8_t*)decompressed);
 		break;
 	case ECF_A8R8G8B8:
 		{
-			for (u32 i=0; i<width*height; ++i)
+			for (uint32_t i=0; i<width*height; ++i)
 			{
 				decompressed[i*4] = src[i*4];
 				decompressed[i*4+1] = src[i*4+3];

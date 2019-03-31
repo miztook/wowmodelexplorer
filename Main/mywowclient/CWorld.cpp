@@ -13,7 +13,7 @@ CWorld::~CWorld()
 
 }
 
-void CWorld::tick( u32 delta )
+void CWorld::tick( uint32_t delta )
 {
 
 }
@@ -30,9 +30,9 @@ void CWorld::setWorldSceneNode( IWDTSceneNode* node )
 	MapTileSceneNode = NULL;
 }
 
-f32 CWorld::getHeightNormal( f32 x, f32 z, vector3df* normal ) const
+float CWorld::getHeightNormal( float x, float z, vector3df* normal ) const
 {
-	f32 height;
+	float height;
 	if (MapTileSceneNode && MapTileSceneNode->getHeightNormal(x, z, &height, normal))
 		return height;
 

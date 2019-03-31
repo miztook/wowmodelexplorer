@@ -15,9 +15,9 @@ public:
 public:
 	void onAnimationEnd();
 
-	bool takeItem(s32 itemid, bool sheath = false);
-	void loadStartOutfit(s32 startid, bool deathknight, bool sheath = false);
-	void loadSet(s32 setid, bool sheath = false);
+	bool takeItem(int32_t itemid, bool sheath = false);
+	void loadStartOutfit(int32_t startid, bool deathknight, bool sheath = false);
+	void loadSet(int32_t setid, bool sheath = false);
 
 	void sheathLeftWeapon(bool sheath);
 	void sheathRightWeapon(bool sheath);
@@ -31,7 +31,7 @@ public:
 	bool isShowCape() const;
 
 private:
-	void takeSlotModelItem(s32 slot, s32 itemid, bool sheath);
+	void takeSlotModelItem(int32_t slot, int32_t itemid, bool sheath);
 
 private:
 	IM2SceneNode*			M2SceneNode;

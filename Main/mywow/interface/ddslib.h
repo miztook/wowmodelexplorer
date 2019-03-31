@@ -238,7 +238,7 @@ typedef struct ddsColor888_s
 	unsigned char	b, g, r;
 }ddsColor888_t;
 
-inline u32 getAlpha(unsigned int color) { return color>>24; }
+inline uint32_t getAlpha(unsigned int color) { return color>>24; }
 
 /* public functions */
 //int DDSGetInfo( ddsBuffer_t *dds, int *width, int *height, ddsPF_t *pf );

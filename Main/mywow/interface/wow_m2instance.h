@@ -12,9 +12,9 @@ class CFileSkin;
 
 struct CharTexturePart				//纹理组合
 {
-	c8  Name[QMAX_PATH];
-	s32 Region;
-	s32 Layer;
+	char  Name[QMAX_PATH];
+	int32_t Region;
+	int32_t Layer;
 
 	bool operator<(const CharTexturePart& c) const
 	{
@@ -27,16 +27,16 @@ struct CharTexture				//使用临时内存
 	explicit CharTexture(bool isHD);
 	~CharTexture();
 
-	void addLayer(const c8* name, s32 region, s32 layer);
-	bool addItemLayer(const c8* name, s32 region,  u32 gender, s32 layer);
-	bool makeItemTexture(s32 region,  u32 gender, const c8* name, c8* outname);
+	void addLayer(const char* name, int32_t region, int32_t layer);
+	bool addItemLayer(const char* name, int32_t region,  uint32_t gender, int32_t layer);
+	bool makeItemTexture(int32_t region,  uint32_t gender, const char* name, char* outname);
 
 	ITexture* compose(bool pandarenOrHD);
 
 	static const int MAX_TEX_PART_SIZE = 40;
 
 	CharTexturePart*		TextureParts;
-	u32		TexPartCount;	
+	uint32_t		TexPartCount;	
 	bool		IsHD;
 };
 
@@ -44,7 +44,7 @@ struct SDynGeoset
 {
 	~SDynGeoset()
 	{
-		for (u32 i=0; i<NumUnits; ++i)
+		for (uint32_t i=0; i<NumUnits; ++i)
 		{
 			delete Units[i].BoneMats;
 			delete Units[i].BoneMatrixArray;
@@ -67,7 +67,7 @@ struct SDynGeoset
 	matrix4			TextureMatrix;
 	SColor		emissive;
 	SColor		finalColor;
-	u32			NumUnits;
+	uint32_t			NumUnits;
 
 	bool				NoAlpha;
 	bool				UseTextureAnim;
@@ -120,18 +120,18 @@ struct SCharacterInfo
 #endif
 	}
 
-	u32		SkinColor;
-	u32		FaceType;
-	u32		HairColor;
-	u32		HairStyle;
-	u32		FacialHair;
+	uint32_t		SkinColor;
+	uint32_t		FaceType;
+	uint32_t		HairColor;
+	uint32_t		HairStyle;
+	uint32_t		FacialHair;
 
-	u32		CapeID;
-	u32		Race;
-	u32		Gender;
+	uint32_t		CapeID;
+	uint32_t		Race;
+	uint32_t		Gender;
 
-	s32		Equipments[NUM_CHAR_SLOTS];
-	s32		Geosets[NUM_GEOSETS];
+	int32_t		Equipments[NUM_CHAR_SLOTS];
+	int32_t		Geosets[NUM_GEOSETS];
 
 	bool		DeathKnight;
 	bool		HelmHideFacial1;
@@ -147,7 +147,7 @@ struct SCharacterInfo
 	bool		IsHD;
 
 #ifdef MW_EDITOR
-	c8			BodyTextureFileNames[NUM_REGIONS][QMAX_PATH];
+	char			BodyTextureFileNames[NUM_REGIONS][QMAX_PATH];
 #endif
 };
 
@@ -163,20 +163,20 @@ public:
 
 	//character
 	void updateCharacter();			//更新模型显示信息
-	void animateBones(u32 anim, u32 time, u32 lastingtime, f32 blend);
+	void animateBones(uint32_t anim, uint32_t time, uint32_t lastingtime, float blend);
 	void disableBones();
-	void animateColors(u32 anim, u32 time);
-	void animateTextures(u32 anim, u32 time);
+	void animateColors(uint32_t anim, uint32_t time);
+	void animateTextures(uint32_t anim, uint32_t time);
 	void solidColors();
 
 	//clothes
-	void updateEquipments(s32 slot, s32 itemid);
-	s32 getItemSlot(s32 itemid) const;
-	s32 getSlotItemId(s32 slot) const;
+	void updateEquipments(int32_t slot, int32_t itemid);
+	int32_t getItemSlot(int32_t itemid) const;
+	int32_t getSlotItemId(int32_t slot) const;
 
 	//weapon, attachment
-	bool slotHasModel(s32 slot) const;
-	void setM2Equipment(s32 slot, s32 itemid, bool sheath, SAttachmentEntry* entry1, SAttachmentInfo* info1, SAttachmentEntry* entry2, SAttachmentInfo* info2);
+	bool slotHasModel(int32_t slot) const;
+	void setM2Equipment(int32_t slot, int32_t itemid, bool sheath, SAttachmentEntry* entry1, SAttachmentInfo* info1, SAttachmentEntry* entry2, SAttachmentInfo* info2);
 
 	//mount
 	void setM2Mount(SAttachmentEntry* entry);
@@ -185,21 +185,21 @@ public:
 	void setHeadDecal(SAttachmentEntry* entry);
 
 	//startoutfit
-	void dressStartOutfit(s32 startid);
+	void dressStartOutfit(int32_t startid);
 
 	//set
-	void dressSet(s32 setid);
+	void dressSet(int32_t setid);
 
 	//npc
-	bool updateNpc(s32 npcid);
+	bool updateNpc(int32_t npcid);
 
 	//item
 	void setItemTexture(ITexture* tex) { setReplaceTexture(TEXTURE_ITEM, tex); }
-	bool getItemInfo(s32 itemid, bool isNpc, SItemInfo& itemInfo) const;
-	bool isBothHandsDagger(s32 itemid) const;
-	bool isOrdinaryDagger(s32 itemid) const;
+	bool getItemInfo(int32_t itemid, bool isNpc, SItemInfo& itemInfo) const;
+	bool isBothHandsDagger(int32_t itemid) const;
+	bool isOrdinaryDagger(int32_t itemid) const;
 
-	bool setGeosetMaterial(u32 subset, SMaterial& material);
+	bool setGeosetMaterial(uint32_t subset, SMaterial& material);
 
 	void buildVisibleGeosets();
 
@@ -210,14 +210,14 @@ public:
 	CFileSkin*		CurrentSkin;
 	SDynBone*		DynBones;
 
-	s8*			UseAttachments;
+	int8_t*			UseAttachments;
 	ITexture*		ReplaceTextures[NUM_TEXTURETYPE];				//可替换的纹理
 
 	LENTRY		VisibleGeosetList;
 	aabbox3df		AnimatedBox;
 
 	//
-	f32			ModelAlpha;
+	float			ModelAlpha;
 	SColor	ModelColor;
 
 	bool		EnableModelAlpha;
@@ -230,39 +230,39 @@ private:
 
 	//character
 	//设置服装类型的装备(不需要另外的模型)
-	void addClothesEquipment(s32 slot, s32 itemnum, s32 layer, CharTexture& tex, bool npc);
+	void addClothesEquipment(int32_t slot, int32_t itemnum, int32_t layer, CharTexture& tex, bool npc);
 	void dressupCharacter(CharTexture& charTex);
-	s32 getSlot(s32 type) const;
+	int32_t getSlot(int32_t type) const;
 	static int getClothesSlotLayer( int slot )	;
 
-	void calcAttachmentBone(u8 i, u32 anim, u32 time, f32 blend);
-	void calcBone(u8 i, u32 anim, u32 time, f32 blend, bool enableScale, aabbox3df* animatedBox=nullptr);				//i: indexinGlobal
+	void calcAttachmentBone(uint8_t i, uint32_t anim, uint32_t time, float blend);
+	void calcBone(uint8_t i, uint32_t anim, uint32_t time, float blend, bool enableScale, aabbox3df* animatedBox=nullptr);				//i: indexinGlobal
 
-	bool isBlinkGeoset(u32 index) const;
-	void getEquipScale(f32& head, f32& shoulder, f32& weapon, f32& waist) const;
+	bool isBlinkGeoset(uint32_t index) const;
+	void getEquipScale(float& head, float& shoulder, float& weapon, float& waist) const;
 
-	void calcTextureAnim(u32 c, u32 anim, u32 time);
+	void calcTextureAnim(uint32_t c, uint32_t anim, uint32_t time);
 
 	bool setMaterialShaders(SMaterial& material, const STexUnit* texUnit, bool billboard);
 
 private:
 	struct SHint
 	{
-		s32		transHint;
-		s32		scaleHint;
-		s32		rotHint;
+		int32_t		transHint;
+		int32_t		scaleHint;
+		int32_t		rotHint;
 	};
 
 	struct SColorHint
 	{
-		s32		colorHint;
-		s32		opacityHint;
-		s32		transparencyHint;
+		int32_t		colorHint;
+		int32_t		opacityHint;
+		int32_t		transparencyHint;
 	};
 
 private:
-	u32		LastBoneAnim, LastColorAnim, LastTextureAnim;
-	u32		LastBoneTime, LastColorTime, LastTextureTime;
+	uint32_t		LastBoneAnim, LastColorAnim, LastTextureAnim;
+	uint32_t		LastBoneTime, LastColorTime, LastTextureTime;
 
 	IFileM2*		Mesh;
 	SHint*		BoneHints;

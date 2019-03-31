@@ -18,9 +18,9 @@ struct SDx11ConstDesc
 		return index < other.index;
 	}
 
-	c8 name[32];
-	u32 index;		//register index in dx9, cbuffer/tbuffer index in dx11
-	u32 size;			//const size
+	char name[32];
+	uint32_t index;		//register index in dx9, cbuffer/tbuffer index in dx11
+	uint32_t size;			//const size
 	ID3D11Buffer*	constBuffer;
 	ID3D11ShaderResourceView*	shaderResourceView;		//for tbuffer
 	bool tbuffer;		//is tbuffer ? 
@@ -33,9 +33,9 @@ struct SSamplerDesc11
 		return index < other.index;
 	}
 
-	c8 name[32];
-	u32 index;
-	u32 count;
+	char name[32];
+	uint32_t index;
+	uint32_t count;
 };
 
 struct STextureDesc11
@@ -45,15 +45,15 @@ struct STextureDesc11
 		return index < other.index;
 	}
 
-	c8 name[32];
-	u32 index;
-	u32 count;
+	char name[32];
+	uint32_t index;
+	uint32_t count;
 };
 
 class CD3D11VertexShader : public IVertexShader
 {
 private:
-	CD3D11VertexShader(E_VS_TYPE type, ID3D11VertexShader* vs, VSHADERCONSTCALLBACK callback, const void* codeBuffer, u32 codeSize);
+	CD3D11VertexShader(E_VS_TYPE type, ID3D11VertexShader* vs, VSHADERCONSTCALLBACK callback, const void* codeBuffer, uint32_t codeSize);
 
 	~CD3D11VertexShader();
 
@@ -66,27 +66,27 @@ private:
 	 T_SamplerList& getSamplerList() { return SamplerList; }
 	 T_TextureList& getTextureList() { return TextureList; }
 
-	SDx11ConstDesc* getConstantDesc(u32 index);
+	SDx11ConstDesc* getConstantDesc(uint32_t index);
 
 public:
 	bool isValid() const { return VertexShader != nullptr; }
 	void onShaderUsed();
 
-	u32 getConstantCount() const { return (u32)CBufferList.size() + (u32)TBufferList.size(); }
-	u32 getTextureCount() const { return (u32)TextureList.size(); }
-	u32 getSamplerCount() const { return (u32)SamplerList.size(); }
+	uint32_t getConstantCount() const { return (uint32_t)CBufferList.size() + (uint32_t)TBufferList.size(); }
+	uint32_t getTextureCount() const { return (uint32_t)TextureList.size(); }
+	uint32_t getSamplerCount() const { return (uint32_t)SamplerList.size(); }
 	ID3D11VertexShader* getDXVShader() const { return VertexShader; }
 
-	void setShaderConstant(const c8* name, const void* srcData, u32 size);
+	void setShaderConstant(const char* name, const void* srcData, uint32_t size);
 
 private:
-	const SDx11ConstDesc* getConstantDesc(const c8* name) const;
-	const STextureDesc11* getTextureDesc(const c8* name) const;
-	const SSamplerDesc11* getSamplerDesc(const c8* name) const;
+	const SDx11ConstDesc* getConstantDesc(const char* name) const;
+	const STextureDesc11* getTextureDesc(const char* name) const;
+	const SSamplerDesc11* getSamplerDesc(const char* name) const;
 
 	const void* getCodeBuffer() const { return CodeBuffer; }
-	u32 getCodeSize() const { return CodeSize; }
-	void setShaderConstant(const SDx11ConstDesc* desc, const void* srcData, u32 size);
+	uint32_t getCodeSize() const { return CodeSize; }
+	void setShaderConstant(const SDx11ConstDesc* desc, const void* srcData, uint32_t size);
 
 private:
 	CD3D11Driver*		Driver;
@@ -98,7 +98,7 @@ private:
 	T_TextureList		TextureList;
 
 	void*	CodeBuffer;
-	u32		CodeSize;
+	uint32_t		CodeSize;
 
 	friend class CD3D11ShaderServices;
 	friend class CD3D11VertexDeclaration;
@@ -120,26 +120,26 @@ private:
 	 T_SamplerList& getSamplerList() { return SamplerList; }
 	 T_TextureList& getTextureList() { return TextureList; }
 
-	SDx11ConstDesc* getConstantDesc(u32 index);
+	SDx11ConstDesc* getConstantDesc(uint32_t index);
 
 public:
 	bool isValid() const { return PixelShader != nullptr; }
 	void onShaderUsed();
 
-	void setShaderConstant(const c8* name, const void* srcData, u32 size);
-	void setTextureConstant(const c8* name, ITexture* texture);
+	void setShaderConstant(const char* name, const void* srcData, uint32_t size);
+	void setTextureConstant(const char* name, ITexture* texture);
 
-	u32 getConstantCount() const { return (u32)CBufferList.size() + (u32)TBufferList.size(); }
-	u32 getTextureCount() const { return (u32)TextureList.size(); }
-	u32 getSamplerCount() const { return (u32)SamplerList.size(); }
+	uint32_t getConstantCount() const { return (uint32_t)CBufferList.size() + (uint32_t)TBufferList.size(); }
+	uint32_t getTextureCount() const { return (uint32_t)TextureList.size(); }
+	uint32_t getSamplerCount() const { return (uint32_t)SamplerList.size(); }
 	ID3D11PixelShader* getDXPShader() const { return PixelShader; }
 
 private:
-	const SDx11ConstDesc* getConstantDesc(const c8* name) const;
-	const STextureDesc11* getTextureDesc(const c8* name) const;
-	const SSamplerDesc11* getSamplerDesc(const c8* name) const;
+	const SDx11ConstDesc* getConstantDesc(const char* name) const;
+	const STextureDesc11* getTextureDesc(const char* name) const;
+	const SSamplerDesc11* getSamplerDesc(const char* name) const;
 	
-	void setShaderConstant(const SDx11ConstDesc* desc, const void* srcData, u32 size);
+	void setShaderConstant(const SDx11ConstDesc* desc, const void* srcData, uint32_t size);
 
 private:
 	CD3D11Driver*	Driver;

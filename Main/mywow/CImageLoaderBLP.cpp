@@ -7,7 +7,7 @@
 
 IImage* CImageLoaderBLP::loadAsImage( IMemFile* file, bool changeRB)
 {
-	u8* buffer = (u8*)file->getBuffer();
+	uint8_t* buffer = (uint8_t*)file->getBuffer();
 
 	CBLPImage::SBLPHeader* header = reinterpret_cast<CBLPImage::SBLPHeader*>(buffer);
 
@@ -20,28 +20,28 @@ IImage* CImageLoaderBLP::loadAsImage( IMemFile* file, bool changeRB)
 	ASSERT(header->_version == 1);
 	bool isABGR = !g_Engine->isDXFamily();
 
-	u32 width = header->_xres;
-	u32 height = header->_yres;
-	u32 size = width * height;
+	uint32_t width = header->_xres;
+	uint32_t height = header->_yres;
+	uint32_t size = width * height;
 
-	u8* src = buffer + header->_mipmapOfs[0];
+	uint8_t* src = buffer + header->_mipmapOfs[0];
 
 	dimension2du dim(width, height);
 
-	u32* decompressed = new u32[size];
+	uint32_t* decompressed = new uint32_t[size];
 	if (header->_compress == 2)				//compressed
 	{
 		if (header->_alphaCompress == 7)			//dxt5
 		{
-			DDSDecompressDXT5(src, width, height, (u8*)decompressed);
+			DDSDecompressDXT5(src, width, height, (uint8_t*)decompressed);
 		}
 		else if (header->_alphaCompress == 1)				//dxt3
 		{
-			DDSDecompressDXT3(src, width, height, (u8*)decompressed);
+			DDSDecompressDXT3(src, width, height, (uint8_t*)decompressed);
 		}	
 		else if (header->_alphaCompress == 0)
 		{
-			DDSDecompressDXT1(src, width, height, (u8*)decompressed, true);
+			DDSDecompressDXT1(src, width, height, (uint8_t*)decompressed, true);
 		}
 		else
 		{
@@ -50,9 +50,9 @@ IImage* CImageLoaderBLP::loadAsImage( IMemFile* file, bool changeRB)
 	}
 	else
 	{
-		u32* palette = (u32*)(buffer + sizeof(CBLPImage::SBLPHeader));
+		uint32_t* palette = (uint32_t*)(buffer + sizeof(CBLPImage::SBLPHeader));
 		SColor c;
-		for (u32 i=0; i<width*height; ++i)
+		for (uint32_t i=0; i<width*height; ++i)
 		{
 			switch (header->_alphaDepth)
 			{
@@ -63,14 +63,14 @@ IImage* CImageLoaderBLP::loadAsImage( IMemFile* file, bool changeRB)
 			case 1:
 				{
 					c = palette[src[i]];
-					u32 a = (src[(size + i/8)] >> (i%8)) & 1;
+					uint32_t a = (src[(size + i/8)] >> (i%8)) & 1;
 					c.setAlpha( a ? 0xff : 0);
 				}
 				break;
 			case 4:
 				{
 					c = palette[src[i]];
-					u32 a;
+					uint32_t a;
 					if (i%2)
 						a = (src[(size+i/2)] >> 4) & 0x000f;
 					else
@@ -91,9 +91,9 @@ IImage* CImageLoaderBLP::loadAsImage( IMemFile* file, bool changeRB)
 
 	if (changeRB)
 	{
-		for (u32 h=0; h<dim.Height; ++h)
+		for (uint32_t h=0; h<dim.Height; ++h)
 		{
-			for (u32 w=0; w<dim.Width; ++w)
+			for (uint32_t w=0; w<dim.Width; ++w)
 			{
 				SColor c = decompressed[h*dim.Width + w];
 				decompressed[h*dim.Width + w] = SColor(c.getAlpha(), c.getBlue(), c.getGreen(), c.getRed()).color;

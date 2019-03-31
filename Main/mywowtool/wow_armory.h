@@ -13,31 +13,31 @@ namespace Json
 
 struct SCharArmoryInfo
 {
-	c8		Name[NAME_SIZE*4];
+	char		Name[NAME_SIZE*4];
 
-	u32		Race;
-	u32		Gender;
-	u32		ClassId;
+	uint32_t		Race;
+	uint32_t		Gender;
+	uint32_t		ClassId;
 
-	u32		SkinColor;
-	u32		FaceType;
-	u32		HairColor;
-	u32		HairStyle;
-	u32		FacialHair;
+	uint32_t		SkinColor;
+	uint32_t		FaceType;
+	uint32_t		HairColor;
+	uint32_t		HairStyle;
+	uint32_t		FacialHair;
 
-	s32		Head;
-	s32		Shoulder;
-	s32		Boots;
-	s32		Belt;
-	s32		Shirt;
-	s32		Pants;
-	s32		Chest;
-	s32		Bracers;
-	s32		Gloves;
-	s32		HandRight;
-	s32		HandLeft;
-	s32		Cape;
-	s32		Tabard;
+	int32_t		Head;
+	int32_t		Shoulder;
+	int32_t		Boots;
+	int32_t		Belt;
+	int32_t		Shirt;
+	int32_t		Pants;
+	int32_t		Chest;
+	int32_t		Bracers;
+	int32_t		Gloves;
+	int32_t		HandRight;
+	int32_t		HandLeft;
+	int32_t		Cape;
+	int32_t		Tabard;
 };
 
 class wow_armory
@@ -50,11 +50,11 @@ public:
 	~wow_armory();
 
 public:
-	bool parseCharacterArmoryInfo(const c8* filename, SCharArmoryInfo* charInfo);
+	bool parseCharacterArmoryInfo(const char* filename, SCharArmoryInfo* charInfo);
 	bool parseCharacterArmoryInfo(IReadFile* file, SCharArmoryInfo* charInfo);
 
 private:
 	bool parseCharInfoFromJson(Json::Value& root, SCharArmoryInfo* charInfo);
-	s32 parseItem(Json::Value& items, const c8* key);
+	int32_t parseItem(Json::Value& items, const char* key);
 };
 

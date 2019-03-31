@@ -45,7 +45,7 @@ CharTexture::~CharTexture()
 	Z_FreeTempMemory(TextureParts);
 }
 
-void CharTexture::addLayer( const c8* name, s32 region, s32 layer )
+void CharTexture::addLayer( const char* name, int32_t region, int32_t layer )
 {
 	if (name == nullptr || strlen(name) == 0)
 		return;
@@ -59,12 +59,12 @@ void CharTexture::addLayer( const c8* name, s32 region, s32 layer )
 	ASSERT(TexPartCount < MAX_TEX_PART_SIZE);
 }
 
-bool CharTexture::addItemLayer( const c8* name, s32 region, u32 gender, s32 layer )
+bool CharTexture::addItemLayer( const char* name, int32_t region, uint32_t gender, int32_t layer )
 {
 	if (name == nullptr || strlen(name) == 0)
 		return false;
 
-	c8 outname[QMAX_PATH];
+	char outname[QMAX_PATH];
 	bool success = makeItemTexture(region, gender, name, outname);
 	if (success)
 	{
@@ -78,7 +78,7 @@ bool CharTexture::addItemLayer( const c8* name, s32 region, u32 gender, s32 laye
 	return success;
 }
 
-bool CharTexture::makeItemTexture(s32 region, u32 gender, const c8* name, c8* outname)
+bool CharTexture::makeItemTexture(int32_t region, uint32_t gender, const char* name, char* outname)
 {
 	if (strlen(name) < 3)
 	{
@@ -96,7 +96,7 @@ bool CharTexture::makeItemTexture(s32 region, u32 gender, const c8* name, c8* ou
 	Q_strlwr(outname);
 #endif
 
-	u32 len = (u32)strlen(outname);
+	uint32_t len = (uint32_t)strlen(outname);
 	if (len < 6)
 	{
 		Q_strcpy(outname, QMAX_PATH, "");
@@ -129,13 +129,13 @@ ITexture* CharTexture::compose(bool pandaren)
 	heapsort<CharTexturePart>(TextureParts, TexPartCount);
 
 	//熊猫人为1024X512, 其他为512X512
-	u32 texWidth = largeScale ? REGION_PX * 2 : REGION_PX;
-	u32 texHeight = REGION_PX;
+	uint32_t texWidth = largeScale ? REGION_PX * 2 : REGION_PX;
+	uint32_t texHeight = REGION_PX;
 
-	u32* destData = (u32*)Z_AllocateTempMemory(texWidth * texHeight * sizeof(u32));
-	memset(destData, 0xff, texWidth * texHeight * sizeof(u32));
+	uint32_t* destData = (uint32_t*)Z_AllocateTempMemory(texWidth * texHeight * sizeof(uint32_t));
+	memset(destData, 0xff, texWidth * texHeight * sizeof(uint32_t));
 
-	for (u32 i=0; i<TexPartCount; ++i)
+	for (uint32_t i=0; i<TexPartCount; ++i)
 	{
 		CharTexturePart* part = &TextureParts[i];
 		const CharRegionCoords coords = largeScale ? pandaren_regions[part->Region] : regions[part->Region];
@@ -158,30 +158,30 @@ ITexture* CharTexture::compose(bool pandaren)
 		{
 			CImage* srcImage = static_cast<CImage*>(image);
 			CImage* newImage = srcImage;
-			u32* tmpData = nullptr;			//临时image
+			uint32_t* tmpData = nullptr;			//临时image
 			bool needScale = srcImage->getDimension().Width != coords.xsize ||
 				srcImage->getDimension().Height != coords.ysize;			//扩大
 
 			if (needScale)
 			{
-				tmpData = (u32*)Z_AllocateTempMemory(coords.xsize * coords.ysize * sizeof(u32));
+				tmpData = (uint32_t*)Z_AllocateTempMemory(coords.xsize * coords.ysize * sizeof(uint32_t));
 				newImage = new CImage(ECF_A8R8G8B8, dimension2du(coords.xsize, coords.ysize), tmpData, false);
 				srcImage->copyToScaling(newImage);
 			}
 
-			u32 width = coords.xsize;
-			u32 height = coords.ysize;
+			uint32_t width = coords.xsize;
+			uint32_t height = coords.ysize;
 
 			ASSERT(newImage->getDimension().Width == coords.xsize &&
 				newImage->getDimension().Height == coords.ysize );
 
-			u32 srcX, srcY, dstX, dstY;
+			uint32_t srcX, srcY, dstX, dstY;
 			for ( srcY=0, dstY=coords.ypos; srcY<height; ++srcY, ++dstY)
 			{
 				for ( srcX=0, dstX=coords.xpos; srcX<width; ++srcX, ++dstX )
 				{
 					SColor src = newImage->getPixel(srcX, srcY);
-					u32* dst = destData + dstY*texWidth + dstX;
+					uint32_t* dst = destData + dstY*texWidth + dstX;
 
 					SColor d(*dst);
 					d = SColor::interpolate(src, d, 1 - src.getAlpha() / 255.0f, true);
@@ -203,9 +203,9 @@ ITexture* CharTexture::compose(bool pandaren)
 	ITexture* tex;
 #ifdef MW_COMPILE_WITH_GLES2
 	//gles2版使用不压缩的 256X256
-	const u32 len_px = 256;
+	const uint32_t len_px = 256;
 
-	u32* tmpData = (u32*)Z_AllocateTempMemory(len_px * len_px * sizeof(u8) * 2);
+	uint32_t* tmpData = (uint32_t*)Z_AllocateTempMemory(len_px * len_px * sizeof(uint8_t) * 2);
 	CBlit::resizeBilinearA8R8G8B8(destData, texWidth, texHeight, tmpData, len_px, len_px, ECF_R5G6B5);
 	//CBlit::resizeBicubicA8R8G8B8(destData, texWidth, texHeight, tmpData, len_px, len_px, ECF_R5G6B5);
 	tex = g_Engine->getManualTextureServices()->createTextureFromData(dimension2du(len_px, len_px), ECF_R5G6B5, tmpData, true);
@@ -215,7 +215,7 @@ ITexture* CharTexture::compose(bool pandaren)
 // 	if (largeScale)		//缩放回 512X512
 // 	{
 // 		CImage* composedImage = new CImage(ECF_A8R8G8B8, dimension2du(texWidth, texHeight), destData, false);
-// 		u32* tmpData = (u32*)Z_AllocateTempMemory(REGION_PX * REGION_PX * sizeof(u32));
+// 		uint32_t* tmpData = (uint32_t*)Z_AllocateTempMemory(REGION_PX * REGION_PX * sizeof(uint32_t));
 // 		composedImage->copyToScaling(tmpData, REGION_PX, REGION_PX);
 // 		tex = g_Engine->getManualTextureServices()->createCompressTextureFromData(dimension2du(REGION_PX, REGION_PX), ECF_A8R8G8B8, tmpData, true);
 // 		Z_FreeTempMemory(tmpData);
@@ -245,7 +245,7 @@ wow_m2instance::wow_m2instance( IFileM2* m2, bool npc )
 	LastBoneAnim = LastColorAnim = LastTextureAnim = -1;
 	LastBoneTime = LastColorTime = LastTextureTime = -1;
 
-	for (u32 i=0; i<NUM_TEXTURETYPE; ++i)
+	for (uint32_t i=0; i<NUM_TEXTURETYPE; ++i)
 		ReplaceTextures[i] = nullptr;
 
 	CurrentSkin = Mesh->Skin;
@@ -257,8 +257,8 @@ wow_m2instance::wow_m2instance( IFileM2* m2, bool npc )
 	DynBones = new SDynBone[Mesh->NumBones];
 	Calcs = new bool[Mesh->NumBones];
 	BoneHints = new SHint[Mesh->NumBones];
-	UseAttachments = new s8[Mesh->NumAttachments];
-	::memset(UseAttachments, 0, sizeof(s8) * Mesh->NumAttachments);
+	UseAttachments = new int8_t[Mesh->NumAttachments];
+	::memset(UseAttachments, 0, sizeof(int8_t) * Mesh->NumAttachments);
 
 	DynGeosets = nullptr;
 	if (CurrentSkin)				//有skin
@@ -266,10 +266,10 @@ wow_m2instance::wow_m2instance( IFileM2* m2, bool npc )
 		DynGeosets = new SDynGeoset[CurrentSkin->NumGeosets];
 		memset(DynGeosets, 0, sizeof(SDynGeoset) * CurrentSkin->NumGeosets);
 
-		for (u32 i=0; i<CurrentSkin->NumGeosets; ++i)
+		for (uint32_t i=0; i<CurrentSkin->NumGeosets; ++i)
 		{
 			CGeoset* set = &CurrentSkin->Geosets[i];
-			DynGeosets[i].NumUnits = (u32)set->BoneUnits.size();
+			DynGeosets[i].NumUnits = (uint32_t)set->BoneUnits.size();
 			DynGeosets[i].Units = new SDynGeoset::SUnit[DynGeosets[i].NumUnits];
 			for (CGeoset::T_BoneUnits::const_iterator itr =set->BoneUnits.begin(); itr != set->BoneUnits.end(); ++itr)
 			{
@@ -313,7 +313,7 @@ wow_m2instance::~wow_m2instance()
 	delete[] Calcs;
 	delete[] DynBones;
 
-	for (u32 i=0; i<NUM_TEXTURETYPE; ++i)
+	for (uint32_t i=0; i<NUM_TEXTURETYPE; ++i)
 		if(ReplaceTextures[i])
 			ReplaceTextures[i]->drop();
 }
@@ -325,7 +325,7 @@ void wow_m2instance::updateCharacter()
 
 	int* Geosets = CharacterInfo->Geosets;
 
-	for (u32 i=0; i<NUM_GEOSETS; ++i)
+	for (uint32_t i=0; i<NUM_GEOSETS; ++i)
 	{
 		Geosets[i] = 1;
 		CharacterInfo->CapeID = 1;
@@ -344,7 +344,7 @@ void wow_m2instance::updateCharacter()
 
 #ifdef MW_EDITOR
 	::memset(CharacterInfo->BodyTextureFileNames, 0, sizeof(CharacterInfo->BodyTextureFileNames));
-	for (u32 i=0; i<charTex.TexPartCount; ++i)
+	for (uint32_t i=0; i<charTex.TexPartCount; ++i)
 	{
 		CharTexturePart* part = &charTex.TextureParts[i];
 		Q_strcpy(CharacterInfo->BodyTextureFileNames[part->Region], QMAX_PATH, part->Name);
@@ -354,7 +354,7 @@ void wow_m2instance::updateCharacter()
 	buildVisibleGeosets();
 }
 
-void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 blend)
+void wow_m2instance::animateBones( uint32_t anim, uint32_t time,  uint32_t lastingtime, float blend)
 {
 
 	if (!CurrentSkin || (LastBoneAnim == anim && time == LastBoneTime))
@@ -372,15 +372,15 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 
 	if (CharacterInfo)
 	{		
-		u32 blinkGeosets[256];
-		u32 blinkGeosetCount = 0;
-		u32 fistGeosets[256];
-		u32 fistGeosetCount = 0;
+		uint32_t blinkGeosets[256];
+		uint32_t blinkGeosetCount = 0;
+		uint32_t fistGeosets[256];
+		uint32_t fistGeosetCount = 0;
 
-		u32 closeFistIndex = Mesh->AnimationLookup[ANIMATION_HANDSCLOSED];
+		uint32_t closeFistIndex = Mesh->AnimationLookup[ANIMATION_HANDSCLOSED];
 		for (PLENTRY p = VisibleGeosetList.Flink; p != &VisibleGeosetList;)
 		{
-			u32 c = (u32)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - DynGeosets);
+			uint32_t c = (uint32_t)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - DynGeosets);
 			p = p->Flink;
 
 			if (DynGeosets[c].NoAlpha)
@@ -404,9 +404,9 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 				SDynGeoset::SUnit* unit = &DynGeosets[c].Units[itr->Index];
 				unit->Enable = itr->BoneCount > 0;
 
-				for(u8 k=0; k <(*itr).BoneCount; ++k)
+				for(uint8_t k=0; k <(*itr).BoneCount; ++k)
 				{
-					u8 idx = (*itr).local2globalMap[k];
+					uint8_t idx = (*itr).local2globalMap[k];
 
 					SModelBone* b = &Mesh->Bones[idx];
 
@@ -432,9 +432,9 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 		}
 
 		//blink geosets
-		for (u32 i=0; i<blinkGeosetCount; ++i)
+		for (uint32_t i=0; i<blinkGeosetCount; ++i)
 		{
-			u32 c = blinkGeosets[i];
+			uint32_t c = blinkGeosets[i];
 			CGeoset* set = &CurrentSkin->Geosets[c];
 
 			for (CGeoset::T_BoneUnits::iterator itr =set->BoneUnits.begin(); itr != set->BoneUnits.end(); ++itr)
@@ -442,9 +442,9 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 				SDynGeoset::SUnit* unit = &DynGeosets[c].Units[itr->Index];
 				unit->Enable = itr->BoneCount > 0;
 
-				for(u8 k=0; k <(*itr).BoneCount; ++k)
+				for(uint8_t k=0; k <(*itr).BoneCount; ++k)
 				{
-					u8 idx = (*itr).local2globalMap[k];
+					uint8_t idx = (*itr).local2globalMap[k];
 					
 					calcBone(idx, 0, lastingtime, blend, true, &AnimatedBox);
 					unit->BoneMats[k] = *(const matrix4*)DynBones[idx].mat.pointer();
@@ -453,9 +453,9 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 		}
 
 		//fist geosets
-		for (u32 i=0; i<fistGeosetCount; ++i)
+		for (uint32_t i=0; i<fistGeosetCount; ++i)
 		{
-			u32 c = fistGeosets[i];
+			uint32_t c = fistGeosets[i];
 			CGeoset* set = &CurrentSkin->Geosets[c];
 
 			for (CGeoset::T_BoneUnits::iterator itr =set->BoneUnits.begin(); itr != set->BoneUnits.end(); ++itr)
@@ -463,9 +463,9 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 				SDynGeoset::SUnit* unit = &DynGeosets[c].Units[itr->Index];
 				unit->Enable = itr->BoneCount > 0;
 
-				for(u8 k=0; k <(*itr).BoneCount; ++k)
+				for(uint8_t k=0; k <(*itr).BoneCount; ++k)
 				{
-					u8 idx = (*itr).local2globalMap[k];
+					uint8_t idx = (*itr).local2globalMap[k];
 
 					SModelBone* b = &Mesh->Bones[idx];
 					if ((CharacterInfo->CloseLHand && b->bonetype == EBT_LEFTHAND) ||
@@ -482,7 +482,7 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 	{
 		for (PLENTRY p = VisibleGeosetList.Flink; p != &VisibleGeosetList;)
 		{
-			u32 c = (u32)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - DynGeosets);
+			uint32_t c = (uint32_t)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - DynGeosets);
 			p = p->Flink;
 
 			if (DynGeosets[c].NoAlpha)
@@ -494,9 +494,9 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 				SDynGeoset::SUnit* unit = &DynGeosets[c].Units[itr->Index];
 				unit->Enable = itr->BoneCount > 0;
 
-				for(u8 k=0; k <(*itr).BoneCount; ++k)
+				for(uint8_t k=0; k <(*itr).BoneCount; ++k)
 				{
-					u8 idx = (*itr).local2globalMap[k];
+					uint8_t idx = (*itr).local2globalMap[k];
 
 					calcBone(idx, anim, time, blend, true, &AnimatedBox);
 					unit->BoneMats[k] = *(const matrix4*)DynBones[idx].mat.pointer();	
@@ -506,9 +506,9 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 	}
 
 	//attachments
-	for (u32 c=0; c<Mesh->NumAttachments; ++c)
+	for (uint32_t c=0; c<Mesh->NumAttachments; ++c)
 	{
-		s32 i = Mesh->Attachments[c].boneIndex;
+		int32_t i = Mesh->Attachments[c].boneIndex;
 
 #ifdef MW_EDITOR
 		if (i != -1)
@@ -521,22 +521,22 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 	//particles
 	if (ShowParticles)
 	{
-		for (u32 c=0; c<Mesh->NumParticleSystems; ++c)
+		for (uint32_t c=0; c<Mesh->NumParticleSystems; ++c)
 		{
-			s16 i;
+			int16_t i;
 			if((i = Mesh->ParticleSystems[c].boneIndex) != -1)
-				calcBone((u8)i, anim, time, blend, false, &AnimatedBox);
+				calcBone((uint8_t)i, anim, time, blend, false, &AnimatedBox);
 		}
 	}
 
 	//ribbons
 	if (ShowRibbons)
 	{
-		for (u32 c=0; c<Mesh->NumRibbonEmitters; ++c)
+		for (uint32_t c=0; c<Mesh->NumRibbonEmitters; ++c)
 		{
-			s16 i;
+			int16_t i;
 			if((i= Mesh->RibbonEmitters[c].boneIndex) != -1)
-				calcBone((u8)i, anim, time, blend, false, &AnimatedBox);
+				calcBone((uint8_t)i, anim, time, blend, false, &AnimatedBox);
 		}
 	}
 
@@ -548,7 +548,7 @@ void wow_m2instance::animateBones( u32 anim, u32 time,  u32 lastingtime, f32 ble
 	LastBoneTime = time;
 }
 
-void wow_m2instance::calcBone( u8 i, u32 anim, u32 time, f32 blend, bool enableScale, aabbox3df* animatedBox)
+void wow_m2instance::calcBone( uint8_t i, uint32_t anim, uint32_t time, float blend, bool enableScale, aabbox3df* animatedBox)
 {
 	if (Calcs[i])
 		return;
@@ -557,8 +557,8 @@ void wow_m2instance::calcBone( u8 i, u32 anim, u32 time, f32 blend, bool enableS
 	const SModelBone* b = &Mesh->Bones[i];
 
 	// 	{
-	// 		u32 numtrans = b->trans.getNumAnims();
-	// 		u32 numrot = b->rot.getNumAnims();
+	// 		uint32_t numtrans = b->trans.getNumAnims();
+	// 		uint32_t numrot = b->rot.getNumAnims();
 	// 		if (numtrans || numrot)
 	// 		{
 	// 			ASSERT(numtrans > anim || numrot > anim);
@@ -613,7 +613,7 @@ void wow_m2instance::calcBone( u8 i, u32 anim, u32 time, f32 blend, bool enableS
 
 	if (b->parent != -1)
 	{
-		calcBone((u8)b->parent, anim, time, blend, enableScale, animatedBox);
+		calcBone((uint8_t)b->parent, anim, time, blend, enableScale, animatedBox);
 
 		DynBones[i].mat = m * DynBones[b->parent].mat;
 	}
@@ -635,7 +635,7 @@ void wow_m2instance::disableBones()
 {
 	for (PLENTRY p = VisibleGeosetList.Flink; p != &VisibleGeosetList;)
 	{
-		u32 c = (u32)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - DynGeosets);
+		uint32_t c = (uint32_t)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - DynGeosets);
 		p = p->Flink;
 
 		if (DynGeosets[c].NoAlpha)
@@ -650,7 +650,7 @@ void wow_m2instance::disableBones()
 	}
 }
 
-void wow_m2instance::calcAttachmentBone( u8 i, u32 anim, u32 time, f32 blend )
+void wow_m2instance::calcAttachmentBone( uint8_t i, uint32_t anim, uint32_t time, float blend )
 {
 	if (Calcs[i])
 		return;
@@ -701,7 +701,7 @@ void wow_m2instance::calcAttachmentBone( u8 i, u32 anim, u32 time, f32 blend )
 
 	if (b->parent != -1)
 	{
-		calcBone((u8)b->parent, anim, time, blend, false, nullptr);
+		calcBone((uint8_t)b->parent, anim, time, blend, false, nullptr);
 
 		DynBones[i].mat = m * DynBones[b->parent].mat;
 	}
@@ -716,7 +716,7 @@ void wow_m2instance::calcAttachmentBone( u8 i, u32 anim, u32 time, f32 blend )
 	Calcs[i]= true;
 }
 
-void wow_m2instance::animateColors(u32 anim, u32 time)
+void wow_m2instance::animateColors(uint32_t anim, uint32_t time)
 {
 	if ( !CurrentSkin || (LastColorAnim == anim && time == LastColorTime))
 		return;
@@ -726,10 +726,10 @@ void wow_m2instance::animateColors(u32 anim, u32 time)
 
 	for (PLENTRY p = VisibleGeosetList.Flink; p != &VisibleGeosetList;)
 	{
-		u32 c = (u32)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - DynGeosets);
+		uint32_t c = (uint32_t)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - DynGeosets);
 		p = p->Flink;
 
-		u32 realAnim = anim;
+		uint32_t realAnim = anim;
 
 		//eye blink
 		if (CharacterInfo && isBlinkGeoset(c)/*|| (isDeathKnightBlinkGeoset(c))*/)
@@ -740,8 +740,8 @@ void wow_m2instance::animateColors(u32 anim, u32 time)
 		DynGeosets[c].NoAlpha = false;
 
 		CGeoset* set = &CurrentSkin->Geosets[c];
-		s16 colorIndex = set->getTexUnit(0)->ColorIndex;
-		s16 transIndex = set->getTexUnit(0)->TransIndex;
+		int16_t colorIndex = set->getTexUnit(0)->ColorIndex;
+		int16_t transIndex = set->getTexUnit(0)->TransIndex;
 
 		SColorf colorf(1.0f, 1.0f, 1.0f, 1.0f);
         
@@ -757,7 +757,7 @@ void wow_m2instance::animateColors(u32 anim, u32 time)
 			(ColorHints[c].opacityHint = Mesh->Colors[colorIndex].opacityAnim.getValue(realAnim, time, alpha, ColorHints[c].opacityHint)) != -1)
 			colorf.a = alpha;	
 
-		u16 t = 32767;
+		uint16_t t = 32767;
 		if (transIndex != -1 && 
 			(ColorHints[c].transparencyHint = Mesh->Transparencies[transIndex].tranAnim.getValue(realAnim, time, t, ColorHints[c].transparencyHint)) != -1)
 			colorf.a *= (t / 32767.0f);
@@ -787,7 +787,7 @@ void wow_m2instance::solidColors()
 	}
 }
 
-void wow_m2instance::animateTextures( u32 anim, u32 time )
+void wow_m2instance::animateTextures( uint32_t anim, uint32_t time )
 {
 	if ( !CurrentSkin || (LastTextureAnim == anim && time == LastTextureTime))
 		return;
@@ -797,7 +797,7 @@ void wow_m2instance::animateTextures( u32 anim, u32 time )
 
 	for (PLENTRY p = VisibleGeosetList.Flink; p != &VisibleGeosetList;)
 	{
-		u32 c = (u32)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - DynGeosets);
+		uint32_t c = (uint32_t)(reinterpret_cast<SDynGeoset*>CONTAINING_RECORD(p, SDynGeoset, Link) - DynGeosets);
 		p = p->Flink;
 
 		if (DynGeosets[c].NoAlpha)
@@ -810,10 +810,10 @@ void wow_m2instance::animateTextures( u32 anim, u32 time )
 	LastTextureTime = time;
 }
 
-void wow_m2instance::calcTextureAnim( u32 c, u32 anim, u32 time )
+void wow_m2instance::calcTextureAnim( uint32_t c, uint32_t anim, uint32_t time )
 {
 	CGeoset* set = &CurrentSkin->Geosets[c];
-	s16 texAnimIndex = set->getTexUnit(0)->TexAnimIndex;
+	int16_t texAnimIndex = set->getTexUnit(0)->TexAnimIndex;
 	if(texAnimIndex == -1)
 	{
 		DynGeosets[c].UseTextureAnim = false;
@@ -846,9 +846,9 @@ void wow_m2instance::calcTextureAnim( u32 c, u32 anim, u32 time )
 
 	if (_rot && r.X != 0.0f)
 	{
-		f32 theta = r.X;
-		f32 cosTheta = cos(theta);
-		f32 sinTheta = sin(theta);
+		float theta = r.X;
+		float cosTheta = cos(theta);
+		float sinTheta = sin(theta);
 
 		mat.m00 = cosTheta;
 		mat.m01 = sinTheta;
@@ -884,14 +884,14 @@ void wow_m2instance::calcTextureAnim( u32 c, u32 anim, u32 time )
 	DynGeosets[c].TextureMatrix = mat;
 }
 
-void wow_m2instance::updateEquipments( s32 slot, s32 itemid )
+void wow_m2instance::updateEquipments( int32_t slot, int32_t itemid )
 {
 	ASSERT(slot >= 0 && slot < NUM_CHAR_SLOTS);
 	if (slot >= 0 && slot < NUM_CHAR_SLOTS)
 		CharacterInfo->Equipments[slot]= itemid;
 }
 
-s32 wow_m2instance::getSlotItemId( s32 slot ) const
+int32_t wow_m2instance::getSlotItemId( int32_t slot ) const
 {
 	ASSERT(slot >= 0 && slot < NUM_CHAR_SLOTS);
 	if (slot >= 0 && slot < NUM_CHAR_SLOTS)
@@ -900,7 +900,7 @@ s32 wow_m2instance::getSlotItemId( s32 slot ) const
 	return 0;
 }
 
-s32 wow_m2instance::getItemSlot( s32 itemid ) const
+int32_t wow_m2instance::getItemSlot( int32_t itemid ) const
 {
 	SItemInfo info;
 	if (getItemInfo(itemid, CharacterInfo->IsNpc, info))
@@ -911,20 +911,20 @@ s32 wow_m2instance::getItemSlot( s32 itemid ) const
 	return -1;
 }
 
-bool wow_m2instance::slotHasModel( s32 slot ) const
+bool wow_m2instance::slotHasModel( int32_t slot ) const
 {
 	return slot==CS_HEAD || slot == CS_SHOULDER || slot == CS_HAND_LEFT ||
 		slot == CS_HAND_RIGHT || slot == CS_QUIVER || slot == CS_BELT;
 }
 
-bool wow_m2instance::updateNpc(s32 npcid)
+bool wow_m2instance::updateNpc(int32_t npcid)
 {
 	auto rSkin = g_Engine->getWowDatabase()->getCreatureDisplayInfoDB()->getByID(npcid);
 	if (!rSkin.isValid())
 		return false;
 
-	u32 modelId = rSkin.getUInt(creatureDisplayInfoDB::ModelID);
-	u32 npcId = rSkin.getUInt(creatureDisplayInfoDB::NPCExtraID);
+	uint32_t modelId = rSkin.getUInt(creatureDisplayInfoDB::ModelID);
+	uint32_t npcId = rSkin.getUInt(creatureDisplayInfoDB::NPCExtraID);
 
 	if (!CharacterInfo)
 	{
@@ -933,26 +933,26 @@ bool wow_m2instance::updateNpc(s32 npcid)
 			return false;
 
 #if WOW_VER >= 70
-		s32 fileId = r.getByte3(creatureModelDB::FileNameID);
-		c8 filename[256];
+		int32_t fileId = r.getByte3(creatureModelDB::FileNameID);
+		char filename[256];
 		g_Engine->getWowDatabase()->getFilePath(fileId, filename, 256);
 #elif WOW_VER >= 60
-		s32 fileId = r.getInt(creatureModelDB::FileNameID);
-		c8 filename[256];
+		int32_t fileId = r.getInt(creatureModelDB::FileNameID);
+		char filename[256];
 		g_Engine->getWowDatabase()->getFilePath(fileId, filename, 256);
 #else
-		const c8* filename = r.getString(creatureModelDB::Filename);
+		const char* filename = r.getString(creatureModelDB::Filename);
 #endif
 		if (strlen(filename) < 4 || strlen(filename) > 255)
 			return false;
 
-		c8 path[QMAX_PATH];
+		char path[QMAX_PATH];
 		getFileDirA(filename, path, QMAX_PATH);
 		Q_strcat(path, QMAX_PATH, "\\");
 
 		{
 #if WOW_VER >= 70
-			u32 texId = rSkin.getInArray<int>(creatureDisplayInfoDB::Texture1, 0);
+			uint32_t texId = rSkin.getInArray<int>(creatureDisplayInfoDB::Texture1, 0);
 			char t[256];
 			g_Engine->getWowDatabase()->getFilePath(texId, t, 256);
 			if (strlen(t) > 0)
@@ -960,7 +960,7 @@ bool wow_m2instance::updateNpc(s32 npcid)
 				setReplaceTexture(TEXTURE_GAMEOBJECT1, g_Engine->getResourceLoader()->loadTexture(t));
 			}
 #else
-			const c8* t = rSkin.getString(creatureDisplayInfoDB::Texture1 );
+			const char* t = rSkin.getString(creatureDisplayInfoDB::Texture1 );
 			if (strlen(t) > 0)
 			{
 				string256 texPath = path;
@@ -1027,14 +1027,14 @@ bool wow_m2instance::updateNpc(s32 npcid)
 
 #if WOW_VER >= 70
 		const npcModelItemSlotDisplayInfoDB* npcItemDB = g_Engine->getWowDatabase()->getNpcModelItemSlotDisplayInfoDB();
-		for(u32 i= 0; i < npcItemDB->getNumRecords(); ++i)
+		for(uint32_t i= 0; i < npcItemDB->getNumRecords(); ++i)
 		{
 			auto rItem = npcItemDB->getRecord(i);
 			if(npcId != rItem.getUInt(npcModelItemSlotDisplayInfoDB::NPCExtraID))
 				continue;
 
-			u32 itemDisplayID = rItem.getUInt(npcModelItemSlotDisplayInfoDB::ItemDisplayInfoID);
-			u32 itemType = rItem.getUInt(npcModelItemSlotDisplayInfoDB::ItemType);
+			uint32_t itemDisplayID = rItem.getUInt(npcModelItemSlotDisplayInfoDB::ItemDisplayInfoID);
+			uint32_t itemType = rItem.getUInt(npcModelItemSlotDisplayInfoDB::ItemType);
 
 			switch(itemType)
 			{
@@ -1091,13 +1091,13 @@ void wow_m2instance::setReplaceTexture( ETextureTypes type, ITexture* texture )
 void wow_m2instance::dressupCharacter(CharTexture& charTex)
 {
 	const charSectionsDB* charSection = g_Engine->getWowDatabase()->getCharSectionDB();
-	u32 Race = CharacterInfo->Race;
-	u32 Gender = CharacterInfo->Gender;
-	u32 SkinColor = CharacterInfo->SkinColor;
-	u32 FaceType = CharacterInfo->FaceType;
-	u32 FacialHair = CharacterInfo->FacialHair;
-	u32 HairColor = CharacterInfo->HairColor;
-	u32 HairStyle = CharacterInfo->HairStyle;
+	uint32_t Race = CharacterInfo->Race;
+	uint32_t Gender = CharacterInfo->Gender;
+	uint32_t SkinColor = CharacterInfo->SkinColor;
+	uint32_t FaceType = CharacterInfo->FaceType;
+	uint32_t FacialHair = CharacterInfo->FacialHair;
+	uint32_t HairColor = CharacterInfo->HairColor;
+	uint32_t HairStyle = CharacterInfo->HairStyle;
 	const int* Equipments = CharacterInfo->Equipments;
 	bool isHD = CharacterInfo->IsHD;
 
@@ -1109,7 +1109,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 		if (r.isValid())
 		{
 #if WOW_VER >= 70
-			u32 f1 = r.getInArray<int>(charSectionsDB::Tex1, 0);
+			uint32_t f1 = r.getInArray<int>(charSectionsDB::Tex1, 0);
 			char t1[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f1, t1, 256);
 
@@ -1117,8 +1117,8 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 			char t2[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f2, t2, 256);
 #else
-			const c8* t1 = r.getString(charSectionsDB::Tex1);
-			const c8* t2 = r.getString(charSectionsDB::Tex1 + 1);
+			const char* t1 = r.getString(charSectionsDB::Tex1);
+			const char* t2 = r.getString(charSectionsDB::Tex1 + 1);
 #endif
 			//base
 			charTex.addLayer(t1, CR_BASE, 0);
@@ -1140,7 +1140,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 		if (r.isValid())
 		{
 #if WOW_VER >= 70
-			u32 f1 = r.getInArray<int>(charSectionsDB::Tex1, 0);
+			uint32_t f1 = r.getInArray<int>(charSectionsDB::Tex1, 0);
 			char t1[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f1, t1, 256);
 
@@ -1148,8 +1148,8 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 			char t2[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f2, t2, 256);
 #else
-			const c8* t1 = r.getString(charSectionsDB::Tex1);
-			const c8* t2 = r.getString(charSectionsDB::Tex1 + 1);
+			const char* t1 = r.getString(charSectionsDB::Tex1);
+			const char* t2 = r.getString(charSectionsDB::Tex1 + 1);
 #endif
 
 			charTex.addLayer(t1, CR_PELVIS_UPPER, 1);		//pants
@@ -1167,7 +1167,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 		if (r.isValid())
 		{
 #if WOW_VER >= 70
-			u32 f1 = r.getInArray<int>(charSectionsDB::Tex1, 0);
+			uint32_t f1 = r.getInArray<int>(charSectionsDB::Tex1, 0);
 			char t1[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f1, t1, 256);
 
@@ -1175,8 +1175,8 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 			char t2[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f2, t2, 256);
 #else
-			const c8* t1 = r.getString(charSectionsDB::Tex1);
-			const c8* t2 = r.getString(charSectionsDB::Tex1 + 1);
+			const char* t1 = r.getString(charSectionsDB::Tex1);
+			const char* t2 = r.getString(charSectionsDB::Tex1 + 1);
 #endif
 
 			charTex.addLayer(t1, CR_FACE_LOWER, 1);
@@ -1195,7 +1195,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 		if (r.isValid())
 		{
 #if WOW_VER >= 70
-			u32 f1 = r.getInArray<int>(charSectionsDB::Tex1, 0);
+			uint32_t f1 = r.getInArray<int>(charSectionsDB::Tex1, 0);
 			char t1[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f1, t1, 256);
 
@@ -1203,8 +1203,8 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 			char t2[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f2, t2, 256);
 #else
-			const c8* t1 = r.getString(charSectionsDB::Tex1);
-			const c8* t2 = r.getString(charSectionsDB::Tex1 + 1);
+			const char* t1 = r.getString(charSectionsDB::Tex1);
+			const char* t2 = r.getString(charSectionsDB::Tex1 + 1);
 #endif
 
 			charTex.addLayer(t1, CR_FACE_LOWER, 2);
@@ -1222,23 +1222,23 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 		if (r.isValid())
 		{
 #if WOW_VER >= 70
-			u32 f1 = r.getInArray<int>(charSectionsDB::Tex1, 0);
+			uint32_t f1 = r.getInArray<int>(charSectionsDB::Tex1, 0);
 			char t1[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f1, t1, 256);
 #else
-			const c8* t1 = r.getString(charSectionsDB::Tex1);
+			const char* t1 = r.getString(charSectionsDB::Tex1);
 #endif
 			string256 texname;
 			if (strlen(t1) == 0)
 			{
 				string256 s = Mesh->Dir;
 				if (Gender == 1)
-					s.subString(0, (u32)strlen(Mesh->Dir)-7, texname);
+					s.subString(0, (uint32_t)strlen(Mesh->Dir)-7, texname);
 				else
-					s.subString(0, (u32)strlen(Mesh->Dir)-5, texname);
+					s.subString(0, (uint32_t)strlen(Mesh->Dir)-5, texname);
 
-				c8 hairname[32];
-				Q_sprintf(hairname, 32, "Hair00_%02d.blp", (s32)HairColor);
+				char hairname[32];
+				Q_sprintf(hairname, 32, "Hair00_%02d.blp", (int32_t)HairColor);
 				texname.append(hairname);
 			}
 			else
@@ -1250,7 +1250,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 			setReplaceTexture(TEXTURE_HAIR, tex);	
 
 #if WOW_VER >= 70
-			u32 f2 = r.getInArray<int>(charSectionsDB::Tex1, 1);
+			uint32_t f2 = r.getInArray<int>(charSectionsDB::Tex1, 1);
 			char t2[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f2, t2, 256);
 
@@ -1258,8 +1258,8 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 			char t3[256];
 			g_Engine->getWowDatabase()->getTextureFilePath(f3, t3, 256);
 #else
-			const c8* t2 = r.getString(charSectionsDB::Tex1 + 1);
-			const c8* t3 = r.getString(charSectionsDB::Tex1 + 2);
+			const char* t2 = r.getString(charSectionsDB::Tex1 + 1);
+			const char* t3 = r.getString(charSectionsDB::Tex1 + 2);
 #endif
 
 			charTex.addLayer(t2, CR_FACE_LOWER, 3);
@@ -1289,7 +1289,7 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 		}
 	}
 
-	for (u32 i=0; i<NUM_CHAR_SLOTS; ++i)
+	for (uint32_t i=0; i<NUM_CHAR_SLOTS; ++i)
 	{
 		if (Equipments[i] != 0)
 			addClothesEquipment(i, Equipments[i], getClothesSlotLayer(i), charTex, CharacterInfo->IsNpc);
@@ -1312,18 +1312,18 @@ void wow_m2instance::dressupCharacter(CharTexture& charTex)
 	}
 }
 
-void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, CharTexture& tex, bool npc/*=true*/ )
+void wow_m2instance::addClothesEquipment( int32_t slot, int32_t itemnum, int32_t layer, CharTexture& tex, bool npc/*=true*/ )
 {
 	int* Geosets = CharacterInfo->Geosets;
-	u32 Gender = CharacterInfo->Gender;
+	uint32_t Gender = CharacterInfo->Gender;
 
 	if (slot == CS_PANTS && Geosets[CG_TROUSERS]==2)
 		return;
 
 	wowDatabase* database = g_Engine->getWowDatabase();
 
-	s32 itemID = 0;
-	s32 type = 0;
+	int32_t itemID = 0;
+	int32_t type = 0;
 	
 	if (!npc)
 	{
@@ -1357,29 +1357,29 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 			Geosets[CG_WRISTBANDS] = 1 + r.getUInt(itemDisplayDB::GeosetGroup + 0);
 
 #if WOW_VER >= 70
-		c8 armUpper[256];
-		c8 armLower[256];
-		c8 torsoUpper[256];
-		c8 torsoLower[256];
+		char armUpper[256];
+		char armLower[256];
+		char torsoUpper[256];
+		char torsoLower[256];
 
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::UpperArm, armUpper, 256);
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::LowerArm, armLower, 256);
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::UpperTorso, torsoUpper, 256);
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::LowerTorso, torsoLower, 256);
 #elif WOW_VER >= 60
-		c8 armUpper[256];
-		c8 armLower[256];
-		c8 torsoUpper[256];
-		c8 torsoLower[256];
+		char armUpper[256];
+		char armLower[256];
+		char torsoUpper[256];
+		char torsoLower[256];
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexArmUpper), armUpper, 256);
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexArmLower), armLower, 256);
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexChestUpper), torsoUpper, 256);
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexChestLower), torsoLower, 256);
 #else
-		const c8* armUpper = r.getString(itemDisplayDB::TexArmUpper);
-		const c8* armLower = r.getString(itemDisplayDB::TexArmLower);
-		const c8* torsoUpper = r.getString(itemDisplayDB::TexChestUpper);
-		const c8* torsoLower = r.getString(itemDisplayDB::TexChestLower);
+		const char* armUpper = r.getString(itemDisplayDB::TexArmUpper);
+		const char* armLower = r.getString(itemDisplayDB::TexArmLower);
+		const char* torsoUpper = r.getString(itemDisplayDB::TexChestUpper);
+		const char* torsoLower = r.getString(itemDisplayDB::TexChestLower);
 #endif
 
 		tex.addItemLayer(armUpper, CR_ARM_UPPER, Gender, layer);
@@ -1395,20 +1395,20 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 				Geosets[CG_FEET] = 2;
 
 #if WOW_VER >= 70
-			c8 legUpper[256];
-			c8 legLower[256];
+			char legUpper[256];
+			char legLower[256];
 
 			itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::UpperLeg, legUpper, 256);
 			itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::LowerLeg, legLower, 256);
 
 #elif WOW_VER >= 60
-			c8 legUpper[256];
-			c8 legLower[256];
+			char legUpper[256];
+			char legLower[256];
 			database->getTextureFilePath(r.getInt(itemDisplayDB::TexLegUpper), legUpper, 256);
 			database->getTextureFilePath(r.getInt(itemDisplayDB::TexLegLower), legLower, 256);
 #else
-			const c8* legUpper = r.getString(itemDisplayDB::TexLegUpper);
-			const c8* legLower = r.getString(itemDisplayDB::TexLegLower);
+			const char* legUpper = r.getString(itemDisplayDB::TexLegUpper);
+			const char* legLower = r.getString(itemDisplayDB::TexLegLower);
 #endif
 			tex.addItemLayer(legUpper, CR_LEG_UPPER, Gender, layer);
 			tex.addItemLayer(legLower, CR_LEG_LOWER, Gender, layer);
@@ -1417,20 +1417,20 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 	else if (slot == CS_BELT)
 	{
 #if WOW_VER >= 70
-		c8 torsolower[256];
-		c8 legUpper[256];
+		char torsolower[256];
+		char legUpper[256];
 
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::LowerTorso, torsolower, 256);
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::UpperLeg, legUpper, 256);
 
 #elif WOW_VER >= 60
-		c8 torsolower[256];
-		c8 legUpper[256];
+		char torsolower[256];
+		char legUpper[256];
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexChestLower), torsolower, 256);
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexLegUpper), legUpper, 256);
 #else
-		const c8* torsolower = r.getString(itemDisplayDB::TexChestLower);
-		const c8* legUpper = r.getString(itemDisplayDB::TexLegUpper);
+		const char* torsolower = r.getString(itemDisplayDB::TexChestLower);
+		const char* legUpper = r.getString(itemDisplayDB::TexLegUpper);
 #endif
 
 		tex.addItemLayer(torsolower, CR_TORSO_LOWER, Gender, layer);
@@ -1439,13 +1439,13 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 	else if (slot == CS_BRACERS)
 	{
 #if WOW_VER >= 70
-		c8 armLower[256];
+		char armLower[256];
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::LowerArm, armLower, 256);
 #elif WOW_VER >= 60
-		c8 armLower[256];
+		char armLower[256];
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexArmLower), armLower, 256);
 #else
- 		const c8* armLower = r.getString(itemDisplayDB::TexArmLower);
+ 		const char* armLower = r.getString(itemDisplayDB::TexArmLower);
 #endif
  		tex.addItemLayer(armLower, CR_ARM_LOWER, Gender, layer);
 	}
@@ -1462,18 +1462,18 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 			Geosets[CG_FEET] = 2;
 
 #if WOW_VER >= 70
-		c8 legUpper[256];
-		c8 legLower[256];
+		char legUpper[256];
+		char legLower[256];
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::UpperLeg, legUpper, 256);
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::LowerLeg, legLower, 256);
 #elif WOW_VER >= 60
-		c8 legUpper[256];
-		c8 legLower[256];
+		char legUpper[256];
+		char legLower[256];
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexLegUpper), legUpper, 256);
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexLegLower), legLower, 256);
 #else
-		const c8* legUpper = r.getString(itemDisplayDB::TexLegUpper);
-		const c8* legLower = r.getString(itemDisplayDB::TexLegLower);
+		const char* legUpper = r.getString(itemDisplayDB::TexLegUpper);
+		const char* legLower = r.getString(itemDisplayDB::TexLegLower);
 #endif
 
 		tex.addItemLayer(legUpper, CR_LEG_UPPER, Gender, layer);
@@ -1496,13 +1496,13 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 #endif
 
 #if WOW_VER >= 70
-		c8 hand[256];
+		char hand[256];
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::Hands, hand, 256);
 #elif WOW_VER >= 60
-		c8 hand[256];
+		char hand[256];
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexHands), hand, 256);
 #else
-		const c8* hand = r.getString(itemDisplayDB::TexHands);
+		const char* hand = r.getString(itemDisplayDB::TexHands);
 #endif
 		tex.addItemLayer(hand, CR_HAND, Gender, layer);
 		if (Geosets[CG_GLOVES] > 1)				//有模型，这时覆盖法袍,衬衣纹理
@@ -1511,13 +1511,13 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 		}
 		
 #if WOW_VER >= 70
-		c8 armLower[256];
+		char armLower[256];
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::LowerArm, armLower, 256);
 #elif WOW_VER >= 60
-		c8 armLower[256];
+		char armLower[256];
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexArmLower), armLower, 256);
 #else
-		const c8* armLower = r.getString(itemDisplayDB::TexArmLower);	
+		const char* armLower = r.getString(itemDisplayDB::TexArmLower);	
 #endif
 		tex.addItemLayer(armLower, CR_ARM_LOWER, Gender, layer);
 	}
@@ -1541,18 +1541,18 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 			Geosets[CG_FEET] = 2;
 
 #if WOW_VER >= 70
-		c8 legLower[256];
-		c8 feet[256];
+		char legLower[256];
+		char feet[256];
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::LowerLeg, legLower, 256);
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::Foot, feet, 256);
 #elif WOW_VER >= 60
-		c8 legLower[256];
-		c8 feet[256];
+		char legLower[256];
+		char feet[256];
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexLegLower), legLower, 256);
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexFeet), feet, 256);
 #else
- 		const c8* legLower = r.getString(itemDisplayDB::TexLegLower);
-		const c8* feet = r.getString(itemDisplayDB::TexFeet);
+ 		const char* legLower = r.getString(itemDisplayDB::TexLegLower);
+		const char* feet = r.getString(itemDisplayDB::TexFeet);
 #endif
 
 		tex.addItemLayer(legLower, CR_LEG_LOWER, Gender, layer);
@@ -1567,18 +1567,18 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 		Geosets[CG_TABARD] = 2;
 
 #if WOW_VER >= 70
-		c8 chestUpper[256];
-		c8 chestLower[256];
+		char chestUpper[256];
+		char chestLower[256];
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::UpperTorso, chestUpper, 256);
 		itemDisplayInfoResDB->getTexturePath(itemID, itemDisplayInfoMaterialResDB::LowerTorso, chestLower, 256);
 #elif WOW_VER >= 60
-		c8 chestUpper[256];
-		c8 chestLower[256];
+		char chestUpper[256];
+		char chestLower[256];
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexChestUpper), chestUpper, 256);
 		database->getTextureFilePath(r.getInt(itemDisplayDB::TexChestLower), chestLower, 256);
 #else
-		const c8* chestUpper = r.getString(itemDisplayDB::TexChestUpper);
-		const c8* chestLower = r.getString(itemDisplayDB::TexChestLower);
+		const char* chestUpper = r.getString(itemDisplayDB::TexChestUpper);
+		const char* chestLower = r.getString(itemDisplayDB::TexChestLower);
 #endif
 
 		tex.addItemLayer(chestUpper, CR_TORSO_UPPER, Gender, layer);
@@ -1587,7 +1587,7 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 	else if (slot == CS_CAPE)
 	{	
 #if WOW_VER >= 70
-		c8 rt[256];
+		char rt[256];
 		auto r = database->getItemDisplayDB()->getByID(itemID);
 		if(r.isValid())
 			g_Engine->getWowDatabase()->getFilePath(r.getByte3(itemDisplayDB::Skin), rt, 256);
@@ -1596,20 +1596,20 @@ void wow_m2instance::addClothesEquipment( s32 slot, s32 itemnum, s32 layer, Char
 
 		if (strlen(rt) > 0)
 		{
-			c8 path[QMAX_PATH];
+			char path[QMAX_PATH];
 			Q_strcpy(path, QMAX_PATH, rt);
 #elif WOW_VER >= 60
-		c8 rt[256];
+		char rt[256];
 		database->getTextureFilePath(r.getInt(itemDisplayDB::Skin), rt, 256);
 		if (strlen(rt) > 0)
 		{
-			c8 path[QMAX_PATH];
+			char path[QMAX_PATH];
 			Q_strcpy(path, QMAX_PATH, rt);
 #else
-		const c8* rt = r.getString(itemDisplayDB::Skin);
+		const char* rt = r.getString(itemDisplayDB::Skin);
 		if (rt && strlen(rt) > 0)
 		{
-			c8 path[QMAX_PATH];
+			char path[QMAX_PATH];
 			Q_strcpy(path, QMAX_PATH, regionCapePath);
 			Q_strcat(path, QMAX_PATH, rt);
 			Q_strcat(path, QMAX_PATH, ".blp");
@@ -1646,10 +1646,10 @@ void wow_m2instance::buildVisibleGeosets()
 	if (!CharacterInfo || 
 		CharacterInfo->Race == RACE_NAGA)
 	{
-		for (u32 i=0; i<CurrentSkin->NumGeosets; ++i)
+		for (uint32_t i=0; i<CurrentSkin->NumGeosets; ++i)
 		{
 			CGeoset* submesh = &CurrentSkin->Geosets[i];
-			s16 texID = submesh->getTexUnit(0)->TexID;
+			int16_t texID = submesh->getTexUnit(0)->TexID;
 
 			if (texID != -1)
 			{
@@ -1657,7 +1657,7 @@ void wow_m2instance::buildVisibleGeosets()
 				if (texType == TEXTURE_FILENAME)
 					DynGeosets[i].Texture0 = Mesh->getTexture(texID);
 				else
-					DynGeosets[i].Texture0 = ReplaceTextures[(u32)texType];
+					DynGeosets[i].Texture0 = ReplaceTextures[(uint32_t)texType];
 			}
 			else
 			{
@@ -1676,8 +1676,8 @@ void wow_m2instance::buildVisibleGeosets()
 	bool isBald = true;
 
 	int* Geosets = CharacterInfo->Geosets;
-	u32 Race = CharacterInfo->Race;
-	u32 Gender = CharacterInfo->Gender;
+	uint32_t Race = CharacterInfo->Race;
+	uint32_t Gender = CharacterInfo->Gender;
 	bool isHD = CharacterInfo->IsHD;
 
 	//eye glow
@@ -1701,9 +1701,9 @@ void wow_m2instance::buildVisibleGeosets()
 			r = g_Engine->getWowDatabase()->getCharFacialHairDB()->getByParams( Race, Gender, 0 );
 		if (r.isValid())
 		{
-			Geosets[CG_GEOSET100] = r.getInArray<u32>(charFacialHairDB::Geoset100V400, 0);		
-			Geosets[CG_GEOSET200] = r.getInArray<u32>(charFacialHairDB::Geoset100V400, charFacialHairDB::Geoset200V400);
-			Geosets[CG_GEOSET300] = r.getInArray<u32>(charFacialHairDB::Geoset100V400, charFacialHairDB::Geoset300V400);
+			Geosets[CG_GEOSET100] = r.getInArray<uint32_t>(charFacialHairDB::Geoset100V400, 0);		
+			Geosets[CG_GEOSET200] = r.getInArray<uint32_t>(charFacialHairDB::Geoset100V400, charFacialHairDB::Geoset200V400);
+			Geosets[CG_GEOSET300] = r.getInArray<uint32_t>(charFacialHairDB::Geoset100V400, charFacialHairDB::Geoset300V400);
 		}
 	}
 	
@@ -1715,11 +1715,11 @@ void wow_m2instance::buildVisibleGeosets()
 	auto rh = hairGeosetDb->getByParams(Race, Gender, CharacterInfo->HairStyle);
 	if (rh.isValid())
 	{
-		u32 id = rh.getUInt(charHairGeosetsDB::Geoset);
+		uint32_t id = rh.getUInt(charHairGeosetsDB::Geoset);
 
 		if(id != 0)
 		{
-			for (u32 k=0; k<CurrentSkin->NumGeosets; ++k)
+			for (uint32_t k=0; k<CurrentSkin->NumGeosets; ++k)
 			{
 				CGeoset* set = &CurrentSkin->Geosets[k];
 				if (set->GeoID == id )
@@ -1736,11 +1736,11 @@ void wow_m2instance::buildVisibleGeosets()
 	int wrist = 0;
 
 	//show
-	for (u32 i=0; i<CurrentSkin->NumGeosets; ++i)
+	for (uint32_t i=0; i<CurrentSkin->NumGeosets; ++i)
 	{
 		CGeoset* submesh = &CurrentSkin->Geosets[i];
-		u32 id  = submesh->GeoID;
-		s16 texID = submesh->getTexUnit(0)->TexID;
+		uint32_t id  = submesh->GeoID;
+		int16_t texID = submesh->getTexUnit(0)->TexID;
 
 		if (texID != -1)
 		{
@@ -1751,7 +1751,7 @@ void wow_m2instance::buildVisibleGeosets()
 			}
 			else
 			{
-				DynGeosets[i].Texture0 = ReplaceTextures[(u32)texType];
+				DynGeosets[i].Texture0 = ReplaceTextures[(uint32_t)texType];
 			}
 		}
 		else
@@ -1846,7 +1846,7 @@ void wow_m2instance::buildVisibleGeosets()
 // 		}	
 	}	
 
-	for (u32 i=0; i<CurrentSkin->NumGeosets; ++i)
+	for (uint32_t i=0; i<CurrentSkin->NumGeosets; ++i)
 	{
 		if (geoShow[i])
 			InsertTailList(&VisibleGeosetList, &DynGeosets[i].Link);
@@ -1855,11 +1855,11 @@ void wow_m2instance::buildVisibleGeosets()
 	Z_FreeTempMemory(geoShow);
 }
 
-bool wow_m2instance::setGeosetMaterial(u32 subset, SMaterial& material)
+bool wow_m2instance::setGeosetMaterial(uint32_t subset, SMaterial& material)
 {
 	CGeoset* set = &CurrentSkin->Geosets[subset];
 	const STexUnit* texUnit = set->getTexUnit(0);
-	s16 rfIndex = texUnit->rfIndex;
+	int16_t rfIndex = texUnit->rfIndex;
 	
 	if (rfIndex == -1 || Mesh->RenderFlags[rfIndex].invisible)
 		return false;
@@ -1945,7 +1945,7 @@ bool wow_m2instance::setGeosetMaterial(u32 subset, SMaterial& material)
 	return true;
 }
 
-bool wow_m2instance::getItemInfo( s32 itemid, bool npc, SItemInfo& itemInfo ) const
+bool wow_m2instance::getItemInfo( int32_t itemid, bool npc, SItemInfo& itemInfo ) const
 {
 	itemInfo.id = -1;
 	itemInfo.itemType = 0;
@@ -1962,7 +1962,7 @@ bool wow_m2instance::getItemInfo( s32 itemid, bool npc, SItemInfo& itemInfo ) co
 	return true;
 }
 
-void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachmentEntry* entry1, SAttachmentInfo* info1, SAttachmentEntry* entry2, SAttachmentInfo* info2 )
+void wow_m2instance::setM2Equipment( int32_t slot, int32_t itemid, bool sheath, SAttachmentEntry* entry1, SAttachmentInfo* info1, SAttachmentEntry* entry2, SAttachmentInfo* info2 )
 {
 	entry1->attachIndex = -1;
 	entry2->attachIndex = -1;
@@ -1972,7 +1972,7 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 
 	SItemInfo itemInfo;
 
-	f32 equipScale = 1.0f;
+	float equipScale = 1.0f;
 
 	if ( !getItemInfo(itemid, CharacterInfo->IsNpc, itemInfo) )
 		return;
@@ -1980,7 +1980,7 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 	bool dagger = itemInfo.itemType == IT_DAGGER;			//双手
 
 	//scale
-	f32 head, shoulder, weapon, waist;
+	float head, shoulder, weapon, waist;
 	getEquipScale(head, shoulder, weapon, waist);
 	switch(slot)
 	{
@@ -2003,11 +2003,11 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 	if (!display.isValid())
 		return;
 
-	u32 Race = CharacterInfo->Race;
-	u32 Gender = CharacterInfo->Gender;
+	uint32_t Race = CharacterInfo->Race;
+	uint32_t Gender = CharacterInfo->Gender;
 
-	s16 id1 = -1;
-	s16 id2 = -1;
+	int16_t id1 = -1;
+	int16_t id2 = -1;
 
 	string256 path;
 	if (slot == CS_HEAD)
@@ -2015,17 +2015,17 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 		id1 = ATT_HELMET;
 		path = regionHeadPath;
 
-		u32 hair = 0;
+		uint32_t hair = 0;
 
 		auto helmet = dbc::record::EMPTY();
 		if (Gender == 0)
 		{
-			u32 vis1 = display.getUInt(itemDisplayDB::GeosetVisID + 0);
+			uint32_t vis1 = display.getUInt(itemDisplayDB::GeosetVisID + 0);
 			helmet = g_Engine->getWowDatabase()->getHelmGeosetDB()->getByID(vis1);
 		}
 		else
 		{
-			u32 vis2 = display.getUInt(itemDisplayDB::GeosetVisID + 1);
+			uint32_t vis2 = display.getUInt(itemDisplayDB::GeosetVisID + 1);
 			helmet = g_Engine->getWowDatabase()->getHelmGeosetDB()->getByID(vis2);
 		}
 
@@ -2107,7 +2107,7 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 	{
 		string256 model1 = display.getString(itemDisplayDB::Model);
 #if WOW_VER >= 60
-		s32 skin1Id = display.getInt(itemDisplayDB::Skin);
+		int32_t skin1Id = display.getInt(itemDisplayDB::Skin);
 		string256 skin1;
 		g_Engine->getWowDatabase()->getTextureFilePath(skin1Id, skin1);
 #else
@@ -2176,7 +2176,7 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 			entry1->slot = slot;
 			entry1->id = id1;
 			entry1->scale = equipScale;
-			entry1->attachIndex = (id1 >= 0 && id1 < (s32)Mesh->NumAttachLookup) ? Mesh->AttachLookup[id1] : -1;
+			entry1->attachIndex = (id1 >= 0 && id1 < (int32_t)Mesh->NumAttachLookup) ? Mesh->AttachLookup[id1] : -1;
 			Q_strcpy(info1->modelpath, QMAX_PATH, modelPath.c_str());
 			Q_strcpy(info1->texpath, QMAX_PATH, texPath.c_str());
 		}
@@ -2187,7 +2187,7 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 		string256 model2 = display.getString(itemDisplayDB::Model + 1);
 
 #if WOW_VER >= 60
-		s32 skin2Id = display.getInt(itemDisplayDB::Skin+ 1);
+		int32_t skin2Id = display.getInt(itemDisplayDB::Skin+ 1);
 		string256 skin2;
 		g_Engine->getWowDatabase()->getTextureFilePath(skin2Id, skin2);
 #else
@@ -2216,7 +2216,7 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 			entry2->slot = slot;
 			entry2->id = id2;
 			entry2->scale = equipScale;
-			entry2->attachIndex = (id2 >= 0 && id2 < (s32)Mesh->NumAttachLookup) ? Mesh->AttachLookup[id2] : -1;
+			entry2->attachIndex = (id2 >= 0 && id2 < (int32_t)Mesh->NumAttachLookup) ? Mesh->AttachLookup[id2] : -1;
 			Q_strcpy(info2->modelpath, QMAX_PATH, modelPath.c_str());
 			Q_strcpy(info2->texpath, QMAX_PATH, texPath.c_str());
 		}	
@@ -2226,7 +2226,7 @@ void wow_m2instance::setM2Equipment( s32 slot, s32 itemid, bool sheath, SAttachm
 void wow_m2instance::setM2Mount( SAttachmentEntry* entry )
 {
 	entry->id = ATT_MOUNT_POINT;
-	entry->attachIndex = ATT_MOUNT_POINT < (s32)Mesh->NumAttachLookup ? Mesh->AttachLookup[ATT_MOUNT_POINT] : -1;
+	entry->attachIndex = ATT_MOUNT_POINT < (int32_t)Mesh->NumAttachLookup ? Mesh->AttachLookup[ATT_MOUNT_POINT] : -1;
 	entry->scale = 1.0f;
 	entry->slot = CS_MOUNT;
 }
@@ -2234,12 +2234,12 @@ void wow_m2instance::setM2Mount( SAttachmentEntry* entry )
 void wow_m2instance::setHeadDecal( SAttachmentEntry* entry )
 {
 	entry->id = ATT_TOP_OF_HEAD;
-	entry->attachIndex = ATT_TOP_OF_HEAD < (s32)Mesh->NumAttachLookup ? Mesh->AttachLookup[ATT_TOP_OF_HEAD] : -1;
+	entry->attachIndex = ATT_TOP_OF_HEAD < (int32_t)Mesh->NumAttachLookup ? Mesh->AttachLookup[ATT_TOP_OF_HEAD] : -1;
 	entry->scale = 1.0f;
 	entry->slot = CS_HEADDECAL;
 }
 
-bool wow_m2instance::isBothHandsDagger( s32 itemid ) const
+bool wow_m2instance::isBothHandsDagger( int32_t itemid ) const
 {
 	SItemInfo itemInfo;
 	if ( !getItemInfo(itemid, CharacterInfo->IsNpc, itemInfo) )
@@ -2257,7 +2257,7 @@ bool wow_m2instance::isBothHandsDagger( s32 itemid ) const
 }
 
 //是否没有规定左右顺序的
-bool wow_m2instance::isOrdinaryDagger( s32 itemid ) const
+bool wow_m2instance::isOrdinaryDagger( int32_t itemid ) const
 {
 	SItemInfo itemInfo;
 	if ( !getItemInfo(itemid, CharacterInfo->IsNpc, itemInfo) )
@@ -2274,7 +2274,7 @@ bool wow_m2instance::isOrdinaryDagger( s32 itemid ) const
 	return !model1.endWith("left.mdx") && !model1.endWith("right.mdx");
 }
 
-void wow_m2instance::dressStartOutfit( s32 startid )
+void wow_m2instance::dressStartOutfit( int32_t startid )
 {
 	auto r = g_Engine->getWowDatabase()->getStartOutfitDB()->getByID(startid);
 	if (!r.isValid())
@@ -2282,7 +2282,7 @@ void wow_m2instance::dressStartOutfit( s32 startid )
 
 	int* Equipments = CharacterInfo->Equipments;
 
-	for (s32 i=0; i<NUM_CHAR_SLOTS; ++i)
+	for (int32_t i=0; i<NUM_CHAR_SLOTS; ++i)
 		Equipments[i] = 0;
 	CharacterInfo->HelmHideHair = false;
 	CharacterInfo->HelmHideFacial1 = false;
@@ -2290,7 +2290,7 @@ void wow_m2instance::dressStartOutfit( s32 startid )
 	CharacterInfo->HelmHideFacial3 = false;
 	CharacterInfo->DeathKnight = false;
 
-	for (u32 i=0; i<startOutfitDB::NumItems; ++i)
+	for (uint32_t i=0; i<startOutfitDB::NumItems; ++i)
 	{
 		int id = r.getInt(startOutfitDB::ItemIDBase + i);
 		if (id == 0)
@@ -2299,7 +2299,7 @@ void wow_m2instance::dressStartOutfit( s32 startid )
 		auto rItem = g_Engine->getWowDatabase()->getItemDB()->getByID(id);
 		if (rItem.isValid() && rItem.getInt(itemDB::InventorySlot) > 0)
 		{
-			s32 slot = getItemSlot(id);
+			int32_t slot = getItemSlot(id);
 
 			if (slot != -1)
 				updateEquipments(slot, id);
@@ -2307,18 +2307,18 @@ void wow_m2instance::dressStartOutfit( s32 startid )
 	}
 }
 
-void wow_m2instance::dressSet( s32 setid )
+void wow_m2instance::dressSet( int32_t setid )
 {
 	auto r = g_Engine->getWowDatabase()->getItemSetDB()->getByID(setid);
 	if (!r.isValid())
 		return;
 
-	for (u32 i=0; i<itemSetDB::NumItems; ++i)
+	for (uint32_t i=0; i<itemSetDB::NumItems; ++i)
 	{
 #if WOW_VER >= 70
-		s32 id = r.getInArray<int>(itemSetDB::ItemIDBaseV400, i);
+		int32_t id = r.getInArray<int>(itemSetDB::ItemIDBaseV400, i);
 #else
-		s32 id = r.getInt(itemSetDB::ItemIDBaseV400 + i);
+		int32_t id = r.getInt(itemSetDB::ItemIDBaseV400 + i);
 #endif
 		if (id == 0)
 			continue;
@@ -2326,7 +2326,7 @@ void wow_m2instance::dressSet( s32 setid )
 		auto rItem = g_Engine->getWowDatabase()->getItemDB()->getByID(id);
 		if (rItem.isValid() && rItem.getInt(itemDB::InventorySlot) > 0)
 		{
-			s32 slot = getItemSlot(id);
+			int32_t slot = getItemSlot(id);
 
 			if (slot != -1)
 				updateEquipments(slot, id);
@@ -2334,12 +2334,12 @@ void wow_m2instance::dressSet( s32 setid )
 	}
 }
 
-bool wow_m2instance::isBlinkGeoset( u32 index ) const
+bool wow_m2instance::isBlinkGeoset( uint32_t index ) const
 {
 	if (CurrentSkin && index < CurrentSkin->NumGeosets)
 	{
-		u32 Race = CharacterInfo->Race;
-		u32 Gender = CharacterInfo->Gender;
+		uint32_t Race = CharacterInfo->Race;
+		uint32_t Gender = CharacterInfo->Gender;
 		bool isHD = CharacterInfo->IsHD;
 
 		if (isHD)
@@ -2452,7 +2452,7 @@ bool wow_m2instance::isBlinkGeoset( u32 index ) const
 	return false;
 }
 
-s32 wow_m2instance::getSlot(s32 type) const
+int32_t wow_m2instance::getSlot(int32_t type) const
 {
 	switch(type)
 	{
@@ -2530,10 +2530,10 @@ int wow_m2instance::getClothesSlotLayer( int slot )			//装备的叠加顺序
 	}
 }
 
-void wow_m2instance::getEquipScale(f32& head, f32& shoulder, f32& weapon, f32& waist) const
+void wow_m2instance::getEquipScale(float& head, float& shoulder, float& weapon, float& waist) const
 {
-	u32 race = CharacterInfo->Race;
-	u32 gender = CharacterInfo->Gender;
+	uint32_t race = CharacterInfo->Race;
+	uint32_t gender = CharacterInfo->Gender;
 	bool isHD = CharacterInfo->IsHD;
 
 	head = shoulder = weapon = waist = 1.0f;
@@ -2676,7 +2676,7 @@ bool wow_m2instance::setMaterialShaders( SMaterial& material, const STexUnit* te
 	}
 	else if (texUnit->Mode == 2)
 	{
-		u16 special = ((texUnit->Shading & 0x8000) == 0x8000 || texUnit->Shading == 0x000e);
+		uint16_t special = ((texUnit->Shading & 0x8000) == 0x8000 || texUnit->Shading == 0x000e);
 		if (special)
 		{
   			material.VertexShader = shaderServices->getVertexShader(EVST_DIFFUSE_T1_ENV);
@@ -2690,7 +2690,7 @@ bool wow_m2instance::setMaterialShaders( SMaterial& material, const STexUnit* te
 	}
 	else if (texUnit->Mode == 3)
 	{
-		u16 special = (texUnit->Shading == 0x8003);
+		uint16_t special = (texUnit->Shading == 0x8003);
 		if (special)
 		{
 			//0x8003

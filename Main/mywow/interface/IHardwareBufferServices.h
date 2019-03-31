@@ -23,12 +23,12 @@ public:
 	virtual void destroyHardwareBuffers(const SBufferParam& bufferParam) = 0;
 	virtual void destroyHardwareBuffer(CVertexBuffer* vbuffer) = 0;
 	virtual void destroyHardwareBuffer(CIndexBuffer* ibuffer) = 0;
-	virtual bool updateHardwareBuffer(CVertexBuffer* vbuffer, u32 size) = 0;
-	virtual bool updateHardwareBuffer(CIndexBuffer* ibuffer, u32 size) = 0;
+	virtual bool updateHardwareBuffer(CVertexBuffer* vbuffer, uint32_t size) = 0;
+	virtual bool updateHardwareBuffer(CIndexBuffer* ibuffer, uint32_t size) = 0;
 
 	CIndexBuffer* getStaticIndexBufferQuadList() const { return StaticIndexBufferQuadList; }
 
-    static u32 MAX_QUADS() { return MAX_TEXT_LENGTH; }
+    static uint32_t MAX_QUADS() { return MAX_TEXT_LENGTH; }
 
 protected:
 	CIndexBuffer*			StaticIndexBufferQuadList;

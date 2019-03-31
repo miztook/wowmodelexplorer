@@ -23,7 +23,7 @@ public:
 	~COpenGLVertexDeclaration();
 
 public:
-	void apply(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1);
+	void apply(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0, CVertexBuffer* vbuffer1, uint32_t offset1);
 
 	void deleteVao(CVertexBuffer* vbuffer0);
 
@@ -33,8 +33,8 @@ private:
 		SGLProgram* program;
 		CVertexBuffer* vbuffer0;
 		CVertexBuffer* vbuffer1;
-		u32 offset0;
-		u32 offset1;
+		uint32_t offset0;
+		uint32_t offset1;
 
 		bool operator<(const SVAOParam& other) const
 		{
@@ -76,28 +76,28 @@ private:
 	GLuint	 getVao(const SVAOParam& param);
 
 private:
-	void createVao_P(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void createVao_PC(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void createVao_PCT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void createVao_PN(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void createVao_PNC(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void createVao_PNT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void createVao_PT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void createVao_PNCT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void createVao_PNCT2(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void createVao_PNT2W(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1);
+	void createVao_P(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void createVao_PC(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void createVao_PCT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void createVao_PN(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void createVao_PNC(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void createVao_PNT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void createVao_PT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void createVao_PNCT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void createVao_PNCT2(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void createVao_PNT2W(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0, CVertexBuffer* vbuffer1, uint32_t offset1);
 
 private:	
-	void setDecl_P(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void setDecl_PC(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void setDecl_PCT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void setDecl_PN(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void setDecl_PNC(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void setDecl_PNT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void setDecl_PT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void setDecl_PNCT(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void setDecl_PNCT2(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0);
-	void setDecl_PNT2W(const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1);
+	void setDecl_P(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void setDecl_PC(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void setDecl_PCT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void setDecl_PN(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void setDecl_PNC(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void setDecl_PNT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void setDecl_PT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void setDecl_PNCT(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void setDecl_PNCT2(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0);
+	void setDecl_PNT2W(const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0, CVertexBuffer* vbuffer1, uint32_t offset1);
 
 #ifdef USE_QALLOCATOR
 	typedef std::map<SVAOParam, GLuint, std::less<SVAOParam>, qzone_allocator<std::pair<SVAOParam, GLuint>>>	T_VaoMap;

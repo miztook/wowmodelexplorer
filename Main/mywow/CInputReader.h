@@ -16,7 +16,7 @@ public:
 	virtual bool acquire(E_INPUT_DEVICE device);
 	virtual bool unacquire(E_INPUT_DEVICE device);
 	virtual bool capture(E_INPUT_DEVICE device);
-	virtual bool isKeyPressed(u8 keycode);
+	virtual bool isKeyPressed(uint8_t keycode);
 	virtual bool isMousePressed(E_MOUSE_BUTTON button);
 
 	virtual void addListener(IInputListener* listener);

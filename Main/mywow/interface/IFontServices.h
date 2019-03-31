@@ -12,16 +12,16 @@ class IFTFont;
 class IFontServices
 {
 public:
-	explicit IFontServices(u32 defaultFontSize) { DefaultFontSize = defaultFontSize; }
+	explicit IFontServices(uint32_t defaultFontSize) { DefaultFontSize = defaultFontSize; }
 	virtual ~IFontServices() {}
 
 public:
 	struct SFontKey
 	{
-		SFontKey(u32 _size, int _style, int _outlineWidth)
+		SFontKey(uint32_t _size, int _style, int _outlineWidth)
 			: size(_size), style(_style), outlineWidth(_outlineWidth) {}
 
-		u32 size;
+		uint32_t size;
 		int style;
 		int outlineWidth;
 
@@ -54,7 +54,7 @@ public:
 
 public:
 	IFTFont* getDefaultFont();
-	IFTFont* getFont(u32 fontSize, int fontStyle, int outlineWidth);
+	IFTFont* getFont(uint32_t fontSize, int fontStyle, int outlineWidth);
 	IFTFont* getFont(SFontKey type);
 
 public:
@@ -72,7 +72,7 @@ protected:
 #endif
 
 	T_FontMap		FontMap;
-	u32		DefaultFontSize;
+	uint32_t		DefaultFontSize;
 };
 
 inline IFTFont* IFontServices::getFont( SFontKey type )
@@ -84,7 +84,7 @@ inline IFTFont* IFontServices::getFont( SFontKey type )
 	return createFont(type);
 }
 
-inline IFTFont* IFontServices::getFont( u32 fontSize, int fontStyle, int outlineWidth )
+inline IFTFont* IFontServices::getFont( uint32_t fontSize, int fontStyle, int outlineWidth )
 {
 	return getFont(SFontKey(fontSize, fontStyle, outlineWidth));
 }

@@ -6,17 +6,17 @@
 class CSysUtility
 {
 public:
-	static bool isKeyPressed(u8 vk);
+	static bool isKeyPressed(uint8_t vk);
 
 	static bool getCursorPosition(vector2di& pos);
 
-	static bool openURLtoJsonFile(const c8* url, const c8* filename);
+	static bool openURLtoJsonFile(const char* url, const char* filename);
 
-	static SWindowInfo createWindow( const char* caption, const dimension2du& windowSize, f32 scale, bool fullscreen, bool hide );
+	static SWindowInfo createWindow( const char* caption, const dimension2du& windowSize, float scale, bool fullscreen, bool hide );
 
-	static void messageBoxWarning(const c8* msg);
+	static void messageBoxWarning(const char* msg);
 
-	static void outputDebug(const c8* format, ...);
+	static void outputDebug(const char* format, ...);
 
 	static void exitProcess(int ret);
 

@@ -503,8 +503,8 @@ COpenGLExtension::~COpenGLExtension()
 
 bool COpenGLExtension::initExtensions()
 {
-	const f32 ogl_ver = fast_atof(reinterpret_cast<const c8*>(glGetString(GL_VERSION)));
-	Version = static_cast<u16>(floor32_(ogl_ver)*100+round32_(fract_(ogl_ver)*10.0f));
+	const float ogl_ver = fast_atof(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+	Version = static_cast<uint16_t>(floor32_(ogl_ver)*100+round32_(fract_(ogl_ver)*10.0f));
 
 	PFNGLGETSTRINGIPROC pGlGetStringi = (PFNGLGETSTRINGIPROC) getProcAddress("glGetStringi");
 
@@ -513,10 +513,10 @@ bool COpenGLExtension::initExtensions()
 		GLint num;
 		glGetIntegerv(GL_NUM_EXTENSIONS, &num);
 
-		for (s32 i=0; i<num; ++i)
+		for (int32_t i=0; i<num; ++i)
 		{
-			const c8* str = (const c8*)pGlGetStringi(GL_EXTENSIONS, i);
-			for (u32 j=0; j<IRR_OpenGL_Feature_Count; ++j)
+			const char* str = (const char*)pGlGetStringi(GL_EXTENSIONS, i);
+			for (uint32_t j=0; j<IRR_OpenGL_Feature_Count; ++j)
 			{
 				if (!strcmp(OpenGLFeatureStrings[j], str))
 				{
@@ -534,19 +534,19 @@ bool COpenGLExtension::initExtensions()
 			ASSERT(false);
 			return false;
 		}
-		u32 len = (u32)strlen(t);
-		c8 * str = (c8*)Z_AllocateTempMemory(len + 1); 
+		uint32_t len = (uint32_t)strlen(t);
+		char * str = (char*)Z_AllocateTempMemory(len + 1); 
 
-		c8* p = str;
+		char* p = str;
 
-		for (u32 i=0; i<len; ++i)
+		for (uint32_t i=0; i<len; ++i)
 		{
 			str[i] = static_cast<char>(t[i]);
 
 			if (str[i] == ' ')
 			{
 				str[i] = 0;
-				for (u32 j=0; j<IRR_OpenGL_Feature_Count; ++j)
+				for (uint32_t j=0; j<IRR_OpenGL_Feature_Count; ++j)
 				{
 					if (!strcmp(OpenGLFeatureStrings[j], p))
 					{
@@ -585,16 +585,16 @@ bool COpenGLExtension::initExtensions()
 #else
 		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &num);
 #endif
-		MaxTextureUnits=static_cast<u8>(num);
+		MaxTextureUnits=static_cast<uint8_t>(num);
 	}
 
 	glGetIntegerv(GL_MAX_LIGHTS, &num);
-	MaxLights=static_cast<u8>(num);
+	MaxLights=static_cast<uint8_t>(num);
 
 	if (FeatureAvailable[IRR_EXT_texture_filter_anisotropic])
 	{
 		glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &num);
-		MaxAnisotropy=static_cast<u8>(num);
+		MaxAnisotropy=static_cast<uint8_t>(num);
 	}
 
 	if (FeatureAvailable[IRR_EXT_framebuffer_multisample])
@@ -604,13 +604,13 @@ bool COpenGLExtension::initExtensions()
 	}
 
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &num);
-	MaxTextureSize = max_(static_cast<u32>(num), 2048u);
+	MaxTextureSize = max_(static_cast<uint32_t>(num), 2048u);
 
 	if (FeatureAvailable[IRR_EXT_texture_lod_bias])
 		glGetFloatv(GL_MAX_TEXTURE_LOD_BIAS_EXT, &MaxTextureLODBias);
 
 	glGetIntegerv(GL_MAX_CLIP_PLANES, &num);
-	MaxUserClipPlanes=static_cast<u8>(num);
+	MaxUserClipPlanes=static_cast<uint8_t>(num);
 
 	glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, DimAliasedLine);
 	glGetFloatv(GL_ALIASED_POINT_SIZE_RANGE, DimAliasedPoint);
@@ -624,18 +624,18 @@ bool COpenGLExtension::initExtensions()
 			ShaderLanguageVersion = 100;
 		else
 		{
-			const f32 sl_ver = fast_atof(reinterpret_cast<const c8*>(shaderVersion));
-			ShaderLanguageVersion = static_cast<u16>(floor32_(sl_ver)*100+round32_(fract_(sl_ver)*10.0f));
+			const float sl_ver = fast_atof(reinterpret_cast<const char*>(shaderVersion));
+			ShaderLanguageVersion = static_cast<uint16_t>(floor32_(sl_ver)*100+round32_(fract_(sl_ver)*10.0f));
 		}
 	}
 
 	glGetIntegerv(GL_MAX_VERTEX_UNIFORM_VECTORS, &num);
-	MaxVertexShaderConst = static_cast<u32>(num);
+	MaxVertexShaderConst = static_cast<uint32_t>(num);
 
 	glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_VECTORS, &num);
-	MaxPixelShaderConst = static_cast<u32>(num);
+	MaxPixelShaderConst = static_cast<uint32_t>(num);
 
-	MaxTextureUnits = min_(MaxTextureUnits, static_cast<u8>(MATERIAL_MAX_TEXTURES));
+	MaxTextureUnits = min_(MaxTextureUnits, static_cast<uint8_t>(MATERIAL_MAX_TEXTURES));
 
 	return true;
 }
@@ -1206,7 +1206,7 @@ void COpenGLExtension::extGlTexImage2DMultisample( GLenum target, GLsizei sample
 	CHECK_OPENGL_ERROR("extGlTexImage2DMultisample");
 }
 
-void* COpenGLExtension::getProcAddress( const c8* funcname )
+void* COpenGLExtension::getProcAddress( const char* funcname )
 {
 	PROC p = wglGetProcAddress(funcname);
 	if (!p)

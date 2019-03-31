@@ -23,7 +23,7 @@ public:
 	 ID3D11DepthStencilView* getDepthStencilView() const { return DepthView; }
 
 private:
-	bool createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, u32 antialias, u32 quality );
+	bool createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, uint32_t antialias, uint32_t quality );
 	bool createCopyTextures( dimension2du size, ECOLOR_FORMAT format );
 	void releaseVideoTexture();		//Îªlock,unlock´´½¨buffer
 

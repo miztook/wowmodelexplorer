@@ -63,7 +63,7 @@ struct SOverrideMaterial
 {
 	SOverrideMaterial() 
 	{
-		for(u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+		for(uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 		{	
 			TextureFilters[i] = ETF_TRILINEAR;
 			MipMapLodBias[i] = 0;
@@ -71,11 +71,11 @@ struct SOverrideMaterial
 	}
 
 	E_TEXTURE_FILTER	TextureFilters[MATERIAL_MAX_TEXTURES];
-	s32		MipMapLodBias[MATERIAL_MAX_TEXTURES];
+	int32_t		MipMapLodBias[MATERIAL_MAX_TEXTURES];
 
 	bool operator!=(const SOverrideMaterial& b) const
 	{
-		for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+		for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 		{
 			if (TextureFilters[i] != b.TextureFilters[i] ||
 				MipMapLodBias[i] != b.MipMapLodBias[i])
@@ -88,7 +88,7 @@ struct SOverrideMaterial
 
 	bool operator==(const SOverrideMaterial& b) const
 	{
-		for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+		for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 		{
 			if (TextureFilters[i] != b.TextureFilters[i] ||
 				MipMapLodBias[i] != b.MipMapLodBias[i])
@@ -106,7 +106,7 @@ SColorf		AmbientColor;
 SColorf		DiffuseColor;
 SColorf		EmissiveColor;
 SColorf		SpecularColor;
-f32		Shininess;
+float		Shininess;
 
 //vs
 bool		GouraudShading : 1;
@@ -123,7 +123,7 @@ E_ANTI_ALIASING_MODE		AntiAliasing;
 SMaterialLayer		TextureLayer[MATERIAL_MAX_TEXTURES];
 
 //depth stencil
-u8			ZBuffer;
+uint8_t			ZBuffer;
 bool		ZWriteEnable : 1;
 bool		StencilEnable : 1;
 
@@ -140,7 +140,7 @@ struct SMaterial
 	SColorf		DiffuseColor;
 	SColorf		EmissiveColor;
 	SColorf		SpecularColor;
-	f32		Shininess;
+	float		Shininess;
 
 	IVertexShader*		VertexShader;
 	SMaterialLayer		TextureLayer[MATERIAL_MAX_TEXTURES];
@@ -246,7 +246,7 @@ struct SMaterial
 		if (!equal)
 			return true;
 
-		for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+		for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 		{
 			if (TextureLayer[i] != b.TextureLayer[i])
 				return true;
@@ -286,7 +286,7 @@ struct  SRenderStateBlock
 		E_TEXTURE_OP		alphaOp;
 		E_TEXTURE_ARG		alphaArg1;
 		E_TEXTURE_ARG		alphaArg2;
-		u8	texcoordIndex;
+		uint8_t	texcoordIndex;
 
 		bool operator!=(const STextureStageBlock& b) const
 		{
@@ -313,7 +313,7 @@ struct  SRenderStateBlock
 		alphaToCoverage(false),		
 		alphaBlendEnabled(false)
 	{
-		for (u8 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+		for (uint8_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 		{
 			textureUnits[i].texcoordIndex = i;
 		}
@@ -327,7 +327,7 @@ struct  SRenderStateBlock
 	E_BLEND_FACTOR	destBlend;
 	bool  alphaTestEnabled;
 	E_COMPARISON_FUNC	alphaTestFunc;
-	u8	alphaTestRef;
+	uint8_t	alphaTestRef;
 	bool	alphaToCoverage;
 	bool	alphaBlendEnabled;
 
@@ -345,7 +345,7 @@ struct  SRenderStateBlock
 		if (!equal)
 			return true;
 
-		for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+		for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 		{
 			if (textureUnits[i] != b.textureUnits[i])
 				return true;

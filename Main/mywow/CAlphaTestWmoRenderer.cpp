@@ -2,7 +2,7 @@
 #include "CAlphaTestWmoRenderer.h"
 #include "mywow.h"
 
-CAlphaTestWmoRenderer::CAlphaTestWmoRenderer(u32 quota)
+CAlphaTestWmoRenderer::CAlphaTestWmoRenderer(uint32_t quota)
 	: Quota(quota)
 {
 	RenderUnits.reserve(Quota);
@@ -29,7 +29,7 @@ void CAlphaTestWmoRenderer::addRenderUnit( const SRenderUnit* unit)
 	if (needRealloc)
 	{
 		RenderEntries.resize(RenderUnits.size());
-		for (u32 i=0; i<RenderUnits.size(); ++i)
+		for (uint32_t i=0; i<RenderUnits.size(); ++i)
 		{
 			RenderEntries[i].unit = &RenderUnits[i];
 		}

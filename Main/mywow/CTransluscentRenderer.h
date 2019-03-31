@@ -6,7 +6,7 @@
 class CTransluscentRenderer : public ISceneRenderer
 {
 public:
-	explicit CTransluscentRenderer(u32 quota);
+	explicit CTransluscentRenderer(uint32_t quota);
 	~CTransluscentRenderer();
 
 public:
@@ -46,7 +46,7 @@ private:
 	std::vector<SRenderUnit>		RenderUnits;
 	std::vector<SEntry>			RenderEntries;
 
-	u32		Quota;
+	uint32_t		Quota;
 
 	friend class CD3D9Driver;
 	friend class CD3D11Driver;

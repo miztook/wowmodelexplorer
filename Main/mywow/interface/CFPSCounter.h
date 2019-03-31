@@ -13,25 +13,25 @@ public:
 	}
 
 	//
-	f32 getFPS() const { return FPS; }
-	void registerFrame(u32 now);
+	float getFPS() const { return FPS; }
+	void registerFrame(uint32_t now);
 	
 
 private:
-	f32 FPS;
-	u32 LastTime;
-	u32 FrameCounted;
+	float FPS;
+	uint32_t LastTime;
+	uint32_t FrameCounted;
 };
 
-inline void CFPSCounter::registerFrame(u32 now)
+inline void CFPSCounter::registerFrame(uint32_t now)
 {
 	++FrameCounted;
 
-	const u32 milliseconds = now - LastTime;
+	const uint32_t milliseconds = now - LastTime;
 
 	if ( milliseconds >= 1500 )
 	{
-		const f32 invMilli = reciprocal_((f32)milliseconds);
+		const float invMilli = reciprocal_((float)milliseconds);
 		FPS = (1000*FrameCounted) * invMilli ;
 		FrameCounted = 0;
 		LastTime = now;

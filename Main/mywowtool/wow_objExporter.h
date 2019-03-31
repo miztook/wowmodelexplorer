@@ -15,9 +15,9 @@ public:
 	~wowObjExporter();
 
 public:
-	virtual bool exportM2SceneNode( IM2SceneNode* node, const c8* filename );
-	virtual bool exportWMOSceneNode( IWMOSceneNode* node, const c8* filename );
-	virtual bool exportWMOSceneNodeGroups( IWMOSceneNode* node, const c8* filename);
+	virtual bool exportM2SceneNode( IM2SceneNode* node, const char* filename );
+	virtual bool exportWMOSceneNode( IWMOSceneNode* node, const char* filename );
+	virtual bool exportWMOSceneNodeGroups( IWMOSceneNode* node, const char* filename);
 
 private:
 	bool exportFileM2(IWriteFile* pFileObj, IWriteFile* pFileMtl, const CFileM2* pFileM2, wow_m2instance* pM2Instance);
@@ -31,8 +31,8 @@ private:
 	bool exportWMOMaterials(IWriteFile* pFile, const CFileWMO* Wmo);
 
 private:
-	bool exportFileWMOGroup(const c8* filename, const CFileWMO* Wmo, u32 iGroup);
-	bool exportWMOGroupVertices(IWriteFile* pFile, const CFileWMO* Wmo, u32 iGroup);
-	bool exportWMOGroupMaterials(IWriteFile* pFile, const CFileWMO* Wmo, u32 iGroup);
+	bool exportFileWMOGroup(const char* filename, const CFileWMO* Wmo, uint32_t iGroup);
+	bool exportWMOGroupVertices(IWriteFile* pFile, const CFileWMO* Wmo, uint32_t iGroup);
+	bool exportWMOGroupMaterials(IWriteFile* pFile, const CFileWMO* Wmo, uint32_t iGroup);
 
 };

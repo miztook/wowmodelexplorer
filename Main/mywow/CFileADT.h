@@ -17,51 +17,51 @@ public:
 	virtual bool loadFileSimple(IMemFile* file);				//load obj only
 	virtual bool loadFileTextures(IMemFile* file);			//load texture only
 	
-	u8* getFileData() const { return FileData; }
-	const CMapChunk* getChunk(u8 row, u8 col) const;
+	uint8_t* getFileData() const { return FileData; }
+	const CMapChunk* getChunk(uint8_t row, uint8_t col) const;
 	aabbox3df getBoundingBox() const { return Box; }
-	bool getHeight(f32 x, f32 z, f32& height) const;
-	bool getNormal(f32 x, f32 z, vector3df& normal) const;
+	bool getHeight(float x, float z, float& height) const;
+	bool getNormal(float x, float z, vector3df& normal) const;
 
-	const c8* getM2FileName(u32 index) const;
-	const c8* getWMOFileName(u32 index) const;
+	const char* getM2FileName(uint32_t index) const;
+	const char* getWMOFileName(uint32_t index) const;
 
 	virtual bool buildVideoResources();
 	virtual void releaseVideoResources();
 
 	CVertexBuffer* getVBuffer() const { return VertexBuffer; }
 	E_VERTEX_TYPE getVertexType() const { return EVT_PNCT2; }
-	u32 getChunkVerticesOffset(u8 row, u8 col) const { return (row * 16 + col) * 145; }
+	uint32_t getChunkVerticesOffset(uint8_t row, uint8_t col) const { return (row * 16 + col) * 145; }
 	ITexture* getBlendMap() const { return BlendMap; }
 
-	const SM2Instance* getM2Instance(u32 index) const { return &M2Instances[index]; }
-	const SWmoInstance* getWMOInstance(u32 index) const { return &WmoInstances[index]; }
+	const SM2Instance* getM2Instance(uint32_t index) const { return &M2Instances[index]; }
+	const SWmoInstance* getWMOInstance(uint32_t index) const { return &WmoInstances[index]; }
 
-	const c8* getTextureName(u32 index) const;
-	u32 getNumTextures() const { return (u32)Textures.size(); }
+	const char* getTextureName(uint32_t index) const;
+	uint32_t getNumTextures() const { return (uint32_t)Textures.size(); }
 
 private:
-	void readChunk( IMemFile* file, u8 row, u8 col, u32 lastpos); 
+	void readChunk( IMemFile* file, uint8_t row, uint8_t col, uint32_t lastpos); 
 	
 	void loadObj0();
 
 	bool loadObj0Simple();
 
-	bool loadTex(u32 n);
+	bool loadTex(uint32_t n);
 
 	void buildMaps();
 
 	void buildTexcoords();
 
-	void getGridPosition(u8 row, u8 col, u8 gridRow, u8 gridCol, vector3df* positions) const;
-	void getGridNormal(u8 row, u8 col, u8 gridRow, u8 gridCol, vector3df* normals) const;
+	void getGridPosition(uint8_t row, uint8_t col, uint8_t gridRow, uint8_t gridCol, vector3df* positions) const;
+	void getGridNormal(uint8_t row, uint8_t col, uint8_t gridRow, uint8_t gridCol, vector3df* normals) const;
 
-	u32 getVertexIndex(u8 row, u8 col) const;	//找到 9 * 9 + 8 * 8顶点的索引
+	uint32_t getVertexIndex(uint8_t row, uint8_t col) const;	//找到 9 * 9 + 8 * 8顶点的索引
 
 private:
 	struct SChunkM2List
 	{
-		std::vector<u32>		m2InstList;
+		std::vector<uint32_t>		m2InstList;
 	};
 
 	struct STex
@@ -72,12 +72,12 @@ private:
 	};
 
 private:
-	u8*			FileData;
+	uint8_t*			FileData;
 
 	//chunk
 	SVertex_PNCT2*		Vertices;
 	CVertexBuffer*		VertexBuffer;
-	u32*		Data_BlendMap;
+	uint32_t*		Data_BlendMap;
 	ITexture*		BlendMap;				//整个adt的blend map,由16 X 16个chunk的map合成
 
 	aabbox3df	Box;
@@ -87,7 +87,7 @@ private:
 	std::vector<STex>		Textures;	
 };
 
-inline u32 CFileADT::getVertexIndex( u8 row, u8 col ) const
+inline uint32_t CFileADT::getVertexIndex( uint8_t row, uint8_t col ) const
 {
 	ASSERT(row < 17);
 

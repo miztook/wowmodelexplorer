@@ -6,7 +6,7 @@
 class CMemFile : public IMemFile
 {
 public:
-	CMemFile( u8* buf, u32 size, const c8* fname, bool tmp) : buffer(buf), size(size), pointer(0), eof(false), temp(tmp)
+	CMemFile( uint8_t* buf, uint32_t size, const char* fname, bool tmp) : buffer(buf), size(size), pointer(0), eof(false), temp(tmp)
 	{
 		Q_strcpy(filename, QMAX_PATH, fname);
 	}
@@ -15,22 +15,22 @@ public:
 		close();
 	}
 
-	u32		read(void* dest, u32 bytes);
-	u32		getSize() const { return size; }
-	u32		getPos() const { return pointer; }
-	u8*		getBuffer() { return buffer; }
-	u8*		getPointer() { return buffer + pointer; }
+	uint32_t		read(void* dest, uint32_t bytes);
+	uint32_t		getSize() const { return size; }
+	uint32_t		getPos() const { return pointer; }
+	uint8_t*		getBuffer() { return buffer; }
+	uint8_t*		getPointer() { return buffer + pointer; }
 	bool		isEof() const { return eof; }
-	bool		seek(s32 offset, bool relative=false);
+	bool		seek(int32_t offset, bool relative=false);
 	void		close();
-	bool		save(const c8* filename);
-	const c8*	getFileName() const { return filename; }			
+	bool		save(const char* filename);
+	const char*	getFileName() const { return filename; }			
 
 private:
-	u8*		buffer;
-	u32		pointer;
-	u32		size;
-	c8		filename[QMAX_PATH];
+	uint8_t*		buffer;
+	uint32_t		pointer;
+	uint32_t		size;
+	char		filename[QMAX_PATH];
 	bool temp;
 	bool eof;
 };

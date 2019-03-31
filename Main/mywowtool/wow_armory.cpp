@@ -12,7 +12,7 @@ wow_armory::~wow_armory()
 
 }
 
-bool wow_armory::parseCharacterArmoryInfo( const c8* filename, SCharArmoryInfo* charInfo )
+bool wow_armory::parseCharacterArmoryInfo( const char* filename, SCharArmoryInfo* charInfo )
 {
 	string256 path = g_Engine->getFileSystem()->getBaseDirectory();
 	path.normalizeDir();
@@ -32,16 +32,16 @@ bool wow_armory::parseCharacterArmoryInfo( IReadFile* file, SCharArmoryInfo* cha
 {
 #ifdef MW_PLATFORM_WINDOWS
     
-	u32 size  = file->getSize();
+	uint32_t size  = file->getSize();
 	if (size == 0)
 		return false;
 
 	bool parsingSuccessful = false;
 
 	++size;				//比文件长度大1
-	c8* buffer = (c8*)Z_AllocateTempMemory(size);
+	char* buffer = (char*)Z_AllocateTempMemory(size);
 	file->seek(0);
-	u32 read = file->readText(buffer, size);
+	uint32_t read = file->readText(buffer, size);
 	_ASSERT(read + 1== size);
 
 	//parse
@@ -113,9 +113,9 @@ bool wow_armory::parseCharInfoFromJson( Json::Value& root, SCharArmoryInfo* char
 #endif
 }
 
-s32 wow_armory::parseItem( Json::Value& items, const c8* key )
+int32_t wow_armory::parseItem( Json::Value& items, const char* key )
 {
-	s32 ret = 0;
+	int32_t ret = 0;
 
 #ifdef MW_PLATFORM_WINDOWS    
 	Json::Value v = items[key];

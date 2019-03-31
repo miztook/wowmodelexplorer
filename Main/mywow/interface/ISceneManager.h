@@ -52,17 +52,17 @@ public:
 
 	virtual void onWindowSizeChanged(const dimension2du& size) = 0;
 
-	f32 getFPS() const { return FPSCounter.getFPS(); }
-	u32 getTimeSinceLastFrame() const { return Timer->getTimeSinceLastFrame(); }
+	float getFPS() const { return FPSCounter.getFPS(); }
+	uint32_t getTimeSinceLastFrame() const { return Timer->getTimeSinceLastFrame(); }
 
 	void setActiveCamera(ICamera* camera) { ActiveCamera = camera; }
 	ICamera* getActiveCamera() { return ActiveCamera; }
 
-	virtual ICamera* addCamera(const vector3df& position, const vector3df& lookat, const vector3df& up, f32 nearValue, f32 farValue, f32 fov) = 0;
+	virtual ICamera* addCamera(const vector3df& position, const vector3df& lookat, const vector3df& up, float nearValue, float farValue, float fov) = 0;
 
 	virtual ISkySceneNode* addSkySceneNode(CMapEnvironment* mapEnv) = 0;
 	virtual ICoordSceneNode* addCoordSceneNode(ISceneNode* parent) = 0;
-	virtual IMeshSceneNode*	addMeshSceneNode(const c8* name, ISceneNode* parent) = 0;
+	virtual IMeshSceneNode*	addMeshSceneNode(const char* name, ISceneNode* parent) = 0;
 	virtual IM2SceneNode* addM2SceneNode(IFileM2* mesh, ISceneNode* parent, bool npc = false) = 0;
 	virtual IWMOSceneNode* addWMOSceneNode(IFileWMO* wmo, ISceneNode* parent) = 0;
 	virtual IMapTileSceneNode* addMapTileSceneNode(IFileWDT* wdt, STile* tile, ISceneNode* parent) = 0;
@@ -73,8 +73,8 @@ public:
 
 public:
 	SColor		BackgroundColor;
-	c8		AreaName[MAX_TEXT_LENGTH];		//current area
-	c16		DebugText[MAX_TEXT_LENGTH];
+	char		AreaName[MAX_TEXT_LENGTH];		//current area
+	char16_t		DebugText[MAX_TEXT_LENGTH];
 	bool			ShowDebugBase;
 	bool		CalcPerf;
 

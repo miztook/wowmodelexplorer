@@ -46,8 +46,8 @@ static CD3D9_VS30::SVertexShaderEntry g_d3d9vs30_vertexShaderEntries[] =
 
 void CD3D9_VS30::loadAll(CD3D9ShaderServices* shaderServices)
 {
-	u32 num = sizeof(g_d3d9vs30_vertexShaderEntries) / sizeof(SVertexShaderEntry);
-	for (u32 i=0; i<num; ++i)
+	uint32_t num = sizeof(g_d3d9vs30_vertexShaderEntries) / sizeof(SVertexShaderEntry);
+	for (uint32_t i=0; i<num; ++i)
 	{
 		loadVShaderHLSL(shaderServices, g_d3d9vs30_vertexShaderEntries[i].vsType);
 	}
@@ -55,20 +55,20 @@ void CD3D9_VS30::loadAll(CD3D9ShaderServices* shaderServices)
 
 bool CD3D9_VS30::loadVShaderHLSL( CD3D9ShaderServices* shaderServices, E_VS_TYPE type )
 {
-	const c8* profile = "vs_3_0";
+	const char* profile = "vs_3_0";
 
 	//load
 
-	c8 basePath[128];
+	char basePath[128];
 	Q_sprintf(basePath, 128, "Vertex\\%s\\", profile);
 	
-	s32 index = -1;
-	u32 num = sizeof(g_d3d9vs30_vertexShaderEntries) / sizeof(SVertexShaderEntry);
-	for (u32 i=0; i<num; ++i)
+	int32_t index = -1;
+	uint32_t num = sizeof(g_d3d9vs30_vertexShaderEntries) / sizeof(SVertexShaderEntry);
+	for (uint32_t i=0; i<num; ++i)
 	{
 		if(g_d3d9vs30_vertexShaderEntries[i].vsType == type)
 		{
-			index = (s32)i;
+			index = (int32_t)i;
 			break;
 		}
 	}
@@ -93,7 +93,7 @@ bool CD3D9_VS30::loadVShaderHLSL( CD3D9ShaderServices* shaderServices, E_VS_TYPE
 	return true;
 }
 
-void CD3D9_VS30::CDiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D9_VS30::CDiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	CD3D9VertexShader* d3d9vs = static_cast<CD3D9VertexShader*>(vs);
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -127,11 +127,11 @@ void CD3D9_VS30::CDiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& 
 	}
 
 	//set
-	u32 size = useAnimTex ? sizeof(SCDiffuse) : sizeof(SCDiffuse) - sizeof(matrix4);
+	uint32_t size = useAnimTex ? sizeof(SCDiffuse) : sizeof(SCDiffuse) - sizeof(matrix4);
 	d3d9vs->setShaderConstant("g_cbuffer", &cbuffer, size);
 }
 
-void CD3D9_VS30::DiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D9_VS30::DiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	CD3D9VertexShader* d3d9vs = static_cast<CD3D9VertexShader*>(vs);
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -168,7 +168,7 @@ void CD3D9_VS30::DiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& m
 		cbuffer.mTexture = *material.TextureLayer[0].TextureMatrix;
 	}
 
-	u32 size = sizeof(SDiffuseT) - sizeof(cbuffer.boneMatrices);
+	uint32_t size = sizeof(SDiffuseT) - sizeof(cbuffer.boneMatrices);
 	if(unit->u.useBoneMatrix)
 	{
 		Q_memcpy(cbuffer.boneMatrices, sizeof(cbuffer.boneMatrices), boneMats->matrices, boneMats->count * sizeof(matrix4));
@@ -179,7 +179,7 @@ void CD3D9_VS30::DiffuseT1_setShaderConst( IVertexShader* vs, const SMaterial& m
 	d3d9vs->setShaderConstant("g_cbuffer", &cbuffer, size);
 }
 
-void CD3D9_VS30::DiffuseEnv_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D9_VS30::DiffuseEnv_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	CD3D9VertexShader* d3d9vs = static_cast<CD3D9VertexShader*>(vs);
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -211,7 +211,7 @@ void CD3D9_VS30::DiffuseEnv_setShaderConst( IVertexShader* vs, const SMaterial& 
 	cbuffer.Params[1] = 0.0f;
 	cbuffer.Params[2] = material.FogEnable ? 1.0f : 0.0f;
 
-	u32 size = sizeof(SDiffuseEnv) - sizeof(cbuffer.boneMatrices);
+	uint32_t size = sizeof(SDiffuseEnv) - sizeof(cbuffer.boneMatrices);
 	if(unit->u.useBoneMatrix)
 	{
 		Q_memcpy(cbuffer.boneMatrices, sizeof(cbuffer.boneMatrices), boneMats->matrices, boneMats->count * sizeof(matrix4));
@@ -222,7 +222,7 @@ void CD3D9_VS30::DiffuseEnv_setShaderConst( IVertexShader* vs, const SMaterial& 
 	d3d9vs->setShaderConstant("g_cbuffer", &cbuffer, size);
 }
 
-void CD3D9_VS30::Default_W_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass)
+void CD3D9_VS30::Default_W_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass)
 {
 	CD3D9VertexShader* d3d9vs = static_cast<CD3D9VertexShader*>(vs);
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -237,7 +237,7 @@ void CD3D9_VS30::Default_W_setShaderConst( IVertexShader* vs, const SMaterial& m
 }
 
 
-void CD3D9_VS30::Default_WCol_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D9_VS30::Default_WCol_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	CD3D9VertexShader* d3d9vs = static_cast<CD3D9VertexShader*>(vs);
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -254,7 +254,7 @@ void CD3D9_VS30::Default_WCol_setShaderConst( IVertexShader* vs, const SMaterial
 	d3d9vs->setShaderConstant("g_cbuffer", &cbuffer, sizeof(cbuffer));
 }
 
-void CD3D9_VS30::Default_WColTex_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D9_VS30::Default_WColTex_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	CD3D9VertexShader* d3d9vs = static_cast<CD3D9VertexShader*>(vs);
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -277,11 +277,11 @@ void CD3D9_VS30::Default_WColTex_setShaderConst( IVertexShader* vs, const SMater
 	}
 
 	//set
-	u32 size = useAnimTex ? sizeof(SParamWColTex) : (sizeof(SParamWColTex) - sizeof(matrix4));
+	uint32_t size = useAnimTex ? sizeof(SParamWColTex) : (sizeof(SParamWColTex) - sizeof(matrix4));
 	d3d9vs->setShaderConstant("g_cbuffer", &cbuffer, size);
 }
 
-void CD3D9_VS30::Default_WTex_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D9_VS30::Default_WTex_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	CD3D9VertexShader* d3d9vs = static_cast<CD3D9VertexShader*>(vs);
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -301,11 +301,11 @@ void CD3D9_VS30::Default_WTex_setShaderConst( IVertexShader* vs, const SMaterial
 	}
 
 	//set
-	u32 size = useAnimTex ? sizeof(SParamWTex) : (sizeof(SParamWTex) - sizeof(matrix4));
+	uint32_t size = useAnimTex ? sizeof(SParamWTex) : (sizeof(SParamWTex) - sizeof(matrix4));
 	d3d9vs->setShaderConstant("g_cbuffer", &cbuffer, size);
 }
 
-void CD3D9_VS30::Terrain_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D9_VS30::Terrain_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	CD3D9VertexShader* d3d9vs = static_cast<CD3D9VertexShader*>(vs);
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -347,11 +347,11 @@ void CD3D9_VS30::Terrain_setShaderConst( IVertexShader* vs, const SMaterial& mat
 	}
 
 	//set
-	u32 size = useAnimTex ? sizeof(cbuffer) : (sizeof(cbuffer) - sizeof(matrix4));
+	uint32_t size = useAnimTex ? sizeof(cbuffer) : (sizeof(cbuffer) - sizeof(matrix4));
 	d3d9vs->setShaderConstant("g_cbuffer", &cbuffer, size);
 }
 
-void CD3D9_VS30::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D9_VS30::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	CD3D9VertexShader* d3d9vs = static_cast<CD3D9VertexShader*>(vs);
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -393,11 +393,11 @@ void CD3D9_VS30::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMateria
 	}
 
 	//set
-	u32 size = useAnimTex ? sizeof(SParamMapObjDiffuse) : (sizeof(SParamMapObjDiffuse) - sizeof(matrix4));
+	uint32_t size = useAnimTex ? sizeof(SParamMapObjDiffuse) : (sizeof(SParamMapObjDiffuse) - sizeof(matrix4));
 	d3d9vs->setShaderConstant("g_cbuffer", &cbuffer, size);
 }
 
-void CD3D9_VS30::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D9_VS30::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	CD3D9VertexShader* d3d9vs = static_cast<CD3D9VertexShader*>(vs);
 	CD3D9Driver* driver = static_cast<CD3D9Driver*>(g_Engine->getDriver());
@@ -439,7 +439,7 @@ void CD3D9_VS30::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMateri
 	}
 
 	//set
-	u32 size = useAnimTex ? sizeof(SParamMapObjSpecular) : (sizeof(SParamMapObjSpecular) - sizeof(matrix4));
+	uint32_t size = useAnimTex ? sizeof(SParamMapObjSpecular) : (sizeof(SParamMapObjSpecular) - sizeof(matrix4));
 	d3d9vs->setShaderConstant("g_cbuffer", &cbuffer, size);
 }
 

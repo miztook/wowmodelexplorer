@@ -33,13 +33,13 @@ public:
 
 public:
 	virtual bool loadFile(IMemFile* file);
-	virtual bool fromImageData(const u8* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap);
-	virtual const void* getMipmapData(u32 level) const;  
-	virtual bool copyMipmapData(u32 level, void* dest, u32 pitch, u32 width, u32 height);
+	virtual bool fromImageData(const uint8_t* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap);
+	virtual const void* getMipmapData(uint32_t level) const;  
+	virtual bool copyMipmapData(uint32_t level, void* dest, uint32_t pitch, uint32_t width, uint32_t height);
 
 private:
-	u8*			FileData;
-	u32			MipmapOffset[16];
+	uint8_t*			FileData;
+	uint32_t			MipmapOffset[16];
 
 public:
 
@@ -47,27 +47,27 @@ public:
 
 	struct KTX_Header
 	{
-		u8 identifier[12];
-		u32 endianness;
-		u32 glType;
-		u32 glTypeSize;
-		u32 glFormat;
-		u32 glInternalFormat;
-		u32 glBaseInternalFormat;
-		u32 pixelWidth;
-		u32 pixelHeight;
-		u32 pixelDepth;
-		u32 numberOfArrayElements;
-		u32 numberOfFaces;
-		u32 numberOfMipmapLevels;
-		u32 bytesOfKeyValueData;
+		uint8_t identifier[12];
+		uint32_t endianness;
+		uint32_t glType;
+		uint32_t glTypeSize;
+		uint32_t glFormat;
+		uint32_t glInternalFormat;
+		uint32_t glBaseInternalFormat;
+		uint32_t pixelWidth;
+		uint32_t pixelHeight;
+		uint32_t pixelDepth;
+		uint32_t numberOfArrayElements;
+		uint32_t numberOfFaces;
+		uint32_t numberOfMipmapLevels;
+		uint32_t bytesOfKeyValueData;
 	};
 
 	struct KTX_Metadata
 	{
-		u32 byteSize;
-		u32 key;
-		u32 data;
+		uint32_t byteSize;
+		uint32_t key;
+		uint32_t data;
 	};
 
 #	pragma pack ()

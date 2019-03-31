@@ -17,8 +17,8 @@ public:
 	virtual void onKeyMessage(window_type hwnd, E_INPUT_MESSAGE message, int key);
 
 private:
-	f32		LastX;
-	f32		LastY;
+	float		LastX;
+	float		LastY;
 	bool		LCapture;
 	bool		RCapture;
 };

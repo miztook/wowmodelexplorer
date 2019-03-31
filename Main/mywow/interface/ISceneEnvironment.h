@@ -15,13 +15,13 @@ struct SOutDoorLight
 		fogIntensity = 0;
 		fogDepth = 0;
 	}
-	f32 hour;
-	f32 minute;
-	f32 dayIntensity;
-	f32 nightIntensity;
-	f32 ambientIntensity;
-	f32 fogIntensity;
-	f32 fogDepth;
+	float hour;
+	float minute;
+	float dayIntensity;
+	float nightIntensity;
+	float ambientIntensity;
+	float fogIntensity;
+	float fogDepth;
 	vector3df	dayColor;
 	vector3df	nightColor;
 	vector3df	ambientColor;
@@ -50,12 +50,12 @@ public:
 
 public:
 	static const int INDEX_DIR_LIGHT = 0;
-	static const u32 MAX_DAYTIME = 2880;			//24 * 60 * 2
+	static const uint32_t MAX_DAYTIME = 2880;			//24 * 60 * 2
 	
-	virtual void computeOutdoorLight(s32 time) = 0;
-	virtual void setDayTime(s32 hour, s32 minute) = 0;
-	virtual void setDayTime(s32 time) = 0;
-	virtual s32 getDayTime() const = 0;
+	virtual void computeOutdoorLight(int32_t time) = 0;
+	virtual void setDayTime(int32_t hour, int32_t minute) = 0;
+	virtual void setDayTime(int32_t time) = 0;
+	virtual int32_t getDayTime() const = 0;
 
 	SColor getFogColor() { return SColorf(OutDoorLightInfo.fogColor).toSColor(); }
 
@@ -67,8 +67,8 @@ public:
 	SColor	AmbientColor;
 	SColor	DirLightColor;	
 
-	f32		WmoMaterialParams[EML_COUNT];
-	f32		TerrainMaterialParams[EML_COUNT];
+	float		WmoMaterialParams[EML_COUNT];
+	float		TerrainMaterialParams[EML_COUNT];
 
 	bool EnableDirLight;
 };

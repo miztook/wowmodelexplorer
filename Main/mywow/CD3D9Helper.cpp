@@ -13,7 +13,7 @@ bool CD3D9Helper::init()
 	return true;
 }
 
-const c8* CD3D9Helper::getD3DFormatString( D3DFORMAT format )
+const char* CD3D9Helper::getD3DFormatString( D3DFORMAT format )
 {
 	switch(format)
 	{

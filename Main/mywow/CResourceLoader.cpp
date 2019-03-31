@@ -94,12 +94,12 @@ CResourceLoader::~CResourceLoader()
 
 }
 
-IImage* CResourceLoader::loadJPGAsImage( const c8* filename )
+IImage* CResourceLoader::loadJPGAsImage( const char* filename )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -107,7 +107,7 @@ IImage* CResourceLoader::loadJPGAsImage( const c8* filename )
 		BEGIN_LOCK(&imageCS);
 
 	IReadFile* rfile = g_Engine->getFileSystem()->createAndOpenFile(realfilename, true);
-	u32 size = rfile->getSize();
+	uint32_t size = rfile->getSize();
 	if (size <= 1)
 	{
 		if (MultiThread)
@@ -117,8 +117,8 @@ IImage* CResourceLoader::loadJPGAsImage( const c8* filename )
 		return nullptr;
 	}
 
-	u8* buffer = (u8*)Z_AllocateTempMemory(size);
-	u32 readSize = rfile->read(buffer, size);
+	uint8_t* buffer = (uint8_t*)Z_AllocateTempMemory(size);
+	uint32_t readSize = rfile->read(buffer, size);
 	ASSERT(readSize == size);
 	delete rfile;
 
@@ -139,12 +139,12 @@ IImage* CResourceLoader::loadJPGAsImage( const c8* filename )
 	return image;
 }
 
-IImage* CResourceLoader::loadPNGAsImage(const c8* filename)
+IImage* CResourceLoader::loadPNGAsImage(const char* filename)
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -152,7 +152,7 @@ IImage* CResourceLoader::loadPNGAsImage(const c8* filename)
 		BEGIN_LOCK(&imageCS);
 
 	IReadFile* rfile = g_Engine->getFileSystem()->createAndOpenFile(realfilename, true);
-	u32 size = rfile->getSize();
+	uint32_t size = rfile->getSize();
 	if (size <= 1)
 	{
 		if (MultiThread)
@@ -162,8 +162,8 @@ IImage* CResourceLoader::loadPNGAsImage(const c8* filename)
 		return nullptr;
 	}
 
-	u8* buffer = (u8*)Z_AllocateTempMemory(size);
-	u32 readSize = rfile->read(buffer, size);
+	uint8_t* buffer = (uint8_t*)Z_AllocateTempMemory(size);
+	uint32_t readSize = rfile->read(buffer, size);
 	ASSERT(readSize == size);
 	delete rfile;
 
@@ -184,12 +184,12 @@ IImage* CResourceLoader::loadPNGAsImage(const c8* filename)
 	return image;
 }
 
-IImage* CResourceLoader::loadBLPAsImage( const c8* filename, bool changeRB)
+IImage* CResourceLoader::loadBLPAsImage( const char* filename, bool changeRB)
 {	
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -223,12 +223,12 @@ IImage* CResourceLoader::loadBLPAsImage( const c8* filename, bool changeRB)
 	return image;
 }
 
-IBLPImage* CResourceLoader::loadBLP( const c8* filename )
+IBLPImage* CResourceLoader::loadBLP( const char* filename )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -267,12 +267,12 @@ IBLPImage* CResourceLoader::loadBLP( const c8* filename )
 	return image;
 }
 
-IImage* CResourceLoader::loadPVRAsImage( const c8* filename )
+IImage* CResourceLoader::loadPVRAsImage( const char* filename )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -306,12 +306,12 @@ IImage* CResourceLoader::loadPVRAsImage( const c8* filename )
 	return image;
 }
 
-IPVRImage* CResourceLoader::loadPVR( const c8* filename )
+IPVRImage* CResourceLoader::loadPVR( const char* filename )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -350,12 +350,12 @@ IPVRImage* CResourceLoader::loadPVR( const c8* filename )
 	return image;
 }
 
-IImage* CResourceLoader::loadKTXAsImage( const c8* filename )
+IImage* CResourceLoader::loadKTXAsImage( const char* filename )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -389,12 +389,12 @@ IImage* CResourceLoader::loadKTXAsImage( const c8* filename )
 	return image;
 }
 
-IKTXImage* CResourceLoader::loadKTX( const c8* filename )
+IKTXImage* CResourceLoader::loadKTX( const char* filename )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -433,12 +433,12 @@ IKTXImage* CResourceLoader::loadKTX( const c8* filename )
 	return image;
 }
 
-IFileM2* CResourceLoader::loadM2( const c8* filename, bool videobuild )
+IFileM2* CResourceLoader::loadM2( const char* filename, bool videobuild )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -495,12 +495,12 @@ IFileM2* CResourceLoader::loadM2( const c8* filename, bool videobuild )
 	return m2;
 }
 
-IFileWDT* CResourceLoader::loadWDT( const c8* filename, s32 mapid, bool simple )
+IFileWDT* CResourceLoader::loadWDT( const char* filename, int32_t mapid, bool simple )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -521,12 +521,12 @@ IFileWDT* CResourceLoader::loadWDT( const c8* filename, s32 mapid, bool simple )
 	return wdt;
 }
 
-IFileADT* CResourceLoader::loadADT( const c8* filename, bool simple, bool videobuild )
+IFileADT* CResourceLoader::loadADT( const char* filename, bool simple, bool videobuild )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -581,12 +581,12 @@ IFileADT* CResourceLoader::loadADT( const c8* filename, bool simple, bool videob
 	return adt;
 }
 
-IFileADT* CResourceLoader::loadADTTextures(const c8* filename)
+IFileADT* CResourceLoader::loadADTTextures(const char* filename)
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -613,12 +613,12 @@ IFileADT* CResourceLoader::loadADTTextures(const c8* filename)
 	return adt;
 }
 
-IFileWMO* CResourceLoader::loadWMO( const c8* filename, bool videobuild )
+IFileWMO* CResourceLoader::loadWMO( const char* filename, bool videobuild )
 {
 	if (strlen(filename) == 0)
 		return nullptr;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -767,7 +767,7 @@ int CResourceLoader::LoadingThreadFunc( void* lpParam )
 	return 0;
 }
 
-void CResourceLoader::beginLoadM2( const c8* filename, const SParamBlock& param )
+void CResourceLoader::beginLoadM2( const char* filename, const SParamBlock& param )
 {
 	if (!MultiThread || !hasFileExtensionA(filename, "m2"))
 		return;
@@ -819,7 +819,7 @@ bool CResourceLoader::m2LoadCompleted()
 	return true;
 }
 
-void CResourceLoader::beginLoadWMO( const c8* filename, const SParamBlock& param )
+void CResourceLoader::beginLoadWMO( const char* filename, const SParamBlock& param )
 {
 	if (!MultiThread || !hasFileExtensionA(filename, "wmo"))
 		return;
@@ -850,7 +850,7 @@ bool CResourceLoader::wmoLoadCompleted()
 	return true;
 }
 
-void CResourceLoader::beginLoadADT( const c8* filename, const SParamBlock& param )
+void CResourceLoader::beginLoadADT( const char* filename, const SParamBlock& param )
 {
 	if (!MultiThread || !hasFileExtensionA(filename, "adt"))
 		return;
@@ -910,7 +910,7 @@ void CResourceLoader::resumeLoading()
 	}
 }
 
-IResourceCache<IFileM2>* CResourceLoader::getM2Cache( const c8* filename )
+IResourceCache<IFileM2>* CResourceLoader::getM2Cache( const char* filename )
 {
 	M2Type type = getM2Type(filename);
 	switch(type)
@@ -982,7 +982,7 @@ void CResourceLoader::clearCurrentTask()
 	END_LOCK(&cs);
 }
 
-void CResourceLoader::setCacheLimit( E_CACHE_TYPE type, u32 limit )
+void CResourceLoader::setCacheLimit( E_CACHE_TYPE type, uint32_t limit )
 {
 	switch(type)
 	{
@@ -1037,7 +1037,7 @@ void CResourceLoader::setCacheLimit( E_CACHE_TYPE type, u32 limit )
 	}
 }
 
-u32 CResourceLoader::getCacheLimit( E_CACHE_TYPE type ) const
+uint32_t CResourceLoader::getCacheLimit( E_CACHE_TYPE type ) const
 {
 	switch(type)
 	{

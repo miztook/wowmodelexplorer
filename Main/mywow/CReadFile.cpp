@@ -16,26 +16,26 @@ CReadFile::~CReadFile()
 		fclose(File);
 }
 
-u32 CReadFile::read(void* buffer, u32 sizeToRead)
+uint32_t CReadFile::read(void* buffer, uint32_t sizeToRead)
 {
 	if (!isOpen() || buffer == nullptr)
 		return 0;
 
-	return (u32)fread(buffer, 1, sizeToRead, File);
+	return (uint32_t)fread(buffer, 1, sizeToRead, File);
 }
 
-u32 CReadFile::readText(c8* buffer, u32 len /*= MAX_READ_NUM */)
+uint32_t CReadFile::readText(char* buffer, uint32_t len /*= MAX_READ_NUM */)
 {
 	if (!isOpen() || buffer == nullptr)
 		return 0;
 
 	ASSERT(!IsBinary);
 
-	c8* c = fgets(buffer, len, File);
-	return c ? (u32)strlen(c) : 0;
+	char* c = fgets(buffer, len, File);
+	return c ? (uint32_t)strlen(c) : 0;
 }
 
-u32 CReadFile::readLine(c8* buffer, u32 len /*= MAX_READ_NUM*/)
+uint32_t CReadFile::readLine(char* buffer, uint32_t len /*= MAX_READ_NUM*/)
 {
 	if (!isOpen() || buffer == nullptr)
 		return 0;
@@ -43,7 +43,7 @@ u32 CReadFile::readLine(c8* buffer, u32 len /*= MAX_READ_NUM*/)
 	ASSERT(!IsBinary);
 
 	int c = fgetc(File);
-	u32 count = 0;
+	uint32_t count = 0;
 	while (c != '\n' && c != EOF)
 	{
 		if (1 + count >= len)
@@ -57,7 +57,7 @@ u32 CReadFile::readLine(c8* buffer, u32 len /*= MAX_READ_NUM*/)
 	return count;
 }
 
-u32 CReadFile::readLineSkipSpace(c8* buffer, u32 len /*= MAX_READ_NUM*/)
+uint32_t CReadFile::readLineSkipSpace(char* buffer, uint32_t len /*= MAX_READ_NUM*/)
 {
 	if (!isOpen() || buffer == nullptr)
 		return 0;
@@ -67,14 +67,14 @@ u32 CReadFile::readLineSkipSpace(c8* buffer, u32 len /*= MAX_READ_NUM*/)
 	ASSERT(!IsBinary);
 
 	int c = fgetc(File);
-	u32 count = 0;
+	uint32_t count = 0;
 
 	while (c != '\n' && c != EOF)
 	{
 		if (1 + count >= len)
 			break;
 
-		if (!isWhiteSpace((c8)c))
+		if (!isWhiteSpace((char)c))
 		{
 			buffer[count] = c;
 			++count;
@@ -85,7 +85,7 @@ u32 CReadFile::readLineSkipSpace(c8* buffer, u32 len /*= MAX_READ_NUM*/)
 	return count;
 }
 
-bool CReadFile::seek(s32 finalPos, bool relativePos/* = false*/)
+bool CReadFile::seek(int32_t finalPos, bool relativePos/* = false*/)
 {
 	if (!isOpen())
 		return false;
@@ -93,9 +93,9 @@ bool CReadFile::seek(s32 finalPos, bool relativePos/* = false*/)
 	return fseek(File, finalPos, relativePos ? SEEK_CUR : SEEK_SET) == 0;
 }
 
-s32 CReadFile::getPos() const
+int32_t CReadFile::getPos() const
 {
-	return (s32)ftell(File);
+	return (int32_t)ftell(File);
 }
 
 void CReadFile::openFile(bool binary)
@@ -105,7 +105,7 @@ void CReadFile::openFile(bool binary)
 	{
 		fseek(File, 0, SEEK_END);
 		long size = ftell(File);
-		FileSize = size > 0 ? (u32)size : 0;
+		FileSize = size > 0 ? (uint32_t)size : 0;
 		fseek(File, 0, SEEK_SET);
 	}
 	else
@@ -116,5 +116,5 @@ void CReadFile::openFile(bool binary)
 
 bool CReadFile::isEof() const
 {
-	return getPos() == (s32)FileSize;
+	return getPos() == (int32_t)FileSize;
 }

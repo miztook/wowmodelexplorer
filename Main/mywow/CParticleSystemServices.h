@@ -7,25 +7,25 @@
 class CParticleSystemServices : public IParticleSystemServices
 {
 public:
-	CParticleSystemServices(u32 poolQuota, u32 bufferQuota, float density);
+	CParticleSystemServices(uint32_t poolQuota, uint32_t bufferQuota, float density);
 	~CParticleSystemServices();
 
 public:
 
 	virtual void setParticleDensity(float density) { ParticleDensity = min_(1.0f, density); }
-	virtual f32 getParticleDensity() const { return ParticleDensity; }
+	virtual float getParticleDensity() const { return ParticleDensity; }
 	
-	virtual u32 getActiveParticlesCount() const { return ParticlePool.getUsedSize(); }
+	virtual uint32_t getActiveParticlesCount() const { return ParticlePool.getUsedSize(); }
 	virtual void adjustParticles();
 
-	void updateVertices(u32 numVertices);
+	void updateVertices(uint32_t numVertices);
 
 	Particle* getParticle();
 	void putParticle(Particle* p);
 
-	f32 getParticleDynamicDensity() const { return ParticleDensity * ParticleFactor; }
-	u32 getMaxVertexCount() const { return BufferQuota * 4; }
-	u32 getBufferQuota() const { return BufferQuota; }
+	float getParticleDynamicDensity() const { return ParticleDensity * ParticleFactor; }
+	uint32_t getMaxVertexCount() const { return BufferQuota * 4; }
+	uint32_t getBufferQuota() const { return BufferQuota; }
 
 private:
 	void createBuffer();
@@ -33,11 +33,11 @@ private:
 private:
 	IResourcePool<Particle>			ParticlePool;
 
-	u32		PoolQuota;
-	u32		BufferQuota;
+	uint32_t		PoolQuota;
+	uint32_t		BufferQuota;
 
-	f32	ParticleDensity;
-	f32	ParticleFactor;		//在density基础上动态调整
+	float	ParticleDensity;
+	float	ParticleFactor;		//在density基础上动态调整
 
 	bool		LackParticle;
 };

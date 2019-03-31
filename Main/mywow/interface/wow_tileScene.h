@@ -33,7 +33,7 @@ private:
 	void registerVisibleM2Instances(ICamera* cam);
 	void registerVisibleWmoInstances(ICamera* cam);
 
-	void classifyM2Instance(u32 index, const matrix4& instMat);
+	void classifyM2Instance(uint32_t index, const matrix4& instMat);
 
 	void processResources();
 
@@ -42,7 +42,7 @@ public:
 	{
 		IM2SceneNode*	node;
 		aabbox3df box;
-		f32 radius;
+		float radius;
 	};
 
 	struct SDynWmoInst
@@ -64,7 +64,7 @@ private:
 	CMapChunk*			CamChunk;
 	
 private:
-	typedef std::list<u32, qzone_allocator<u32> > T_InstanceList;
+	typedef std::list<uint32_t, qzone_allocator<uint32_t> > T_InstanceList;
 
 	struct SChunkM2List
 	{

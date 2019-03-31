@@ -40,15 +40,15 @@ struct SDriverSetting
 {
 	bool vsync;	
 	bool fullscreen;
-	u8	antialias;
-	u8	quality;
+	uint8_t	antialias;
+	uint8_t	quality;
 };
 
 struct SDisplayMode
 {
-	u16 width;
-	u16 height;
-	u32 refreshrate;	
+	uint16_t width;
+	uint16_t height;
+	uint32_t refreshrate;	
 	
 	bool operator==(const SDisplayMode& mode) const
 	{
@@ -72,11 +72,11 @@ public:
 	}
 
 public:
-	u32		index;
-	u32		vendorID;
-	c8		description[512];
-	c8		name[DEFAULT_SIZE];
-	c8		vendorName[DEFAULT_SIZE];
+	uint32_t		index;
+	uint32_t		vendorID;
+	char		description[512];
+	char		name[DEFAULT_SIZE];
+	char		vendorName[DEFAULT_SIZE];
 	
 	typedef std::list<SDisplayMode, qzone_allocator<SDisplayMode>  >	T_DisplayModeList;
 	T_DisplayModeList displayModes;
@@ -89,18 +89,18 @@ public:
 		}
 	}
 
-	SDisplayMode getCloseMatchDisplayMode(u32 width, u32 height) const
+	SDisplayMode getCloseMatchDisplayMode(uint32_t width, uint32_t height) const
 	{
 		SDisplayMode ret;
 		//select first
 		T_DisplayModeList::const_iterator itr = displayModes.begin();
-		u32 diff = abs(((s32)itr->width - (s32)width)) + abs(((s32)itr->height - (s32)height));
+		uint32_t diff = abs(((int32_t)itr->width - (int32_t)width)) + abs(((int32_t)itr->height - (int32_t)height));
 		ret = (*itr);
 
 		++itr;
 		for (; itr != displayModes.end(); ++itr)
 		{
-			u32 d = abs(((s32)itr->width - (s32)width)) + abs(((s32)itr->height - (s32)height));
+			uint32_t d = abs(((int32_t)itr->width - (int32_t)width)) + abs(((int32_t)itr->height - (int32_t)height));
 			if ( d < diff)
 			{
 				diff = d;
@@ -146,11 +146,11 @@ public:
 	IShaderServices*	getShaderServices() const { return ShaderServices; }
 
 	//scale 
-	f32 getDisplay2DScale() const { return (f32)ScreenSize.Height / STANDARD_DISPLAY_HEIGHT; }
+	float getDisplay2DScale() const { return (float)ScreenSize.Height / STANDARD_DISPLAY_HEIGHT; }
 
 public:
 	virtual E_DRIVER_TYPE getDriverType() const = 0;
-	virtual u32 getAdapterCount() const = 0;
+	virtual uint32_t getAdapterCount() const = 0;
 
 	virtual bool beginScene() = 0;
 	virtual bool endScene() = 0;
@@ -164,7 +164,7 @@ public:
 	virtual void setDisplayMode(const dimension2du& size) = 0;
 	virtual bool setDriverSetting(const SDriverSetting& setting) = 0;
 
-	virtual void drawDebugInfo(const c8* strMsg) = 0;
+	virtual void drawDebugInfo(const char* strMsg) = 0;
 
 	//helper functions
 	virtual void helper_render(CMeshRenderer* meshRenderer, const SRenderUnit*& currentUnit,  ICamera* cam) = 0;

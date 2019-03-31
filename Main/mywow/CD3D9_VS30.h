@@ -19,18 +19,18 @@ private:
 public:
 	CD3D9_VS30() {}
 
-	static void Terrain_setShaderConst(IVertexShader* vs, const SMaterial& material, u32 pass);
-	static void Default_W_setShaderConst(IVertexShader* vs, const SMaterial& material, u32 pass);
-	static void Default_WCol_setShaderConst(IVertexShader* vs, const SMaterial& material, u32 pass);
-	static void Default_WColTex_setShaderConst(IVertexShader* vs, const SMaterial& material, u32 pass);
-	static void Default_WTex_setShaderConst(IVertexShader* vs, const SMaterial& material, u32 pass);
+	static void Terrain_setShaderConst(IVertexShader* vs, const SMaterial& material, uint32_t pass);
+	static void Default_W_setShaderConst(IVertexShader* vs, const SMaterial& material, uint32_t pass);
+	static void Default_WCol_setShaderConst(IVertexShader* vs, const SMaterial& material, uint32_t pass);
+	static void Default_WColTex_setShaderConst(IVertexShader* vs, const SMaterial& material, uint32_t pass);
+	static void Default_WTex_setShaderConst(IVertexShader* vs, const SMaterial& material, uint32_t pass);
 
-	static void CDiffuseT1_setShaderConst(IVertexShader* vs, const SMaterial& material, u32 pass);
-	static void DiffuseT1_setShaderConst(IVertexShader* vs, const SMaterial& material, u32 pass);
-	static void DiffuseEnv_setShaderConst(IVertexShader* vs, const SMaterial& material, u32 pass);
+	static void CDiffuseT1_setShaderConst(IVertexShader* vs, const SMaterial& material, uint32_t pass);
+	static void DiffuseT1_setShaderConst(IVertexShader* vs, const SMaterial& material, uint32_t pass);
+	static void DiffuseEnv_setShaderConst(IVertexShader* vs, const SMaterial& material, uint32_t pass);
 
-	static void MapObjDiffuse_setShaderConst(IVertexShader* vs, const SMaterial& material, u32 pass);
-	static void MapObjSpecular_setShaderConst(IVertexShader* vs, const SMaterial& material, u32 pass);
+	static void MapObjDiffuse_setShaderConst(IVertexShader* vs, const SMaterial& material, uint32_t pass);
+	static void MapObjSpecular_setShaderConst(IVertexShader* vs, const SMaterial& material, uint32_t pass);
 
 public:
 	void loadAll(CD3D9ShaderServices* shaderServices);

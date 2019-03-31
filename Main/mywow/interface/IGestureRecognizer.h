@@ -4,7 +4,7 @@
 #include "GestureDef.h"
 #include <vector>
 
-typedef bool (*fn_isValidJoystickPosition)(s32 x, s32 y);
+typedef bool (*fn_isValidJoystickPosition)(int32_t x, int32_t y);
 
 class IGestureRecognizer
 {

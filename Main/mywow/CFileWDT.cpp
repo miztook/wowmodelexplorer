@@ -7,7 +7,7 @@
 CFileWDT::CFileWDT()
 {
 	FileData = nullptr;
-	TileOffsets = new s32[TILENUM * TILENUM];
+	TileOffsets = new int32_t[TILENUM * TILENUM];
 	MapEnvironment = nullptr;
 	MapId = 0;
 
@@ -29,7 +29,7 @@ CFileWDT::~CFileWDT()
 	delete[] WmoFileNameBlock;
 }
 
-bool CFileWDT::loadFile( IMemFile* file, s32 mapid )
+bool CFileWDT::loadFile( IMemFile* file, int32_t mapid )
 {
 	MapId = mapid;
 
@@ -39,11 +39,11 @@ bool CFileWDT::loadFile( IMemFile* file, s32 mapid )
 		Q_strcpy(MapName, DEFAULT_SIZE, mapRecord->name);
 	}
 
-	const c8* name = file->getFileName();
+	const char* name = file->getFileName();
 	getFullFileNameNoExtensionA(name, Name, QMAX_PATH);
 
-	c8 fourcc[5];
-	u32 size;
+	char fourcc[5];
+	uint32_t size;
 
 	// WDT files specify exactly which map tiles are present in a world, 
 	// if any, and can also reference a "global" WMO. They have a chunked file structure.
@@ -58,10 +58,10 @@ bool CFileWDT::loadFile( IMemFile* file, s32 mapid )
 		if (size == 0)
 			continue;
 
-		u32 nextpos = file->getPos() + size;
+		uint32_t nextpos = file->getPos() + size;
 		if (strcmp(fourcc, "MVER") == 0)
 		{
-			u32 version;
+			uint32_t version;
 			file->read(&version, size);
 			ASSERT(version == 18);
 		}
@@ -73,11 +73,11 @@ bool CFileWDT::loadFile( IMemFile* file, s32 mapid )
 			ASSERT(size == TILENUM * TILENUM * 8);
 
 			Tiles.clear();
-			for (u8 i=0; i<TILENUM; ++i)			//col
+			for (uint8_t i=0; i<TILENUM; ++i)			//col
 			{
-				for (u8 j=0; j<TILENUM; ++j)				//row
+				for (uint8_t j=0; j<TILENUM; ++j)				//row
 				{
-					c8 adtname[QMAX_PATH];
+					char adtname[QMAX_PATH];
 					Q_sprintf(adtname, QMAX_PATH, "%s_%d_%d", Name, j, i);
 					Q_strcat(adtname, QMAX_PATH, ".adt");
 					if(g_Engine->getWowEnvironment()->exists(adtname))
@@ -87,7 +87,7 @@ bool CFileWDT::loadFile( IMemFile* file, s32 mapid )
 						tile.col = j;
 											
 						Tiles.push_back(tile);
-						TileLookup[M_MAKEWORD(j, i)] = (u32)Tiles.size() - 1;
+						TileLookup[M_MAKEWORD(j, i)] = (uint32_t)Tiles.size() - 1;
 					}
 				}
 			}
@@ -138,8 +138,8 @@ bool CFileWDT::loadFile( IMemFile* file, s32 mapid )
 		if(loadADTData(tile))
 		{
 			AdtPosition = static_cast<CFileADT*>(tile->fileAdt)->getBoundingBox().MinEdge;
-			AdtRow = (s32)tile->row;
-			AdtCol = (s32)tile->col;
+			AdtRow = (int32_t)tile->row;
+			AdtCol = (int32_t)tile->col;
 			unloadADT(tile);
 		}
 	}
@@ -147,7 +147,7 @@ bool CFileWDT::loadFile( IMemFile* file, s32 mapid )
 	return true;
 }
 
-bool CFileWDT::loadFileSimple( IMemFile* file, s32 mapid )
+bool CFileWDT::loadFileSimple( IMemFile* file, int32_t mapid )
 {
 	MapId = mapid;
 
@@ -157,15 +157,15 @@ bool CFileWDT::loadFileSimple( IMemFile* file, s32 mapid )
 		Q_strcpy(MapName, DEFAULT_SIZE, mapRecord->name);
 	}
 
-	const c8* name = file->getFileName();
+	const char* name = file->getFileName();
 	getFullFileNameNoExtensionA(name, Name, QMAX_PATH);
 
 	Tiles.clear();
-	for (u8 i=0; i<TILENUM; ++i)			//col
+	for (uint8_t i=0; i<TILENUM; ++i)			//col
 	{
-		for (u8 j=0; j<TILENUM; ++j)				//row
+		for (uint8_t j=0; j<TILENUM; ++j)				//row
 		{
-			c8 adtname[QMAX_PATH];
+			char adtname[QMAX_PATH];
 			Q_sprintf(adtname, QMAX_PATH, "%s_%d_%d", Name, j, i);
 			Q_strcat(adtname, QMAX_PATH, ".adt");
 			if(g_Engine->getWowEnvironment()->exists(adtname))
@@ -175,14 +175,14 @@ bool CFileWDT::loadFileSimple( IMemFile* file, s32 mapid )
 				tile.col = j;
 
 				Tiles.push_back(tile);
-				TileLookup[M_MAKEWORD(j, i)] = (u32)Tiles.size() - 1;
+				TileLookup[M_MAKEWORD(j, i)] = (uint32_t)Tiles.size() - 1;
 			}
 		}
 	}
 	return true;
 }
 
-bool CFileWDT::getPositionByTile( s32 row, s32 col, vector3df& pos )
+bool CFileWDT::getPositionByTile( int32_t row, int32_t col, vector3df& pos )
 {
 	if(AdtRow == -1 || AdtCol == -1)		//1st adt not read
 		return false;
@@ -193,21 +193,21 @@ bool CFileWDT::getPositionByTile( s32 row, s32 col, vector3df& pos )
 	return true;
 }
 
-bool CFileWDT::getTileByPosition(vector3df pos, s32& row, s32& col)
+bool CFileWDT::getTileByPosition(vector3df pos, int32_t& row, int32_t& col)
 {
 	if(AdtRow == -1 || AdtCol == -1)		//1st adt not read
 		return false;
 
-	f32 z = pos.Z - AdtPosition.Z;
-	f32 x = AdtPosition.X - pos.X;
-	row = AdtRow + (s32)floorf(z / TILESIZE);
-	col = AdtCol + (s32)ceilf(x / TILESIZE);
+	float z = pos.Z - AdtPosition.Z;
+	float x = AdtPosition.X - pos.X;
+	row = AdtRow + (int32_t)floorf(z / TILESIZE);
+	col = AdtCol + (int32_t)ceilf(x / TILESIZE);
 	return true;
 }
 
-STile* CFileWDT::getTile( u8 row, u8 col )
+STile* CFileWDT::getTile( uint8_t row, uint8_t col )
 {
-	u16 n = M_MAKEWORD(col, row);
+	uint16_t n = M_MAKEWORD(col, row);
 	T_TileLookup::const_iterator itr = TileLookup.find(n);
 	if (itr == TileLookup.end())
 		return nullptr;
@@ -219,7 +219,7 @@ bool CFileWDT::loadADT( STile* tile, bool simple )
 	if (!tile || tile->fileAdt)
 		return false;
 
-	c8 adtname[QMAX_PATH];
+	char adtname[QMAX_PATH];
 	getADTFileName(tile->row, tile->col, adtname, QMAX_PATH);
 
 	IFileADT* adt = g_Engine->getResourceLoader()->loadADT(adtname, simple, !simple);
@@ -238,7 +238,7 @@ bool CFileWDT::loadADTTextures(STile* tile)
 	if (!tile || tile->fileAdt)
 		return false;
 
-	c8 adtname[QMAX_PATH];
+	char adtname[QMAX_PATH];
 	getADTFileName(tile->row, tile->col, adtname, QMAX_PATH);
 
 	IFileADT* adt = g_Engine->getResourceLoader()->loadADTTextures(adtname);
@@ -264,7 +264,7 @@ bool CFileWDT::unloadADT( STile* tile )
 
 void CFileWDT::loadWDL()
 {
-	c8 name[QMAX_PATH];
+	char name[QMAX_PATH];
 	Q_strcpy(name, QMAX_PATH, Name);
 	Q_strcat(name, QMAX_PATH, ".wdl");
 
@@ -272,8 +272,8 @@ void CFileWDT::loadWDL()
 	if (!file)
 		return;
 
-	c8 fourcc[5];
-	u32 size;
+	char fourcc[5];
+	uint32_t size;
 
 	int countMare = 0;
 	int countMaho = 0;
@@ -290,25 +290,25 @@ void CFileWDT::loadWDL()
 		if (size == 0)
 			continue;
 
-		u32 nextpos = file->getPos() + size;
+		uint32_t nextpos = file->getPos() + size;
 		if (strcmp(fourcc, "MVER") == 0)
 		{
-			u32 version;
+			uint32_t version;
 			file->read(&version, 4);
 			ASSERT(version == 18);
 		}
 		else if (strcmp(fourcc, "MWMO") == 0)			//Filenames for WMO that appear in the low resolution map
 		{
 			ASSERT(WmoFileNameBlock == 0);
-			WmoFileNameBlock = new c8[size];
+			WmoFileNameBlock = new char[size];
 			file->read(WmoFileNameBlock, size);
 		} 
 		else if (strcmp(fourcc, "MWID") == 0)				//List of indexes into the MWMO chunk		
 		{
 			ASSERT(WmoFileNameIndices == 0);
-			NumWmoFileNames = size / sizeof(u32);
-			WmoFileNameIndices = new u32[NumWmoFileNames];
-			file->read(WmoFileNameIndices, NumWmoFileNames * sizeof(u32));
+			NumWmoFileNames = size / sizeof(uint32_t);
+			WmoFileNameIndices = new uint32_t[NumWmoFileNames];
+			file->read(WmoFileNameIndices, NumWmoFileNames * sizeof(uint32_t));
 		} 
 		else if (strcmp(fourcc, "MODF") == 0)				//Placement information for the WMO		
 		{
@@ -317,7 +317,7 @@ void CFileWDT::loadWDL()
 			{
 				WmoInstances = new SWmoInstance[NumWmoInstance];
 				ADT::SWMOPlacement placement;
-				for (u32 i=0; i<NumWmoInstance; ++i)
+				for (uint32_t i=0; i<NumWmoInstance; ++i)
 				{	
 					file->read(&placement, sizeof(ADT::SWMOPlacement));
 					WmoInstances[i].wmoIndex = placement.wmoIndex;
@@ -370,7 +370,7 @@ void CFileWDT::loadWDL()
 
 void CFileWDT::loadTEX()
 {
-	c8 name[QMAX_PATH];
+	char name[QMAX_PATH];
 	Q_strcpy(name, QMAX_PATH, Name);
 	Q_strcat(name, QMAX_PATH, ".tex");
 
@@ -378,8 +378,8 @@ void CFileWDT::loadTEX()
 	if (!file)
 		return;
 
-	c8 fourcc[5];
-	u32 size;
+	char fourcc[5];
+	uint32_t size;
 
 	while (!file->isEof())
 	{
@@ -392,10 +392,10 @@ void CFileWDT::loadTEX()
 		if (size == 0)
 			continue;
 
-		u32 nextpos = file->getPos() + size;
+		uint32_t nextpos = file->getPos() + size;
 		if (strcmp(fourcc, "TXVR") == 0)
 		{
-			u32 version;
+			uint32_t version;
 			file->read(&version, 4);
 			ASSERT(version == 0);
 		}
@@ -411,12 +411,12 @@ void CFileWDT::loadTEX()
 		else if (strcmp(fourcc, "TXFN") == 0)
 		{
 			ASSERT(TextureFileNameBlock == 0);
-			TextureFileNameBlock = new c8[size];
+			TextureFileNameBlock = new char[size];
 			file->read(TextureFileNameBlock, size);
 		}
 		else if (strcmp(fourcc, "TXMD") == 0)
 		{
-			u8* buffer = (u8*)Z_AllocateTempMemory(size);
+			uint8_t* buffer = (uint8_t*)Z_AllocateTempMemory(size);
 			file->read(buffer, size);
 			Z_FreeTempMemory(buffer);
 		}
@@ -431,14 +431,14 @@ void CFileWDT::loadTEX()
 	delete file;
 }
 
-const c8* CFileWDT::getWMOFileName( u32 index ) const
+const char* CFileWDT::getWMOFileName( uint32_t index ) const
 {
 	if (index >= NumWmoFileNames)
 		return nullptr;
-	return (const c8*)&WmoFileNameBlock[WmoFileNameIndices[index]];
+	return (const char*)&WmoFileNameBlock[WmoFileNameIndices[index]];
 }
 
-void CFileWDT::getADTFileName( u8 row, u8 col, c8* name, u32 size ) const
+void CFileWDT::getADTFileName( uint8_t row, uint8_t col, char* name, uint32_t size ) const
 {
 	ASSERT(size >= QMAX_PATH);
 	Q_sprintf(name, QMAX_PATH, "%s_%d_%d", Name, col, row);
@@ -450,7 +450,7 @@ bool CFileWDT::loadADTData( STile* tile )
 	if (!tile || tile->fileAdt)
 		return false;
 
-	c8 adtname[QMAX_PATH];
+	char adtname[QMAX_PATH];
 	getADTFileName(tile->row, tile->col, adtname, QMAX_PATH);
 
 	IFileADT* adt = g_Engine->getResourceLoader()->loadADT(adtname, false, false);

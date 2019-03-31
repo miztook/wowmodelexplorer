@@ -4,7 +4,7 @@
 #include "CBlit.h"
 
 // KTX Header Identifiers.
-const u8 KTX_IDENTIFIER[12] = {0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A};
+const uint8_t KTX_IDENTIFIER[12] = {0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A};
 
 CKTXImage::CKTXImage()
 {
@@ -19,11 +19,11 @@ CKTXImage::~CKTXImage()
 
 bool CKTXImage::loadFile( IMemFile* file )
 {
-	u32 filesize = file->getSize();
-	FileData = new u8[filesize];
+	uint32_t filesize = file->getSize();
+	FileData = new uint8_t[filesize];
 	Q_memcpy(FileData, filesize, file->getBuffer(), filesize);
 
-	u32 offset = 0;
+	uint32_t offset = 0;
 	KTX_Header header;
 	Q_memcpy(&header, sizeof(KTX_Header), FileData, sizeof(KTX_Header));
 	offset = sizeof(KTX_Header);
@@ -131,10 +131,10 @@ bool CKTXImage::loadFile( IMemFile* file )
 		}
 	}
 
-	u32 mipoffset = offset;
-	for (u32 i=0; i<NumMipMaps; ++i)
+	uint32_t mipoffset = offset;
+	for (uint32_t i=0; i<NumMipMaps; ++i)
 	{
-		mipoffset += sizeof(u32);		//not use
+		mipoffset += sizeof(uint32_t);		//not use
 		MipmapOffset[i] = mipoffset;
 
 		dimension2du mipsize = Size.getMipLevelSize(i);
@@ -148,13 +148,13 @@ bool CKTXImage::loadFile( IMemFile* file )
 	return true;
 }
 
-bool CKTXImage::fromImageData( const u8* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap )
+bool CKTXImage::fromImageData( const uint8_t* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap )
 {
 	ASSERT(false);
 	return false;
 }
 
-const void* CKTXImage::getMipmapData( u32 level ) const
+const void* CKTXImage::getMipmapData( uint32_t level ) const
 {
 	if (level >= 16)
 		return nullptr;
@@ -165,17 +165,17 @@ const void* CKTXImage::getMipmapData( u32 level ) const
 	return nullptr;
 }
 
-bool CKTXImage::copyMipmapData( u32 level, void* dest, u32 pitch, u32 width, u32 height )
+bool CKTXImage::copyMipmapData( uint32_t level, void* dest, uint32_t pitch, uint32_t width, uint32_t height )
 {
-	u32 limit = getMipmapDataSize(level);
-	const u8* src = static_cast<const u8*>(getMipmapData(level));
+	uint32_t limit = getMipmapDataSize(level);
+	const uint8_t* src = static_cast<const uint8_t*>(getMipmapData(level));
 	if (!src || !limit )
 	{
 		ASSERT(false);
 		return false;
 	}
 
-	u32 srcPitch, srcDataSize;
+	uint32_t srcPitch, srcDataSize;
 	getImagePitchAndBytes(Format, width, height, srcPitch, srcDataSize);
 	if (srcPitch != pitch)
 	{

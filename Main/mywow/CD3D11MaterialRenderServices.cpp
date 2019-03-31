@@ -110,7 +110,7 @@ ID3D11DepthStencilState* CD3D11MaterialRenderServices::getDepthStencilState()
 	return state;
 }
 
-ID3D11SamplerState* CD3D11MaterialRenderServices::getSamplerState( u32 index )
+ID3D11SamplerState* CD3D11MaterialRenderServices::getSamplerState( uint32_t index )
 {
 	if(index >= MATERIAL_MAX_TEXTURES)
 		return nullptr;
@@ -224,7 +224,7 @@ void CD3D11MaterialRenderServices::setBasicRenderStates( const SMaterial& materi
 	}
 
 	//texture address mode
-	for (u32 st=0; st<MATERIAL_MAX_TEXTURES; ++st)
+	for (uint32_t st=0; st<MATERIAL_MAX_TEXTURES; ++st)
 	{	
 		if (resetAllRenderstates || 
 			material.TextureLayer[st].TextureWrapU != lastMaterial.TextureLayer[st].TextureWrapU ||
@@ -246,7 +246,7 @@ void CD3D11MaterialRenderServices::setBasicRenderStates( const SMaterial& materi
 
 void CD3D11MaterialRenderServices::setOverrideRenderStates( const SOverrideMaterial& overrideMaterial, bool resetAllRenderStates )
 {
-	for (u32 st=0; st<MATERIAL_MAX_TEXTURES; ++st)
+	for (uint32_t st=0; st<MATERIAL_MAX_TEXTURES; ++st)
 	{
 		if (resetAllRenderStates || overrideMaterial.TextureFilters[st] != LastOverrideMaterial.TextureFilters[st])
 		{
@@ -266,12 +266,12 @@ void CD3D11MaterialRenderServices::setOverrideRenderStates( const SOverrideMater
 				break;
 			}
 			
-			CurrentRenderState.TextureUnits[st].SamplerDesc.MaxAnisotropy = (u32)getAnisotropic(overrideMaterial.TextureFilters[st]);
+			CurrentRenderState.TextureUnits[st].SamplerDesc.MaxAnisotropy = (uint32_t)getAnisotropic(overrideMaterial.TextureFilters[st]);
 		}
 
 		if (resetAllRenderStates || overrideMaterial.MipMapLodBias[st] != LastOverrideMaterial.MipMapLodBias[st])
 		{
-			f32 v = overrideMaterial.MipMapLodBias[st] * 0.125f;
+			float v = overrideMaterial.MipMapLodBias[st] * 0.125f;
 			CurrentRenderState.TextureUnits[st].SamplerDesc.MipLODBias = v;
 		}
 	}
@@ -382,7 +382,7 @@ void CD3D11MaterialRenderServices::setPixelShaderMaterialBlock( SRenderStateBloc
 	ASSERT(block.pixelShader);
 }
 
-void CD3D11MaterialRenderServices::setTextureWrap( u32 st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap )
+void CD3D11MaterialRenderServices::setTextureWrap( uint32_t st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap )
 {
 	D3D11_TEXTURE_ADDRESS_MODE v = CD3D11Helper::getD3DTextureAddress(wrap);
 	switch (address)
@@ -404,7 +404,7 @@ void CD3D11MaterialRenderServices::setTextureWrap( u32 st, E_TEXTURE_ADDRESS add
 	}
 }
 
-E_TEXTURE_CLAMP CD3D11MaterialRenderServices::getTextureWrap( u32 st, E_TEXTURE_ADDRESS address ) const
+E_TEXTURE_CLAMP CD3D11MaterialRenderServices::getTextureWrap( uint32_t st, E_TEXTURE_ADDRESS address ) const
 {
 	D3D11_TEXTURE_ADDRESS_MODE v = D3D11_TEXTURE_ADDRESS_WRAP;
 	switch (address)
@@ -475,8 +475,8 @@ void CD3D11MaterialRenderServices::applyMaterialChanges()
 	//暂不支持数组
 
 	//texture
-	u32 textureCount = ps->getTextureCount();
-	for (u32 i=0; i<textureCount; ++i)
+	uint32_t textureCount = ps->getTextureCount();
+	for (uint32_t i=0; i<textureCount; ++i)
 	{
 		const CD3D11Texture* tex = static_cast<const CD3D11Texture*>(CurrentRenderState.TextureUnits[i].texture);
 		views[i] = tex ? tex->getShaderResourceView() : nullptr;
@@ -490,8 +490,8 @@ void CD3D11MaterialRenderServices::applyMaterialChanges()
 	}
 
 	//sampler
-	u32 samplerCount = ps->getSamplerCount();
-	for (u32 i=0; i<samplerCount; ++i)
+	uint32_t samplerCount = ps->getSamplerCount();
+	for (uint32_t i=0; i<samplerCount; ++i)
 	{
 		samplers[i] = getSamplerState(i);
 	}

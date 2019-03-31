@@ -13,30 +13,30 @@ public:
 	~CPlayer();
 
 public:
-	virtual void setTargetCamera(f32 nearValue, f32 farValue, f32 fov);
+	virtual void setTargetCamera(float nearValue, float farValue, float fov);
 
-	virtual void setM2AsTarget(IM2SceneNode* node, f32 distance, f32 rad);
+	virtual void setM2AsTarget(IM2SceneNode* node, float distance, float rad);
 
 	virtual wow_m2TargetCamera* getTargetCamera() const { return TargetCamera; }
 
-	virtual void setMoveSpeed(f32 walk, f32 run, f32 backwards, f32 roll);
+	virtual void setMoveSpeed(float walk, float run, float backwards, float roll);
 
-	virtual void getMoveSpeed(f32& walk, f32& run, f32& backwards, f32& roll);
+	virtual void getMoveSpeed(float& walk, float& run, float& backwards, float& roll);
 
-	virtual void tick(u32 delta);
+	virtual void tick(uint32_t delta);
 
-	virtual void onMouseWheel(f32 fDelta);
+	virtual void onMouseWheel(float fDelta);
 
-	virtual void onMouseMove(f32 pitchDegree, f32 yawDegree);
+	virtual void onMouseMove(float pitchDegree, float yawDegree);
 
-	virtual void rideOnModel(s32 npcid, E_M2_STATES state);
+	virtual void rideOnModel(int32_t npcid, E_M2_STATES state);
 
-	virtual s32 getRideNpcId() const { return RideNpcId; }
+	virtual int32_t getRideNpcId() const { return RideNpcId; }
 
 private:
-	void onPlayerSpellAction(u32 delta);
-	void onPlayerMoveAction(u32 delta, const SMoveControl& moveControl);		//控制移动和动作
-	void onPlayerDirection(u32 delta, const SMoveControl& moveControl);		//控制方向
+	void onPlayerSpellAction(uint32_t delta);
+	void onPlayerMoveAction(uint32_t delta, const SMoveControl& moveControl);		//控制移动和动作
+	void onPlayerDirection(uint32_t delta, const SMoveControl& moveControl);		//控制方向
 
 	vector3df getMoveVector() const;
 
@@ -51,11 +51,11 @@ private:
 
 private:
 	wow_m2TargetCamera*		TargetCamera;
-	f32		WalkSpeed;
-	f32		RunSpeed;
-	f32		RollSpeed;
-	f32		BackwardsSpeed;
+	float		WalkSpeed;
+	float		RunSpeed;
+	float		RollSpeed;
+	float		BackwardsSpeed;
 	IM2SceneNode*		MainModel;
 	IM2SceneNode*		RideModel;
-	s32		RideNpcId;
+	int32_t		RideNpcId;
 };

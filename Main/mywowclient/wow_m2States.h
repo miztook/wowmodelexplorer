@@ -18,12 +18,12 @@ public:
 
 	virtual bool isValid() const;
 	virtual bool enter();
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame) {}
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame) {}
 	virtual void exit() { M2Action= NULL; }
 	virtual E_M2_STATES getType() const { return EMS_STAND; }
 
 	virtual wow_m2Action* getM2Action() const { return M2Action; }
-	virtual void onAnimationEnd(u32 currentIndex) {}
+	virtual void onAnimationEnd(uint32_t currentIndex) {}
 
 private:
 	wow_m2Action* M2Action;
@@ -44,18 +44,18 @@ public:
 		HeightGround = 0.0f;
 	}
 
-	static f32 GRAVITY;
-	static f32 LANDHEIGHT;
-	static f32 ABOUTLANDHEIGHT;
+	static float GRAVITY;
+	static float LANDHEIGHT;
+	static float ABOUTLANDHEIGHT;
 
 	virtual bool isValid() const;
 	virtual bool enter();
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame);
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame);
 	virtual void exit() { M2Action= NULL; }
 	virtual E_M2_STATES getType() const { return EMS_JUMP; }
 
 	virtual wow_m2Action* getM2Action() const { return M2Action; }
-	virtual void onAnimationEnd(u32 currentIndex);
+	virtual void onAnimationEnd(uint32_t currentIndex);
 
 	bool isJumpEnd() const;
 	bool isAboutLand() const { return IsAboutLand; }
@@ -64,14 +64,14 @@ public:
 	const vector3df& getJumpDir() const { return JumpDir; }
 
 private:
-	f32 getM2Height() const;
+	float getM2Height() const;
 
 private:
 	wow_m2Action*	M2Action;
 	vector3df	JumpDir;
-	f32	Velocity;
-	f32	CurrentVelocity;
-	f32	HeightGround;
+	float	Velocity;
+	float	CurrentVelocity;
+	float	HeightGround;
 	bool IsAboutLand;
 	bool NextLandRun;
 	bool WaitToFinish;
@@ -86,12 +86,12 @@ public:
 
 	virtual bool isValid() const;
 	virtual bool enter();
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame);
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame);
 	virtual void exit();
 	virtual E_M2_STATES getType() const { return State; }
 
 	virtual wow_m2Action* getM2Action() const { return M2Action; }
-	virtual void onAnimationEnd(u32 currentIndex) {}
+	virtual void onAnimationEnd(uint32_t currentIndex) {}
 
 private:
 	wow_m2Action* M2Action;

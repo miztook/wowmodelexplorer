@@ -15,7 +15,7 @@
 #include "CGestureRecognizer_Swipe.h"
 #include "CGestureRecognizer_Circle.h"
 
-static const f32 g_doubleTapMaxOffset = 3.0f;
+static const float g_doubleTapMaxOffset = 3.0f;
 
 CGestureReader::CGestureReader()
 {
@@ -50,7 +50,7 @@ CGestureReader::~CGestureReader()
 
 	DESTROY_LOCK(&cs);
 
-	for (u32 i=0; i<GestureType_Num; ++i)
+	for (uint32_t i=0; i<GestureType_Num; ++i)
 	{
 		delete GestureRecognizers[i];
 	}
@@ -58,7 +58,7 @@ CGestureReader::~CGestureReader()
 
 void CGestureReader::filterWindowProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	u32 now = g_Engine->getTimer()->getMillisecond();
+	uint32_t now = g_Engine->getTimer()->getMillisecond();
 
 	switch(message)
 	{
@@ -69,18 +69,18 @@ void CGestureReader::filterWindowProc( HWND hWnd, UINT message, WPARAM wParam, L
 		break;
 	case WM_LBUTTONDOWN:
 		{
-			f32 time = now * 0.001f;
+			float time = now * 0.001f;
 
 			SGesTouchInfo touch;
 			touch.fingerID = FingerId[WIN_TOUCH_LBUTTON];
 			touch.tapCount = 1;
 
-			s32 x = (int)(short)LOWORD(lParam);
-			s32 y = (int)(short)HIWORD(lParam);
+			int32_t x = (int)(short)LOWORD(lParam);
+			int32_t y = (int)(short)HIWORD(lParam);
 
 			touch.phase = TouchPhase_Begin;
-			touch.posX = (f32)x;
-			touch.posY = (f32)y;
+			touch.posX = (float)x;
+			touch.posY = (float)y;
 
 			touch.deltaTime = 0.0f;
 			touch.deltaX = 0.0f; //touch.posX - CacheButtonDown[WIN_TOUCH_LBUTTON].posX;
@@ -105,18 +105,18 @@ void CGestureReader::filterWindowProc( HWND hWnd, UINT message, WPARAM wParam, L
 		break;
 	case WM_LBUTTONUP:
 		{			
-			f32 time = now * 0.001f;
+			float time = now * 0.001f;
 
 			SGesTouchInfo touch;
 			touch.fingerID = FingerId[WIN_TOUCH_LBUTTON];
 			touch.tapCount = 1;
 
-			s32 x = (int)(short)LOWORD(lParam);
-			s32 y = (int)(short)HIWORD(lParam);
+			int32_t x = (int)(short)LOWORD(lParam);
+			int32_t y = (int)(short)HIWORD(lParam);
 
 			touch.phase = TouchPhase_End;
-			touch.posX = (f32)x;
-			touch.posY = (f32)y;
+			touch.posX = (float)x;
+			touch.posY = (float)y;
 
 			STouchCache& cache = CacheButtonDown[WIN_TOUCH_LBUTTON];
 
@@ -144,18 +144,18 @@ void CGestureReader::filterWindowProc( HWND hWnd, UINT message, WPARAM wParam, L
 		break;
 	case WM_RBUTTONDOWN:
 		{			
-			f32 time = now * 0.001f;
+			float time = now * 0.001f;
 
 			SGesTouchInfo touch;
 			touch.fingerID = FingerId[WIN_TOUCH_RBUTTON];
 			touch.tapCount = 1;
 
-			s32 x = (int)(short)LOWORD(lParam);
-			s32 y = (int)(short)HIWORD(lParam);
+			int32_t x = (int)(short)LOWORD(lParam);
+			int32_t y = (int)(short)HIWORD(lParam);
 
 			touch.phase = TouchPhase_Begin;
-			touch.posX = (f32)x;
-			touch.posY = (f32)y;
+			touch.posX = (float)x;
+			touch.posY = (float)y;
 
 			touch.deltaTime = 0.0f;
 			touch.deltaX = 0.0f; //touch.posX - CacheButtonDown[WIN_TOUCH_RBUTTON].posX;
@@ -180,18 +180,18 @@ void CGestureReader::filterWindowProc( HWND hWnd, UINT message, WPARAM wParam, L
 		break;
 	case WM_RBUTTONUP:
 		{		
-			f32 time = now * 0.001f;
+			float time = now * 0.001f;
 
 			SGesTouchInfo touch;
 			touch.fingerID = FingerId[WIN_TOUCH_RBUTTON];
 			touch.tapCount = 1;
 
-			s32 x = (int)(short)LOWORD(lParam);
-			s32 y = (int)(short)HIWORD(lParam);
+			int32_t x = (int)(short)LOWORD(lParam);
+			int32_t y = (int)(short)HIWORD(lParam);
 
 			touch.phase = TouchPhase_End;
-			touch.posX = (f32)x;
-			touch.posY = (f32)y;
+			touch.posX = (float)x;
+			touch.posY = (float)y;
 
 			STouchCache& cache = CacheButtonDown[WIN_TOUCH_RBUTTON];
 
@@ -221,22 +221,22 @@ void CGestureReader::filterWindowProc( HWND hWnd, UINT message, WPARAM wParam, L
 		{
 			SGesTouchInfo moveTouch[2];
 
-			u32 index = WIN_TOUCH_NONE;
+			uint32_t index = WIN_TOUCH_NONE;
 
 			if (wParam & MK_LBUTTON)
 			{		
-				f32 time = now * 0.001f;
+				float time = now * 0.001f;
 
 				SGesTouchInfo& left = moveTouch[index];
 				left.fingerID = FingerId[WIN_TOUCH_LBUTTON];
 				left.tapCount = 1;
 
-				s32 x = (int)(short)LOWORD(lParam);
-				s32 y = (int)(short)HIWORD(lParam);
+				int32_t x = (int)(short)LOWORD(lParam);
+				int32_t y = (int)(short)HIWORD(lParam);
 
 				left.phase = TouchPhase_Move;
-				left.posX = (f32)x;
-				left.posY = (f32)y;
+				left.posX = (float)x;
+				left.posY = (float)y;
 
 				STouchCache& cache = CacheButtonDown[WIN_TOUCH_LBUTTON];
 
@@ -256,18 +256,18 @@ void CGestureReader::filterWindowProc( HWND hWnd, UINT message, WPARAM wParam, L
 
 			if (wParam & MK_RBUTTON)
 			{
-				f32 time = now * 0.001f;
+				float time = now * 0.001f;
 
 				SGesTouchInfo& right = moveTouch[index];
 				right.fingerID = FingerId[WIN_TOUCH_RBUTTON];
 				right.tapCount = 1;
 
-				s32 x = (int)(short)LOWORD(lParam);
-				s32 y = (int)(short)HIWORD(lParam);
+				int32_t x = (int)(short)LOWORD(lParam);
+				int32_t y = (int)(short)HIWORD(lParam);
 
 				right.phase = TouchPhase_Move;
-				right.posX = (f32)x;
-				right.posY = (f32)y;
+				right.posX = (float)x;
+				right.posY = (float)y;
 
 				STouchCache& cache = CacheButtonDown[WIN_TOUCH_RBUTTON];
 
@@ -291,8 +291,8 @@ void CGestureReader::filterWindowProc( HWND hWnd, UINT message, WPARAM wParam, L
 		break;
 	case WM_MOUSEWHEEL:
 		{
-			s32 zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
-			f32 score = zDelta / 120.0f;
+			int32_t zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+			float score = zDelta / 120.0f;
 			score = 1.0f + 0.1f * score;
 			if (score < 0.1f)
 				score = 0.1f;

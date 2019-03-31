@@ -11,114 +11,114 @@ namespace M2
 	//------------------------------------------------------------------------------
 	// WotLK version
 	struct Header20 { 				      
-		/*0x000*/   u8      _magic[4]; 	             // "MD20"																					  			
-		/*0x004*/   u8   _version[4];		     // 0x80 10 00 00 (first digit of the build the format was last updated)												  	  			
-		/*0x008*/   u32  _modelNameLength;		     // Length of the model's name																	  	  			
-		/*0x00C*/   u32  _modelNameOffset; 	     // Offset to the name																			  			   
-		/*0x010*/   u32  _GlobalModelFlags;	     // 1: tilt x, 2: tilt y, 4:, 8: add another field in header, 16: ; (no other flags as of 3.1.1); list at M2/WotLK/flags --schlumpf_ 02:21, 23 April 2009 (CEST)	  	  																							       
+		/*0x000*/   uint8_t      _magic[4]; 	             // "MD20"																					  			
+		/*0x004*/   uint8_t   _version[4];		     // 0x80 10 00 00 (first digit of the build the format was last updated)												  	  			
+		/*0x008*/   uint32_t  _modelNameLength;		     // Length of the model's name																	  	  			
+		/*0x00C*/   uint32_t  _modelNameOffset; 	     // Offset to the name																			  			   
+		/*0x010*/   uint32_t  _GlobalModelFlags;	     // 1: tilt x, 2: tilt y, 4:, 8: add another field in header, 16: ; (no other flags as of 3.1.1); list at M2/WotLK/flags --schlumpf_ 02:21, 23 April 2009 (CEST)	  	  																							       
 
-		/*0x014*/   u32  _nGlobalSequences;	     // A list of timestamps.														        						     
-		/*0x018*/   u32  _ofsGlobalSequences;	     // 																        						     
+		/*0x014*/   uint32_t  _nGlobalSequences;	     // A list of timestamps.														        						     
+		/*0x018*/   uint32_t  _ofsGlobalSequences;	     // 																        						     
 
-		/*0x01C*/   u32  _nAnimations;		     // Information about the animations in the model.  										        						     
-		/*0x020*/   u32  _ofsAnimations;		     // 																        						     
+		/*0x01C*/   uint32_t  _nAnimations;		     // Information about the animations in the model.  										        						     
+		/*0x020*/   uint32_t  _ofsAnimations;		     // 																        						     
 
-		/*0x024*/   u32  _nAnimationLookup;	     // Mapping of global IDs to the entries in the Animation sequences block.  							        						     
-		/*0x028*/   u32  _ofsAnimationLookup;	     // 																        						     
+		/*0x024*/   uint32_t  _nAnimationLookup;	     // Mapping of global IDs to the entries in the Animation sequences block.  							        						     
+		/*0x028*/   uint32_t  _ofsAnimationLookup;	     // 																        						     
 
-		/*0x02C*/   u32  _nBones;  		     // Information about the bones in this model.											        						     
-		/*0x030*/   u32  _ofsBones;		     // 																        						     
+		/*0x02C*/   uint32_t  _nBones;  		     // Information about the bones in this model.											        						     
+		/*0x030*/   uint32_t  _ofsBones;		     // 																        						     
 
-		/*0x034*/   u32  _nKeyBoneLookup;  	     // Lookup table for key skeletal bones.												        						     
-		/*0x038*/   u32  _ofsKeyBoneLookup;	     // 																        						     
+		/*0x034*/   uint32_t  _nKeyBoneLookup;  	     // Lookup table for key skeletal bones.												        						     
+		/*0x038*/   uint32_t  _ofsKeyBoneLookup;	     // 																        						     
 
-		/*0x03C*/   u32  _nVertices;		     // Vertices of the model.  													        						     
-		/*0x040*/   u32  _ofsVertices;		     // Views (LOD) are now in .skins.  												        						     
-		/*0x044*/   u32  _nViews;  		     // Color definitions.														        						     
+		/*0x03C*/   uint32_t  _nVertices;		     // Vertices of the model.  													        						     
+		/*0x040*/   uint32_t  _ofsVertices;		     // Views (LOD) are now in .skins.  												        						     
+		/*0x044*/   uint32_t  _nViews;  		     // Color definitions.														        						     
 
-		/*0x048*/   u32  _nColors; 		     // # of colors in table
-		/*0x04C*/   u32  _ofsColors;		     // 													        						     
+		/*0x048*/   uint32_t  _nColors; 		     // # of colors in table
+		/*0x04C*/   uint32_t  _ofsColors;		     // 													        						     
 
-		/*0x050*/   u32  _nTextures;		     // # of transparency values in table																        						     
-		/*0x054*/   u32  _ofsTextures;		     // 													        						     
+		/*0x050*/   uint32_t  _nTextures;		     // # of transparency values in table																        						     
+		/*0x054*/   uint32_t  _ofsTextures;		     // 													        						     
 
-		/*0x058*/   u32  _nTransparency;		     // 																        						     
-		/*0x05C*/   u32  _ofsTransparency; 	     // 																        						     
+		/*0x058*/   uint32_t  _nTransparency;		     // 																        						     
+		/*0x05C*/   uint32_t  _ofsTransparency; 	     // 																        						     
 
-		/*0x060*/   u32  _nTextureanimations;	     // 																        						     
-		/*0x064*/   u32  _ofsTextureanimations;	     // 																        						     
+		/*0x060*/   uint32_t  _nTextureanimations;	     // 																        						     
+		/*0x064*/   uint32_t  _ofsTextureanimations;	     // 																        						     
 
-		/*0x068*/   u32  _nTexReplace;		     // Replaceable Textures.														        						     
-		/*0x06C*/   u32  _ofsTexReplace;		     // 																        						     
+		/*0x068*/   uint32_t  _nTexReplace;		     // Replaceable Textures.														        						     
+		/*0x06C*/   uint32_t  _ofsTexReplace;		     // 																        						     
 
-		/*0x070*/   u32  _nRenderFlags;		     // Blending modes / render flags.  												        						     
-		/*0x074*/   u32  _ofsRenderFlags;  	     // 																        						     
+		/*0x070*/   uint32_t  _nRenderFlags;		     // Blending modes / render flags.  												        						     
+		/*0x074*/   uint32_t  _ofsRenderFlags;  	     // 																        						     
 
-		/*0x078*/   u32  _nBoneLookupTable;	     // A bone lookup table.														        						     
-		/*0x07C*/   u32  _ofsBoneLookupTable;	     // 																        						     
+		/*0x078*/   uint32_t  _nBoneLookupTable;	     // A bone lookup table.														        						     
+		/*0x07C*/   uint32_t  _ofsBoneLookupTable;	     // 																        						     
 
-		/*0x080*/   u32  _nTexLookup;		     // The same for textures.  													        						     
-		/*0x084*/   u32  _ofsTexLookup;		     // 																        						     
+		/*0x080*/   uint32_t  _nTexLookup;		     // The same for textures.  													        						     
+		/*0x084*/   uint32_t  _ofsTexLookup;		     // 																        						     
 
-		/*0x088*/   u32  _nTexUnits;		     // And texture units. Somewhere they have to be too.										        						     
-		/*0x08C*/   u32  _ofsTexUnits;		     // 																        						     
+		/*0x088*/   uint32_t  _nTexUnits;		     // And texture units. Somewhere they have to be too.										        						     
+		/*0x08C*/   uint32_t  _ofsTexUnits;		     // 																        						     
 
-		/*0x090*/   u32  _nTransLookup;		     // Everything needs its lookup. Here are the transparencies.
-		/*0x094*/   u32  _ofsTransLookup;  	     // 																        						     
+		/*0x090*/   uint32_t  _nTransLookup;		     // Everything needs its lookup. Here are the transparencies.
+		/*0x094*/   uint32_t  _ofsTransLookup;  	     // 																        						     
 
-		/*0x098*/   u32  _nTexAnimLookup;  	     // Wait. Do we have animated Textures? Wasn't ofsTexAnims deleted? oO		
-		/*0x09C*/   u32  _ofsTexAnimLookup;	     // Noone knows. Meeh, they are here.												        						     
+		/*0x098*/   uint32_t  _nTexAnimLookup;  	     // Wait. Do we have animated Textures? Wasn't ofsTexAnims deleted? oO		
+		/*0x09C*/   uint32_t  _ofsTexAnimLookup;	     // Noone knows. Meeh, they are here.												        						     
 
 		/*0x0A0*/   aabbox3df      _boundingbox;		     //bounding 																        						     
-		/*0x0B8*/   f32     _boundingRadius;
+		/*0x0B8*/   float     _boundingRadius;
 		/*0x0BC*/   aabbox3df      _vertexBox;                  //collision
-		/*0x0D4*/   f32     _vertexRadius; 
+		/*0x0D4*/   float     _vertexRadius; 
 
-		/*0x0D8*/   u32  _nBoundingTriangles;	     // Our bounding volumes. Similar structure like in the old ofsViews.	
-		/*0x0DC*/   u32  _ofsBoundingTriangles;	     // 																        						     
+		/*0x0D8*/   uint32_t  _nBoundingTriangles;	     // Our bounding volumes. Similar structure like in the old ofsViews.	
+		/*0x0DC*/   uint32_t  _ofsBoundingTriangles;	     // 																        						     
 
-		/*0x0E0*/   u32  _nBoundingVertices;	     // 																        						     
-		/*0x0E4*/   u32  _ofsBoundingVertices;	     // 																        						     
+		/*0x0E0*/   uint32_t  _nBoundingVertices;	     // 																        						     
+		/*0x0E4*/   uint32_t  _ofsBoundingVertices;	     // 																        						     
 
-		/*0x0E8*/   u32  _nBoundingNormals;	     // 																        						     
-		/*0x0EC*/   u32  _ofsBoundingNormals;	     // 																        						     
+		/*0x0E8*/   uint32_t  _nBoundingNormals;	     // 																        						     
+		/*0x0EC*/   uint32_t  _ofsBoundingNormals;	     // 																        						     
 
-		/*0x0F0*/   u32  _nAttachments;		     // Attachments are for weapons etc.												        						     
-		/*0x0F4*/   u32  _ofsAttachments;  	     // 																        						     
+		/*0x0F0*/   uint32_t  _nAttachments;		     // Attachments are for weapons etc.												        						     
+		/*0x0F4*/   uint32_t  _ofsAttachments;  	     // 																        						     
 
-		/*0x0F8*/   u32  _nAttachLookup;		     // Of course with a lookup.													        						     
-		/*0x0FC*/   u32  _ofsAttachLookup; 	     // 																        						     
+		/*0x0F8*/   uint32_t  _nAttachLookup;		     // Of course with a lookup.													        						     
+		/*0x0FC*/   uint32_t  _ofsAttachLookup; 	     // 																        						     
 
-		/*0x100*/   u32  _nEvents;  	     //												        						     
-		/*0x104*/   u32  _ofsEvents;	     // Used for playing sounds when dying and a lot else.																        						     
-		/*0x108*/   u32  _nLights; 		     // Lights are mainly used in loginscreens but in wands and some doodads too.	
-		/*0x10C*/   u32  _ofsLights;		     // 																        						     
+		/*0x100*/   uint32_t  _nEvents;  	     //												        						     
+		/*0x104*/   uint32_t  _ofsEvents;	     // Used for playing sounds when dying and a lot else.																        						     
+		/*0x108*/   uint32_t  _nLights; 		     // Lights are mainly used in loginscreens but in wands and some doodads too.	
+		/*0x10C*/   uint32_t  _ofsLights;		     // 																        						     
 
-		/*0x110*/   u32  _nCameras;		     // The cameras are present in most models for having a model in the Character-Tab. 		
-		/*0x114*/   u32  _ofsCameras;		     // 																        						     
+		/*0x110*/   uint32_t  _nCameras;		     // The cameras are present in most models for having a model in the Character-Tab. 		
+		/*0x114*/   uint32_t  _ofsCameras;		     // 																        						     
 
-		/*0x118*/   u32  _nCameraLookup;		     // And lookup-time again.  													        						     
-		/*0x11C*/   u32  _ofsCameraLookup; 	     // 																        						     
+		/*0x118*/   uint32_t  _nCameraLookup;		     // And lookup-time again.  													        						     
+		/*0x11C*/   uint32_t  _ofsCameraLookup; 	     // 																        						     
 
-		/*0x120*/   u32  _nRibbonEmitters; 	     // Things swirling around. See the CoT-entrance for light-trails.  			
-		/*0x124*/   u32  _ofsRibbonEmitters;	     // 																        						     
+		/*0x120*/   uint32_t  _nRibbonEmitters; 	     // Things swirling around. See the CoT-entrance for light-trails.  			
+		/*0x124*/   uint32_t  _ofsRibbonEmitters;	     // 																        						     
 
-		/*0x128*/   u32  _nParticleEmitters;	     // Spells and weapons, doodads and loginscreens use them. Blood dripping of a blade? Particles.	
-		/*0x12C*/   u32  _ofsParticleEmitters;	     	        						     
+		/*0x128*/   uint32_t  _nParticleEmitters;	     // Spells and weapons, doodads and loginscreens use them. Blood dripping of a blade? Particles.	
+		/*0x12C*/   uint32_t  _ofsParticleEmitters;	     	        						     
 	};
 
 	struct Header21
 	{
-		u8      _magic[4]; 	             // "MD20"
-		u32 unknown;
+		uint8_t      _magic[4]; 	             // "MD20"
+		uint32_t unknown;
 		Header20	_header20;
 	};
 
 	//------------------------------------------------------------------------------
 	struct vertex {
 		/*0x00*/    vector3df     _Position;       	 	     // A vector to the position of the vertex.
-		/*0x0C*/    u8   _BoneWeight[4];     	     // The vertex weight for 4 bones.
-		/*0x10*/    u8   _BoneIndices[4];    	     // Which are referenced here.
+		/*0x0C*/    uint8_t   _BoneWeight[4];     	     // The vertex weight for 4 bones.
+		/*0x10*/    uint8_t   _BoneIndices[4];    	     // Which are referenced here.
 		/*0x14*/    vector3df     _Normal;         		     // A normal vector.
 		/*0x20*/    vector2df     _TextureCoords0;	  	     // Coordinates for a texture.
 		/*0x28*/    vector2df     _TextureCoords1;        	     // Null?	
@@ -126,46 +126,46 @@ namespace M2
 
 	//------------------------------------------------------------------------------
 	struct animseq {
-		/*0x00*/    u16  _AnimationID;     	     // Animation id in AnimationData.dbc										      
-		/*0x02*/    u16  _SubAnimationID;  	     // Sub-animation id: Which number in a row of animations this one is.						      
-		/*0x04*/    u32  _Length;          	     // The length (timestamps) of the animation. I believe this actually the length of the animation in milliseconds.        
+		/*0x00*/    uint16_t  _AnimationID;     	     // Animation id in AnimationData.dbc										      
+		/*0x02*/    uint16_t  _SubAnimationID;  	     // Sub-animation id: Which number in a row of animations this one is.						      
+		/*0x04*/    uint32_t  _Length;          	     // The length (timestamps) of the animation. I believe this actually the length of the animation in milliseconds.        
 		/*0x08*/    float     _MovingSpeed;     	     // As 2.x says: moving speed for walk/run animations.								      
-		/*0x0C*/    u32  _Flags;           	     // One thing I saw in the source is that "-1 animationblocks" in bones wont get parsed if 0x20 is not set. 	      
-		/*0x10*/    u32  _Flags_2;         	     // Only the first 4 bits are the actual flags. The rest is 1. Seen flags: 0,3,6,7  				      
-		/*0x14*/    u32  _Unknown_1;       	     // These two are connected. Most of the time, they are 0.  							      
-		/*0x18*/    u32  _Unknown_2;       	     // But if there is data in one, there is data in both of them.							      
-		/*0x1C*/    u32  _PlaybackSpeed;   	     // Values: 0, 50, 100, 150, 200, 250, 300, 350, 500.								      
+		/*0x0C*/    uint32_t  _Flags;           	     // One thing I saw in the source is that "-1 animationblocks" in bones wont get parsed if 0x20 is not set. 	      
+		/*0x10*/    uint32_t  _Flags_2;         	     // Only the first 4 bits are the actual flags. The rest is 1. Seen flags: 0,3,6,7  				      
+		/*0x14*/    uint32_t  _Unknown_1;       	     // These two are connected. Most of the time, they are 0.  							      
+		/*0x18*/    uint32_t  _Unknown_2;       	     // But if there is data in one, there is data in both of them.							      
+		/*0x1C*/    uint32_t  _PlaybackSpeed;   	     // Values: 0, 50, 100, 150, 200, 250, 300, 350, 500.								      
 		/*0x20*/    aabbox3df      _BBox;  	             	     // A Bounding Box made out of 2 vectors.										      
 		/*0x38*/    float     _Radius;                       // The radius.													      
-		/*0x3C*/    s16   _NextAnimation;                // Id of the following animation of this AnimationID, points to an Index or is -1 if none. 			      
-		/*0x3E*/    s16  _Index;                        // Id in the list of animations.	
+		/*0x3C*/    int16_t   _NextAnimation;                // Id of the following animation of this AnimationID, points to an Index or is -1 if none. 			      
+		/*0x3E*/    int16_t  _Index;                        // Id in the list of animations.	
 	};
 
 	//------------------------------------------------------------------------------
 	struct sequence {
-		/*0x00*/    u32  _NValues;
-		/*0x04*/    u32  _SequencesOfs;
+		/*0x00*/    uint32_t  _NValues;
+		/*0x04*/    uint32_t  _SequencesOfs;
 	};
 
 	//------------------------------------------------------------------------------
 	struct animblock {
-		/*0x00*/    s16   _Interpolation;         	     // interpolation type
-		/*0x02*/    s16   _SequenceID;	      	     // global sequence ID or -1
-		// 	/*0x04*/    u32  _nRanges;	             // number of (int, int) interpolation ranges	 
-		// 	/*0x08*/    u32  _rangesOfs;                  // offset to interpolation ranges		    	 
-		/*0x0C*/    u32  _Ntimings;                     // number of (int) timestamps
-		/*0x10*/    u32  _TimingsOfs;                   // offset to timestamps
-		/*0x14*/    u32  _Nvalues;                      // number of values
-		/*0x18*/    u32  _ValuesOfs;                    // offset to values
+		/*0x00*/    int16_t   _Interpolation;         	     // interpolation type
+		/*0x02*/    int16_t   _SequenceID;	      	     // global sequence ID or -1
+		// 	/*0x04*/    uint32_t  _nRanges;	             // number of (int, int) interpolation ranges	 
+		// 	/*0x08*/    uint32_t  _rangesOfs;                  // offset to interpolation ranges		    	 
+		/*0x0C*/    uint32_t  _Ntimings;                     // number of (int) timestamps
+		/*0x10*/    uint32_t  _TimingsOfs;                   // offset to timestamps
+		/*0x14*/    uint32_t  _Nvalues;                      // number of values
+		/*0x18*/    uint32_t  _ValuesOfs;                    // offset to values
 	};
 
 	//------------------------------------------------------------------------------
 	struct bone {
-		/*0x00*/    s32   _AnimationSeq;    	     // Index into Animation sequences or -1.					      
-		/*0x04*/    u32  _Flags;	        	     // Only known flags: 8 - billborded and 512 - transformed  				    
-		/*0x08*/    s16   _ParentBone;      	     // Parent bone ID or -1 if there is none.  				      
-		/*0x0A*/    s16  _GeosetID;        	     // A geoset for this bone. 						      
-		/*0x0C*/    u32  _Unknown;         	     // 									      
+		/*0x00*/    int32_t   _AnimationSeq;    	     // Index into Animation sequences or -1.					      
+		/*0x04*/    uint32_t  _Flags;	        	     // Only known flags: 8 - billborded and 512 - transformed  				    
+		/*0x08*/    int16_t   _ParentBone;      	     // Parent bone ID or -1 if there is none.  				      
+		/*0x0A*/    int16_t  _GeosetID;        	     // A geoset for this bone. 						      
+		/*0x0C*/    uint32_t  _Unknown;         	     // 									      
 		/*0x10*/    animblock _Translation;     	     // An animationblock for translation. Should be 3*floats.  		      
 		/*0x24*/    animblock _Rotation;        	     // An animationblock for rotation. Should be 4*shorts, see Quaternion values and 2.x.    
 		/*0x38*/    animblock _Scaling;         	     // An animationblock for scaling. Should be 3*floats.					    
@@ -175,24 +175,24 @@ namespace M2
 	//------------------------------------------------------------------------------
 	// Attachments 
 	struct attach {
-		/*0x00*/    u32  _Id;	   		     // Just an id. Is referenced in the lookup-block below too.
-		/*0x04*/    s32  _Bone;	   		     // Bone it is attached to
+		/*0x00*/    uint32_t  _Id;	   		     // Just an id. Is referenced in the lookup-block below too.
+		/*0x04*/    int32_t  _Bone;	   		     // Bone it is attached to
 		/*0x08*/    vector3df     _Position;   		     // Position (relative to the bone)
 		/*0x14*/    animblock _Data;	  		     // Its an integer in the data. It has been 1 on all models I saw. Whatever.
 	};
 
 	//------------------------------------------------------------------------------
 	struct texture {
-		/*0x000*/   u32  _type;	    		     // The type of the texture : 0 for regular textures
-		/*0x004*/   u32  _flags;     		     // Textures have some flags. 
-		/*0x008*/   u32  _lenFilename; 		     // Here is the length of the filename, if the type is not "0 - hardcoded" then it's just 1 and points to a zero
-		/*0x00C*/   u32  _ofsFilename; 		     // And the offset to the filename.
+		/*0x000*/   uint32_t  _type;	    		     // The type of the texture : 0 for regular textures
+		/*0x004*/   uint32_t  _flags;     		     // Textures have some flags. 
+		/*0x008*/   uint32_t  _lenFilename; 		     // Here is the length of the filename, if the type is not "0 - hardcoded" then it's just 1 and points to a zero
+		/*0x00C*/   uint32_t  _ofsFilename; 		     // And the offset to the filename.
 	};
 
 	//------------------------------------------------------------------------------
 	struct light {
-		/*0x00*/    u16  _type;			     // Types are listed below. 					     
-		/*0x02*/    s16   _bone;			     // If its attached to a bone, this is the bone. Else here is a nice -1. 
+		/*0x00*/    uint16_t  _type;			     // Types are listed below. 					     
+		/*0x02*/    int16_t   _bone;			     // If its attached to a bone, this is the bone. Else here is a nice -1. 
 		/*0x04*/    vector3df     _pos;     	      	     // Where is this light?						     
 		/*0x10*/    animblock _ambientColor; 		     // The ambient color. Three floats for RGB.			     
 		/*0x24*/    animblock _ambientIntensity;	     // A float for the intensity.		     	 	      
@@ -207,34 +207,34 @@ namespace M2
 	struct skin_header {
 		/*0x00*/    char      _magic[4];	// "SKIN"
 
-		/*0x04*/    u32  _nIndices;        // 	  
-		/*0x08*/    u32  _ofsIndices;      // Indices used in this View.
+		/*0x04*/    uint32_t  _nIndices;        // 	  
+		/*0x08*/    uint32_t  _ofsIndices;      // Indices used in this View.
 
-		/*0x0C*/    u32  _nTriangles;      // 	  
-		/*0x10*/    u32  _ofsTriangles;    // The triangles made with them.
+		/*0x0C*/    uint32_t  _nTriangles;      // 	  
+		/*0x10*/    uint32_t  _ofsTriangles;    // The triangles made with them.
 
-		/*0x14*/    u32  _nProperties;     // 	  
-		/*0x18*/    u32  _ofsProperties;   // Properties of the vertices.
+		/*0x14*/    uint32_t  _nProperties;     // 	  
+		/*0x18*/    uint32_t  _ofsProperties;   // Properties of the vertices.
 
-		/*0x1C*/    u32  _nSubmeshes;      // 	  
-		/*0x20*/    u32  _ofsSubmeshes;    // Submeshes (Geosets) of this View.
+		/*0x1C*/    uint32_t  _nSubmeshes;      // 	  
+		/*0x20*/    uint32_t  _ofsSubmeshes;    // Submeshes (Geosets) of this View.
 
-		/*0x24*/    u32  _nTextureUnits;   // 	  
-		/*0x28*/    u32  _ofsTextureUnits; // Texture Units.
-		/*0x2C*/    u32  _LOD;             // LOD distance or something else
+		/*0x24*/    uint32_t  _nTextureUnits;   // 	  
+		/*0x28*/    uint32_t  _ofsTextureUnits; // Texture Units.
+		/*0x2C*/    uint32_t  _LOD;             // LOD distance or something else
 	};
 
 	//------------------------------------------------------------------------------
 	struct submesh {
-		/*0x00*/    u32  _ID;	        // Mesh part ID, see below.
-		/*0x04*/    u16  _startVertex;     // Starting vertex number.
-		/*0x06*/    u16  _nVertices;       // Number of vertices.
-		/*0x08*/    u16  _startTriangle;   // Starting triangle index (that's 3* the number of triangles drawn so far).
-		/*0x0A*/    u16  _nTriangles;      // Number of triangle indices.
-		/*0x0C*/    u16  _nBones;	        // Number of elements in the bone lookup table.
-		/*0x0E*/    u16  _startBones;      // Starting index in the bone lookup table.
-		/*0x10*/    u16  _unknown;         // 
-		/*0x12*/    u16  _rootBone;        // Not sure.
+		/*0x00*/    uint32_t  _ID;	        // Mesh part ID, see below.
+		/*0x04*/    uint16_t  _startVertex;     // Starting vertex number.
+		/*0x06*/    uint16_t  _nVertices;       // Number of vertices.
+		/*0x08*/    uint16_t  _startTriangle;   // Starting triangle index (that's 3* the number of triangles drawn so far).
+		/*0x0A*/    uint16_t  _nTriangles;      // Number of triangle indices.
+		/*0x0C*/    uint16_t  _nBones;	        // Number of elements in the bone lookup table.
+		/*0x0E*/    uint16_t  _startBones;      // Starting index in the bone lookup table.
+		/*0x10*/    uint16_t  _unknown;         // 
+		/*0x12*/    uint16_t  _rootBone;        // Not sure.
 		/*0x14*/    vector3df   _minBox;     	// Some Vector. Not sure about it being the Position.
 						  vector3df	_maxBox;
 		/*0x20*/    float     _radius;       // New Floats since BC. 	 
@@ -242,18 +242,18 @@ namespace M2
 
 	//------------------------------------------------------------------------------
 	struct textureUnit {
-		/*0x00*/  u16    _flags;                        // Flags
-		/*0x02*/  u16     _shading;                     // If set to 0x8000: shaders. Used in skyboxes to ditch the need for depth buffering.
-		/*0x04*/  s16    _submeshIdx;                   // Submesh index
-		/*0x06*/  s16    _submeshIdx2;  		     // Submesh index (repeated?)
-		/*0x08*/  s16     _colorIdx;                     // Color index or -1
-		/*0x0A*/  s16    _renderFlagsIdx;		     // Index into render flags table
-		/*0x0C*/  s16    _textureUnit;		     // Texture unit number (0 or 1 - index into the texture unit lookup table)
-		/*0x0E*/  u16    _mode;		             // Its actually two uint8s defining the shader used. Everything below this is in binary. X represents a variable digit
-		/*0x10*/  s16    _textureIdx;		     // Texture to use (index into the texture lookup table)
-		/*0x12*/  s16    _textureUnit2;		     // Texture unit number (repeated?)
-		/*0x14*/  s16    _transparencyIdx;		     // Transparency (index into transparency lookup table)
-		/*0x16*/  s16    _animationIdx;		     // Texture animation (index into the texture animation lookup table) 
+		/*0x00*/  uint16_t    _flags;                        // Flags
+		/*0x02*/  uint16_t     _shading;                     // If set to 0x8000: shaders. Used in skyboxes to ditch the need for depth buffering.
+		/*0x04*/  int16_t    _submeshIdx;                   // Submesh index
+		/*0x06*/  int16_t    _submeshIdx2;  		     // Submesh index (repeated?)
+		/*0x08*/  int16_t     _colorIdx;                     // Color index or -1
+		/*0x0A*/  int16_t    _renderFlagsIdx;		     // Index into render flags table
+		/*0x0C*/  int16_t    _textureUnit;		     // Texture unit number (0 or 1 - index into the texture unit lookup table)
+		/*0x0E*/  uint16_t    _mode;		             // Its actually two uint8s defining the shader used. Everything below this is in binary. X represents a variable digit
+		/*0x10*/  int16_t    _textureIdx;		     // Texture to use (index into the texture lookup table)
+		/*0x12*/  int16_t    _textureUnit2;		     // Texture unit number (repeated?)
+		/*0x14*/  int16_t    _transparencyIdx;		     // Transparency (index into transparency lookup table)
+		/*0x16*/  int16_t    _animationIdx;		     // Texture animation (index into the texture animation lookup table) 
 
 	};
 
@@ -289,14 +289,14 @@ namespace M2
 	};
 
 	struct renderflag {
-		u16 flags;
+		uint16_t flags;
 		//unsigned char f1;
 		//unsigned char f2;
-		u16 blend; 
+		uint16_t blend; 
 	};
 
 	struct ModelCameraDef {
-		s32 id; // 0 is potrait camera, 1 characterinfo camera; -1 if none; referenced in CamLookup_Table
+		int32_t id; // 0 is potrait camera, 1 characterinfo camera; -1 if none; referenced in CamLookup_Table
 		float fov; // No radians, no degrees. Multiply by 35 to get degrees.
 		float farclip; // Where it stops to be drawn.
 		float nearclip; // Far and near. Both of them.
@@ -308,7 +308,7 @@ namespace M2
 	};
 
 	struct ModelCameraDefV10 {
-		s32 id; // 0 is potrait camera, 1 characterinfo camera; -1 if none; referenced in CamLookup_Table
+		int32_t id; // 0 is potrait camera, 1 characterinfo camera; -1 if none; referenced in CamLookup_Table
 		float farclip; // Where it stops to be drawn.
 		float nearclip; // Far and near. Both of them.
 		animblock transPos; // (Vec3D) How the cameras position moves. Should be 3*3 floats. (? WoW parses 36 bytes = 3*3*sizeof(float))
@@ -320,17 +320,17 @@ namespace M2
 	};
 
 	struct FakeAnimationBlock {
-		u32 nTimes;
-		u32 ofsTimes;
-		u32 nKeys;
-		u32 ofsKeys;
+		uint32_t nTimes;
+		uint32_t ofsTimes;
+		uint32_t nKeys;
+		uint32_t ofsKeys;
 	};
 
 	struct ModelParticleParams {
 		FakeAnimationBlock colors; 	// (Vec3D)	This one points to 3 floats defining red, green and blue.
 		FakeAnimationBlock opacity;      // (UInt16)		Looks like opacity (short), Most likely they all have 3 timestamps for {start, middle, end}.
 		FakeAnimationBlock sizes; 		// (Vec2D)	It carries two floats per key. (x and y scale)
-		s32 d[2];
+		int32_t d[2];
 		FakeAnimationBlock Intensity; 	// (UInt16) Some kind of intensity values seen: 0,16,17,32(if set to different it will have high intensity) 
 		FakeAnimationBlock unk2; 		// (UInt16)
 		float unk[3];
@@ -343,8 +343,8 @@ namespace M2
 		vector3df Rot2;					//Model Rotation 2
 		vector3df Trans;				//Model Translation
 		float f2[4];
-		s32 nUnknownReference;
-		s32 ofsUnknownReferenc;
+		int32_t nUnknownReference;
+		int32_t ofsUnknownReferenc;
 	};
 
 #define	MODELPARTICLE_FLAGS_DONOTTRAIL		0x10
@@ -354,28 +354,28 @@ namespace M2
 #define	MODELPARTICLE_EMITTER_SPLINE		3
 
 	struct ModelParticleEmitterDef {
-		s32 id;
-		s32 flags; // MODELPARTICLE_FLAGS_*
+		int32_t id;
+		int32_t flags; // MODELPARTICLE_FLAGS_*
 		vector3df pos; // The position. Relative to the following bone.
-		s16 bone; // The bone its attached to.
-		s16 texture; // And the texture that is used.
-		s32 nModelFileName;
-		s32 ofsModelFileName;
-		s32 nParticleFileName;
-		s32 ofsParticleFileName; // TODO
+		int16_t bone; // The bone its attached to.
+		int16_t texture; // And the texture that is used.
+		int32_t nModelFileName;
+		int32_t ofsModelFileName;
+		int32_t nParticleFileName;
+		int32_t ofsParticleFileName; // TODO
 
-		s8 blend;
-		s8 EmitterType; // EmitterType	 1 - Plane (rectangle), 2 - Sphere, 3 - Spline? (can't be bothered to find one)
-		s16 ParticleColor; // This one is used so you can assign a color to specific particles. They loop over all 
+		int8_t blend;
+		int8_t EmitterType; // EmitterType	 1 - Plane (rectangle), 2 - Sphere, 3 - Spline? (can't be bothered to find one)
+		int16_t ParticleColor; // This one is used so you can assign a color to specific particles. They loop over all 
 		// particles and compare +0x2A to 11, 12 and 13. If that matches, the colors from the dbc get applied.
-		s8 ParticleType; // 0 "normal" particle, 
+		int8_t ParticleType; // 0 "normal" particle, 
 		// 1 large quad from the particle's origin to its position (used in Moonwell water effects)
 		// 2 seems to be the same as 0 (found some in the Deeprun Tram blinky-lights-sign thing)
-		s8 HeaderTail; // 0 - Head, 1 - Tail, 2 - Both
-		s16 TextureTileRotation; // TODO, Rotation for the texture tile. (Values: -1,0,1)
+		int8_t HeaderTail; // 0 - Head, 1 - Tail, 2 - Both
+		int16_t TextureTileRotation; // TODO, Rotation for the texture tile. (Values: -1,0,1)
 
-		s16 cols; // How many different frames are on that texture? People should learn what rows and cols are.
-		s16 rows; // (2, 2) means slice texture to 2*2 pieces
+		int16_t cols; // How many different frames are on that texture? People should learn what rows and cols are.
+		int16_t rows; // (2, 2) means slice texture to 2*2 pieces
 		animblock EmissionSpeed; // (Float) All of the following blocks should be floats.
 		animblock SpeedVariation; // (Float) Variation in the flying-speed. (range: 0 to 1)
 		animblock VerticalRange; // (Float) Drifting away vertically. (range: 0 to pi)
@@ -383,11 +383,11 @@ namespace M2
 		animblock Gravity; // (Float) Fall down, apple!
 		animblock Lifespan; // (Float) Everyone has to die.
 
-		s32 unknown;
+		int32_t unknown;
 
 		animblock EmissionRate; // (Float) Stread your particles, emitter.
 
-		s32 unknown2;
+		int32_t unknown2;
 
 		animblock EmissionAreaLength; // (Float) Well, you can do that in this area.
 		animblock EmissionAreaWidth; // (Float) 
@@ -397,54 +397,54 @@ namespace M2
 	};
 
 	struct ModelParticleEmitterDefV10 {
-		s32 id;
-		s32 flags;
+		int32_t id;
+		int32_t flags;
 		vector3df pos; // The position. Relative to the following bone.
-		s16 bone; // The bone its attached to.
-		s16 texture; // And the texture that is used.
-		s32 nModelFileName;
-		s32 ofsModelFileName;
-		s32 nParticleFileName;
-		s32 ofsParticleFileName; // TODO
-		s8 blend;
-		s8 EmitterType; // EmitterType	 1 - Plane (rectangle), 2 - Sphere, 3 - Spline? (can't be bothered to find one)
-		s16 ParticleColor; // This one is used so you can assign a color to specific particles. They loop over all 
+		int16_t bone; // The bone its attached to.
+		int16_t texture; // And the texture that is used.
+		int32_t nModelFileName;
+		int32_t ofsModelFileName;
+		int32_t nParticleFileName;
+		int32_t ofsParticleFileName; // TODO
+		int8_t blend;
+		int8_t EmitterType; // EmitterType	 1 - Plane (rectangle), 2 - Sphere, 3 - Spline? (can't be bothered to find one)
+		int16_t ParticleColor; // This one is used so you can assign a color to specific particles. They loop over all 
 		// particles and compare +0x2A to 11, 12 and 13. If that matches, the colors from the dbc get applied.
-		s8 ParticleType; // 0 "normal" particle, 
+		int8_t ParticleType; // 0 "normal" particle, 
 		// 1 large quad from the particle's origin to its position (used in Moonwell water effects)
 		// 2 seems to be the same as 0 (found some in the Deeprun Tram blinky-lights-sign thing)
-		s8 HeaderTail; // 0 - Head, 1 - Tail, 2 - Both
-		s16 TextureTileRotation; // TODO, Rotation for the texture tile. (Values: -1,0,1)
-		s16 cols; // How many different frames are on that texture? People should learn what rows and cols are.
-		s16 rows; // (2, 2) means slice texture to 2*2 pieces
+		int8_t HeaderTail; // 0 - Head, 1 - Tail, 2 - Both
+		int16_t TextureTileRotation; // TODO, Rotation for the texture tile. (Values: -1,0,1)
+		int16_t cols; // How many different frames are on that texture? People should learn what rows and cols are.
+		int16_t rows; // (2, 2) means slice texture to 2*2 pieces
 		animblock EmissionSpeed; // (Float) All of the following blocks should be floats.
 		animblock SpeedVariation; // (Float) Variation in the flying-speed. (range: 0 to 1)
 		animblock VerticalRange; // (Float) Drifting away vertically. (range: 0 to pi)
 		animblock HorizontalRange; // (Float) They can do it horizontally too! (range: 0 to 2*pi)
 		animblock Gravity; // (Float) Fall down, apple!
 		animblock Lifespan; // (Float) Everyone has to die.
-		s32 unknown;
+		int32_t unknown;
 		animblock EmissionRate; // (Float) Stread your particles, emitter.
-		s32 unknown2;
+		int32_t unknown2;
 		animblock EmissionAreaLength; // (Float) Well, you can do that in this area.
 		animblock EmissionAreaWidth; // (Float) 
 		animblock Gravity2; // (Float) A second gravity? Its strong.
 		ModelParticleParams p;
 		animblock en; // (UInt16), seems unused in cataclysm
-		s32 unknown3; // 12319, cataclysm
-		s32 unknown4; // 12319, cataclysm
-		s32 unknown5; // 12319, cataclysm
-		s32 unknown6; // 12319, cataclysm
+		int32_t unknown3; // 12319, cataclysm
+		int32_t unknown4; // 12319, cataclysm
+		int32_t unknown5; // 12319, cataclysm
+		int32_t unknown6; // 12319, cataclysm
 	};
 
 	struct ModelRibbonEmitterDef {
-		s32 id;
-		s32 bone;
+		int32_t id;
+		int32_t bone;
 		vector3df pos;
-		s32 nTextures;
-		s32 ofsTextures;
-		s32 nUnknown;
-		s32 ofsUnknown;
+		int32_t nTextures;
+		int32_t ofsTextures;
+		int32_t nUnknown;
+		int32_t ofsUnknown;
 		animblock color; // (Vec3D)
 		animblock opacity; // (UInt16) And an alpha value in a short, where: 0 - transparent, 0x7FFF - opaque.
 		animblock above; // (Float) The height above.
@@ -452,11 +452,11 @@ namespace M2
 		float res; // This defines how smooth the ribbon is. A low value may produce a lot of edges.
 		float length; // The length aka Lifespan.
 		float Emissionangle; // use arcsin(val) to get the angle in degree
-		s16 s1, s2;
+		int16_t s1, s2;
 		animblock unk1; // (short)
 		animblock unk2; // (boolean)
 
-		s32 unknown; // This looks much like just some Padding to the fill up the 0x10 Bytes, always 0
+		int32_t unknown; // This looks much like just some Padding to the fill up the 0x10 Bytes, always 0
 	};
 
 #	pragma pack ()

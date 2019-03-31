@@ -4,7 +4,7 @@
 
 namespace WowLegion
 {
-	dbc::dbc(const wowEnvironment* env, const wowDatabase* database, const c8* filename, bool tmp /*= false*/)
+	dbc::dbc(const wowEnvironment* env, const wowDatabase* database, const char* filename, bool tmp /*= false*/)
 		: DBType(WowDBType::Unknown)
 		, IsSparse(false)
 	{
@@ -20,7 +20,7 @@ namespace WowLegion
 
 		string512 path = filename;
 
-		c8 name[MAX_PATH];
+		char name[MAX_PATH];
 		getFileNameNoExtensionA(filename, name, MAX_PATH);
 		TableStructure = database->getTableStructure(name);
 		ASSERT(TableStructure);
@@ -45,10 +45,10 @@ namespace WowLegion
 			return;
 		}
 
-		_buffer = new u8[file->getSize()];
+		_buffer = new uint8_t[file->getSize()];
 		memcpy(_buffer, file->getBuffer(), file->getSize());
 
-		const c8* magic = (const c8*)file->getBuffer();
+		const char* magic = (const char*)file->getBuffer();
 		if (strncmp(magic, "WDBC", 4) == 0)
 			DBType = WowDBType::WDBC;
 		else if (strncmp(magic, "WDB2", 4) == 0)
@@ -105,7 +105,7 @@ namespace WowLegion
 		Fields.resize(nFields);
 		file->read(Fields.data(), sizeof(SField)* nFields);
 
-		for (u32 i = 0; i < nFields; ++i)
+		for (uint32_t i = 0; i < nFields; ++i)
 		{
 			FieldSizeMap[Fields[i].position] = Fields[i].size;
 		}
@@ -115,10 +115,10 @@ namespace WowLegion
 			file->seek(StringSize);
 
 			nActualRecords = 0;
-			for (u32 i = 0; i < (header.max_id - header.min_id); ++i)
+			for (uint32_t i = 0; i < (header.max_id - header.min_id); ++i)
 			{
-				u32 offset;
-				u16 length;
+				uint32_t offset;
+				uint16_t length;
 
 				file->read(&offset, sizeof(offset));
 				file->read(&length, sizeof(length));
@@ -139,13 +139,13 @@ namespace WowLegion
 			if (HasIndex)
 			{
 				IDs.resize(nRecords);
-				file->read(IDs.data(), sizeof(u32) * nRecords);
+				file->read(IDs.data(), sizeof(uint32_t) * nRecords);
 			}
 			else
 			{
-				u32 indexPos = Fields[header.idindex].position;
-				u32 indexSize = (32 - Fields[header.idindex].size) / 8;
-				u32 indexMask = 0xFFFFFFFF;
+				uint32_t indexPos = Fields[header.idindex].position;
+				uint32_t indexSize = (32 - Fields[header.idindex].size) / 8;
+				uint32_t indexMask = 0xFFFFFFFF;
 				if (indexSize == 1)
 					indexMask = 0x000000FF;
 				else if (indexSize == 2)
@@ -153,40 +153,40 @@ namespace WowLegion
 				else if (indexSize == 3)
 					indexMask = 0x00FFFFFF;
 
-				for (u32 i = 0; i < nRecords; ++i)
+				for (uint32_t i = 0; i < nRecords; ++i)
 				{
-					const u8* recordOffset = _recordStart + i * RecordSize;
-					u32 v;
+					const uint8_t* recordOffset = _recordStart + i * RecordSize;
+					uint32_t v;
 					memcpy(&v, recordOffset + indexPos, indexSize);
 					IDs.push_back(v & indexMask);
 				}
 			}
 
-			for (u32 i = 0; i < nRecords; ++i)
+			for (uint32_t i = 0; i < nRecords; ++i)
 				RecordOffsets.push_back(_recordStart + i * RecordSize);
 		}
 
 		//relationship
 		if (HasRelationshipData)
 		{
-			s32 relationshipDataSize = nRecords * sizeof(s32);
-			file->seek(nRecords * sizeof(s32), true);
+			int32_t relationshipDataSize = nRecords * sizeof(int32_t);
+			file->seek(nRecords * sizeof(int32_t), true);
 		}
 
 		if (header.copydatasize > 0)
 		{
-			u32 nCopys = header.copydatasize / sizeof(SCopyTableEntry);
+			uint32_t nCopys = header.copydatasize / sizeof(SCopyTableEntry);
 			std::vector<SCopyTableEntry> copyTables;
 			copyTables.resize(nCopys);
 			file->read(copyTables.data(), sizeof(SCopyTableEntry)* nCopys);
 
-			std::map<int, u8*>  IDToOffsetMap;
-			for (u32 i = 0; i < nActualRecords; ++i)
+			std::map<int, uint8_t*>  IDToOffsetMap;
+			for (uint32_t i = 0; i < nActualRecords; ++i)
 			{
 				IDToOffsetMap[IDs[i]] = RecordOffsets[i];
 			}
 
-			for (u32 i = 0; i < nCopys; ++i)
+			for (uint32_t i = 0; i < nCopys; ++i)
 			{
 				IDs.push_back(copyTables[i].id_new_row);
 				RecordOffsets.push_back(IDToOffsetMap[copyTables[i].id_copied_row]);
@@ -198,7 +198,7 @@ namespace WowLegion
 		ASSERT(file->getPos() == file->getSize());
 
 		//build map
-		for (u32 i = 0; i < nActualRecords; ++i)
+		for (uint32_t i = 0; i < nActualRecords; ++i)
 		{
 			RecordLookup32[IDs[i]] = i;
 		}
@@ -228,7 +228,7 @@ namespace WowLegion
 		Fields.resize(nFields);
 		file->read(Fields.data(), sizeof(SField)* nFields);
 
-		for (u32 i = 0; i < nFields; ++i)
+		for (uint32_t i = 0; i < nFields; ++i)
 		{
 			FieldSizeMap[Fields[i].position] = Fields[i].size;
 		}
@@ -238,10 +238,10 @@ namespace WowLegion
 			file->seek(StringSize);
 
 			nActualRecords = 0;
-			for (u32 i = 0; i < (header.max_id - header.min_id); ++i)
+			for (uint32_t i = 0; i < (header.max_id - header.min_id); ++i)
 			{
-				u32 offset;
-				u16 length;
+				uint32_t offset;
+				uint16_t length;
 
 				file->read(&offset, sizeof(offset));
 				file->read(&length, sizeof(length));
@@ -262,13 +262,13 @@ namespace WowLegion
 			if (HasIndex)
 			{
 				IDs.resize(nRecords);
-				file->read(IDs.data(), sizeof(u32)* nRecords);
+				file->read(IDs.data(), sizeof(uint32_t)* nRecords);
 			}
 			else
 			{
-				u32 indexPos = Fields[header.idindex].position;
-				u32 indexSize = (32 - Fields[header.idindex].size) / 8;
-				u32 indexMask = 0xFFFFFFFF;
+				uint32_t indexPos = Fields[header.idindex].position;
+				uint32_t indexSize = (32 - Fields[header.idindex].size) / 8;
+				uint32_t indexMask = 0xFFFFFFFF;
 				if (indexSize == 1)
 					indexMask = 0x000000FF;
 				else if (indexSize == 2)
@@ -276,40 +276,40 @@ namespace WowLegion
 				else if (indexSize == 3)
 					indexMask = 0x00FFFFFF;
 
-				for (u32 i = 0; i < nRecords; ++i)
+				for (uint32_t i = 0; i < nRecords; ++i)
 				{
-					const u8* recordOffset = _recordStart + i * RecordSize;
-					u32 v;
+					const uint8_t* recordOffset = _recordStart + i * RecordSize;
+					uint32_t v;
 					memcpy(&v, recordOffset + indexPos, indexSize);
 					IDs.push_back(v & indexMask);
 				}
 			}
 
-			for (u32 i = 0; i < nRecords; ++i)
+			for (uint32_t i = 0; i < nRecords; ++i)
 				RecordOffsets.push_back(_recordStart + i * RecordSize);
 		}
 
 		//relationship
 		if (HasRelationshipData)
 		{
-			s32 relationshipDataSize = nRecords * sizeof(s32);
-			file->seek(nRecords * sizeof(s32), true);
+			int32_t relationshipDataSize = nRecords * sizeof(int32_t);
+			file->seek(nRecords * sizeof(int32_t), true);
 		}
 
 		if (header.copydatasize > 0)
 		{
-			u32 nCopys = header.copydatasize / sizeof(SCopyTableEntry);
+			uint32_t nCopys = header.copydatasize / sizeof(SCopyTableEntry);
 			std::vector<SCopyTableEntry> copyTables;
 			copyTables.resize(nCopys);
 			file->read(copyTables.data(), sizeof(SCopyTableEntry)* nCopys);
 
-			std::map<int, u8*>  IDToOffsetMap;
-			for (u32 i = 0; i < nActualRecords; ++i)
+			std::map<int, uint8_t*>  IDToOffsetMap;
+			for (uint32_t i = 0; i < nActualRecords; ++i)
 			{
 				IDToOffsetMap[IDs[i]] = RecordOffsets[i];
 			}
 
-			for (u32 i = 0; i < nCopys; ++i)
+			for (uint32_t i = 0; i < nCopys; ++i)
 			{
 				IDs.push_back(copyTables[i].id_new_row);
 				RecordOffsets.push_back(IDToOffsetMap[copyTables[i].id_copied_row]);
@@ -321,17 +321,17 @@ namespace WowLegion
 		//CommonData read
 		if (header.nonzero_column_table_size > 0)
 		{
-			u32 nColumns;
-			file->read(&nColumns, sizeof(u32));
+			uint32_t nColumns;
+			file->read(&nColumns, sizeof(uint32_t));
 
-			for (u32 c = 0; c < nColumns; c++)
+			for (uint32_t c = 0; c < nColumns; c++)
 			{
 				// read number of records
-				u32 nbrecords;
+				uint32_t nbrecords;
 				file->read(&nbrecords, sizeof(nbrecords));
 
 				// read type
-				u8 type;
+				uint8_t type;
 				file->read(&type, sizeof(type));
 
 				if (nbrecords == 0)
@@ -340,7 +340,7 @@ namespace WowLegion
 				SCommonColumn column;
 				column.type = type;
 
-				u32 size = 4;
+				uint32_t size = 4;
 				// starting from 7.3 version, data in common data is stored in 4 bytes, not dynamic size anymore
 				if (false) //(!GAMEDIRECTORY.version().contains("7.3"))
 				{
@@ -350,12 +350,12 @@ namespace WowLegion
 						size = 1;
 				}
 
-				for (u32 i = 0; i < nbrecords; i++)
+				for (uint32_t i = 0; i < nbrecords; i++)
 				{
-					u32 id;
+					uint32_t id;
 					file->read(&id, sizeof(id));
 
-					u32 val = 0;
+					uint32_t val = 0;
 					file->read(&val, size);
 
 					column.recordmap[id] = val;
@@ -368,7 +368,7 @@ namespace WowLegion
 		ASSERT(file->getPos() == file->getSize());
 
 		//build map
-		for (u32 i = 0; i < nActualRecords; ++i)
+		for (uint32_t i = 0; i < nActualRecords; ++i)
 		{
 			RecordLookup32[IDs[i]] = i;
 		}
@@ -398,13 +398,13 @@ namespace WowLegion
 		Fields.resize(nFields);
 		file->read(Fields.data(), sizeof(SField)* nFields);
 
-		for (u32 i = 0; i < nFields; ++i)
+		for (uint32_t i = 0; i < nFields; ++i)
 		{
 			FieldSizeMap[Fields[i].position] = Fields[i].size;
 		}
 
-		u8* recordOffsetStart = file->getPointer();
-		u32 stringTableOffset = file->getPos() + RecordSize * nRecords;
+		uint8_t* recordOffsetStart = file->getPointer();
+		uint32_t stringTableOffset = file->getPos() + RecordSize * nRecords;
 		if (HasDataOffsetBlock)
 		{
 			StringSize = 0;
@@ -412,23 +412,23 @@ namespace WowLegion
 		}
 
 		file->seek(stringTableOffset);
-		u32 idBlockOffset = stringTableOffset + StringSize;
-		u32 copyBlockOffset = idBlockOffset;
+		uint32_t idBlockOffset = stringTableOffset + StringSize;
+		uint32_t copyBlockOffset = idBlockOffset;
 
 		if (HasIndex)			//skip index
 			copyBlockOffset += (nRecords * 4);
 
-		u32 fieldStorageInfoOffset = copyBlockOffset + header.copydatasize;
-		u32 palletBlockOffset = fieldStorageInfoOffset + header.field_storage_info_size;
-		u32 commonBlockOffset = palletBlockOffset + header.pallet_data_size;
-		u32 relationshipDataOffset = commonBlockOffset + header.common_data_size;
+		uint32_t fieldStorageInfoOffset = copyBlockOffset + header.copydatasize;
+		uint32_t palletBlockOffset = fieldStorageInfoOffset + header.field_storage_info_size;
+		uint32_t commonBlockOffset = palletBlockOffset + header.pallet_data_size;
+		uint32_t relationshipDataOffset = commonBlockOffset + header.common_data_size;
 
 		//read storage info
 		if (header.field_storage_info_size > 0)
 		{
 			file->seek(fieldStorageInfoOffset);
-			u32 nFieldStorageInfo = header.field_storage_info_size / sizeof(SFieldStorageInfo);
-			for (u32 i = 0; i < nFieldStorageInfo; ++i)
+			uint32_t nFieldStorageInfo = header.field_storage_info_size / sizeof(SFieldStorageInfo);
+			for (uint32_t i = 0; i < nFieldStorageInfo; ++i)
 			{
 				SFieldStorageInfo info;
 				file->read(&info, sizeof(info));
@@ -441,10 +441,10 @@ namespace WowLegion
 			file->seek(header.offset_map_offset);
 
 			nActualRecords = 0;
-			for (u32 i = 0; i < (header.max_id - header.min_id); ++i)
+			for (uint32_t i = 0; i < (header.max_id - header.min_id); ++i)
 			{
-				u32 offset;
-				u16 length;
+				uint32_t offset;
+				uint16_t length;
 
 				file->read(&offset, sizeof(offset));
 				file->read(&length, sizeof(length));
@@ -463,32 +463,32 @@ namespace WowLegion
 			{
 				file->seek(idBlockOffset);
 				IDs.resize(nRecords);
-				file->read(IDs.data(), sizeof(u32)* nRecords);
+				file->read(IDs.data(), sizeof(uint32_t)* nRecords);
 			}
 			else
 			{
 				const SFieldStorageInfo& info = FieldStorageInfos[header.idindex];
-				for (u32 i = 0; i < nRecords; ++i)
+				for (uint32_t i = 0; i < nRecords; ++i)
 				{
-					const u8* recordOffset = recordOffsetStart + i * RecordSize;
+					const uint8_t* recordOffset = recordOffsetStart + i * RecordSize;
 					switch (info.storage_type)
 					{
 					case FIELD_COMPRESSION::NONE:
 					{
-						u32 size = info.field_offset_bits / 8;
-						u8* val = new u8[size];
+						uint32_t size = info.field_offset_bits / 8;
+						uint8_t* val = new uint8_t[size];
 						memcpy(val, recordOffset, size);
-						IDs.push_back((*reinterpret_cast<u32*>(val)));
+						IDs.push_back((*reinterpret_cast<uint32_t*>(val)));
 						delete[] val;
 					}
 						break;
 					case FIELD_COMPRESSION::BITPACKED:
 					{
-						u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
-						u32 offset = info.field_offset_bits / 8;
-						u8* val = new u8[size];
+						uint32_t size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
+						uint32_t offset = info.field_offset_bits / 8;
+						uint8_t* val = new uint8_t[size];
 						memcpy(val, recordOffset, size);
-						u32 id = (*reinterpret_cast<u32*>(val));
+						uint32_t id = (*reinterpret_cast<uint32_t*>(val));
 						id = id & ((1ull << info.field_size_bits) - 1);
 						IDs.push_back(id);
 						delete[] val;
@@ -510,25 +510,25 @@ namespace WowLegion
 				}
 			}
 
-			for (u32 i = 0; i < nRecords; ++i)
+			for (uint32_t i = 0; i < nRecords; ++i)
 				RecordOffsets.push_back(recordOffsetStart + i * RecordSize);
 		}
 
 		//copy table
 		if (header.copydatasize > 0)
 		{
-			u32 nCopys = header.copydatasize / sizeof(SCopyTableEntry);
+			uint32_t nCopys = header.copydatasize / sizeof(SCopyTableEntry);
 			std::vector<SCopyTableEntry> copyTables;
 			copyTables.resize(nCopys);
 			file->read(copyTables.data(), sizeof(SCopyTableEntry)* nCopys);
 
-			std::map<int, u8*>  IDToOffsetMap;
-			for (u32 i = 0; i < nActualRecords; ++i)
+			std::map<int, uint8_t*>  IDToOffsetMap;
+			for (uint32_t i = 0; i < nActualRecords; ++i)
 			{
 				IDToOffsetMap[IDs[i]] = RecordOffsets[i];
 			}
 
-			for (u32 i = 0; i < nCopys; ++i)
+			for (uint32_t i = 0; i < nCopys; ++i)
 			{
 				IDs.push_back(copyTables[i].id_new_row);
 				RecordOffsets.push_back(IDToOffsetMap[copyTables[i].id_copied_row]);
@@ -540,7 +540,7 @@ namespace WowLegion
 		//common data
 		if (header.common_data_size > 0)
 		{
-			u32 fieldId = 0;
+			uint32_t fieldId = 0;
 			for (auto info : FieldStorageInfos)
 			{
 				if (info.storage_type == FIELD_COMPRESSION::COMMON_DATA && info.additional_data_size != 0)
@@ -549,11 +549,11 @@ namespace WowLegion
 
 					SCommonColumn column;
 					column.type = 0;
-					for(u32 i = 0; i < info.additional_data_size / 8; ++i)
+					for(uint32_t i = 0; i < info.additional_data_size / 8; ++i)
 					{
-						u32 id;
+						uint32_t id;
 						file->read(&id, sizeof(id));
-						u32 val = 0;
+						uint32_t val = 0;
 						file->read(&val, 4);
 
 						column.recordmap[id] = val;
@@ -569,7 +569,7 @@ namespace WowLegion
 		//pallet data
 		if (header.pallet_data_size > 0)
 		{
-			u32 fieldId = 0;
+			uint32_t fieldId = 0;
 			for (auto info : FieldStorageInfos)
 			{
 				if (info.storage_type == FIELD_COMPRESSION::BITPACKED_INDEXED &&
@@ -587,22 +587,22 @@ namespace WowLegion
 		if (header.relationship_data_size > 0)
 		{
 			file->seek(relationshipDataOffset);
-			u32 nbEntries;
-			file->read(&nbEntries, sizeof(u32));
+			uint32_t nbEntries;
+			file->read(&nbEntries, sizeof(uint32_t));
 
 			file->seek(8, true);
-			for (u32 i = 0; i < nbEntries; ++i)
+			for (uint32_t i = 0; i < nbEntries; ++i)
 			{
-				u32 foreignKey;
-				u32 recordIndex;
-				file->read(&foreignKey, sizeof(u32));
-				file->read(&recordIndex, sizeof(u32));
+				uint32_t foreignKey;
+				uint32_t recordIndex;
+				file->read(&foreignKey, sizeof(uint32_t));
+				file->read(&recordIndex, sizeof(uint32_t));
 				RelationShipData[recordIndex] = foreignKey;
 			}
 		}
 
 		//build map
-		for (u32 i = 0; i < nActualRecords; ++i)
+		for (uint32_t i = 0; i < nActualRecords; ++i)
 		{
 			RecordLookup32[IDs[i]] = i;
 		}
@@ -636,7 +636,7 @@ namespace WowLegion
 		Fields.resize(nFields);
 		file->read(Fields.data(), sizeof(SField)* nFields);
 
-		for (u32 i = 0; i < nFields; ++i)
+		for (uint32_t i = 0; i < nFields; ++i)
 		{
 			FieldSizeMap[Fields[i].position] = Fields[i].size;
 		}
@@ -644,8 +644,8 @@ namespace WowLegion
 		//read storage info
 		if (header.field_storage_info_size > 0)
 		{
-			u32 nFieldStorageInfo = header.field_storage_info_size / sizeof(SFieldStorageInfo);
-			for (u32 i = 0; i < nFieldStorageInfo; ++i)
+			uint32_t nFieldStorageInfo = header.field_storage_info_size / sizeof(SFieldStorageInfo);
+			for (uint32_t i = 0; i < nFieldStorageInfo; ++i)
 			{
 				SFieldStorageInfo info;
 				file->read(&info, sizeof(info));
@@ -653,14 +653,14 @@ namespace WowLegion
 			}
 		}
 
-		u32 palletBlockOffset = file->getPos();
-		u32 commonBlockOffset = palletBlockOffset + header.pallet_data_size;
+		uint32_t palletBlockOffset = file->getPos();
+		uint32_t commonBlockOffset = palletBlockOffset + header.pallet_data_size;
 
 		file->seek(sectionHeaders[0].file_offset);
 
-		u8* recordOffsetStart = file->getPointer();
+		uint8_t* recordOffsetStart = file->getPointer();
 
-		u32 stringTableOffset = file->getPos() + RecordSize * nRecords;
+		uint32_t stringTableOffset = file->getPos() + RecordSize * nRecords;
 		if (HasDataOffsetBlock)
 		{
 			StringSize = 0;
@@ -669,19 +669,19 @@ namespace WowLegion
 		file->seek(stringTableOffset);
 		_stringStart = file->getPointer();
 
-		u32 idBlockOffset = stringTableOffset + StringSize;
-		u32 copyBlockOffset = idBlockOffset + sectionHeaders[0].id_list_size;
-		u32 relationshipDataOffset = copyBlockOffset + sectionHeaders[0].copy_table_size;
+		uint32_t idBlockOffset = stringTableOffset + StringSize;
+		uint32_t copyBlockOffset = idBlockOffset + sectionHeaders[0].id_list_size;
+		uint32_t relationshipDataOffset = copyBlockOffset + sectionHeaders[0].copy_table_size;
 
 		if (HasDataOffsetBlock)
 		{
 			file->seek(sectionHeaders[0].offset_map_offset);
 
 			nActualRecords = 0;
-			for (u32 i = 0; i < (header.max_id - header.min_id); ++i)
+			for (uint32_t i = 0; i < (header.max_id - header.min_id); ++i)
 			{
-				u32 offset;
-				u16 length;
+				uint32_t offset;
+				uint16_t length;
 
 				file->read(&offset, sizeof(offset));
 				file->read(&length, sizeof(length));
@@ -700,32 +700,32 @@ namespace WowLegion
 			{
 				file->seek(idBlockOffset);
 				IDs.resize(nRecords);
-				file->read(IDs.data(), sizeof(u32)* nRecords);
+				file->read(IDs.data(), sizeof(uint32_t)* nRecords);
 			}
 			else
 			{
 				const SFieldStorageInfo& info = FieldStorageInfos[header.idindex];
-				for (u32 i = 0; i < nRecords; ++i)
+				for (uint32_t i = 0; i < nRecords; ++i)
 				{
-					const u8* recordOffset = recordOffsetStart + i * RecordSize;
+					const uint8_t* recordOffset = recordOffsetStart + i * RecordSize;
 					switch (info.storage_type)
 					{
 					case FIELD_COMPRESSION::NONE:
 					{
-						u32 size = info.field_offset_bits / 8;
-						u8* val = new u8[size];
+						uint32_t size = info.field_offset_bits / 8;
+						uint8_t* val = new uint8_t[size];
 						memcpy(val, recordOffset, size);
-						IDs.push_back((*reinterpret_cast<u32*>(val)));
+						IDs.push_back((*reinterpret_cast<uint32_t*>(val)));
 						delete[] val;
 					}
 						break;
 					case FIELD_COMPRESSION::BITPACKED:
 					{
-						u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
-						u32 offset = info.field_offset_bits / 8;
-						u8* val = new u8[size];
+						uint32_t size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
+						uint32_t offset = info.field_offset_bits / 8;
+						uint8_t* val = new uint8_t[size];
 						memcpy(val, recordOffset, size);
-						u32 id = (*reinterpret_cast<u32*>(val));
+						uint32_t id = (*reinterpret_cast<uint32_t*>(val));
 						id = id & ((1ull << info.field_size_bits) - 1);
 						IDs.push_back(id);
 						delete[] val;
@@ -747,25 +747,25 @@ namespace WowLegion
 				}
 			}
 
-			for (u32 i = 0; i < nRecords; ++i)
+			for (uint32_t i = 0; i < nRecords; ++i)
 				RecordOffsets.push_back(recordOffsetStart + i * RecordSize);
 		}
 
 		//copy table
 		if (sectionHeaders[0].copy_table_size > 0)
 		{
-			u32 nCopys = sectionHeaders[0].copy_table_size / sizeof(SCopyTableEntry);
+			uint32_t nCopys = sectionHeaders[0].copy_table_size / sizeof(SCopyTableEntry);
 			std::vector<SCopyTableEntry> copyTables;
 			copyTables.resize(nCopys);
 			file->read(copyTables.data(), sizeof(SCopyTableEntry)* nCopys);
 
-			std::map<int, u8*>  IDToOffsetMap;
-			for (u32 i = 0; i < nActualRecords; ++i)
+			std::map<int, uint8_t*>  IDToOffsetMap;
+			for (uint32_t i = 0; i < nActualRecords; ++i)
 			{
 				IDToOffsetMap[IDs[i]] = RecordOffsets[i];
 			}
 
-			for (u32 i = 0; i < nCopys; ++i)
+			for (uint32_t i = 0; i < nCopys; ++i)
 			{
 				IDs.push_back(copyTables[i].id_new_row);
 				RecordOffsets.push_back(IDToOffsetMap[copyTables[i].id_copied_row]);
@@ -777,7 +777,7 @@ namespace WowLegion
 		//common data
 		if (header.common_data_size > 0)
 		{
-			u32 fieldId = 0;
+			uint32_t fieldId = 0;
 			for (auto info : FieldStorageInfos)
 			{
 				if (info.storage_type == FIELD_COMPRESSION::COMMON_DATA && info.additional_data_size != 0)
@@ -786,11 +786,11 @@ namespace WowLegion
 
 					SCommonColumn column;
 					column.type = 0;
-					for (u32 i = 0; i < info.additional_data_size / 8; ++i)
+					for (uint32_t i = 0; i < info.additional_data_size / 8; ++i)
 					{
-						u32 id;
+						uint32_t id;
 						file->read(&id, sizeof(id));
-						u32 val = 0;
+						uint32_t val = 0;
 						file->read(&val, 4);
 
 						column.recordmap[id] = val;
@@ -806,7 +806,7 @@ namespace WowLegion
 		//pallet data
 		if (header.pallet_data_size > 0)
 		{
-			u32 fieldId = 0;
+			uint32_t fieldId = 0;
 			for (auto info : FieldStorageInfos)
 			{
 				if (info.storage_type == FIELD_COMPRESSION::BITPACKED_INDEXED &&
@@ -824,22 +824,22 @@ namespace WowLegion
 		if (sectionHeaders[0].relationship_data_size > 0)
 		{
 			file->seek(relationshipDataOffset);
-			u32 nbEntries;
-			file->read(&nbEntries, sizeof(u32));
+			uint32_t nbEntries;
+			file->read(&nbEntries, sizeof(uint32_t));
 
 			file->seek(8, true);
-			for (u32 i = 0; i < nbEntries; ++i)
+			for (uint32_t i = 0; i < nbEntries; ++i)
 			{
-				u32 foreignKey;
-				u32 recordIndex;
-				file->read(&foreignKey, sizeof(u32));
-				file->read(&recordIndex, sizeof(u32));
+				uint32_t foreignKey;
+				uint32_t recordIndex;
+				file->read(&foreignKey, sizeof(uint32_t));
+				file->read(&recordIndex, sizeof(uint32_t));
 				RelationShipData[recordIndex] = foreignKey;
 			}
 		}
 
 		//build map
-		for (u32 i = 0; i < nActualRecords; ++i)
+		for (uint32_t i = 0; i < nActualRecords; ++i)
 		{
 			RecordLookup32[IDs[i]] = i;
 		}
@@ -847,31 +847,31 @@ namespace WowLegion
 		fs->writeLog(ELOG_RES, "successfully loaded db file: %s", file->getFileName());
 	}
 
-	bool dbc::readFieldValue(u32 recordIndex, u32 fieldIndex, u32 arrayIndex, u32 arraySize, u32& result) const
+	bool dbc::readFieldValue(uint32_t recordIndex, uint32_t fieldIndex, uint32_t arrayIndex, uint32_t arraySize, uint32_t& result) const
 	{
 		return true;
 	}
 
-	u32 dbc::readBitpackedValue(const SFieldStorageInfo& info, const u8* recordOffset) const
+	uint32_t dbc::readBitpackedValue(const SFieldStorageInfo& info, const uint8_t* recordOffset) const
 	{
-		u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
-		u32 offset = info.field_offset_bits / 8;
-		u8* v = new u8[size];
+		uint32_t size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
+		uint32_t offset = info.field_offset_bits / 8;
+		uint8_t* v = new uint8_t[size];
 		memcpy(v, recordOffset + offset, size);
-		u32 result = (*reinterpret_cast<u32*>(v));
+		uint32_t result = (*reinterpret_cast<uint32_t*>(v));
 		delete v;
 
 		result = result & ((1ull << info.field_size_bits) - 1);
 		return result;
 	}
 
-	u32 dbc::readBitpackedValue2(const SFieldStorageInfo& info, const u8* recordOffset) const
+	uint32_t dbc::readBitpackedValue2(const SFieldStorageInfo& info, const uint8_t* recordOffset) const
 	{
-		u32 size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
-		u32 offset = info.field_offset_bits / 8;
-		u8* v = new u8[size];
+		uint32_t size = (info.field_size_bits + (info.field_offset_bits & 7) + 7) / 8;
+		uint32_t offset = info.field_offset_bits / 8;
+		uint8_t* v = new uint8_t[size];
 		memcpy(v, recordOffset + offset, size);
-		u32 result = (*reinterpret_cast<u32*>(v));
+		uint32_t result = (*reinterpret_cast<uint32_t*>(v));
 		delete v;
 
 		result = result >> (info.field_offset_bits & 7);

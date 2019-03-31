@@ -16,20 +16,20 @@ void CGestureRecognizer_Tap2::tick()
 {
 	CGestureRecognizerBase::tick();
 
-	u32 now = g_Engine->getTimer()->getMillisecond();
+	uint32_t now = g_Engine->getTimer()->getMillisecond();
 	if (State == RecognizerState_None && !TouchInfoArray.empty())
 	{
-		if (now - TimeStamp > (u32)(getfDoubleTouchDiffTime() * 1000))
+		if (now - TimeStamp > (uint32_t)(getfDoubleTouchDiffTime() * 1000))
 			changeState(RecognizerState_Fail);
 	} 
 	else if (State == RecognizerState_Begin)
 	{
-		if (now - TimeStamp > (u32)(getfRecognizerFailInterval() * 1000))
+		if (now - TimeStamp > (uint32_t)(getfRecognizerFailInterval() * 1000))
 			changeState(RecognizerState_Fail);
 	}
 	else if (State == RecognizerState_Changed)
 	{
-		if (now - TimeStamp > (u32)(getfDoubleTouchDiffTime() * 1000))
+		if (now - TimeStamp > (uint32_t)(getfDoubleTouchDiffTime() * 1000))
 			changeState(RecognizerState_Fail);
 	}
 }
@@ -39,8 +39,8 @@ void CGestureRecognizer_Tap2::onTouchBegin( const std::vector<SGesTouchInfo>& to
 	if (State != RecognizerState_None || touchInfos.empty())
 		return;
 
-	u32 numCache = (u32)TouchInfoArray.size();
-	u32 numBegin = (u32)touchInfos.size();
+	uint32_t numCache = (uint32_t)TouchInfoArray.size();
+	uint32_t numBegin = (uint32_t)touchInfos.size();
 	if (numBegin + numCache > 2)
 	{
 		changeState(RecognizerState_Fail);
@@ -95,7 +95,7 @@ void CGestureRecognizer_Tap2::onTouchMove( const std::vector<SGesTouchInfo>& tou
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
 
-		s32 index = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index = findTouchInfo(head.fingerID, touchInfos);
 		//超过一定距离，替换第一个touch，重新cache
 		if (index != -1 &&
 			getTouchDistance(head, touchInfos[index]) > getThreshold_MoveDist())
@@ -109,8 +109,8 @@ void CGestureRecognizer_Tap2::onTouchMove( const std::vector<SGesTouchInfo>& tou
 		SGesTouchInfo& head = TouchInfoArray.front();
 		SGesTouchInfo& tail = TouchInfoArray.back();
 
-		s32 index0 = findTouchInfo(head.fingerID, touchInfos);
-		s32 index1 = findTouchInfo(tail.fingerID, touchInfos);
+		int32_t index0 = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index1 = findTouchInfo(tail.fingerID, touchInfos);
 		//超过一定距离，替换touch，重新cache
 		if (index0 != -1 &&
 			getTouchDistance(head, touchInfos[index0]) > getThreshold_MoveDist())
@@ -135,7 +135,7 @@ void CGestureRecognizer_Tap2::onTouchEnd( const std::vector<SGesTouchInfo>& touc
 	if (TouchInfoArray.size() == 1)
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
-		s32 index = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index = findTouchInfo(head.fingerID, touchInfos);
 		if (index != -1)
 		{
 			head = touchInfos[index];
@@ -146,8 +146,8 @@ void CGestureRecognizer_Tap2::onTouchEnd( const std::vector<SGesTouchInfo>& touc
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
 		SGesTouchInfo& tail = TouchInfoArray.back();
-		s32 index0 = findTouchInfo(head.fingerID, touchInfos);
-		s32 index1 = findTouchInfo(tail.fingerID, touchInfos);
+		int32_t index0 = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index1 = findTouchInfo(tail.fingerID, touchInfos);
 		if (index0 != -1 && index1 != -1)
 		{
 			//两个touch同时结束
@@ -189,7 +189,7 @@ void CGestureRecognizer_Tap2::onTouchCancel( const std::vector<SGesTouchInfo>& t
 	if (TouchInfoArray.size() == 1)
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
-		s32 index = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index = findTouchInfo(head.fingerID, touchInfos);
 		if (index != -1)
 		{
 			head = touchInfos[index];
@@ -200,8 +200,8 @@ void CGestureRecognizer_Tap2::onTouchCancel( const std::vector<SGesTouchInfo>& t
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
 		SGesTouchInfo& tail = TouchInfoArray.back();
-		s32 index0 = findTouchInfo(head.fingerID, touchInfos);
-		s32 index1 = findTouchInfo(tail.fingerID, touchInfos);
+		int32_t index0 = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index1 = findTouchInfo(tail.fingerID, touchInfos);
 
 		if (index0 != -1 || index1 != -1)
 		{

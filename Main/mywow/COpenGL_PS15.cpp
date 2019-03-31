@@ -78,8 +78,8 @@ static COpenGL_PS15::SPixelShaderEntry g_openglps15_pixelShaderEntries[] =
 
 void COpenGL_PS15::loadAll( COpenGLShaderServices* shaderServices )
 {
-	u32 num = sizeof(g_openglps15_pixelShaderEntries) / sizeof(SPixelShaderEntry);
-	for (u32 i=0; i<num; ++i)
+	uint32_t num = sizeof(g_openglps15_pixelShaderEntries) / sizeof(SPixelShaderEntry);
+	for (uint32_t i=0; i<num; ++i)
 	{
 		loadPShaderHLSL(shaderServices, g_openglps15_pixelShaderEntries[i].psType, PS_Macro_None);
 	}
@@ -87,18 +87,18 @@ void COpenGL_PS15::loadAll( COpenGLShaderServices* shaderServices )
 
 bool COpenGL_PS15::loadPShaderHLSL(COpenGLShaderServices* shaderServices, E_PS_TYPE type, E_PS_MACRO macro)
 {
-	const c8* profile = "glps_1_5";
+	const char* profile = "glps_1_5";
 
-	c8 basePath[128];
+	char basePath[128];
 	Q_sprintf(basePath, 128, "Pixel\\%s\\", profile);
 
-	s32 index = -1;
-	u32 num = sizeof(g_openglps15_pixelShaderEntries) / sizeof(SPixelShaderEntry);
-	for (u32 i=0; i<num; ++i)
+	int32_t index = -1;
+	uint32_t num = sizeof(g_openglps15_pixelShaderEntries) / sizeof(SPixelShaderEntry);
+	for (uint32_t i=0; i<num; ++i)
 	{
 		if (g_openglps15_pixelShaderEntries[i].psType == type)
 		{
-			index = (s32)i;
+			index = (int32_t)i;
 			break;
 		}
 	}
@@ -116,7 +116,7 @@ bool COpenGL_PS15::loadPShaderHLSL(COpenGLShaderServices* shaderServices, E_PS_T
 	return shaderServices->loadPShaderHLSL(path.c_str(), "main", profile, g_openglps15_pixelShaderEntries[index].psType, macro, g_openglps15_pixelShaderEntries[index].callback);
 }
 
-void COpenGL_PS15::Default_setShaderConst_T1( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::Default_setShaderConst_T1( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 	COpenGLShaderServices* shaderServices = static_cast<COpenGLShaderServices*>(g_Engine->getDriver()->getShaderServices());
@@ -129,13 +129,13 @@ void COpenGL_PS15::Default_setShaderConst_T1( IPixelShader* ps, const SMaterial&
 		cbuffer.params[0] = block.alphaTestEnabled ? 1.0f : 0.0f;
 		cbuffer.params[1] = block.alphaTestRef / 255.0f;
 
-		shaderServices->setShaderUniformF("g_psbuffer", (const f32*)&cbuffer, sizeof(cbuffer));
+		shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, sizeof(cbuffer));
 	}
 
 	services->setSampler_Texture(0, renderUnit->textures[0]);
 }
 
-void COpenGL_PS15::Default_setShaderConst_T2( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::Default_setShaderConst_T2( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 	COpenGLShaderServices* shaderServices = static_cast<COpenGLShaderServices*>(g_Engine->getDriver()->getShaderServices());
@@ -148,7 +148,7 @@ void COpenGL_PS15::Default_setShaderConst_T2( IPixelShader* ps, const SMaterial&
 		cbuffer.params[0] = block.alphaTestEnabled ? 1.0f : 0.0f;
 		cbuffer.params[1] = block.alphaTestRef / 255.0f;
 
-		shaderServices->setShaderUniformF("g_psbuffer", (const f32*)&cbuffer, sizeof(cbuffer));
+		shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, sizeof(cbuffer));
 	}
 
 	services->setSampler_Texture(0, renderUnit->textures[0]);
@@ -156,7 +156,7 @@ void COpenGL_PS15::Default_setShaderConst_T2( IPixelShader* ps, const SMaterial&
 	services->setSampler_Texture(1, renderUnit->textures[1]);
 }
 
-void COpenGL_PS15::UI_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::UI_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* matServices = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 	ITexture* tex0 = matServices->getSampler_Texture(0);
@@ -164,7 +164,7 @@ void COpenGL_PS15::UI_setShaderConst( IPixelShader* ps, const SMaterial& materia
 	matServices->setSampler_Texture(0,  matServices->getSampler_Texture(0));
 }
 
-void COpenGL_PS15::DiffuseT1_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::DiffuseT1_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 	COpenGLShaderServices* shaderServices = static_cast<COpenGLShaderServices*>(g_Engine->getDriver()->getShaderServices());
@@ -179,13 +179,13 @@ void COpenGL_PS15::DiffuseT1_setShaderConst( IPixelShader* ps, const SMaterial& 
 	if(block.alphaTestEnabled)
 		cbuffer.params[1] = block.alphaTestRef / 255.0f;
 
-	u32 size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
-	shaderServices->setShaderUniformF("g_psbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
+	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, size);
 
 	services->setSampler_Texture(0,  renderUnit->textures[0]);
 }
 
-void COpenGL_PS15::DiffuseT2_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::DiffuseT2_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 	COpenGLShaderServices* shaderServices = static_cast<COpenGLShaderServices*>(g_Engine->getDriver()->getShaderServices());
@@ -200,15 +200,15 @@ void COpenGL_PS15::DiffuseT2_setShaderConst( IPixelShader* ps, const SMaterial& 
 	if(block.alphaTestEnabled)
 		cbuffer.params[1] = block.alphaTestRef / 255.0f;
 
-	u32 size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
-	shaderServices->setShaderUniformF("g_psbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
+	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, size);
 
 	services->setSampler_Texture(0,  renderUnit->textures[0]);
 
 	services->setSampler_Texture(1,  renderUnit->textures[1]);
 }
 
-void COpenGL_PS15::DiffuseT3_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::DiffuseT3_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 	COpenGLShaderServices* shaderServices = static_cast<COpenGLShaderServices*>(g_Engine->getDriver()->getShaderServices());
@@ -223,8 +223,8 @@ void COpenGL_PS15::DiffuseT3_setShaderConst( IPixelShader* ps, const SMaterial& 
 	if(block.alphaTestEnabled)
 		cbuffer.params[1] = block.alphaTestRef / 255.0f;
 
-	u32 size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
-	shaderServices->setShaderUniformF("g_psbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
+	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, size);
 
 	services->setSampler_Texture(0,  renderUnit->textures[0]);
 
@@ -233,7 +233,7 @@ void COpenGL_PS15::DiffuseT3_setShaderConst( IPixelShader* ps, const SMaterial& 
 	services->setSampler_Texture(2,  renderUnit->textures[2]);
 }
 
-void COpenGL_PS15::Terrain_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::Terrain_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 	COpenGLShaderServices* shaderServices = static_cast<COpenGLShaderServices*>(g_Engine->getDriver()->getShaderServices());
@@ -248,7 +248,7 @@ void COpenGL_PS15::Terrain_setShaderConst( IPixelShader* ps, const SMaterial& ma
 	cbuffer.params[0] =  (float)chunk->numTextures;
 	cbuffer.fogColor = SColorf(fogParam.FogColor);
 
-	shaderServices->setShaderUniformF("g_psbuffer", (const f32*)&cbuffer, sizeof(cbuffer));
+	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, sizeof(cbuffer));
 
 	services->setSampler_Texture(0, adt->getBlendMap());
 	services->setSampler_Texture(1, chunk->textures[0]);
@@ -269,7 +269,7 @@ void COpenGL_PS15::Terrain_setShaderConst( IPixelShader* ps, const SMaterial& ma
 	}
 }
 
-void COpenGL_PS15::MapObjOpaque_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::MapObjOpaque_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 	COpenGLShaderServices* shaderServices = static_cast<COpenGLShaderServices*>(g_Engine->getDriver()->getShaderServices());
@@ -281,12 +281,12 @@ void COpenGL_PS15::MapObjOpaque_setShaderConst( IPixelShader* ps, const SMateria
 	cbuffer.AmbientColor = material.Lighting ? SColorf(sceneStateServices->getAmbientLight()) * material.AmbientColor : material.EmissiveColor;
 	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
 
-	shaderServices->setShaderUniformF("g_psbuffer", (const f32*)&cbuffer, sizeof(cbuffer));
+	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, sizeof(cbuffer));
 
 	services->setSampler_Texture(0, renderUnit->textures[0]);
 }
 
-void COpenGL_PS15::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	//texture
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
@@ -303,13 +303,13 @@ void COpenGL_PS15::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& mat
 	if(block.alphaTestEnabled)
 		cbuffer.params[1] = block.alphaTestRef / 255.0f;
 
-	u32 size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
-	shaderServices->setShaderUniformF("g_psbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
+	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, size);
 
 	services->setSampler_Texture(0, renderUnit->textures[0]);
 }
 
-void COpenGL_PS15::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 	COpenGLShaderServices* shaderServices = static_cast<COpenGLShaderServices*>(g_Engine->getDriver()->getShaderServices());
@@ -325,15 +325,15 @@ void COpenGL_PS15::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMater
 	if(block.alphaTestEnabled)
 		cbuffer.params[1] = block.alphaTestRef / 255.0f;
 
-	u32 size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
-	shaderServices->setShaderUniformF("g_psbuffer", (const f32*)&cbuffer, size);
+	uint32_t size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
+	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, size);
 
 	services->setSampler_Texture(0, renderUnit->textures[0]);
 
 	services->setSampler_Texture(1, renderUnit->textures[1]);
 }
 
-void COpenGL_PS15::MapObjTwoLayerOpaque_setShaderConst( IPixelShader* ps, const SMaterial& material, u32 pass )
+void COpenGL_PS15::MapObjTwoLayerOpaque_setShaderConst( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 	COpenGLShaderServices* shaderServices = static_cast<COpenGLShaderServices*>(g_Engine->getDriver()->getShaderServices());
@@ -345,7 +345,7 @@ void COpenGL_PS15::MapObjTwoLayerOpaque_setShaderConst( IPixelShader* ps, const 
 	cbuffer.AmbientColor = material.Lighting ? SColorf(sceneStateServices->getAmbientLight()) * material.AmbientColor : material.EmissiveColor;
 	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
 
-	shaderServices->setShaderUniformF("g_psbuffer", (const f32*)&cbuffer, sizeof(cbuffer));
+	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, sizeof(cbuffer));
 
 	services->setSampler_Texture(0, renderUnit->textures[0]);
 

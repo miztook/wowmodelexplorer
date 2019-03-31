@@ -45,7 +45,7 @@ CFileADT::~CFileADT()
 
 	delete[] Data_BlendMap;
 
-	for (u32 i=0; i<Textures.size(); ++i)
+	for (uint32_t i=0; i<Textures.size(); ++i)
 	{
 		if(Textures[i].texture)
 			Textures[i].texture->drop();
@@ -63,13 +63,13 @@ CFileADT::~CFileADT()
 
 bool CFileADT::loadFile( IMemFile* file )
 {
-	const c8* name = file->getFileName();
+	const char* name = file->getFileName();
 	getFullFileNameNoExtensionA(name, Name, QMAX_PATH);
 
-	c8 fourcc[5];
-	u32 size;
+	char fourcc[5];
+	uint32_t size;
 
-	u32 nChunks = 0;
+	uint32_t nChunks = 0;
 
 	while( !file->isEof() )
 	{
@@ -82,11 +82,11 @@ bool CFileADT::loadFile( IMemFile* file )
 		if (size == 0)
 			continue;
 
-		u32 nextpos = file->getPos() + size;
+		uint32_t nextpos = file->getPos() + size;
 
 		if (strcmp(fourcc, "MVER") == 0)				//version
 		{
-			u32 version;
+			uint32_t version;
 			file->read(&version, size);
 			ASSERT(version == 18);
 		}
@@ -98,8 +98,8 @@ bool CFileADT::loadFile( IMemFile* file )
 		}
 		else if (strcmp(fourcc, "MCNK") == 0)		//After the above mentioned chunks come 256 individual MCNK chunks, row by row
 		{
-			u32 row = nChunks / 16;
-			u32 col = nChunks % 16;
+			uint32_t row = nChunks / 16;
+			uint32_t col = nChunks % 16;
 
 			//read
 			readChunk(file, row, col, file->getPos() + size);
@@ -134,7 +134,7 @@ bool CFileADT::loadFile( IMemFile* file )
 			ASSERT(false);
 		}
 
-		file->seek((s32)nextpos);
+		file->seek((int32_t)nextpos);
 	}
 
 	ASSERT(nChunks == 256);
@@ -154,17 +154,17 @@ bool CFileADT::loadFile( IMemFile* file )
 
 bool CFileADT::loadFileSimple( IMemFile* file )
 {
-	const c8* name = file->getFileName();
+	const char* name = file->getFileName();
 	getFullFileNameNoExtensionA(name, Name, QMAX_PATH);
 
 	return loadObj0Simple();
 }
 
-void CFileADT::readChunk( IMemFile* file, u8 row, u8 col, u32 lastpos)
+void CFileADT::readChunk( IMemFile* file, uint8_t row, uint8_t col, uint32_t lastpos)
 {
 	CMapChunk& currentChunk = Chunks[row][col];
 
-	u32 offset = getChunkVerticesOffset(row, col);
+	uint32_t offset = getChunkVerticesOffset(row, col);
 	SVertex_PNCT2* vertices = &Vertices[offset];
 
 	ADT::chunkHeader header;
@@ -176,8 +176,8 @@ void CFileADT::readChunk( IMemFile* file, u8 row, u8 col, u32 lastpos)
 	currentChunk.xbase = header.xpos - ZEROPOINT;
 	currentChunk.box.set(vector3df(99999.9f), vector3df(-99999.9f));
 
-	c8 fourcc[5];
-	u32 size;
+	char fourcc[5];
+	uint32_t size;
 
 	while( file->getPos() < lastpos )
 	{
@@ -190,17 +190,17 @@ void CFileADT::readChunk( IMemFile* file, u8 row, u8 col, u32 lastpos)
 		if (size == 0)
 			continue;
 
-		u32 nextpos = file->getPos() + size;
+		uint32_t nextpos = file->getPos() + size;
 
 		if (strcmp(fourcc, "MCVT") == 0)			
 		{
-			ASSERT(size == 145 * sizeof(f32));
-			u32 count = 0;
-			for (u32 j=0; j<17; ++j)
+			ASSERT(size == 145 * sizeof(float));
+			uint32_t count = 0;
+			for (uint32_t j=0; j<17; ++j)
 			{
-				for (s32 i=0; i<((j%2)?8:9); ++i)
+				for (int32_t i=0; i<((j%2)?8:9); ++i)
 				{
-					f32 h, xpos, zpos;
+					float h, xpos, zpos;
 					file->read(&h, 4);
 					xpos = -i * UNITSIZE;
 					zpos = j * 0.5f * UNITSIZE;
@@ -227,14 +227,14 @@ void CFileADT::readChunk( IMemFile* file, u8 row, u8 col, u32 lastpos)
 		{
 			nextpos = file->getPos() + 0x1C0; // size fix
 
-			u32 count = 0;
-			u8 nor[3];
-			for (u32 j=0; j<17; ++j)
+			uint32_t count = 0;
+			uint8_t nor[3];
+			for (uint32_t j=0; j<17; ++j)
 			{
-				for (s32 i=0; i<((j%2)?8:9); ++i)
+				for (int32_t i=0; i<((j%2)?8:9); ++i)
 				{
 					file->read(nor, 3);
-					vector3df n(-(f32)nor[1]/127.0f, (f32)nor[2]/127.0f, -(f32)nor[0]/127.0f);
+					vector3df n(-(float)nor[1]/127.0f, (float)nor[2]/127.0f, -(float)nor[0]/127.0f);
 					vertices[count].Normal = n;
 					++count;
 				}
@@ -244,11 +244,11 @@ void CFileADT::readChunk( IMemFile* file, u8 row, u8 col, u32 lastpos)
 		{
 			ASSERT( size == 145 * 4);
 
-			u32 count = 0;
-			u8 clr[4];
-			for (u32 j=0; j<17; ++j)
+			uint32_t count = 0;
+			uint8_t clr[4];
+			for (uint32_t j=0; j<17; ++j)
 			{
-				for (s32 i=0; i<((j%2)?8:9); ++i)
+				for (int32_t i=0; i<((j%2)?8:9); ++i)
 				{
 					file->read(clr, 4);
 					SColor color(clr[3], clr[0], clr[1], clr[2]);
@@ -271,13 +271,13 @@ void CFileADT::readChunk( IMemFile* file, u8 row, u8 col, u32 lastpos)
 		{
 			ASSERT(size % 28 == 0);
 
-			u32 nSounds = size / sizeof(ADT::SSoundEmitter);
+			uint32_t nSounds = size / sizeof(ADT::SSoundEmitter);
 			if (nSounds)
 			{
 				ASSERT(currentChunk.sounds == nullptr);
 				currentChunk.sounds = new SChunkSound[nSounds];
 				ADT::SSoundEmitter sound;
-				for (u32 i=0; i<nSounds; ++i)
+				for (uint32_t i=0; i<nSounds; ++i)
 				{
 					file->read(&sound, sizeof(ADT::SSoundEmitter));
 					currentChunk.sounds[i].soundID = sound.SoundEntriesAdvancedId;
@@ -299,17 +299,17 @@ void CFileADT::readChunk( IMemFile* file, u8 row, u8 col, u32 lastpos)
 			ASSERT(false);
 		}
 
-		file->seek((s32)nextpos);
+		file->seek((int32_t)nextpos);
 	}
 }
 
-const CMapChunk* CFileADT::getChunk( u8 row, u8 col ) const
+const CMapChunk* CFileADT::getChunk( uint8_t row, uint8_t col ) const
 {
 	ASSERT(row < 16 && col <16);
 	return &Chunks[row][col];
 }
 
-bool CFileADT::getHeight( f32 x, f32 z, f32& height ) const
+bool CFileADT::getHeight( float x, float z, float& height ) const
 {
 	//不在这个adt中，返回
 	if(x < Chunks[0][0].xbase - TILESIZE || x > Chunks[0][0].xbase ||
@@ -317,16 +317,16 @@ bool CFileADT::getHeight( f32 x, f32 z, f32& height ) const
 	return false;
 
 	//找到所在chunk
-	u8 row = (u8)((z - Chunks[0][0].zbase) / CHUNKSIZE);
-	u8 col = (u8)((Chunks[0][0].xbase - x) / CHUNKSIZE);
+	uint8_t row = (uint8_t)((z - Chunks[0][0].zbase) / CHUNKSIZE);
+	uint8_t col = (uint8_t)((Chunks[0][0].xbase - x) / CHUNKSIZE);
 	ASSERT(row < 16 && col < 16);
 
 	//找到所在chunk中的grid
-	const f32 zbase = Chunks[row][col].zbase;
-	const f32 xbase = Chunks[row][col].xbase;
-	const f32 gridsize = UNITSIZE * 0.5f;
-	u8 gridRow = (u8)((z - zbase) / gridsize);
-	u8 gridCol = (u8)((xbase - x) / gridsize);
+	const float zbase = Chunks[row][col].zbase;
+	const float xbase = Chunks[row][col].xbase;
+	const float gridsize = UNITSIZE * 0.5f;
+	uint8_t gridRow = (uint8_t)((z - zbase) / gridsize);
+	uint8_t gridCol = (uint8_t)((xbase - x) / gridsize);
 
 	if (gridRow == 16)
 	{
@@ -346,8 +346,8 @@ bool CFileADT::getHeight( f32 x, f32 z, f32& height ) const
 	const vector3df& c = positions[2];
 	const vector3df& d = positions[3];
 
-	f32 dx = (a.X - x) / gridsize;
-	f32 dz = (z - a.Z) / gridsize;
+	float dx = (a.X - x) / gridsize;
+	float dz = (z - a.Z) / gridsize;
 
 	if (dx > dz)
 		height = a.Y + (d.Y - b.Y)*dz + (b.Y - a.Y)*dx;
@@ -357,7 +357,7 @@ bool CFileADT::getHeight( f32 x, f32 z, f32& height ) const
 	return true;
 }
 
-bool CFileADT::getNormal( f32 x, f32 z, vector3df& normal ) const
+bool CFileADT::getNormal( float x, float z, vector3df& normal ) const
 {
 	//不在这个adt中，返回
 	if(x < Chunks[0][0].xbase - TILESIZE || x > Chunks[0][0].xbase ||
@@ -365,16 +365,16 @@ bool CFileADT::getNormal( f32 x, f32 z, vector3df& normal ) const
 		return false;
 
 	//找到所在chunk
-	u8 row = (u8)((z - Chunks[0][0].zbase) / CHUNKSIZE);
-	u8 col = (u8)((Chunks[0][0].xbase - x) / CHUNKSIZE);
+	uint8_t row = (uint8_t)((z - Chunks[0][0].zbase) / CHUNKSIZE);
+	uint8_t col = (uint8_t)((Chunks[0][0].xbase - x) / CHUNKSIZE);
 	ASSERT(row < 16 && col < 16);
 
 	//找到所在chunk中的grid
-	const f32 zbase = Chunks[row][col].zbase;
-	const f32 xbase = Chunks[row][col].xbase;
-	const f32 gridsize = UNITSIZE * 0.5f;
-	u8 gridRow = (u8)((z - zbase) / gridsize);
-	u8 gridCol = (u8)((xbase - x) / gridsize);
+	const float zbase = Chunks[row][col].zbase;
+	const float xbase = Chunks[row][col].xbase;
+	const float gridsize = UNITSIZE * 0.5f;
+	uint8_t gridRow = (uint8_t)((z - zbase) / gridsize);
+	uint8_t gridCol = (uint8_t)((xbase - x) / gridsize);
 	ASSERT(gridRow < 16 && gridCol < 16);
 
 	//对grid的4个点插值
@@ -386,8 +386,8 @@ bool CFileADT::getNormal( f32 x, f32 z, vector3df& normal ) const
 	const vector3df& c = normals[2];
 	const vector3df& d = normals[3];
 
-	f32 dx = (a.X - x) / gridsize;
-	f32 dz = (z - a.Z) / gridsize;
+	float dx = (a.X - x) / gridsize;
+	float dz = (z - a.Z) / gridsize;
 
 	if (dx > dz)
 		normal = a + (d - b)*dz + (b - a)*dx;
@@ -397,12 +397,12 @@ bool CFileADT::getNormal( f32 x, f32 z, vector3df& normal ) const
 	return true;
 }
 
-void CFileADT::getGridPosition( u8 row, u8 col, u8 gridRow, u8 gridCol, vector3df* positions ) const
+void CFileADT::getGridPosition( uint8_t row, uint8_t col, uint8_t gridRow, uint8_t gridCol, vector3df* positions ) const
 {
 	SVertex_PNCT2* baseVertices = &Vertices[getChunkVerticesOffset(row, col)];
 
-	u8 r = gridRow;
-	u8 c = gridCol / 2;
+	uint8_t r = gridRow;
+	uint8_t c = gridCol / 2;
 
 	if (gridRow % 2 == 0)
 	{
@@ -440,12 +440,12 @@ void CFileADT::getGridPosition( u8 row, u8 col, u8 gridRow, u8 gridCol, vector3d
 	}
 }
 
-void CFileADT::getGridNormal( u8 row, u8 col, u8 gridRow, u8 gridCol, vector3df* normals ) const
+void CFileADT::getGridNormal( uint8_t row, uint8_t col, uint8_t gridRow, uint8_t gridCol, vector3df* normals ) const
 {
 	SVertex_PNCT2* baseVertices = &Vertices[getChunkVerticesOffset(row, col)];
 
-	u8 r = gridRow;
-	u8 c = gridCol / 2;
+	uint8_t r = gridRow;
+	uint8_t c = gridCol / 2;
 
 	if (gridRow % 2 == 0)
 	{
@@ -485,7 +485,7 @@ void CFileADT::getGridNormal( u8 row, u8 col, u8 gridRow, u8 gridCol, vector3df*
 
 void CFileADT::loadObj0()
 {
-	c8 name[QMAX_PATH];
+	char name[QMAX_PATH];
 	Q_strcpy(name, QMAX_PATH, Name);
 	Q_strcat(name, QMAX_PATH, "_obj0.adt");
 
@@ -493,10 +493,10 @@ void CFileADT::loadObj0()
 	if (!file)
 		return;
 
-	u32 nChunks = 0;
+	uint32_t nChunks = 0;
 
-	c8 fourcc[5];
-	u32 size;
+	char fourcc[5];
+	uint32_t size;
 
 	while( !file->isEof() )
 	{
@@ -509,39 +509,39 @@ void CFileADT::loadObj0()
 		if (size == 0)
 			continue;
 
-		u32 nextpos = file->getPos() + size;
+		uint32_t nextpos = file->getPos() + size;
 
 		if (strcmp(fourcc, "MVER") == 0)
 		{
-			u32 version;
+			uint32_t version;
 			file->read(&version, size);
 			ASSERT(version == 18);
 		}
 		else if (strcmp(fourcc, "MMDX") == 0)		//List of filenames for M2 models that appear in this map tile. 
 		{
 			ASSERT(M2FileNameBlock == 0);
-			M2FileNameBlock = new c8[size];
+			M2FileNameBlock = new char[size];
 			file->read(M2FileNameBlock, size);
 		}
 		else if (strcmp(fourcc, "MMID") == 0)		//List of offsets of model filenames in the MMDX chunk. 
 		{
-			NumM2FileNames = size / sizeof(u32);
+			NumM2FileNames = size / sizeof(uint32_t);
 			ASSERT(M2FileNameIndices == 0);
-			M2FileNameIndices = new u32[NumM2FileNames];
-			file->read(M2FileNameIndices, NumM2FileNames * sizeof(u32));
+			M2FileNameIndices = new uint32_t[NumM2FileNames];
+			file->read(M2FileNameIndices, NumM2FileNames * sizeof(uint32_t));
 		}
 		else if (strcmp(fourcc, "MWMO") == 0)	//List of filenames for WMOs (world map objects) that appear in this map tile. 
 		{
 			ASSERT(WmoFileNameBlock == 0);
-			WmoFileNameBlock = new c8[size];
+			WmoFileNameBlock = new char[size];
 			file->read(WmoFileNameBlock, size);
 		}
 		else if (strcmp(fourcc, "MWID") == 0)		//List of offsets of WMO filenames in the MWMO chunk.
 		{
-			NumWmoFileNames = size / sizeof(u32);
+			NumWmoFileNames = size / sizeof(uint32_t);
 			ASSERT(WmoFileNameIndices == 0);
-			WmoFileNameIndices = new u32[NumWmoFileNames];
-			file->read(WmoFileNameIndices, NumWmoFileNames * sizeof(u32));
+			WmoFileNameIndices = new uint32_t[NumWmoFileNames];
+			file->read(WmoFileNameIndices, NumWmoFileNames * sizeof(uint32_t));
 		}
 		else if (strcmp(fourcc, "MDDF") == 0)		//Placement information for doodads (M2 models). 
 		{
@@ -550,13 +550,13 @@ void CFileADT::loadObj0()
 			{
 				M2Instances = new SM2Instance[NumM2Instance];
 				ADT::SM2Placement placement;
-				for (u32 i=0; i<NumM2Instance; ++i)
+				for (uint32_t i=0; i<NumM2Instance; ++i)
 				{	
 					file->read(&placement, sizeof(ADT::SM2Placement));
 					M2Instances[i].m2Index = placement.m2Index;
 					M2Instances[i].id = placement.id;
 					M2Instances[i].dir = vector3df(placement.dir.Z -90, placement.dir.Y + 90, -placement.dir.X);
-					M2Instances[i].scale = (f32)placement.scale / 1024.0f;
+					M2Instances[i].scale = (float)placement.scale / 1024.0f;
 					M2Instances[i].position = vector3df(-placement.pos.X, placement.pos.Y, placement.pos.Z);
 					//ASSERT(placement.unknown == 0);
 				}
@@ -569,7 +569,7 @@ void CFileADT::loadObj0()
 			if (NumWmoInstance)
 			{
 				WmoInstances = new SWmoInstance[NumWmoInstance];		
-				for (u32 i=0; i<NumWmoInstance; ++i)
+				for (uint32_t i=0; i<NumWmoInstance; ++i)
 				{	
 					file->read(&placement, sizeof(ADT::SWMOPlacement));
 					WmoInstances[i].wmoIndex = placement.wmoIndex;
@@ -585,12 +585,12 @@ void CFileADT::loadObj0()
 		}
 		else if (strcmp(fourcc, "MCNK") == 0)
 		{
-			u32 lastpos = nextpos = file->getPos() + size;
+			uint32_t lastpos = nextpos = file->getPos() + size;
 
 			while( file->getPos() < lastpos )
 			{
-				c8 lfourcc[5];
-				u32 lsize;
+				char lfourcc[5];
+				uint32_t lsize;
 
 				file->read(lfourcc, 4);
 				file->read(&lsize, 4);
@@ -601,7 +601,7 @@ void CFileADT::loadObj0()
 				if (lsize == 0)
 					continue;
 
-				u32 lnextpos = file->getPos() + lsize;
+				uint32_t lnextpos = file->getPos() + lsize;
 
 				if (strcmp(lfourcc, "MCRD") == 0)
 				{
@@ -614,7 +614,7 @@ void CFileADT::loadObj0()
 					ASSERT(false);
 				}
 
-				file->seek((s32)lnextpos);
+				file->seek((int32_t)lnextpos);
 			}
 
 			++nChunks;
@@ -628,7 +628,7 @@ void CFileADT::loadObj0()
 			ASSERT(false);
 		}
 
-		file->seek((s32)nextpos);
+		file->seek((int32_t)nextpos);
 	}
 
 	delete file;
@@ -636,7 +636,7 @@ void CFileADT::loadObj0()
 
 bool CFileADT::loadObj0Simple()
 {
-	c8 name[QMAX_PATH];
+	char name[QMAX_PATH];
 	Q_strcpy(name, QMAX_PATH, Name);
 	Q_strcat(name, QMAX_PATH, "_obj0.adt");
 
@@ -644,10 +644,10 @@ bool CFileADT::loadObj0Simple()
 	if (!file)
 		return false;
 
-	u32 nChunks = 0;
+	uint32_t nChunks = 0;
 
-	c8 fourcc[5];
-	u32 size;
+	char fourcc[5];
+	uint32_t size;
 
 	while( !file->isEof() )
 	{
@@ -660,39 +660,39 @@ bool CFileADT::loadObj0Simple()
 		if (size == 0)
 			continue;
 
-		u32 nextpos = file->getPos() + size;
+		uint32_t nextpos = file->getPos() + size;
 
 		if (strcmp(fourcc, "MVER") == 0)
 		{
-			u32 version;
+			uint32_t version;
 			file->read(&version, size);
 			ASSERT(version == 18);
 		}
 		else if (strcmp(fourcc, "MMDX") == 0)		//List of filenames for M2 models that appear in this map tile. 
 		{
 			ASSERT(M2FileNameBlock == 0);
-			M2FileNameBlock = new c8[size];
+			M2FileNameBlock = new char[size];
 			file->read(M2FileNameBlock, size);
 		}
 		else if (strcmp(fourcc, "MMID") == 0)		//List of offsets of model filenames in the MMDX chunk. 
 		{
-			NumM2FileNames = size / sizeof(u32);
+			NumM2FileNames = size / sizeof(uint32_t);
 			ASSERT(M2FileNameIndices == 0);
-			M2FileNameIndices = new u32[NumM2FileNames];
-			file->read(M2FileNameIndices, NumM2FileNames * sizeof(u32));
+			M2FileNameIndices = new uint32_t[NumM2FileNames];
+			file->read(M2FileNameIndices, NumM2FileNames * sizeof(uint32_t));
 		}
 		else if (strcmp(fourcc, "MWMO") == 0)	//List of filenames for WMOs (world map objects) that appear in this map tile. 
 		{
 			ASSERT(WmoFileNameBlock == 0);
-			WmoFileNameBlock = new c8[size];
+			WmoFileNameBlock = new char[size];
 			file->read(WmoFileNameBlock, size);
 		}
 		else if (strcmp(fourcc, "MWID") == 0)		//List of offsets of WMO filenames in the MWMO chunk.
 		{
-			NumWmoFileNames = size / sizeof(u32);
+			NumWmoFileNames = size / sizeof(uint32_t);
 			ASSERT(WmoFileNameIndices == 0);
-			WmoFileNameIndices = new u32[NumWmoFileNames];
-			file->read(WmoFileNameIndices, NumWmoFileNames * sizeof(u32));
+			WmoFileNameIndices = new uint32_t[NumWmoFileNames];
+			file->read(WmoFileNameIndices, NumWmoFileNames * sizeof(uint32_t));
 		}
 		else if (strcmp(fourcc, "MDDF") == 0)		//Placement information for doodads (M2 models). 
 		{
@@ -715,7 +715,7 @@ bool CFileADT::loadObj0Simple()
 			ASSERT(false);
 		}
 
-		file->seek((s32)nextpos);
+		file->seek((int32_t)nextpos);
 	}
 
 	delete file;
@@ -725,25 +725,25 @@ bool CFileADT::loadObj0Simple()
 
 bool CFileADT::loadFileTextures(IMemFile* file)
 {
-	const c8* name = file->getFileName();
+	const char* name = file->getFileName();
 	getFullFileNameNoExtensionA(name, Name, QMAX_PATH);
 
 	return loadTex(0);
 }
 
-bool CFileADT::loadTex( u32 n )
+bool CFileADT::loadTex( uint32_t n )
 {
-	c8 name[QMAX_PATH];
-	Q_sprintf(name, QMAX_PATH, "%s_tex%d.adt", Name, (s32)n);
+	char name[QMAX_PATH];
+	Q_sprintf(name, QMAX_PATH, "%s_tex%d.adt", Name, (int32_t)n);
 
 	IMemFile* file = g_Engine->getWowEnvironment()->openFile(name);
 	if (!file)
 		return false;
 
-	u32 nChunks = 0;
+	uint32_t nChunks = 0;
 
-	c8 fourcc[5];
-	u32 size;
+	char fourcc[5];
+	uint32_t size;
 
 	while( !file->isEof() )
 	{
@@ -756,11 +756,11 @@ bool CFileADT::loadTex( u32 n )
 		if (size == 0)
 			continue;
 
-		u32 nextpos = file->getPos() + size;
+		uint32_t nextpos = file->getPos() + size;
 
 		if (strcmp(fourcc, "MVER") == 0)
 		{
-			u32 version;
+			uint32_t version;
 			file->read(&version, size);
 			ASSERT(version == 18);
 		}
@@ -770,17 +770,17 @@ bool CFileADT::loadTex( u32 n )
 		}
 		else if (strcmp(fourcc, "MTEX") == 0)
 		{
-			c8* buffer = (c8*)Z_AllocateTempMemory(size+1);
+			char* buffer = (char*)Z_AllocateTempMemory(size+1);
 			file->read(buffer, size);
 			buffer[size] = '\0';
 
-			c8* p = buffer;
+			char* p = buffer;
 			while(p < buffer + size)
 			{
-				const c8* str =  p;
-				c8 path[256];
+				const char* str =  p;
+				char path[256];
 				Q_strcpy(path, 256, str);
-				s32 idx = (s32)strlen(path) - 4;
+				int32_t idx = (int32_t)strlen(path) - 4;
 				ASSERT(idx > 0);
 				path[idx] = '\0';
 				Q_strcat(path, 256, "_s.blp");
@@ -799,12 +799,12 @@ bool CFileADT::loadTex( u32 n )
 		{
 			CMapChunk& currentChunk = Chunks[nChunks/16][nChunks%16];
 
-			u32 lastpos = nextpos = file->getPos() + size;
+			uint32_t lastpos = nextpos = file->getPos() + size;
 
 			while( file->getPos() < lastpos )
 			{
-				c8 mk_fourcc[5];
-				u32 mk_size;
+				char mk_fourcc[5];
+				uint32_t mk_size;
 
 				file->read(mk_fourcc, 4);
 				file->read(&mk_size, 4);
@@ -815,16 +815,16 @@ bool CFileADT::loadTex( u32 n )
 				if (mk_size == 0)
 					continue;
 
-				u32 lnextpos = file->getPos() + mk_size;
+				uint32_t lnextpos = file->getPos() + mk_size;
 
 				if (strcmp(mk_fourcc, "MCLY") == 0)					//texture layer
 				{
 					currentChunk.numTextures = mk_size / sizeof(ADT::MCLY);
 					ASSERT(currentChunk.numTextures <= 4);
-					for (u32 i=0; i<currentChunk.numTextures; ++i)
+					for (uint32_t i=0; i<currentChunk.numTextures; ++i)
 					{
 						file->read(&currentChunk.mclys[i], sizeof(ADT::MCLY));
-						u32 idx = currentChunk.mclys[i].textureId;
+						uint32_t idx = currentChunk.mclys[i].textureId;
 						ASSERT(idx < Textures.size());
 						currentChunk.textures[i] = Textures[idx].texture;
 					}
@@ -834,53 +834,53 @@ bool CFileADT::loadTex( u32 n )
 					//tex1的size为 2 * 64
 					ASSERT(mk_size == 8 * 64);
 					
-					u8* sbuf = (u8*)Z_AllocateTempMemory(sizeof(u8) * 64 * 64);
-					u8 tmp[8];
-					u8* p = sbuf;
-					for (u32 i=0; i<64; ++i)
+					uint8_t* sbuf = (uint8_t*)Z_AllocateTempMemory(sizeof(uint8_t) * 64 * 64);
+					uint8_t tmp[8];
+					uint8_t* p = sbuf;
+					for (uint32_t i=0; i<64; ++i)
 					{
 						file->read(tmp, 8);
-						for (u8 c=0; c<8; ++c)
-							for (u32 k = 0x01; k != 0x100; k<<=1)
+						for (uint8_t c=0; c<8; ++c)
+							for (uint32_t k = 0x01; k != 0x100; k<<=1)
 								*p++ = (tmp[c] & k) ? 76 : 0;
 					}
 					
 #ifdef FIXPIPELINE
-					Q_memcpy(currentChunk.data_shadowmap, sizeof(u8) * 64 * 64, sbuf, sizeof(u8) * 64 * 64);
+					Q_memcpy(currentChunk.data_shadowmap, sizeof(uint8_t) * 64 * 64, sbuf, sizeof(uint8_t) * 64 * 64);
 #endif
-					for (u32 k=0; k<64*64; ++k) {
+					for (uint32_t k=0; k<64*64; ++k) {
 						currentChunk.data_blendmap[k*4 + 3] = sbuf[k];
 					}
 					Z_FreeTempMemory(sbuf);
 				}
 				else if (strcmp(mk_fourcc, "MCAL") == 0)				//alpha map
 				{
-					u8* data = file->getPointer();
+					uint8_t* data = file->getPointer();
 
 					currentChunk.numAlphaMap = 0;
 					ASSERT(currentChunk.numTextures <= 4);
 
 					//从第一个纹理开始，检查alphamap
-					for (u32 i=1; i<currentChunk.numTextures; ++i)
+					for (uint32_t i=1; i<currentChunk.numTextures; ++i)
 					{
 						if ((currentChunk.mclys[i].flags & MCLY_USE_ALPHAMAP) == 0)
 							continue;
 
 						++currentChunk.numAlphaMap;
 
-						u8* amap = (u8*)Z_AllocateTempMemory(sizeof(u8) * 64 * 64);
+						uint8_t* amap = (uint8_t*)Z_AllocateTempMemory(sizeof(uint8_t) * 64 * 64);
 
-						u8* abuf = data + currentChunk.mclys[i].offsetInMCAL;
+						uint8_t* abuf = data + currentChunk.mclys[i].offsetInMCAL;
 						if (currentChunk.mclys[i].flags & MCLY_ALPHAMAP_COMPRESS)
 						{
-							u32 offI = 0;
-							u32 offO = 0;
+							uint32_t offI = 0;
+							uint32_t offO = 0;
 							while( offO < 64 * 64)
 							{
 								bool fill = (abuf[offI] & 0x80) > 0;
-								u32 num = abuf[offI] & 0x7f;
+								uint32_t num = abuf[offI] & 0x7f;
 								++offI;
-								for (u32 k=0; k<num; ++k)
+								for (uint32_t k=0; k<num; ++k)
 								{
 									if (offO >= 64 *64)
 										break;
@@ -907,9 +907,9 @@ bool CFileADT::loadTex( u32 n )
 						}
 
 #ifdef FIXPIPELINE
-						Q_memcpy(currentChunk.data_alphamap[i-1], sizeof(u8) * 64 * 64, amap, sizeof(u8) * 64 * 64);
+						Q_memcpy(currentChunk.data_alphamap[i-1], sizeof(uint8_t) * 64 * 64, amap, sizeof(uint8_t) * 64 * 64);
 #endif
-						for (u32 k=0; k<64*64; ++k) {
+						for (uint32_t k=0; k<64*64; ++k) {
 							currentChunk.data_blendmap[k*4+i-1] = amap[k];
 						}
 						Z_FreeTempMemory(amap);
@@ -925,7 +925,7 @@ bool CFileADT::loadTex( u32 n )
 					ASSERT(false);
 				}
 
-				file->seek((s32)lnextpos);
+				file->seek((int32_t)lnextpos);
 			}
 
 			++nChunks;
@@ -946,7 +946,7 @@ bool CFileADT::loadTex( u32 n )
 			ASSERT(false);
 		}
 
-		file->seek((s32)nextpos);
+		file->seek((int32_t)nextpos);
 	}
 
 	delete file;
@@ -963,20 +963,20 @@ void CFileADT::buildTexcoords()
 	const float step = 0.96f/16.0f;
 	const float delta = 0.02f/16.0f;
 
-	for (u8 row=0; row<16; ++row)
+	for (uint8_t row=0; row<16; ++row)
 	{
-		for (u8 col=0; col<16; ++col)
+		for (uint8_t col=0; col<16; ++col)
 		{
 			const float minX = col * fixstep + delta;
 			const float minY = row * fixstep + delta; 
 
-			u32 offset = getChunkVerticesOffset(row, col);
+			uint32_t offset = getChunkVerticesOffset(row, col);
 			SVertex_PNCT2* v = &Vertices[offset];
 
 			//detail, alpha
 			const float detail_half = 0.5f;
 			const float alpha_half = step / 16.0f;
-			f32 tx,ty, tx2, ty2;
+			float tx,ty, tx2, ty2;
 			for (int j=0; j<17; j++) {
 				for (int i=0; i<((j%2)?8:9); i++) {
 					tx = 1.0f * i;
@@ -998,23 +998,23 @@ void CFileADT::buildTexcoords()
 	}
 }
 
-const c8* CFileADT::getM2FileName( u32 index ) const
+const char* CFileADT::getM2FileName( uint32_t index ) const
 {
 	if(index >= NumM2FileNames)
 		return "";
-	return (const c8*)&M2FileNameBlock[M2FileNameIndices[index]];
+	return (const char*)&M2FileNameBlock[M2FileNameIndices[index]];
 }
 
-const c8* CFileADT::getWMOFileName( u32 index ) const
+const char* CFileADT::getWMOFileName( uint32_t index ) const
 {
 	if (index >= NumWmoFileNames)
 		return "";
-	return (const c8*)&WmoFileNameBlock[WmoFileNameIndices[index]];
+	return (const char*)&WmoFileNameBlock[WmoFileNameIndices[index]];
 }
 
-const c8* CFileADT::getTextureName(u32 index) const
+const char* CFileADT::getTextureName(uint32_t index) const
 {
-	if (index >= (u32)Textures.size())
+	if (index >= (uint32_t)Textures.size())
 		return "";
 	ITexture* tex = Textures[index].texture;
 
@@ -1025,23 +1025,23 @@ const c8* CFileADT::getTextureName(u32 index) const
 void CFileADT::buildMaps()
 {
 	//process shadow + alpha map, delete blend map
-	for (u8 i=0; i<16; ++i)
+	for (uint8_t i=0; i<16; ++i)
 	{
-		for (u8 j=0; j<16; ++j)
+		for (uint8_t j=0; j<16; ++j)
 		{	
-			for (u32 n=0; n<64*64; ++n)
+			for (uint32_t n=0; n<64*64; ++n)
 			{
-				u8 v = Chunks[i][j].data_shadowmap[n];
+				uint8_t v = Chunks[i][j].data_shadowmap[n];
 				Chunks[i][j].data_shadowmap[n] = (0x00 | v<<8);
 			}
 
-			for (u32 k=0; k<3; ++k)
+			for (uint32_t k=0; k<3; ++k)
 			{
 				if (Chunks[i][j].data_alphamap[k])
 				{
-					for (u32 n=0; n<64*64; ++n)
+					for (uint32_t n=0; n<64*64; ++n)
 					{
-						u8 v = Chunks[i][j].data_alphamap[k][n];
+						uint8_t v = Chunks[i][j].data_alphamap[k][n];
 						Chunks[i][j].data_alphamap[k][n] = (0xff | v << 8);
 					}
 				}
@@ -1057,7 +1057,7 @@ bool CFileADT::buildVideoResources()
 	if (VideoBuilt)
 		return true;
 
-	for (u32 i=0; i<Textures.size(); ++i)
+	for (uint32_t i=0; i<Textures.size(); ++i)
 	{
 		if(Textures[i].texture)
 			Textures[i].texture->createVideoTexture();
@@ -1065,9 +1065,9 @@ bool CFileADT::buildVideoResources()
 
 	g_Engine->getHardwareBufferServices()->createHardwareBuffer(VertexBuffer);
 
-	for (u8 i=0; i<16; ++i)
+	for (uint8_t i=0; i<16; ++i)
 	{
-		for (u8 j=0; j<16; ++j)
+		for (uint8_t j=0; j<16; ++j)
 		{
 			//shadow map
 			if (Chunks[i][j].data_shadowmap)
@@ -1078,7 +1078,7 @@ bool CFileADT::buildVideoResources()
 			}
 
 			//alpha map
-			for (u32 k=0; k<3; ++k)
+			for (uint32_t k=0; k<3; ++k)
 			{
 				if (Chunks[i][j].data_alphamap[k])
 				{
@@ -1102,7 +1102,7 @@ void CFileADT::releaseVideoResources()
 	if (!VideoBuilt)
 		return;
 
-	for (u32 i=0; i<Textures.size(); ++i)
+	for (uint32_t i=0; i<Textures.size(); ++i)
 	{
 		if(Textures[i].texture && Textures[i].texture->getReferenceCount() == 2)
 			Textures[i].texture->releaseVideoTexture();
@@ -1110,11 +1110,11 @@ void CFileADT::releaseVideoResources()
 
 	g_Engine->getHardwareBufferServices()->destroyHardwareBuffer(VertexBuffer);
 
-	for (u32 i=0; i<16; ++i)
+	for (uint32_t i=0; i<16; ++i)
 	{
-		for (u32 j=0; j<16; ++j)
+		for (uint32_t j=0; j<16; ++j)
 		{
-			for (u32 k=0; k<3; ++k)
+			for (uint32_t k=0; k<3; ++k)
 			{
 				if (Chunks[i][j].alphamap[k])
 				{
@@ -1137,17 +1137,17 @@ void CFileADT::releaseVideoResources()
 #else
 void CFileADT::buildMaps()
 {
-	Data_BlendMap =  new u32[BLENDMAP_SIZE * BLENDMAP_SIZE];
+	Data_BlendMap =  new uint32_t[BLENDMAP_SIZE * BLENDMAP_SIZE];
 	//
-	for (u8 i=0; i<16; ++i)
+	for (uint8_t i=0; i<16; ++i)
 	{
-		for (u8 j=0; j<16; ++j)
+		for (uint8_t j=0; j<16; ++j)
 		{
-			u32* dst = Data_BlendMap + i * 64 * BLENDMAP_SIZE + j * 64;
-			u32* src = (u32*)Chunks[i][j].data_blendmap;
-			for (u8 k=0; k<64; ++k)
+			uint32_t* dst = Data_BlendMap + i * 64 * BLENDMAP_SIZE + j * 64;
+			uint32_t* src = (uint32_t*)Chunks[i][j].data_blendmap;
+			for (uint8_t k=0; k<64; ++k)
 			{
-				Q_memcpy(dst + k*BLENDMAP_SIZE, sizeof(u32) * 64,  src + k*64, 4*64);
+				Q_memcpy(dst + k*BLENDMAP_SIZE, sizeof(uint32_t) * 64,  src + k*64, 4*64);
 			}
 		}
 	}
@@ -1160,7 +1160,7 @@ bool CFileADT::buildVideoResources()
 	if (VideoBuilt)
 		return true;
 
-	for (u32 i=0; i<Textures.size(); ++i)
+	for (uint32_t i=0; i<Textures.size(); ++i)
 	{
 		if(Textures[i].texture)
 			IVideoResource::buildVideoResources(Textures[i].texture);
@@ -1185,7 +1185,7 @@ void CFileADT::releaseVideoResources()
 	if (!VideoBuilt)
 		return;
 
-	for (u32 i=0; i<Textures.size(); ++i)
+	for (uint32_t i=0; i<Textures.size(); ++i)
 	{
 		if(Textures[i].texture && Textures[i].texture->getReferenceCount() == 2)
 			IVideoResource::releaseVideoResources(Textures[i].texture);

@@ -17,13 +17,13 @@ struct SGesTouchInfo
 {
 	SGesTouchInfo() : skip(false) {}
 	
-	ptr_t		fingerID;
-	f32		posX;
-	f32		posY;
-	f32		deltaX;
-	f32		deltaY;
-	f32		deltaTime;	
-	s32		tapCount;
+	uintptr_t		fingerID;
+	float		posX;
+	float		posY;
+	float		deltaX;
+	float		deltaY;
+	float		deltaTime;	
+	int32_t		tapCount;
 	E_TOUCH_PHASE		phase;				//E_TOUCH_PHASE
 	bool		skip;
 };
@@ -46,7 +46,7 @@ enum E_GESTURE_TYPE
 	GestureType_Num,
 };
 
-inline const c8* getGestureTypeName(E_GESTURE_TYPE type)
+inline const char* getGestureTypeName(E_GESTURE_TYPE type)
 {
 	switch (type)
 	{
@@ -85,7 +85,7 @@ enum E_GESTURE_STATE
 	GestureState_Num,
 };
 
-inline const c8* getGestureStateName(E_GESTURE_STATE state)
+inline const char* getGestureStateName(E_GESTURE_STATE state)
 {
 	switch(state)
 	{
@@ -124,57 +124,57 @@ struct SGestureInfo
 	{
 		struct
 		{
-			f32 joystick_xPos;
-			f32 joystick_yPos;
-			f32 joystick_xDelta;
-			f32 joystick_yDelta;
+			float joystick_xPos;
+			float joystick_yPos;
+			float joystick_xDelta;
+			float joystick_yDelta;
 		};
 
 		struct
 		{
-			f32 tap1_xPos;
-			f32 tap1_yPos;
-			s32 tap1_tapCount;
+			float tap1_xPos;
+			float tap1_yPos;
+			int32_t tap1_tapCount;
 		};
 
 		struct
 		{
-			f32 tap2_xPos;
-			f32 tap2_yPos;
+			float tap2_xPos;
+			float tap2_yPos;
 		};
 
 		struct
 		{
-			f32 pinch_scale;
-			f32 pinch_velocity;
+			float pinch_scale;
+			float pinch_velocity;
 		};
 
 		struct
 		{
-			f32 pan1_xPos;
-			f32 pan1_yPos;
-			f32 pan1_xVelocity;
-			f32 pan1_yVelocity;
+			float pan1_xPos;
+			float pan1_yPos;
+			float pan1_xVelocity;
+			float pan1_yVelocity;
 		};
 
 		struct
 		{
-			f32 pan2_xPos;
-			f32 pan2_yPos;
-			f32 pan2_xVelocity;
-			f32 pan2_yVelocity;
+			float pan2_xPos;
+			float pan2_yPos;
+			float pan2_xVelocity;
+			float pan2_yVelocity;
 		};
 
 		struct
 		{
-			f32 longpress_xPos;
-			f32 longpress_yPos;
+			float longpress_xPos;
+			float longpress_yPos;
 		};
 
 		struct
 		{
-			f32 swipe_xPos;
-			f32 swipe_yPos;
+			float swipe_xPos;
+			float swipe_yPos;
 			E_SWIPE_DIR swipe_direction;
 		};
 

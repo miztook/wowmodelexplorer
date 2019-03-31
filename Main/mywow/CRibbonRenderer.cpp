@@ -4,7 +4,7 @@
 #include "CRibbonEmitterServices.h"
 #include "CRibbonSceneNode.h"
 
-CRibbonRenderer::CRibbonRenderer( u32 quota )
+CRibbonRenderer::CRibbonRenderer( uint32_t quota )
 	: Quota(quota)
 {
 	RenderUnits.reserve(Quota);
@@ -32,7 +32,7 @@ void CRibbonRenderer::addRenderUnit( const SRenderUnit* unit )
 	if (needRealloc)
 	{
 		RenderEntries.resize(RenderUnits.size());
-		for (u32 i=0; i<RenderUnits.size(); ++i)
+		for (uint32_t i=0; i<RenderUnits.size(); ++i)
 		{
 			RenderEntries[i].unit = &RenderUnits[i];
 		}
@@ -55,8 +55,8 @@ void CRibbonRenderer::render( const SRenderUnit*& currentUnit, ICamera* cam )
 	//collect batches
 	RenderBatches.clear();
 
-	u32 size = (u32)RenderEntries.size();
-	for (u32 i=0; i<size; ++i)
+	uint32_t size = (uint32_t)RenderEntries.size();
+	for (uint32_t i=0; i<size; ++i)
 	{
 		const SRenderUnit* unit  = RenderEntries[i].unit;
 
@@ -86,7 +86,7 @@ void CRibbonRenderer::render( const SRenderUnit*& currentUnit, ICamera* cam )
 		SBatch& batch = RenderBatches.back();
 		const CRibbonSceneNode* node = static_cast<const CRibbonSceneNode*>(unit->sceneNode);
 		SVertex_PCT* vertices = (SVertex_PCT*)&RibbonServices->Vertices[batch.vbase + batch.vcount];
-		u32 nFill = node->onFillVertexBuffer(vertices, unit->drawParam.numVertices);
+		uint32_t nFill = node->onFillVertexBuffer(vertices, unit->drawParam.numVertices);
 		batch.vcount += nFill;
 	}
 
@@ -138,7 +138,7 @@ bool CRibbonRenderer::isInBatch( const SBatch& batch, const SRenderUnit* unit ) 
 		batch.matProjection == unit->matProjection;
 }
 
-bool CRibbonRenderer::isBatchExceed( const SBatch& batch, u32 vcount ) const
+bool CRibbonRenderer::isBatchExceed( const SBatch& batch, uint32_t vcount ) const
 {
 	return batch.vbase + batch.vcount + vcount > RibbonServices->getMaxVertexCount();
 }

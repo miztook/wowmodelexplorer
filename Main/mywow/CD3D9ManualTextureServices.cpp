@@ -34,7 +34,7 @@ CD3D9ManualTextureServices::~CD3D9ManualTextureServices()
 	}
 }
 
-ITexture* CD3D9ManualTextureServices::addTexture( const c8* name, const dimension2du& size, IImage* img, bool mipmap )
+ITexture* CD3D9ManualTextureServices::addTexture( const char* name, const dimension2du& size, IImage* img, bool mipmap )
 {
 	if(TextureMap.find(name) != TextureMap.end())
 		return nullptr;
@@ -50,7 +50,7 @@ ITexture* CD3D9ManualTextureServices::addTexture( const c8* name, const dimensio
 	return tex;
 }
 
-void CD3D9ManualTextureServices::removeTexture(const c8* name)
+void CD3D9ManualTextureServices::removeTexture(const char* name)
 {
 	T_TextureMap::iterator itr = TextureMap.find(name);
 	if (itr == TextureMap.end())
@@ -112,7 +112,7 @@ ITexture* CD3D9ManualTextureServices::createTextureFromData( const dimension2du&
 ITexture* CD3D9ManualTextureServices::createCompressTextureFromData( const dimension2du& size, ECOLOR_FORMAT format, const void* data, bool mipmap )
 {
 	CBLPImage* image = new CBLPImage;
-	if (!image->fromImageData((const u8*)data, size, format, mipmap))
+	if (!image->fromImageData((const uint8_t*)data, size, format, mipmap))
 	{
 		image->drop();
 		return nullptr;
@@ -145,7 +145,7 @@ void CD3D9ManualTextureServices::loadDefaultTextures()
 	ECOLOR_FORMAT format = ECF_R5G6B5;
 	dimension2du size = dimension2du(32, 32);
 
-	u32 pitch, nbytes;
+	uint32_t pitch, nbytes;
 	getImagePitchAndBytes(format, size.Width, size.Height, pitch, nbytes);
 
 	void* data = Z_AllocateTempMemory(nbytes);

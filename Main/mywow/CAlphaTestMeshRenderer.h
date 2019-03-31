@@ -6,7 +6,7 @@
 class CAlphaTestMeshRenderer : public ISceneRenderer
 {
 public:
-	explicit CAlphaTestMeshRenderer(u32 quota);
+	explicit CAlphaTestMeshRenderer(uint32_t quota);
 	~CAlphaTestMeshRenderer();
 
 public:
@@ -44,7 +44,7 @@ private:
 	std::vector<SRenderUnit>		RenderUnits;
 	std::vector<SEntry>			RenderEntries;
 
-	u32		Quota;
+	uint32_t		Quota;
 
 	friend class CD3D9Driver;
 	friend class CD3D11Driver;

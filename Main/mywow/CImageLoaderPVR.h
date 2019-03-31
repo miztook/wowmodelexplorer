@@ -8,7 +8,7 @@ class IImage;
 class CImageLoaderPVR
 {
 public:
-	static bool isALoadableFileExtension( const c8* filename ) { return hasFileExtensionA(filename, "pvr"); }
+	static bool isALoadableFileExtension( const char* filename ) { return hasFileExtensionA(filename, "pvr"); }
 
 	IImage* loadAsImage( IMemFile* file );
 

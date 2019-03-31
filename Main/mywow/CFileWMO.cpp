@@ -89,7 +89,7 @@ void CFileWMO::clear()
 
 	delete[] Groups;
 
-	for (u32 i=0; i<Header.nMaterials; ++i)
+	for (uint32_t i=0; i<Header.nMaterials; ++i)
 	{
 		if (Materials[i].texture0)
 			Materials[i].texture0->drop();
@@ -104,11 +104,11 @@ void CFileWMO::clear()
 
 bool CFileWMO::loadFile( IMemFile* file )
 {
-	const c8* name = file->getFileName();
+	const char* name = file->getFileName();
 	getFullFileNameNoExtensionA(name, Name, QMAX_PATH);
 
-	c8 fourcc[5];
-	u32 size;
+	char fourcc[5];
+	uint32_t size;
 
 	while( !file->isEof() )
 	{
@@ -121,11 +121,11 @@ bool CFileWMO::loadFile( IMemFile* file )
 		if (size == 0)
 			continue;
 
-		u32 nextpos = file->getPos() + size;
+		uint32_t nextpos = file->getPos() + size;
 
 		if (strcmp(fourcc, "MVER") == 0)				//version
 		{
-			u32 version;
+			uint32_t version;
 			file->read(&version, size);
 			ASSERT(version == 17);
 		}
@@ -142,7 +142,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 		}
 		else if (strcmp(fourcc, "MOTX") == 0)					//texture
 		{
-			TextureFileNameBlock = new c8[size];
+			TextureFileNameBlock = new char[size];
 			file->read(TextureFileNameBlock, size);
 		}
 		else if (strcmp(fourcc, "MOMT") == 0)				//material
@@ -150,7 +150,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 			ASSERT(size == Header.nMaterials * sizeof(WMO::wmoMaterial));
 			WMO::wmoMaterial* materials = (WMO::wmoMaterial*)Z_AllocateTempMemory(Header.nMaterials * sizeof(WMO::wmoMaterial));
 			file->read(materials, Header.nMaterials * sizeof(WMO::wmoMaterial));
-			for (u32 i=0; i<Header.nMaterials; ++i)
+			for (uint32_t i=0; i<Header.nMaterials; ++i)
 			{
 				const WMO::wmoMaterial& m = materials[i];
 
@@ -159,11 +159,11 @@ bool CFileWMO::loadFile( IMemFile* file )
 				Materials[i].alphatest = m.alphatest != 0;
 
 				Materials[i].color0.set(m.col1A, m.col1R, m.col1G, m.col1B);
-				const c8* tex1 = &TextureFileNameBlock[m.tex1];
+				const char* tex1 = &TextureFileNameBlock[m.tex1];
 				Materials[i].texture0= g_Engine->getResourceLoader()->loadTexture(tex1);
 
 				Materials[i].color1.set(m.col2A, m.col2R, m.col2G, m.col2B);
-				const c8* tex2 = &TextureFileNameBlock[m.tex2];
+				const char* tex2 = &TextureFileNameBlock[m.tex2];
 				Materials[i].texture1 = g_Engine->getResourceLoader()->loadTexture(tex2);
 
 				Materials[i].color2.set(m.col3A, m.col3R, m.col3G, m.col3B);
@@ -172,7 +172,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 		}
 		else if (strcmp(fourcc, "MOGN") == 0)					//group name
 		{
-			GroupNamesBlock = new c8[size];
+			GroupNamesBlock = new char[size];
 			file->read(GroupNamesBlock, size);
 			GroupNameBlockSize = size;
 		}
@@ -181,13 +181,13 @@ bool CFileWMO::loadFile( IMemFile* file )
 			ASSERT(size == Header.nGroups * sizeof(WMO::wmoGroupInfo));
 			WMO::wmoGroupInfo* groupInfos = (WMO::wmoGroupInfo*)Z_AllocateTempMemory(Header.nGroups * sizeof(WMO::wmoGroupInfo));
 			file->read(groupInfos, Header.nGroups * sizeof(WMO::wmoGroupInfo));
-			for (u32 i=0; i<Header.nGroups; ++i)
+			for (uint32_t i=0; i<Header.nGroups; ++i)
 			{
 				const WMO::wmoGroupInfo& gi = groupInfos[i];
 				Groups[i].flags = gi.flags;
 				Groups[i].box.set(fixCoordinate(gi.min), fixCoordinate(gi.max));
 
-				if(gi.nameIndex >= 0 && gi.nameIndex < (s32)GroupNameBlockSize)
+				if(gi.nameIndex >= 0 && gi.nameIndex < (int32_t)GroupNameBlockSize)
 					Q_strcpy(Groups[i].name, DEFAULT_SIZE, &GroupNamesBlock[gi.nameIndex]);
 				else
 					Q_strcpy(Groups[i].name, DEFAULT_SIZE, "");
@@ -212,7 +212,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 				PortalVertices = new vector3df[NumPortalVertices];
 				vector3df* pVertices = (vector3df*)Z_AllocateTempMemory(sizeof(vector3df) * NumPortalVertices);
 				file->read(pVertices, NumPortalVertices * sizeof(vector3df));
-				for (u32 i=0; i<NumPortalVertices; ++i)
+				for (uint32_t i=0; i<NumPortalVertices; ++i)
 				{
 					if(i % 4 == 2)
 						PortalVertices[i] = fixCoordinate(pVertices[i/4 + 3]);
@@ -232,7 +232,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 			WMO::wmoPortalInfo* portalInfos = (WMO::wmoPortalInfo*)Z_AllocateTempMemory(Header.nPortals * sizeof(WMO::wmoPortalInfo));
 			file->read(portalInfos, Header.nPortals * sizeof(WMO::wmoPortalInfo));
 
-			for (u32 i=0; i<Header.nPortals; ++i)
+			for (uint32_t i=0; i<Header.nPortals; ++i)
 			{
 				const WMO::wmoPortalInfo& pi = portalInfos[i];
 
@@ -253,7 +253,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 			WMO::wmoPortalRelation* relations = (WMO::wmoPortalRelation*)Z_AllocateTempMemory(NumPortalRelations * sizeof(WMO::wmoPortalRelation));
 			file->read(relations, NumPortalRelations * sizeof(WMO::wmoPortalRelation));
 			
-			for (u32 i=0; i<NumPortalRelations; ++i)
+			for (uint32_t i=0; i<NumPortalRelations; ++i)
 			{
 				const WMO::wmoPortalRelation& pr = relations[i];
 				PortalRelations[i].portalIndex = pr.portal;
@@ -272,7 +272,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 			WMO::wmoLight* lights = (WMO::wmoLight*)Z_AllocateTempMemory(Header.nLights * sizeof(WMO::wmoLight));
 			file->read(lights, Header.nLights * sizeof(WMO::wmoLight));
 
-			for (u32 i=0; i<Header.nLights; ++i)
+			for (uint32_t i=0; i<Header.nLights; ++i)
 			{
 				const WMO::wmoLight& li = lights[i];
 
@@ -293,7 +293,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 			WMO::wmoDoodadSet* sets = (WMO::wmoDoodadSet*)Z_AllocateTempMemory(Header.nDoodadSets * sizeof(WMO::wmoDoodadSet));
 			file->read(sets, Header.nDoodadSets * sizeof(WMO::wmoDoodadSet));
 
-			for (u32 i=0; i<Header.nDoodadSets; ++i)
+			for (uint32_t i=0; i<Header.nDoodadSets; ++i)
 			{
 				const WMO::wmoDoodadSet& s = sets[i];
 
@@ -305,7 +305,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 		}
 		else if (strcmp(fourcc, "MODN") == 0)				//doodad names
 		{
-			ModelNamesBlock = new c8[size];
+			ModelNamesBlock = new char[size];
 			file->read(ModelNamesBlock, size);
 			DoodadNameBlockSize = size;
 		}
@@ -317,11 +317,11 @@ bool CFileWMO::loadFile( IMemFile* file )
 			WMO::wmoDoodadDef* dds = (WMO::wmoDoodadDef*)Z_AllocateTempMemory(NumDoodads * sizeof(WMO::wmoDoodadDef));
 			file->read(dds, NumDoodads * sizeof(WMO::wmoDoodadDef));
 
-			for (u32 i=0; i<NumDoodads; ++i)
+			for (uint32_t i=0; i<NumDoodads; ++i)
 			{
 				const WMO::wmoDoodadDef& dd = dds[i];
 				
-				if(dd.nameIndex >= 0 && dd.nameIndex < (s32)DoodadNameBlockSize)
+				if(dd.nameIndex >= 0 && dd.nameIndex < (int32_t)DoodadNameBlockSize)
 					Q_strcpy(Doodads[i].name, 256, &ModelNamesBlock[dd.nameIndex]);
 				else
 					Q_strcpy(Doodads[i].name, 256, "");
@@ -342,7 +342,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 			WMO::wmoFog* fogs = (WMO::wmoFog*)Z_AllocateTempMemory(NumFogs * sizeof(WMO::wmoFog));
 			file->read(fogs, NumFogs * sizeof(WMO::wmoFog));
 
-			for (u32 i=0; i<NumFogs; ++i)
+			for (uint32_t i=0; i<NumFogs; ++i)
 			{
 				const WMO::wmoFog& f = fogs[i];
 
@@ -374,22 +374,22 @@ bool CFileWMO::loadFile( IMemFile* file )
 			ASSERT(false);
 		}
 
-		file->seek((s32)nextpos);
+		file->seek((int32_t)nextpos);
 	}
 
 	//load grouops and build bouding box
 	Box.set(vector3df(999999.9f), vector3df(-999999.9f));
-	for (u32 i=0; i<Header.nGroups; ++i)
+	for (uint32_t i=0; i<Header.nGroups; ++i)
 	{
 		Groups[i].loadFile(i, this);
 		Box.addInternalBox(Groups[i].box);
 
 		//group box
-		for (u32 c=0; c<Groups[i].NumBatches; ++c)
+		for (uint32_t c=0; c<Groups[i].NumBatches; ++c)
 		{
 			SWMOBatch* batch = &Groups[i].Batches[c];
 			batch->box.set(vector3df(999999.9f), vector3df(-999999.9f));
-			for (u32 k=batch->vertexStart; k<batch->vertexEnd; ++k)
+			for (uint32_t k=batch->vertexStart; k<batch->vertexEnd; ++k)
 			{
 				batch->box.addInternalPoint(Groups[i].Vertices[k].Pos);
 			}
@@ -399,22 +399,22 @@ bool CFileWMO::loadFile( IMemFile* file )
 	buildGroupBuffers();
 
 	//portal
-	for (u32 i=0; i<Header.nPortals; ++i)
+	for (uint32_t i=0; i<Header.nPortals; ++i)
 	{
 		SWMOPortal* p = &Portals[i];
 		p->box.set(vector3df(999999.9f), vector3df(-999999.9f));
-		for (u32 c=0; c<p->vCount; ++c)
+		for (uint32_t c=0; c<p->vCount; ++c)
 		{
 			p->box.addInternalPoint(PortalVertices[p->vStart + c]);
 		}
 	}
 
 	//portal relation
-	for (u32 i=0; i<NumPortalRelations; ++i)
+	for (uint32_t i=0; i<NumPortalRelations; ++i)
 	{
 		SWMOPortalRelation* relation = &PortalRelations[i];
 		SWMOPortal* p = &Portals[relation->portalIndex];
-		ASSERT(relation->groupIndex < (s16)Header.nGroups);
+		ASSERT(relation->groupIndex < (int16_t)Header.nGroups);
 
 		if (relation->face)
 			p->frontGroupIndex = relation->groupIndex;
@@ -432,9 +432,9 @@ bool CFileWMO::loadFile( IMemFile* file )
 
 void CFileWMO::buildGroupBuffers()
 {
-	u32 vCount = 0;
-	u32 iCount = 0;
-	for (u32 i=0; i<Header.nGroups; ++i)
+	uint32_t vCount = 0;
+	uint32_t iCount = 0;
+	for (uint32_t i=0; i<Header.nGroups; ++i)
 	{
 		CWMOGroup* group = &Groups[i];
 		
@@ -445,14 +445,14 @@ void CFileWMO::buildGroupBuffers()
 	}
 
 	Vertices = new SVertex_PNCT2[vCount];
-	Indices = new u32[iCount];
+	Indices = new uint32_t[iCount];
 
-	for (u32 i=0; i<Header.nGroups; ++i)
+	for (uint32_t i=0; i<Header.nGroups; ++i)
 	{
 		CWMOGroup* group = &Groups[i];
 
 		Q_memcpy(&Vertices[group->VStart], sizeof(SVertex_PNCT2) * group->VCount, group->Vertices, sizeof(SVertex_PNCT2) * group->VCount);
-		for (u32 k=0; k<group->ICount; ++k)
+		for (uint32_t k=0; k<group->ICount; ++k)
 			Indices[group->IStart + k] = group->Indices[k] + group->VStart;
 
 		//合并之后释放 group顶点
@@ -475,7 +475,7 @@ bool CFileWMO::buildVideoResources()
 		return true;
 
 	//texture
-	for (u32 i=0; i<Header.nMaterials; ++i)
+	for (uint32_t i=0; i<Header.nMaterials; ++i)
 	{
 		if (Materials[i].texture0)
 			IVideoResource::buildVideoResources(Materials[i].texture0);
@@ -503,7 +503,7 @@ void CFileWMO::releaseVideoResources()
 	//CLock lock(&g_Globals.wmoCS);
 
 	//texture
-	for (u32 i=0; i<Header.nMaterials; ++i)
+	for (uint32_t i=0; i<Header.nMaterials; ++i)
 	{
 		if (Materials[i].texture0 && Materials[i].texture0->getReferenceCount() == 2)
 			IVideoResource::releaseVideoResources(Materials[i].texture0);
@@ -528,16 +528,16 @@ void CFileWMO::buildPortalEntries()
 {
 	FrontGroupRefMap.clear();
 	FrontPortalEntries = new SPortalEntry[Header.nPortals];
-	for (u32 i=0; i<Header.nPortals; ++i)
+	for (uint32_t i=0; i<Header.nPortals; ++i)
 	{
 		FrontPortalEntries[i].group0 = Portals[i].frontGroupIndex;
 		FrontPortalEntries[i].portalIndex = i;
 	}
 	heapsort<SPortalEntry>(FrontPortalEntries, Header.nPortals);
 
-	for (u32 i=0; i<Header.nPortals; ++i)
+	for (uint32_t i=0; i<Header.nPortals; ++i)
 	{
-		s16 id = FrontPortalEntries[i].group0;
+		int16_t id = FrontPortalEntries[i].group0;
 		T_GroupRefMap::iterator itr = FrontGroupRefMap.find(id);
 		if ( itr == FrontGroupRefMap.end() )
 		{
@@ -554,16 +554,16 @@ void CFileWMO::buildPortalEntries()
 
 	BackGroupRefMap.clear();
 	BackPortalEntries = new SPortalEntry[Header.nPortals];
-	for (u32 i=0; i<Header.nPortals; ++i)
+	for (uint32_t i=0; i<Header.nPortals; ++i)
 	{
 		BackPortalEntries[i].group0 = Portals[i].backGroupIndex;
 		BackPortalEntries[i].portalIndex = i;
 	}
 	heapsort<SPortalEntry>(BackPortalEntries, Header.nPortals);
 
-	for (u32 i=0; i<Header.nPortals; ++i)
+	for (uint32_t i=0; i<Header.nPortals; ++i)
 	{
-		s16 id = BackPortalEntries[i].group0;
+		int16_t id = BackPortalEntries[i].group0;
 		T_GroupRefMap::iterator itr = BackGroupRefMap.find(id);
 		if ( itr == BackGroupRefMap.end() )
 		{
@@ -579,49 +579,49 @@ void CFileWMO::buildPortalEntries()
 	}
 }
 
-u32 CFileWMO::getPortalCountAsFront( u32 frontGroupIndex ) const
+uint32_t CFileWMO::getPortalCountAsFront( uint32_t frontGroupIndex ) const
 {
-	T_GroupRefMap::const_iterator itr = FrontGroupRefMap.find((s16)frontGroupIndex);
+	T_GroupRefMap::const_iterator itr = FrontGroupRefMap.find((int16_t)frontGroupIndex);
 	if (itr == FrontGroupRefMap.end())
 		return 0;
 	
 	return itr->second.count;
 }
 
-s32 CFileWMO::getPortalIndexAsFront( u32 frontGroupIndex, u32 index ) const
+int32_t CFileWMO::getPortalIndexAsFront( uint32_t frontGroupIndex, uint32_t index ) const
 {
-	T_GroupRefMap::const_iterator itr = FrontGroupRefMap.find((s16)frontGroupIndex);
+	T_GroupRefMap::const_iterator itr = FrontGroupRefMap.find((int16_t)frontGroupIndex);
 	if (itr == FrontGroupRefMap.end() || index >= itr->second.count)
 		return -1;
 
 	return FrontPortalEntries[itr->second.start + index].portalIndex;
 }
 
-u32 CFileWMO::getPortalCountAsBack( u32 backGroupIndex ) const
+uint32_t CFileWMO::getPortalCountAsBack( uint32_t backGroupIndex ) const
 {
-	T_GroupRefMap::const_iterator itr = BackGroupRefMap.find((s16)backGroupIndex);
+	T_GroupRefMap::const_iterator itr = BackGroupRefMap.find((int16_t)backGroupIndex);
 	if (itr == BackGroupRefMap.end())
 		return 0;
 
 	return itr->second.count;
 }
 
-s32 CFileWMO::getPortalIndexAsBack( u32 backGroupIndex, u32 index ) const
+int32_t CFileWMO::getPortalIndexAsBack( uint32_t backGroupIndex, uint32_t index ) const
 {
-	T_GroupRefMap::const_iterator itr = BackGroupRefMap.find((s16)backGroupIndex);
+	T_GroupRefMap::const_iterator itr = BackGroupRefMap.find((int16_t)backGroupIndex);
 	if (itr == BackGroupRefMap.end() || index >= itr->second.count)
 		return -1;
 
 	return BackPortalEntries[itr->second.start + index].portalIndex;
 }
 
-bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
+bool CWMOGroup::loadFile( uint32_t index, IFileWMO* wmo )
 {
-	c8 path[QMAX_PATH];
+	char path[QMAX_PATH];
 	getFullFileNameNoExtensionA(wmo->Name, path, QMAX_PATH);
 
-	c8 filename[QMAX_PATH];
-	Q_sprintf(filename, QMAX_PATH, "%s_%03d.wmo", path, (s32)index);
+	char filename[QMAX_PATH];
+	Q_sprintf(filename, QMAX_PATH, "%s_%03d.wmo", path, (int32_t)index);
 
 	IMemFile* file = g_Engine->getWowEnvironment()->openFile(filename);
 	ASSERT(file);
@@ -630,10 +630,10 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 
 	WMO::wmoGroupHeader header;
 
-	c8 fourcc[5];
-	u32 size;
+	char fourcc[5];
+	uint32_t size;
 
-	u32 nTcoords = 0;
+	uint32_t nTcoords = 0;
 
 	while( !file->isEof() )
 	{
@@ -646,11 +646,11 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 		if (size == 0)
 			continue;
 
-		u32 nextpos = file->getPos() + size;
+		uint32_t nextpos = file->getPos() + size;
 
 		if (strcmp(fourcc, "MVER") == 0)				//version
 		{
-			u32 version;
+			uint32_t version;
 			file->read(&version, size);
 			ASSERT(version == 17);
 		}
@@ -663,11 +663,11 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 		else if (strcmp(fourcc, "MOPY") == 0)				//
 		{
 // 			NumTriangleMaterials = size / sizeof(WMO::wmoTriangleMaterial);
-// 			TriangleMaterials = new u8[NumTriangleMaterials];
+// 			TriangleMaterials = new uint8_t[NumTriangleMaterials];
 // 
 // 			WMO::wmoTriangleMaterial* mats = (WMO::wmoTriangleMaterial*)Hunk_AllocateTempMemory(NumTriangleMaterials * sizeof(WMO::wmoTriangleMaterial));
 // 			file->read(mats, NumTriangleMaterials * sizeof(WMO::wmoTriangleMaterial));
-// 			for (u32 i=0; i<NumTriangleMaterials; ++i)
+// 			for (uint32_t i=0; i<NumTriangleMaterials; ++i)
 // 			{
 // 				TriangleMaterials[i] = mats[i].matId;
 // 			}
@@ -675,8 +675,8 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 		}
 		else if (strcmp(fourcc, "MOVI") == 0)
 		{
-			ICount = size / sizeof(u16);
-			Indices = new u16[ICount];
+			ICount = size / sizeof(uint16_t);
+			Indices = new uint16_t[ICount];
 			file->read(Indices, size);
 		}
 		else if (strcmp(fourcc, "MOVT") == 0)
@@ -686,7 +686,7 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 
 			vector3df* tmp = (vector3df*)Z_AllocateTempMemory(size);
 			file->read(tmp, size);
-			for (u32 i=0; i<VCount; ++i)
+			for (uint32_t i=0; i<VCount; ++i)
 			{
 				Vertices[i].Pos = fixCoordinate(tmp[i]);
 			}
@@ -696,7 +696,7 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 		{
 			vector3df* tmp = (vector3df*)Z_AllocateTempMemory(size);
 			file->read(tmp, size);
-			for (u32 i=0; i<VCount; ++i)
+			for (uint32_t i=0; i<VCount; ++i)
 			{
 				Vertices[i].Normal = fixCoordinate(tmp[i]);
 				Vertices[i].Normal.normalize();
@@ -709,12 +709,12 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 			file->read(tmp, size);
 			if (nTcoords == 0)
 			{
-				for (u32 i=0; i<VCount; ++i)
+				for (uint32_t i=0; i<VCount; ++i)
 					Vertices[i].TCoords0 = tmp[i];
 			}
 			else
 			{
-				for (u32 i=0; i<VCount; ++i)
+				for (uint32_t i=0; i<VCount; ++i)
 					Vertices[i].TCoords1 = tmp[i];
 			}
 			Z_FreeTempMemory(tmp);
@@ -728,7 +728,7 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 
 			WMO::wmoGroupBatch* bats = (WMO::wmoGroupBatch*)Z_AllocateTempMemory(NumBatches * sizeof(WMO::wmoGroupBatch));
 			file->read(bats, NumBatches * sizeof(WMO::wmoGroupBatch));
-			for (u32 i=0; i<NumBatches; ++i)
+			for (uint32_t i=0; i<NumBatches; ++i)
 			{
 				const WMO::wmoGroupBatch& b = bats[i];
 
@@ -744,15 +744,15 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 		}
 		else if (strcmp(fourcc, "MOLR") == 0)
 		{
-			NumLights = size / sizeof(u16);
-			Lights = new u16[NumLights];
-			file->read(Lights, NumLights * sizeof(u16));		
+			NumLights = size / sizeof(uint16_t);
+			Lights = new uint16_t[NumLights];
+			file->read(Lights, NumLights * sizeof(uint16_t));		
 		}
 		else if (strcmp(fourcc, "MODR") == 0)
 		{
-			NumDoodads = size / sizeof(u16);
-			Doodads = new u16[NumDoodads];
-			file->read(Doodads, NumDoodads * sizeof(u16));		
+			NumDoodads = size / sizeof(uint16_t);
+			Doodads = new uint16_t[NumDoodads];
+			file->read(Doodads, NumDoodads * sizeof(uint16_t));		
 		}
 		else if (strcmp(fourcc, "MOBN") == 0)			//bsp node
 		{
@@ -760,7 +760,7 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 			BspNodes = new SWMOBspNode[NumBspNodes];
 			WMO::wmoBspNode* nodes = (WMO::wmoBspNode*)Z_AllocateTempMemory(NumBspNodes * sizeof(WMO::wmoBspNode));
 			file->read(nodes, NumBspNodes * sizeof(WMO::wmoBspNode));
-			for (u32 i=0; i<NumBspNodes; ++i)
+			for (uint32_t i=0; i<NumBspNodes; ++i)
 			{
 				const WMO::wmoBspNode& n = nodes[i];
 
@@ -776,8 +776,8 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 		}
 		else if (strcmp(fourcc, "MOBR") == 0)				//bsp triangle
 		{
-			NumBspTriangles = size / sizeof(u16);
-			BspTriangles = new u16[NumBspTriangles];
+			NumBspTriangles = size / sizeof(uint16_t);
+			BspTriangles = new uint16_t[NumBspTriangles];
 			file->read(BspTriangles, size);
 		}
 		else if (strcmp(fourcc, "MOCV") == 0)
@@ -785,7 +785,7 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 			hasVertexColor = true;
 			SColor* colors = (SColor*)Z_AllocateTempMemory(size);
 			file->read(colors, size);
-			for (u32 i=0; i<VCount; ++i)
+			for (uint32_t i=0; i<VCount; ++i)
 			{
 				Vertices[i].Color = colors[i];
 			}
@@ -812,7 +812,7 @@ bool CWMOGroup::loadFile( u32 index, IFileWMO* wmo )
 			ASSERT(false);
 		}
 
-		file->seek((s32)nextpos);
+		file->seek((int32_t)nextpos);
 	}
 
 	delete file;
@@ -828,7 +828,7 @@ void CWMOGroup::buildBspVIBuffers()
 	{
 		//bsp vertex buffer
 		BspVertices = new SVertex_P[VCount];
-		for (u32 i=0; i<VCount; ++i)
+		for (uint32_t i=0; i<VCount; ++i)
 		{
 			BspVertices[i].Pos = Vertices[i].Pos;
 		}
@@ -836,16 +836,16 @@ void CWMOGroup::buildBspVIBuffers()
 		BspVertexBuffer->set(BspVertices, EST_P, VCount, EMM_STATIC);
 
 		//bsp index buffer
-		u32 icount = 0;
-		for (u32 i=0; i<NumBspNodes; ++i)
+		uint32_t icount = 0;
+		for (uint32_t i=0; i<NumBspNodes; ++i)
 		{
 			SWMOBspNode* node = &BspNodes[i];
 			node->startIndex = icount;
 			icount += node->numfaces * 3;
 		}
 
-		BspIndices = new u16[icount];
-		for (u32 i=0; i<NumBspNodes; ++i)
+		BspIndices = new uint16_t[icount];
+		for (uint32_t i=0; i<NumBspNodes; ++i)
 		{
 			SWMOBspNode* node = &BspNodes[i];
 			if (node->numfaces == 0)
@@ -854,18 +854,18 @@ void CWMOGroup::buildBspVIBuffers()
 			node->minVertex = VCount;
 			node->maxVertex = 0;
 
-			u16* dest = &BspIndices[node->startIndex]; 
-			for (u32 k=0; k<node->numfaces; ++k)
+			uint16_t* dest = &BspIndices[node->startIndex]; 
+			for (uint32_t k=0; k<node->numfaces; ++k)
 			{
-				u16 triIndex = BspTriangles[node->firstface + k];
+				uint16_t triIndex = BspTriangles[node->firstface + k];
 
 				dest[k*3] = Indices[triIndex*3];
 				dest[k*3+1] = Indices[triIndex*3+1];
 				dest[k*3+2] = Indices[triIndex*3+2];
 
-				for (u32 c=0; c<3; ++c)
+				for (uint32_t c=0; c<3; ++c)
 				{
-					u16 current = dest[k*3+c];
+					uint16_t current = dest[k*3+c];
 					if (current > node->maxVertex)
 						node->maxVertex = current;
 					if (current < node->minVertex)

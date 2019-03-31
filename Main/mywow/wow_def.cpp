@@ -8,20 +8,20 @@ using namespace WowLegion;
 using namespace WowClassic;
 #endif
 
-const SItemRecord* ItemCollections::getById(s32 id) const
+const SItemRecord* ItemCollections::getById(int32_t id) const
 {
 	T_itemLookup::const_iterator itr = itemLookup.find(id);
 	if (itr != itemLookup.end())
 	{
-		s32 i = itr->second;
+		int32_t i = itr->second;
 		return &items[i];
 	}
 	return nullptr;
 }
 
-SNPCRecord::SNPCRecord(const c8* line)
+SNPCRecord::SNPCRecord(const char* line)
 {
-	s32 id;
+	int32_t id;
 
 	Q_sscanf(line, "%d,%d,%d", &id, &model, &type);
 
@@ -34,12 +34,12 @@ SNPCRecord::SNPCRecord(const c8* line)
 		}
 	}
 
-	u32 l = (u32)Q_strlen(name);
+	uint32_t l = (uint32_t)Q_strlen(name);
 	if (l > 0)
 		name[l - 1] = '\0';
 }
 
-bool NPCCollections::open(const c8* filename)
+bool NPCCollections::open(const char* filename)
 {
 	IFileSystem* fs = g_Engine->getFileSystem();
 	string_path path;
@@ -55,7 +55,7 @@ bool NPCCollections::open(const c8* filename)
 
 	npcs.reserve(1024);
 
-	c8 line[512];
+	char line[512];
 	while (file->readText(line, 512))
 	{
 		SNPCRecord rec(line);
@@ -63,7 +63,7 @@ bool NPCCollections::open(const c8* filename)
 		if (rec.type > 0 && rec.model > 0)
 		{
 			npcs.emplace_back(rec);
-			npcLookup[rec.model] = (s32)(npcs.size() - 1);
+			npcLookup[rec.model] = (int32_t)(npcs.size() - 1);
 
 			//id_set.insert(rec.id);
 		}
@@ -73,10 +73,10 @@ bool NPCCollections::open(const c8* filename)
 
 	//build other npcs (unknown name)
 	const creatureDisplayInfoDB* db = g_Engine->getWowDatabase()->getCreatureDisplayInfoDB();
-	for (u32 i = 0; i<db->getNumActualRecords(); ++i)
+	for (uint32_t i = 0; i<db->getNumActualRecords(); ++i)
 	{
 		dbc::record r = db->getRecord(i);
-		s32 id = r.getInt(0);
+		int32_t id = r.getInt(0);
 		if (npcLookup.find(id) != npcLookup.end())		//skip npcs already built
 			continue;
 
@@ -86,7 +86,7 @@ bool NPCCollections::open(const c8* filename)
 		rec.type = 0;		//unknown
 
 		npcs.emplace_back(rec);
-		npcLookup[rec.model] = (s32)(npcs.size() - 1);
+		npcLookup[rec.model] = (int32_t)(npcs.size() - 1);
 	}
 
 	//npcs.shrink_to_fit();
@@ -94,21 +94,21 @@ bool NPCCollections::open(const c8* filename)
 	return true;
 }
 
-const SNPCRecord* NPCCollections::getById(s32 id) const
+const SNPCRecord* NPCCollections::getById(int32_t id) const
 {
 	T_npcLookup::const_iterator itr = npcLookup.find(id);
 	if (itr != npcLookup.end())
 	{
-		s32 i = itr->second;
+		int32_t i = itr->second;
 		return &npcs[i];
 	}
 	return nullptr;
 }
 
-const SStartOutfitEntry* StartOutfitClassCollections::get(u32 race, bool female, u32 idx)
+const SStartOutfitEntry* StartOutfitClassCollections::get(uint32_t race, bool female, uint32_t idx)
 {
-	u32 count = 0;
-	for (u32 i = 0; i<startOutfits.size(); ++i)
+	uint32_t count = 0;
+	for (uint32_t i = 0; i<startOutfits.size(); ++i)
 	{
 		if (startOutfits[i].race == race &&
 			startOutfits[i].female == female)
@@ -121,10 +121,10 @@ const SStartOutfitEntry* StartOutfitClassCollections::get(u32 race, bool female,
 	return nullptr;
 }
 
-u32 StartOutfitClassCollections::getNumStartOutfits(u32 race, bool female)
+uint32_t StartOutfitClassCollections::getNumStartOutfits(uint32_t race, bool female)
 {
-	u32 count = 0;
-	for (u32 i = 0; i<startOutfits.size(); ++i)
+	uint32_t count = 0;
+	for (uint32_t i = 0; i<startOutfits.size(); ++i)
 	{
 		if (startOutfits[i].race == race && startOutfits[i].female == female)
 			++count;
@@ -133,23 +133,23 @@ u32 StartOutfitClassCollections::getNumStartOutfits(u32 race, bool female)
 }
 
 
-const SMapRecord* MapCollections::getMapById(s32 id) const
+const SMapRecord* MapCollections::getMapById(int32_t id) const
 {
 	T_mapLookup::const_iterator itr = mapLookup.find(id);
 	if (itr == mapLookup.end())
 		return nullptr;
 
-	s32 index = itr->second;
+	int32_t index = itr->second;
 	return &maps[index];
 }
 
-SMapRecord* MapCollections::getMapById(s32 id)
+SMapRecord* MapCollections::getMapById(int32_t id)
 {
 	T_mapLookup::iterator itr = mapLookup.find(id);
 	if (itr == mapLookup.end())
 		return nullptr;
 
-	s32 index = itr->second;
+	int32_t index = itr->second;
 	return &maps[index];
 }
 
@@ -174,12 +174,12 @@ RidableCollections::RidableCollections()
 }
 
 
-SRidable::SRidable(const c8* line)
+SRidable::SRidable(const char* line)
 {
 	Q_sscanf(line, "%d,%d", &npcid, &mountflag);
 }
 
-bool RidableCollections::open(const c8* filename, const NPCCollections& npcs)
+bool RidableCollections::open(const char* filename, const NPCCollections& npcs)
 {
 	IFileSystem* fs = g_Engine->getFileSystem();
 	string_path path;
@@ -193,7 +193,7 @@ bool RidableCollections::open(const c8* filename, const NPCCollections& npcs)
 	if (!file)
 		return false;
 
-	c8 line[512];
+	char line[512];
 	while (file->readText(line, 512))
 	{
 		SRidable rec(line);

@@ -127,13 +127,13 @@ void COpenGLMaterialRenderer_Transparent_Alpha_Blend::OnSetMaterial( E_VERTEX_TY
 	services->applyMaterialBlock(MaterialBlock, resetAllRenderStates);
 }
 
-void COpenGLMaterialRenderer_Transparent_Alpha_Blend::OnRender( const SMaterial& material, u32 pass )
+void COpenGLMaterialRenderer_Transparent_Alpha_Blend::OnRender( const SMaterial& material, uint32_t pass )
 {
 	if (material.MaterialType == EMT_TRANSAPRENT_ALPHA_BLEND_TEST)
 	{
 		COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 
-		MaterialBlock.alphaTestRef = (u8)(200 * material.getMaterialAlpha());
+		MaterialBlock.alphaTestRef = (uint8_t)(200 * material.getMaterialAlpha());
 		services->applyMaterialBlock(MaterialBlock, false);
 	}
 }
@@ -159,11 +159,11 @@ void COpenGLMaterialRenderer_Transparent_Alpha_Test::OnSetMaterial( E_VERTEX_TYP
 	services->applyMaterialBlock(MaterialBlock, resetAllRenderStates);
 }
 
-void COpenGLMaterialRenderer_Transparent_Alpha_Test::OnRender( const SMaterial& material, u32 pass )
+void COpenGLMaterialRenderer_Transparent_Alpha_Test::OnRender( const SMaterial& material, uint32_t pass )
 {
 	COpenGLMaterialRenderServices* services = static_cast<COpenGLMaterialRenderServices*>(g_Engine->getDriver()->getMaterialRenderServices());
 
-	MaterialBlock.alphaTestRef = (u8)(200 * material.getMaterialAlpha());
+	MaterialBlock.alphaTestRef = (uint8_t)(200 * material.getMaterialAlpha());
 	services->applyMaterialBlock(MaterialBlock, false);
 }
 
@@ -203,7 +203,7 @@ void COpenGLMaterialRenderer_Terrain_MultiPass::OnSetMaterial( E_VERTEX_TYPE vTy
 	services->setTextureWrap(0, ETA_U, ETC_CLAMP_TO_BORDER);
 	services->setTextureWrap(0, ETA_V, ETC_CLAMP_TO_BORDER);
 
-	for (u32 i=1; i<5; ++i)				//base textures
+	for (uint32_t i=1; i<5; ++i)				//base textures
 	{
 		services->setTextureWrap(i, ETA_U, ETC_REPEAT);
 		services->setTextureWrap(i, ETA_V, ETC_REPEAT);
@@ -225,7 +225,7 @@ void COpenGLMaterialRenderer_Terrain_MultiPass::OnSetMaterial( E_VERTEX_TYPE vTy
 	}
 }
 
-void COpenGLMaterialRenderer_Terrain_MultiPass::OnRender( const SMaterial& material, u32 pass )
+void COpenGLMaterialRenderer_Terrain_MultiPass::OnRender( const SMaterial& material, uint32_t pass )
 {
 #ifdef FIXPIPELINE
 

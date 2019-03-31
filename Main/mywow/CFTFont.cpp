@@ -4,7 +4,7 @@
 #include "CFontServices.h"
 #include "CFTGlyphCache.h"
 
-CFTFont::CFTFont(const char* faceName, int faceIndex, u32 size, int fontStyle, int outlineWidth)
+CFTFont::CFTFont(const char* faceName, int faceIndex, uint32_t size, int fontStyle, int outlineWidth)
 	: IFTFont(faceName, faceIndex, size, fontStyle, outlineWidth)
 {
 	Ascender =
@@ -99,7 +99,7 @@ bool CFTFont::init()
 
 CFTFont::~CFTFont()
 {
-	for (u32 i=0; i<(u32)FontTextures.size(); ++i)
+	for (uint32_t i=0; i<(uint32_t)FontTextures.size(); ++i)
 	{
 		if(FontTextures[i])
 		{
@@ -114,7 +114,7 @@ CFTFont::~CFTFont()
 		FontServices->RemoveFaceID(MyFaceID);
 }
 
-dimension2du CFTFont::getWTextExtent( const c16* text, int nCharCount, bool vertical )
+dimension2du CFTFont::getWTextExtent( const char16_t* text, int nCharCount, bool vertical )
 {
 	int x;
 	int y;
@@ -130,14 +130,14 @@ dimension2du CFTFont::getWTextExtent( const c16* text, int nCharCount, bool vert
 		y = m_iFontHeight;
 	}
 
-	u32 len = nCharCount > 0 ? (u32)nCharCount : (u32)Q_UTF16Len(text);
-	for (u32 i=0; i<len; ++i)
+	uint32_t len = nCharCount > 0 ? (uint32_t)nCharCount : (uint32_t)Q_UTF16Len(text);
+	for (uint32_t i=0; i<len; ++i)
 	{
-		c16 ch = text[i];
+		char16_t ch = text[i];
 		const IFTFont::SCharInfo* charInfo = addChar(ch);
 		ASSERT(charInfo);
 
-		if ( ch == (c16)'\r' || ch == (c16)'\n') // Unix breaks
+		if ( ch == (char16_t)'\r' || ch == (char16_t)'\n') // Unix breaks
 		{
 			if (vertical)
 			{
@@ -162,7 +162,7 @@ dimension2du CFTFont::getWTextExtent( const c16* text, int nCharCount, bool vert
 	return dimension2du(x, y);
 }
 
-dimension2du CFTFont::getWCharExtent( c16 ch, bool vertical )
+dimension2du CFTFont::getWCharExtent( char16_t ch, bool vertical )
 {
 	int x;
 	int y;
@@ -181,7 +181,7 @@ dimension2du CFTFont::getWCharExtent( c16 ch, bool vertical )
 	const IFTFont::SCharInfo* charInfo = addChar(ch);
 	ASSERT(charInfo);
 
-	if ( ch == (c16)'\r' || ch == (c16)'\n') // Mac or Windows breaks
+	if ( ch == (char16_t)'\r' || ch == (char16_t)'\n') // Mac or Windows breaks
 	{
 		// 		if (vertical)
 		// 		{
@@ -209,9 +209,9 @@ int CFTFont::GetTextWCount(const char* utf8text) const
 	const char* p = utf8text;
 	while(*p)
 	{
-		c16 ch;
+		char16_t ch;
 		int nadv;
-		ch = (c16)Q_ParseUnicodeFromUTF8Str(p, &nadv);
+		ch = (char16_t)Q_ParseUnicodeFromUTF8Str(p, &nadv);
 		if(nadv == 0)		//parse end
 			break;
 		p += nadv;
@@ -252,12 +252,12 @@ dimension2du CFTFont::getTextExtent( const char* utf8text, int nCharCount, bool 
 		if(value < 0 || value >= 0x10000)
 			continue;
 
-		c16 ch = (c16)value;
+		char16_t ch = (char16_t)value;
 
 		const IFTFont::SCharInfo* charInfo = addChar(ch);
 		ASSERT(charInfo);
 
-		if ( ch == (c16)'\r' || ch == (c16)'\n') // Unix breaks
+		if ( ch == (char16_t)'\r' || ch == (char16_t)'\n') // Unix breaks
 		{
 			// 			if (vertical)
 			// 			{
@@ -279,7 +279,7 @@ dimension2du CFTFont::getTextExtent( const char* utf8text, int nCharCount, bool 
 	return dimension2du(x, y);
 }
 
-ITexture* CFTFont::getTexture( u32 idx )
+ITexture* CFTFont::getTexture( uint32_t idx )
 {
 	if (idx >= FontTextures.size())
 		return nullptr;
@@ -287,7 +287,7 @@ ITexture* CFTFont::getTexture( u32 idx )
 	return FontTextures[idx];
 }
 
-const IFTFont::SCharInfo* CFTFont::addChar( c16 ch )
+const IFTFont::SCharInfo* CFTFont::addChar( char16_t ch )
 {
 	T_CharacterMap::const_iterator itr = CharacterMap.find(ch);
 	if (itr != CharacterMap.end())
@@ -339,32 +339,32 @@ const IFTFont::SCharInfo* CFTFont::addChar( c16 ch )
 
 		ITextureWriter* texWriter = g_Engine->getTextureWriteServices()->createTextureWriter(tex, false);
 
-		u32 pitch;
-		u8* data = (u8*)texWriter->lock(0, pitch);
+		uint32_t pitch;
+		uint8_t* data = (uint8_t*)texWriter->lock(0, pitch);
 		ASSERT(data);
 
 		//写纹理 A8L8
 		if (tex->getColorFormat() == ECF_A8L8)
 		{
-			u8* p = data + (charposy * pitch) + sizeof(u16) * charposx; 
+			uint8_t* p = data + (charposy * pitch) + sizeof(uint16_t) * charposx; 
 
 			for (int i = 0; i < m_iFontHeight; ++i)
 			{
-				const u8 *src = bitmapGlyph->bitmap.buffer + (i * bitmapGlyph->bitmap.pitch);       
-				u8 *dst = reinterpret_cast<u8*>(p);
+				const uint8_t *src = bitmapGlyph->bitmap.buffer + (i * bitmapGlyph->bitmap.pitch);       
+				uint8_t *dst = reinterpret_cast<uint8_t*>(p);
 				for (int j = 0; j < m_iFontWidth; ++j)
 				{
 					bool bEdge = (j >= bmpW || i >= bmpH);
 					if (bEdge)
 					{
-						u8 alpha = 0;
+						uint8_t alpha = 0;
 
 						*dst++ = 0;		//color
 						*dst++ = 0;		//alpha
 					}
 					else
 					{
-						u8 alpha = *src++;
+						uint8_t alpha = *src++;
 
 						*dst++ = alpha; 	//color
 						*dst++ = alpha;		//alpha
@@ -375,18 +375,18 @@ const IFTFont::SCharInfo* CFTFont::addChar( c16 ch )
 		}
 		else if (tex->getColorFormat() == ECF_A8R8G8B8)			//dx11 format
 		{
-			u8* p = data + (charposy * pitch) + sizeof(u32) * charposx;
+			uint8_t* p = data + (charposy * pitch) + sizeof(uint32_t) * charposx;
 
 			for (int i = 0; i < m_iFontHeight; ++i)
 			{
-				const u8 *src = bitmapGlyph->bitmap.buffer + (i * bitmapGlyph->bitmap.pitch);       
-				u8 *dst = reinterpret_cast<u8*>(p);  
+				const uint8_t *src = bitmapGlyph->bitmap.buffer + (i * bitmapGlyph->bitmap.pitch);       
+				uint8_t *dst = reinterpret_cast<uint8_t*>(p);  
 				for (int j = 0; j < m_iFontWidth; ++j)
 				{
 					bool bEdge = (j >= bmpW || i >= bmpH);
 					if (bEdge)
 					{
-						u8 alpha = 0;
+						uint8_t alpha = 0;
 
 						*dst++ = alpha; 	//b
 						*dst++ = alpha; 	//g
@@ -396,7 +396,7 @@ const IFTFont::SCharInfo* CFTFont::addChar( c16 ch )
 					}
 					else
 					{
-						u8 alpha = *src++;
+						uint8_t alpha = *src++;
 
 						*dst++ = alpha; 	//b
 						*dst++ = alpha; 	//g
@@ -475,9 +475,9 @@ void CFTFont::drawA(const char* utf8text, SColor color, vector2di position, int 
 	int nLen = nCharCount > 0 ? nCharCount : (int)strlen(utf8text);
 	while(*p && nLen >= 0)
 	{
-		c16 ch;
+		char16_t ch;
 		int nadv;
-		ch = (c16)Q_ParseUnicodeFromUTF8Str(p, &nadv, nLen);
+		ch = (char16_t)Q_ParseUnicodeFromUTF8Str(p, &nadv, nLen);
 		if(nadv == 0)		//parse end
 			break;
 		p += nadv;
@@ -490,7 +490,7 @@ void CFTFont::drawA(const char* utf8text, SColor color, vector2di position, int 
 		if (!charInfo)
 			continue;
 
-		if ( ch == (c16)'\r' || ch == (c16)'\n') // Unix breaks
+		if ( ch == (char16_t)'\r' || ch == (char16_t)'\n') // Unix breaks
 		{
 			y += m_iFontHeight;
 			x = position.X;
@@ -591,7 +591,7 @@ void CFTFont::drawA(const char* utf8text, SColor color, vector2di position, int 
 	g_Engine->getDrawServices()->flushAll2DQuads();
 }
 
-void CFTFont::drawW(const c16* text, SColor color, vector2di position, int nCharCount /*= -1*/, recti* pClip /*= nullptr*/)
+void CFTFont::drawW(const char16_t* text, SColor color, vector2di position, int nCharCount /*= -1*/, recti* pClip /*= nullptr*/)
 {
 	int x = position.X;
 	int y = position.Y;
@@ -604,10 +604,10 @@ void CFTFont::drawW(const c16* text, SColor color, vector2di position, int nChar
 	S2DBlendParam blendParam = S2DBlendParam::UIFontBlendParam();
 	float fInv = 1.0f / FONT_TEXTURE_SIZE;
 
-	u32 len = nCharCount > 0 ? (u32)nCharCount : (u32)Q_UTF16Len(text);
-	for (u32 i=0; i<len; ++i)
+	uint32_t len = nCharCount > 0 ? (uint32_t)nCharCount : (uint32_t)Q_UTF16Len(text);
+	for (uint32_t i=0; i<len; ++i)
 	{
-		c16 c = text[i];
+		char16_t c = text[i];
 		if (c == 0)		//string end
 			continue;
 
@@ -616,7 +616,7 @@ void CFTFont::drawW(const c16* text, SColor color, vector2di position, int nChar
 		if (!charInfo)
 			continue;
 
-		if ( c == (c16)'\r' || c == (c16)'\n') // Unix breaks
+		if ( c == (char16_t)'\r' || c == (char16_t)'\n') // Unix breaks
 		{
 			y += m_iFontHeight;
 			x = position.X;
@@ -722,15 +722,15 @@ void CFTFont::addTextA( const char* utf8text, SColor color, vector2di position, 
 	if (nCharCount == 0)			//-1表示实际长度，0或以上是指定长度
 		return;
 
-	u32 offset = (u32)Texts.size();
+	uint32_t offset = (uint32_t)Texts.size();
 	const char* p = utf8text;
 	int nLen = nCharCount > 0 ? nCharCount : (int)strlen(utf8text);
-	u32 uCharCount = 0;
+	uint32_t uCharCount = 0;
 	while(*p && nLen >= 0)
 	{
-		c16 ch;
+		char16_t ch;
 		int nadv;
-		ch = (c16)Q_ParseUnicodeFromUTF8Str(p, &nadv, nLen);
+		ch = (char16_t)Q_ParseUnicodeFromUTF8Str(p, &nadv, nLen);
 		if(nadv == 0)		//parse end
 			break;
 		p += nadv;
@@ -754,15 +754,15 @@ void CFTFont::addTextA( const char* utf8text, SColor color, vector2di position, 
 	DrawTexts.push_back(d);
 }
 
-void CFTFont::addTextW( const c16* text, SColor color, vector2di position, int nCharCount, recti* pClip, bool bVertical )
+void CFTFont::addTextW( const char16_t* text, SColor color, vector2di position, int nCharCount, recti* pClip, bool bVertical )
 {
 	if (nCharCount == 0)		//-1表示实际长度，0或以上是指定长度
 		return;
 
-	u32 offset = (u32)Texts.size();
-	u32 uCharCount = nCharCount > 0  ? (u32)nCharCount : (u32)Q_UTF16Len(text);
+	uint32_t offset = (uint32_t)Texts.size();
+	uint32_t uCharCount = nCharCount > 0  ? (uint32_t)nCharCount : (uint32_t)Q_UTF16Len(text);
 
-	for (u32 i=0; i<uCharCount; ++i)
+	for (uint32_t i=0; i<uCharCount; ++i)
 		Texts.push_back(text[i]);
 
 	SDrawText d;
@@ -785,7 +785,7 @@ void CFTFont::flushText()
 	Texts.clear();
 }
 
-const IFTFont::SCharInfo* CFTFont::getCharInfo( c16 ch ) const
+const IFTFont::SCharInfo* CFTFont::getCharInfo( char16_t ch ) const
 {
 	T_CharacterMap::const_iterator itr = CharacterMap.find(ch);
 	if(itr != CharacterMap.end())
@@ -817,7 +817,7 @@ FT_Size CFTFont::GetFTSize()
 	return ftSize;
 }
 
-FT_BitmapGlyph CFTFont::getCharExtent( u32 ch, int& offsetX, int& offsetY, int& chWidth, int& chHeight, int& chBmpW, int& chBmpH )
+FT_BitmapGlyph CFTFont::getCharExtent( uint32_t ch, int& offsetX, int& offsetY, int& chWidth, int& chHeight, int& chBmpW, int& chBmpH )
 {
 	FT_BitmapGlyph ftGlyph;
 
@@ -840,13 +840,13 @@ FT_BitmapGlyph CFTFont::getCharExtent( u32 ch, int& offsetX, int& offsetY, int& 
 	return ftGlyph;
 }
 
-FT_BitmapGlyph CFTFont::RenderChar( u32 ch )
+FT_BitmapGlyph CFTFont::RenderChar( uint32_t ch )
 {
 	FTC_CMapCache mapCache = FontServices->GetCMapCache();
 	FTC_FaceID ftFaceID = (FTC_FaceID)GetMyFaceID();
 
 	//在cmap中找
-	u32 index = FTC_CMapCache_Lookup(mapCache, ftFaceID, UnicodeCMapIndex, (u32)ch);
+	uint32_t index = FTC_CMapCache_Lookup(mapCache, ftFaceID, UnicodeCMapIndex, (uint32_t)ch);
 	if (0 == index)
 	{
 		index = FTC_CMapCache_Lookup(mapCache, ftFaceID, UnicodeCMapIndex, L'□');
@@ -862,10 +862,10 @@ void CFTFont::drawTextWBatch()
 	S2DBlendParam blendParam = S2DBlendParam::UIFontBlendParam();
 	float fInv = 1.0f / FONT_TEXTURE_SIZE;
 
-	for (u32 dt=0; dt<(u32)DrawTexts.size(); ++dt)
+	for (uint32_t dt=0; dt<(uint32_t)DrawTexts.size(); ++dt)
 	{
 		const SDrawText& d = DrawTexts[dt];
-		const c16* txt = &Texts[d.offset];
+		const char16_t* txt = &Texts[d.offset];
 
 		if(!d.bVertical)
 			drawText(d, txt, fInv, blendParam);
@@ -876,7 +876,7 @@ void CFTFont::drawTextWBatch()
 	g_Engine->getDrawServices()->flushAll2DQuads();
 }
 
-void CFTFont::drawText(const SDrawText& d, const c16* txt, float fInv, const S2DBlendParam& blendParam)
+void CFTFont::drawText(const SDrawText& d, const char16_t* txt, float fInv, const S2DBlendParam& blendParam)
 {
 	bool bClip = d.bClip;
 	const recti& rcClip = d.rcClip;
@@ -889,11 +889,11 @@ void CFTFont::drawText(const SDrawText& d, const c16* txt, float fInv, const S2D
 		(y >= rcClip.bottom() || y + m_iFontHeight <= rcClip.top() || x >= rcClip.right()))
 		return;
 
-	u32 len = d.length;
-	for (u32 i=0; i<len; ++i)
+	uint32_t len = d.length;
+	for (uint32_t i=0; i<len; ++i)
 	{
-		c16 c = txt[i];
-		if (c == (c16)0)
+		char16_t c = txt[i];
+		if (c == (char16_t)0)
 			break;
 
 		const SCharInfo* charInfo = addChar(c);
@@ -901,7 +901,7 @@ void CFTFont::drawText(const SDrawText& d, const c16* txt, float fInv, const S2D
 		if (!charInfo)
 			continue;
 
-		if (c == (c16)'\r' || c == (c16)'\n') // Unix breaks
+		if (c == (char16_t)'\r' || c == (char16_t)'\n') // Unix breaks
 		{
 			y += m_iFontHeight;
 			x = d.position.X;
@@ -1003,7 +1003,7 @@ void CFTFont::drawText(const SDrawText& d, const c16* txt, float fInv, const S2D
 	}
 }
 
-void CFTFont::drawTextVertical(const SDrawText& d, const c16* txt, float fInv, const S2DBlendParam& blendParam)
+void CFTFont::drawTextVertical(const SDrawText& d, const char16_t* txt, float fInv, const S2DBlendParam& blendParam)
 {
 	bool bClip = d.bClip;
 	const recti& rcClip = d.rcClip;
@@ -1016,11 +1016,11 @@ void CFTFont::drawTextVertical(const SDrawText& d, const c16* txt, float fInv, c
 		(y >= rcClip.bottom() || y + m_iFontHeight <= rcClip.top() || x >= rcClip.right()))
 		return;
 
-	u32 len = d.length;
-	for (u32 i=0; i<len; ++i)
+	uint32_t len = d.length;
+	for (uint32_t i=0; i<len; ++i)
 	{
-		c16 c = txt[i];
-		if (c == (c16)0)
+		char16_t c = txt[i];
+		if (c == (char16_t)0)
 			break;
 
 		const SCharInfo* charInfo = addChar(c);
@@ -1028,7 +1028,7 @@ void CFTFont::drawTextVertical(const SDrawText& d, const c16* txt, float fInv, c
 		if (!charInfo)
 			continue;
 
-		if (c == (c16)'\r' || c == (c16)'\n') // Unix breaks
+		if (c == (char16_t)'\r' || c == (char16_t)'\n') // Unix breaks
 		{
 			y += m_iFontHeight;
 			x = d.position.X;

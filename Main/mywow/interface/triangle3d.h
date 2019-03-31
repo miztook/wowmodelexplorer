@@ -75,21 +75,21 @@ inline bool triangle3d<T>::isPointInside( const vector3d<T>& p ) const
 	const vector3d<T> f = pointB - pointA;
 	const vector3d<T> g = pointC - pointA;
 
-	const f32 a = f.dotProduct(f);
-	const f32 b = f.dotProduct(g);
-	const f32 c = g.dotProduct(g);
+	const float a = f.dotProduct(f);
+	const float b = f.dotProduct(g);
+	const float c = g.dotProduct(g);
 
 	const vector3d<T> vp = p - pointA;
-	const f32 d = vp.dotProduct(f);
-	const f32 e = vp.dotProduct(g);
+	const float d = vp.dotProduct(f);
+	const float e = vp.dotProduct(g);
 
-	f32 x = (d*c)-(e*b);
-	f32 y = (e*a)-(d*b);
-	const f32 ac_bb = (a*c)-(b*b);
-	f32 z = x+y-ac_bb;
+	float x = (d*c)-(e*b);
+	float y = (e*a)-(d*b);
+	const float ac_bb = (a*c)-(b*b);
+	float z = x+y-ac_bb;
 
 	return (( (IR(z)) & ~((IR(x))|(IR(y))) ) & 0x80000000)!=0;
 }
 
-typedef triangle3d<f32>	triangle3df;
-typedef triangle3d<s32>	triangle3di;
+typedef triangle3d<float>	triangle3df;
+typedef triangle3d<int32_t>	triangle3di;

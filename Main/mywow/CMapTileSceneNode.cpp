@@ -78,7 +78,7 @@ vector3df CMapTileSceneNode::getCenter() const
 	CFileADT* adt = static_cast<CFileADT*>(Block.tile->fileAdt);
 
 	vector3df  v = adt->getBoundingBox().getCenter();
-	f32 h;
+	float h;
 	bool ret = adt->getHeight(v.X, v.Z, h);
 	ASSERT(ret);
 	v.Y = h;
@@ -87,7 +87,7 @@ vector3df CMapTileSceneNode::getCenter() const
 	return v;
 }
 
-bool CMapTileSceneNode::getHeightNormal( f32 x, f32 z, f32* height, vector3df* normal ) const
+bool CMapTileSceneNode::getHeightNormal( float x, float z, float* height, vector3df* normal ) const
 {
 	vector3df v(x, 0, z);
 	matrix4 mat = AbsoluteTransformation;
@@ -96,7 +96,7 @@ bool CMapTileSceneNode::getHeightNormal( f32 x, f32 z, f32* height, vector3df* n
 		
 	CFileADT* adt = static_cast<CFileADT*>(Block.tile->fileAdt);
 
-	f32 h;
+	float h;
 	if (normal && !adt->getNormal(v.X, v.Z, *normal))			//don't transform normal
 		return false;
 
@@ -114,7 +114,7 @@ bool CMapTileSceneNode::getHeightNormal( f32 x, f32 z, f32* height, vector3df* n
 	return true;
 }
 
-void CMapTileSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame, bool visible )
+void CMapTileSceneNode::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible )
 {
 	if (!Block.tile || !Block.tile->fileAdt)
 		return;
@@ -123,9 +123,9 @@ void CMapTileSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame, bool v
 	Block.HighResChunkRenderList.clear();
 	Block.LowResChunkRenderList.clear();
 
-	for (u8 row=0; row<16; ++row)
+	for (uint8_t row=0; row<16; ++row)
 	{
-		for (u8 col=0; col<16; ++col)
+		for (uint8_t col=0; col<16; ++col)
 		{
 			const SDynChunk& dynChunk = Block.DynChunks[row][col];
 
@@ -151,20 +151,20 @@ void CMapTileSceneNode::render() const
 	renderChunkRenderList(false);
 }
 
-void CMapTileSceneNode::addChunkRenderList( bool high, u8 row, u8 col )
+void CMapTileSceneNode::addChunkRenderList( bool high, uint8_t row, uint8_t col )
 {
 	CMapBlock* block = &Block;
 	CFileADT* adt = static_cast<CFileADT*>(block->tile->fileAdt);
 
 	const CMapChunk* chunk = adt->getChunk(row, col);
-	u8 k = row * 16 + col;
+	uint8_t k = row * 16 + col;
 
 	CMapBlock::T_ChunkRenderList& renderList = high ? block->HighResChunkRenderList : block->LowResChunkRenderList;
 
 	bool find = false;
 	for (CMapBlock::T_ChunkRenderList::iterator itr = renderList.begin(); itr != renderList.end(); ++itr)
 	{
-		u8 num = itr->row * 16 + itr->col + itr->chunkCount;
+		uint8_t num = itr->row * 16 + itr->col + itr->chunkCount;
 		if (num == k)		//连续并且纹理相同，可以合并
 		{
 			const CMapChunk* srcChunk = adt->getChunk(itr->row, itr->col);
@@ -265,9 +265,9 @@ void CMapTileSceneNode::registerVisibleChunks(ICamera* cam)
 	plane3df clipPlane = cam->getTerrainClipPlane();
 
 	//chunk
-	for (u8 i=0; i<16; ++i)
+	for (uint8_t i=0; i<16; ++i)
 	{
-		for (u8 j=0; j<16; ++j)
+		for (uint8_t j=0; j<16; ++j)
 		{
 			const CMapChunk* chunk = adt->getChunk(i, j);
 			SDynChunk* dynChunk = &Block.DynChunks[i][j];
@@ -316,9 +316,9 @@ void CMapTileSceneNode::onUpdated()
 	
 	CFileADT* adt = static_cast<CFileADT*>(Block.tile->fileAdt);
 
-	for (u8 i=0; i<16; ++i)
+	for (uint8_t i=0; i<16; ++i)
 	{
-		for (u8 j=0; j<16; ++j)
+		for (uint8_t j=0; j<16; ++j)
 		{
 			const CMapChunk* chunk = adt->getChunk(i, j);
 			SDynChunk* dynChunk = &Block.DynChunks[i][j];

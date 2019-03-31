@@ -23,8 +23,8 @@ void CGestureRecognizer_Pinch::tick()
 	if (State == RecognizerState_None &&
 		TouchInfoArray.size() == 1)
 	{
-		u32 now = g_Engine->getTimer()->getMillisecond();
-		if (now - TimeStamp > (u32)(getfPinchDoubleTouchDiffTime() * 1000))
+		uint32_t now = g_Engine->getTimer()->getMillisecond();
+		if (now - TimeStamp > (uint32_t)(getfPinchDoubleTouchDiffTime() * 1000))
 		{	
 			changeState(RecognizerState_Fail);
 		}
@@ -44,8 +44,8 @@ void CGestureRecognizer_Pinch::onTouchBegin( const std::vector<SGesTouchInfo>& t
 	if (State != RecognizerState_None || touchInfos.empty())
 		return;
 
-	u32 numCache = (u32)TouchInfoArray.size();
-	u32 numBegin = (u32)touchInfos.size();
+	uint32_t numCache = (uint32_t)TouchInfoArray.size();
+	uint32_t numBegin = (uint32_t)touchInfos.size();
 	if (numBegin + numCache > 2)
 	{
 		changeState(RecognizerState_Fail);
@@ -86,8 +86,8 @@ void CGestureRecognizer_Pinch::onTouchMove( const std::vector<SGesTouchInfo>& to
 	bool changeTail = false;
 	SGesTouchInfo& head = TouchInfoArray.front();
 	SGesTouchInfo& tail = TouchInfoArray.back();
-	s32 index0 = findTouchInfo(head.fingerID, touchInfos);
-	s32 index1 = findTouchInfo(tail.fingerID, touchInfos);
+	int32_t index0 = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index1 = findTouchInfo(tail.fingerID, touchInfos);
 
 	if (index0 != -1 &&
 		getTouchDistance(head, touchInfos[index0]) > getThreshold_PinchDist())
@@ -124,11 +124,11 @@ void CGestureRecognizer_Pinch::onTouchMove( const std::vector<SGesTouchInfo>& to
 
 void CGestureRecognizer_Pinch::onTouchEnd( const std::vector<SGesTouchInfo>& touchInfos )
 {
-	u32 size = (u32)TouchInfoArray.size();
+	uint32_t size = (uint32_t)TouchInfoArray.size();
 	if (size == 1)
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
-		s32 index = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index = findTouchInfo(head.fingerID, touchInfos);
 		if (index != -1)
 		{
 			head = touchInfos[index];
@@ -139,8 +139,8 @@ void CGestureRecognizer_Pinch::onTouchEnd( const std::vector<SGesTouchInfo>& tou
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
 		SGesTouchInfo& tail = TouchInfoArray.back();
-		s32 index0 = findTouchInfo(head.fingerID, touchInfos);
-		s32 index1 = findTouchInfo(tail.fingerID, touchInfos);
+		int32_t index0 = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index1 = findTouchInfo(tail.fingerID, touchInfos);
 		if (index0 != -1 || index1 != -1)
 		{
 			if (index0 != -1)
@@ -159,11 +159,11 @@ void CGestureRecognizer_Pinch::onTouchEnd( const std::vector<SGesTouchInfo>& tou
 
 void CGestureRecognizer_Pinch::onTouchCancel( const std::vector<SGesTouchInfo>& touchInfos )
 {
-	u32 size = (u32)TouchInfoArray.size();
+	uint32_t size = (uint32_t)TouchInfoArray.size();
 	if (size == 1)
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
-		s32 index = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index = findTouchInfo(head.fingerID, touchInfos);
 		if (index != -1)
 		{
 			head = touchInfos[index];
@@ -174,8 +174,8 @@ void CGestureRecognizer_Pinch::onTouchCancel( const std::vector<SGesTouchInfo>& 
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
 		SGesTouchInfo& tail = TouchInfoArray.back();
-		s32 index0 = findTouchInfo(head.fingerID, touchInfos);
-		s32 index1 = findTouchInfo(tail.fingerID, touchInfos);
+		int32_t index0 = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index1 = findTouchInfo(tail.fingerID, touchInfos);
 		if (index0 != -1 || index1 != -1)
 		{
 			if (index0 != -1)
@@ -213,7 +213,7 @@ bool CGestureRecognizer_Pinch::checkPinchMoveDir()
 	if (TouchInfoArray.size() != 2)
 		return false;
 
-	f32 dot = getTouchDot(TouchInfoArray.front(), TouchInfoArray.back());
+	float dot = getTouchDot(TouchInfoArray.front(), TouchInfoArray.back());
 
 	return dot < 0.0f; // 0.707f;		//cos(45)
 }
@@ -229,7 +229,7 @@ void CGestureRecognizer_Pinch::outputPinchGesture( E_GESTURE_STATE state )
 	gesInfo.type = Type;
 	gesInfo.state = state;
 
-	u32 now = g_Engine->getTimer()->getMillisecond();
+	uint32_t now = g_Engine->getTimer()->getMillisecond();
 
 	if (state == GestureState_Begin)
 	{
@@ -238,10 +238,10 @@ void CGestureRecognizer_Pinch::outputPinchGesture( E_GESTURE_STATE state )
 	}
 	else
 	{
-		f32 distance = getTouchDistance(TouchInfoArray.front(), TouchInfoArray.back());
-		u32 delta = now - TimeStamp;
-		f32 curScale = OriginalDistance > 0.0f ? distance / OriginalDistance : 1.0f;
-		f32 curVelocity = delta ? (curScale - LastScale) / (delta * 0.001f) : LastVelocity;
+		float distance = getTouchDistance(TouchInfoArray.front(), TouchInfoArray.back());
+		uint32_t delta = now - TimeStamp;
+		float curScale = OriginalDistance > 0.0f ? distance / OriginalDistance : 1.0f;
+		float curVelocity = delta ? (curScale - LastScale) / (delta * 0.001f) : LastVelocity;
 
 		gesInfo.param.pinch_scale = curScale;
 		gesInfo.param.pinch_velocity = getfPinchVelocityLowpass() * curVelocity + (1.0f - getfPinchVelocityLowpass()) * LastVelocity;

@@ -76,7 +76,7 @@ int PVRCompressA8R8G8B8ToRGB4bpp( unsigned char* src, int width, int height, uns
 // 		return -1;
 // 	}
 // 
-// 	u32 pitch, dstSize;
+// 	uint32_t pitch, dstSize;
 // 	getImagePitchAndBytes(ECF_PVRTC1_RGB_4BPP, width, height, pitch, dstSize);
 // 	if (pTexture->getDataSize() < dstSize)
 // 	{

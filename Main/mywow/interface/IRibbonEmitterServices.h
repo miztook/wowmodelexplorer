@@ -14,7 +14,7 @@ public:
 	virtual ~IRibbonEmitterServices() {}
 
 public:
-	virtual u32 getActiveSegmentsCount() const = 0;
+	virtual uint32_t getActiveSegmentsCount() const = 0;
 	
 public:
 	SBufferParam	BufferParam;

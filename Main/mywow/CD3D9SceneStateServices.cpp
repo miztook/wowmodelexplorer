@@ -39,7 +39,7 @@ CD3D9SceneStateServices::~CD3D9SceneStateServices()
 void CD3D9SceneStateServices::deleteAllDynamicLights()
 {
 #ifdef FIXPIPELINE
-	for (u32 i=0; i<SceneState.MAX_LIGTHTS; ++i)
+	for (uint32_t i=0; i<SceneState.MAX_LIGTHTS; ++i)
 	{
 		if (ResetRenderStates || SceneState.LightsOn[i] != false)
 			pID3DDevice->LightEnable(i, false);
@@ -49,9 +49,9 @@ void CD3D9SceneStateServices::deleteAllDynamicLights()
 	SceneState.resetLights();
 }
 
-bool CD3D9SceneStateServices::setDynamicLight( u32 index, const SLight& dl )
+bool CD3D9SceneStateServices::setDynamicLight( uint32_t index, const SLight& dl )
 {
-	if(index >= (u32)Driver->Caps.MaxActiveLights || index >= SceneState.MAX_LIGTHTS)
+	if(index >= (uint32_t)Driver->Caps.MaxActiveLights || index >= SceneState.MAX_LIGTHTS)
 		return false;
 
 #ifdef FIXPIPELINE
@@ -97,9 +97,9 @@ bool CD3D9SceneStateServices::setDynamicLight( u32 index, const SLight& dl )
 	return true;
 }
 
-void CD3D9SceneStateServices::turnLightOn( u32 lightIndex, bool turnOn )
+void CD3D9SceneStateServices::turnLightOn( uint32_t lightIndex, bool turnOn )
 {
-	if(lightIndex >= SceneState.MAX_LIGTHTS || lightIndex >= (u32)Driver->Caps.MaxActiveLights)
+	if(lightIndex >= SceneState.MAX_LIGTHTS || lightIndex >= (uint32_t)Driver->Caps.MaxActiveLights)
 		return;
 
 	if (ResetRenderStates || SceneState.LightsOn[lightIndex] != turnOn)
@@ -169,9 +169,9 @@ void CD3D9SceneStateServices::setFog( const SFogParam& fogParam )
 	SceneState.FogParam = fogParam;
 }
 
-bool CD3D9SceneStateServices::setClipPlane( u32 index, const plane3df& plane )
+bool CD3D9SceneStateServices::setClipPlane( uint32_t index, const plane3df& plane )
 {
-	if (index >= (u32)Driver->Caps.MaxUserClipPlanes || index >= SSceneState::MAX_CLIPPLANES)
+	if (index >= (uint32_t)Driver->Caps.MaxUserClipPlanes || index >= SSceneState::MAX_CLIPPLANES)
 	{
 		ASSERT(false);
 		return false;
@@ -185,9 +185,9 @@ bool CD3D9SceneStateServices::setClipPlane( u32 index, const plane3df& plane )
 	return true;
 }
 
-void CD3D9SceneStateServices::enableClipPlane( u32 index, bool enable )
+void CD3D9SceneStateServices::enableClipPlane( uint32_t index, bool enable )
 {
-	if (index >= (u32)Driver->Caps.MaxUserClipPlanes || index >= SSceneState::MAX_CLIPPLANES)
+	if (index >= (uint32_t)Driver->Caps.MaxUserClipPlanes || index >= SSceneState::MAX_CLIPPLANES)
 	{
 		ASSERT(false);
 		return;
@@ -208,9 +208,9 @@ void CD3D9SceneStateServices::enableClipPlane( u32 index, bool enable )
 	}
 }
 
-bool CD3D9SceneStateServices::isClipPlaneEnable( u32 index ) const
+bool CD3D9SceneStateServices::isClipPlaneEnable( uint32_t index ) const
 {
-	if (index >= (u32)Driver->Caps.MaxUserClipPlanes || index >= SSceneState::MAX_CLIPPLANES)
+	if (index >= (uint32_t)Driver->Caps.MaxUserClipPlanes || index >= SSceneState::MAX_CLIPPLANES)
 	{
 		ASSERT(false);
 		return false;
@@ -219,9 +219,9 @@ bool CD3D9SceneStateServices::isClipPlaneEnable( u32 index ) const
 	return SceneState.enableclips[index];
 }
 
-bool CD3D9SceneStateServices::getClipPlane( u32 index, plane3df& plane ) const
+bool CD3D9SceneStateServices::getClipPlane( uint32_t index, plane3df& plane ) const
 {
-	if (index >= SSceneState::MAX_CLIPPLANES || index >= (u32)Driver->Caps.MaxUserClipPlanes)
+	if (index >= SSceneState::MAX_CLIPPLANES || index >= (uint32_t)Driver->Caps.MaxUserClipPlanes)
 	{
 		ASSERT(false);
 		return false;
@@ -243,7 +243,7 @@ void CD3D9SceneStateServices::resetSceneStateCache()
 	pID3DDevice->GetRenderState(D3DRS_RANGEFOGENABLE, &SSCache.RangeFogEnable);
 	pID3DDevice->GetRenderState(D3DRS_CLIPPLANEENABLE, &SSCache.ClipPlaneEnable);
 	
-	for (u32 i=0; i<SSceneState::MAX_CLIPPLANES; ++i)
+	for (uint32_t i=0; i<SSceneState::MAX_CLIPPLANES; ++i)
 	{
 		pID3DDevice->GetClipPlane(i, (float*)&SSCache.Planes[i]);
 	}
@@ -259,13 +259,13 @@ bool CD3D9SceneStateServices::reset()
 
 	//restore scene states
 	setAmbientLight(lastSceneState.AmbientLightColor);
-	for (u32 i=0; i<SSceneState::MAX_LIGTHTS; ++i)
+	for (uint32_t i=0; i<SSceneState::MAX_LIGTHTS; ++i)
 	{
 		setDynamicLight(i, lastSceneState.Lights[i]);
 		turnLightOn(i, lastSceneState.LightsOn[i]);
 	}
 	setFog(lastSceneState.FogParam);
-	for (u32 i=0; i<SSceneState::MAX_CLIPPLANES; ++i)
+	for (uint32_t i=0; i<SSceneState::MAX_CLIPPLANES; ++i)
 	{
 		setClipPlane(i, lastSceneState.clipplanes[i]);
 		enableClipPlane(i, lastSceneState.enableclips[i]);
@@ -276,7 +276,7 @@ bool CD3D9SceneStateServices::reset()
 	return true;
 }
 
-const SLight* CD3D9SceneStateServices::getDynamicLight( u32 index ) const
+const SLight* CD3D9SceneStateServices::getDynamicLight( uint32_t index ) const
 {
 	if(index >= SceneState.MAX_LIGTHTS)
 		return nullptr;

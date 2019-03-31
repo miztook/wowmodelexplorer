@@ -16,21 +16,21 @@ class COpenGLMaterialRenderer_Transparent_Alpha_Blend : public IMaterialRenderer
 {
 public:
 	virtual void OnSetMaterial( E_VERTEX_TYPE vType, const SMaterial& material, bool resetAllRenderStates );
-	virtual void OnRender(const SMaterial& material, u32 pass);
+	virtual void OnRender(const SMaterial& material, uint32_t pass);
 };
 
 class COpenGLMaterialRenderer_Transparent_Alpha_Test : public IMaterialRenderer
 {
 public:
 	virtual void OnSetMaterial( E_VERTEX_TYPE vType, const SMaterial& material, bool resetAllRenderStates );
-	virtual void OnRender(const SMaterial& material, u32 pass);
+	virtual void OnRender(const SMaterial& material, uint32_t pass);
 };
 
 class COpenGLMaterialRenderer_Terrain_MultiPass : public IMaterialRenderer
 {
 public:
 	virtual void OnSetMaterial( E_VERTEX_TYPE vType, const SMaterial& material, bool resetAllRenderStates );
-	virtual void OnRender(const SMaterial& material, u32 pass);
+	virtual void OnRender(const SMaterial& material, uint32_t pass);
 };
 
 

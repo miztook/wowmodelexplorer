@@ -3,7 +3,7 @@
 #include "mywow.h"
 #include "CFileM2.h"
 
-wow_m2Action::wow_m2Action(IFileM2* filem2, const c8* name, E_PLAY_TYPE playType, s32 maxPlayTime)
+wow_m2Action::wow_m2Action(IFileM2* filem2, const char* name, E_PLAY_TYPE playType, int32_t maxPlayTime)
 	: PlayType(playType), MaxPlayTime(maxPlayTime)
 {
 	FileM2 = static_cast<CFileM2*>(filem2);
@@ -18,14 +18,14 @@ wow_m2Action::~wow_m2Action()
 	
 }
 
-bool wow_m2Action::pushAnimationEntry( const c8* animName, u32 subIdx, s32 loopTime )
+bool wow_m2Action::pushAnimationEntry( const char* animName, uint32_t subIdx, int32_t loopTime )
 {
-	s16 animIndex = FileM2->getAnimationIndex(animName, subIdx);
+	int16_t animIndex = FileM2->getAnimationIndex(animName, subIdx);
 	if (animIndex == -1)
 		return false;
 
 	SAnimEntry entry;
-	entry.entryIndex = (u16)AnimationList.size();
+	entry.entryIndex = (uint16_t)AnimationList.size();
 	entry.animIndex = animIndex;
 	entry.loopTime = loopTime;
 

@@ -31,32 +31,32 @@ public:
 	virtual wow_m2FSM* getM2FSM() const = 0;
 	virtual wow_m2Move* getM2Move() const = 0;
 
-	virtual u32 onFillVertexBuffer(u32 geoset, SVertex_PCT* vertices, u32 vcount) const = 0;
+	virtual uint32_t onFillVertexBuffer(uint32_t geoset, SVertex_PCT* vertices, uint32_t vcount) const = 0;
 
 	virtual bool isNpc() const = 0;
 	virtual void buildVisibleGeosets() = 0;
 	virtual void updateCharacter() = 0;
-	virtual bool updateNpc(s32 npcid) = 0;
+	virtual bool updateNpc(int32_t npcid) = 0;
 
 	virtual const aabbox3df& getAnimatedWorldAABB() const = 0;
 	virtual const aabbox3df& getWorldBoundingAABox() const = 0;
 	virtual const aabbox3df& getWorldCollisionAABox() const = 0;
-	virtual f32 getWorldRadius() const = 0;
+	virtual float getWorldRadius() const = 0;
 
-	virtual bool playAnimationByIndex(u32 anim, bool loop, s32 timeblend = 200) = 0;
-	virtual bool playAnimationByName(const c8* name, u32 subIdx, bool loop, s32 timeblend = 200) = 0;
-	virtual s32 getCurrentAnimationIndex() const = 0;	
-	virtual void setParticleSpeed(f32 speed) = 0;
-	virtual f32 getParticleSpeed() const = 0;
-	virtual s32 getCurrentAnimation(animation* anim = nullptr) const = 0;
+	virtual bool playAnimationByIndex(uint32_t anim, bool loop, int32_t timeblend = 200) = 0;
+	virtual bool playAnimationByName(const char* name, uint32_t subIdx, bool loop, int32_t timeblend = 200) = 0;
+	virtual int32_t getCurrentAnimationIndex() const = 0;	
+	virtual void setParticleSpeed(float speed) = 0;
+	virtual float getParticleSpeed() const = 0;
+	virtual int32_t getCurrentAnimation(animation* anim = nullptr) const = 0;
 
-	virtual bool setModelCamera(s32 index) = 0;
-	virtual s32 getModelCamera() const = 0;
+	virtual bool setModelCamera(int32_t index) = 0;
+	virtual int32_t getModelCamera() const = 0;
 
-	virtual void setM2ModelEquipment(s32 slot, s32 itemid, bool sheath) = 0;
+	virtual void setM2ModelEquipment(int32_t slot, int32_t itemid, bool sheath) = 0;
 	virtual bool setMountM2SceneNode(IM2SceneNode* m2Node) = 0;
 
-	virtual void setModelAlpha(bool enable, f32 val) = 0;
+	virtual void setModelAlpha(bool enable, float val) = 0;
 	virtual void setModelColor(bool enable, SColor color) = 0;
 	virtual void enableFog(bool enable) = 0;
 
@@ -66,5 +66,5 @@ public:
 public:
 	animation		Animation;
 	E_RENDERINST_TYPE		RenderInstType;
-	s32	RenderPriority;
+	int32_t	RenderPriority;
 };

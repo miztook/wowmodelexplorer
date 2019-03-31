@@ -22,7 +22,7 @@ public:
 public:
 	virtual void tick();
 
-	virtual void readTouchInfo(const SGesTouchInfo* arrTouches, u32 count);
+	virtual void readTouchInfo(const SGesTouchInfo* arrTouches, uint32_t count);
 
 	virtual bool addGestureToQueue(const SGestureInfo& gesInfo);
 
@@ -56,12 +56,12 @@ private:
 public:
 	struct STouchCache
 	{
-		f32 time;
-		f32 posX;
-		f32 posY;
+		float time;
+		float posX;
+		float posY;
 	};
 
-typedef std::map<ptr_t, STouchCache, std::less<ptr_t>, qzone_allocator<std::pair<ptr_t, STouchCache> > > T_TouchCacheMap;
+typedef std::map<uintptr_t, STouchCache, std::less<uintptr_t>, qzone_allocator<std::pair<uintptr_t, STouchCache> > > T_TouchCacheMap;
 
 //platform
 #ifdef MW_PLATFORM_WINDOWS
@@ -78,7 +78,7 @@ public:
 	};
 
 private:
-	s32 FingerId[WIN_TOUCH_NUM];
+	int32_t FingerId[WIN_TOUCH_NUM];
 	STouchCache CacheButtonDown[WIN_TOUCH_NUM];
 
 #elif defined(A_PLATFORM_ANDROID)

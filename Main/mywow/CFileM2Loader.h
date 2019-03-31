@@ -8,7 +8,7 @@ class IMemFile;
 class CM2Loader
 {
 public:
-	static bool isALoadableFileExtension( const c8* filename ) { return hasFileExtensionA(filename, "m2"); }
+	static bool isALoadableFileExtension( const char* filename ) { return hasFileExtensionA(filename, "m2"); }
 
 	IFileM2* loadM2( IMemFile* file );
 };

@@ -6,8 +6,8 @@
 
 struct SAnimFile
 {
-	u8* data;
-	u32 size;
+	uint8_t* data;
+	uint32_t size;
 };
 
 template<>
@@ -68,7 +68,7 @@ public:
 };
 
 struct PACK_QUATERNION {  
-	s16 x,y,z,w;  
+	int16_t x,y,z,w;  
 }; 
 
 class Quat16ToMinusQuat32 {
@@ -76,10 +76,10 @@ public:
 	 static const quaternion conv(const PACK_QUATERNION& t)
 	{
 		return quaternion(
-			(f32)(t.x < 0? t.x + 32768 : t.x - 32767)/ 32767.0f, 
-			(f32)(t.z < 0? t.z + 32768 : t.z - 32767)/ 32767.0f,
-			(f32)(t.y < 0? t.y + 32768 : t.y - 32767)/ 32767.0f,	
-			-(f32)(t.w < 0? t.w + 32768 : t.w - 32767)/ 32767.0f);
+			(float)(t.x < 0? t.x + 32768 : t.x - 32767)/ 32767.0f, 
+			(float)(t.z < 0? t.z + 32768 : t.z - 32767)/ 32767.0f,
+			(float)(t.y < 0? t.y + 32768 : t.y - 32767)/ 32767.0f,	
+			-(float)(t.w < 0? t.w + 32768 : t.w - 32767)/ 32767.0f);
 	}
 };
 
@@ -93,8 +93,8 @@ public:
 		Type(INTERPOLATION_NONE), Seq(-1), 
 		GlobalSeq(nullptr), NumGlobalSeq(0) { }
 
-	 void init(const M2::animblock* block, const u8* fileData, s32* globalSeq, u32 numGlobalSeq);
-	 void init(const M2::animblock* block, const u8* m2FileData, SAnimFile* animFiles, s32* globalSeq, u32 numGlobalSeq);
+	 void init(const M2::animblock* block, const uint8_t* fileData, int32_t* globalSeq, uint32_t numGlobalSeq);
+	 void init(const M2::animblock* block, const uint8_t* m2FileData, SAnimFile* animFiles, int32_t* globalSeq, uint32_t numGlobalSeq);
 
 	~SWowAnimation()
 	{
@@ -102,12 +102,12 @@ public:
 	}
 
 public:
-	 s32		getValue(u32 anim, u32 time, T& v, s32 hint=0) const;			//第几个动画在某时间的插值
-	 u32		getNumAnims() const { return NumAnimations; }
-	 bool		hasAnimation(u32 anim) const { return anim < NumAnimations; }
-	 u32		getGlobalSeq(u32 idx) const;
+	 int32_t		getValue(uint32_t anim, uint32_t time, T& v, int32_t hint=0) const;			//第几个动画在某时间的插值
+	 uint32_t		getNumAnims() const { return NumAnimations; }
+	 bool		hasAnimation(uint32_t anim) const { return anim < NumAnimations; }
+	 uint32_t		getGlobalSeq(uint32_t idx) const;
 
-	s16		Type;	
+	int16_t		Type;	
 private:
 	struct	SAnimationEntry				//单个animation
 	{
@@ -117,23 +117,23 @@ private:
 			delete times;
 		}
 
-		u32		numKeys;
-		u32*		times;
+		uint32_t		numKeys;
+		uint32_t*		times;
 		T*		values;
 		T*		values1;					//for hermite interpolation
 		T*		values2;
 	};
 
-	u32		NumAnimations;		
-	u32		NumGlobalSeq;		
-	s32		Seq;					//索引一个外部的时间长度，动画的时间值在这个时间长度内
+	uint32_t		NumAnimations;		
+	uint32_t		NumGlobalSeq;		
+	int32_t		Seq;					//索引一个外部的时间长度，动画的时间值在这个时间长度内
 	SAnimationEntry*		Animations;
 	
-	s32*		GlobalSeq;
+	int32_t*		GlobalSeq;
 };
 
 template <class T, class D, class Conv>
-u32 SWowAnimation<T, D, Conv>::getGlobalSeq( u32 idx ) const
+uint32_t SWowAnimation<T, D, Conv>::getGlobalSeq( uint32_t idx ) const
 {
 	if (idx >= NumGlobalSeq)
 		return 0;
@@ -142,7 +142,7 @@ u32 SWowAnimation<T, D, Conv>::getGlobalSeq( u32 idx ) const
 
 //从m2文件中读取time, key数据, sequence
 template <class T, class D, class Conv>
-void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const u8* fileData, s32* globalSeq, u32 numGlobalSeq )
+void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const uint8_t* fileData, int32_t* globalSeq, uint32_t numGlobalSeq )
 {
 	Type = block->_Interpolation;
 	Seq = block->_SequenceID;
@@ -158,18 +158,18 @@ void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const u8* fileDa
 	Animations = new SAnimationEntry[NumAnimations];
 
 	//time
-	for (u32 i=0; i<NumAnimations; ++i)
+	for (uint32_t i=0; i<NumAnimations; ++i)
 	{
 		M2::sequence* p = (M2::sequence*)(fileData + block->_TimingsOfs + i*sizeof(M2::sequence));
 		Animations[i].numKeys = p->_NValues;
 		if (Animations[i].numKeys == 0)
 			continue;
 
-		u32 num = Animations[i].numKeys;
+		uint32_t num = Animations[i].numKeys;
 
 		M2::sequence* v = (M2::sequence*)(fileData + block->_ValuesOfs +i*sizeof(M2::sequence));
 
-		u32* times = (u32*)(fileData + p->_SequencesOfs);	
+		uint32_t* times = (uint32_t*)(fileData + p->_SequencesOfs);	
 		const D* values = reinterpret_cast<const D*>(fileData + v->_SequencesOfs);
 
 		switch (Type)
@@ -177,11 +177,11 @@ void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const u8* fileDa
 		case INTERPOLATION_NONE:
 		case INTERPOLATION_LINEAR:
 			{
-				Animations[i].times = (u32*)new u8[sizeof(u32) * num + sizeof(T) * num];
-				Animations[i].values = (T*)((u8*)Animations[i].times + sizeof(u32) * num);
+				Animations[i].times = (uint32_t*)new uint8_t[sizeof(uint32_t) * num + sizeof(T) * num];
+				Animations[i].values = (T*)((uint8_t*)Animations[i].times + sizeof(uint32_t) * num);
 
-				Q_memcpy(Animations[i].times, sizeof(u32)*num, times, sizeof(u32)*num);
-				for (u32 j=0; j<num; ++j)
+				Q_memcpy(Animations[i].times, sizeof(uint32_t)*num, times, sizeof(uint32_t)*num);
+				for (uint32_t j=0; j<num; ++j)
 				{
 					Animations[i].values[j] = Conv::conv(values[j]);
 				}
@@ -189,13 +189,13 @@ void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const u8* fileDa
 			break;
 		case INTERPOLATION_HERMITE:
 			{
-				Animations[i].times = (u32*)new u8[sizeof(u32) * num + sizeof(T) * num + sizeof(T) * num + sizeof(T) * num];
-				Animations[i].values = (T*)((u8*)Animations[i].times + sizeof(u32) * num);
-				Animations[i].values1 = (T*)((u8*)Animations[i].times + sizeof(u32) * num + sizeof(T) * num);
-				Animations[i].values2 = (T*)((u8*)Animations[i].times + sizeof(u32) * num + sizeof(T) * num + sizeof(T) * num);
+				Animations[i].times = (uint32_t*)new uint8_t[sizeof(uint32_t) * num + sizeof(T) * num + sizeof(T) * num + sizeof(T) * num];
+				Animations[i].values = (T*)((uint8_t*)Animations[i].times + sizeof(uint32_t) * num);
+				Animations[i].values1 = (T*)((uint8_t*)Animations[i].times + sizeof(uint32_t) * num + sizeof(T) * num);
+				Animations[i].values2 = (T*)((uint8_t*)Animations[i].times + sizeof(uint32_t) * num + sizeof(T) * num + sizeof(T) * num);
 
-				Q_memcpy(Animations[i].times, sizeof(u32)*num, times, sizeof(u32)*num);
-				for (u32 j=0; j<num; ++j)
+				Q_memcpy(Animations[i].times, sizeof(uint32_t)*num, times, sizeof(uint32_t)*num);
+				for (uint32_t j=0; j<num; ++j)
 				{
 					Animations[i].values[j] = Conv::conv(values[j*3]);
 					Animations[i].values1[j] = Conv::conv(values[j*3+1]);
@@ -212,7 +212,7 @@ void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const u8* fileDa
 
 //从m2文件中读取time, key数据, sequence, 也从anim文件中读取动画数据，如果对应的anim文件存在，则使用动画文件
 template <class T, class D, class Conv>
-void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const u8* m2FileData, SAnimFile* animFiles, s32* globalSeq, u32 numGlobalSeq )
+void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const uint8_t* m2FileData, SAnimFile* animFiles, int32_t* globalSeq, uint32_t numGlobalSeq )
 {
 	Type = block->_Interpolation;
 	Seq = block->_SequenceID;
@@ -228,20 +228,20 @@ void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const u8* m2File
 	Animations = new SAnimationEntry[NumAnimations];
 
 	//time
-	for (u32 i=0; i<NumAnimations; ++i)
+	for (uint32_t i=0; i<NumAnimations; ++i)
 	{
 		M2::sequence* p = (M2::sequence*)(m2FileData + block->_TimingsOfs + i*sizeof(M2::sequence));
 		Animations[i].numKeys = p->_NValues;
 		if (Animations[i].numKeys == 0)
 			continue;
 
-		u32 num = Animations[i].numKeys;
+		uint32_t num = Animations[i].numKeys;
 
-		u32* times;
-		if (animFiles[i].size && (animFiles[i].size >= p->_SequencesOfs + sizeof(u32)*num) )
-			times = (u32*)(animFiles[i].data + p->_SequencesOfs);
+		uint32_t* times;
+		if (animFiles[i].size && (animFiles[i].size >= p->_SequencesOfs + sizeof(uint32_t)*num) )
+			times = (uint32_t*)(animFiles[i].data + p->_SequencesOfs);
 		else
-			times = (u32*)(m2FileData + p->_SequencesOfs);
+			times = (uint32_t*)(m2FileData + p->_SequencesOfs);
 
 		M2::sequence* v = (M2::sequence*)(m2FileData + block->_ValuesOfs + i*sizeof(M2::sequence));
 
@@ -256,11 +256,11 @@ void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const u8* m2File
 		case INTERPOLATION_NONE:
 		case INTERPOLATION_LINEAR:
 			{
-				Animations[i].times = (u32*)new u8[sizeof(u32) * num + sizeof(T) * num];
-				Animations[i].values = (T*)((u8*)Animations[i].times + sizeof(u32) * num);
+				Animations[i].times = (uint32_t*)new uint8_t[sizeof(uint32_t) * num + sizeof(T) * num];
+				Animations[i].values = (T*)((uint8_t*)Animations[i].times + sizeof(uint32_t) * num);
 
-				Q_memcpy(Animations[i].times, sizeof(u32)*num, times, sizeof(u32)*num);
-				for (u32 j=0; j<num; ++j)
+				Q_memcpy(Animations[i].times, sizeof(uint32_t)*num, times, sizeof(uint32_t)*num);
+				for (uint32_t j=0; j<num; ++j)
 				{
 					Animations[i].values[j] = Conv::conv(values[j]);
 				}
@@ -268,13 +268,13 @@ void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const u8* m2File
 			break;
 		case INTERPOLATION_HERMITE:
 			{
-				Animations[i].times = (u32*)new u8[sizeof(u32) * num + sizeof(T) * num + sizeof(T) * num + sizeof(T) * num];
-				Animations[i].values = (T*)((u8*)Animations[i].times + sizeof(u32) * num);
-				Animations[i].values1 = (T*)((u8*)Animations[i].times + sizeof(u32) * num + sizeof(T) * num);
-				Animations[i].values2 = (T*)((u8*)Animations[i].times + sizeof(u32) * num + sizeof(T) * num + sizeof(T) * num);
+				Animations[i].times = (uint32_t*)new uint8_t[sizeof(uint32_t) * num + sizeof(T) * num + sizeof(T) * num + sizeof(T) * num];
+				Animations[i].values = (T*)((uint8_t*)Animations[i].times + sizeof(uint32_t) * num);
+				Animations[i].values1 = (T*)((uint8_t*)Animations[i].times + sizeof(uint32_t) * num + sizeof(T) * num);
+				Animations[i].values2 = (T*)((uint8_t*)Animations[i].times + sizeof(uint32_t) * num + sizeof(T) * num + sizeof(T) * num);
 
-				Q_memcpy(Animations[i].times, sizeof(u32)*num, times, sizeof(u32)*num);
-				for (u32 j=0; j<num; ++j)
+				Q_memcpy(Animations[i].times, sizeof(uint32_t)*num, times, sizeof(uint32_t)*num);
+				for (uint32_t j=0; j<num; ++j)
 				{
 					Animations[i].values[j] = Conv::conv(values[j*3]);
 					Animations[i].values1[j] = Conv::conv(values[j*3+1]);
@@ -289,18 +289,18 @@ void SWowAnimation<T,D,Conv>::init( const M2::animblock* block, const u8* m2File
 }
 
 template <class T, class D, class Conv>
-s32 SWowAnimation<T,D,Conv>::getValue( u32 anim, u32 time, T& v, s32 hint ) const
+int32_t SWowAnimation<T,D,Conv>::getValue( uint32_t anim, uint32_t time, T& v, int32_t hint ) const
 {
 	if(anim >= NumAnimations)
 		return -1;
 
 	const SAnimationEntry& entry = Animations[anim];
 
-	s32 pos = -1;
+	int32_t pos = -1;
 	if (entry.numKeys > 1)
 	{
 		//adjust time
-		if (Seq > -1 && Seq < (s32)NumGlobalSeq)
+		if (Seq > -1 && Seq < (int32_t)NumGlobalSeq)
 		{
 			if (GlobalSeq[Seq]==0)
 				time = 0;
@@ -316,10 +316,10 @@ s32 SWowAnimation<T,D,Conv>::getValue( u32 anim, u32 time, T& v, s32 hint ) cons
 		else if (time >= entry.times[entry.numKeys-1])		//大于最大帧
 		{
  			v = entry.values[entry.numKeys-1];
- 			return (s32)entry.numKeys-1;
+ 			return (int32_t)entry.numKeys-1;
 		}
 
-		u32 i = 1;
+		uint32_t i = 1;
 		if (hint >1 && time > entry.times[hint-1])					//加速
 			i = hint;			
 	
@@ -334,8 +334,8 @@ s32 SWowAnimation<T,D,Conv>::getValue( u32 anim, u32 time, T& v, s32 hint ) cons
 		
 		if (pos != -1)
 		{
-			u32 t1 = entry.times[pos];
-			u32 t2 = entry.times[pos-1];
+			uint32_t t1 = entry.times[pos];
+			uint32_t t2 = entry.times[pos-1];
 			float r = (time-t2)/(float)(t1-t2);
 
 			switch (Type)

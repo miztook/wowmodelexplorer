@@ -90,8 +90,8 @@ bool AUX_ExportBlpAsTga(const char* blpfilename, const char* tgafilename, bool b
 		ASSERT(image->getColorFormat() == ECF_A8R8G8B8);
 		dimension2du size = image->getDimension();
 
-		u32 dataSize = size.Width * size.Height * getBytesPerPixelFromFormat(ECF_R8G8B8);
-		u8* data = (u8*)Z_AllocateTempMemory(dataSize);
+		uint32_t dataSize = size.Width * size.Height * getBytesPerPixelFromFormat(ECF_R8G8B8);
+		uint8_t* data = (uint8_t*)Z_AllocateTempMemory(dataSize);
 		image->copyToScaling(data, size.Width, size.Height, ECF_R8G8B8);
 
 		bool ret = TGAWriteFile(tgafilename, size.Width, size.Height, TGA_FORMAT_BGR, data);

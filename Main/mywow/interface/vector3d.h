@@ -77,7 +77,7 @@ public:
 
 	 vector3d<T>& normalize()
 	{
-		f32 length = X*X + Y*Y + Z*Z;
+		float length = X*X + Y*Y + Z*Z;
 		if (equals_(length, 0.0) || equals_(length, 1.0)) // this check isn't an optimization but prevents getting NAN in the sqrt.
 			return *this;
 		length = reciprocal_squareroot_(length);
@@ -88,19 +88,19 @@ public:
 		return *this;
 	}
 
-	 static vector3d<T> interpolate(const vector3d<T>& a, const vector3d<T>& b, f32 d)
+	 static vector3d<T> interpolate(const vector3d<T>& a, const vector3d<T>& b, float d)
 	{
-		f32 inv = 1.0f - d;
+		float inv = 1.0f - d;
 		return vector3d<T>((a.X*inv + b.X*d), (a.Y*inv + b.Y*d), (a.Z*inv + b.Z*d));
 	}
 
-	 vector3d<T> getInterpolated_quadratic(const vector3d<T>& v2, const vector3d<T>& v3, f32 d) const
+	 vector3d<T> getInterpolated_quadratic(const vector3d<T>& v2, const vector3d<T>& v3, float d) const
 	{
 		// this*(1-d)*(1-d) + 2 * v2 * (1-d) + v3 * d * d;
-		const f32 inv = (T) 1.0 - d;
-		const f32 mul0 = inv * inv;
-		const f32 mul1 = (T) 2.0 * d * inv;
-		const f32 mul2 = d * d;
+		const float inv = (T) 1.0 - d;
+		const float mul0 = inv * inv;
+		const float mul1 = (T) 2.0 * d * inv;
+		const float mul2 = d * d;
 
 		return vector3d<T> ((T)(X * mul0 + v2.X * mul1 + v3.X * mul2),
 			(T)(Y * mul0 + v2.Y * mul1 + v3.Y * mul2),
@@ -114,5 +114,5 @@ public:
 };
 
 
-typedef vector3d<f32> vector3df;
-typedef vector3d<s32> vector3di;
+typedef vector3d<float> vector3df;
+typedef vector3d<int32_t> vector3di;

@@ -24,8 +24,8 @@ void CGestureRecognizer_Pan1::tick()
 
 	if (State == RecognizerState_Begin)
 	{
-		u32 now = g_Engine->getTimer()->getMillisecond();
-		if (now - TimeStamp > (u32)(getfRecognizerFailInterval() * 1000))
+		uint32_t now = g_Engine->getTimer()->getMillisecond();
+		if (now - TimeStamp > (uint32_t)(getfRecognizerFailInterval() * 1000))
 			changeState(RecognizerState_Fail);
 	}
 }
@@ -62,7 +62,7 @@ void CGestureRecognizer_Pan1::onTouchMove( const std::vector<SGesTouchInfo>& tou
 
 	SGesTouchInfo& head = TouchInfoArray.front();
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)
 		return;
 
@@ -117,7 +117,7 @@ void CGestureRecognizer_Pan1::onTouchEnd( const std::vector<SGesTouchInfo>& touc
 
 	SGesTouchInfo& head = TouchInfoArray.front();
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)
 		return;
 
@@ -136,7 +136,7 @@ void CGestureRecognizer_Pan1::onTouchCancel( const std::vector<SGesTouchInfo>& t
 
 	SGesTouchInfo& head = TouchInfoArray.front();
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)
 		return;
 
@@ -189,8 +189,8 @@ void CGestureRecognizer_Pan1::outputPanGesture( E_GESTURE_STATE state )
 		const SGesTouchInfo& head = TouchInfoArray.front();
 		gesInfo.param.pan1_xPos = head.posX;
 		gesInfo.param.pan1_yPos = head.posY;
-		f32 curVelocityX = head.deltaTime > 0.0f ? head.deltaX / head.deltaTime : 0.0f;
-		f32 curVelocityY = head.deltaTime > 0.0f ? head.deltaY / head.deltaTime : 0.0f;
+		float curVelocityX = head.deltaTime > 0.0f ? head.deltaX / head.deltaTime : 0.0f;
+		float curVelocityY = head.deltaTime > 0.0f ? head.deltaY / head.deltaTime : 0.0f;
 		gesInfo.param.pan1_xVelocity = curVelocityX * getfPanVelocityLowpass() + LastVelocityX * (1.0f - getfPanVelocityLowpass());
 		gesInfo.param.pan1_yVelocity = curVelocityY * getfPanVelocityLowpass() + LastVelocityY * (1.0f - getfPanVelocityLowpass());
 	}

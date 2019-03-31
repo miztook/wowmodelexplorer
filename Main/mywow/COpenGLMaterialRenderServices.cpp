@@ -287,7 +287,7 @@ void COpenGLMaterialRenderServices::setBasicRenderStates( const SMaterial& mater
 	}
 
 	//texture address mode
-	for (u32 st=0; st<MATERIAL_MAX_TEXTURES; ++st)
+	for (uint32_t st=0; st<MATERIAL_MAX_TEXTURES; ++st)
 	{	
 
 		if (resetAllRenderstates || 
@@ -319,7 +319,7 @@ void COpenGLMaterialRenderServices::setBasicRenderStates( const SMaterial& mater
 
 void COpenGLMaterialRenderServices::setOverrideRenderStates( const SOverrideMaterial& overrideMaterial, bool resetAllRenderStates )
 {
-	for (u32 st=0; st<MATERIAL_MAX_TEXTURES; ++st)
+	for (uint32_t st=0; st<MATERIAL_MAX_TEXTURES; ++st)
 	{
 		if (resetAllRenderStates || overrideMaterial.TextureFilters[st] != LastOverrideMaterial.TextureFilters[st])
 		{
@@ -329,7 +329,7 @@ void COpenGLMaterialRenderServices::setOverrideRenderStates( const SOverrideMate
 			GLint maxAnisotropy = 1;
 			if (overrideMaterial.TextureFilters[st] != ETF_NONE)
 			{
-				u8 anisotropic = getAnisotropic(overrideMaterial.TextureFilters[st]);
+				uint8_t anisotropic = getAnisotropic(overrideMaterial.TextureFilters[st]);
 				tftMag = GL_LINEAR;
 				tftMin = GL_LINEAR;
 				tftMip = overrideMaterial.TextureFilters[st] > ETF_BILINEAR ? GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST_MIPMAP_NEAREST;
@@ -392,7 +392,7 @@ void COpenGLMaterialRenderServices::set2DRenderStates( const S2DBlendParam& blen
 void COpenGLMaterialRenderServices::applyMaterialBlock( const SRenderStateBlock& block, bool resetAllRenderStates )
 {
 
-	for (u32 st=0; st<MATERIAL_MAX_TEXTURES; ++st)
+	for (uint32_t st=0; st<MATERIAL_MAX_TEXTURES; ++st)
 	{	
 		//color op, alpha op, FFP only
 #ifdef FIXPIPELINE
@@ -692,12 +692,12 @@ void COpenGLMaterialRenderServices::applyMaterialChanges()
 	DEVICE_SET_ALPHAFUNC_STATE(AlphaFunc, AlphaRef, CurrentRenderState.AlphaFunc, CurrentRenderState.AlphaRef);
 #endif
 
-	u32 maxTextrues = min_((u32)MATERIAL_MAX_TEXTURES, (u32)Extension->MaxTextureUnits);
+	uint32_t maxTextrues = min_((uint32_t)MATERIAL_MAX_TEXTURES, (uint32_t)Extension->MaxTextureUnits);
 
 	//textures
-	u32 samplerCount = ShaderServices->getSamplerCount();
+	uint32_t samplerCount = ShaderServices->getSamplerCount();
 
-	for (u32 st = 0; st < samplerCount; ++st)
+	for (uint32_t st = 0; st < samplerCount; ++st)
 	{
 		const SRenderStateCache::STextureUnit& texunit = CurrentRenderState.TextureUnits[st];
 		
@@ -824,14 +824,14 @@ void COpenGLMaterialRenderServices::resetRSCache()
 	RsCache.AlphaToCoverage = glIsEnabled(GL_SAMPLE_ALPHA_TO_COVERAGE_ARB);
 
 	//texture op
-	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+	for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
 		RsCache.TextureUnits[i].texture = nullptr;
 	}
 
 	glGetIntegerv(GL_ACTIVE_TEXTURE, &RsCache.ActiveTextureIndex);
 
-	for (u32 idx=0; idx<MATERIAL_MAX_TEXTURES; ++idx)
+	for (uint32_t idx=0; idx<MATERIAL_MAX_TEXTURES; ++idx)
 	{
 		setActiveTexture(idx);
 
@@ -919,7 +919,7 @@ void COpenGLMaterialRenderServices::set2DPixelShaderMaterialBlock( SRenderStateB
 #endif
 }
 
-void COpenGLMaterialRenderServices::setTextureWrap( u32 st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap )
+void COpenGLMaterialRenderServices::setTextureWrap( uint32_t st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap )
 {
 	GLint v = COpenGLHelper::getGLTextureAddress(wrap);
 	switch (address)
@@ -941,7 +941,7 @@ void COpenGLMaterialRenderServices::setTextureWrap( u32 st, E_TEXTURE_ADDRESS ad
 	}
 }
 
-void COpenGLMaterialRenderServices::applyTextureFilter( u32 st, E_TEXTURE_FILTER filter )
+void COpenGLMaterialRenderServices::applyTextureFilter( uint32_t st, E_TEXTURE_FILTER filter )
 {
 	GLint tftMag, tftMin, tftMip;
 
@@ -949,7 +949,7 @@ void COpenGLMaterialRenderServices::applyTextureFilter( u32 st, E_TEXTURE_FILTER
 	GLint maxAnisotropy = 1;
 	if (filter != ETF_NONE)
 	{
-		u8 anisotropic = getAnisotropic(filter);
+		uint8_t anisotropic = getAnisotropic(filter);
 		tftMag = GL_LINEAR;
 		tftMin = GL_LINEAR;
 		tftMip = filter > ETF_BILINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_NEAREST;
@@ -987,7 +987,7 @@ void COpenGLMaterialRenderServices::applyTextureFilter( u32 st, E_TEXTURE_FILTER
 	LastOverrideMaterial.TextureFilters[st] = filter;
 }
 
-E_TEXTURE_CLAMP COpenGLMaterialRenderServices::getTextureWrap( u32 st, E_TEXTURE_ADDRESS address ) const
+E_TEXTURE_CLAMP COpenGLMaterialRenderServices::getTextureWrap( uint32_t st, E_TEXTURE_ADDRESS address ) const
 {
 	GLint v = 0;
 	switch (address)
@@ -1020,7 +1020,7 @@ bool COpenGLMaterialRenderServices::getZWriteEnable() const
 	return CurrentRenderState.ZWriteEnable != GL_FALSE;
 }
 
-void COpenGLMaterialRenderServices::setActiveTexture( u32 st )
+void COpenGLMaterialRenderServices::setActiveTexture( uint32_t st )
 {
 	if (Extension->MaxTextureUnits > 1)
 	{
@@ -1034,7 +1034,7 @@ void COpenGLMaterialRenderServices::setActiveTexture( u32 st )
 	}
 }
 
-void COpenGLMaterialRenderServices::setTextureEnable( u32 st, bool enable )
+void COpenGLMaterialRenderServices::setTextureEnable( uint32_t st, bool enable )
 {
 #ifdef FIXPIPELINE
 	if (st >= MATERIAL_MAX_TEXTURES)
@@ -1047,7 +1047,7 @@ void COpenGLMaterialRenderServices::setTextureEnable( u32 st, bool enable )
 #endif
 }
 
-void COpenGLMaterialRenderServices::applyTextureMipMap( u32 st, bool mipmap )
+void COpenGLMaterialRenderServices::applyTextureMipMap( uint32_t st, bool mipmap )
 {
 	GLint baselevel = 0;
 	GLint maxlevel = mipmap ? 1000 : 0;
@@ -1056,7 +1056,7 @@ void COpenGLMaterialRenderServices::applyTextureMipMap( u32 st, bool mipmap )
 	DEVICE_SET_TEXTURE2D_PARAMETER_I(st, maxLevel, GL_TEXTURE_MAX_LEVEL, maxlevel);
 }
 
-void COpenGLMaterialRenderServices::applySamplerTexture( u32 st, ITexture* tex )
+void COpenGLMaterialRenderServices::applySamplerTexture( uint32_t st, ITexture* tex )
 {
 	setActiveTexture(st);
 
@@ -1066,7 +1066,7 @@ void COpenGLMaterialRenderServices::applySamplerTexture( u32 st, ITexture* tex )
 	RsCache.TextureUnits[st].texture = tex;
 }
 
-void COpenGLMaterialRenderServices::applySamplerTextureMultiSample(u32 st, ITexture* tex)
+void COpenGLMaterialRenderServices::applySamplerTextureMultiSample(uint32_t st, ITexture* tex)
 {
 	setActiveTexture(st);
 
@@ -1076,7 +1076,7 @@ void COpenGLMaterialRenderServices::applySamplerTextureMultiSample(u32 st, IText
 	RsCache.TextureUnits[st].texture = tex;
 }
 
-void COpenGLMaterialRenderServices::applyTextureWrap( u32 st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap)
+void COpenGLMaterialRenderServices::applyTextureWrap( uint32_t st, E_TEXTURE_ADDRESS address, E_TEXTURE_CLAMP wrap)
 {
 	ASSERT(RsCache.TextureUnits[st].texture);
 

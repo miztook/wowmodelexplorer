@@ -36,10 +36,10 @@ protected:
 	virtual bool hasVideoBuilt() const override final { return HWLink != nullptr; }
 
 public:
-	bool updateHWBuffer(u32 size);
+	bool updateHWBuffer(uint32_t size);
 
 	template <class T>
-	void set(const T* vertices, E_VERTEX_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping)
+	void set(const T* vertices, E_VERTEX_TYPE type, uint32_t size, E_MESHBUFFER_MAPPING mapping)
 	{
 		//ASSERT(type == T::TYPE());
 
@@ -51,14 +51,14 @@ public:
 	}
 
 public:
-	void set(void* vertices, E_STREAM_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping);
+	void set(void* vertices, E_STREAM_TYPE type, uint32_t size, E_MESHBUFFER_MAPPING mapping);
 
 public:
 	LENTRY		Link;		
 
 	const void*	Vertices;
 	void*	HWLink;
-	u32  Size;
+	uint32_t  Size;
 	E_STREAM_TYPE		Type;
 	E_MESHBUFFER_MAPPING		Mapping;
 	
@@ -66,7 +66,7 @@ private:
 	bool Clear;
 };
 
-inline void CVertexBuffer::set( void* vertices, E_STREAM_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping )
+inline void CVertexBuffer::set( void* vertices, E_STREAM_TYPE type, uint32_t size, E_MESHBUFFER_MAPPING mapping )
 {
 	Vertices = vertices;
 	Type = type;
@@ -102,7 +102,7 @@ public:
 	}
 
 public:
-	void set(void* indices, E_INDEX_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping);
+	void set(void* indices, E_INDEX_TYPE type, uint32_t size, E_MESHBUFFER_MAPPING mapping);
 
 protected:
 	virtual bool buildVideoResources() override final;
@@ -110,10 +110,10 @@ protected:
 	virtual bool hasVideoBuilt() const override final { return HWLink != nullptr; }
 
 public:
-	bool updateHWBuffer(u32 size);
+	bool updateHWBuffer(uint32_t size);
 
 	template <class T>
-	void set(const T* indices, E_INDEX_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping)
+	void set(const T* indices, E_INDEX_TYPE type, uint32_t size, E_MESHBUFFER_MAPPING mapping)
 	{
 		ASSERT((sizeof(T) == 2 && type == EIT_16BIT) || (sizeof(T) == 4 && type == EIT_32BIT));
 
@@ -129,7 +129,7 @@ public:
 public:
 	const void*	Indices;
 	void*	HWLink;
-	u32  Size;
+	uint32_t  Size;
 	E_INDEX_TYPE		Type;
 	E_MESHBUFFER_MAPPING		Mapping;
 		
@@ -138,7 +138,7 @@ private:
 
 };
 
-inline void CIndexBuffer::set( void* indices, E_INDEX_TYPE type, u32 size, E_MESHBUFFER_MAPPING mapping)
+inline void CIndexBuffer::set( void* indices, E_INDEX_TYPE type, uint32_t size, E_MESHBUFFER_MAPPING mapping)
 {
 	Indices = indices;
 	Type = type;
@@ -167,7 +167,7 @@ struct SBufferParam
 		delete vbuffer0; vbuffer0 = nullptr;
 	}
 
-	CVertexBuffer* getVBuffer(u32 index) const
+	CVertexBuffer* getVBuffer(uint32_t index) const
 	{
 		switch(index)
 		{

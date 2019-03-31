@@ -36,7 +36,7 @@ enum E_M2_STATES : int32_t
 	EMS_COUNT,
 };
 
-static const c8* g_actionNames[] =
+static const char* g_actionNames[] =
 {
 	"Stand",
 	"Walk",
@@ -67,19 +67,19 @@ static const c8* g_actionNames[] =
 	"ReadySpellDirected",
 };
 
-inline const c8* getActionName(E_M2_STATES action)
+inline const char* getActionName(E_M2_STATES action)
 {
-	if (static_cast<u32>(action) < ARRAY_COUNT(g_actionNames))
+	if (static_cast<uint32_t>(action) < ARRAY_COUNT(g_actionNames))
 		return g_actionNames[action];
 
 	ASSERT(false);
 	return "";
 }
 
-inline E_M2_STATES getM2State(const c8* actionname)
+inline E_M2_STATES getM2State(const char* actionname)
 {
-	u32 count = ARRAY_COUNT(g_actionNames);
-	for (u32 i=0; i<count; ++i)
+	uint32_t count = ARRAY_COUNT(g_actionNames);
+	for (uint32_t i=0; i<count; ++i)
 	{
 		if(Q_stricmp(actionname, g_actionNames[i]) == 0)
 			return (E_M2_STATES)i;
@@ -100,12 +100,12 @@ public:
 public:
 	virtual bool isValid() const = 0;
 	virtual bool enter() = 0;
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame) = 0;
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame) = 0;
 	virtual void exit() = 0;
 	virtual E_M2_STATES getType() const = 0;
 
 	virtual wow_m2Action* getM2Action() const  = 0;
-	virtual void onAnimationEnd(u32 currentIndex) = 0;
+	virtual void onAnimationEnd(uint32_t currentIndex) = 0;
 
 protected:
 	entity_type*	Entity;

@@ -8,7 +8,7 @@ class IM2SceneNode;
 class wow_m2TargetCamera
 {
 public:
-	wow_m2TargetCamera(f32 nearValue, f32 farValue, f32 fov);
+	wow_m2TargetCamera(float nearValue, float farValue, float fov);
 	~wow_m2TargetCamera();
 
 public:
@@ -16,19 +16,19 @@ public:
 
 	//rad cam dir to m2 dir
 	void setM2AsTarget(IM2SceneNode* node);
-	void setM2AsTarget(IM2SceneNode* node, f32 distance, f32 rad);
+	void setM2AsTarget(IM2SceneNode* node, float distance, float rad);
 	IM2SceneNode* getM2Target() const { return M2Node; }
 
-	void tick(u32 delta);
+	void tick(uint32_t delta);
 
-	void setMinMaxDistance(f32 minDistance, f32 maxDistance);
+	void setMinMaxDistance(float minDistance, float maxDistance);
 
-	void onMouseWheel(f32 fDelta);
+	void onMouseWheel(float fDelta);
 
-	void onMouseMove(f32 pitchDegree, f32 yawDegree);
+	void onMouseMove(float pitchDegree, float yawDegree);
 
-	void makeTargetFollowCamera(u32 deltaTime, bool front, bool back, bool left, bool right);
-	void makeCameraFollowTarget(u32 deltaTime, bool front, bool back, bool left, bool right);
+	void makeTargetFollowCamera(uint32_t deltaTime, bool front, bool back, bool left, bool right);
+	void makeCameraFollowTarget(uint32_t deltaTime, bool front, bool back, bool left, bool right);
 
 	void onTargetMove();
 
@@ -38,11 +38,11 @@ private:
 private:
 	ICamera*		Camera;
 	IM2SceneNode*		M2Node;
-	f32	MaxDistance;
-	f32	MinDistance;
+	float	MaxDistance;
+	float	MinDistance;
 
-	f32	CurrentDistance;
-	f32	CurrentHeight;
+	float	CurrentDistance;
+	float	CurrentHeight;
 
 	vector3df		DestDir;
 	bool		NeedAdjustDir;

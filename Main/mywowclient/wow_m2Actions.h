@@ -8,10 +8,10 @@ struct SAnimationEntries
 	SAnimationEntries()
 		: animations(NULL), count(0) {}
 
-	SAnimationEntries(wow_m2Action::SAnimationEntry* anims, u32 num) : animations(anims), count(num) {}
+	SAnimationEntries(wow_m2Action::SAnimationEntry* anims, uint32_t num) : animations(anims), count(num) {}
 
 	wow_m2Action::SAnimationEntry* animations;
-	u32 count;
+	uint32_t count;
 };
 
 class wow_m2Actions

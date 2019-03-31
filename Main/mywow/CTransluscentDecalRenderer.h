@@ -8,7 +8,7 @@ class CMeshDecalServices;
 class CTransluscentDecalRenderer : public ISceneRenderer
 {
 public:
-	explicit CTransluscentDecalRenderer(u32 quota);
+	explicit CTransluscentDecalRenderer(uint32_t quota);
 	~CTransluscentDecalRenderer();
 
 public:
@@ -20,7 +20,7 @@ public:
 	void end_setupLightFog() const;
 
 private:
-	bool isDecalExceed( u32 vcount ) const;
+	bool isDecalExceed( uint32_t vcount ) const;
 
 private:
 	struct SEntry
@@ -48,8 +48,8 @@ private:
 		const matrix4*		matView;
 		const matrix4*		matProjection;
 
-		u32 vbase;
-		u32 vcount;
+		uint32_t vbase;
+		uint32_t vcount;
 
 		const SRenderUnit*	firstUnit;			//保存一个unit，为shader参数等使用
 	};
@@ -57,7 +57,7 @@ private:
 private:
 	void renderAllBatches(const SRenderUnit*& currentUnit, ICamera* cam);
 	bool isInBatch(const SBatch& batch, const SRenderUnit* unit) const;
-	bool isBatchExceed(const SBatch& batch, u32 vcount) const;
+	bool isBatchExceed(const SBatch& batch, uint32_t vcount) const;
 	void addNewBatch(const SRenderUnit* unit);
 
 private:
@@ -67,7 +67,7 @@ private:
 
 	CMeshDecalServices*	MeshDecalServices;
 
-	u32		Quota;
+	uint32_t		Quota;
 
 	friend class CD3D9Driver;
 	friend class CD3D11Driver;

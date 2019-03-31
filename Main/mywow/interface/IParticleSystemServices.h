@@ -18,7 +18,7 @@ public:
 	virtual void setParticleDensity(float density) = 0;		//¡£◊”∑¢…‰√‹∂»
 	virtual float getParticleDensity() const = 0;
 
-	virtual u32 getActiveParticlesCount() const = 0;
+	virtual uint32_t getActiveParticlesCount() const = 0;
 
 public:
 	SBufferParam		BufferParam;

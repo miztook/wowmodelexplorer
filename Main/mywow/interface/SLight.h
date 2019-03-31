@@ -24,9 +24,9 @@ struct SLight
 	vector3df	Attenuation;
 	vector3df	Position;
 	vector3df	Direction;
-	f32	OuterCone;
-	f32	InnerCone;
-	f32	Falloff;
-	f32	Radius;
+	float	OuterCone;
+	float	InnerCone;
+	float	Falloff;
+	float	Radius;
 	E_LIGHT_TYPE		Type;
 };

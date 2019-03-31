@@ -16,7 +16,7 @@ public:
 
 public:
 	virtual IMesh* getMesh() const  = 0;
-	virtual void setTexture(u32 i, ITexture* texture) = 0;
+	virtual void setTexture(uint32_t i, ITexture* texture) = 0;
 	virtual SMaterial& getMaterial() = 0;
 
 	void setRenderInstType(E_RENDERINST_TYPE renderType) { RenderInstType = renderType; }

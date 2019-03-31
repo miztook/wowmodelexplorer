@@ -21,8 +21,8 @@ public:
 	bool createEmptyTexture( const dimension2du& size, ECOLOR_FORMAT format );
 	bool createFromImage(const dimension2du& size, IImage* image);
 	bool createFromBlpImage(IBLPImage* blpImage);
-	bool createRTTexture( const dimension2du& size, ECOLOR_FORMAT format, u32 antialias, u32 quality );
-	bool createDSTexture( const dimension2du& size, ECOLOR_FORMAT format, u32 antialias, u32 quality );
+	bool createRTTexture( const dimension2du& size, ECOLOR_FORMAT format, uint32_t antialias, uint32_t quality );
+	bool createDSTexture( const dimension2du& size, ECOLOR_FORMAT format, uint32_t antialias, uint32_t quality );
 
 	virtual bool isValid() const { return DXTexture!=nullptr; }
 
@@ -35,14 +35,14 @@ protected:
 	virtual bool hasVideoBuilt() const { return VideoBuilt; }
 
 private:
-	bool createViews(DXGI_FORMAT format, u32 mipmapLevels, bool multisample);
+	bool createViews(DXGI_FORMAT format, uint32_t mipmapLevels, bool multisample);
 	bool createTexture( const dimension2du& size, IImage* image, bool mipmap );
 	bool createTexture( IBLPImage* blpimage, bool mipmap );
 
-	void buildTempSysMemData(D3D11_SUBRESOURCE_DATA* subData, u32 size, IBLPImage* blpimage);
-	void buildTempSysMemData(D3D11_SUBRESOURCE_DATA* subData, u32 size, IImage* image);
+	void buildTempSysMemData(D3D11_SUBRESOURCE_DATA* subData, uint32_t size, IBLPImage* blpimage);
+	void buildTempSysMemData(D3D11_SUBRESOURCE_DATA* subData, uint32_t size, IImage* image);
 
-	void destroyTempSysMemData(D3D11_SUBRESOURCE_DATA* subData, u32 size);
+	void destroyTempSysMemData(D3D11_SUBRESOURCE_DATA* subData, uint32_t size);
 
 private:
 	ID3D11Texture2D*		DXTexture;

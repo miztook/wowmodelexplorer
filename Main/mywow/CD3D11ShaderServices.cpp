@@ -26,21 +26,21 @@ CD3D11ShaderServices::~CD3D11ShaderServices()
 
 	releaseConstantBuffers();
 
-	for (u32 i=0; i < EVST_COUNT; ++i)
+	for (uint32_t i=0; i < EVST_COUNT; ++i)
 	{
 		delete VertexShaders[i];
 	}
 
-	for (u32 i=0; i < EPST_COUNT; ++i)
+	for (uint32_t i=0; i < EPST_COUNT; ++i)
 	{
-		for (u32 k=PS_Macro_None; k<PS_Macro_Num; ++k)
+		for (uint32_t k=PS_Macro_None; k<PS_Macro_Num; ++k)
 			delete PixelShaders[i][k];
 	}
 }
 
 void CD3D11ShaderServices::loadAll()
 {
-	const c8* profile = "";
+	const char* profile = "";
 
 	//vs
 	g_Engine->getFileSystem()->writeLog(ELOG_GX, "begin loading shaders ...");
@@ -91,13 +91,13 @@ void CD3D11ShaderServices::loadAll()
 	assignBuffersToShaders();
 }
 
-bool CD3D11ShaderServices::loadVShader( const c8* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool CD3D11ShaderServices::loadVShader( const char* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	ASSERT(false);
 	return false;
 }
 
-bool CD3D11ShaderServices::loadPShader( const c8* filename, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
+bool CD3D11ShaderServices::loadPShader( const char* filename, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
 {
 	ASSERT(false);
 	return false;
@@ -105,7 +105,7 @@ bool CD3D11ShaderServices::loadPShader( const c8* filename, E_PS_TYPE type, E_PS
 
 #ifdef DIRECTX_USE_COMPILED_SHADER
 
-bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool CD3D11ShaderServices::loadVShaderHLSL( const char* filename, const char* entry, const char* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	string_path absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
@@ -119,7 +119,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 	}
 
 	ID3D11VertexShader* vertexShader;
-	u32 len = 0;
+	uint32_t len = 0;
 
 	//read bls file
 	BlsHeader header;
@@ -135,10 +135,10 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 	ASSERT(blockHeader.codeSize);
 
 	//read
-	u8* constBuffer = (u8*)Z_AllocateTempMemory(blockHeader.constSize);
-	u8* samplerBuffer = (u8*)Z_AllocateTempMemory(blockHeader.samplerSize);
-	u8* textureBuffer = (u8*)Z_AllocateTempMemory(blockHeader.textureSize);
-	u8* codeBuffer = (u8*)Z_AllocateTempMemory(blockHeader.codeSize);
+	uint8_t* constBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.constSize);
+	uint8_t* samplerBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.samplerSize);
+	uint8_t* textureBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.textureSize);
+	uint8_t* codeBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.codeSize);
 
 	len = rfile->read(constBuffer, blockHeader.constSize);
 	ASSERT(len == blockHeader.constSize);
@@ -173,7 +173,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 		CD3D11VertexShader::T_BufferList& cbufferList = shader->getCBufferList();
 		CD3D11VertexShader::T_BufferList& tbufferList = shader->getTBufferList();
 
-		const u8* p = constBuffer;
+		const uint8_t* p = constBuffer;
 		while (p < constBuffer + blockHeader.constSize)
 		{
 			BlsConst* constEntry = (BlsConst*)p;
@@ -189,7 +189,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 				cbufferList.emplace_back(desc);
 
 			p += (sizeof(BlsConst) -1);
-			p+= (strlen((const c8*)p)+1);
+			p+= (strlen((const char*)p)+1);
 		}
 		ASSERT(p == constBuffer + blockHeader.constSize);
 		cbufferList.sort();
@@ -201,7 +201,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 	{
 		CD3D11VertexShader::T_SamplerList& samplerList = shader->getSamplerList();
 
-		const u8* p = samplerBuffer;
+		const uint8_t* p = samplerBuffer;
 		while (p < samplerBuffer + blockHeader.samplerSize)
 		{
 			BlsSampler* constEntry = (BlsSampler*)p;
@@ -212,7 +212,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 			samplerList.emplace_back(desc);
 
 			p += (sizeof(BlsSampler) -1);
-			p+= (strlen((const c8*)p)+1);
+			p+= (strlen((const char*)p)+1);
 		}
 		ASSERT(p == samplerBuffer + blockHeader.samplerSize);
 		samplerList.sort();
@@ -223,7 +223,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 	{
 		CD3D11VertexShader::T_TextureList& textureList = shader->getTextureList();
 
-		const u8* p = textureBuffer;
+		const uint8_t* p = textureBuffer;
 		while (p < textureBuffer + blockHeader.textureSize)
 		{
 			BlsTexture* constEntry = (BlsTexture*)p;
@@ -234,7 +234,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 			textureList.emplace_back(desc);
 
 			p += (sizeof(BlsTexture) -1);
-			p+= (strlen((const c8*)p)+1);
+			p+= (strlen((const char*)p)+1);
 		}
 		ASSERT(p == textureBuffer + blockHeader.textureSize);
 		textureList.sort();
@@ -251,7 +251,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 	return true;
 }
 
-bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
+bool CD3D11ShaderServices::loadPShaderHLSL( const char* filename, const char* entry, const char* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
 {
 	string_path absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
@@ -265,7 +265,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 	}
 
 	ID3D11PixelShader* pixelShader;
-	u32 len = 0;
+	uint32_t len = 0;
 
 	//read bls file
 	BlsHeader header;
@@ -273,7 +273,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 
 	ASSERT(len == sizeof(header));
 
-	if (header.shaderCount <= (u32)macro)
+	if (header.shaderCount <= (uint32_t)macro)
 	{
 		delete rfile;
 		ASSERT(false);
@@ -281,7 +281,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 	}
 
 	//seek to block that correspond to macro
-	for (u32 i = 0; i < (u32)macro; ++i)
+	for (uint32_t i = 0; i < (uint32_t)macro; ++i)
 	{
 		BlsBlockHeader blockHeader;
 		len = rfile->read(&blockHeader, sizeof(blockHeader));
@@ -305,10 +305,10 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 	ASSERT(blockHeader.codeSize);
 
 	//read
-	u8* constBuffer = (u8*)Z_AllocateTempMemory(blockHeader.constSize);
-	u8* samplerBuffer = (u8*)Z_AllocateTempMemory(blockHeader.samplerSize);
-	u8* textureBuffer = (u8*)Z_AllocateTempMemory(blockHeader.textureSize);
-	u8* codeBuffer = (u8*)Z_AllocateTempMemory(blockHeader.codeSize);
+	uint8_t* constBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.constSize);
+	uint8_t* samplerBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.samplerSize);
+	uint8_t* textureBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.textureSize);
+	uint8_t* codeBuffer = (uint8_t*)Z_AllocateTempMemory(blockHeader.codeSize);
 
 	len = rfile->read(constBuffer, blockHeader.constSize);
 	ASSERT(len == blockHeader.constSize);
@@ -343,7 +343,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 		CD3D11PixelShader::T_BufferList& cbufferList = shader->getCBufferList();
 		CD3D11PixelShader::T_BufferList& tbufferList = shader->getTBufferList();
 
-		const u8* p = constBuffer;
+		const uint8_t* p = constBuffer;
 		while (p < constBuffer + blockHeader.constSize)
 		{
 			BlsConst* constEntry = (BlsConst*)p;
@@ -359,7 +359,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 				cbufferList.emplace_back(desc);
 
 			p += (sizeof(BlsConst) -1);
-			p+= (strlen((const c8*)p)+1);
+			p+= (strlen((const char*)p)+1);
 		}
 		ASSERT(p == constBuffer + blockHeader.constSize);
 		cbufferList.sort();
@@ -371,7 +371,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 	{
 		CD3D11PixelShader::T_SamplerList& samplerList = shader->getSamplerList();
 
-		const u8* p = samplerBuffer;
+		const uint8_t* p = samplerBuffer;
 		while (p < samplerBuffer + blockHeader.samplerSize)
 		{
 			BlsSampler* constEntry = (BlsSampler*)p;
@@ -382,7 +382,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 			samplerList.emplace_back(desc);
 
 			p += (sizeof(BlsSampler) -1);
-			p+= (strlen((const c8*)p)+1);
+			p+= (strlen((const char*)p)+1);
 		}
 		ASSERT(p == samplerBuffer + blockHeader.samplerSize);
 		samplerList.sort();
@@ -393,7 +393,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 	{
 		CD3D11PixelShader::T_TextureList& textureList = shader->getTextureList();
 
-		const u8* p = textureBuffer;
+		const uint8_t* p = textureBuffer;
 		while (p < textureBuffer + blockHeader.textureSize)
 		{
 			BlsTexture* texEntry = (BlsTexture*)p;
@@ -404,7 +404,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 			textureList.emplace_back(desc);
 
 			p += (sizeof(BlsTexture) -1);
-			p+= (strlen((const c8*)p)+1);
+			p+= (strlen((const char*)p)+1);
 		}
 		ASSERT(p == textureBuffer + blockHeader.textureSize);
 		textureList.sort();
@@ -424,11 +424,11 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 #else
 
 /*
-bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool CD3D11ShaderServices::loadVShaderHLSL( const char* filename, const char* entry, const char* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	string256 absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
-	c16	absFileNameW[MAX_PATH];
+	char16_t	absFileNameW[MAX_PATH];
 	str8to16(absFileName.c_str(), absFileNameW, MAX_PATH);
 
 	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
@@ -478,7 +478,7 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 
 		D3D11_SHADER_DESC desc;
 		pReflector->GetDesc(&desc);
-		for (u32 i=0; i<desc.ConstantBuffers; ++i)
+		for (uint32_t i=0; i<desc.ConstantBuffers; ++i)
 		{
 			ID3D11ShaderReflectionConstantBuffer* pConstant = pReflector->GetConstantBufferByIndex(i);
 			D3D11_SHADER_BUFFER_DESC bufferDesc;
@@ -498,11 +498,11 @@ bool CD3D11ShaderServices::loadVShaderHLSL( const c8* filename, const c8* entry,
 	return true;
 }
 
-bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry, const c8* profile, E_PS_TYPE type, PSHADERCONSTCALLBACK callback )
+bool CD3D11ShaderServices::loadPShaderHLSL( const char* filename, const char* entry, const char* profile, E_PS_TYPE type, PSHADERCONSTCALLBACK callback )
 {
 	string256 absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
-	c16	absFileNameW[MAX_PATH];
+	char16_t	absFileNameW[MAX_PATH];
 	str8to16(absFileName.c_str(), absFileNameW, MAX_PATH);
 
 	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
@@ -552,7 +552,7 @@ bool CD3D11ShaderServices::loadPShaderHLSL( const c8* filename, const c8* entry,
 
 		D3D11_SHADER_DESC desc;
 		pReflector->GetDesc(&desc);
-		for (u32 i=0; i<desc.ConstantBuffers; ++i)
+		for (uint32_t i=0; i<desc.ConstantBuffers; ++i)
 		{
 			ID3D11ShaderReflectionConstantBuffer* pConstant = pReflector->GetConstantBufferByIndex(i);
 			D3D11_SHADER_BUFFER_DESC bufferDesc;
@@ -615,14 +615,14 @@ void CD3D11ShaderServices::applyShaders()
 	ResetShaders = false;
 }
 
-void CD3D11ShaderServices::setShaderConstants( IVertexShader* vs, const SMaterial& material, u32 pass )
+void CD3D11ShaderServices::setShaderConstants( IVertexShader* vs, const SMaterial& material, uint32_t pass )
 {
 	ASSERT(vs);
 	if (vs && vs->ShaderConstCallback)
 		vs->ShaderConstCallback(vs, material, pass);
 }
 
-void CD3D11ShaderServices::setShaderConstants( IPixelShader* ps, const SMaterial& material, u32 pass )
+void CD3D11ShaderServices::setShaderConstants( IPixelShader* ps, const SMaterial& material, uint32_t pass )
 {
 	ASSERT(ps);
 	if (ps && ps->ShaderConstCallback)
@@ -713,12 +713,12 @@ void CD3D11ShaderServices::buildConstantBuffers()
 
 	T_SizeMap	totalSizeMap;
 
-	for (u32 i=0; i<EVST_COUNT; ++i)
+	for (uint32_t i=0; i<EVST_COUNT; ++i)
 	{	
 		T_SizeMap  shaderSizeMap;
 
 		CD3D11VertexShader* vs = static_cast<CD3D11VertexShader*>(VertexShaders[i]);
-		for (u32 idx=0; idx<vs->getConstantCount(); ++idx)
+		for (uint32_t idx=0; idx<vs->getConstantCount(); ++idx)
 		{
 			const SDx11ConstDesc* desc = vs->getConstantDesc(idx);
 			if (desc->tbuffer)
@@ -734,8 +734,8 @@ void CD3D11ShaderServices::buildConstantBuffers()
 		//添加到总的sizeMap中
 		for (T_SizeMap::const_iterator itr=shaderSizeMap.begin(); itr != shaderSizeMap.end(); ++itr)
 		{
-			u32 size = itr->first;
-			u32 count = itr->second;
+			uint32_t size = itr->first;
+			uint32_t count = itr->second;
 
 			T_SizeMap::iterator it = totalSizeMap.find(size);
 			if (it == totalSizeMap.end() || it->second < count)		//更新总的map计数
@@ -743,15 +743,15 @@ void CD3D11ShaderServices::buildConstantBuffers()
 		}
 	}
 
-	for (u32 i=0; i<EPST_COUNT; ++i)
+	for (uint32_t i=0; i<EPST_COUNT; ++i)
 	{	
 		T_SizeMap  shaderSizeMap;
-		for (u32 k=PS_Macro_None; k<PS_Macro_Num; ++k)
+		for (uint32_t k=PS_Macro_None; k<PS_Macro_Num; ++k)
 		{
 			CD3D11PixelShader* ps = static_cast<CD3D11PixelShader*>(PixelShaders[i][k]);
 			if (!ps)
 				continue;
-			for (u32 idx=0; idx<ps->getConstantCount(); ++idx)
+			for (uint32_t idx=0; idx<ps->getConstantCount(); ++idx)
 			{
 				const SDx11ConstDesc* desc = ps->getConstantDesc(idx);
 				if (desc->tbuffer)
@@ -768,8 +768,8 @@ void CD3D11ShaderServices::buildConstantBuffers()
 		//添加到总的sizeMap中
 		for (T_SizeMap::const_iterator itr=shaderSizeMap.begin(); itr != shaderSizeMap.end(); ++itr)
 		{
-			u32 size = itr->first;
-			u32 count = itr->second;
+			uint32_t size = itr->first;
+			uint32_t count = itr->second;
 
 			T_SizeMap::iterator it = totalSizeMap.find(size);
 			if (it == totalSizeMap.end() || it->second < count)		//更新总的map计数
@@ -780,10 +780,10 @@ void CD3D11ShaderServices::buildConstantBuffers()
 	//创建constant buffers
 	for (T_SizeMap::const_iterator itr = totalSizeMap.begin(); itr != totalSizeMap.end(); ++itr)
 	{
-		u32 size = itr->first;
-		u32 count = itr->second;
+		uint32_t size = itr->first;
+		uint32_t count = itr->second;
 
-		for (u32 i=0; i<count; ++i)
+		for (uint32_t i=0; i<count; ++i)
 		{
 			SConstantBuffer buffer;
 			buffer.used = false;
@@ -827,12 +827,12 @@ void CD3D11ShaderServices::buildTextureBuffers()
 
 	T_SizeMap	totalSizeMap;
 
-	for (u32 i=0; i<EVST_COUNT; ++i)
+	for (uint32_t i=0; i<EVST_COUNT; ++i)
 	{	
 		T_SizeMap  shaderSizeMap;
 		
 		CD3D11VertexShader* vs = static_cast<CD3D11VertexShader*>(VertexShaders[i]);
-		for (u32 idx=0; idx<vs->getConstantCount(); ++idx)
+		for (uint32_t idx=0; idx<vs->getConstantCount(); ++idx)
 		{
 			const SDx11ConstDesc* desc = vs->getConstantDesc(idx);
 			if (!desc->tbuffer)
@@ -848,8 +848,8 @@ void CD3D11ShaderServices::buildTextureBuffers()
 		//添加到总的sizeMap中
 		for (T_SizeMap::const_iterator itr=shaderSizeMap.begin(); itr != shaderSizeMap.end(); ++itr)
 		{
-			u32 size = itr->first;
-			u32 count = itr->second;
+			uint32_t size = itr->first;
+			uint32_t count = itr->second;
 
 			T_SizeMap::iterator it = totalSizeMap.find(size);
 			if (it == totalSizeMap.end() || it->second < count)		//更新总的map计数
@@ -857,16 +857,16 @@ void CD3D11ShaderServices::buildTextureBuffers()
 		}
 	}
 
-	for (u32 i=0; i<EPST_COUNT; ++i)
+	for (uint32_t i=0; i<EPST_COUNT; ++i)
 	{		
 		T_SizeMap  shaderSizeMap;
 		
-		for (u32 k=PS_Macro_None; k<PS_Macro_Num; ++k)
+		for (uint32_t k=PS_Macro_None; k<PS_Macro_Num; ++k)
 		{
 			CD3D11PixelShader* ps = static_cast<CD3D11PixelShader*>(PixelShaders[i][k]);
 			if(!ps)
 				continue;
-			for (u32 idx=0; idx<ps->getConstantCount(); ++idx)
+			for (uint32_t idx=0; idx<ps->getConstantCount(); ++idx)
 			{
 				const SDx11ConstDesc* desc = ps->getConstantDesc(idx);
 				if (!desc->tbuffer)
@@ -883,8 +883,8 @@ void CD3D11ShaderServices::buildTextureBuffers()
 		//添加到总的sizeMap中
 		for (T_SizeMap::const_iterator itr=shaderSizeMap.begin(); itr != shaderSizeMap.end(); ++itr)
 		{
-			u32 size = itr->first;
-			u32 count = itr->second;
+			uint32_t size = itr->first;
+			uint32_t count = itr->second;
 
 			T_SizeMap::iterator it = totalSizeMap.find(size);
 			if (it == totalSizeMap.end() || it->second < count)		//更新总的map计数
@@ -895,10 +895,10 @@ void CD3D11ShaderServices::buildTextureBuffers()
 	//创建constant buffers
 	for (T_SizeMap::const_iterator itr = totalSizeMap.begin(); itr != totalSizeMap.end(); ++itr)
 	{
-		u32 size = itr->first;
-		u32 count = itr->second;
+		uint32_t size = itr->first;
+		uint32_t count = itr->second;
 
-		for (u32 i=0; i<count; ++i)
+		for (uint32_t i=0; i<count; ++i)
 		{
 			SConstantBuffer buffer;
 			buffer.size = size;
@@ -953,13 +953,13 @@ void CD3D11ShaderServices::releaseTextureBuffers()
 
 void CD3D11ShaderServices::assignBuffersToShaders()
 {
-	for (u32 i=0; i<EVST_COUNT; ++i)
+	for (uint32_t i=0; i<EVST_COUNT; ++i)
 	{
 		CD3D11VertexShader* vs = static_cast<CD3D11VertexShader*>(VertexShaders[i]);
 
 		markAllConstantBufferUnused();
 
-		for (u32 k=0; k<vs->getConstantCount(); ++k)
+		for (uint32_t k=0; k<vs->getConstantCount(); ++k)
 		{
 			SDx11ConstDesc* desc = vs->getConstantDesc(k);
 
@@ -971,9 +971,9 @@ void CD3D11ShaderServices::assignBuffersToShaders()
 		}
 	}
 
-	for (u32 i=0; i<EPST_COUNT; ++i)
+	for (uint32_t i=0; i<EPST_COUNT; ++i)
 	{
-		for (u32 macro=PS_Macro_None; macro<PS_Macro_Num; ++macro)
+		for (uint32_t macro=PS_Macro_None; macro<PS_Macro_Num; ++macro)
 		{
 			CD3D11PixelShader* ps = static_cast<CD3D11PixelShader*>(PixelShaders[i][macro]);
 			if (!ps)
@@ -981,7 +981,7 @@ void CD3D11ShaderServices::assignBuffersToShaders()
 
 			markAllConstantBufferUnused();
 
-			for (u32 k=0; k<ps->getConstantCount(); ++k)
+			for (uint32_t k=0; k<ps->getConstantCount(); ++k)
 			{
 				SDx11ConstDesc* desc = ps->getConstantDesc(k);
 

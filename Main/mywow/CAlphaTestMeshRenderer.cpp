@@ -2,7 +2,7 @@
 #include "CAlphaTestMeshRenderer.h"
 #include "mywow.h"
 
-CAlphaTestMeshRenderer::CAlphaTestMeshRenderer(u32 quota)
+CAlphaTestMeshRenderer::CAlphaTestMeshRenderer(uint32_t quota)
 	: Quota(quota)
 {
 	RenderUnits.reserve(Quota);
@@ -25,7 +25,7 @@ void CAlphaTestMeshRenderer::addRenderUnit(const SRenderUnit* unit)
 	if (needRealloc)
 	{
 		RenderEntries.resize(RenderUnits.size());
-		for (u32 i=0; i<RenderUnits.size(); ++i)
+		for (uint32_t i=0; i<RenderUnits.size(); ++i)
 		{
 			RenderEntries[i].unit = &RenderUnits[i];
 		}

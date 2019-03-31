@@ -26,7 +26,7 @@ private:
 	void outputPinchGesture(E_GESTURE_STATE state);
 
 private:
-	f32 OriginalDistance;		//distance between two fingers
-	f32 LastScale;
-	f32 LastVelocity;
+	float OriginalDistance;		//distance between two fingers
+	float LastScale;
+	float LastVelocity;
 };

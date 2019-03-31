@@ -58,8 +58,8 @@ struct SEngineInitParam
 		outputFileName = false;
 	}
 
-	c8 baseDir[QMAX_PATH];
-	c8 logDir[QMAX_PATH];
+	char baseDir[QMAX_PATH];
+	char logDir[QMAX_PATH];
 	float osversion;
 	bool ignoreSetting;
 	bool useCompress;
@@ -72,9 +72,9 @@ public:
 	Engine(const SEngineInitParam& param, const SWindowInfo& wndInfo);
 	~Engine();
 
-	static SWindowInfo createWindow(const char* caption, const dimension2du& windowSize, f32 scale = 1.0f, bool fullscreen = false, bool hide = false);
+	static SWindowInfo createWindow(const char* caption, const dimension2du& windowSize, float scale = 1.0f, bool fullscreen = false, bool hide = false);
 
-	bool initDriver(E_DRIVER_TYPE driverType, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread);
+	bool initDriver(E_DRIVER_TYPE driverType, uint32_t adapter, bool fullscreen, bool vsync, uint8_t antialias, bool multithread);
 
 	void initSceneManager();
 
@@ -82,7 +82,7 @@ public:
 	IMessageHandler* getMessageHandler() { return MessageHandler; }
 
 	IFTFont* getDefaultFont();
-	IFTFont* getFont(u32 fontSize, int fontStyle, int outlineWidth);
+	IFTFont* getFont(uint32_t fontSize, int fontStyle, int outlineWidth);
 
 	void setSceneManager(ISceneManager* smgr) { SceneManager = smgr; }
 
@@ -118,7 +118,6 @@ public:
 private:
 	SWindowInfo WindowInfo;
 	COSInfo*	OSInfo;
-	WowLegion::wowDatabase*		WowDatabase70;
 	WowClassic::wowDatabase*		WowDatabase;
 	wowEnvironment*		WowEnvironment;
 	IFileSystem*		FileSystem;

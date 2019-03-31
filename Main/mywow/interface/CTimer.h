@@ -13,27 +13,27 @@ public:
 public:
 	void beginPerf(bool enable);
 
-	void endPerf(bool enble, u32& time);
+	void endPerf(bool enble, uint32_t& time);
 
-	u32 getMillisecond() const;
+	uint32_t getMillisecond() const;
 
-	u32 getMicrosecond() const;
+	uint32_t getMicrosecond() const;
 	
 	void calculateTime();
 
-	u32 getTimeSinceStart() const { return timeSinceStart; }
+	uint32_t getTimeSinceStart() const { return timeSinceStart; }
 
-	u32 getTimeSinceLastFrame() const { return timeSinceLastFrame; }
+	uint32_t getTimeSinceLastFrame() const { return timeSinceLastFrame; }
 
-	bool checkFrameLimit(s32 limit);
+	bool checkFrameLimit(int32_t limit);
 
 private:
-	u64	PerfFreq;
-	u64	PerfStart;
-	u64	PerfEnd;
+	uint64_t	PerfFreq;
+	uint64_t	PerfStart;
+	uint64_t	PerfEnd;
 
-	u32		timelastframe;
-	u32		timeSinceStart, timeSinceLastFrame;
+	uint32_t		timelastframe;
+	uint32_t		timeSinceStart, timeSinceLastFrame;
 
-	u32		FrameInterval;
+	uint32_t		FrameInterval;
 };

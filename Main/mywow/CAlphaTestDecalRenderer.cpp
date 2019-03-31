@@ -4,7 +4,7 @@
 #include "CMeshDecalServices.h"
 #include "CM2SceneNode.h"
 
-CAlphaTestDecalRenderer::CAlphaTestDecalRenderer(u32 quota)
+CAlphaTestDecalRenderer::CAlphaTestDecalRenderer(uint32_t quota)
 	: Quota(quota)
 {
 	RenderUnits.reserve(Quota);
@@ -30,7 +30,7 @@ void CAlphaTestDecalRenderer::addRenderUnit( const SRenderUnit* unit )
 	if (needRealloc)
 	{
 		RenderEntries.resize(RenderUnits.size());
-		for (u32 i=0; i<RenderUnits.size(); ++i)
+		for (uint32_t i=0; i<RenderUnits.size(); ++i)
 		{
 			RenderEntries[i].unit = &RenderUnits[i];
 		}
@@ -54,8 +54,8 @@ void CAlphaTestDecalRenderer::render(const SRenderUnit*& currentUnit,  ICamera* 
 	//collect batches
 	RenderBatches.clear();
 
-	u32 size = (u32)RenderEntries.size();
-	for (u32 i=0; i<size; ++i)
+	uint32_t size = (uint32_t)RenderEntries.size();
+	for (uint32_t i=0; i<size; ++i)
 	{
 		const SRenderUnit* unit  = RenderEntries[i].unit;
 
@@ -85,7 +85,7 @@ void CAlphaTestDecalRenderer::render(const SRenderUnit*& currentUnit,  ICamera* 
 		SBatch& batch = RenderBatches.back();
 		SVertex_PCT* vertices = (SVertex_PCT*)&MeshDecalServices->Vertices[batch.vbase + batch.vcount];		
 
-		u32 nFill = 0;
+		uint32_t nFill = 0;
 		if (unit->sceneNode->getType() == EST_M2)
 		{		
 			const CM2SceneNode* node = static_cast<const CM2SceneNode*>(unit->sceneNode);
@@ -142,7 +142,7 @@ bool CAlphaTestDecalRenderer::isInBatch( const SBatch& batch, const SRenderUnit*
 		batch.matProjection == unit->matProjection;
 }
 
-bool CAlphaTestDecalRenderer::isBatchExceed( const SBatch& batch, u32 vcount ) const
+bool CAlphaTestDecalRenderer::isBatchExceed( const SBatch& batch, uint32_t vcount ) const
 {
 	return batch.vbase + batch.vcount + vcount + vcount > MeshDecalServices->getMaxVertexCount();
 }

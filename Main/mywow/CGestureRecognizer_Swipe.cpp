@@ -21,8 +21,8 @@ void CGestureRecognizer_Swipe::tick()
 
 	if (State == RecognizerState_Begin)
 	{
-		u32 now = g_Engine->getTimer()->getMillisecond();
-		if (now - TimeStamp > (u32)(getfSwipeMaxStayTime() * 1000))
+		uint32_t now = g_Engine->getTimer()->getMillisecond();
+		if (now - TimeStamp > (uint32_t)(getfSwipeMaxStayTime() * 1000))
 			changeState(RecognizerState_Fail);
 	}
 }
@@ -74,8 +74,8 @@ void CGestureRecognizer_Swipe::onTouchMove( const std::vector<SGesTouchInfo>& to
 			return;			//ignore
 		
 		head = touch;
-		f32 speedX = touch.deltaTime > 0.0f ? touch.deltaX / touch.deltaTime : 0.0f;
-		f32 speedY = touch.deltaTime > 0.0f ? touch.deltaY / touch.deltaTime : 0.0f;
+		float speedX = touch.deltaTime > 0.0f ? touch.deltaX / touch.deltaTime : 0.0f;
+		float speedY = touch.deltaTime > 0.0f ? touch.deltaY / touch.deltaTime : 0.0f;
 		if (vector2df(speedX, speedY).getLength() > getThreshold_SwipeSpeedDist())
 		{
 			ChangePosX = touch.posX;
@@ -100,7 +100,7 @@ void CGestureRecognizer_Swipe::onTouchEnd( const std::vector<SGesTouchInfo>& tou
 
 	SGesTouchInfo& head = TouchInfoArray.front();
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index != -1)
 	{
 		const SGesTouchInfo& touch = touchInfos[index];
@@ -110,8 +110,8 @@ void CGestureRecognizer_Swipe::onTouchEnd( const std::vector<SGesTouchInfo>& tou
 			return;			//ignore
 
 		head = touch;
-		f32 speedX = touch.deltaTime > 0.0f ? touch.deltaX / touch.deltaTime : 0.0f;
-		f32 speedY = touch.deltaTime > 0.0f ? touch.deltaY / touch.deltaTime : 0.0f;
+		float speedX = touch.deltaTime > 0.0f ? touch.deltaX / touch.deltaTime : 0.0f;
+		float speedY = touch.deltaTime > 0.0f ? touch.deltaY / touch.deltaTime : 0.0f;
 		if (vector2df(speedX, speedY).getLength() > getThreshold_SwipeSpeedDist())
 		{
 			changeState(RecognizerState_End);
@@ -133,7 +133,7 @@ void CGestureRecognizer_Swipe::onTouchCancel( const std::vector<SGesTouchInfo>& 
 		return;
 
 	SGesTouchInfo& head = TouchInfoArray.front();
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index != -1)
 	{
 		head = touchInfos[index];
@@ -175,8 +175,8 @@ E_SWIPE_DIR CGestureRecognizer_Swipe::calcSwipeDirection()
 	if (TouchInfoArray.empty())
 		return SwipeDir_None;
 
-	f32 deltaX = TouchInfoArray.front().deltaX;
-	f32 deltaY = TouchInfoArray.front().deltaY;
+	float deltaX = TouchInfoArray.front().deltaX;
+	float deltaY = TouchInfoArray.front().deltaY;
 	
 	vector2df v(deltaX, deltaY);
 	if (equals_(v.getLength(), 0.0f))
@@ -184,7 +184,7 @@ E_SWIPE_DIR CGestureRecognizer_Swipe::calcSwipeDirection()
 
 	v.normalize();
 
-	f32 thresholdDir = getThreshold_SwipeDirValid();
+	float thresholdDir = getThreshold_SwipeDirValid();
 	if (v.X > thresholdDir)
 		return SwipeDir_Right;
 	else if (v.X < -thresholdDir)

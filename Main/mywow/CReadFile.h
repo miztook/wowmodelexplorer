@@ -10,28 +10,28 @@ public:
 	virtual ~CReadFile();
 
 public:
-	virtual u32 read(void* buffer, u32 sizeToRead);
-	virtual u32 readText(c8* buffer, u32 len = MAX_READ_NUM);
-	virtual u32 readLine(c8* buffer, u32 len = MAX_READ_NUM);
-	virtual u32 readLineSkipSpace(c8* buffer, u32 len = MAX_READ_NUM);
-	virtual bool seek(s32 finalPos, bool relativePos = false);
-	virtual u32 getSize() const { return FileSize; }
-	virtual s32 getPos() const;
+	virtual uint32_t read(void* buffer, uint32_t sizeToRead);
+	virtual uint32_t readText(char* buffer, uint32_t len = MAX_READ_NUM);
+	virtual uint32_t readLine(char* buffer, uint32_t len = MAX_READ_NUM);
+	virtual uint32_t readLineSkipSpace(char* buffer, uint32_t len = MAX_READ_NUM);
+	virtual bool seek(int32_t finalPos, bool relativePos = false);
+	virtual uint32_t getSize() const { return FileSize; }
+	virtual int32_t getPos() const;
 	virtual bool isEof() const;
-	virtual const c8* getFileName() const { return FileName; }
+	virtual const char* getFileName() const { return FileName; }
 	virtual bool isOpen() const { return File != nullptr; }
 	virtual bool isBinary() const { return IsBinary; }
 
 private:
 	void openFile(bool binary);
-	bool isWhiteSpace(const c8 symbol) const
+	bool isWhiteSpace(const char symbol) const
 	{
 		return symbol == ' ' || symbol == '\t' || symbol == '\r';
 	}
 
 private:
 	FILE*		File;
-	u32		FileSize;
-	c8		FileName[QMAX_PATH];
+	uint32_t		FileSize;
+	char		FileName[QMAX_PATH];
 	bool		IsBinary;
 };

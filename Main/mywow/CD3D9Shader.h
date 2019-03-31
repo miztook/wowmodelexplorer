@@ -18,9 +18,9 @@ struct SDx9ConstDesc
 		return index < other.index;
 	}
 
-	c8		name[32];
-	u32 index;		//register index in dx9
-	u32 size;			//const size
+	char		name[32];
+	uint32_t index;		//register index in dx9
+	uint32_t size;			//const size
 };
 
 class CD3D9VertexShader : public IVertexShader
@@ -34,10 +34,10 @@ public:
 	bool isValid() const { return VertexShader != nullptr; }
 	void onShaderUsed() {}
 
-	 u32 getConstantCount() const { return (u32)ConstList.size(); }
+	 uint32_t getConstantCount() const { return (uint32_t)ConstList.size(); }
 	 IDirect3DVertexShader9* getDXVShader() const { return VertexShader; }
 
-	void setShaderConstant(const c8* name, const void* srcData, u32 size);
+	void setShaderConstant(const char* name, const void* srcData, uint32_t size);
 
 public:
 	typedef std::list<SDx9ConstDesc, qzone_allocator<SDx9ConstDesc> >		T_ConstList;
@@ -45,8 +45,8 @@ public:
 	 T_ConstList& getConstList() { return ConstList; }
 
 private:
-	void setShaderConstant(const SDx9ConstDesc* desc, const void* srcData, u32 size);
-	const SDx9ConstDesc* getConstantDesc(const c8* name) const;
+	void setShaderConstant(const SDx9ConstDesc* desc, const void* srcData, uint32_t size);
+	const SDx9ConstDesc* getConstantDesc(const char* name) const;
 
 private:
 	CD3D9Driver*	Driver;
@@ -67,11 +67,11 @@ public:
 	bool isValid() const { return PixelShader != nullptr; }
 	void onShaderUsed() {}
 
-	 u32 getConstantCount() const { return (u32)ConstList.size(); }
+	 uint32_t getConstantCount() const { return (uint32_t)ConstList.size(); }
 	 IDirect3DPixelShader9* getDXPShader() const { return PixelShader; }
 
-	void setShaderConstant(const c8* name, const void* srcData, u32 size);
-	void setTextureConstant(const c8* name, ITexture* texture);
+	void setShaderConstant(const char* name, const void* srcData, uint32_t size);
+	void setTextureConstant(const char* name, ITexture* texture);
 
 public:
 	typedef std::list<SDx9ConstDesc, qzone_allocator<SDx9ConstDesc> >		T_ConstList;
@@ -79,8 +79,8 @@ public:
 	 T_ConstList& getConstList() { return ConstList; }
 
 private:
-	void setShaderConstant(const SDx9ConstDesc* desc, const void* srcData, u32 size);
-	const SDx9ConstDesc* getConstantDesc(const c8* name) const;
+	void setShaderConstant(const SDx9ConstDesc* desc, const void* srcData, uint32_t size);
+	const SDx9ConstDesc* getConstantDesc(const char* name) const;
 
 private:
 	CD3D9Driver*	Driver;

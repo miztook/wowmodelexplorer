@@ -29,9 +29,9 @@ public:
 
 	wow_m2Logic*	 getWowM2Logic() const { return WowM2Logic; }
 
-	void tick(u32 delta);
-	void onMouseWheel(f32 fDelta);
-	void onMouseMove(f32 pitchDegree, f32 yawDegree);
+	void tick(uint32_t delta);
+	void onMouseWheel(float fDelta);
+	void onMouseMove(float pitchDegree, float yawDegree);
 
 private:
 	IPlayer* Player;

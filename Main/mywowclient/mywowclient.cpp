@@ -31,18 +31,18 @@ Client::~Client()
 	delete WowM2Logic;
 }
 
-void Client::tick( u32 delta )
+void Client::tick( uint32_t delta )
 {	
 	World->tick(delta);
 	Player->tick(delta);
 }
 
-void Client::onMouseWheel( f32 fDelta )
+void Client::onMouseWheel( float fDelta )
 {
 	Player->onMouseWheel(fDelta);
 }
 
-void Client::onMouseMove( f32 pitchDegree, f32 yawDegree )
+void Client::onMouseMove( float pitchDegree, float yawDegree )
 {
 	Player->onMouseMove(pitchDegree, yawDegree);
 }

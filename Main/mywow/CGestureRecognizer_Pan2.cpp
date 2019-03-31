@@ -24,14 +24,14 @@ void CGestureRecognizer_Pan2::tick()
 
 	if (State == RecognizerState_None && !TouchInfoArray.empty())
 	{
-		u32 now = g_Engine->getTimer()->getMillisecond();
-		if (now - TimeStamp > (u32)(getfDoubleTouchDiffTime() * 1000))
+		uint32_t now = g_Engine->getTimer()->getMillisecond();
+		if (now - TimeStamp > (uint32_t)(getfDoubleTouchDiffTime() * 1000))
 			changeState(RecognizerState_Fail);
 	}
 	else if (State == RecognizerState_Begin)
 	{
-		u32 now = g_Engine->getTimer()->getMillisecond();
-		if (now - TimeStamp > (u32)(getfRecognizerFailInterval() * 1000))
+		uint32_t now = g_Engine->getTimer()->getMillisecond();
+		if (now - TimeStamp > (uint32_t)(getfRecognizerFailInterval() * 1000))
 			changeState(RecognizerState_Fail);
 	}
 }
@@ -53,8 +53,8 @@ void CGestureRecognizer_Pan2::onTouchBegin( const std::vector<SGesTouchInfo>& to
 	if (State != RecognizerState_None || touchInfos.empty())
 		return;
 
-	u32 numCache = (u32)TouchInfoArray.size();
-	u32 numBegin = (u32)touchInfos.size();
+	uint32_t numCache = (uint32_t)TouchInfoArray.size();
+	uint32_t numBegin = (uint32_t)touchInfos.size();
 	if (numBegin + numCache > 2)
 	{
 		changeState(RecognizerState_Fail);
@@ -104,15 +104,15 @@ void CGestureRecognizer_Pan2::onTouchMove( const std::vector<SGesTouchInfo>& tou
 		(State != RecognizerState_Begin && State != RecognizerState_Changed))
 	return;
 
-	f32 deltaX0 = 0.0f;
-	f32 deltaY0 = 0.0f;
-	f32 deltaX1 = 0.0f;
-	f32 deltaY1 = 0.0f;
+	float deltaX0 = 0.0f;
+	float deltaY0 = 0.0f;
+	float deltaX1 = 0.0f;
+	float deltaY1 = 0.0f;
 
 	SGesTouchInfo& head = TouchInfoArray.front();
 	SGesTouchInfo& tail = TouchInfoArray.back();
 
-	s32 index0 = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index0 = findTouchInfo(head.fingerID, touchInfos);
 	if (index0 != -1 &&
 		getTouchDistance(head, touchInfos[index0]) > getThreshold_Pan2MoveDist())
 	{
@@ -125,7 +125,7 @@ void CGestureRecognizer_Pan2::onTouchMove( const std::vector<SGesTouchInfo>& tou
 		return;
 	}
 
-	s32 index1 = findTouchInfo(tail.fingerID, touchInfos);
+	int32_t index1 = findTouchInfo(tail.fingerID, touchInfos);
 	if (index1 != -1 &&
 		getTouchDistance(tail, touchInfos[index1]) > getThreshold_Pan2MoveDist())
 	{
@@ -165,7 +165,7 @@ void CGestureRecognizer_Pan2::onTouchEnd( const std::vector<SGesTouchInfo>& touc
 	if (TouchInfoArray.size() == 1)
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
-		s32 index = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index = findTouchInfo(head.fingerID, touchInfos);
 		if (index != -1)
 		{
 			head = touchInfos[index];
@@ -176,8 +176,8 @@ void CGestureRecognizer_Pan2::onTouchEnd( const std::vector<SGesTouchInfo>& touc
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
 		SGesTouchInfo& tail = TouchInfoArray.back();
-		s32 index0 = findTouchInfo(head.fingerID, touchInfos);
-		s32 index1 = findTouchInfo(tail.fingerID, touchInfos);
+		int32_t index0 = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index1 = findTouchInfo(tail.fingerID, touchInfos);
 
 		if (index0 != -1 || index1 != -1)
 		{
@@ -201,7 +201,7 @@ void CGestureRecognizer_Pan2::onTouchCancel( const std::vector<SGesTouchInfo>& t
 	if (TouchInfoArray.size() == 1)
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
-		s32 index = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index = findTouchInfo(head.fingerID, touchInfos);
 		if (index != -1)
 		{
 			head = touchInfos[index];
@@ -212,8 +212,8 @@ void CGestureRecognizer_Pan2::onTouchCancel( const std::vector<SGesTouchInfo>& t
 	{
 		SGesTouchInfo& head = TouchInfoArray.front();
 		SGesTouchInfo& tail = TouchInfoArray.back();
-		s32 index0 = findTouchInfo(head.fingerID, touchInfos);
-		s32 index1 = findTouchInfo(tail.fingerID, touchInfos);
+		int32_t index0 = findTouchInfo(head.fingerID, touchInfos);
+		int32_t index1 = findTouchInfo(tail.fingerID, touchInfos);
 
 		if (index0 != -1 || index1 != -1)
 		{
@@ -247,7 +247,7 @@ void CGestureRecognizer_Pan2::onEnterState( E_RECOGNIZER_STATE state )
 	CGestureRecognizerBase::onEnterState(state);
 }
 
-bool CGestureRecognizer_Pan2::checkPan2MoveDelta( f32 deltaX1, f32 deltaY1, f32 deltaX2, f32 deltaY2 )
+bool CGestureRecognizer_Pan2::checkPan2MoveDelta( float deltaX1, float deltaY1, float deltaX2, float deltaY2 )
 {
 	vector2df v1(deltaX1, deltaY1);
 	vector2df v2(deltaX2, deltaY2);
@@ -300,12 +300,12 @@ void CGestureRecognizer_Pan2::outputPan2Gesture( E_GESTURE_STATE state )
 	{
 		const SGesTouchInfo& head = TouchInfoArray.front();
 		const SGesTouchInfo& tail = TouchInfoArray.back();
-		f32 curPosX = (head.posX + tail.posX) * 0.5f;
-		f32 curPoxY = (head.posY + tail.posY) * 0.5f;
+		float curPosX = (head.posX + tail.posX) * 0.5f;
+		float curPoxY = (head.posY + tail.posY) * 0.5f;
 
-		f32 deltaTime = (g_Engine->getTimer()->getMillisecond() - TimeStamp) * 0.001f;
-		f32 curVelocityX = deltaTime > 0.0f ? (curPosX - LastPosX) / deltaTime : 0.0f;
-		f32 curVelocityY = deltaTime > 0.0f ? (curPoxY - LastPosY) / deltaTime : 0.0f;
+		float deltaTime = (g_Engine->getTimer()->getMillisecond() - TimeStamp) * 0.001f;
+		float curVelocityX = deltaTime > 0.0f ? (curPosX - LastPosX) / deltaTime : 0.0f;
+		float curVelocityY = deltaTime > 0.0f ? (curPoxY - LastPosY) / deltaTime : 0.0f;
 
 		gesInfo.param.pan2_xPos = curPosX;
 		gesInfo.param.pan2_yPos = curPoxY;

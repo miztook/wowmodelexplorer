@@ -16,10 +16,10 @@ namespace WowLegion
 		string256 type;
 		bool isKey;
 		bool needIndex;
-		u32 arraySize;
-		s32 id;
+		uint32_t arraySize;
+		int32_t id;
 
-		s32 pos;
+		int32_t pos;
 		bool isCommonData;
 		bool isRelationshipData;
 	};

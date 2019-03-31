@@ -14,17 +14,17 @@ public:
 	CSceneEnvironment();
 	~CSceneEnvironment();
 
-	virtual void computeOutdoorLight(s32 time);
+	virtual void computeOutdoorLight(int32_t time);
 
-	virtual void setDayTime(s32 hour, s32 minute);
-	virtual void setDayTime(s32 time);
-	virtual s32 getDayTime() const { return DayTime; }
+	virtual void setDayTime(int32_t hour, int32_t minute);
+	virtual void setDayTime(int32_t time);
+	virtual int32_t getDayTime() const { return DayTime; }
 
 private:
 
 	struct SOutDoorLightEntry
 	{
-		s32 time;
+		int32_t time;
 		SOutDoorLight light;
 
 		bool operator<(const SOutDoorLightEntry& other) const
@@ -39,14 +39,14 @@ private:
 
 	void readOutDoorLightEntry(IMemFile* file, SOutDoorLightEntry* outdoorlight);
 
-	s32 getOurDoorLightInfo(s32 time, SOutDoorLight& v, s32 hint);
+	int32_t getOurDoorLightInfo(int32_t time, SOutDoorLight& v, int32_t hint);
 
-	void interpolate(SOutDoorLight& info, const SOutDoorLightEntry& entry1, const SOutDoorLightEntry& entry2, f32 r);
+	void interpolate(SOutDoorLight& info, const SOutDoorLightEntry& entry1, const SOutDoorLightEntry& entry2, float r);
 
 private:
 	std::vector<SOutDoorLightEntry>		OutDoorLights;
 
-	s32	DayTime;
-	s32	LastTime;
-	s32	Hint;
+	int32_t	DayTime;
+	int32_t	LastTime;
+	int32_t	Hint;
 };

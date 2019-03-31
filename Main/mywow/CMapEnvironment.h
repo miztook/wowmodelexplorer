@@ -31,9 +31,9 @@ enum SkyColorNames : int32_t
 struct SSkyColor
 {
 	vector3df color;
-	u32 time;
+	uint32_t time;
 
-	void set(u32 t, u32 col)
+	void set(uint32_t t, uint32_t col)
 	{
 		time = t;
 		color.Z = ((col & 0x0000ff)) / 255.0f;
@@ -49,22 +49,22 @@ struct SSkyLight
 		radiusInner = 0;
 		radiusOuter = 0;
 		::memset(colorRows, 0, sizeof(SSkyColor*)*18);
-		::memset(colorNums, 0, sizeof(u32)*18);
+		::memset(colorNums, 0, sizeof(uint32_t)*18);
 	}
 	~SSkyLight()
 	{
-		for (u32 i=0; i<18; ++i)
+		for (uint32_t i=0; i<18; ++i)
 			delete[] colorRows[i];
 	}
 
 	vector3df		position;
-	f32		radiusInner;
-	f32		radiusOuter;
+	float		radiusInner;
+	float		radiusOuter;
 
 	SSkyColor*	colorRows[18];
-	u32	colorNums[18];
+	uint32_t	colorNums[18];
 
-	s32 getColor( u32 row, u32 time, vector3df& v, s32 hint=0 );
+	int32_t getColor( uint32_t row, uint32_t time, vector3df& v, int32_t hint=0 );
 
 	bool operator<(const SSkyLight& other) const
 	{
@@ -76,21 +76,21 @@ struct SSkyLight
 class CMapEnvironment
 {
 public:
-	explicit CMapEnvironment(s32 mapid);
+	explicit CMapEnvironment(int32_t mapid);
 	~CMapEnvironment();
 
-	void computeSkyLights(vector3df pos, s32 time);
+	void computeSkyLights(vector3df pos, int32_t time);
 
 	vector3df ColorSet[COLOR_COUNT];
 
 private:
-	s32	MapId;
+	int32_t	MapId;
 
 	struct SSkyLightEntry
 	{
 		SSkyLightEntry(SSkyLight* l) : light(l), weight(0.0f) {}
 		SSkyLight* light;
-		f32 weight;
+		float weight;
 
 		bool operator<(const SSkyLightEntry& other) const
 		{

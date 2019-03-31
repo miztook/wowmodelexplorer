@@ -23,19 +23,19 @@ public:
 	virtual void add3DLine(const line3df& line, SColor color) = 0;
 	virtual void addAABB(const aabbox3df& box, SColor color) = 0;
 	virtual void add3DBox(const vector3df& vPos, const vector3df& vDir, const vector3df& vUp, const vector3df& vRight, const vector3df& vExts, SColor color, const matrix4* pMat) = 0;
-	virtual void addSphere(const vector3df& center, float radius, SColor color, u32 hori = 10, u32 vert = 6) = 0;
+	virtual void addSphere(const vector3df& center, float radius, SColor color, uint32_t hori = 10, uint32_t vert = 6) = 0;
 	virtual void flushAll3DLines(ICamera* cam) = 0;
 
 	//flat
 	virtual void addAABB_Flat(const aabbox3df& box, SColor color) = 0;
 	virtual void add3DBox_Flat(const vector3df& vPos, const vector3df& vDir, const vector3df& vUp, const vector3df& vRight, const vector3df& vExts, SColor color, const matrix4* pMat) = 0;
-	virtual void addSphere_Flat(const vector3df& center, float radius, SColor color, u32 hori = 10, u32 vert = 6) = 0;
-	virtual void add3DVertices(vector3df* verts, u32 numverts, u16* indices, u32 numindices, SColor color) = 0;
-	virtual void add3DVertices(vector3df* verts, u32 numverts, SColor color) = 0;
+	virtual void addSphere_Flat(const vector3df& center, float radius, SColor color, uint32_t hori = 10, uint32_t vert = 6) = 0;
+	virtual void add3DVertices(vector3df* verts, uint32_t numverts, uint16_t* indices, uint32_t numindices, SColor color) = 0;
+	virtual void add3DVertices(vector3df* verts, uint32_t numverts, SColor color) = 0;
 	virtual void flushAll3DVertices(ICamera* cam) = 0;
 
 	virtual void add2DColor(const recti& rect, SColor color, const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource()) = 0;
-	virtual void add2DQuads(ITexture* texture, const SVertex_PCT* vertices, u32 numQuads, const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource()) = 0;
+	virtual void add2DQuads(ITexture* texture, const SVertex_PCT* vertices, uint32_t numQuads, const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource()) = 0;
 	virtual void flushAll2DQuads() = 0;
 
 	virtual void draw2DColor(const recti& rect, 
@@ -53,7 +53,7 @@ public:
 	virtual void draw2DImageBatch(ITexture* texture,
 		const vector2di* positions,
 		const recti* sourceRects[],
-		u32 batchCount,	
+		uint32_t batchCount,	
 		SColor color = SColor(),
 		E_RECT_UVCOORDS uvcoords = ERU_00_11,
 		float scale = 1.0f,
@@ -62,7 +62,7 @@ public:
 		const vector2di* positions,
 		const recti* sourceRects[],
 		const SColor* colors,
-		u32 batchCount,	
+		uint32_t batchCount,	
 		E_RECT_UVCOORDS uvcoords = ERU_00_11,
 		float scale = 1.0f,
 		const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource()) = 0;
@@ -75,7 +75,7 @@ public:
 	virtual void draw2DImageRectBatch(ITexture* texture,
 		const recti* destRects[],
 		const recti* sourceRects[],
-		u32 batchCount,
+		uint32_t batchCount,
 		SColor color = SColor(),
 		E_RECT_UVCOORDS uvcoords = ERU_00_11,
 		const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource()) = 0;
@@ -83,20 +83,20 @@ public:
 		const recti* destRects[],
 		const recti* sourceRects[],
 		const SColor* colors,
-		u32 batchCount,
+		uint32_t batchCount,
 		E_RECT_UVCOORDS uvcoords = ERU_00_11,
 		const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource()) = 0;
 
 	virtual void draw2DSquadBatch(ITexture* texture,
 		const SVertex_PCT* verts,
-		u32 numQuads,
+		uint32_t numQuads,
 		const S2DBlendParam& blendParam) = 0;
 
 	virtual void draw2DVertices(ITexture* texture,
 		const SVertex_PCT* verts,
-		u32 numVerts,
-		const u16* indices,
-		u32 numIndices,
+		uint32_t numVerts,
+		const uint16_t* indices,
+		uint32_t numIndices,
 		const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource()) = 0;
 
 	SMaterial& getLineMaterial() { return LineMaterial; }
@@ -110,13 +110,13 @@ public:
 	bool is3DLineZTestEnable() const { return LineMaterial.ZBuffer == ECFN_LESSEQUAL; }
 
 public:
-	static u32 MAX_2DLINE_BATCH_COUNT() { return 128; }
-	static u32 MAX_3DLINE_BATCH_COUNT() { return 1024; }
-	static u32 MAX_IMAGE_BATCH_COUNT() { return MAX_TEXT_LENGTH; }
-	static u32 MAX_VERTEX_COUNT() { return 4096; }
-	static u32 MAX_INDEX_COUNT() { return 6144; }
-	static u32 MAX_VERTEX_2D_COUNT() { return 64; }
-	static u32 MAX_INDEX_2D_COUNT() { return 128; }
+	static uint32_t MAX_2DLINE_BATCH_COUNT() { return 128; }
+	static uint32_t MAX_3DLINE_BATCH_COUNT() { return 1024; }
+	static uint32_t MAX_IMAGE_BATCH_COUNT() { return MAX_TEXT_LENGTH; }
+	static uint32_t MAX_VERTEX_COUNT() { return 4096; }
+	static uint32_t MAX_INDEX_COUNT() { return 6144; }
+	static uint32_t MAX_VERTEX_2D_COUNT() { return 64; }
+	static uint32_t MAX_INDEX_2D_COUNT() { return 128; }
 
 protected:
 	SMaterial	LineMaterial;

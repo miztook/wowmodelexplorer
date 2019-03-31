@@ -10,12 +10,12 @@
 #define LOG_DIR	"Logs/"
 #define  SUBDIR_SHADER		"Shaders/"
 
-CFileSystem::CFileSystem(const c8* baseDir, const c8* logDir, bool ignoreSetting)
+CFileSystem::CFileSystem(const char* baseDir, const char* logDir, bool ignoreSetting)
 	: LogGxFile(nullptr), LogResFile(nullptr), LogSoundFile(nullptr)
 {
 	::memset(LogString, 0, sizeof(LogString));
 
-	c8 tmp[QMAX_PATH];
+	char tmp[QMAX_PATH];
 
 	if (Q_strlen(baseDir))
 	{
@@ -25,7 +25,7 @@ CFileSystem::CFileSystem(const c8* baseDir, const c8* logDir, bool ignoreSetting
 	}
 	else
 	{
-		c8		workingDirectory[QMAX_PATH];
+		char		workingDirectory[QMAX_PATH];
 		if (!Q_getcwd(workingDirectory, QMAX_PATH))
 		{
 			ASSERT(false);
@@ -80,7 +80,7 @@ CFileSystem::CFileSystem(const c8* baseDir, const c8* logDir, bool ignoreSetting
 	
 	createLogFiles();
 
-	const c8* wowDir = Configs.getSetting(ECT_SETTING, "wowdir");
+	const char* wowDir = Configs.getSetting(ECT_SETTING, "wowdir");
 	writeLog(ELOG_RES, "wowdir: %s", wowDir);
 
 	if (!ignoreSetting && isFileExists(wowDir))
@@ -108,7 +108,7 @@ CFileSystem::~CFileSystem()
 	delete LogResFile;
 }
 
-bool CFileSystem::createDirectory( const c8* dirname )
+bool CFileSystem::createDirectory( const char* dirname )
 {
 	int ret = Q_mkdir(dirname);
 
@@ -117,12 +117,12 @@ bool CFileSystem::createDirectory( const c8* dirname )
 	return false;
 }
 
-bool CFileSystem::deleteDirectory( const c8* dirname )
+bool CFileSystem::deleteDirectory( const char* dirname )
 {
 	return Q_rmdir(dirname) == 0;
 }
 
-IReadFile* CFileSystem::createAndOpenFile( const c8* filename, bool binary )
+IReadFile* CFileSystem::createAndOpenFile( const char* filename, bool binary )
 {
 	CReadFile* file = new CReadFile(filename, binary);
 	if (file->isOpen())
@@ -132,7 +132,7 @@ IReadFile* CFileSystem::createAndOpenFile( const c8* filename, bool binary )
 	return nullptr;
 }
 
-IWriteFile* CFileSystem::createAndWriteFile( const c8* filename, bool binary, bool append /*= false*/ )
+IWriteFile* CFileSystem::createAndWriteFile( const char* filename, bool binary, bool append /*= false*/ )
 {
 	CWriteFile* file = new CWriteFile(filename, binary, append);
 	if (file->isOpen())
@@ -142,12 +142,12 @@ IWriteFile* CFileSystem::createAndWriteFile( const c8* filename, bool binary, bo
 	return nullptr;
 }
 
-void CFileSystem::getAbsolutePath( const c8* filename, c8* outfilename, u32 size )
+void CFileSystem::getAbsolutePath( const char* filename, char* outfilename, uint32_t size )
 {
 	Q_fullpath(filename, outfilename, size);
 }
 
-bool CFileSystem::isFileExists( const c8* filename )
+bool CFileSystem::isFileExists( const char* filename )
 {
 	if(strlen(filename) == 0)
 		return false;
@@ -204,7 +204,7 @@ bool CFileSystem::createLogFiles()
 	return true;
 }
 
-const c8* CFileSystem::getLogFileName( E_LOG_TYPE type ) const
+const char* CFileSystem::getLogFileName( E_LOG_TYPE type ) const
 {
 	switch (type)
 	{
@@ -219,7 +219,7 @@ const c8* CFileSystem::getLogFileName( E_LOG_TYPE type ) const
 	}
 }
 
-void CFileSystem::writeLog( E_LOG_TYPE type, const c8* format, ... )
+void CFileSystem::writeLog( E_LOG_TYPE type, const char* format, ... )
 {
 	CLock lock(g_Globals.logCS);
 
@@ -232,9 +232,9 @@ void CFileSystem::writeLog( E_LOG_TYPE type, const c8* format, ... )
 // 	time( &ltime );
 // 	struct tm gmt;
 // 	localtime_s(&gmt, &ltime);
-// 	c8 timebuf[64];
+// 	char timebuf[64];
 // 	strftime(timebuf, 64, "%m/%d %H:%M:%S ", &gmt);
-	c8 timebuf[64];
+	char timebuf[64];
 	Q_getLocalTime(timebuf, 64);
 	
 	string1024 text = timebuf;

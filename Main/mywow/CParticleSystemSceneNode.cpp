@@ -91,12 +91,12 @@ bool CParticleSystemSceneNode::isNodeEligible() const
 	return true;
 }
 
-void CParticleSystemSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame, bool visible )
+void CParticleSystemSceneNode::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible )
 {
 	float delta = timeSinceLastFrame * 0.001f * Speed;
 
-	u32 anim = CurrentAnim;
-	u32 time = (u32)(CurrentFrame * Speed);
+	uint32_t anim = CurrentAnim;
+	uint32_t time = (uint32_t)(CurrentFrame * Speed);
 
 	if (LastAnim != anim || time < LastTime)			//在anim改变或时间轴倒退时清除hint
 		::memset(&Hint, 0, sizeof(SHint));
@@ -105,16 +105,16 @@ void CParticleSystemSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame,
 	{
 		float frate = 0;
 		float flife = 0;
-		u16 en = 1;
+		uint16_t en = 1;
 
 		Hint.frate = Ps->emissionRate.getValue(anim, time, frate, Hint.frate);
 		Hint.flife = Ps->lifespan.getValue(anim, time, flife, Hint.flife);
 		Hint.en = Ps->enabled.getValue(anim, time, en, Hint.en);
 
-		f32 wholeDensity = ParticleSystemServices->getParticleDynamicDensity() * Density;
+		float wholeDensity = ParticleSystemServices->getParticleDynamicDensity() * Density;
 		frate *= wholeDensity;
 
-		f32 ftospawn;
+		float ftospawn;
 		if (flife != 0)
 			ftospawn = min_(50.0f, min_(delta, 0.033f) * frate / flife) + Rem;
 		else
@@ -125,9 +125,9 @@ void CParticleSystemSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame,
 		}
 		else
 		{
-			u32 tospawn = (u32)ftospawn;
+			uint32_t tospawn = (uint32_t)ftospawn;
 
-			u32 maxParticles = (u32)ceilf(ParticleSystemServices->getBufferQuota() * wholeDensity);
+			uint32_t maxParticles = (uint32_t)ceilf(ParticleSystemServices->getBufferQuota() * wholeDensity);
 
 			if (tospawn + LiveParticleCount > maxParticles)
 			{
@@ -162,7 +162,7 @@ void CParticleSystemSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame,
 				param.horizontal = horz;
 				param.maxlife = flife;
 
-				for (u32 i=0; i<tospawn; ++i)
+				for (uint32_t i=0; i<tospawn; ++i)
 				{
 					Particle* p = ParticleSystemServices->getParticle();
 					if (!p)
@@ -218,13 +218,13 @@ void CParticleSystemSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame,
 
 			if (rlife < 0.5f)
 			{
-				f32 prop = rlife / 0.5f;
+				float prop = rlife / 0.5f;
 				p->size = interpolate(prop, Ps->sizes[0], Ps->sizes[1]) * interpolate(prop, Ps->scales[0], Ps->scales[1]);
 				p->color = interpolate(prop, Ps->colors[0], Ps->colors[1]);
 			}
 			else
 			{
-				f32 prop = (rlife-0.5f) / 0.5f;
+				float prop = (rlife-0.5f) / 0.5f;
 				p->size = interpolate(prop, Ps->sizes[1], Ps->sizes[2]) * interpolate(prop, Ps->scales[1], Ps->scales[2]);;
 				p->color = interpolate(prop, Ps->colors[1], Ps->colors[2]);
 			}
@@ -259,7 +259,7 @@ void CParticleSystemSceneNode::render() const
 	sceneRenderServices->addRenderUnit(&unit, ERT_PARTICLE);
 }
 
-u32 CParticleSystemSceneNode::onFillVertexBuffer( SVertex_PCT* vertices, u32 vertexCount ) const
+uint32_t CParticleSystemSceneNode::onFillVertexBuffer( SVertex_PCT* vertices, uint32_t vertexCount ) const
 {
 	ICamera* camera = g_Engine->getSceneManager()->getActiveCamera();
 
@@ -269,7 +269,7 @@ u32 CParticleSystemSceneNode::onFillVertexBuffer( SVertex_PCT* vertices, u32 ver
 	vector3df up( view[1], view[5], view[9] );
 	vector3df dir( view[2], view[6], view[10]);
 
-	u32 vCount = 0;
+	uint32_t vCount = 0;
 
 	//normal particles
 	if (Ps->billboard)			//world
@@ -297,7 +297,7 @@ u32 CParticleSystemSceneNode::onFillVertexBuffer( SVertex_PCT* vertices, u32 ver
 
 			SColor c = p->color;
 			if (EnableModelAlpha)
-				c.setAlpha((u32)(p->color.getAlpha() * ModelAlpha));
+				c.setAlpha((uint32_t)(p->color.getAlpha() * ModelAlpha));
 
 			vertices[vCount + 0].Color = 
 				vertices[vCount + 1].Color = 
@@ -317,8 +317,8 @@ u32 CParticleSystemSceneNode::onFillVertexBuffer( SVertex_PCT* vertices, u32 ver
 			Particle* p = reinterpret_cast<Particle*>CONTAINING_RECORD(e, Particle, Link);
 			e = e->Flink;
 
-			f32 w = p->size.X * Scale;		
-			f32 h = p->size.Y * Scale;
+			float w = p->size.X * Scale;		
+			float h = p->size.Y * Scale;
 
 			if (!Ps->ribbontype)
 			{
@@ -343,7 +343,7 @@ u32 CParticleSystemSceneNode::onFillVertexBuffer( SVertex_PCT* vertices, u32 ver
 
 			SColor c = p->color;
 			if (EnableModelAlpha)
-				c.setAlpha((u32)(p->color.getAlpha() * ModelAlpha));
+				c.setAlpha((uint32_t)(p->color.getAlpha() * ModelAlpha));
 
 			vertices[vCount + 0].Color = 
 				vertices[vCount + 1].Color = 
@@ -383,9 +383,9 @@ void CParticleSystemSceneNode::setMaterial( SMaterial& material ) const
 	}
 }
 
-void CParticleSystemSceneNode::setWholeAlpha( bool enable, f32 val )
+void CParticleSystemSceneNode::setWholeAlpha( bool enable, float val )
 {
-	f32 v = clamp_(val, 0.0f, 1.0f);
+	float v = clamp_(val, 0.0f, 1.0f);
 	EnableModelAlpha = enable;
 	ModelAlpha = v;
 }
@@ -396,7 +396,7 @@ void CParticleSystemSceneNode::setWholeColor( bool enable, SColor color )
 	ModelColor = color;
 }
 
-void CParticleSystemSceneNode::fillParticleRect( Particle* p, u32 uvflag, SVertex_PCT* vertices, const vector3df& w, const vector3df& h ) const
+void CParticleSystemSceneNode::fillParticleRect( Particle* p, uint32_t uvflag, SVertex_PCT* vertices, const vector3df& w, const vector3df& h ) const
 {
 	vector3df worldpos = p->basepos + p->pos;
 
@@ -470,7 +470,7 @@ void CParticleSystemSceneNode::fillParticleRect( Particle* p, u32 uvflag, SVerte
 	}
 }
 
-void CParticleSystemSceneNode::fillParticleRect( Particle* p, u32 uvflag, SVertex_PCT* vertices, const vector3df& w, const vector3df& h, const quaternion& q ) const
+void CParticleSystemSceneNode::fillParticleRect( Particle* p, uint32_t uvflag, SVertex_PCT* vertices, const vector3df& w, const vector3df& h, const quaternion& q ) const
 {
 	vector3df worldpos = p->basepos + p->pos;
 
@@ -549,7 +549,7 @@ void CParticleSystemSceneNode::fillParticleRect( Particle* p, u32 uvflag, SVerte
 	}
 }
 
-u32 CParticleSystemSceneNode::getParticleUVFlag( Particle* p ) const
+uint32_t CParticleSystemSceneNode::getParticleUVFlag( Particle* p ) const
 {
 	if (!Ps->ribbontype)
 		return 0;

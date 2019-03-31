@@ -3,10 +3,10 @@
 #include "fixstring.h"
 #include <vector>
 
-inline bool isComment( const c8* p )
+inline bool isComment( const char* p )
 {
-	u32 len = (u32)strlen(p);
-	for (u32 i=0; i<len; ++i)
+	uint32_t len = (uint32_t)strlen(p);
+	for (uint32_t i=0; i<len; ++i)
 	{
 		if (p[i] == '\t' || p[i] == '\r' || p[i] == ' ')
 			continue;
@@ -20,15 +20,15 @@ inline bool isComment( const c8* p )
 }
 
 //make multiple #define MACRO, split by #
-inline void makeMacroString(string1024& macroString, const c8* strMacro)
+inline void makeMacroString(string1024& macroString, const char* strMacro)
 {
 	macroString.clear();
-	u32 len = (u32)strlen(strMacro);
+	uint32_t len = (uint32_t)strlen(strMacro);
 	if (len == 0)
 		return;
 
-	u32 p = 0;
-	for (u32 i=0; i<len; ++i)
+	uint32_t p = 0;
+	for (uint32_t i=0; i<len; ++i)
 	{
 		if (i>0 && strMacro[i] == '#')	//split
 		{
@@ -53,15 +53,15 @@ inline void makeMacroString(string1024& macroString, const c8* strMacro)
 	}
 }
 
-inline void makeMacroStringList(std::vector<string128>& macroStrings, const c8* strMacro)
+inline void makeMacroStringList(std::vector<string128>& macroStrings, const char* strMacro)
 {
 	macroStrings.clear();
-	u32 len = (u32)strlen(strMacro);
+	uint32_t len = (uint32_t)strlen(strMacro);
 	if (len == 0)
 		return;
 
-	u32 p = 0;
-	for (u32 i=0; i<len; ++i)
+	uint32_t p = 0;
+	for (uint32_t i=0; i<len; ++i)
 	{
 		if (i>0 && strMacro[i] == '#')	//split
 		{

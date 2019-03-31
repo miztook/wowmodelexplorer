@@ -27,18 +27,18 @@ FT_CALLBACK_DEF( unsigned long )
 		IReadFile* file = pointer->file;
 
 		if ( stream->pos != offset )
-			file->seek((s32)offset, false);
+			file->seek((int32_t)offset, false);
 
-		return (unsigned long)file->read(buffer, (u32)count);
+		return (unsigned long)file->read(buffer, (uint32_t)count);
 	}
 	else
 	{
 		IMemFile* file = pointer->mpqfile;
 
 		if ( stream->pos != offset )
-			file->seek((s32)offset, false);
+			file->seek((int32_t)offset, false);
 
-		return (unsigned long)file->read(buffer, (u32)count);
+		return (unsigned long)file->read(buffer, (uint32_t)count);
 	}
 }
 
@@ -81,8 +81,8 @@ FT_CALLBACK_DEF( FT_Error )
 	stream->read               = nullptr;
 	stream->close              = nullptr;
 
-	const c8* basedir = g_Engine->getFileSystem()->getBaseDirectory();
-	c8 path[QMAX_PATH];
+	const char* basedir = g_Engine->getFileSystem()->getBaseDirectory();
+	char path[QMAX_PATH];
 	Q_strcpy(path, QMAX_PATH, basedir);
 	normalizeDirName(path);
 	Q_strcat(path, QMAX_PATH, filepathname);

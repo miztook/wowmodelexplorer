@@ -87,7 +87,7 @@ struct SVertex_PNCT2
 // 	vector3df Pos;
 // 	vector3df Normal;
 // 	vector2df TCoords;
-// 	f32		Weights[4];
+// 	float		Weights[4];
 // 
 // 	 void set(const vector3df& p, const vector3df& n, const vector2df& t) { Pos = p; Normal = n; TCoords = t; }
 // };
@@ -98,7 +98,7 @@ struct SVertex_PNT2W
 	vector3df Normal;
 	vector2df TCoords0;
 	vector2df TCoords1;
-	u8		Weights[4];
+	uint8_t		Weights[4];
 
 	 void set(const vector3df& p, const vector3df& n, const vector2df& t, const vector2df& t1) 
 	{ Pos = p; Normal = n; TCoords0 = t; TCoords1 = t1; }
@@ -106,11 +106,11 @@ struct SVertex_PNT2W
 
 struct SVertex_A
 {
-	u8		BoneIndices[4];
+	uint8_t		BoneIndices[4];
 };
 
 
-inline u32 getStreamPitchFromType(E_STREAM_TYPE type)
+inline uint32_t getStreamPitchFromType(E_STREAM_TYPE type)
 {
 	switch (type)
 	{
@@ -196,10 +196,10 @@ inline void deleteIndicesFromType(E_INDEX_TYPE type, void* indices)
 	switch (type)
 	{
 	case EIT_16BIT:
-		DELETE_ARRAY(u16, indices);
+		DELETE_ARRAY(uint16_t, indices);
 		break;
 	case EIT_32BIT:
-		DELETE_ARRAY(u32, indices);
+		DELETE_ARRAY(uint32_t, indices);
 		break;
 	default:
 		ASSERT(false);

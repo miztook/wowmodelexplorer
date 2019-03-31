@@ -14,7 +14,7 @@
 #define LISTFILE    "listfile60.txt"
 #endif
 
-const c8* basempqfiles[] = 
+const char* basempqfiles[] = 
 {
 	"alternate.mpq",
 	"model.mpq",
@@ -30,12 +30,12 @@ const c8* basempqfiles[] =
 	"misc.mpq",
 };
 
-const c8* localempqfiles[] =
+const char* localempqfiles[] =
 {
 	"locale",
 };
 
-const c8* updatefiles[] =
+const char* updatefiles[] =
 {
 	"16016",
 	"16048",
@@ -124,7 +124,7 @@ wowEnvironment::wowEnvironment(IFileSystem* fs, bool useCompress, bool outputFil
 
 	if(outputFilename)
 	{
-		const c8* filename = FileSystem->getConfigs()->getSetting(ECT_SETTING, "output");
+		const char* filename = FileSystem->getConfigs()->getSetting(ECT_SETTING, "output");
 		RecordFile = FileSystem->createAndWriteFile(filename, false);
 	}
 
@@ -155,24 +155,24 @@ void wowEnvironment::loadCascListFiles()
 	path.normalize();
 
 	IReadFile* rfile = FileSystem->createAndOpenFile(path.c_str(), false);
-	u32 size = rfile->getSize();
+	uint32_t size = rfile->getSize();
 	if (size > 0)
 	{
-		u8* buffer = (u8*)Z_AllocateTempMemory(size);
-		u32 rsize = rfile->read(buffer, size);
-		u8* p = buffer;
-		u8* end = buffer + rsize;
+		uint8_t* buffer = (uint8_t*)Z_AllocateTempMemory(size);
+		uint32_t rsize = rfile->read(buffer, size);
+		uint8_t* p = buffer;
+		uint8_t* end = buffer + rsize;
 
 		while (p <= end)
 		{
-			u8* q = p;
+			uint8_t* q = p;
 			do 
 			{
 				if (*q == '\r' || *q=='\n')
 					break;
 			} while (q++ <= end);
 
-			string_cs256 filename((const c8*)p, (u32)(q-p));
+			string_cs256 filename((const char*)p, (uint32_t)(q-p));
 			
 			if (filename.length() == 0)
 				break;
@@ -209,11 +209,11 @@ void wowEnvironment::loadCascListFiles()
 		int nFiles = (int)CascListFiles.size();
 		for (int i=0; i<nFiles; ++i)
 		{
-			const c8* szFile = CascListFiles[i].c_str();
+			const char* szFile = CascListFiles[i].c_str();
 			const char* p = strchr( szFile, '/');
 			while(p)
 			{
-				string_cs256 dir(szFile, (u32)(p - szFile));
+				string_cs256 dir(szFile, (uint32_t)(p - szFile));
 				if (DirIndexMap.find(dir) == DirIndexMap.end())
 					DirIndexMap[dir] = i;														//add dir to index
 					
@@ -232,13 +232,13 @@ bool wowEnvironment::loadRoot()
 #if defined(MW_USE_MPQ)
 
 	//custom locale
-	const c8* customlocale = FileSystem->getConfigs()->getSetting(ECT_SETTING, "customlocalempq");
+	const char* customlocale = FileSystem->getConfigs()->getSetting(ECT_SETTING, "customlocalempq");
 	if (strlen(customlocale))
 	{
 		string_path path = LocalePath;
 		path.append(customlocale);
 
-		c8 fullpath[QMAX_PATH];
+		char fullpath[QMAX_PATH];
 		FileSystem->getAbsolutePath(path.c_str(), fullpath, QMAX_PATH);
 
 		if (FileSystem->isFileExists(fullpath))
@@ -251,12 +251,12 @@ bool wowEnvironment::loadRoot()
 	}
 
 	//custom base
-	const c8* custombase = FileSystem->getConfigs()->getSetting(ECT_SETTING, "custombasempq");
+	const char* custombase = FileSystem->getConfigs()->getSetting(ECT_SETTING, "custombasempq");
 	if (strlen(custombase))
 	{
 		string_path path = FileSystem->getMpqDirectory();
 		path.append(custombase);
-		c8 fullpath[QMAX_PATH];
+		char fullpath[QMAX_PATH];
 		FileSystem->getAbsolutePath(path.c_str(), fullpath, QMAX_PATH);
 
 		if (FileSystem->isFileExists(fullpath))
@@ -268,9 +268,9 @@ bool wowEnvironment::loadRoot()
 		}
 	}
 
-	u32 patchnum = sizeof(updatefiles) / sizeof(c8*);
+	uint32_t patchnum = sizeof(updatefiles) / sizeof(char*);
 	//open locale patch
-	for (u32 k=0; k<patchnum; ++k)
+	for (uint32_t k=0; k<patchnum; ++k)
 	{
 		string_path patch = LocalePath;
 		patch.append("wow-update-");
@@ -279,7 +279,7 @@ bool wowEnvironment::loadRoot()
 		patch.append(updatefiles[k]);
 		patch.append(".mpq");
 
-		c8 fullpath[QMAX_PATH];
+		char fullpath[QMAX_PATH];
 		FileSystem->getAbsolutePath(patch.c_str(), fullpath, QMAX_PATH);
 
 		if (FileSystem->isFileExists(fullpath))
@@ -296,8 +296,8 @@ bool wowEnvironment::loadRoot()
 	}
 
 	//locale file
-	u32 localmpqnum = sizeof(localempqfiles) / sizeof(c8*);
-	for (u32 i=0; i<localmpqnum; ++i)
+	uint32_t localmpqnum = sizeof(localempqfiles) / sizeof(char*);
+	for (uint32_t i=0; i<localmpqnum; ++i)
 	{
 		string_path path = LocalePath;
 		path.append(localempqfiles[i]);
@@ -305,12 +305,12 @@ bool wowEnvironment::loadRoot()
 		path.append(Locale.c_str());
 		path.append(".mpq");
 
-		c8 fullpath[QMAX_PATH];
+		char fullpath[QMAX_PATH];
 		FileSystem->getAbsolutePath(path.c_str(), fullpath, QMAX_PATH);
 
 		if (!FileSystem->isFileExists(fullpath))
 		{
-			c8 tmp[512];
+			char tmp[512];
 			Q_sprintf(tmp, 512, "%s doesn't exist, make sure it exists or edit setting.cfg properly!", fullpath);
 			
 			CSysUtility::messageBoxWarning(tmp);
@@ -334,14 +334,14 @@ bool wowEnvironment::loadRoot()
 	}
 
 	//open main patch
-	for (u32 k=0; k<patchnum; ++k)
+	for (uint32_t k=0; k<patchnum; ++k)
 	{
 		string_path patch =  FileSystem->getMpqDirectory();
 		patch.append("wow-update-base-");
 		patch.append(updatefiles[k]);
 		patch.append(".mpq");
 		
-		c8 fullpath[QMAX_PATH];
+		char fullpath[QMAX_PATH];
 		FileSystem->getAbsolutePath(patch.c_str(), fullpath, QMAX_PATH);
 
 		if (FileSystem->isFileExists(fullpath))
@@ -358,17 +358,17 @@ bool wowEnvironment::loadRoot()
 	}
 
 	//main file
-	u32 basempqnum = sizeof(basempqfiles) / sizeof(c8*);
-	for (u32 i=0; i<basempqnum; ++i)
+	uint32_t basempqnum = sizeof(basempqfiles) / sizeof(char*);
+	for (uint32_t i=0; i<basempqnum; ++i)
 	{
 		string_path path = FileSystem->getMpqDirectory();
 		path.append(basempqfiles[i]);
-		c8 fullpath[QMAX_PATH];
+		char fullpath[QMAX_PATH];
 		FileSystem->getAbsolutePath(path.c_str(), fullpath, QMAX_PATH);
 
 		if (!FileSystem->isFileExists(fullpath))
 		{
-			c8 tmp[512];
+			char tmp[512];
 			Q_sprintf(tmp, 512, "%s doesn't exist, make sure it exists or edit setting.cfg properly!", fullpath);
 
 			CSysUtility::messageBoxWarning(tmp);
@@ -395,7 +395,7 @@ bool wowEnvironment::loadRoot()
 #elif defined(MW_USE_CASC)
 	if(!CascOpenStorage(FileSystem->getMpqDirectory(), 0, &hStorage))
 	{
-		c8 tmp[512];
+		char tmp[512];
 		Q_sprintf(tmp, 512, "%s is not a valid CASC root, please edit setting.cfg properly!", FileSystem->getMpqDirectory());
 
 		CSysUtility::messageBoxWarning(tmp);
@@ -457,9 +457,9 @@ void wowEnvironment::unloadRoot()
 }
 
 //读取文件使用临时内存，在打开后需要尽快释放
-IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
+IMemFile* wowEnvironment::openFile(const char* filename, bool tempfile) const
 {
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 
@@ -487,7 +487,7 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 				continue;
 
 			// Found!
-			u32 size = SFileGetFileSize( fh, nullptr );
+			uint32_t size = SFileGetFileSize( fh, nullptr );
 
 			// HACK: in patch.mpq some files don't want to open and give 1 for filesize
 			if (size<=1) {
@@ -508,7 +508,7 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 			//record file
 			if(RecordFile)
 			{
-				c8 tmp[1024];
+				char tmp[1024];
 				Q_sprintf(tmp, 1024, "%s , %d\n", realfilename, 1);
 				RecordFile->writeText(tmp, 1024);
 				RecordFile->flush();
@@ -540,7 +540,7 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 			}
 			
 			// Found!
-			u32 size = SFileGetFileSize( fh, nullptr );
+			uint32_t size = SFileGetFileSize( fh, nullptr );
 
 			// HACK: in patch.mpq some files don't want to open and give 1 for filesize
 			if (size<=1 || size == 0xffffffff) {
@@ -561,7 +561,7 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 			//record file
 			if(RecordFile)
 			{
-				c8 tmp[1024];
+				char tmp[1024];
 				Q_sprintf(tmp, 1024, "%s , %d\n", realfilename, 0);
 				RecordFile->writeText(tmp, 1024);
 				RecordFile->flush();
@@ -578,7 +578,7 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 		if (FileSystem->isFileExists(path.c_str()))
 		{
 			IReadFile* rfile = FileSystem->createAndOpenFile(path.c_str(), true);
-			u32 size = rfile->getSize();
+			uint32_t size = rfile->getSize();
 
 			if (size <= 1 || size == 0xffffffff)
 			{
@@ -591,7 +591,7 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 			else
 				buffer = new unsigned char[size];
 
-			u32 readSize = rfile->read(buffer, size);
+			uint32_t readSize = rfile->read(buffer, size);
 			ASSERT(readSize == size);
 			delete rfile;
 
@@ -608,7 +608,7 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 
 		// Found!
 		DWORD dwHigh;
-		u32 size = CascGetFileSize(hFile, &dwHigh);
+		uint32_t size = CascGetFileSize(hFile, &dwHigh);
 
 		// HACK: in patch.mpq some files don't want to open and give 1 for filesize
 		if (size<=1 || size == 0xffffffff) {
@@ -639,7 +639,7 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 		//record file
 		if(RecordFile)
 		{
-			c8 tmp[1024];
+			char tmp[1024];
 			Q_sprintf(tmp, 1024, "%s , %d\n", realfilename, 0);
 			RecordFile->writeText(tmp, 1024);
 			RecordFile->flush();
@@ -671,7 +671,7 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 		}
 
 		IReadFile* rfile = FileSystem->createAndOpenFile(path.c_str(), true);
-		u32 size = rfile->getSize();
+		uint32_t size = rfile->getSize();
 
 		if (size <= 1)
 		{
@@ -684,7 +684,7 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 		else
 			buffer = new unsigned char[size];
 
-		u32 readSize = rfile->read(buffer, size);
+		uint32_t readSize = rfile->read(buffer, size);
 		ASSERT(readSize == size);
 		delete rfile;
 
@@ -694,12 +694,12 @@ IMemFile* wowEnvironment::openFile(const c8* filename, bool tempfile) const
 	return nullptr;
 }
 
-bool wowEnvironment::exists(const c8* filename) const
+bool wowEnvironment::exists(const char* filename) const
 {
 	if (strlen(filename) == 0)
 		return false;
 
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 	Q_strlwr(realfilename);
 	
@@ -776,7 +776,7 @@ bool wowEnvironment::exists(const c8* filename) const
 	return false;
 }
 
-void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void* param) const
+void wowEnvironment::iterateFiles(const char* ext, MPQFILECALLBACK callback, void* param) const
 {
 	if(UseCompress)
 	{
@@ -795,21 +795,21 @@ void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void*
 
 			if (size > 0)
 			{
-				u8* buffer = (u8*)Z_AllocateTempMemory(size);
+				uint8_t* buffer = (uint8_t*)Z_AllocateTempMemory(size);
 				SFileReadFile(fh, buffer, (DWORD)size, nullptr, nullptr);
-				u8* p = buffer;
-				u8* end = buffer + size;
+				uint8_t* p = buffer;
+				uint8_t* end = buffer + size;
 
 				while (p <= end)
 				{
-					u8* q = p;
+					uint8_t* q = p;
 					do 
 					{
 						if (*q == '\r')
 							break;
 					} while (q++ <= end);
 
-					string256 filename((const c8*)p, (u32)(q-p));
+					string256 filename((const char*)p, (uint32_t)(q-p));
 					if (filename.length() == 0)
 						break;
 					filename.normalize();
@@ -841,21 +841,21 @@ void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void*
 
 			if (size > 0)
 			{
-				u8* buffer = (u8*)Z_AllocateTempMemory(size);
+				uint8_t* buffer = (uint8_t*)Z_AllocateTempMemory(size);
 				SFileReadFile(fh, buffer, (DWORD)size, nullptr, nullptr);
-				u8* p = buffer;
-				u8* end = buffer + size;
+				uint8_t* p = buffer;
+				uint8_t* end = buffer + size;
 
 				while (p <= end)
 				{
-					u8* q = p;
+					uint8_t* q = p;
 					do 
 					{
 						if (*q == '\r' || *q=='\n')
 							break;
 					} while (q++ <= end);
 
-					string256 filename((const c8*)p, (u32)(q-p));
+					string256 filename((const char*)p, (uint32_t)(q-p));
 					if (filename.length() == 0)
 						break;
 					filename.normalize();
@@ -876,10 +876,10 @@ void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void*
 
 #elif defined(MW_USE_CASC)
 		{
-			u32 count = (u32)CascListFiles.size();
-			for (u32 i=0; i<count; ++i)
+			uint32_t count = (uint32_t)CascListFiles.size();
+			for (uint32_t i=0; i<count; ++i)
 			{
-				const c8* filename = CascListFiles[i].c_str();
+				const char* filename = CascListFiles[i].c_str();
 				if (hasFileExtensionA(filename, ext))
 				{
 					callback(filename, param);
@@ -906,7 +906,7 @@ void wowEnvironment::iterateFiles(const c8* ext, MPQFILECALLBACK callback, void*
 
 }
 
-void wowEnvironment::iterateFiles(const c8* path, const c8* ext, MPQFILECALLBACK callback, void* param) const
+void wowEnvironment::iterateFiles(const char* path, const char* ext, MPQFILECALLBACK callback, void* param) const
 {
 #if defined(MW_USE_CASC)
 	{
@@ -919,10 +919,10 @@ void wowEnvironment::iterateFiles(const c8* path, const c8* ext, MPQFILECALLBACK
 		//calc start
 		int nStart = itr->second;
 
-		u32 count = (u32)CascListFiles.size();
-		for (u32 i=nStart; i<count; ++i)
+		uint32_t count = (uint32_t)CascListFiles.size();
+		for (uint32_t i=nStart; i<count; ++i)
 		{
-			const c8* filename = CascListFiles[i].c_str();
+			const char* filename = CascListFiles[i].c_str();
 			if (hasFileExtensionA(filename, ext))
 			{
 				callback(filename, param);
@@ -940,7 +940,7 @@ void wowEnvironment::clearOwnCascFiles()
 	OwnCascSet.clear();
 }
 
-void wowEnvironment::addOwnCascFile(const c8* filename)
+void wowEnvironment::addOwnCascFile(const char* filename)
 {
 	string_cs256 fname(filename);
 	fname.normalize();
@@ -963,11 +963,11 @@ void wowEnvironment::finishOwnCascFiles()
 		int nFiles = (int)OwnCascFiles.size();
 		for (int i=0; i<nFiles; ++i)
 		{
-			const c8* szFile = OwnCascFiles[i].c_str();
+			const char* szFile = OwnCascFiles[i].c_str();
 			const char* p = strchr( szFile, '/');
 			while(p)
 			{
-				string_cs256 dir(szFile, (u32)(p - szFile));
+				string_cs256 dir(szFile, (uint32_t)(p - szFile));
 				if (OwnDirIndexMap.find(dir) == OwnDirIndexMap.end())
 					OwnDirIndexMap[dir] = i;														//add dir to index
 
@@ -1017,7 +1017,7 @@ void wowEnvironment::getCascLocale()
 #endif
 }
 
-void wowEnvironment::getFiles(const c8* baseDir, const c8* ext, std::vector<string_cs256>& files, bool useOwn)
+void wowEnvironment::getFiles(const char* baseDir, const char* ext, std::vector<string_cs256>& files, bool useOwn)
 {
 	string_cs256 dir(baseDir);
 	dir.normalizeDir();
@@ -1034,7 +1034,7 @@ void wowEnvironment::getFiles(const c8* baseDir, const c8* ext, std::vector<stri
 		int nFiles = (int)CascListFiles.size();
 		for (int i=0; i<nFiles; ++i)
 		{
-			const c8* szFile = CascListFiles[i].c_str();
+			const char* szFile = CascListFiles[i].c_str();
 			const char* p = strchr( szFile, '/');
 			if(!p && hasFileExtensionA(szFile, ext))
 				files.push_back(szFile);
@@ -1056,7 +1056,7 @@ void wowEnvironment::getFiles(const c8* baseDir, const c8* ext, std::vector<stri
 		int nFiles = (int)listFiles.size();
 		for (int i=nStart; i<nFiles; ++i)
 		{
-			const c8* szFile = listFiles[i].c_str();
+			const char* szFile = listFiles[i].c_str();
 			const char* p = strstr(szFile, dir.c_str());
 			if (p)
 			{
@@ -1074,7 +1074,7 @@ void wowEnvironment::getFiles(const c8* baseDir, const c8* ext, std::vector<stri
 	}
 }
 
-void wowEnvironment::getDirectories(const c8* baseDir, std::vector<string_cs256>& outdirs, bool useOwn)
+void wowEnvironment::getDirectories(const char* baseDir, std::vector<string_cs256>& outdirs, bool useOwn)
 {
 	string512 dir(baseDir);
 	dir.normalizeDir();
@@ -1091,11 +1091,11 @@ void wowEnvironment::getDirectories(const c8* baseDir, std::vector<string_cs256>
 		for (T_DirIndexMap::iterator itr = dirIndexMap.begin(); itr != dirIndexMap.end(); ++itr)
 		{
 			int idx = itr->second;
-			const c8* szFile = listFiles[idx].c_str();
+			const char* szFile = listFiles[idx].c_str();
 			const char* p = strchr( szFile, '/');
 			if (p)
 			{
-				string_cs256 dir(szFile, (u32)(p - szFile));
+				string_cs256 dir(szFile, (uint32_t)(p - szFile));
 				dirSet.insert(dir);
 			}
 		}
@@ -1115,7 +1115,7 @@ void wowEnvironment::getDirectories(const c8* baseDir, std::vector<string_cs256>
 		int nFiles = (int)listFiles.size();
 		for (int i=nStart; i<nFiles; ++i)
 		{
-			const c8* szFile = listFiles[i].c_str();
+			const char* szFile = listFiles[i].c_str();
 			const char* p = strstr(szFile, dir.c_str());
 			if (p)
 			{
@@ -1125,7 +1125,7 @@ void wowEnvironment::getDirectories(const c8* baseDir, std::vector<string_cs256>
 				const char* p2 = strchr(p1, '/');		//包含目录，需要有'/'字符
 				if (p2)
 				{
-					string_cs256 dir(szFile, (u32)(p2 - szFile));
+					string_cs256 dir(szFile, (uint32_t)(p2 - szFile));
 					dirSet.insert(dir);
 				}
 			}

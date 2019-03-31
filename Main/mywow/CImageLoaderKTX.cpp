@@ -6,11 +6,11 @@
 
 IImage* CImageLoaderKTX::loadAsImage( IMemFile* file )
 {
-	u8* buffer = (u8*)file->getBuffer();
+	uint8_t* buffer = (uint8_t*)file->getBuffer();
 
-	u32 width = 0;
-	u32 height = 0;
-	u32 offset = 0;
+	uint32_t width = 0;
+	uint32_t height = 0;
+	uint32_t offset = 0;
 
 	ECOLOR_FORMAT format = ECF_UNKNOWN;
 
@@ -18,7 +18,7 @@ IImage* CImageLoaderKTX::loadAsImage( IMemFile* file )
 	Q_memcpy(&header, sizeof(CKTXImage::KTX_Header), buffer, sizeof(CKTXImage::KTX_Header));
 	offset = sizeof(CKTXImage::KTX_Header);
 
-	const u8 KTX_IDENTIFIER[12] = {0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A};
+	const uint8_t KTX_IDENTIFIER[12] = {0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A};
 
 	if (memcmp(header.identifier, KTX_IDENTIFIER, 12) != 0)
 	{
@@ -47,16 +47,16 @@ IImage* CImageLoaderKTX::loadAsImage( IMemFile* file )
 		}
 	}
 
-	u8* src = buffer + offset + sizeof(u32);
+	uint8_t* src = buffer + offset + sizeof(uint32_t);
 
 	dimension2du dim(width, height);
-	u32* decompressed = new u32[width * height];
+	uint32_t* decompressed = new uint32_t[width * height];
 
 	switch(format)
 	{
 	case ECF_A8R8G8B8:
 		{
-			for (u32 i=0; i<width*height; ++i)
+			for (uint32_t i=0; i<width*height; ++i)
 			{
 				decompressed[i*4] = src[i*4];
 				decompressed[i*4+1] = src[i*4+3];

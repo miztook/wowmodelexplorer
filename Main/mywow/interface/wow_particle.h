@@ -20,11 +20,11 @@ struct Particle
 	vector3df		dir;
 
 	vector2df		size;
-	f32  life;
-	f32	maxlife;
-	f32  rotation;
+	float  life;
+	float	maxlife;
+	float  rotation;
 	SColor	color;
-	u32	tile;
+	uint32_t	tile;
 };
 
 class ParticleSystem;
@@ -114,7 +114,7 @@ public:
 	};
 
 public:
-	void init(const M2::ModelParticleEmitterDef& mta, const u8* fileData, s32* globalSeq, u32 numGlobalSeq);
+	void init(const M2::ModelParticleEmitterDef& mta, const uint8_t* fileData, int32_t* globalSeq, uint32_t numGlobalSeq);
 
 	void calcSpreadMatrix(float spread1, float spread2, matrix4& mat);
 
@@ -133,7 +133,7 @@ public:
 	SWowAnimation<float>		emissionAreaWidth;				//x
 	SWowAnimation<float>		emissionAreaLength;				//z
 	SWowAnimation<float>		deacceleration;
-	SWowAnimation<u16>		enabled;
+	SWowAnimation<uint16_t>		enabled;
 
 	ParticleEmitter*		emitter;
 	IFileM2*	Mesh;
@@ -148,12 +148,12 @@ public:
 	vector3df		pos;
 
 	int		blend;
-	s32		flags;
-	u32		NumTiles;
-	s16		tileRotation;
-	s16		rows, cols;
-	s16		boneIndex;
-	s16		EmitterType;
+	int32_t		flags;
+	uint32_t		NumTiles;
+	int16_t		tileRotation;
+	int16_t		rows, cols;
+	int16_t		boneIndex;
+	int16_t		EmitterType;
 	bool		billboard;
 	bool		ribbontype;
 //	bool		followParent;
@@ -169,7 +169,7 @@ struct RibbonSegment
 	vector3df back;
 	float len;
 	float len0;
-	s32		time;
+	int32_t		time;
 };
 
 class RibbonEmitter
@@ -189,7 +189,7 @@ public:
 	}
 
 public:
-	void init(const M2::ModelRibbonEmitterDef& mta, const u8* fileData, s32* globalSeq, u32 numGlobalSeq);
+	void init(const M2::ModelRibbonEmitterDef& mta, const uint8_t* fileData, int32_t* globalSeq, uint32_t numGlobalSeq);
 
 public:
 	SWowAnimation<vector3df>	color;

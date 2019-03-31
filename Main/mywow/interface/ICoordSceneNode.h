@@ -43,16 +43,16 @@ public:
 public:
 	virtual E_AXIS getSelectedAxis() const = 0;
 	virtual void checkSelectedAxis(vector2di pos) = 0;
-	virtual void setPosition2D(E_POSITION_2D pos2d, f32 distance = 18) = 0;
+	virtual void setPosition2D(E_POSITION_2D pos2d, float distance = 18) = 0;
 	virtual void setAxisVisible(bool xVisible, bool yVisible, bool zVisible) = 0;
 	virtual void setAxisColor(SColor colorX, SColor colorY, SColor colorZ) = 0;
-	virtual void setAxisText(const c8* textX, const c8* textY, const c8* textZ) = 0;
-	virtual void setArrowSize(f32 length, f32 radius) = 0;
+	virtual void setAxisText(const char* textX, const char* textY, const char* textZ) = 0;
+	virtual void setArrowSize(float length, float radius) = 0;
 	virtual void setDir(E_AXIS axis, const vector3df& dir) = 0;
 	virtual vector3df getDir(E_AXIS axis) const = 0;
-	virtual void pitch_yaw_FPS(f32 pitchDegree, f32 yawDegree) = 0;
+	virtual void pitch_yaw_FPS(float pitchDegree, float yawDegree) = 0;
 
 public:	
-	f32  Length;
+	float  Length;
 	E_COORD_MODE		Mode;
 };

@@ -50,10 +50,10 @@ void CRibbonSceneNode::registerSceneNode(bool frustumcheck, int sequence)
 	IRibbonSceneNode::registerSceneNode(frustumcheck, sequence);
 }
 
-void CRibbonSceneNode::tick( u32 timeSinceStart, u32 timeSinceLastFrame, bool visible )
+void CRibbonSceneNode::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible )
 {
-	u32 anim = 0;
-	u32 time = timeSinceStart;
+	uint32_t anim = 0;
+	uint32_t time = timeSinceStart;
 
 	matrix4 mat;			//¹Ç÷À¾ØÕó
 	mat = Character->DynBones[Re->boneIndex].mat * AbsoluteTransformation;
@@ -165,9 +165,9 @@ void CRibbonSceneNode::onPreRender()
 		vertices = (SVertex_PCT*)&RibbonEmitterServices->Vertices[RibbonEmitterServices->CurrentOffset];
 	}
 
-	u32 vCount = 0;
+	uint32_t vCount = 0;
 	float len = 0;
-	u32 count = 0;
+	uint32_t count = 0;
 
 	float above = tabove;
 	float below = tbelow;
@@ -214,10 +214,10 @@ void CRibbonSceneNode::onPreRender()
 }
 */
 
-u32 CRibbonSceneNode::onFillVertexBuffer( SVertex_PCT* vertices, u32 vertexCount ) const
+uint32_t CRibbonSceneNode::onFillVertexBuffer( SVertex_PCT* vertices, uint32_t vertexCount ) const
 {
-	u32 vCount = 0;
-	u32 count = 0;
+	uint32_t vCount = 0;
+	uint32_t count = 0;
 
 	float above = tabove;
 	float below = tbelow;

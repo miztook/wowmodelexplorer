@@ -63,7 +63,7 @@ CD3D9Driver::CD3D9Driver()
 	InitMaterial2D.ZWriteEnable = false;
 	InitMaterial2D.ZBuffer = ECFN_NEVER;
 	InitMaterial2D.AntiAliasing = EAAM_OFF;
-	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+	for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
 		InitMaterial2D.TextureLayer[i].TextureWrapU=ETC_CLAMP;
 		InitMaterial2D.TextureLayer[i].TextureWrapV=ETC_CLAMP;
@@ -105,7 +105,7 @@ CD3D9Driver::~CD3D9Driver()
 		FreeLibrary(HLib);
 }
 
-bool CD3D9Driver::initDriver(const SWindowInfo& wndInfo, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread )
+bool CD3D9Driver::initDriver(const SWindowInfo& wndInfo, uint32_t adapter, bool fullscreen, bool vsync, uint8_t antialias, bool multithread )
 {
 	ASSERT(::IsWindow(wndInfo.hwnd));
 
@@ -115,7 +115,7 @@ bool CD3D9Driver::initDriver(const SWindowInfo& wndInfo, u32 adapter, bool fulls
 
 	RECT rc;
 	::GetClientRect(wndInfo.hwnd, &rc);
-	dimension2du windowSize((u32)rc.right-rc.left, (u32)rc.bottom-rc.top);
+	dimension2du windowSize((uint32_t)rc.right-rc.left, (uint32_t)rc.bottom-rc.top);
 
 	HLib = ::LoadLibraryA("d3d9.dll");
 	if (!HLib)
@@ -183,16 +183,16 @@ bool CD3D9Driver::initDriver(const SWindowInfo& wndInfo, u32 adapter, bool fulls
 	// set present params...
 	D3DDISPLAYMODE d3ddm;
 	pID3D->GetAdapterDisplayMode(AdapterInfo.index, &d3ddm);
-	u32 numModes = pID3D->GetAdapterModeCount(AdapterInfo.index, d3ddm.Format);
-	for (u32 i=0; i<numModes; ++i)
+	uint32_t numModes = pID3D->GetAdapterModeCount(AdapterInfo.index, d3ddm.Format);
+	for (uint32_t i=0; i<numModes; ++i)
 	{
 		D3DDISPLAYMODE ddm;
 		pID3D->EnumAdapterModes(AdapterInfo.index, d3ddm.Format, i, &ddm);
 
 		SDisplayMode displayMode;
-		displayMode.width = (u16)ddm.Width;
-		displayMode.height = (u16)ddm.Height;
-		displayMode.refreshrate = (u8)ddm.RefreshRate;
+		displayMode.width = (uint16_t)ddm.Width;
+		displayMode.height = (uint16_t)ddm.Height;
+		displayMode.refreshrate = (uint8_t)ddm.RefreshRate;
 		AdapterInfo.displayModes.emplace_back(displayMode);
 	}
 
@@ -249,7 +249,7 @@ bool CD3D9Driver::initDriver(const SWindowInfo& wndInfo, u32 adapter, bool fulls
 				DevType, Present.BackBufferFormat, !fullscreen,
 				(D3DMULTISAMPLE_TYPE)antialias, &qualityLevels)) && qualityLevels)
 			{
-				u32 quality = min_((u32)(qualityLevels-1), 1u);
+				uint32_t quality = min_((uint32_t)(qualityLevels-1), 1u);
 				Present.MultiSampleType	= (D3DMULTISAMPLE_TYPE)antialias;
 				Present.MultiSampleQuality = quality;
 				Present.SwapEffect		= D3DSWAPEFFECT_DISCARD;		//multisample requies discard
@@ -259,7 +259,7 @@ bool CD3D9Driver::initDriver(const SWindowInfo& wndInfo, u32 adapter, bool fulls
 		}
 	}
 	DriverSetting.antialias = antialias;
-	DriverSetting.quality = (u8)Present.MultiSampleQuality;
+	DriverSetting.quality = (uint8_t)Present.MultiSampleQuality;
 
 	//depth stencil
 	Present.AutoDepthStencilFormat = D3DFMT_D24X8;
@@ -613,7 +613,7 @@ void CD3D9Driver::setTransform( E_TRANSFORMATION_STATE state, const matrix4& mat
 		break;
 	default:		//texture
 		{
-			s32 tex = state - ETS_TEXTURE_0;
+			int32_t tex = state - ETS_TEXTURE_0;
 			if (  tex >= 0  && tex < MATERIAL_MAX_TEXTURES )
 			{
 #ifdef FIXPIPELINE
@@ -627,7 +627,7 @@ void CD3D9Driver::setTransform( E_TRANSFORMATION_STATE state, const matrix4& mat
 	}
 }
 
-void CD3D9Driver::setTexture( u32 stage, ITexture* texture )
+void CD3D9Driver::setTexture( uint32_t stage, ITexture* texture )
 {
 	D3D9MaterialRenderServices->setSampler_Texture(stage, texture);
 }
@@ -647,7 +647,7 @@ void CD3D9Driver::setTransform(const matrix4& matView, const matrix4& matProject
 	CurrentRenderMode = ERM_3D;
 }
 
-void CD3D9Driver::setTransform_Material_Textures( const matrix4& matWorld, const SMaterial& material, ITexture* const textures[], u32 numTextures )
+void CD3D9Driver::setTransform_Material_Textures( const matrix4& matWorld, const SMaterial& material, ITexture* const textures[], uint32_t numTextures )
 {
 #ifdef FIXPIPELINE
 	pID3DDevice->SetTransform( D3DTS_WORLD, (D3DMATRIX*)(void*)matWorld.pointer());
@@ -661,14 +661,14 @@ void CD3D9Driver::setTransform_Material_Textures( const matrix4& matWorld, const
 
 	Material = material;
 
-	u32 n = min_(numTextures, (u32)MATERIAL_MAX_TEXTURES);
-	for (u32 i=0; i<n; ++i)
+	uint32_t n = min_(numTextures, (uint32_t)MATERIAL_MAX_TEXTURES);
+	for (uint32_t i=0; i<n; ++i)
 	{
 		D3D9MaterialRenderServices->setSampler_Texture(i, textures[i]);
 	}
 }
 
-void CD3D9Driver::setTransform_Material_Textures( const matrix4& matWorld, const matrix4& matView, const matrix4& matProjection, const SMaterial& material, ITexture* const textures[], u32 numTextures )
+void CD3D9Driver::setTransform_Material_Textures( const matrix4& matWorld, const matrix4& matView, const matrix4& matProjection, const SMaterial& material, ITexture* const textures[], uint32_t numTextures )
 {
 #ifdef FIXPIPELINE
 	pID3DDevice->SetTransform( D3DTS_WORLD, (D3DMATRIX*)(void*)matWorld.pointer());
@@ -686,14 +686,14 @@ void CD3D9Driver::setTransform_Material_Textures( const matrix4& matWorld, const
 
 	Material = material;
 
-	u32 n = min_(numTextures, (u32)MATERIAL_MAX_TEXTURES);
-	for (u32 i=0; i<n; ++i)
+	uint32_t n = min_(numTextures, (uint32_t)MATERIAL_MAX_TEXTURES);
+	for (uint32_t i=0; i<n; ++i)
 	{
 		D3D9MaterialRenderServices->setSampler_Texture(i, textures[i]);
 	}
 }
 
-ITexture* CD3D9Driver::getTexture( u32 index ) const
+ITexture* CD3D9Driver::getTexture( uint32_t index ) const
 {
 	return D3D9MaterialRenderServices->getSampler_Texture(index);
 }
@@ -777,7 +777,7 @@ bool CD3D9Driver::setDriverSetting( const SDriverSetting& setting )
 	bool fullscreenChanged = false;
 
 	bool vsync = setting.vsync;
-	u8 antialias = setting.antialias;
+	uint8_t antialias = setting.antialias;
 	bool fullscreen = setting.fullscreen;
 
 	if (vsync != DriverSetting.vsync)
@@ -801,7 +801,7 @@ bool CD3D9Driver::setDriverSetting( const SDriverSetting& setting )
 				DevType, Present.BackBufferFormat, !fullscreen,
 				(D3DMULTISAMPLE_TYPE)antialias, &qualityLevels)) && qualityLevels)
 			{
-				u32 quality = min_((u32)(qualityLevels-1), 1u);
+				uint32_t quality = min_((uint32_t)(qualityLevels-1), 1u);
 				Present.MultiSampleType	= (D3DMULTISAMPLE_TYPE)antialias;
 				Present.MultiSampleQuality = quality;
 				Present.SwapEffect		= D3DSWAPEFFECT_DISCARD;		//multisample requies discard
@@ -816,14 +816,14 @@ bool CD3D9Driver::setDriverSetting( const SDriverSetting& setting )
 		antialiasChanged = true;
 
 		DriverSetting.antialias = antialias;
-		DriverSetting.quality = (u8)Present.MultiSampleQuality;
+		DriverSetting.quality = (uint8_t)Present.MultiSampleQuality;
 	}
 
 	if (fullscreen != DriverSetting.fullscreen)
 	{
 		RECT rc;
 		::GetClientRect(HWnd, &rc);
-		dimension2du windowSize((u32)rc.right-rc.left, (u32)rc.bottom-rc.top);
+		dimension2du windowSize((uint32_t)rc.right-rc.left, (uint32_t)rc.bottom-rc.top);
 		D3DDISPLAYMODE d3ddm;
 		pID3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &d3ddm);
 
@@ -869,7 +869,7 @@ bool CD3D9Driver::setDriverSetting( const SDriverSetting& setting )
 		{ 	
 			g_Engine->getFileSystem()->writeLog(ELOG_GX, "Driver Setting Changed. Vsync: %s, Antialias: %d, %s", 
 				Present.PresentationInterval == D3DPRESENT_INTERVAL_IMMEDIATE ? "Off" : "On",
-				(s32)DriverSetting.antialias, 
+				(int32_t)DriverSetting.antialias, 
 				Present.Windowed ? "Window" : "FullScreen");
 		}
 	}
@@ -976,7 +976,7 @@ bool CD3D9Driver::reset()
 
 void CD3D9Driver::createVertexDecl()
 {
-	for (u32 i=0; i<EVT_COUNT; ++i)
+	for (uint32_t i=0; i<EVT_COUNT; ++i)
 	{
 		VertexDeclarations[i] = new CD3D9VertexDeclaration((E_VERTEX_TYPE)i);
 	}
@@ -984,7 +984,7 @@ void CD3D9Driver::createVertexDecl()
 
 void CD3D9Driver::releaseVertexDecl()
 {
-	for (u32 i=0; i<EVT_COUNT; ++i)
+	for (uint32_t i=0; i<EVT_COUNT; ++i)
 	{
 		delete VertexDeclarations[i];
 	}

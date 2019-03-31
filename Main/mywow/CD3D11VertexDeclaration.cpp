@@ -151,7 +151,7 @@ ID3D11InputLayout* CD3D11VertexDeclaration::getInputLayout( IVertexShader* shade
 		return nullptr;
 	}
 
-	u32 shaderSize = vertexShader->getCodeSize();
+	uint32_t shaderSize = vertexShader->getCodeSize();
 
 	ID3D11InputLayout* layout = nullptr;
 	T_LayoutMap::const_iterator itr = LayoutMap.find(signature);

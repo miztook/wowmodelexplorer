@@ -8,14 +8,14 @@ public:
 	virtual ~IMemFile() {}
 
 public:
-	virtual u32 read(void* dest, u32 bytes) = 0;
-	virtual u32 getSize() const = 0;
-	virtual u32 getPos() const = 0;
-	virtual u8* getBuffer() = 0;
-	virtual u8* getPointer() = 0;
+	virtual uint32_t read(void* dest, uint32_t bytes) = 0;
+	virtual uint32_t getSize() const = 0;
+	virtual uint32_t getPos() const = 0;
+	virtual uint8_t* getBuffer() = 0;
+	virtual uint8_t* getPointer() = 0;
 	virtual bool isEof() const = 0;
-	virtual bool seek(s32 offset, bool relative=false) = 0;
+	virtual bool seek(int32_t offset, bool relative=false) = 0;
 	virtual void close() = 0;
-	virtual bool save(const c8* filename) = 0;
-	virtual const c8*	getFileName() const = 0;	
+	virtual bool save(const char* filename) = 0;
+	virtual const char*	getFileName() const = 0;	
 };

@@ -49,8 +49,8 @@ void processPan1( const SGestureInfo& gesInfo )
 {
 #ifdef MW_PLATFORM_WINDOWS
 
-	static f32 lastX = 0.0f;
-	static f32 lastY = 0.0f;
+	static float lastX = 0.0f;
+	static float lastY = 0.0f;
 	static bool capture = false;
 
 	ISceneManager* smgr = g_Engine->getSceneManager();
@@ -67,8 +67,8 @@ void processPan1( const SGestureInfo& gesInfo )
 	}
 	else if (gesInfo.state == GestureState_Change)
 	{
-		f32 x = gesInfo.param.pan1_xPos;
-		f32 y = gesInfo.param.pan1_yPos;
+		float x = gesInfo.param.pan1_xPos;
+		float y = gesInfo.param.pan1_yPos;
 
 		const float blend = 0.8f;				//旋转柔和
 
@@ -105,8 +105,8 @@ void processPan2( const SGestureInfo& gesInfo )
 {
 #ifndef MW_PLATFORM_WINDOWS
 
-	static f32 lastX = 0.0f;
-	static f32 lastY = 0.0f;
+	static float lastX = 0.0f;
+	static float lastY = 0.0f;
 	static bool capture = false;
 
 	ISceneManager* smgr = g_Engine->getSceneManager();
@@ -123,8 +123,8 @@ void processPan2( const SGestureInfo& gesInfo )
 	}
 	else if (gesInfo.state == GestureState_Change)
 	{
-		f32 x = gesInfo.param.pan1_xPos;
-		f32 y = gesInfo.param.pan1_yPos;
+		float x = gesInfo.param.pan1_xPos;
+		float y = gesInfo.param.pan1_yPos;
 
 		const float blend = 0.8f;				//旋转柔和
 

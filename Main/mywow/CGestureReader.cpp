@@ -7,7 +7,7 @@ void CGestureReader::tick()
 {
 	BEGIN_LOCK(&cs);
 
-	for (u32 i=0; i<GestureType_Num; ++i)
+	for (uint32_t i=0; i<GestureType_Num; ++i)
 	{
 		CGestureRecognizerBase* recognizer = GestureRecognizers[i];
 		if(recognizer)
@@ -17,7 +17,7 @@ void CGestureReader::tick()
 	END_LOCK(&cs);
 }
 
-void CGestureReader::readTouchInfo( const SGesTouchInfo* arrTouches, u32 count )
+void CGestureReader::readTouchInfo( const SGesTouchInfo* arrTouches, uint32_t count )
 {
 	if (!arrTouches || !count)
 		return;
@@ -27,7 +27,7 @@ void CGestureReader::readTouchInfo( const SGesTouchInfo* arrTouches, u32 count )
 	EndTouchInfos.clear();
 	CancelTouchInfos.clear();
 
-	for (u32 i=0; i<count; ++i)
+	for (uint32_t i=0; i<count; ++i)
 	{
 		const SGesTouchInfo& touch = arrTouches[i];
 
@@ -53,7 +53,7 @@ void CGestureReader::readTouchInfo( const SGesTouchInfo* arrTouches, u32 count )
 
 	BEGIN_LOCK(&cs);
 
-	for (u32 i=0; i<GestureType_Num; ++i)
+	for (uint32_t i=0; i<GestureType_Num; ++i)
 	{
 		CGestureRecognizerBase* recognizer = GestureRecognizers[i];
 		if(!recognizer)

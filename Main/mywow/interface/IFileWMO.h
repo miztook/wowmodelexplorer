@@ -37,8 +37,8 @@ struct SWMOMaterial
 		alphatest = false;
 		shaderType = Diffuse;
 	}
-	u32 flags;
-	u32	shaderType;
+	uint32_t flags;
+	uint32_t	shaderType;
 	ITexture* texture0;
 	ITexture* texture1;
 	SColor color0;
@@ -51,10 +51,10 @@ struct SWMOPortal
 {
 	SWMOPortal() : vStart(0), vCount(0), frontGroupIndex(-1), backGroupIndex(-1) {}
 
-	u16 vStart;
-	u16 vCount;
-	s16 frontGroupIndex;
-	s16 backGroupIndex;	
+	uint16_t vStart;
+	uint16_t vCount;
+	int16_t frontGroupIndex;
+	int16_t backGroupIndex;	
 	plane3df	plane;
 	aabbox3df	 box;
 
@@ -63,8 +63,8 @@ struct SWMOPortal
 
 struct SWMOPortalRelation
 {
-	u16 portalIndex;
-	s16 groupIndex;
+	uint16_t portalIndex;
+	int16_t groupIndex;
 	bool face;
 };
 
@@ -73,31 +73,31 @@ struct SWMOLight
 	E_LIGHT_TYPE lighttype;
 	SColor color;
 	vector3df position;
-	f32 intensity;
-	f32 attenStart, attenEnd;
+	float intensity;
+	float attenStart, attenEnd;
 };
 
 struct SWMODoodadSet
 {
-	c8 name[20];
-	u32 start;
-	u32 count;
+	char name[20];
+	uint32_t start;
+	uint32_t count;
 };
 
 struct SWMODoodad
 {
-	c8 name[256];
+	char name[256];
 	vector3df position;
 	quaternion quat;
-	f32 scale;
+	float scale;
 	SColor color;
 };
 
 struct SWMOFog
 {
 	vector3df position;
-	f32 radius1, radius2;
-	f32 fogend, fogstart;
+	float radius1, radius2;
+	float fogend, fogstart;
 	SColor color;
 };
 
@@ -143,26 +143,26 @@ public:
 	virtual void releaseVideoResources() = 0;
 
 public:
-	c8		Name[QMAX_PATH];
+	char		Name[QMAX_PATH];
 
-	u32		NumPortalVertices;
-	u32		NumDoodads;
-	u32		NumFogs;
-	u32		NumPortalRelations;
-	u32		GroupNameBlockSize;
-	u32		DoodadNameBlockSize;
+	uint32_t		NumPortalVertices;
+	uint32_t		NumDoodads;
+	uint32_t		NumFogs;
+	uint32_t		NumPortalRelations;
+	uint32_t		GroupNameBlockSize;
+	uint32_t		DoodadNameBlockSize;
 
 	WMO::wmoHeader		Header;
-	c8*		TextureFileNameBlock;
+	char*		TextureFileNameBlock;
 	SWMOMaterial*		Materials;
-	c8*		GroupNamesBlock;
+	char*		GroupNamesBlock;
 
 	CWMOGroup*		Groups;
 	vector3df*		PortalVertices;
 	SWMOPortal*		Portals;
 	SWMOPortalRelation*		PortalRelations;
 	SWMOLight*			Lights;
-	c8*		ModelNamesBlock;
+	char*		ModelNamesBlock;
 	SWMODoodadSet*		DoodadSets;
 	SWMODoodad*		Doodads;
 	SWMOFog*		Fogs;

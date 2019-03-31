@@ -3,26 +3,26 @@
 #include <string.h>
 #include "function.h"
 
-template <u32 MaxSize>
+template <uint32_t MaxSize>
 class string
 {
 public:
-	string(const c8* c)
+	string(const char* c)
 	{
 		Q_strcpy(data, MaxSize, c);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
 	}
 
-	string(const c8* c, u32 len)
+	string(const char* c, uint32_t len)
 	{
 		if (len >= MaxSize)
 			len = MaxSize-1;
 		Q_strncpy(data, MaxSize, c, len);
         data[len] = '\0';
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
@@ -37,16 +37,16 @@ public:
 	string(const string& other)
 	{
 		Q_strcpy(data, MaxSize, other.data);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
 	}
 
-	string& operator=(const c8* c)
+	string& operator=(const char* c)
 	{
 		Q_strcpy(data, MaxSize, c);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
@@ -57,7 +57,7 @@ public:
 	string& operator=(const string& other)
 	{
 		Q_strcpy(data, MaxSize, other.data);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
@@ -74,12 +74,12 @@ public:
 		return 0 != Q_stricmp(data, other.data);
 	}
 
-	bool operator==(const c8* c) const
+	bool operator==(const char* c) const
 	{
 		return 0 == Q_stricmp(data, c);
 	}
 
-	bool operator!=(const c8* c) const
+	bool operator!=(const char* c) const
 	{
 		return 0 != Q_stricmp(data, c);
 	}
@@ -94,10 +94,10 @@ public:
 		return used==0;
 	}
 
-	void cpptext_to_utf8(const c8* cpptext)
+	void cpptext_to_utf8(const char* cpptext)
 	{
 		cpptext_to_utf8(cpptext, data, MaxSize);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
@@ -110,12 +110,12 @@ public:
 		used = 0;
 	}
 
-	const c8* c_str() const
+	const char* c_str() const
 	{
 		return data;
 	}
 
-	u32 length() const
+	uint32_t length() const
 	{
 		return used;
 	}
@@ -123,12 +123,12 @@ public:
 	char operator [] (int n) const { assert(n >= 0 && n <= (int)used); return data[n]; }
 	char& operator [] (int n) { assert(n >= 0 && n <= (int)used); return data[n]; }
 
-	s32 findNext(c8 c, u32 startPos) const
+	int32_t findNext(char c, uint32_t startPos) const
 	{
 		if (startPos >= MaxSize)
 			return -1;
-		u32 endPos = min_(length(), MaxSize);
-		for (u32 i=startPos; i<endPos; ++i)
+		uint32_t endPos = min_(length(), MaxSize);
+		for (uint32_t i=startPos; i<endPos; ++i)
 		{
 			if(data[i] == c)
 				return i;
@@ -136,10 +136,10 @@ public:
 		return -1;
 	}
 
-	s32 findLast(c8 c, s32 start = -1) const
+	int32_t findLast(char c, int32_t start = -1) const
 	{
-		start = clamp_(start < 0 ? (s32)length()-1 : start, 0, (s32)length()-1);
-		for (s32 i=(s32)length()-1; i>=start; --i)
+		start = clamp_(start < 0 ? (int32_t)length()-1 : start, 0, (int32_t)length()-1);
+		for (int32_t i=(int32_t)length()-1; i>=start; --i)
 		{
 			if (data[i] == c)
 				return i;
@@ -148,9 +148,9 @@ public:
 		return -1;
 	}
 
-	void subString(u32 begin, u32 len, string& outString)
+	void subString(uint32_t begin, uint32_t len, string& outString)
 	{
-		u32 l = length();
+		uint32_t l = length();
 
 		if (begin >= l)
 			outString = "";
@@ -158,17 +158,17 @@ public:
 			len = l - begin;
 		Q_strncpy(outString.data, MaxSize, &data[begin], len);
         outString.data[len] = '\0';
-		outString.used = (u32)strlen(outString.data);
+		outString.used = (uint32_t)strlen(outString.data);
 		outString.data[used] = '\0';
 
 		ASSERT(outString.isValid());
 	}
 
-	bool endWith(const c8* end)
+	bool endWith(const char* end)
 	{
-		u32 l = length();
+		uint32_t l = length();
 
-		u32 len = (u32)strlen(end);
+		uint32_t len = (uint32_t)strlen(end);
 
 		if (l < len)
 			return false;
@@ -176,11 +176,11 @@ public:
 		return  Q_stricmp(&data[l-len], end) == 0;
 	}
 
-	bool beginWith(const c8* begin)
+	bool beginWith(const char* begin)
 	{
-		u32 l = length();
+		uint32_t l = length();
 
-		u32 len = (u32)strlen(begin);
+		uint32_t len = (uint32_t)strlen(begin);
 
 		if (l < len)
 			return false;
@@ -188,7 +188,7 @@ public:
 		return  Q_strnicmp(&data[0], begin, len) == 0;
 	}
 
-	void append(c8 c)
+	void append(char c)
 	{
 		++used;
 		data[used-1] = c;
@@ -197,10 +197,10 @@ public:
 		ASSERT(isValid());
 	}
 
-	void append(const c8* c)
+	void append(const char* c)
 	{
 		Q_strcat(data, MaxSize, c);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
@@ -221,31 +221,31 @@ public:
 		Q_strupr(data, MaxSize);
 	}
     
-    s32 findString(const c8* subStr)
+    int32_t findString(const char* subStr)
     {
         if(empty()) return -1;
         
-        c8* c = strstr(data, subStr);
+        char* c = strstr(data, subStr);
         if(!c)
             return -1;
-        return (s32)(ptrdiff_t)(c - data);
+        return (int32_t)(ptrdiff_t)(c - data);
     }
 
-	void format(const c8* fmt, ...)
+	void format(const char* fmt, ...)
 	{
 		va_list va;
 		va_start( va, fmt );
 		Q_vsprintf( data, MaxSize, fmt, va );
 		va_end( va );
 
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 	}
 
 	void normalize()
 	{
-		u32 len = length();
-		for (u32 i=0; i<len; ++i)
+		uint32_t len = length();
+		for (uint32_t i=0; i<len; ++i)
 		{
 			if(data[i] == '\\')
 				data[i] = '/';
@@ -254,8 +254,8 @@ public:
 
 	void normalizeDir()
 	{
-		u32 len = length();
-		for (u32 i=0; i<len; ++i)
+		uint32_t len = length();
+		for (uint32_t i=0; i<len; ++i)
 		{
 			if(data[i] == '\\')
 				data[i] = '/';
@@ -263,7 +263,7 @@ public:
 
 		if (len > 0)
 		{
-			c8 last = data[len -1];
+			char last = data[len -1];
 			if (last != '/' && last != '\\' )
 			{
 				append('/');
@@ -273,8 +273,8 @@ public:
 
 	bool isNormalized() const
 	{
-		u32 len = length();
-		for (u32 i=0; i<len; ++i)
+		uint32_t len = length();
+		for (uint32_t i=0; i<len; ++i)
 		{
 			if(data[i] == '\\')
 				return false;
@@ -282,11 +282,11 @@ public:
 		return true;
 	}
 
-	bool changeExt(const c8* ext, const c8* newExt)
+	bool changeExt(const char* ext, const char* newExt)
 	{
 		if (endWith(ext))
 		{
-			u32 oldlen = length() - (u32)strlen(ext);
+			uint32_t oldlen = length() - (uint32_t)strlen(ext);
 			data[oldlen] = '\0';
 			append(newExt);
 			return true;
@@ -294,9 +294,9 @@ public:
 		return false;
 	}
 
-	void makeHDFileName(const c8* textureName)
+	void makeHDFileName(const char* textureName)
 	{
-		const c8* p = strrchr(textureName, '.' );
+		const char* p = strrchr(textureName, '.' );
 		if (p)
 		{
 			Q_strncpy(data, MaxSize, textureName, p-textureName);
@@ -307,7 +307,7 @@ public:
 		{
 			Q_strcat(data, MaxSize, "_HD");
 		}
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
@@ -328,8 +328,8 @@ public:
 	};
 
 private:
-	c8 data[MaxSize];
-	u32 used;
+	char data[MaxSize];
+	uint32_t used;
 
 	bool isValid() const
 	{
@@ -348,26 +348,26 @@ typedef string<1024>	string1024;
 
 typedef string<QMAX_PATH>		string_path;
 
-template <u32 MaxSize>
+template <uint32_t MaxSize>
 class string_cs
 {
 public:
-	string_cs(const c8* c)
+	string_cs(const char* c)
 	{
 		Q_strcpy(data, MaxSize, c);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
 	}
 
-	string_cs(const c8* c, u32 len)
+	string_cs(const char* c, uint32_t len)
 	{
 		if (len > MaxSize)
 			len = MaxSize;
 		Q_strncpy(data, MaxSize, c, len);
         data[len] = '\0';
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
@@ -382,16 +382,16 @@ public:
 	string_cs(const string_cs& other)
 	{
 		Q_strcpy(data, MaxSize, other.data);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
 	}
 
-	string_cs& operator=(const c8* c)
+	string_cs& operator=(const char* c)
 	{
 		Q_strcpy(data, MaxSize, c);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
@@ -402,7 +402,7 @@ public:
 	string_cs& operator=(const string_cs& other)
 	{
 		Q_strcpy(data, MaxSize, other.data);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
@@ -419,12 +419,12 @@ public:
 		return 0 != strcmp(data, other.data);
 	}
 
-	bool operator==(const c8* c) const
+	bool operator==(const char* c) const
 	{
 		return 0 == strcmp(data, c);
 	}
 
-	bool operator!=(const c8* c) const
+	bool operator!=(const char* c) const
 	{
 		return 0 != strcmp(data, c);
 	}
@@ -439,10 +439,10 @@ public:
 		return used==0;
 	}
 
-	void cpptext_to_utf8(const c8* cpptext)
+	void cpptext_to_utf8(const char* cpptext)
 	{
 		cpptext_to_utf8(cpptext, data, MaxSize);
-		used = (u32)strlen(data);
+		used = (uint32_t)strlen(data);
 		data[used] = '\0';
 
 		ASSERT(isValid());
@@ -455,22 +455,22 @@ public:
 		used = 0;
 	}
 
-	const c8* c_str() const
+	const char* c_str() const
 	{
 		return data;
 	}
 
-	u32 length() const
+	uint32_t length() const
 	{
 		return used;
 	}
 
-	s32 findNext(c8 c, u32 startPos) const
+	int32_t findNext(char c, uint32_t startPos) const
 	{
 		if (startPos >= MaxSize)
 			return -1;
-		u32 endPos = min_(length(), MaxSize);
-		for (u32 i=startPos; i<endPos; ++i)
+		uint32_t endPos = min_(length(), MaxSize);
+		for (uint32_t i=startPos; i<endPos; ++i)
 		{
 			if(data[i] == c)
 				return i;
@@ -478,10 +478,10 @@ public:
 		return -1;
 	}
 
-	s32 findLast(c8 c, s32 start = -1) const
+	int32_t findLast(char c, int32_t start = -1) const
 	{
-		start = clamp_(start < 0 ? (s32)length()-1 : start, 0, (s32)length()-1);
-		for (s32 i=start; i>=0; --i)
+		start = clamp_(start < 0 ? (int32_t)length()-1 : start, 0, (int32_t)length()-1);
+		for (int32_t i=start; i>=0; --i)
 		{
 			if (data[i] == c)
 				return i;
@@ -490,9 +490,9 @@ public:
 		return -1;
 	}
 
-	void subString(u32 begin, u32 len, string_cs& outString) const
+	void subString(uint32_t begin, uint32_t len, string_cs& outString) const
 	{
-		u32 l = length();
+		uint32_t l = length();
 
 		if (begin >= l)
 			outString = "";
@@ -500,17 +500,17 @@ public:
 			len = l - begin;
 		Q_strncpy(outString.data, MaxSize, &data[begin], len);
         outString.data[len] = '\0';
-		outString.used = (u32)strlen(outString.data);
+		outString.used = (uint32_t)strlen(outString.data);
 		outString.data[used] = '\0';
 
 		ASSERT(outString.isValid());
 	}
 
-	bool endWith(const c8* end)
+	bool endWith(const char* end)
 	{
-		u32 l = length();
+		uint32_t l = length();
 
-		u32 len = strlen(end);
+		uint32_t len = strlen(end);
 
 		if (l < len)
 			return false;
@@ -518,11 +518,11 @@ public:
 		return  strcmp(&data[l-len], end) == 0;
 	}
 
-	bool beginWith(const c8* begin)
+	bool beginWith(const char* begin)
 	{
-		u32 l = length();
+		uint32_t l = length();
 
-		u32 len = strlen(begin);
+		uint32_t len = strlen(begin);
 
 		if (l < len)
 			return false;
@@ -530,7 +530,7 @@ public:
 		return  strncmp(&data[0], begin, len) == 0;
 	}
 
-	void append(c8 c)
+	void append(char c)
 	{
 		++used;
 		data[used-1] = c;
@@ -539,7 +539,7 @@ public:
 		ASSERT(isValid());
 	}
 
-	void append(const c8* c)
+	void append(const char* c)
 	{
 		Q_strcat(data, MaxSize, c);
 		used = strlen(data);
@@ -565,8 +565,8 @@ public:
 
 	void normalize()
 	{
-		u32 len = length();
-		for (u32 i=0; i<len; ++i)
+		uint32_t len = length();
+		for (uint32_t i=0; i<len; ++i)
 		{
 			if(data[i] == '\\')
 				data[i] = '/';
@@ -575,8 +575,8 @@ public:
 
 	void normalizeDir()
 	{
-		u32 len = length();
-		for (u32 i=0; i<len; ++i)
+		uint32_t len = length();
+		for (uint32_t i=0; i<len; ++i)
 		{
 			if(data[i] == '\\')
 				data[i] = '/';
@@ -584,7 +584,7 @@ public:
 
 		if (len > 0)
 		{
-			c8 last = data[len -1];
+			char last = data[len -1];
 			if (last != '/' && last != '\\' )
 			{
 				append('/');
@@ -594,8 +594,8 @@ public:
 
 	bool isNormalized() const
 	{
-		u32 len = length();
-		for (u32 i=0; i<len; ++i)
+		uint32_t len = length();
+		for (uint32_t i=0; i<len; ++i)
 		{
 			if(data[i] == '\\')
 				return false;
@@ -603,11 +603,11 @@ public:
 		return true;
 	}
 
-	bool changeExt(const c8* ext, const c8* newExt)
+	bool changeExt(const char* ext, const char* newExt)
 	{
 		if (endWith(ext))
 		{
-			u32 oldlen = length() - strlen(ext);
+			uint32_t oldlen = length() - strlen(ext);
 			data[oldlen] = '\0';
 			append(newExt);
 			return true;
@@ -627,8 +627,8 @@ public:
 	};
 
 private:
-	c8 data[MaxSize];
-	u32 used;
+	char data[MaxSize];
+	uint32_t used;
 
 	bool isValid() const
 	{

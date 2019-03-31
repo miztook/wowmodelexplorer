@@ -18,8 +18,8 @@ void CGestureRecognizer_Tap1::tick()
 
 	if (State == RecognizerState_Begin)
 	{
-		u32 now = g_Engine->getTimer()->getMillisecond();
-		if (now  - TimeStamp > (u32)(getfRecognizerFailInterval()* 1000))
+		uint32_t now = g_Engine->getTimer()->getMillisecond();
+		if (now  - TimeStamp > (uint32_t)(getfRecognizerFailInterval()* 1000))
 			changeState(RecognizerState_Fail);
 	}
 }
@@ -44,11 +44,11 @@ void CGestureRecognizer_Tap1::onTouchMove( const std::vector<SGesTouchInfo>& tou
 
 	const SGesTouchInfo& head = TouchInfoArray[0];
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)			//not valid touch finger id
 		return;
 
-	f32 distance = getTouchDistance(head, touchInfos[index]);
+	float distance = getTouchDistance(head, touchInfos[index]);
 	if (distance > getThreshold_MoveDist())
 		changeState(RecognizerState_Fail);
 }
@@ -60,11 +60,11 @@ void CGestureRecognizer_Tap1::onTouchEnd( const std::vector<SGesTouchInfo>& touc
 
 	const SGesTouchInfo& head = TouchInfoArray[0];
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)			//not valid touch finger id
 		return;
 
-	f32 distance = getTouchDistanceSQ(head, touchInfos[index]);
+	float distance = getTouchDistanceSQ(head, touchInfos[index]);
 	if (distance > getThreshold_MoveDist() ||
         !checkForbidGestures())
 		changeState(RecognizerState_Fail);
@@ -79,7 +79,7 @@ void CGestureRecognizer_Tap1::onTouchCancel( const std::vector<SGesTouchInfo>& t
 
 	const SGesTouchInfo& head = TouchInfoArray[0];
 
-	s32 index = findTouchInfo(head.fingerID, touchInfos);
+	int32_t index = findTouchInfo(head.fingerID, touchInfos);
 	if (index == -1)			//not valid touch finger id
 		return;
 

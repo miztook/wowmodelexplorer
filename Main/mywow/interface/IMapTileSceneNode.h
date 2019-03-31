@@ -14,7 +14,7 @@ public:
 
 public:
 	virtual IFileADT*	getFileADT() const = 0;
-	virtual bool getHeightNormal(f32 x, f32 z, f32* height, vector3df* normal) const = 0;
+	virtual bool getHeightNormal(float x, float z, float* height, vector3df* normal) const = 0;
 	virtual vector3df getCenter() const = 0;
 
 	virtual void addM2SceneNodes() = 0;

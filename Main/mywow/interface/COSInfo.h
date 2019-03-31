@@ -52,15 +52,15 @@ public:
 	explicit COSInfo(float version);
 
 public:
-	const c8* getOSName() const { return OSName.c_str(); }
+	const char* getOSName() const { return OSName.c_str(); }
 
 	bool IsAeroSupport() const;
 
-	void SetVersion(f32 version);
+	void SetVersion(float version);
 
 public:
-	u32	MajorVersion;
-	u32	MinorVersion;
+	uint32_t	MajorVersion;
+	uint32_t	MinorVersion;
 
 private:
 	void retrieveDeviceInfo();
@@ -70,8 +70,8 @@ private:
 	E_DEVICE_TYPE		DeviceType;
 };
 
-inline void COSInfo::SetVersion(f32 version)
+inline void COSInfo::SetVersion(float version)
 {
-	MajorVersion = (u32)floor32_(version);
-	MinorVersion = (u32)round32_(fract_(version)*10.0f);
+	MajorVersion = (uint32_t)floor32_(version);
+	MinorVersion = (uint32_t)round32_(fract_(version)*10.0f);
 }

@@ -32,7 +32,7 @@ public:
 	void skipSceneNode(ISceneNode* node);
 
 	void clearAllSceneNodes();
-	void tickAllSceneNodes(u32 timeSinceStart, u32 timeSinceLastFrame, int sequence);
+	void tickAllSceneNodes(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, int sequence);
 	void renderAllSceneNodes() const;
 
 	void addRenderUnit(const SRenderUnit* unit, E_RENDERINST_TYPE type);

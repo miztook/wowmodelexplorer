@@ -11,31 +11,31 @@
 #include "COpenGLHelper.h"
 #include "COpenGLMaterialRenderServices.h"
 
-COpenGLTextureWriter::COpenGLTextureWriter( const dimension2du& size, ECOLOR_FORMAT format, u32 numMipmap, bool bTempMemory )
+COpenGLTextureWriter::COpenGLTextureWriter( const dimension2du& size, ECOLOR_FORMAT format, uint32_t numMipmap, bool bTempMemory )
 	: ITextureWriter(numMipmap)
 {
 	TempMemory = bTempMemory;
 	TextureSize = size;
 	ColorFormat = format;
 
-	u32 bpp = getBytesPerPixelFromFormat(format);
+	uint32_t bpp = getBytesPerPixelFromFormat(format);
 
 	MipData = new SMipData[NumMipmaps];
-	for (u32 i=0; i<NumMipmaps; ++i)
+	for (uint32_t i=0; i<NumMipmaps; ++i)
 	{
 		dimension2du mipsize = size.getMipLevelSize(i);
 
-		u32 pitch, bytes;
+		uint32_t pitch, bytes;
 		getImagePitchAndBytes(ColorFormat, mipsize.Width, mipsize.Height, pitch, bytes);
 		
 		MipData[i].pitch = pitch;
-		MipData[i].data = TempMemory ? (u8*)Z_AllocateTempMemory(bytes) : new u8[bytes];
+		MipData[i].data = TempMemory ? (uint8_t*)Z_AllocateTempMemory(bytes) : new uint8_t[bytes];
 	}
 }
 
 COpenGLTextureWriter::~COpenGLTextureWriter()
 {
-	for (u32 i=0; i<NumMipmaps; ++i)
+	for (uint32_t i=0; i<NumMipmaps; ++i)
 	{
 		if (TempMemory)
 			Z_FreeTempMemory(MipData[i].data);
@@ -45,7 +45,7 @@ COpenGLTextureWriter::~COpenGLTextureWriter()
 	delete[] MipData;
 }
 
-void* COpenGLTextureWriter::lock( u32 level, u32& pitch )
+void* COpenGLTextureWriter::lock( uint32_t level, uint32_t& pitch )
 {
 	if (level >= NumMipmaps)
 		return nullptr;
@@ -54,14 +54,14 @@ void* COpenGLTextureWriter::lock( u32 level, u32& pitch )
 	return MipData[level].data;
 }
 
-void COpenGLTextureWriter::unlock( u32 level )
+void COpenGLTextureWriter::unlock( uint32_t level )
 {
 
 }
 
 void COpenGLTextureWriter::initEmptyData()
 {
-	u32 pitch;
+	uint32_t pitch;
 	void* dest = lock(0, pitch);
 	memset(dest, 0, pitch * TextureSize.Height);
 	unlock(0);
@@ -90,13 +90,13 @@ bool COpenGLTextureWriter::copyToTexture( ITexture* texture, const recti* descRe
 		GLint width = descRect->getWidth();
 		GLint height = descRect->getHeight();
 
-		u32 bpp = getBytesPerPixelFromFormat(ColorFormat);
-		const u8* start = MipData[0].data + MipData[0].pitch * top + bpp * left;
-		u8* data = (u8*)Z_AllocateTempMemory(bpp * width * height);
+		uint32_t bpp = getBytesPerPixelFromFormat(ColorFormat);
+		const uint8_t* start = MipData[0].data + MipData[0].pitch * top + bpp * left;
+		uint8_t* data = (uint8_t*)Z_AllocateTempMemory(bpp * width * height);
 
-		u8* dst = data;
-		u8* src = (u8*)start;
-		for (s32 h=0; h<height; ++h)
+		uint8_t* dst = data;
+		uint8_t* src = (uint8_t*)start;
+		for (int32_t h=0; h<height; ++h)
 		{
 			Q_memcpy(dst, bpp * width, src, bpp * width);
 			dst += bpp * width;
@@ -119,7 +119,7 @@ bool COpenGLTextureWriter::copyToTexture( ITexture* texture, const recti* descRe
 		else
 		{
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 4);	
-			u32 pitch, compressedSize;
+			uint32_t pitch, compressedSize;
 			getImagePitchAndBytes(ColorFormat, width, height, pitch, compressedSize);
 			ASSERT(width > 0 && height > 0 );
 			driver->getGLExtension()->extGlCompressedTexSubImage2D(GL_TEXTURE_2D, 0, left, top, width, height, internalFormat, compressedSize, data);
@@ -139,7 +139,7 @@ bool COpenGLTextureWriter::copyToTexture( ITexture* texture, const recti* descRe
 		services->applyTextureWrap(0, ETA_V, ETC_CLAMP);
 		services->applyTextureMipMap(0, texture->hasMipMaps());
 
-		for (u32 i=0; i<NumMipmaps; ++i)
+		for (uint32_t i=0; i<NumMipmaps; ++i)
 		{
 			dimension2du size = TextureSize.getMipLevelSize(i);
 			if (!compressed)
@@ -151,7 +151,7 @@ bool COpenGLTextureWriter::copyToTexture( ITexture* texture, const recti* descRe
 			else
 			{
 				glPixelStorei(GL_UNPACK_ALIGNMENT, 4);	
-				u32 pitch, compressedSize;
+				uint32_t pitch, compressedSize;
 				getImagePitchAndBytes(ColorFormat, size.Width, size.Height, pitch, compressedSize);
 				ASSERT(size.Width > 0 && size.Height > 0);
 				driver->getGLExtension()->extGlCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, size.Width, size.Height, 0, compressedSize, MipData[i].data);
@@ -183,7 +183,7 @@ ITextureWriter* COpenGLTextureWriteServices::createTextureWriter( ITexture* text
 {
 	ECOLOR_FORMAT format = texture->getColorFormat();
 	dimension2du size = texture->getSize();
-	u32 numMipmap = texture->getNumMipmaps();
+	uint32_t numMipmap = texture->getNumMipmaps();
 
 	T_TextureWriterMap::iterator itr = TextureWriterMap.find(texture);
 	if (itr != TextureWriterMap.end())

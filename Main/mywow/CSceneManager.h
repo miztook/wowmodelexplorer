@@ -34,11 +34,11 @@ public:
 
 	virtual void onWindowSizeChanged(const dimension2du& size);
 
-	virtual ICamera* addCamera(const vector3df& position, const vector3df& lookat, const vector3df& up, f32 nearValue, f32 farValue, f32 fov);
+	virtual ICamera* addCamera(const vector3df& position, const vector3df& lookat, const vector3df& up, float nearValue, float farValue, float fov);
 
 	virtual ISkySceneNode* addSkySceneNode(CMapEnvironment* mapEnv);
 	virtual ICoordSceneNode* addCoordSceneNode(ISceneNode* parent);
-	virtual IMeshSceneNode*	addMeshSceneNode(const c8* name, ISceneNode* parent);
+	virtual IMeshSceneNode*	addMeshSceneNode(const char* name, ISceneNode* parent);
 	virtual IM2SceneNode* addM2SceneNode(IFileM2* mesh, ISceneNode* parent, bool npc = false);
 	virtual IWMOSceneNode* addWMOSceneNode(IFileWMO* wmo, ISceneNode* parent);
 	virtual IMapTileSceneNode* addMapTileSceneNode(IFileWDT* wdt, STile* tile, ISceneNode* parent);
@@ -79,20 +79,20 @@ protected:
 
 	ITexture*		DebugTexture;
 
-	c8 Text[MAX_TEXT_LENGTH];
-	c8 SceneInfo[MAX_TEXT_LENGTH];
+	char Text[MAX_TEXT_LENGTH];
+	char SceneInfo[MAX_TEXT_LENGTH];
 
 	//performance
-	u32		PerfCalcTime;
-	u32		Perf_GPUTime;
-	u32		Perf_tickTime;
-	u32		Perf_renderTime;
-	u32		Perf_terrainTime;
-	u32		Perf_wmoTime;
-	u32		Perf_meshTime;
-	u32		Perf_alphaTestTime;
-	u32		Perf_transparentTime;
-	u32		Perf_3DwireTime;
-	u32		Perf_2DTime;
+	uint32_t		PerfCalcTime;
+	uint32_t		Perf_GPUTime;
+	uint32_t		Perf_tickTime;
+	uint32_t		Perf_renderTime;
+	uint32_t		Perf_terrainTime;
+	uint32_t		Perf_wmoTime;
+	uint32_t		Perf_meshTime;
+	uint32_t		Perf_alphaTestTime;
+	uint32_t		Perf_transparentTime;
+	uint32_t		Perf_3DwireTime;
+	uint32_t		Perf_2DTime;
 
 };

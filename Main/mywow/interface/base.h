@@ -45,32 +45,11 @@ public: static type& getInstance()	 { static type inst; return inst; }
 #define ROUND_16BYTES(x) ((x+15) & ~15)
 #define ROUND_32BYTES(x) ((x+31) & ~31)
 
-typedef		uint8_t				u8;
-typedef		int8_t				s8;
+typedef		uintptr_t		uintptr_t;
+typedef		intptr_t		intptr_t;
 
-typedef		char				c8;
-typedef		char16_t			c16;
-
-typedef		uint16_t			u16;
-typedef		int16_t				s16;
-
-typedef		uint32_t			u32;
-typedef		int32_t				s32;
-
-typedef		uint64_t			u64;
-typedef		int64_t				s64;
-
-typedef		float				f32;
-
-typedef		char				UTF8;
-typedef		char16_t			UTF16;
-typedef		char32_t			UTF32;
-
-typedef		uintptr_t		ptr_t;
-typedef		intptr_t		sptr_t;
-
-#define PTR_TO_INT32(x)		((s32)((sptr_t)(x) & 0xffffffff))
-#define PTR_TO_UINT32(x)	((u32)((ptr_t)(x) & 0xffffffff))
+#define PTR_TO_INT32(x)		((int32_t)((intptr_t)(x) & 0xffffffff))
+#define PTR_TO_UINT32(x)	((uint32_t)((uintptr_t)(x) & 0xffffffff))
 
 #ifdef MW_PLATFORM_WINDOWS
 
@@ -88,10 +67,10 @@ typedef		void*				glcontext_type;
 //	typedef	double	f64;
 #endif
 
-//arm下的float, double和u64,s64在赋值时需要4字节对齐，必须注意struct内的对齐问题
+//arm下的float, double和uint64_t,int64_t在赋值时需要4字节对齐，必须注意struct内的对齐问题
 #define MAKE_ALIGN4BYTES(x) x = (x+3) & ~3;
 
-#define MAKE_ALIGN4BYTES_POINTER(p, base)	{ u32 len = p - base;	\
+#define MAKE_ALIGN4BYTES_POINTER(p, base)	{ uint32_t len = p - base;	\
 	MAKE_ALIGN4BYTES(len)	\
 	p = len + base; }	
 
@@ -114,13 +93,13 @@ typedef		void*				glcontext_type;
 #ifndef CONTAINING_RECORD
 #define CONTAINING_RECORD(address, type, field) ((type *)( \
 	(char*)(address) - \
-	(ptr_t)(&((type *)0)->field)))
+	(uintptr_t)(&((type *)0)->field)))
 #endif
 
-#define M_MAKEWORD(a, b)      ((u16)(((u8)(((ptr_t)(a)) & 0xff)) | ((u16)((u8)(((ptr_t)(b)) & 0xff))) << 8))
+#define M_MAKEWORD(a, b)      ((uint16_t)(((uint8_t)(((uintptr_t)(a)) & 0xff)) | ((uint16_t)((uint8_t)(((uintptr_t)(b)) & 0xff))) << 8))
 
-#define F32_AS_DWORD(f)		(*((u32*)&(f)))
-#define DWORD_AS_F32(d)		(*((f32*)&(d)))
+#define F32_AS_DWORD(f)		(*((uint32_t*)&(f)))
+#define DWORD_AS_F32(d)		(*((float*)&(d)))
 
 #define FOURCC(c0, c1, c2, c3) (c0 | (c1 << 8) | (c2 << 16) | (c3 << 24))
 
@@ -208,7 +187,7 @@ enum E_DRIVER_TYPE : int32_t
 	EDT_COUNT,
 };
 
-inline const c8* getEnumString(E_DRIVER_TYPE type)
+inline const char* getEnumString(E_DRIVER_TYPE type)
 {
 	switch(type)
 	{
@@ -335,12 +314,12 @@ enum ECOLOR_FORMAT : int32_t
 struct STexFormatDesc 
 {
 	ECOLOR_FORMAT format;
-	u32 blockBytes;
-	u32 blockWidth;
-	u32 blockHeight;
-	u32 minWidth;
-	u32 minHeight;
-	c8 text[32];
+	uint32_t blockBytes;
+	uint32_t blockWidth;
+	uint32_t blockHeight;
+	uint32_t minWidth;
+	uint32_t minHeight;
+	char text[32];
 };
 
 static STexFormatDesc g_FormatDesc[] =
@@ -371,15 +350,15 @@ static STexFormatDesc g_FormatDesc[] =
 	{ ECF_D32, 4, 1, 1, 1, 1,	"DEPTH32", },
 };
 
-inline u32 getBytesPerPixelFromFormat( ECOLOR_FORMAT format)
+inline uint32_t getBytesPerPixelFromFormat( ECOLOR_FORMAT format)
 {
-	ASSERT(static_cast<u32>(format) < ARRAY_COUNT(g_FormatDesc));
+	ASSERT(static_cast<uint32_t>(format) < ARRAY_COUNT(g_FormatDesc));
 	return g_FormatDesc[format].blockBytes;
 }
 
 inline bool isCompressedFormat( ECOLOR_FORMAT format )
 {
-	ASSERT(static_cast<u32>(format) < ARRAY_COUNT(g_FormatDesc));
+	ASSERT(static_cast<uint32_t>(format) < ARRAY_COUNT(g_FormatDesc));
 	return g_FormatDesc[format].blockWidth > 1;
 }
 
@@ -388,21 +367,21 @@ inline bool isCompressedWithAlphaFormat(ECOLOR_FORMAT format)
 	return format == ECF_ETC1_RGBA;
 }
 
-inline const c8* getColorFormatString( ECOLOR_FORMAT format )
+inline const char* getColorFormatString( ECOLOR_FORMAT format )
 {
-	ASSERT(static_cast<u32>(format) < ARRAY_COUNT(g_FormatDesc));
+	ASSERT(static_cast<uint32_t>(format) < ARRAY_COUNT(g_FormatDesc));
 	return g_FormatDesc[format].text;
 }
 
-inline void getImageSize( ECOLOR_FORMAT format, u32 width, u32 height, u32& w, u32& h)
+inline void getImageSize( ECOLOR_FORMAT format, uint32_t width, uint32_t height, uint32_t& w, uint32_t& h)
 {
-	ASSERT(static_cast<u32>(format) < ARRAY_COUNT(g_FormatDesc));
+	ASSERT(static_cast<uint32_t>(format) < ARRAY_COUNT(g_FormatDesc));
 
-	u32 bw = g_FormatDesc[format].blockWidth;
-	u32 bh = g_FormatDesc[format].blockHeight;
+	uint32_t bw = g_FormatDesc[format].blockWidth;
+	uint32_t bh = g_FormatDesc[format].blockHeight;
     
-    u32 mw = g_FormatDesc[format].minWidth;
-    u32 mh = g_FormatDesc[format].minHeight;
+    uint32_t mw = g_FormatDesc[format].minWidth;
+    uint32_t mh = g_FormatDesc[format].minHeight;
     
 	if (bw > 1)			//compressed
 	{
@@ -416,11 +395,11 @@ inline void getImageSize( ECOLOR_FORMAT format, u32 width, u32 height, u32& w, u
 	}
 }
 
-inline void getImagePitchAndBytes( ECOLOR_FORMAT format, u32 width, u32 height, u32& pitch, u32& bytes)
+inline void getImagePitchAndBytes( ECOLOR_FORMAT format, uint32_t width, uint32_t height, uint32_t& pitch, uint32_t& bytes)
 {
-	u32 bpp = getBytesPerPixelFromFormat(format);
+	uint32_t bpp = getBytesPerPixelFromFormat(format);
 
-	u32 w, h;
+	uint32_t w, h;
 	getImageSize(format, width, height, w, h);
 
 	pitch = w * bpp;
@@ -546,9 +525,9 @@ enum E_PRIMITIVE_TYPE : int32_t
 	EPT_COUNT,
 };
 
-inline u32 getPrimitiveCount(E_PRIMITIVE_TYPE primType, u32 count)
+inline uint32_t getPrimitiveCount(E_PRIMITIVE_TYPE primType, uint32_t count)
 {
-	u32 p = 0;
+	uint32_t p = 0;
 
 	switch (primType)
 	{
@@ -577,9 +556,9 @@ inline u32 getPrimitiveCount(E_PRIMITIVE_TYPE primType, u32 count)
 	return p;
 }
 
-inline u32 getIndexCount(E_PRIMITIVE_TYPE primType, u32 primCount)
+inline uint32_t getIndexCount(E_PRIMITIVE_TYPE primType, uint32_t primCount)
 {
-	u32 p = 0;
+	uint32_t p = 0;
 
 	switch (primType)
 	{
@@ -718,7 +697,7 @@ enum E_TEXTURE_FILTER : int32_t
 	ETF_ANISOTROPIC_X16,
 };
 
-inline u8 getAnisotropic(E_TEXTURE_FILTER filter)
+inline uint8_t getAnisotropic(E_TEXTURE_FILTER filter)
 {
 	switch(filter)
 	{

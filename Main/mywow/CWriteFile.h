@@ -7,18 +7,18 @@
 class CWriteFile : public IWriteFile
 {
 public:
-	CWriteFile(const c8* filename, bool binary, bool append = false);
+	CWriteFile(const char* filename, bool binary, bool append = false);
 	~CWriteFile();
 
 public:
-	virtual u32 write(const void* buffer, u32 sizeToWrite);
-	virtual u32 writeText( const c8* buffer, u32 len = MAX_WRITE_NUM );
-	virtual u32 writeLine(const c8* text);
+	virtual uint32_t write(const void* buffer, uint32_t sizeToWrite);
+	virtual uint32_t writeText( const char* buffer, uint32_t len = MAX_WRITE_NUM );
+	virtual uint32_t writeLine(const char* text);
 	virtual bool flush();
-	virtual bool seek(s32 finalPos, bool relativeMovement = false);
-	virtual u32 getSize() const { return FileSize; }
-	virtual s32 getPos() const;
-	virtual const c8* getFileName() const { return FileName; }
+	virtual bool seek(int32_t finalPos, bool relativeMovement = false);
+	virtual uint32_t getSize() const { return FileSize; }
+	virtual int32_t getPos() const;
+	virtual const char* getFileName() const { return FileName; }
 	virtual bool isOpen() const { return File != nullptr;}
 	virtual bool isBinary() const { return IsBinary; }
 
@@ -26,8 +26,8 @@ private:
 	void openFile(bool binary, bool append);
 
 private:
-	c8 FileName[QMAX_PATH];
+	char FileName[QMAX_PATH];
 	FILE*	File;
-	u32	FileSize;
+	uint32_t	FileSize;
 	bool IsBinary;
 };

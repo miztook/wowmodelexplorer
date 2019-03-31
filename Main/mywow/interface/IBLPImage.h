@@ -27,24 +27,24 @@ public:
 
 public:
 	virtual bool loadFile(IMemFile* file, bool abgr) = 0;
-	virtual bool fromImageData(const u8* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap) = 0;
-	virtual const void* getMipmapData(u32 level) const = 0;  
-	virtual bool copyMipmapData(u32 level, void* dest, u32 pitch, u32 width, u32 height) = 0;
+	virtual bool fromImageData(const uint8_t* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap) = 0;
+	virtual const void* getMipmapData(uint32_t level) const = 0;  
+	virtual bool copyMipmapData(uint32_t level, void* dest, uint32_t pitch, uint32_t width, uint32_t height) = 0;
 
 	ECOLOR_FORMAT getColorFormat() const { return Format; }
 	const dimension2du& getDimension() const { return Size; }
-	u32 getNumMipLevels() const { return NumMipMaps; }
-	u32 getMipmapDataSize(u32 level) const { return MipmapDataSize[level]; }
-	u32 getMipmapPitch(u32 level) const { return MipmapPitch[level]; }
-	u32 getAlphaDepth() const { return AlphaDepth; }
+	uint32_t getNumMipLevels() const { return NumMipMaps; }
+	uint32_t getMipmapDataSize(uint32_t level) const { return MipmapDataSize[level]; }
+	uint32_t getMipmapPitch(uint32_t level) const { return MipmapPitch[level]; }
+	uint32_t getAlphaDepth() const { return AlphaDepth; }
 	bool isABGR() const { return IsABGR; }
 
 protected:
 	dimension2du Size;
-	u32			NumMipMaps;	
-	u32			MipmapDataSize[16];
-	u32			MipmapPitch[16];	
-	u32			AlphaDepth;
+	uint32_t			NumMipMaps;	
+	uint32_t			MipmapDataSize[16];
+	uint32_t			MipmapPitch[16];	
+	uint32_t			AlphaDepth;
 	ECOLOR_FORMAT	Format;
 	bool			IsABGR;
 };

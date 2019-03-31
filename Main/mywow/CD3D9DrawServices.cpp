@@ -36,9 +36,9 @@ CD3D9DrawServices::CD3D9DrawServices()
 	Line3DVertices = new SVertex_PC[Line3DVertexLimit];
 	ImageVertices = new SVertex_PCT[ImageVertexLimit];
 	Vertices3D = new SVertex_PC[VertexLimit];
-	Indices3D = new u16[IndexLimit];
+	Indices3D = new uint16_t[IndexLimit];
 	Vertices2D = new SVertex_PCT[VertexLimit2D];
-	Indices2D = new u16[IndexLimit2D];
+	Indices2D = new uint16_t[IndexLimit2D];
 
 	VBLine2D = new CVertexBuffer(false);
 	VBLine2D->set(Line2DVertices, EST_PC, Line2DVertexLimit, EMM_DYNAMIC);
@@ -106,8 +106,8 @@ void CD3D9DrawServices::add2DLine(const line2di& line, SColor color)
 		return;//flushAll2DLines();
 
 	SVertex_PC v0, v1;
-	v0.Pos.set((f32)line.start.X, (f32)line.start.Y, 0);
-	v1.Pos.set((f32)line.end.X, (f32)line.end.Y, 0);
+	v0.Pos.set((float)line.start.X, (float)line.start.Y, 0);
+	v1.Pos.set((float)line.end.X, (float)line.end.Y, 0);
 	v0.Color = v1.Color = color;
 
 	Line2DVertices[Line2DVertexCount++] = v0;
@@ -120,10 +120,10 @@ void CD3D9DrawServices::add2DRect( const recti& rect, SColor color )
 		return;//flushAll2DLines();
 
 	SVertex_PC v0, v1, v2, v3;
-	v0.Pos.set((f32)rect.UpperLeftCorner.X, (f32)rect.UpperLeftCorner.Y, 0);
-	v1.Pos.set((f32)rect.LowerRightCorner.X, (f32)rect.UpperLeftCorner.Y, 0);
-	v2.Pos.set((f32)rect.LowerRightCorner.X, (f32)rect.LowerRightCorner.Y, 0);
-	v3.Pos.set((f32)rect.UpperLeftCorner.X, (f32)rect.LowerRightCorner.Y, 0);
+	v0.Pos.set((float)rect.UpperLeftCorner.X, (float)rect.UpperLeftCorner.Y, 0);
+	v1.Pos.set((float)rect.LowerRightCorner.X, (float)rect.UpperLeftCorner.Y, 0);
+	v2.Pos.set((float)rect.LowerRightCorner.X, (float)rect.LowerRightCorner.Y, 0);
+	v3.Pos.set((float)rect.UpperLeftCorner.X, (float)rect.LowerRightCorner.Y, 0);
 	v0.Color = v1.Color = v2.Color = v3.Color = color;
 
 	Line2DVertices[Line2DVertexCount++] = v0;
@@ -182,12 +182,12 @@ void CD3D9DrawServices::addAABB( const aabbox3df& box, SColor color )
 		return;//flushAll3DLines();
 
 	vector3df points[8];
-	u16 indices[24];
+	uint16_t indices[24];
 	box.getVertices(points, indices, true);
 
-	for (u32 i=0; i<24; ++i)
+	for (uint32_t i=0; i<24; ++i)
 	{
-		u32 index = indices[i];
+		uint32_t index = indices[i];
 		Line3DVertices[Line3DVertexCount++].set(points[index], color);
 	}
 }
@@ -197,7 +197,7 @@ void CD3D9DrawServices::add3DBox(const vector3df& vPos, const vector3df& vDir, c
 	if (Line3DVertexCount >= Line3DVertexLimit - 24)
 		return;//flushAll3DLines();
 
-	static u16 aWireIndices[24] = 
+	static uint16_t aWireIndices[24] = 
 	{
 		0, 1, 1, 2, 2, 3, 3, 0,
 		4, 5, 5, 6, 6, 7, 7, 4,
@@ -225,17 +225,17 @@ void CD3D9DrawServices::add3DBox(const vector3df& vPos, const vector3df& vDir, c
 			(*pMat).transformVect(aVerts[i]);
 	}
 
-	for (u32 i=0; i<24; ++i)
+	for (uint32_t i=0; i<24; ++i)
 	{
-		u32 index = aWireIndices[i];
+		uint32_t index = aWireIndices[i];
 		Line3DVertices[Line3DVertexCount++].set(aVerts[index], color);
 	}
 }
 
-void CD3D9DrawServices::addSphere(const vector3df& center, float radius, SColor color, u32 hori /*= 10*/, u32 vert /*= 6*/)
+void CD3D9DrawServices::addSphere(const vector3df& center, float radius, SColor color, uint32_t hori /*= 10*/, uint32_t vert /*= 6*/)
 {
-	u32 polyCountX = min_(hori, 20u);
-	u32 polyCountY = min_(vert, 10u);
+	uint32_t polyCountX = min_(hori, 20u);
+	uint32_t polyCountY = min_(vert, 10u);
 
 	const float AngleX = 2 * PI / polyCountX;
 	const float AngleY = PI / polyCountY;
@@ -244,14 +244,14 @@ void CD3D9DrawServices::addSphere(const vector3df& center, float radius, SColor 
 
 	float ay = 0;
 
-	for (u32 y = 0; y <= polyCountY; ++y)
+	for (uint32_t y = 0; y <= polyCountY; ++y)
 	{
 		const float sinay = sin(ay);
 		float axz = 0;
 
 		// calculate the necessary vertices without the doubled one
 		vector3df lastp;
-		for (u32 xz = 0;xz < polyCountX; ++xz)
+		for (uint32_t xz = 0;xz < polyCountX; ++xz)
 		{
 			// calculate points position
 			vector3df pos(static_cast<float>(radius * cos(axz) * sinay),
@@ -266,9 +266,9 @@ void CD3D9DrawServices::addSphere(const vector3df& center, float radius, SColor 
 		ay += AngleY;
 	}
 
-	for (u32 y = 0; y <= polyCountY; ++y)
+	for (uint32_t y = 0; y <= polyCountY; ++y)
 	{	
-		for (u32 xz = 0;xz < polyCountX; ++xz)
+		for (uint32_t xz = 0;xz < polyCountX; ++xz)
 		{
 			vector3df v1, v2;
 			v1 = vpos[y][xz];
@@ -333,7 +333,7 @@ void CD3D9DrawServices::addAABB_Flat(const aabbox3df& box, SColor color)
 		return;
 
 	vector3df points[8];
-	u16 indices[36];
+	uint16_t indices[36];
 	box.getVertices(points, indices, false);
 
 	add3DVertices(points, 8, indices, 36, color);
@@ -345,7 +345,7 @@ void CD3D9DrawServices::add3DBox_Flat(const vector3df& vPos, const vector3df& vD
 		36 + CurrentIndex3DCount >= IndexLimit)
 		return;
 
-	static u16 indexTriangle[] =
+	static uint16_t indexTriangle[] =
 	{
 		0, 1, 3, 3, 1, 2, 
 		2, 1, 6, 6, 1, 5, 
@@ -379,10 +379,10 @@ void CD3D9DrawServices::add3DBox_Flat(const vector3df& vPos, const vector3df& vD
 	add3DVertices(aVerts, 8, indexTriangle, 36, color);
 }
 
-void CD3D9DrawServices::addSphere_Flat(const vector3df& center, float radius, SColor color, u32 hori /*= 10*/, u32 vert /*= 6*/)
+void CD3D9DrawServices::addSphere_Flat(const vector3df& center, float radius, SColor color, uint32_t hori /*= 10*/, uint32_t vert /*= 6*/)
 {
-	u32 polyCountX = min_(hori, 20u);
-	u32 polyCountY = min_(vert, 10u);
+	uint32_t polyCountX = min_(hori, 20u);
+	uint32_t polyCountY = min_(vert, 10u);
 
 	const float AngleX = 2 * PI / polyCountX;
 	const float AngleY = PI / polyCountY;
@@ -391,14 +391,14 @@ void CD3D9DrawServices::addSphere_Flat(const vector3df& center, float radius, SC
 
 	float ay = 0;
 
-	for (u32 y = 0; y <= polyCountY; ++y)
+	for (uint32_t y = 0; y <= polyCountY; ++y)
 	{
 		const float sinay = sin(ay);
 		float axz = 0;
 
 		// calculate the necessary vertices without the doubled one
 		vector3df lastp;
-		for (u32 xz = 0;xz < polyCountX; ++xz)
+		for (uint32_t xz = 0;xz < polyCountX; ++xz)
 		{
 			// calculate points position
 			vector3df pos(static_cast<float>(radius * cos(axz) * sinay),
@@ -413,11 +413,11 @@ void CD3D9DrawServices::addSphere_Flat(const vector3df& center, float radius, SC
 		ay += AngleY;
 	}
 
-	static u16 indices[] = { 0, 1, 2, 1, 3, 2};
+	static uint16_t indices[] = { 0, 1, 2, 1, 3, 2};
 
-	for (u32 y = 0; y <= polyCountY; ++y)
+	for (uint32_t y = 0; y <= polyCountY; ++y)
 	{	
-		for (u32 xz = 0;xz < polyCountX; ++xz)
+		for (uint32_t xz = 0;xz < polyCountX; ++xz)
 		{
 			vector3df v[4];
 			v[0] = vpos[y][xz];
@@ -450,39 +450,39 @@ void CD3D9DrawServices::addSphere_Flat(const vector3df& center, float radius, SC
 	}
 }
 
-void CD3D9DrawServices::add3DVertices(vector3df* verts, u32 numverts, u16* indices, u32 numindices, SColor color)
+void CD3D9DrawServices::add3DVertices(vector3df* verts, uint32_t numverts, uint16_t* indices, uint32_t numindices, SColor color)
 {
 	if (numverts + CurrentVertex3DCount >= VertexLimit ||
 		numindices + CurrentIndex3DCount >= IndexLimit)
 		return;
 
-	for(u32 i=0; i<numverts; ++i)
+	for(uint32_t i=0; i<numverts; ++i)
 	{
 		Vertices3D[CurrentVertex3DCount + i].Pos = verts[i];
 		Vertices3D[CurrentVertex3DCount + i].Color = color;
 	}
 
-	for (u32 i=0; i<numindices; ++i)
+	for (uint32_t i=0; i<numindices; ++i)
 	{
-		Indices3D[CurrentIndex3DCount + i] = indices[i] + (u16)CurrentVertex3DCount;
+		Indices3D[CurrentIndex3DCount + i] = indices[i] + (uint16_t)CurrentVertex3DCount;
 	}
 
 	CurrentVertex3DCount += numverts;
 	CurrentIndex3DCount += numindices;
 }
 
-void CD3D9DrawServices::add3DVertices(vector3df* verts, u32 numverts, SColor color)
+void CD3D9DrawServices::add3DVertices(vector3df* verts, uint32_t numverts, SColor color)
 {
 	if (numverts + CurrentVertex3DCount >= VertexLimit ||
 		numverts + CurrentIndex3DCount >= IndexLimit)
 		return;
 
-	for(u32 i=0; i<numverts; ++i)
+	for(uint32_t i=0; i<numverts; ++i)
 	{
 		Vertices3D[CurrentVertex3DCount + i].Pos = verts[i];
 		Vertices3D[CurrentVertex3DCount + i].Color = color;
 
-		Indices3D[CurrentIndex3DCount + i] = i + (u16)CurrentVertex3DCount;
+		Indices3D[CurrentIndex3DCount + i] = i + (uint16_t)CurrentVertex3DCount;
 	}
 
 	CurrentVertex3DCount += numverts;
@@ -556,12 +556,12 @@ void CD3D9DrawServices::add2DColor(const recti& rect, SColor color, const S2DBle
 	if (batchDraw.vertNum >= MaxImageBatch * 4)
 	{
 		//flush
-		draw2DSquadBatch(key.texture, &batchDraw.drawVerts[0], (u32)batchDraw.vertNum / 4, key.blendParam);
+		draw2DSquadBatch(key.texture, &batchDraw.drawVerts[0], (uint32_t)batchDraw.vertNum / 4, key.blendParam);
 		batchDraw.vertNum = 0;
 	}
 }
 
-void CD3D9DrawServices::add2DQuads(ITexture* texture, const SVertex_PCT* vertices, u32 numQuads, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
+void CD3D9DrawServices::add2DQuads(ITexture* texture, const SVertex_PCT* vertices, uint32_t numQuads, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
 {
 	if (!texture)
 		return;
@@ -570,7 +570,7 @@ void CD3D9DrawServices::add2DQuads(ITexture* texture, const SVertex_PCT* vertice
 	SQuadBatchDraw& batchDraw = m_2DQuadDrawMap[key];
 
 	const SVertex_PCT* p = vertices;
-	for (u32 i=0; i<numQuads; ++i)
+	for (uint32_t i=0; i<numQuads; ++i)
 	{		
 		SVertex_PCT v = *p++;
 		//v.Pos.X += 0.5f;
@@ -599,7 +599,7 @@ void CD3D9DrawServices::add2DQuads(ITexture* texture, const SVertex_PCT* vertice
 		if (batchDraw.vertNum >= MaxImageBatch * 4)
 		{
 			//flush
-			draw2DSquadBatch(key.texture, &batchDraw.drawVerts[0], (u32)batchDraw.vertNum / 4, key.blendParam);
+			draw2DSquadBatch(key.texture, &batchDraw.drawVerts[0], (uint32_t)batchDraw.vertNum / 4, key.blendParam);
 			batchDraw.vertNum = 0;
 		}
 	}
@@ -612,7 +612,7 @@ void CD3D9DrawServices::flushAll2DQuads()
 		const SQuadDrawBatchKey& key = itr->first;
 		SQuadBatchDraw& batchDraw = itr->second;
 
-		u32 numQuads = (u32)batchDraw.vertNum / 4;
+		uint32_t numQuads = (uint32_t)batchDraw.vertNum / 4;
 		if (!numQuads)
 			continue;
 
@@ -637,7 +637,7 @@ void CD3D9DrawServices::draw2DImage(ITexture* texture, vector2di destPos, const 
 	draw2DImageBatch(texture, &destPos, sourceRect ? &sourceRect : nullptr, 1, color, uvcoords, scale, blendParam);
 }
 
-void CD3D9DrawServices::draw2DImageBatch(ITexture* texture, const vector2di* positions, const recti* sourceRects[], u32 batchCount, SColor color /*= SColor()*/, E_RECT_UVCOORDS uvcoords /*= ERU_00_11*/, float scale /*= 1.0f*/, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
+void CD3D9DrawServices::draw2DImageBatch(ITexture* texture, const vector2di* positions, const recti* sourceRects[], uint32_t batchCount, SColor color /*= SColor()*/, E_RECT_UVCOORDS uvcoords /*= ERU_00_11*/, float scale /*= 1.0f*/, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
 {
 	ASSERT(texture || sourceRects);
 	if (!texture && !sourceRects)
@@ -649,7 +649,7 @@ void CD3D9DrawServices::draw2DImageBatch(ITexture* texture, const vector2di* pos
 	SVertex_PCT* vertices = &ImageVertices[0];
 	const dimension2du texSize = texture ? texture->getSize() : dimension2du(0, 0);
 
-	for (u32 i=0; i<batchCount; ++i)
+	for (uint32_t i=0; i<batchCount; ++i)
 	{
 		vector2di destPos = positions[i];
 		vector2di sourcePos = sourceRects ? sourceRects[i]->UpperLeftCorner : vector2di(0,0);
@@ -747,7 +747,7 @@ void CD3D9DrawServices::draw2DImageBatch(ITexture* texture, const vector2di* pos
 		blendParam);
 }
 
-void CD3D9DrawServices::draw2DImageBatch(ITexture* texture, const vector2di* positions, const recti* sourceRects[], const SColor* colors, u32 batchCount, E_RECT_UVCOORDS uvcoords /*= ERU_00_11*/, float scale /*= 1.0f*/, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
+void CD3D9DrawServices::draw2DImageBatch(ITexture* texture, const vector2di* positions, const recti* sourceRects[], const SColor* colors, uint32_t batchCount, E_RECT_UVCOORDS uvcoords /*= ERU_00_11*/, float scale /*= 1.0f*/, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
 {
 	ASSERT(texture || sourceRects);
 	if (!texture && !sourceRects)
@@ -759,7 +759,7 @@ void CD3D9DrawServices::draw2DImageBatch(ITexture* texture, const vector2di* pos
 	SVertex_PCT* vertices = &ImageVertices[0];
 	const dimension2du texSize = texture ? texture->getSize() : dimension2du(0, 0);
 
-	for (u32 i=0; i<batchCount; ++i)
+	for (uint32_t i=0; i<batchCount; ++i)
 	{
 		vector2di destPos = positions[i];
 		vector2di sourcePos = sourceRects ? sourceRects[i]->UpperLeftCorner : vector2di(0,0);
@@ -863,7 +863,7 @@ void CD3D9DrawServices::draw2DImageRect(ITexture* texture, const recti* destRect
 	draw2DImageRectBatch(texture, &destRect, sourceRect? &sourceRect : nullptr, 1, color, uvcoords, blendParam);
 }
 
-void CD3D9DrawServices::draw2DImageRectBatch(ITexture* texture, const recti* destRects[], const recti* sourceRects[], u32 batchCount, SColor color /*= SColor()*/, E_RECT_UVCOORDS uvcoords /*= ERU_00_11*/, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
+void CD3D9DrawServices::draw2DImageRectBatch(ITexture* texture, const recti* destRects[], const recti* sourceRects[], uint32_t batchCount, SColor color /*= SColor()*/, E_RECT_UVCOORDS uvcoords /*= ERU_00_11*/, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
 {
 	if (batchCount > MaxImageBatch)
 		batchCount = MaxImageBatch;
@@ -871,7 +871,7 @@ void CD3D9DrawServices::draw2DImageRectBatch(ITexture* texture, const recti* des
 	SVertex_PCT* vertices = &ImageVertices[0];
 	const dimension2du texSize = texture ? texture->getSize() : dimension2du(0, 0);
 
-	for (u32 i=0; i<batchCount; ++i)
+	for (uint32_t i=0; i<batchCount; ++i)
 	{
 		const recti poss = *destRects[i];
 
@@ -963,7 +963,7 @@ void CD3D9DrawServices::draw2DImageRectBatch(ITexture* texture, const recti* des
 		blendParam);
 }
 
-void CD3D9DrawServices::draw2DImageRectBatch(ITexture* texture, const recti* destRects[], const recti* sourceRects[], const SColor* colors, u32 batchCount, E_RECT_UVCOORDS uvcoords /*= ERU_00_11*/, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
+void CD3D9DrawServices::draw2DImageRectBatch(ITexture* texture, const recti* destRects[], const recti* sourceRects[], const SColor* colors, uint32_t batchCount, E_RECT_UVCOORDS uvcoords /*= ERU_00_11*/, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
 {
 	if (batchCount > MaxImageBatch)
 		batchCount = MaxImageBatch;
@@ -971,7 +971,7 @@ void CD3D9DrawServices::draw2DImageRectBatch(ITexture* texture, const recti* des
 	SVertex_PCT* vertices = &ImageVertices[0];
 	const dimension2du texSize = texture ? texture->getSize() : dimension2du(0, 0);
 
-	for (u32 i=0; i<batchCount; ++i)
+	for (uint32_t i=0; i<batchCount; ++i)
 	{
 		const recti poss = *destRects[i];
 		const SColor color = colors[i];
@@ -1064,9 +1064,9 @@ void CD3D9DrawServices::draw2DImageRectBatch(ITexture* texture, const recti* des
 		blendParam);
 }
 
-void CD3D9DrawServices::draw2DSquadBatch(ITexture* texture, const SVertex_PCT* verts, u32 numQuads, const S2DBlendParam& blendParam)
+void CD3D9DrawServices::draw2DSquadBatch(ITexture* texture, const SVertex_PCT* verts, uint32_t numQuads, const S2DBlendParam& blendParam)
 {
-	u32 batchCount = numQuads;
+	uint32_t batchCount = numQuads;
 	if (batchCount > MaxImageBatch)
 	{
 		batchCount = MaxImageBatch;
@@ -1093,7 +1093,7 @@ void CD3D9DrawServices::draw2DSquadBatch(ITexture* texture, const SVertex_PCT* v
 		blendParam, ZTest2DQuadEnable);
 }
 
-void CD3D9DrawServices::draw2DVertices(ITexture* texture, const SVertex_PCT* verts, u32 numVerts, const u16* indices, u32 numIndices, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
+void CD3D9DrawServices::draw2DVertices(ITexture* texture, const SVertex_PCT* verts, uint32_t numVerts, const uint16_t* indices, uint32_t numIndices, const S2DBlendParam& blendParam /*= S2DBlendParam::OpaqueSource()*/)
 {
 	if (numVerts > VertexLimit2D || numIndices > IndexLimit2D)
 	{
@@ -1102,7 +1102,7 @@ void CD3D9DrawServices::draw2DVertices(ITexture* texture, const SVertex_PCT* ver
 	}
 
 	Q_memcpy(Vertices2D, sizeof(SVertex_PCT) * VertexLimit2D, verts, sizeof(SVertex_PCT) * numVerts);
-	Q_memcpy(Indices2D, sizeof(u16) * IndexLimit2D, indices, sizeof(u16) * numIndices);
+	Q_memcpy(Indices2D, sizeof(uint16_t) * IndexLimit2D, indices, sizeof(uint16_t) * numIndices);
 
 	HWBufferServices->updateHardwareBuffer(VB2D, numVerts);
 	HWBufferServices->updateHardwareBuffer(IB2D, numIndices);

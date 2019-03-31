@@ -25,11 +25,11 @@ public:
 	virtual ~COpenGLDriver();
 
 public:
-	bool initDriver(const SWindowInfo& wndInfo, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread);
+	bool initDriver(const SWindowInfo& wndInfo, uint32_t adapter, bool fullscreen, bool vsync, uint8_t antialias, bool multithread);
 
 public:
 	virtual E_DRIVER_TYPE getDriverType() const { return EDT_OPENGL; }
-	virtual u32 getAdapterCount() const { return AdapterCount; }
+	virtual uint32_t getAdapterCount() const { return AdapterCount; }
 
 	virtual bool beginScene();
 	virtual bool endScene();
@@ -43,7 +43,7 @@ public:
 	virtual void setDisplayMode(const dimension2du& size);
 	virtual bool setDriverSetting(const SDriverSetting& setting);
 
-	virtual void drawDebugInfo(const c8* strMsg);
+	virtual void drawDebugInfo(const char* strMsg);
 
 	//helper functions
 	virtual void helper_render(CMeshRenderer* meshRenderer, const SRenderUnit*& currentUnit,  ICamera* cam);
@@ -61,17 +61,17 @@ public:
 public:
 	bool queryFeature(E_VIDEO_DRIVER_FEATURE feature) const;
 
-	void setTexture(u32 stage, ITexture* texture);
-	ITexture* getTexture(u32 index) const;
+	void setTexture(uint32_t stage, ITexture* texture);
+	ITexture* getTexture(uint32_t index) const;
 
 	void draw3DMode( const SBufferParam& bufferParam, 
 		E_PRIMITIVE_TYPE primType,
-		u32 primCount, 
+		uint32_t primCount, 
 		const SDrawParam& drawParam);
 
 	void draw2DMode( const SBufferParam& bufferParam, 
 		E_PRIMITIVE_TYPE primType,
-		u32 primCount, 
+		uint32_t primCount, 
 		const SDrawParam& drawParam,
 		const S2DBlendParam& blendParam,
 		bool zTest = false);
@@ -81,14 +81,14 @@ public:
 	void setTransform_Material_Textures(const matrix4& matWorld,
 		const SMaterial& material,
 		ITexture* const textures[],
-		u32 numTextures);
+		uint32_t numTextures);
 
 	void setTransform_Material_Textures(const matrix4& matWorld,
 		const matrix4& matView, 
 		const matrix4& matProjection,
 		const SMaterial& material,
 		ITexture* const textures[],
-		u32 numTextures);
+		uint32_t numTextures);
 
 public:
 	 COpenGLExtension*	getGLExtension() const { return GLExtension; }
@@ -107,15 +107,15 @@ private:
 	dimension2du getWindowSize() const;
 	void drawIndexedPrimitive( const SBufferParam& bufferParam, 
 		E_PRIMITIVE_TYPE primType,
-		u32 primCount, 
+		uint32_t primCount, 
 		const SDrawParam& drawParam);
 
-	int chooseMultiSamplePixelFormat(int pixelformat, u8& antialias, PIXELFORMATDESCRIPTOR* ppfd);
+	int chooseMultiSamplePixelFormat(int pixelformat, uint8_t& antialias, PIXELFORMATDESCRIPTOR* ppfd);
 
 	bool reset();
 	void createVertexDecl();
 	void releaseVertexDecl();
-	void setVertexDeclarationAndBuffers(E_VERTEX_TYPE type, const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1, CIndexBuffer* ibuffer);
+	void setVertexDeclarationAndBuffers(E_VERTEX_TYPE type, const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0, CVertexBuffer* vbuffer1, uint32_t offset1, CIndexBuffer* ibuffer);
 
 	COpenGLVertexDeclaration* getVertexDeclaration(E_VERTEX_TYPE type) const { return VertexDeclarations[type]; }
 	void setRenderState3DMode(E_VERTEX_TYPE vType);
@@ -151,11 +151,11 @@ private:
 	COpenGLExtension*		GLExtension;
 	COpenGLVertexDeclaration*		VertexDeclarations[EVT_COUNT];
 
-	u32		AdapterCount;
-	u32		PrimitivesDrawn;
-	u32		DrawCall;
+	uint32_t		AdapterCount;
+	uint32_t		PrimitivesDrawn;
+	uint32_t		DrawCall;
 
-	c8		DebugMsg[512];
+	char		DebugMsg[512];
 
 	bool		ResetRenderStates;
 

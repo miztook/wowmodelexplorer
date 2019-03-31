@@ -29,9 +29,9 @@ void CD3D11Driver::helper_render( CMeshRenderer* meshRenderer, const SRenderUnit
 	matrix4 projection = cam->getProjectionMatrix();
 
 	std::vector<CMeshRenderer::SEntry>& renderEntries = meshRenderer->RenderEntries;
-	u32 size = (u32)meshRenderer->RenderEntries.size();
+	uint32_t size = (uint32_t)meshRenderer->RenderEntries.size();
 
-	for (u32 i=0; i<size; ++i)
+	for (uint32_t i=0; i<size; ++i)
 	{
 		const SRenderUnit* unit  = renderEntries[i].unit;
 		currentUnit = unit;
@@ -62,8 +62,8 @@ void CD3D11Driver::helper_render( CTerrainRenderer* terrainRenderer, const SRend
 	std::vector<CTerrainRenderer::SEntry>& highRenderEntries = terrainRenderer->HighRenderEntries;
 	std::vector<CTerrainRenderer::SEntry>& lowRenderEntries = terrainRenderer->LowRenderEntries;
 
-	u32 highSize = (u32)highRenderEntries.size();
-	u32 lowSize = (u32)lowRenderEntries.size(); 
+	uint32_t highSize = (uint32_t)highRenderEntries.size();
+	uint32_t lowSize = (uint32_t)lowRenderEntries.size(); 
 
 #ifndef FIXPIPELINE
 	cam->makeClipPlane(clipPlane, clipPlane);
@@ -72,7 +72,7 @@ void CD3D11Driver::helper_render( CTerrainRenderer* terrainRenderer, const SRend
 	sceneService->setClipPlane(0, clipPlane);
 	sceneService->enableClipPlane(0, true);
 
-	for (u32 i=0; i<highSize; ++i)
+	for (uint32_t i=0; i<highSize; ++i)
 	{
 		const SRenderUnit* unit  = highRenderEntries[i].unit;
 		currentUnit = unit;
@@ -91,7 +91,7 @@ void CD3D11Driver::helper_render( CTerrainRenderer* terrainRenderer, const SRend
 
 	sceneService->enableClipPlane(0, false);
 
-	for (u32 i=0; i<lowSize; ++i)
+	for (uint32_t i=0; i<lowSize; ++i)
 	{
 		const SRenderUnit* unit  = lowRenderEntries[i].unit;
 		currentUnit = unit;
@@ -111,12 +111,12 @@ void CD3D11Driver::helper_render( CTerrainRenderer* terrainRenderer, const SRend
 void CD3D11Driver::helper_render( CTransluscentRenderer* transluscentRenderer, const SRenderUnit*& currentUnit, ICamera* cam )
 {
 	std::vector<CTransluscentRenderer::SEntry>& renderEntries = transluscentRenderer->RenderEntries;
-	u32 size = (u32)transluscentRenderer->RenderEntries.size();
+	uint32_t size = (uint32_t)transluscentRenderer->RenderEntries.size();
 
 	matrix4 view = cam->getViewMatrix();
 	matrix4 projection = cam->getProjectionMatrix();
 
-	for (u32 i=0; i<size; ++i)
+	for (uint32_t i=0; i<size; ++i)
 	{
 		const SRenderUnit* unit  = renderEntries[i].unit;
 		currentUnit = unit;
@@ -152,8 +152,8 @@ void CD3D11Driver::helper_render( CWmoRenderer* wmoRenderer, const SRenderUnit*&
 	sceneService->setClipPlane(0, clipPlane);
 	sceneService->enableClipPlane(0, true);
 
-	u32 size = (u32)renderEntries.size();
-	for (u32 i=0; i<size; ++i)
+	uint32_t size = (uint32_t)renderEntries.size();
+	for (uint32_t i=0; i<size; ++i)
 	{
 		SRenderUnit* unit  = renderEntries[i].unit;
 		currentUnit = unit;
@@ -179,9 +179,9 @@ void CD3D11Driver::helper_render( CAlphaTestMeshRenderer* meshRenderer, const SR
 	matrix4 projection = cam->getProjectionMatrix();
 
 	std::vector<CAlphaTestMeshRenderer::SEntry>& renderEntries = meshRenderer->RenderEntries;
-	u32 size = (u32)meshRenderer->RenderEntries.size();
+	uint32_t size = (uint32_t)meshRenderer->RenderEntries.size();
 
-	for (u32 i=0; i<size; ++i)
+	for (uint32_t i=0; i<size; ++i)
 	{
 		const SRenderUnit* unit  = renderEntries[i].unit;
 		currentUnit = unit;
@@ -217,8 +217,8 @@ void CD3D11Driver::helper_render( CAlphaTestWmoRenderer* wmoRenderer, const SRen
 	sceneService->setClipPlane(0, clipPlane);
 	sceneService->enableClipPlane(0, true);
 
-	u32 size = (u32)renderEntries.size();
-	for (u32 i=0; i<size; ++i)
+	uint32_t size = (uint32_t)renderEntries.size();
+	for (uint32_t i=0; i<size; ++i)
 	{
 		const SRenderUnit* unit  = renderEntries[i].unit;
 		currentUnit = unit;
@@ -245,13 +245,13 @@ void CD3D11Driver::helper_renderAllBatches( CParticleRenderer* particleRenderer,
 
 	std::vector<CParticleRenderer::SBatch>& renderBatches = particleRenderer->RenderBatches;
 	CParticleSystemServices* particleRenderServices = particleRenderer->ParticleServices;
-	u32 size = (u32)renderBatches.size();
+	uint32_t size = (uint32_t)renderBatches.size();
 
 	//render batches
-	for (u32 i=0; i<size; ++i)
+	for (uint32_t i=0; i<size; ++i)
 	{
 		const CParticleRenderer::SBatch& batch = renderBatches[i];
-		u32 primCount = batch.vcount / 2;
+		uint32_t primCount = batch.vcount / 2;
 
 		if (!primCount)
 			continue;
@@ -291,10 +291,10 @@ void CD3D11Driver::helper_renderAllBatches( CRibbonRenderer* ribbonRenderer, con
 
 	std::vector<CRibbonRenderer::SBatch>& renderBatches = ribbonRenderer->RenderBatches;
 	CRibbonEmitterServices* ribbonServices = ribbonRenderer->RibbonServices;
-	u32 size = (u32)renderBatches.size();
+	uint32_t size = (uint32_t)renderBatches.size();
 
 	//render batches
-	for (u32 i=0; i<size; ++i)
+	for (uint32_t i=0; i<size; ++i)
 	{
 		CRibbonRenderer::SBatch& batch = renderBatches[i];
 
@@ -309,7 +309,7 @@ void CD3D11Driver::helper_renderAllBatches( CRibbonRenderer* ribbonRenderer, con
 #endif
 		drawParam.numVertices = batch.vcount;
 
-		u32 primCount = batch.vcount / 2;
+		uint32_t primCount = batch.vcount / 2;
 
 		ITexture* textures[MATERIAL_MAX_TEXTURES] = {0};
 		textures[0] = batch.texture0;
@@ -335,13 +335,13 @@ void CD3D11Driver::helper_renderAllBatches( CMeshDecalRenderer* meshDecalRendere
 
 	std::vector<CMeshDecalRenderer::SBatch>& renderBatches = meshDecalRenderer->RenderBatches;
 	CMeshDecalServices* meshDecalServices = meshDecalRenderer->MeshDecalServices;
-	u32 size = (u32)renderBatches.size();
+	uint32_t size = (uint32_t)renderBatches.size();
 
 	//render batches
-	for (u32 i=0; i<size; ++i)
+	for (uint32_t i=0; i<size; ++i)
 	{
 		const CMeshDecalRenderer::SBatch& batch = renderBatches[i];
-		u32 primCount = batch.vcount / 2;
+		uint32_t primCount = batch.vcount / 2;
 
 		if (!primCount)
 			continue;
@@ -382,13 +382,13 @@ void CD3D11Driver::helper_renderAllBatches( CTransluscentDecalRenderer* transDec
 
 	std::vector<CTransluscentDecalRenderer::SBatch>& renderBatches = transDecalRenderer->RenderBatches;
 	CMeshDecalServices* meshDecalServices = transDecalRenderer->MeshDecalServices;
-	u32 size = (u32)renderBatches.size();
+	uint32_t size = (uint32_t)renderBatches.size();
 
 	//render batches
-	for (u32 i=0; i<size; ++i)
+	for (uint32_t i=0; i<size; ++i)
 	{
 		const CTransluscentDecalRenderer::SBatch& batch = renderBatches[i];
-		u32 primCount = batch.vcount / 2;
+		uint32_t primCount = batch.vcount / 2;
 
 		if (!primCount)
 			continue;
@@ -429,13 +429,13 @@ void CD3D11Driver::helper_renderAllBatches( CAlphaTestDecalRenderer* meshDecalRe
 
 	std::vector<CAlphaTestDecalRenderer::SBatch>& renderBatches = meshDecalRenderer->RenderBatches;
 	CMeshDecalServices* meshDecalServices = meshDecalRenderer->MeshDecalServices;
-	u32 size = (u32)renderBatches.size();
+	uint32_t size = (uint32_t)renderBatches.size();
 
 	//render batches
-	for (u32 i=0; i<size; ++i)
+	for (uint32_t i=0; i<size; ++i)
 	{
 		const CAlphaTestDecalRenderer::SBatch& batch = renderBatches[i];
-		u32 primCount = batch.vcount / 2;
+		uint32_t primCount = batch.vcount / 2;
 
 		if (!primCount)
 			continue;

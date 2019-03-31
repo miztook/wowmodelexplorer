@@ -42,20 +42,20 @@ public:
 	 dimension2d<T>& set(const T& width, const T& height) { Width = width; Height = height; return *this; }
 	 T getArea() const { return Width*Height; }
 
-	u32 getNumMipLevels() const;
+	uint32_t getNumMipLevels() const;
 
-	 dimension2d<T> getMipLevelSize(u32 level) const 
+	 dimension2d<T> getMipLevelSize(uint32_t level) const 
 	{
 		return dimension2d<T>(max_(1u, Width >> level), max_(1u, Height >> level)); 
 	}
 
-	dimension2d<T> getInterpolated(const dimension2d<T>& other, f32 d) const;
+	dimension2d<T> getInterpolated(const dimension2d<T>& other, float d) const;
 	
 	dimension2d<T> getOptimalSize(
 		bool requirePowerOfTwo=true,
 		bool requireSquare=false,
 		bool larger=true,
-		u32 maxValue = 0) const;
+		uint32_t maxValue = 0) const;
 
 public:
 	T Width;
@@ -63,10 +63,10 @@ public:
 };
 
 template <class T>
-inline u32 dimension2d<T>::getNumMipLevels() const
+inline uint32_t dimension2d<T>::getNumMipLevels() const
 {
-	u32 mip = 0;
-	u32 len = max_(Width, Height);
+	uint32_t mip = 0;
+	uint32_t len = max_(Width, Height);
 	while(len)
 	{
 		len >>= 1;
@@ -77,32 +77,32 @@ inline u32 dimension2d<T>::getNumMipLevels() const
 }
 
 template <class T>
-inline dimension2d<T> dimension2d<T>::getInterpolated( const dimension2d<T>& other, f32 d ) const
+inline dimension2d<T> dimension2d<T>::getInterpolated( const dimension2d<T>& other, float d ) const
 {	
-	const f32 inv = 1.0f - d;
+	const float inv = 1.0f - d;
 	return dimension2d<T>(other.Width*inv + Width*d, other.Height*inv + Height*d);
 }
 
 template <class T>
-inline dimension2d<T> dimension2d<T>::getOptimalSize( bool requirePowerOfTwo/*=true*/, bool requireSquare/*=false*/, bool larger/*=true*/, u32 maxValue /*= 0*/ ) const
+inline dimension2d<T> dimension2d<T>::getOptimalSize( bool requirePowerOfTwo/*=true*/, bool requireSquare/*=false*/, bool larger/*=true*/, uint32_t maxValue /*= 0*/ ) const
 {
-	u32 i=1;
-	u32 j=1;
+	uint32_t i=1;
+	uint32_t j=1;
 	if (requirePowerOfTwo)
 	{
-		while (i<(u32)Width)
+		while (i<(uint32_t)Width)
 			i<<=1;
-		if (!larger && i!=1 && i!=(u32)Width)
+		if (!larger && i!=1 && i!=(uint32_t)Width)
 			i>>=1;
-		while (j<(u32)Height)
+		while (j<(uint32_t)Height)
 			j<<=1;
-		if (!larger && j!=1 && j!=(u32)Height)
+		if (!larger && j!=1 && j!=(uint32_t)Height)
 			j>>=1;
 	}
 	else
 	{
-		i=(u32)Width;
-		j=(u32)Height;
+		i=(uint32_t)Width;
+		j=(uint32_t)Height;
 	}
 
 	if (requireSquare)
@@ -113,13 +113,13 @@ inline dimension2d<T> dimension2d<T>::getOptimalSize( bool requirePowerOfTwo/*=t
 			i=j;
 	}
 
-	f32 f = j / (f32)i;
+	float f = j / (float)i;
 	if (f > 1)
 	{
 		if (j > maxValue)
 		{
 			j = maxValue;
-			i = (u32)(maxValue / f);
+			i = (uint32_t)(maxValue / f);
 		}
 	}
 	else
@@ -127,13 +127,13 @@ inline dimension2d<T> dimension2d<T>::getOptimalSize( bool requirePowerOfTwo/*=t
 		if (i > maxValue)
 		{
 			i = maxValue;
-			j = (u32)(maxValue * f);
+			j = (uint32_t)(maxValue * f);
 		}
 	}
 
 	return dimension2d<T>((T)i,(T)j);
 }
 
-typedef dimension2d<f32> dimension2df;
-typedef dimension2d<u32> dimension2du;
-typedef dimension2d<s32> dimension2di;
+typedef dimension2d<float> dimension2df;
+typedef dimension2d<uint32_t> dimension2du;
+typedef dimension2d<int32_t> dimension2di;

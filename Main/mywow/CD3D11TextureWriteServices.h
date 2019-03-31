@@ -14,14 +14,14 @@ class CD3D11Driver;
 class CD3D11TextureWriter : public ITextureWriter
 {
 private:
-	CD3D11TextureWriter(const dimension2du& size, ECOLOR_FORMAT format, u32 numMipmap);
+	CD3D11TextureWriter(const dimension2du& size, ECOLOR_FORMAT format, uint32_t numMipmap);
 	~CD3D11TextureWriter();
 
 	friend class CD3D11TextureWriteServices;
 
 public:
-	virtual void* lock(u32 level, u32& pitch);
-	virtual void unlock(u32 level);
+	virtual void* lock(uint32_t level, uint32_t& pitch);
+	virtual void unlock(uint32_t level);
 	virtual bool copyToTexture(ITexture* texture, const recti* descRect = nullptr);
 	virtual void initEmptyData();
 

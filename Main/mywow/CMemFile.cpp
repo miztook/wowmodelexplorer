@@ -2,7 +2,7 @@
 #include "CMemFile.h"
 #include "temp_memory.h"
 
-u32 CMemFile::read( void* dest, u32 bytes )
+uint32_t CMemFile::read( void* dest, uint32_t bytes )
 {
 	if (eof) 
 		return 0;
@@ -15,12 +15,12 @@ u32 CMemFile::read( void* dest, u32 bytes )
 
 	memcpy(dest, &(buffer[pointer]), bytes);
 
-	pointer = (u32)rpos;
+	pointer = (uint32_t)rpos;
 
 	return bytes;
 }
 
-bool CMemFile::seek( s32 offset, bool relative )
+bool CMemFile::seek( int32_t offset, bool relative )
 {
 	if (relative)
 		pointer += offset;
@@ -41,9 +41,9 @@ void CMemFile::close()
 	eof = true;
 }
 
-bool CMemFile::save( const c8* filename )
+bool CMemFile::save( const char* filename )
 {
-	c8 realfilename[QMAX_PATH];
+	char realfilename[QMAX_PATH];
 	normalizeFileName(filename, realfilename, QMAX_PATH);
 
 	if (!Q_MakeDirForFileName(realfilename))

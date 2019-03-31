@@ -32,7 +32,7 @@ public:
 				sunShafts = particleDensity = EL_LOW;
 			SSAO = EL_DISABLE;
 		}
-		u32 antialias;
+		uint32_t antialias;
 		bool vsync;
 		bool fullscreen;
 		bool textureProjection;							//材质投射
@@ -62,8 +62,8 @@ public:
 		}
 
 		E_DRIVER_TYPE driverType;
-		s32 maxForegroundFPS;
-		s32 maxBackgroundFPS;
+		int32_t maxForegroundFPS;
+		int32_t maxBackgroundFPS;
 		bool tripleBuffering;
 		bool reduceInputLag;
 		bool hardwareCursor;
@@ -139,19 +139,19 @@ public:
 	bool getHardwareCursor() const { return AdvancedSetting.hardwareCursor; }
 
 	//前台，后台fps
-	void setForegroundFPSLimit(s32 limit) { AdvancedSetting.maxForegroundFPS = limit; }
-	s32 getForegroundFPSLimit() const { return AdvancedSetting.maxForegroundFPS; }
-	void setBackgroundFPSLimit(s32 limit) { AdvancedSetting.maxBackgroundFPS = limit; }
-	s32 getBackgroundFPSLimit() const { return AdvancedSetting.maxBackgroundFPS; }
+	void setForegroundFPSLimit(int32_t limit) { AdvancedSetting.maxForegroundFPS = limit; }
+	int32_t getForegroundFPSLimit() const { return AdvancedSetting.maxForegroundFPS; }
+	void setBackgroundFPSLimit(int32_t limit) { AdvancedSetting.maxBackgroundFPS = limit; }
+	int32_t getBackgroundFPSLimit() const { return AdvancedSetting.maxBackgroundFPS; }
 
 private:
-	bool getValue(IConfigs* config, const c8* key, bool& v);
-	bool getValue(IConfigs* config, const c8* key, s32& v);
-	bool getValue(IConfigs* config, const c8* key, u32& v);
+	bool getValue(IConfigs* config, const char* key, bool& v);
+	bool getValue(IConfigs* config, const char* key, int32_t& v);
+	bool getValue(IConfigs* config, const char* key, uint32_t& v);
 
-	bool setValue(IConfigs* config, const c8* key, bool v);
-	bool setValue(IConfigs* config, const c8* key, s32 v);
-	bool setValue(IConfigs* config, const c8* key, u32 v);
+	bool setValue(IConfigs* config, const char* key, bool v);
+	bool setValue(IConfigs* config, const char* key, int32_t v);
+	bool setValue(IConfigs* config, const char* key, uint32_t v);
 
 private:
 	SVideoSetting		VideoSetting;

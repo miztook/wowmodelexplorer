@@ -36,7 +36,7 @@ public:
 	 void setLine(const vector2d<T>& nstart, const vector2d<T>& nend){start.set(nstart); end.set(nend);}
 	 void setLine(const line2d<T>& line){start.set(line.start); end.set(line.end);}
 
-	 f32 getLength() const { return start.getDistanceFrom(end); }
+	 float getLength() const { return start.getDistanceFrom(end); }
 
 	 T getLengthSQ() const { return start.getDistanceFromSQ(end); }
 
@@ -49,5 +49,5 @@ public:
 	vector2d<T> end;
 };
 
-typedef line2d<f32> line2df;
-typedef line2d<s32> line2di;
+typedef line2d<float> line2df;
+typedef line2d<int32_t> line2di;

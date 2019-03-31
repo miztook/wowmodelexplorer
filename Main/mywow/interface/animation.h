@@ -8,64 +8,64 @@ public:
 		: StartFrame(0), EndFrame(0), MaxFrameCount(0), FramesPerMs(1.0f), 
 		CurrentFrameNumber(0.0f), Looping(false) {}
 public:
-	void setMaxFrame(s32 maxFrame) { MaxFrameCount = abs_(maxFrame); }
-	void setCurrentFrame(f32 frame);
-	void setFrameLoop(s32 begin, s32 end);
-	void setAnimationSpeed(f32 framePerMs) { FramesPerMs = framePerMs; }
-	f32 getAnimationSpeed() const { return FramesPerMs; }
+	void setMaxFrame(int32_t maxFrame) { MaxFrameCount = abs_(maxFrame); }
+	void setCurrentFrame(float frame);
+	void setFrameLoop(int32_t begin, int32_t end);
+	void setAnimationSpeed(float framePerMs) { FramesPerMs = framePerMs; }
+	float getAnimationSpeed() const { return FramesPerMs; }
 
-	f32 getCurrentFrame() const { return CurrentFrameNumber; }
-	s32 getStartFrame() const { return StartFrame; }
-	s32 getEndFrame() const { return EndFrame; }
-	s32 getFrameLength() const { return abs_(EndFrame - StartFrame); }
+	float getCurrentFrame() const { return CurrentFrameNumber; }
+	int32_t getStartFrame() const { return StartFrame; }
+	int32_t getEndFrame() const { return EndFrame; }
+	int32_t getFrameLength() const { return abs_(EndFrame - StartFrame); }
 	void setLoopMode(bool on) { Looping = on; }
 	bool isLoop() const { return Looping; }
 	//
-	f32 buildFrameNumber( u32 timeMs, bool* animEnd = nullptr );			//·µ»Øframe delta
+	float buildFrameNumber( uint32_t timeMs, bool* animEnd = nullptr );			//·µ»Øframe delta
 
 	bool isFrameStart() const;
 	bool isFrameEnd() const;
 
 private:
-	f32	FramesPerMs;
-	f32	CurrentFrameNumber;
-	s32	StartFrame;
-	s32	EndFrame;
-	s32  MaxFrameCount;		
+	float	FramesPerMs;
+	float	CurrentFrameNumber;
+	int32_t	StartFrame;
+	int32_t	EndFrame;
+	int32_t  MaxFrameCount;		
 	bool	Looping;
 };
 
- inline void animation::setCurrentFrame( f32 frame )
+ inline void animation::setCurrentFrame( float frame )
 {
-	CurrentFrameNumber = clamp_<f32>( frame, (f32)StartFrame, (f32)EndFrame );
+	CurrentFrameNumber = clamp_<float>( frame, (float)StartFrame, (float)EndFrame );
 }
 
-inline  void animation::setFrameLoop( s32 begin, s32 end )
+inline  void animation::setFrameLoop( int32_t begin, int32_t end )
 {
 	if (end < begin)
 	{
-		StartFrame = clamp_<s32>(end, 0, MaxFrameCount);
-		EndFrame = clamp_<s32>(begin, StartFrame, MaxFrameCount);
+		StartFrame = clamp_<int32_t>(end, 0, MaxFrameCount);
+		EndFrame = clamp_<int32_t>(begin, StartFrame, MaxFrameCount);
 	}
 	else
 	{
-		StartFrame = clamp_<s32>(begin, 0, MaxFrameCount);
-		EndFrame = clamp_<s32>(end, StartFrame, MaxFrameCount);
+		StartFrame = clamp_<int32_t>(begin, 0, MaxFrameCount);
+		EndFrame = clamp_<int32_t>(end, StartFrame, MaxFrameCount);
 	}
 	if (FramesPerMs < 0)
-		setCurrentFrame((f32)EndFrame);
+		setCurrentFrame((float)EndFrame);
 	else
-		setCurrentFrame((f32)StartFrame);
+		setCurrentFrame((float)StartFrame);
 }
 
- inline f32 animation::buildFrameNumber( u32 timeMs, bool* animEnd )
+ inline float animation::buildFrameNumber( uint32_t timeMs, bool* animEnd )
 {
-	f32 last = CurrentFrameNumber;
+	float last = CurrentFrameNumber;
 	bool end = false;
 
 	if (StartFrame==EndFrame)
 	{
-		CurrentFrameNumber = (f32)StartFrame; //Support for non animated meshes
+		CurrentFrameNumber = (float)StartFrame; //Support for non animated meshes
 	}
 	else if (Looping)
 	{
@@ -73,7 +73,7 @@ inline  void animation::setFrameLoop( s32 begin, s32 end )
 		CurrentFrameNumber += timeMs * FramesPerMs;
 		if (FramesPerMs > 0.f) //forwards...
 		{
-			if (CurrentFrameNumber > (f32)EndFrame)
+			if (CurrentFrameNumber > (float)EndFrame)
 			{
 				CurrentFrameNumber -= (EndFrame-StartFrame);	
 				end = true;
@@ -81,7 +81,7 @@ inline  void animation::setFrameLoop( s32 begin, s32 end )
 		}
 		else //backwards...
 		{
-			if (CurrentFrameNumber < (f32)StartFrame)	
+			if (CurrentFrameNumber < (float)StartFrame)	
 			{
 				CurrentFrameNumber += (EndFrame-StartFrame);
 				end = true;
@@ -94,17 +94,17 @@ inline  void animation::setFrameLoop( s32 begin, s32 end )
 		CurrentFrameNumber += timeMs * FramesPerMs;
 		if (FramesPerMs > 0.f) //forwards...
 		{
-			if (CurrentFrameNumber > (f32)EndFrame)
+			if (CurrentFrameNumber > (float)EndFrame)
 			{
-				CurrentFrameNumber = (f32)EndFrame;
+				CurrentFrameNumber = (float)EndFrame;
 				end = true;
 			}
 		}
 		else //backwards...
 		{
-			if (CurrentFrameNumber < (f32)StartFrame)
+			if (CurrentFrameNumber < (float)StartFrame)
 			{
-				CurrentFrameNumber = (f32)StartFrame;	
+				CurrentFrameNumber = (float)StartFrame;	
 				end = true;
 			}
 		}

@@ -5,7 +5,7 @@
 
 bool wow_m2State_Stand::enter()
 {
-	const c8* actname = getActionName(EMS_STAND);
+	const char* actname = getActionName(EMS_STAND);
 	M2Action = Entity->getFileM2()->getAction(actname);
 	if(!M2Action || !Entity->getM2FSM()->playAction(M2Action, 200))
 	{
@@ -18,13 +18,13 @@ bool wow_m2State_Stand::enter()
 
 bool wow_m2State_Stand::isValid() const
 {
-	const c8* actname = getActionName(EMS_STAND);
+	const char* actname = getActionName(EMS_STAND);
 	return Entity->getFileM2()->getAction(actname) != NULL;
 }
 
 bool wow_m2State_commonAction::enter()
 {
-	const c8* actname = getActionName(State);
+	const char* actname = getActionName(State);
 	M2Action = Entity->getFileM2()->getAction(actname);
 	if(!M2Action || !Entity->getM2FSM()->playAction(M2Action, 200))
 	{
@@ -35,19 +35,19 @@ bool wow_m2State_commonAction::enter()
 	return true;
 }
 
-f32 wow_m2State_Jump::GRAVITY = 0.001f * 0.05f;
-f32 wow_m2State_Jump::ABOUTLANDHEIGHT = 2.0f;
-f32 wow_m2State_Jump::LANDHEIGHT = 0.4f;
+float wow_m2State_Jump::GRAVITY = 0.001f * 0.05f;
+float wow_m2State_Jump::ABOUTLANDHEIGHT = 2.0f;
+float wow_m2State_Jump::LANDHEIGHT = 0.4f;
 
 bool wow_m2State_Jump::isValid() const
 {
-	const c8* actname = getActionName(EMS_JUMP);
+	const char* actname = getActionName(EMS_JUMP);
 	return Entity->getFileM2()->getAction(actname) != NULL;
 }
 
 bool wow_m2State_Jump::enter()
 {
-	const c8* actname = getActionName(EMS_JUMP);
+	const char* actname = getActionName(EMS_JUMP);
 	M2Action = Entity->getFileM2()->getAction(actname);
 	if(!M2Action || !Entity->getM2FSM()->playAction(M2Action, 200))
 	{
@@ -66,15 +66,15 @@ bool wow_m2State_Jump::enter()
 	return true;
 }
 
-void wow_m2State_Jump::tick( u32 timeSinceStart, u32 timeSinceLastFrame )
+void wow_m2State_Jump::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame )
 {
 	wow_m2FSM* fsm = Entity->getM2FSM();
-	f32 height = getM2Height();
+	float height = getM2Height();
 	if (fsm->isPlaying(M2Action))
 	{
-		f32 v = CurrentVelocity;
+		float v = CurrentVelocity;
 		CurrentVelocity -= GRAVITY * timeSinceLastFrame;
-		f32 delta = (v + CurrentVelocity) * 0.5f * timeSinceLastFrame;
+		float delta = (v + CurrentVelocity) * 0.5f * timeSinceLastFrame;
 
 		if (HeightGround + delta > height)				//在地面之上
 		{
@@ -154,12 +154,12 @@ bool wow_m2State_Jump::isJumpEnd() const
 	return false;
 }
 
-void wow_m2State_Jump::onAnimationEnd( u32 currentIndex )
+void wow_m2State_Jump::onAnimationEnd( uint32_t currentIndex )
 {
 	wow_m2FSM* fsm = Entity->getM2FSM();
 	if (M2Action && fsm->isPlaying(M2Action))
 	{
-		f32 height = getM2Height();
+		float height = getM2Height();
 		const SDynAction& dynAction = fsm->getDynAction();
 		if(dynAction.currentIndex == 0)
 		{
@@ -190,14 +190,14 @@ void wow_m2State_Jump::onAnimationEnd( u32 currentIndex )
 	}
 }
 
-f32 wow_m2State_Jump::getM2Height() const
+float wow_m2State_Jump::getM2Height() const
 {
 	vector3df pos = Entity->getM2Move()->getPos();
 
 	return g_Client->getWorld()->getHeightNormal(pos.X, pos.Z);
 }
 
-void wow_m2State_commonAction::tick( u32 timeSinceStart, u32 timeSinceLastFrame )
+void wow_m2State_commonAction::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame )
 {
  	if (M2Action && !Entity->getM2FSM()->isPlaying(M2Action))
 		Entity->getM2FSM()->changeState(EMS_STAND);
@@ -210,6 +210,6 @@ void wow_m2State_commonAction::exit()
 
 bool wow_m2State_commonAction::isValid( ) const
 {
-	const c8* actname = getActionName(State);
+	const char* actname = getActionName(State);
 	return Entity->getFileM2()->getAction(actname) != NULL;
 }

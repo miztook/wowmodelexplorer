@@ -2,7 +2,7 @@
 #include "CParticleSystemServices.h"
 #include "mywow.h"
 
-CParticleSystemServices::CParticleSystemServices( u32 poolQuota, u32 bufferQuota, float density)
+CParticleSystemServices::CParticleSystemServices( uint32_t poolQuota, uint32_t bufferQuota, float density)
 	: PoolQuota(poolQuota), LackParticle(false)
 {
 	BufferQuota = min_(bufferQuota, IHardwareBufferServices::MAX_QUADS());
@@ -29,7 +29,7 @@ void CParticleSystemServices::createBuffer()
 	BufferParam.clear();
 	BufferParam.vType = EVT_PCT;
 
-	u32 vsize = BufferQuota * 4;
+	uint32_t vsize = BufferQuota * 4;
 
 	//vertex buffer
 	Vertices.resize(vsize);
@@ -44,7 +44,7 @@ void CParticleSystemServices::createBuffer()
 
 }
 
-void CParticleSystemServices::updateVertices(u32 numVertices)
+void CParticleSystemServices::updateVertices(uint32_t numVertices)
 {
 	if (!numVertices)
 		return;
@@ -68,7 +68,7 @@ void CParticleSystemServices::putParticle( Particle* p )
 
 void CParticleSystemServices::adjustParticles()
 {
-	f32 portion = getActiveParticlesCount() / (f32)PoolQuota;
+	float portion = getActiveParticlesCount() / (float)PoolQuota;
 
 	if (portion > 0.99f)
 	{

@@ -2,7 +2,7 @@
 #include "CRibbonEmitterServices.h"
 #include "mywow.h"
 
-CRibbonEmitterServices::CRibbonEmitterServices( u32 poolQuota, u32 bufferQuota )
+CRibbonEmitterServices::CRibbonEmitterServices( uint32_t poolQuota, uint32_t bufferQuota )
 	: PoolQuota(poolQuota), BufferQuota(bufferQuota)
 {
 	SegmentPool.allocateAll(PoolQuota);
@@ -21,7 +21,7 @@ void CRibbonEmitterServices::createBuffer()
 	BufferParam.clear();
 	BufferParam.vType = EVT_PCT;
 
-	u32 vsize = BufferQuota * 2;							//每个segment 2 个顶点
+	uint32_t vsize = BufferQuota * 2;							//每个segment 2 个顶点
 
 	//vertex buffer
 	Vertices.resize(vsize);
@@ -30,7 +30,7 @@ void CRibbonEmitterServices::createBuffer()
 	g_Engine->getHardwareBufferServices()->createHardwareBuffers(BufferParam);
 }
 
-void CRibbonEmitterServices::updateVertices( u32 numVertices )
+void CRibbonEmitterServices::updateVertices( uint32_t numVertices )
 {
 	if (!numVertices)
 		return;

@@ -36,15 +36,15 @@ protected:
 	virtual bool hasVideoBuilt() const { return VideoBuilt; }
 
 private:
-	bool createTexture( const dimension2du& size, ECOLOR_FORMAT format, u32 numMipmap );
+	bool createTexture( const dimension2du& size, ECOLOR_FORMAT format, uint32_t numMipmap );
 	
 	//blp
 	void copyTexture( ITextureWriter* writer, IBLPImage* blpimage );
-	bool copyBlpMipMaps( ITextureWriter* writer, IBLPImage* blpimage, u32 level = 1);
+	bool copyBlpMipMaps( ITextureWriter* writer, IBLPImage* blpimage, uint32_t level = 1);
 
 	//image
 	void copyTexture( ITextureWriter* writer, IImage* image );
-	bool createMipMaps( ITextureWriter* writer, u32 level = 1 );		
+	bool createMipMaps( ITextureWriter* writer, uint32_t level = 1 );		
 
 private:
 	IDirect3DTexture9*		DXTexture;

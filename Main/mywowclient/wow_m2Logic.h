@@ -32,7 +32,7 @@ public:
 	virtual void onM2SceneNodeAdd(IM2SceneNode* node);
 
 private:
-	bool addAction(IFileM2* filem2, E_M2_STATES act, wow_m2Action::E_PLAY_TYPE playType, s32 maxPlaytime, const SAnimationEntries& anims);
+	bool addAction(IFileM2* filem2, E_M2_STATES act, wow_m2Action::E_PLAY_TYPE playType, int32_t maxPlaytime, const SAnimationEntries& anims);
 
 	void buildStandAction(IFileM2* fileM2);	
 

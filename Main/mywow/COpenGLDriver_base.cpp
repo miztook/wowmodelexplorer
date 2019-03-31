@@ -64,7 +64,7 @@ COpenGLDriver::COpenGLDriver()
 	InitMaterial2D.ZWriteEnable = false;
 	InitMaterial2D.ZBuffer = ECFN_NEVER;
 	InitMaterial2D.AntiAliasing = EAAM_LINE_SMOOTH;
-	for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
+	for (uint32_t i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 	{
 		InitMaterial2D.TextureLayer[i].TextureWrapU=ETC_CLAMP;
 		InitMaterial2D.TextureLayer[i].TextureWrapV=ETC_CLAMP;
@@ -108,7 +108,7 @@ COpenGLDriver::~COpenGLDriver()
 		::ReleaseDC(HWnd, Hdc);
 }
 
-bool COpenGLDriver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread )
+bool COpenGLDriver::initDriver( const SWindowInfo& wndInfo, uint32_t adapter, bool fullscreen, bool vsync, uint8_t antialias, bool multithread )
 {
 	ASSERT(::IsWindow(wndInfo.hwnd));
 
@@ -133,8 +133,8 @@ bool COpenGLDriver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool fu
 	
 	Hdc = ::GetDC(HWnd);
 
-	const u8 depthBits = 24;
-	const u8 stencilBits = 8;
+	const uint8_t depthBits = 24;
+	const uint8_t stencilBits = 8;
 
 	// Set up pixel format descriptor with desired parameters
 	PIXELFORMATDESCRIPTOR pfd = {
@@ -209,11 +209,11 @@ bool COpenGLDriver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool fu
 	AdapterCount = 1;
 	AdapterInfo.index = 0;
 
-	const c8* str = reinterpret_cast<const c8*>(glGetString(GL_RENDERER));
+	const char* str = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 	Q_strcpy(AdapterInfo.description, 512, str);
-	const c8* str1 = reinterpret_cast<const c8*>(glGetString(GL_VERSION));
+	const char* str1 = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 	Q_sprintf(AdapterInfo.name, DEFAULT_SIZE, "OpenGL %s", str1);
-	const c8* str2 = reinterpret_cast<const c8*>(glGetString(GL_VENDOR));
+	const char* str2 = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
 	Q_strcpy(AdapterInfo.vendorName, DEFAULT_SIZE, str2);
 
 	//log
@@ -307,7 +307,7 @@ bool COpenGLDriver::initDriver( const SWindowInfo& wndInfo, u32 adapter, bool fu
 	return true;
 }
 
-int COpenGLDriver::chooseMultiSamplePixelFormat( int pixelformat, u8& antialias, PIXELFORMATDESCRIPTOR* ppfd)
+int COpenGLDriver::chooseMultiSamplePixelFormat( int pixelformat, uint8_t& antialias, PIXELFORMATDESCRIPTOR* ppfd)
 {
 	glcontext_type rc, rc_before=wglGetCurrentContext();
 	window_type hWnd;
@@ -337,8 +337,8 @@ int COpenGLDriver::chooseMultiSamplePixelFormat( int pixelformat, u8& antialias,
 		if(antialias > 16)
 			antialias = 16;
 
-		f32 fAttributes[] = {0.0, 0.0};
-		s32 iAttributes[] =
+		float fAttributes[] = {0.0, 0.0};
+		int32_t iAttributes[] =
 		{
 			WGL_DRAW_TO_WINDOW_ARB,	GL_TRUE,
 			WGL_SUPPORT_OPENGL_ARB,	GL_TRUE,
@@ -363,13 +363,13 @@ int COpenGLDriver::chooseMultiSamplePixelFormat( int pixelformat, u8& antialias,
 			0,0
 		};
 
-		s32 rv=0;
+		int32_t rv=0;
 		// Try to get an acceptable pixel format
 		while(rv==0 && iAttributes[21] > 1)
 		{
-			s32 outpf=0;
-			u32 numFormats=0;
-			const s32 valid = wglChoosePixelFormat_ARB(Hdc, iAttributes, fAttributes, 1, &outpf, &numFormats);
+			int32_t outpf=0;
+			uint32_t numFormats=0;
+			const int32_t valid = wglChoosePixelFormat_ARB(Hdc, iAttributes, fAttributes, 1, &outpf, &numFormats);
 
 			if (valid && numFormats>0)
 				rv = outpf;
@@ -405,7 +405,7 @@ dimension2du COpenGLDriver::getWindowSize() const
 {
 	RECT rc;
 	::GetClientRect(HWnd, &rc);
-	return dimension2du((u32)rc.right-rc.left, (u32)rc.bottom-rc.top);
+	return dimension2du((uint32_t)rc.right-rc.left, (uint32_t)rc.bottom-rc.top);
 }
 
 void COpenGLDriver::logCaps()
@@ -578,7 +578,7 @@ void COpenGLDriver::setTransform( E_TRANSFORMATION_STATE state, const matrix4& m
 		break;
 	default:		//texture
 		{
-			s32 tex = state - ETS_TEXTURE_0;
+			int32_t tex = state - ETS_TEXTURE_0;
 			if (  tex >= 0  && tex < MATERIAL_MAX_TEXTURES )
 			{
 #ifdef FIXPIPELINE
@@ -605,7 +605,7 @@ void COpenGLDriver::setTransform( E_TRANSFORMATION_STATE state, const matrix4& m
 	}
 }
 
-void COpenGLDriver::setTexture( u32 stage, ITexture* texture )
+void COpenGLDriver::setTexture( uint32_t stage, ITexture* texture )
 {
 	OpenGLMaterialRenderServices->setSampler_Texture(stage, texture);
 }
@@ -638,7 +638,7 @@ void COpenGLDriver::setTransform(const matrix4& matView, const matrix4& matProje
 	CurrentRenderMode = ERM_3D;
 }
 
-void COpenGLDriver::setTransform_Material_Textures( const matrix4& matWorld, const SMaterial& material, ITexture* const textures[], u32 numTextures )
+void COpenGLDriver::setTransform_Material_Textures( const matrix4& matWorld, const SMaterial& material, ITexture* const textures[], uint32_t numTextures )
 {
 	Matrices[ETS_WORLD] = matWorld;
 
@@ -657,14 +657,14 @@ void COpenGLDriver::setTransform_Material_Textures( const matrix4& matWorld, con
 
 	Material = material;
 
-	u32 n = min_(numTextures, (u32)MATERIAL_MAX_TEXTURES);
-	for (u32 i=0; i<n; ++i)
+	uint32_t n = min_(numTextures, (uint32_t)MATERIAL_MAX_TEXTURES);
+	for (uint32_t i=0; i<n; ++i)
 	{
 		OpenGLMaterialRenderServices->setSampler_Texture(i, textures[i]);
 	}
 }
 
-void COpenGLDriver::setTransform_Material_Textures( const matrix4& matWorld, const matrix4& matView, const matrix4& matProjection, const SMaterial& material, ITexture* const textures[], u32 numTextures )
+void COpenGLDriver::setTransform_Material_Textures( const matrix4& matWorld, const matrix4& matView, const matrix4& matProjection, const SMaterial& material, ITexture* const textures[], uint32_t numTextures )
 {
 	Matrices[ETS_WORLD] = matWorld;
 	Matrices[ETS_VIEW] = matView;
@@ -694,14 +694,14 @@ void COpenGLDriver::setTransform_Material_Textures( const matrix4& matWorld, con
 
 	Material = material;
 
-	u32 n = min_(numTextures, (u32)MATERIAL_MAX_TEXTURES);
-	for (u32 i=0; i<n; ++i)
+	uint32_t n = min_(numTextures, (uint32_t)MATERIAL_MAX_TEXTURES);
+	for (uint32_t i=0; i<n; ++i)
 	{
 		OpenGLMaterialRenderServices->setSampler_Texture(i, textures[i]);
 	}
 }
 
-ITexture* COpenGLDriver::getTexture( u32 index ) const
+ITexture* COpenGLDriver::getTexture( uint32_t index ) const
 {
 	return OpenGLMaterialRenderServices->getSampler_Texture(index);
 }
@@ -786,7 +786,7 @@ bool COpenGLDriver::setDriverSetting( const SDriverSetting& setting )
 	bool fullscreenChanged = false;
 
 	bool vsync = setting.vsync;
-	u8 antialias = setting.antialias;
+	uint8_t antialias = setting.antialias;
 	bool fullscreen = setting.fullscreen;
 
 	if (vsync != DriverSetting.vsync)
@@ -829,7 +829,7 @@ bool COpenGLDriver::setDriverSetting( const SDriverSetting& setting )
 		{ 	
 			g_Engine->getFileSystem()->writeLog(ELOG_GX, "Driver Setting Changed. Vsync: %s, Antialias: %d, %s", 
 				DriverSetting.vsync ? "On" : "Off",
-				(s32)DriverSetting.antialias, 
+				(int32_t)DriverSetting.antialias, 
 				"Window");
 		}
 	}
@@ -838,7 +838,7 @@ bool COpenGLDriver::setDriverSetting( const SDriverSetting& setting )
 
 void COpenGLDriver::createVertexDecl()
 {
-	for (u32 i=0; i<EVT_COUNT; ++i)
+	for (uint32_t i=0; i<EVT_COUNT; ++i)
 	{
 		VertexDeclarations[i] = new COpenGLVertexDeclaration((E_VERTEX_TYPE)i);
 	}
@@ -846,13 +846,13 @@ void COpenGLDriver::createVertexDecl()
 
 void COpenGLDriver::releaseVertexDecl()
 {
-	for (u32 i=0; i<EVT_COUNT; ++i)
+	for (uint32_t i=0; i<EVT_COUNT; ++i)
 	{
 		delete VertexDeclarations[i];
 	}
 }
 
-void COpenGLDriver::setVertexDeclarationAndBuffers( E_VERTEX_TYPE type, const SGLProgram* program, CVertexBuffer* vbuffer0, u32 offset0, CVertexBuffer* vbuffer1, u32 offset1, CIndexBuffer* ibuffer )
+void COpenGLDriver::setVertexDeclarationAndBuffers( E_VERTEX_TYPE type, const SGLProgram* program, CVertexBuffer* vbuffer0, uint32_t offset0, CVertexBuffer* vbuffer1, uint32_t offset1, CIndexBuffer* ibuffer )
 {
 	COpenGLVertexDeclaration* decl = getVertexDeclaration(type);
 	ASSERT(decl);

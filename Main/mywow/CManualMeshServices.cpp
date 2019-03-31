@@ -3,7 +3,7 @@
 #include "mywow.h"
 #include "CMesh.h"
 
-bool CManualMeshServices::addMesh( const c8* name, const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, u32 primCount, const aabbox3df& box)
+bool CManualMeshServices::addMesh( const char* name, const SBufferParam& bufferParam, E_PRIMITIVE_TYPE primType, uint32_t primCount, const aabbox3df& box)
 {
 	if (MeshMap.find(name) != MeshMap.end())
 		return false;
@@ -14,7 +14,7 @@ bool CManualMeshServices::addMesh( const c8* name, const SBufferParam& bufferPar
 	return true;
 }
 
-IMesh* CManualMeshServices::getMesh( const c8* name )
+IMesh* CManualMeshServices::getMesh( const char* name )
 {
 	TMeshMap::const_iterator i = MeshMap.find(name);
 	if (i == MeshMap.end())
@@ -23,7 +23,7 @@ IMesh* CManualMeshServices::getMesh( const c8* name )
 	return i->second;
 }
 
-void CManualMeshServices::removeMesh( const c8* name )
+void CManualMeshServices::removeMesh( const char* name )
 {
 	TMeshMap::const_iterator i = MeshMap.find(name);
 	if (i == MeshMap.end())
@@ -49,11 +49,11 @@ CManualMeshServices::~CManualMeshServices()
 	clear();
 }
 
-bool CManualMeshServices::addGridLineMesh( const c8* name, u32 xzCount, f32 gridSize, SColor color )
+bool CManualMeshServices::addGridLineMesh( const char* name, uint32_t xzCount, float gridSize, SColor color )
 {
 	IGeometryCreator* geo = g_Engine->getGeometryCreator();
 
-	u32 vcount = geo->getGridLineVCount(xzCount);
+	uint32_t vcount = geo->getGridLineVCount(xzCount);
 	SVertex_PC* vertices = new SVertex_PC[vcount];
 	geo->fillGridLineMeshV(vertices, vcount, xzCount, gridSize, color);
 
@@ -67,7 +67,7 @@ bool CManualMeshServices::addGridLineMesh( const c8* name, u32 xzCount, f32 grid
 	return addMesh(name, bufferParam, geo->getPrimType(EGT_GRID), vcount/2, geo->getGridLineAABBox(xzCount,gridSize));
 }
 
-bool CManualMeshServices::addDecal( const c8* name, f32 width, f32 height, SColor color )
+bool CManualMeshServices::addDecal( const char* name, float width, float height, SColor color )
 {
 	SVertex_PCT* vertices = new SVertex_PCT[4];
 	vertices[0].Pos = vector3df(-width, height, 0);		vertices[0].Color = color;    vertices[0].TCoords.set(0,0);
@@ -75,7 +75,7 @@ bool CManualMeshServices::addDecal( const c8* name, f32 width, f32 height, SColo
 	vertices[2].Pos = vector3df(-width, -height, 0);		vertices[2].Color = color;	  vertices[2].TCoords.set(0,1);
 	vertices[3].Pos = vector3df(width, -height, 0);		vertices[3].Color = color;	  vertices[3].TCoords.set(1,1);
 	
-	u16* indices = new u16[6];
+	uint16_t* indices = new uint16_t[6];
 	indices[0] = 0; indices[1] = 1; indices[2] = 2; indices[3] = 2; indices[4] = 1; indices[5] = 3;
 
 	CVertexBuffer* vbuffer = new CVertexBuffer(true);
@@ -92,16 +92,16 @@ bool CManualMeshServices::addDecal( const c8* name, f32 width, f32 height, SColo
 	return addMesh(name, bufferParam, EPT_TRIANGLES, 2, aabbox3df(vector3df(-width,-height,0), vector3df(width,height,0)));
 }
 
-bool CManualMeshServices::addCube( const c8* name, const vector3df& size, SColor color )
+bool CManualMeshServices::addCube( const char* name, const vector3df& size, SColor color )
 {
 	IGeometryCreator* geo = g_Engine->getGeometryCreator();
 
-	u32 vcount = 0;
-	u32 icount = 0;
+	uint32_t vcount = 0;
+	uint32_t icount = 0;
 	geo->getCubeMeshVICount(vcount, icount);
 
 	SVertex_PCT* vertices = new SVertex_PCT[vcount];
-	u16* indices = new u16[icount];
+	uint16_t* indices = new uint16_t[icount];
 	geo->fillCubeMeshVI(vertices, vcount, indices, icount, size, color);
 
 	CVertexBuffer* vbuffer = new CVertexBuffer(true);
@@ -118,16 +118,16 @@ bool CManualMeshServices::addCube( const c8* name, const vector3df& size, SColor
 	return addMesh(name, bufferParam, EPT_TRIANGLES, icount/3, geo->getCubeMeshAABBox(size));
 }
 
-bool CManualMeshServices::addSphere( const c8* name, f32 radius, u32 polyCountX, u32 polyCountY, SColor color )
+bool CManualMeshServices::addSphere( const char* name, float radius, uint32_t polyCountX, uint32_t polyCountY, SColor color )
 {
 	IGeometryCreator* geo = g_Engine->getGeometryCreator();
 
-	u32 vcount = 0;
-	u32 icount = 0;
+	uint32_t vcount = 0;
+	uint32_t icount = 0;
 	geo->getSphereMeshVICount(vcount, icount, polyCountX, polyCountY);
 
 	SVertex_PCT* vertices = new SVertex_PCT[vcount];
-	u16* indices = new u16[icount];
+	uint16_t* indices = new uint16_t[icount];
 	geo->fillSphereMeshVI(vertices, vcount, indices, icount, radius, polyCountX, polyCountY, color);
 
 	CVertexBuffer* vbuffer = new CVertexBuffer(true);
@@ -144,16 +144,16 @@ bool CManualMeshServices::addSphere( const c8* name, f32 radius, u32 polyCountX,
 	return addMesh(name, bufferParam, EPT_TRIANGLES, icount/3, geo->getSphereMeshAABBox(radius));
 }
 
-bool CManualMeshServices::addSkyDome( const c8* name, u32 horiRes, u32 vertRes, f32 spherePercentage, f32 radius, SColor color )
+bool CManualMeshServices::addSkyDome( const char* name, uint32_t horiRes, uint32_t vertRes, float spherePercentage, float radius, SColor color )
 {
 	IGeometryCreator* geo = g_Engine->getGeometryCreator();
 
-	u32 vcount = 0;
-	u32 icount = 0;
+	uint32_t vcount = 0;
+	uint32_t icount = 0;
 	geo->getSkyDomeMeshVICount(vcount, icount, horiRes, vertRes);
 
 	SVertex_PC* vertices = new SVertex_PC[vcount];
-	u16* indices = new u16[icount];
+	uint16_t* indices = new uint16_t[icount];
 	geo->fillSkyDomeMeshVI(vertices, vcount, indices, icount, horiRes, vertRes, spherePercentage, radius, color);
 
 	CVertexBuffer* vbuffer = new CVertexBuffer(true);

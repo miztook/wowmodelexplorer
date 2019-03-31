@@ -24,11 +24,11 @@ public:
 	virtual ~CD3D11Driver();
 
 public:
-	bool initDriver(const SWindowInfo& wndInfo, u32 adapter, bool fullscreen, bool vsync, u8 antialias, bool multithread);
+	bool initDriver(const SWindowInfo& wndInfo, uint32_t adapter, bool fullscreen, bool vsync, uint8_t antialias, bool multithread);
 
 public:
 	virtual E_DRIVER_TYPE getDriverType() const { return EDT_DIRECT3D11; }
-	virtual u32 getAdapterCount() const { return AdapterCount; }
+	virtual uint32_t getAdapterCount() const { return AdapterCount; }
 
 	virtual bool beginScene();
 	virtual bool endScene();
@@ -42,7 +42,7 @@ public:
 	virtual void setDisplayMode(const dimension2du& size);
 	virtual bool setDriverSetting(const SDriverSetting& setting);
 
-	virtual void drawDebugInfo(const c8* strMsg);
+	virtual void drawDebugInfo(const char* strMsg);
 
 	//helper functions
 	virtual void helper_render(CMeshRenderer* meshRenderer, const SRenderUnit*& currentUnit,  ICamera* cam);
@@ -60,32 +60,32 @@ public:
 public:
 	bool queryFeature(E_VIDEO_DRIVER_FEATURE feature) const;
 
-	void setTexture(u32 stage, ITexture* texture);
-	ITexture* getTexture(u32 index) const;
+	void setTexture(uint32_t stage, ITexture* texture);
+	ITexture* getTexture(uint32_t index) const;
 
 	void setTransform(const matrix4& matView, const matrix4& matProjection);
 
 	void setTransform_Material_Textures(const matrix4& matWorld,
 		const SMaterial& material,
 		ITexture* const textures[],
-		u32 numTextures);
+		uint32_t numTextures);
 
 	void setTransform_Material_Textures(const matrix4& matWorld,
 		const matrix4& matView, 
 		const matrix4& matProjection,
 		const SMaterial& material,
 		ITexture* const textures[],
-		u32 numTextures);
+		uint32_t numTextures);
 
 	//draw
 	void draw3DMode( const SBufferParam& bufferParam, 
 		E_PRIMITIVE_TYPE primType,
-		u32 primCount, 
+		uint32_t primCount, 
 		const SDrawParam& drawParam);
 
 	void draw2DMode( const SBufferParam& bufferParam, 
 		E_PRIMITIVE_TYPE primType,
-		u32 primCount, 
+		uint32_t primCount, 
 		const SDrawParam& drawParam,
 		const S2DBlendParam& blendParam,
 		bool zTest = false);
@@ -93,14 +93,14 @@ public:
 private:
 	void drawIndexedPrimitive( const SBufferParam& bufferParam, IVertexShader* vs, 
 		E_PRIMITIVE_TYPE primType,
-		u32 primCount, 
+		uint32_t primCount, 
 		const SDrawParam& drawParam);
 	void drawPrimitive( const SBufferParam& bufferParam, IVertexShader* vs, 
 		E_PRIMITIVE_TYPE primType,
-		u32 primCount,
+		uint32_t primCount,
 		const SDrawParam& drawParam);
 
-	void recreateDepthStencilView(dimension2du size, ECOLOR_FORMAT depthFmt, u32 antialias, u32 quality);
+	void recreateDepthStencilView(dimension2du size, ECOLOR_FORMAT depthFmt, uint32_t antialias, uint32_t quality);
 	bool reset(bool recreateSwapChain);
 	void createVertexDecl();
 	void releaseVertexDecl();
@@ -158,16 +158,16 @@ private:
 		CVertexBuffer*	vBuffer0;
 		CVertexBuffer	*vBuffer1;
 
-		u32		vOffset0;
-		u32		vOffset1;
+		uint32_t		vOffset0;
+		uint32_t		vOffset1;
 
 		CIndexBuffer*		iBuffer;
 	};
 
 private:
-	u32		AdapterCount;
-	u32		PrimitivesDrawn;
-	u32		DrawCall;
+	uint32_t		AdapterCount;
+	uint32_t		PrimitivesDrawn;
+	uint32_t		DrawCall;
 
 	// device state cache
 	SDeviceState	CurrentDeviceState;
@@ -180,7 +180,7 @@ private:
 
 	CD3D11VertexDeclaration* VertexDeclarations[EVT_COUNT];
 
-	c8		DebugMsg[512];	
+	char		DebugMsg[512];	
 	
 	bool		ResetRenderStates;
 

@@ -33,19 +33,19 @@ public:
 	virtual void add3DLine(const line3df& line, SColor color);
 	virtual void addAABB(const aabbox3df& box, SColor color);
 	virtual void add3DBox(const vector3df& vPos, const vector3df& vDir, const vector3df& vUp, const vector3df& vRight, const vector3df& vExts, SColor color, const matrix4* pMat);
-	virtual void addSphere(const vector3df& center, float radius, SColor color, u32 hori = 10, u32 vert = 6);
+	virtual void addSphere(const vector3df& center, float radius, SColor color, uint32_t hori = 10, uint32_t vert = 6);
 	virtual void flushAll3DLines(ICamera* cam);
 
 	//flat
 	virtual void addAABB_Flat(const aabbox3df& box, SColor color);
 	virtual void add3DBox_Flat(const vector3df& vPos, const vector3df& vDir, const vector3df& vUp, const vector3df& vRight, const vector3df& vExts, SColor color, const matrix4* pMat);
-	virtual void addSphere_Flat(const vector3df& center, float radius, SColor color, u32 hori = 10, u32 vert = 6);
-	virtual void add3DVertices(vector3df* verts, u32 numverts, u16* indices, u32 numindices, SColor color);
-	virtual void add3DVertices(vector3df* verts, u32 numverts, SColor color);
+	virtual void addSphere_Flat(const vector3df& center, float radius, SColor color, uint32_t hori = 10, uint32_t vert = 6);
+	virtual void add3DVertices(vector3df* verts, uint32_t numverts, uint16_t* indices, uint32_t numindices, SColor color);
+	virtual void add3DVertices(vector3df* verts, uint32_t numverts, SColor color);
 	virtual void flushAll3DVertices(ICamera* cam);
 
 	virtual void add2DColor(const recti& rect, SColor color, const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource());
-	virtual void add2DQuads(ITexture* texture, const SVertex_PCT* vertices, u32 numQuads, const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource());
+	virtual void add2DQuads(ITexture* texture, const SVertex_PCT* vertices, uint32_t numQuads, const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource());
 	virtual void flushAll2DQuads();
 
 	virtual void draw2DColor(const recti& rect, 
@@ -63,7 +63,7 @@ public:
 	virtual void draw2DImageBatch(ITexture* texture,
 		const vector2di* positions,
 		const recti* sourceRects[],
-		u32 batchCount,	
+		uint32_t batchCount,	
 		SColor color = SColor(),
 		E_RECT_UVCOORDS uvcoords = ERU_00_11,
 		float scale = 1.0f,
@@ -72,7 +72,7 @@ public:
 		const vector2di* positions,
 		const recti* sourceRects[],
 		const SColor* colors,
-		u32 batchCount,	
+		uint32_t batchCount,	
 		E_RECT_UVCOORDS uvcoords = ERU_00_11,
 		float scale = 1.0f,
 		const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource());
@@ -85,7 +85,7 @@ public:
 	virtual void draw2DImageRectBatch(ITexture* texture,
 		const recti* destRects[],
 		const recti* sourceRects[],
-		u32 batchCount,
+		uint32_t batchCount,
 		SColor color = SColor(),
 		E_RECT_UVCOORDS uvcoords = ERU_00_11,
 		const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource());
@@ -93,20 +93,20 @@ public:
 		const recti* destRects[],
 		const recti* sourceRects[],
 		const SColor* colors,
-		u32 batchCount,
+		uint32_t batchCount,
 		E_RECT_UVCOORDS uvcoords = ERU_00_11,
 		const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource());
 
 	virtual void draw2DSquadBatch(ITexture* texture,
 		const SVertex_PCT* verts,
-		u32 numQuads,
+		uint32_t numQuads,
 		const S2DBlendParam& blendParam);
 
 	virtual void draw2DVertices(ITexture* texture,
 		const SVertex_PCT* verts,
-		u32 numVerts,
-		const u16* indices,
-		u32 numIndices,
+		uint32_t numVerts,
+		const uint16_t* indices,
+		uint32_t numIndices,
 		const S2DBlendParam& blendParam = S2DBlendParam::OpaqueSource());
 
 private:
@@ -144,7 +144,7 @@ private:
 		}
 
 		SVertex_PCT	drawVerts[MAX_TEXT_LENGTH * 4];
-		u32		vertNum;
+		uint32_t		vertNum;
 	};
 
 	struct SQuadDrawBatchKey_hash
@@ -166,9 +166,9 @@ private:
 	SVertex_PC*		Line3DVertices;
 	SVertex_PCT*		ImageVertices;		//image
 	SVertex_PC*		Vertices3D;		//3d
-	u16*		Indices3D;
+	uint16_t*		Indices3D;
 	SVertex_PCT*		Vertices2D;		//2d
-	u16*		Indices2D;
+	uint16_t*		Indices2D;
 
 	CVertexBuffer*		VBLine2D;		//line
 	CVertexBuffer*		VBLine3D;
@@ -181,20 +181,20 @@ private:
 	CD3D9Driver*		Driver;
 	CD3D9HardwareBufferServices*		HWBufferServices;
 
-	u32		Line2DVertexLimit;	//line
-	u32		Line3DVertexLimit;
-	u32		ImageVertexLimit;		//image
-	u32		VertexLimit;				//3d
-	u32		IndexLimit;
-	u32		MaxImageBatch;
-	u32		VertexLimit2D;		//2d
-	u32		IndexLimit2D;
+	uint32_t		Line2DVertexLimit;	//line
+	uint32_t		Line3DVertexLimit;
+	uint32_t		ImageVertexLimit;		//image
+	uint32_t		VertexLimit;				//3d
+	uint32_t		IndexLimit;
+	uint32_t		MaxImageBatch;
+	uint32_t		VertexLimit2D;		//2d
+	uint32_t		IndexLimit2D;
 
 	//	
-	u32		Line2DVertexCount;
-	u32		Line3DVertexCount;
-	u32		CurrentVertex3DCount;
-	u32		CurrentIndex3DCount;
+	uint32_t		Line2DVertexCount;
+	uint32_t		Line3DVertexCount;
+	uint32_t		CurrentVertex3DCount;
+	uint32_t		CurrentIndex3DCount;
 
 	//
 	T_2DQuadDrawMap		m_2DQuadDrawMap;

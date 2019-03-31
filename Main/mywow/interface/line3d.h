@@ -46,5 +46,5 @@ public:
 
 };
 
-typedef line3d<f32> line3df;
-typedef line3d<s32> line3di;
+typedef line3d<float> line3df;
+typedef line3d<int32_t> line3di;

@@ -26,7 +26,7 @@ public:
 	//ISceneNode
 	virtual void registerSceneNode(bool frustumcheck, int sequence);
 	virtual aabbox3df getBoundingBox() const;
-	virtual void tick(u32 timeSinceStart, u32 timeSinceLastFrame, bool visible);
+	virtual void tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible);
 	virtual void render() const;
 	virtual bool isNodeEligible() const;
 	virtual void onUpdated();
@@ -51,20 +51,20 @@ protected:
 		~SDynGroup() { delete[] batches; }
 
 		aabbox3df		worldbox;
-		f32	 distancesq;
+		float	 distancesq;
 		SDynBatch*		batches;
 		bool visible;
 	};
 
 protected:
-	void renderWMOGroup(u32 groupIndex, u32 batchIndex) const;
+	void renderWMOGroup(uint32_t groupIndex, uint32_t batchIndex) const;
 
 	void setMaterial(const SWMOMaterial* material, SMaterial& mat) const;
 
 	//for editor
-	virtual void drawPortal(u32 index, SColor color);
+	virtual void drawPortal(uint32_t index, SColor color);
 
-	virtual void drawBspNode(u32 groupIndex, u32 nodeIndex, SColor color);
+	virtual void drawBspNode(uint32_t groupIndex, uint32_t nodeIndex, SColor color);
 
 protected:
 	CFileWMO*  Wmo;

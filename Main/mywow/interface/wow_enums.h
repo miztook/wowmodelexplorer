@@ -202,10 +202,10 @@ enum ECharRegions : int32_t
 
 struct CharRegionCoords 
 {
-	u32 xpos;
-	u32 ypos;
-	u32 xsize;
-	u32 ysize;
+	uint32_t xpos;
+	uint32_t ypos;
+	uint32_t xsize;
+	uint32_t ysize;
 };
 
 //装备系统的纹理分布
@@ -377,7 +377,7 @@ static const char* M2TypeString[] =
 
 inline M2Type getM2Type(const char* dir)
 {
-	for (u32 i=1; i<MT_COUNT; ++i)
+	for (uint32_t i=1; i<MT_COUNT; ++i)
 	{
 		if ( 0 == Q_strnicmp(M2TypeString[i], dir, strlen(M2TypeString[i])) )
 			return (M2Type)i;

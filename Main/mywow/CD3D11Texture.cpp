@@ -143,7 +143,7 @@ bool CD3D11Texture::createEmptyTexture( const dimension2du& size, ECOLOR_FORMAT 
 	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	desc.MipLevels = 1;
 
-	u32 numberOfMipLevels = desc.MipLevels;
+	uint32_t numberOfMipLevels = desc.MipLevels;
 	
 	HRESULT hr = pDevice->CreateTexture2D(&desc, nullptr, &DXTexture);
 	if (FAILED(hr))
@@ -152,7 +152,7 @@ bool CD3D11Texture::createEmptyTexture( const dimension2du& size, ECOLOR_FORMAT 
 		return false;
 	}
 
-	SampleCount = (u8)desc.SampleDesc.Count;
+	SampleCount = (uint8_t)desc.SampleDesc.Count;
 
 	//create resource view
 	if (!createViews(dxgifmt, numberOfMipLevels, SampleCount > 1))
@@ -174,7 +174,7 @@ bool CD3D11Texture::createEmptyTexture( const dimension2du& size, ECOLOR_FORMAT 
 	return true;
 }
 
-bool CD3D11Texture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT format, u32 antialias, u32 quality )
+bool CD3D11Texture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT format, uint32_t antialias, uint32_t quality )
 {
 	//CLock lock(&g_Globals.textureCS);
 
@@ -208,7 +208,7 @@ bool CD3D11Texture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT for
 	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
 	desc.MipLevels = 1;		//no mipmap
 
-	u32 numberOfMipLevels = desc.MipLevels;
+	uint32_t numberOfMipLevels = desc.MipLevels;
 
 	HRESULT hr = pDevice->CreateTexture2D(&desc, nullptr, &DXTexture);
 	if (FAILED(hr))
@@ -217,7 +217,7 @@ bool CD3D11Texture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT for
 		return false;
 	}
 
-	SampleCount = (u8)desc.SampleDesc.Count;
+	SampleCount = (uint8_t)desc.SampleDesc.Count;
 
 	//create resource view
 	if (!createViews(dxgifmt, numberOfMipLevels, SampleCount > 1))
@@ -231,7 +231,7 @@ bool CD3D11Texture::createRTTexture( const dimension2du& size, ECOLOR_FORMAT for
 	return true;
 }
 
-bool CD3D11Texture::createDSTexture( const dimension2du& size, ECOLOR_FORMAT format, u32 antialias, u32 quality )
+bool CD3D11Texture::createDSTexture( const dimension2du& size, ECOLOR_FORMAT format, uint32_t antialias, uint32_t quality )
 {
 	//CLock lock(&g_Globals.textureCS);
 
@@ -283,7 +283,7 @@ bool CD3D11Texture::createDSTexture( const dimension2du& size, ECOLOR_FORMAT for
 
 	SampleCount = desc.SampleDesc.Count;
 
-	u32 numberOfMipLevels = desc.MipLevels;
+	uint32_t numberOfMipLevels = desc.MipLevels;
 
 	if (driver->FeatureLevel >= D3D_FEATURE_LEVEL_10_1)
 	{
@@ -300,7 +300,7 @@ bool CD3D11Texture::createDSTexture( const dimension2du& size, ECOLOR_FORMAT for
 	return true;
 }
 
-bool CD3D11Texture::createViews( DXGI_FORMAT format, u32 mipmapLevels, bool multisample )
+bool CD3D11Texture::createViews( DXGI_FORMAT format, uint32_t mipmapLevels, bool multisample )
 {
 	if (!DXTexture || SRView)
 	{
@@ -445,15 +445,15 @@ bool CD3D11Texture::createTexture( IBLPImage* blpimage, bool mipmap )
 	return true;
 }
 
-void CD3D11Texture::buildTempSysMemData( D3D11_SUBRESOURCE_DATA* subData, u32 size, IBLPImage* blpimage )
+void CD3D11Texture::buildTempSysMemData( D3D11_SUBRESOURCE_DATA* subData, uint32_t size, IBLPImage* blpimage )
 {
 	ASSERT(size && size <= NumMipmaps);
 
-	for (u32 i=0; i<size; ++i)
+	for (uint32_t i=0; i<size; ++i)
 	{
 		dimension2du mipSize = TextureSize.getMipLevelSize(i);
 
-		u32 pitch, bytes;
+		uint32_t pitch, bytes;
 		getImagePitchAndBytes(ColorFormat, mipSize.Width, mipSize.Height, pitch, bytes);
 
 		void* dest = Z_AllocateTempMemory(bytes);
@@ -469,15 +469,15 @@ void CD3D11Texture::buildTempSysMemData( D3D11_SUBRESOURCE_DATA* subData, u32 si
 	}
 }
 
-void CD3D11Texture::buildTempSysMemData( D3D11_SUBRESOURCE_DATA* subData, u32 size, IImage* image )
+void CD3D11Texture::buildTempSysMemData( D3D11_SUBRESOURCE_DATA* subData, uint32_t size, IImage* image )
 {
 	ASSERT(size && size <= NumMipmaps);
 
-	u32 bytesPerPixel = getBytesPerPixelFromFormat(ColorFormat);
+	uint32_t bytesPerPixel = getBytesPerPixelFromFormat(ColorFormat);
 
 	//0
 	dimension2du mipSize = TextureSize.getMipLevelSize(0);
-	u32 pitch = mipSize.Width * bytesPerPixel;
+	uint32_t pitch = mipSize.Width * bytesPerPixel;
 	void* dest = Z_AllocateTempMemory(pitch * mipSize.Height);
 	
 	image->copyToScaling(dest, mipSize.Width, mipSize.Height, ColorFormat, pitch);
@@ -486,15 +486,15 @@ void CD3D11Texture::buildTempSysMemData( D3D11_SUBRESOURCE_DATA* subData, u32 si
 	subData[0].SysMemPitch = pitch;
 	subData[0].SysMemSlicePitch = 0;
 
-	for(u32 i=1; i<size; ++i)
+	for(uint32_t i=1; i<size; ++i)
 	{
 		dimension2du upperSize = TextureSize.getMipLevelSize(i - 1);
 		dimension2du lowerSize = TextureSize.getMipLevelSize(i);
 
-		u32 upperPitch = upperSize.Width * bytesPerPixel;
-		u32 lowerPitch = lowerSize.Width * bytesPerPixel;
-		u8* destdata = (u8*)Z_AllocateTempMemory(pitch * lowerSize.Height);
-		const u8* src = (u8*)subData[i-1].pSysMem;
+		uint32_t upperPitch = upperSize.Width * bytesPerPixel;
+		uint32_t lowerPitch = lowerSize.Width * bytesPerPixel;
+		uint8_t* destdata = (uint8_t*)Z_AllocateTempMemory(pitch * lowerSize.Height);
+		const uint8_t* src = (uint8_t*)subData[i-1].pSysMem;
 
 		if (ColorFormat == ECF_R5G6B5 || ColorFormat == ECF_A1R5G5B5)
 			CBlit::copy16BitMipMap(src, destdata,
@@ -513,9 +513,9 @@ void CD3D11Texture::buildTempSysMemData( D3D11_SUBRESOURCE_DATA* subData, u32 si
 	}
 }
 
-void CD3D11Texture::destroyTempSysMemData( D3D11_SUBRESOURCE_DATA* subData, u32 size )
+void CD3D11Texture::destroyTempSysMemData( D3D11_SUBRESOURCE_DATA* subData, uint32_t size )
 {
-	for (s32 i=(s32)size-1; i>=0; --i)
+	for (int32_t i=(int32_t)size-1; i>=0; --i)
 	{
 		void* data = (void*)subData[i].pSysMem;
 		Z_FreeTempMemory(data);

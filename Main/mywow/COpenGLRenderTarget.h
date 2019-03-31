@@ -22,7 +22,7 @@ public:
 	GLuint getFrameBuffer() const { return FrameBuffer; }
 
 private:
-	bool createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, u8 antialias);
+	bool createAsRenderTarget( dimension2du size, ECOLOR_FORMAT colorFmt, ECOLOR_FORMAT depthFmt, uint8_t antialias);
 	void releaseVideoTexture();
 	void bindTexture();
 

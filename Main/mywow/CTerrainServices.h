@@ -16,9 +16,9 @@ public:
 	CIndexBuffer* getLowResIndexBuffer() const { return LowResIndexBuffer; }
 	CIndexBuffer* getHighResIndexBuffer() const { return HighResIndexBuffer; }
 
-	u32 getVertexCount() const { return 9*9 + 8*8; }
-	u32 getLowResPrimCount() const { return 8*8*2; } //{ return 4; }
-	u32 getHighResPrimCount() const { return 8*8*4; }
+	uint32_t getVertexCount() const { return 9*9 + 8*8; }
+	uint32_t getLowResPrimCount() const { return 8*8*2; } //{ return 4; }
+	uint32_t getHighResPrimCount() const { return 8*8*4; }
 
 private:
 	void createLowResIndexBuffer();

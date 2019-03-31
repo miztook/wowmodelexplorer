@@ -21,12 +21,12 @@ public:
 	void setCameraChunk(CMapChunk* chunk) { CamChunk = chunk; }
 	const CMapChunk* getCameraChunk() const { return CamChunk; }
 
-	s32 getRow() const { return Row; }
-	s32 getCol() const { return Col; }
+	int32_t getRow() const { return Row; }
+	int32_t getCol() const { return Col; }
 
 	void setAdtLoadSize(E_ADT_LOAD size);
 
-	void setCurrentTile(s32 row, s32 col);
+	void setCurrentTile(int32_t row, int32_t col);
 	void startLoadADT(STile* tile);
 	bool processADT();
 	bool updateBlocksByCamera();
@@ -36,8 +36,8 @@ public:
 	bool isTileNeeded(STile* tile) const;		//是否在需要加载的范围内
 
 	bool isLoading(STile* tile) const;
-	void recalculateTilesNeeded(s32 row, s32 col);
-	u32 getNumBlocks() const;
+	void recalculateTilesNeeded(int32_t row, int32_t col);
+	uint32_t getNumBlocks() const;
 
 private:
 #ifdef USE_QALLOCATOR
@@ -56,13 +56,13 @@ private:
 	CMapChunk*			CamChunk;
 	CMapChunk*			LastCamChunk;
 
-	s32	Row;			//所在中心row
-	s32	Col;				//所在中心col;
+	int32_t	Row;			//所在中心row
+	int32_t	Col;				//所在中心col;
 
 	vector2di		Coords[25];
 	
 	//flags
-	u32 TileChangeTick;
+	uint32_t TileChangeTick;
 	bool TileChanging;
 	
 	E_ADT_LOAD		AdtLoadSize;

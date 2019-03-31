@@ -103,7 +103,7 @@ void CSceneRenderServices::clearAllSceneNodes()
 	}
 }
 
-void CSceneRenderServices::tickAllSceneNodes( u32 timeSinceStart, u32 timeSinceLastFrame, int sequence )
+void CSceneRenderServices::tickAllSceneNodes( uint32_t timeSinceStart, uint32_t timeSinceLastFrame, int sequence )
 {
 	if (sequence >= MAX_SCENENODE_SEQUENCE ||
 		m_SceneNodes[sequence].empty())
@@ -111,8 +111,8 @@ void CSceneRenderServices::tickAllSceneNodes( u32 timeSinceStart, u32 timeSinceL
 
 	std::vector<SEntry>& sceneNodes = m_SceneNodes[sequence];
 	std::sort(sceneNodes.begin(), sceneNodes.end());
-	u32 size = (u32)sceneNodes.size();
-	for (u32 i=0; i<size; ++i)
+	uint32_t size = (uint32_t)sceneNodes.size();
+	for (uint32_t i=0; i<size; ++i)
 	{		
 		if (sceneNodes[i].skip)
 			continue;
@@ -127,8 +127,8 @@ void CSceneRenderServices::renderAllSceneNodes() const
 	{
 		const std::vector<SEntry>& sceneNodes = m_SceneNodes[n];
 
-		u32 size = (u32)sceneNodes.size();
-		for (u32 i=0; i<size; ++i)
+		uint32_t size = (uint32_t)sceneNodes.size();
+		for (uint32_t i=0; i<size; ++i)
 		{
 			if (sceneNodes[i].skip)
 				continue;
