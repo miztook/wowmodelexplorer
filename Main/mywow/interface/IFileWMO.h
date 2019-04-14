@@ -8,7 +8,7 @@
 
 class ITexture;
 
-enum E_WMO_SHADER : int32_t
+enum class E_WMO_SHADER : int32_t
 {
 	Diffuse = 0,
 	Specular,
@@ -35,10 +35,10 @@ struct SWMOMaterial
 	{
 		flags = 0;
 		alphatest = false;
-		shaderType = Diffuse;
+		shaderType = E_WMO_SHADER::Diffuse;
 	}
 	uint32_t flags;
-	uint32_t	shaderType;
+	E_WMO_SHADER	shaderType;
 	ITexture* texture0;
 	ITexture* texture1;
 	SColor color0;

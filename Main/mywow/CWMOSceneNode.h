@@ -59,7 +59,7 @@ protected:
 protected:
 	void renderWMOGroup(uint32_t groupIndex, uint32_t batchIndex) const;
 
-	void setMaterial(const SWMOMaterial* material, SMaterial& mat) const;
+	void setMaterial(const SWMOMaterial& material, SMaterial& mat) const;
 
 	//for editor
 	virtual void drawPortal(uint32_t index, SColor color);

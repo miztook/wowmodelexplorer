@@ -158,13 +158,13 @@ void CWMOSceneNode::renderWMOGroup( uint32_t groupIndex, uint32_t batchIndex ) c
 	CSceneRenderServices* sceneRenderServices = static_cast<CSceneRenderServices*>(g_Engine->getSceneRenderServices());
 
 	CFileWMO* wmo = static_cast<CFileWMO*>(Wmo);
-	CWMOGroup* group = &Wmo->Groups[groupIndex];
-	SDynGroup* dynGroup = &DynGroups[groupIndex];
+	const CWMOGroup* group = &Wmo->Groups[groupIndex];
+	const SDynGroup* dynGroup = &DynGroups[groupIndex];
 	const SWMOBatch* batch = &group->Batches[batchIndex];
 	uint16_t matId = batch->matId;
 	ASSERT(matId < Wmo->Header.nMaterials);
 
-	const SWMOMaterial* material = &Wmo->Materials[matId]; 
+	const SWMOMaterial& material = Wmo->Materials[matId]; 
 
 	SRenderUnit unit = {0};
 
@@ -172,6 +172,16 @@ void CWMOSceneNode::renderWMOGroup( uint32_t groupIndex, uint32_t batchIndex ) c
 
 // 	if (unit.material.PsType != EPST_MAPOBJ_DIFFUSE && unit.material.PsType != EPST_MAPOBJ_OPAQUE)
 // 		return;
+
+	if ((material.flags & 0x1) || (material.flags & 0x10))
+	{
+		return;
+	}
+
+	if (material.shaderType != E_WMO_SHADER::Specular)
+	{
+		return;
+	}
 
 	unit.distance = dynGroup->distancesq;
 	unit.bufferParam.vbuffer0 = wmo->VertexBuffer;
@@ -184,8 +194,8 @@ void CWMOSceneNode::renderWMOGroup( uint32_t groupIndex, uint32_t batchIndex ) c
 	unit.drawParam.numVertices = batch->getVertexCount();
 	unit.sceneNode = this;
 	unit.matWorld = &AbsoluteTransformation;
- 	unit.textures[0] = material->texture0;
- 	unit.textures[1] = material->texture1;
+ 	unit.textures[0] = material.texture0;
+ 	unit.textures[1] = material.texture1;
 	
 	sceneRenderServices->addRenderUnit(&unit, ERT_WMO);
 }
@@ -231,23 +241,24 @@ void CWMOSceneNode::onUpdated()
 	}
 }
 
-void CWMOSceneNode::setMaterial( const SWMOMaterial* material, SMaterial& mat ) const
+void CWMOSceneNode::setMaterial( const SWMOMaterial& material, SMaterial& mat ) const
 {
 	IShaderServices* shaderServices = g_Engine->getDriver()->getShaderServices();
-	switch(material->shaderType)
+	switch(material.shaderType)
 	{
-	case Diffuse:
+	case E_WMO_SHADER::Diffuse:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1);
 			mat.PsType = EPST_MAPOBJ_DIFFUSE;
 		}
 		break;
-	case Specular:
+	case E_WMO_SHADER::Specular:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_SPECULAR_T1);
 			mat.PsType = EPST_MAPOBJ_SPECULAR;
 		}
 		break;
+/*
 	case Metal:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_SPECULAR_T1);
@@ -320,6 +331,7 @@ void CWMOSceneNode::setMaterial( const SWMOMaterial* material, SMaterial& mat ) 
 			mat.PsType = EPST_MAPOBJ_TWOLAYERDIFFUSE;
 		}
 		break;
+		*/
 	default:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1);
@@ -331,21 +343,21 @@ void CWMOSceneNode::setMaterial( const SWMOMaterial* material, SMaterial& mat ) 
 	mat.AmbientColor.set(0.0f, 0.0f, 0.0f);
 	mat.SpecularColor.set(0.0f, 0.0f, 0.0f);
 
-	if (material->flags & 0x4)
+	if (material.flags & 0x4)
 	{
 		mat.Cull = ECM_FRONT;
 	}
 
-	if (material->flags & 0x1)
+	if (material.flags & 0x1)
 	{
  		mat.Lighting = false;
-		mat.EmissiveColor = SColorf(1.5f, 1.5f, 1.5f);
+		mat.EmissiveColor = SColorf(1.0f, 1.0f, 1.0f);
 		mat.DiffuseColor.set(0.0f, 0.0f, 0.0f);
 	}
-	else if(material->flags & 0x10)
+	else if(material.flags & 0x10)
 	{	
 		mat.Lighting = false;
-		mat.EmissiveColor = SColorf(material->color0) + SColorf(0.5f, 0.5f, 0.5f);
+		mat.EmissiveColor = SColorf(material.color0);
 		mat.DiffuseColor.set(0.0f, 0.0f, 0.0f);
 	}
 	else
@@ -355,13 +367,15 @@ void CWMOSceneNode::setMaterial( const SWMOMaterial* material, SMaterial& mat ) 
 		mat.DiffuseColor.set(1.0f, 1.0f, 1.0f);
 	}
 
+	bool uClamp = (material.flags & 0x40) != 0;
+	bool vClamp = (material.flags & 0x80) != 0;
+
 	mat.FogEnable = EnableFog;
 
-	mat.MaterialType = material->alphatest ? EMT_ALPHA_TEST : EMT_SOLID;
+	mat.MaterialType = material.alphatest ? EMT_ALPHA_TEST : EMT_SOLID;
 
-	mat.TextureLayer[0].TextureWrapU = mat.TextureLayer[0].TextureWrapV = ETC_REPEAT;
-	mat.TextureLayer[1].TextureWrapU = mat.TextureLayer[1].TextureWrapV = ETC_REPEAT;
-
+	mat.TextureLayer[0].TextureWrapU = mat.TextureLayer[1].TextureWrapU = uClamp ? ETC_CLAMP : ETC_REPEAT;
+	mat.TextureLayer[0].TextureWrapV = mat.TextureLayer[1].TextureWrapV = vClamp ? ETC_CLAMP : ETC_REPEAT;
 }
 
 void CWMOSceneNode::enableFog( bool enable )

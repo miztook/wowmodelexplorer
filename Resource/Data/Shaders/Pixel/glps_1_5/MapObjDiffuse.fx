@@ -44,7 +44,7 @@ void main(void)
 	mediump vec3 emissive = vec3(g_psbuffer[Emissive]);
 	
 	mediump vec4 col = texture2D(g_TexSampler0, v_Tex0.xy); 
-	col.rgb = col.rgb * (lightColor.rgb * diffuse * HalfLambert(v_Normal, lightDir) + emissive);
+	col.rgb = col.rgb * (lightColor.rgb * diffuse * HalfLambert(v_Normal, lightDir) + emissive + v_Diffuse.rgb);
 	
 #ifdef _ALPHATEST_
 	if(g_psbuffer[Params][0] != 0.0 && col.a < g_psbuffer[Params][1])

@@ -155,7 +155,7 @@ bool CFileWMO::loadFile( IMemFile* file )
 				const WMO::wmoMaterial& m = materials[i];
 
 				Materials[i].flags = m.flags;
-				Materials[i].shaderType = m.shadertype;
+				Materials[i].shaderType = (E_WMO_SHADER)m.shadertype;
 				Materials[i].alphatest = m.alphatest != 0;
 
 				Materials[i].color0.set(m.col1A, m.col1R, m.col1G, m.col1B);
