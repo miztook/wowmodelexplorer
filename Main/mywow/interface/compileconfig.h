@@ -9,7 +9,7 @@
 //#define MW_EDITOR
 
 #ifndef WOW_VER
-	#define WOW_VER 80
+	#define WOW_VER 60
 #endif
 
 #if WOW_VER >= 60

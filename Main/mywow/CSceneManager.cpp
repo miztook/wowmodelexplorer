@@ -516,18 +516,6 @@ void CSceneManager::drawDebugTexture()
 
 void CSceneManager::onWindowSizeChanged( const dimension2du& size )
 {
-// 	if (size.Width > 0 && size.Height > 0 && Driver->checkValid())
-// 	{
-// 		if(DebugTexture)
-// 			DebugTexture->drop();
-// 		IImage* image = g_Engine->getResourceLoader()->loadJPGAsImage("D:\\myeditor\\2.jpg");
-// 		if (image)
-// 		{
-// 			DebugTexture = g_Engine->getManualTextureServices()->createTextureFromImage(size, image, false);
-// 			image->drop();
-// 		}
-// 	}
-
 #ifdef MW_USE_FRAME_RT
 	if (size.Width > 0 && size.Height > 0 && Driver->checkValid())
 	{
