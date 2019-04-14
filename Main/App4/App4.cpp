@@ -21,7 +21,7 @@ int main()
 	CMemDbg globalDbg;
 	globalDbg.beginCheckPoint();
 
-	SWindowInfo wndInfo = Engine::createWindow("App4", dimension2du(1136,640));
+	SWindowInfo wndInfo = Engine::createWindow("App4", dimension2du(1920,1080), 1.0f, true);
 	HWND hwnd = wndInfo.hwnd;
 
 	SEngineInitParam param;	

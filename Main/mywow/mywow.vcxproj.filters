@@ -302,12 +302,6 @@
     <ClInclude Include="CCoordSceneNode.h">
       <Filter>implementation\scene\sceneNode</Filter>
     </ClInclude>
-    <ClInclude Include="CD3D9_VS20.h">
-      <Filter>implementation\video\Direct3D9\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D9_PS20.h">
-      <Filter>implementation\video\Direct3D9\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="CD3D9_VS30.h">
       <Filter>implementation\video\Direct3D9\Shaders</Filter>
     </ClInclude>
@@ -1164,12 +1158,6 @@
     </ClCompile>
     <ClCompile Include="CCoordSceneNode.cpp">
       <Filter>implementation\scene\sceneNode</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D9_VS20.cpp">
-      <Filter>implementation\video\Direct3D9\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D9_PS20.cpp">
-      <Filter>implementation\video\Direct3D9\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="CD3D9_VS30.cpp">
       <Filter>implementation\video\Direct3D9\Shaders</Filter>

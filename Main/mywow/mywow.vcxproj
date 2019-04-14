@@ -392,11 +392,9 @@
     <ClInclude Include="CD3D11_VS50.h" />
     <ClInclude Include="CD3D9DrawServices.h" />
     <ClInclude Include="CD3D9TextureWriteServices.h" />
-    <ClInclude Include="CD3D9_PS20.h" />
     <ClInclude Include="CD3D9_PS30.h" />
     <ClInclude Include="CD3D9RenderTarget.h" />
     <ClInclude Include="CD3D9VertexDeclaration.h" />
-    <ClInclude Include="CD3D9_VS20.h" />
     <ClInclude Include="CD3D9_VS30.h" />
     <ClInclude Include="CBLPImage.h" />
     <ClInclude Include="CFileADTLoader.h" />
@@ -718,12 +716,10 @@
     <ClCompile Include="CD3D9ManualTextureServices.cpp" />
     <ClCompile Include="CD3D9MaterialRenderer.cpp" />
     <ClCompile Include="CD3D9MaterialRenderServices.cpp" />
-    <ClCompile Include="CD3D9_PS20.cpp" />
     <ClCompile Include="CD3D9ResourceLoader.cpp" />
     <ClCompile Include="CD3D9Shader.cpp" />
     <ClCompile Include="CD3D9ShaderServices.cpp" />
     <ClCompile Include="CD3D9Texture.cpp" />
-    <ClCompile Include="CD3D9_VS20.cpp" />
     <ClCompile Include="CFileADT.cpp" />
     <ClCompile Include="CFileM2.cpp" />
     <ClCompile Include="CFileSystem.cpp" />
