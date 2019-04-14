@@ -17,13 +17,13 @@ public:
 	explicit CBlpToKTX(PVRCompressionQuality quality);
 
 public:
-	bool convertBlpToKTX(IBLPImage* blp, const c8* outputpath);
-	const c8* getLastErrorString() const { return strError.c_str(); }
+	bool convertBlpToKTX(IBLPImage* blp, const char* outputpath);
+	const char* getLastErrorString() const { return strError.c_str(); }
 
 private:
-	bool processPvrTexture(pvrtexture::CPVRTexture* pTexture, IBLPImage* blpImage, const c8* outputpath);
+	bool processPvrTexture(pvrtexture::CPVRTexture* pTexture, IBLPImage* blpImage, const char* outputpath);
 
-	bool addAlphaMetadata(const c8* filename);
+	bool addAlphaMetadata(const char* filename);
 
 private:
 	PVRCompressionQuality Quality;

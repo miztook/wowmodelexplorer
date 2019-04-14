@@ -8,8 +8,8 @@
 
 struct SLight
 {
-	SLight() : AmbientColor( 255, 128,0,0 ), DiffuseColor(255,255,255,255),
-		SpecularColor(255,255,255,255), Attenuation(1.f,0.f,0.f),
+	SLight() : LightColor(255,255,255,255),
+		Attenuation(1.f,0.f,0.f),
 		Position(0.f,0.f,0.f), Direction(0.f,0.f,1.f),
 		OuterCone(45.f), InnerCone(0.f), Falloff(2.f),
 		Radius(100.f), Type(ELT_POINT)
@@ -17,9 +17,7 @@ struct SLight
 	}
 
 	//
-	SColor	AmbientColor;
-	SColor	DiffuseColor;
-	SColor	SpecularColor;
+	SColor	LightColor;
 
 	vector3df	Attenuation;
 	vector3df	Position;

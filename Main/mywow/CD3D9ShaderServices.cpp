@@ -45,11 +45,6 @@ void CD3D9ShaderServices::loadAll()
 		profile = "vs_3_0";
 		vs30Loader.loadAll(this);
 	}
-	else if (Driver->queryFeature(EVDF_VERTEX_SHADER_2_0))
-	{
-		profile = "vs_2_0";
-		vs20Loader.loadAll(this);
-	}
 	else 
 	{
 		ASSERT(false);
@@ -65,11 +60,6 @@ void CD3D9ShaderServices::loadAll()
 	{
 		profile = "ps_3_0";
 		ps30Loader.loadAll(this);
-	}
-	else if (Driver->queryFeature(EVDF_PIXEL_SHADER_2_0))
-	{
-		profile = "ps_2_0";
-		ps20Loader.loadAll(this);
 	}
 	else
 	{

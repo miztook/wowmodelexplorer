@@ -64,18 +64,16 @@ private:
 		float				params[4];		//0: alphatest, 1: alpharef
 	};
 
-	struct MapObjOpaque_CB
+	struct MapObjDiffuse_CB
 	{
-		SColorf			AmbientColor;
-		SColorf			FogColor;
-	};
-
-	struct MapObjAlphaTest_CB
-	{
-		SColorf			AmbientColor;
+		float		LightDir[4];
+		SColorf			LightColor;
+		SColorf			Diffuse;
+		SColorf			Emissive;
 		SColorf			FogColor;
 		float			params[4];			//0: alphatest, 1: ref
 	};
+
 };
 
 

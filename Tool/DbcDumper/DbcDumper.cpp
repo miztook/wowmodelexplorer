@@ -6,12 +6,12 @@
 IFileSystem* g_fs = NULL;
 wowEnvironment* g_wowEnv = NULL;
 
-void g_callbackDBC(const c8* filename, void* param);
-void g_callbackDB2(const c8* filename, void* param);
+void g_callbackDBC(const char* filename, void* param);
+void g_callbackDB2(const char* filename, void* param);
 
-void g_callbackDBC1(const c8* filename, void* param);
+void g_callbackDBC1(const char* filename, void* param);
 
-void g_callbackFile(const c8* filename, void* param);
+void g_callbackFile(const char* filename, void* param);
 
 int main()
 {
@@ -49,7 +49,7 @@ int main()
 	return 0;
 }
 
-void g_callbackFile(const c8* filename, void* param)
+void g_callbackFile(const char* filename, void* param)
 {
 	string512 strFileName = "C:\\Users\\miaoyu\\Desktop\\Work\\unknown";
 	strFileName.normalizeDir();
@@ -58,7 +58,7 @@ void g_callbackFile(const c8* filename, void* param)
 	
 	char tmp[4];
 	fread(tmp, 1, 4, file);
-	const c8* magic = (const c8*)tmp;
+	const char* magic = (const char*)tmp;
 	if (strncmp(magic, "WDB5", 4) == 0)
 	{
 		int x = 0;
@@ -69,7 +69,7 @@ void g_callbackFile(const c8* filename, void* param)
 	printf("%s\n", filename);
 }
 
-void g_callbackDBC1(const c8* filename, void* param)
+void g_callbackDBC1(const char* filename, void* param)
 {
 	if (strstr(filename, "internal") || strstr(filename, "wmominimaptexture"))
 	{
@@ -87,7 +87,7 @@ void g_callbackDBC1(const c8* filename, void* param)
 		return;
 	}
 
-	c8* buf = (c8*)Z_AllocateTempMemory(db->getStringSize() + 1);
+	char* buf = (char*)Z_AllocateTempMemory(db->getStringSize() + 1);
 	memcpy_s(buf, db->getStringSize()+1, db->getStringStart(), db->getStringSize());
 	buf[db->getStringSize()] = '\0';
 
@@ -119,7 +119,7 @@ void g_callbackDBC1(const c8* filename, void* param)
 	delete db;
 }
 
-void g_callbackDBC(const c8* filename, void* param)
+void g_callbackDBC(const char* filename, void* param)
 {
 	if (strstr(filename, "internal"))
 		return;
@@ -133,7 +133,7 @@ void g_callbackDBC(const c8* filename, void* param)
 	string256 path = g_fs->getBaseDirectory();
 	path.append("dbc\\");
 
-	c8 name[DEFAULT_SIZE];
+	char name[DEFAULT_SIZE];
 	getFileNameA(filename, name, DEFAULT_SIZE);
 	getFileNameNoExtensionA(name, name, DEFAULT_SIZE);
 	path.append(name);
@@ -144,7 +144,7 @@ void g_callbackDBC(const c8* filename, void* param)
 
 	dbc* db = new dbc((wowEnvironment*)param, filename, true);
 
-	c8 txt[1024];
+	char txt[1024];
 	sprintf_s(txt, 1024, "记录数: %d\n", db->getNumActualRecords());
 	file->writeText(txt);
 	sprintf_s(txt, 1024, "记录字段数: %d\n", db->getNumFields());
@@ -156,15 +156,15 @@ void g_callbackDBC(const c8* filename, void* param)
 
 	if (db->getRecordSize() == db->getNumFields() * 4)
 	{
-		for (u32 i=0; i<db->getNumActualRecords(); ++i)
+		for (uint32_t i=0; i<db->getNumActualRecords(); ++i)
 		{
 			dbc::record r = db->getRecord(i);
 
 			sprintf_s(txt, 1024, "记录%d:", i);
 
-			for (u32 k=0; k<db->getNumFields(); ++k)
+			for (uint32_t k=0; k<db->getNumFields(); ++k)
 			{
-				c8 tmp[32];
+				char tmp[32];
 				sprintf_s(tmp, 32, "\t%d", r.getInt(k));
 				strcat_s(txt, 1024, tmp);
 			}
@@ -182,17 +182,17 @@ void g_callbackDBC(const c8* filename, void* param)
 		file->writeText(txt);
 	}
 
-	c8* buf = (c8*)Z_AllocateTempMemory(db->getStringSize() + 1);
+	char* buf = (char*)Z_AllocateTempMemory(db->getStringSize() + 1);
 	memcpy_s(buf, db->getStringSize()+1, db->getStringStart(), db->getStringSize());
 	buf[db->getStringSize()] = '\0';
 
 	c16 tmp[1024];
-	c8 outText[1000];
+	char outText[1000];
 
 	char *p=buf;
 	while (p<buf+db->getStringSize()) {
 
-		const c8* str = p;
+		const char* str = p;
 		utf8to16(str, tmp, 1024);
 	
 		if (writeString)
@@ -212,7 +212,7 @@ void g_callbackDBC(const c8* filename, void* param)
 	*/
 }
 
-void g_callbackDB2(const c8* filename, void* param)
+void g_callbackDB2(const char* filename, void* param)
 {
 	if (strstr(filename, "internal") || strstr(filename, "wmominimaptexture"))
 	{
@@ -228,7 +228,7 @@ void g_callbackDB2(const c8* filename, void* param)
 	string256 path = g_fs->getBaseDirectory();
 	path.append("db2\\");
 
-	c8 name[DEFAULT_SIZE];
+	char name[DEFAULT_SIZE];
 	getFileNameA(filename, name, DEFAULT_SIZE);
 	getFileNameNoExtensionA(name, name, DEFAULT_SIZE);
 	path.append(name);
@@ -239,7 +239,7 @@ void g_callbackDB2(const c8* filename, void* param)
 
 	dbc* db = new dbc((wowEnvironment*)param, filename, true);
 
-	c8 txt[1024];
+	char txt[1024];
 	sprintf_s(txt, 1024, "记录数: %d\n", db->getNumActualRecords());
 	file->writeText(txt);
 	sprintf_s(txt, 1024, "记录字段数: %d\n", db->getNumFields());
@@ -249,7 +249,7 @@ void g_callbackDB2(const c8* filename, void* param)
 	sprintf_s(txt, 1024, "字符串区域大小: %d\n", db->getStringSize());
 	file->writeText(txt);
 
-	for (u32 i=0; i<db->getNumActualRecords(); ++i)
+	for (uint32_t i=0; i<db->getNumActualRecords(); ++i)
 	{
 		dbc::record r = db->getRecord(i);
 
@@ -257,17 +257,17 @@ void g_callbackDB2(const c8* filename, void* param)
 
 		if (db->hasIndex())
 		{
-			c8 tmp[32];
+			char tmp[32];
 			sprintf_s(tmp, 32, "\t[%d]", db->getIDs()[i]);
 			strcat_s(txt, 1024, tmp);
 		}
 
-		for (u32 k=0; k<db->getNumFields(); ++k)
+		for (uint32_t k=0; k<db->getNumFields(); ++k)
 		{
-			u16 fs = db->getFieldSize(k);
+			uint16_t fs = db->getFieldSize(k);
 
-			c8 tmp[32] = {0};
-			if(fs == sizeof(int) || fs == sizeof(u16) || fs == sizeof(u8))
+			char tmp[32] = {0};
+			if(fs == sizeof(int) || fs == sizeof(uint16_t) || fs == sizeof(uint8_t))
 				sprintf_s(tmp, 32, "\t%d", r.getUInt(k));
 			else
 			{
@@ -289,17 +289,17 @@ void g_callbackDB2(const c8* filename, void* param)
 		file->writeText(txt);
 	}
 
-	c8* buf = (c8*)Z_AllocateTempMemory(db->getStringSize() + 1);
+	char* buf = (char*)Z_AllocateTempMemory(db->getStringSize() + 1);
 	memcpy_s(buf, db->getStringSize()+1, db->getStringStart(), db->getStringSize());
 	buf[db->getStringSize()] = '\0';
 
 	c16 tmp[1024];
-	c8 outText[1000];
+	char outText[1000];
 
 	char *p=buf;
 	while (p<buf+db->getStringSize()) {
 
-		const c8* str = p;
+		const char* str = p;
 		utf8to16(str, tmp, 1024);
 
 		if (writeString)

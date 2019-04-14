@@ -23,9 +23,9 @@ HRESULT CD3D11ShaderInclude::Open(D3D_INCLUDE_TYPE IncludeType,
 		return S_FALSE;
 	}
 
-	c8* buffer = (c8*)Z_AllocateTempMemory(rFile->getSize());
+	char* buffer = (char*)Z_AllocateTempMemory(rFile->getSize());
 	rFile->seek(0);
-	u32 len = rFile->read(buffer, rFile->getSize());
+	uint32_t len = rFile->read(buffer, rFile->getSize());
 	delete rFile;
 
 	*ppData = (LPCVOID)buffer;
@@ -47,7 +47,7 @@ HRESULT CD3D11ShaderInclude::Close(LPCVOID pData)
 
 void buildShaders_40( bool vs, bool ps, bool gs )
 {
-	const c8* basedir = g_BaseDir.c_str();
+	const char* basedir = g_BaseDir.c_str();
 
 	printf("4_0.................................................................\n\n");
 
@@ -77,7 +77,7 @@ void buildShaders_40( bool vs, bool ps, bool gs )
 
 void buildShaders_50( bool vs, bool ps, bool gs, bool ds, bool hs )
 {
-	const c8* basedir = g_BaseDir.c_str();
+	const char* basedir = g_BaseDir.c_str();
 
 	printf("5_0.................................................................\n\n");
 
@@ -119,22 +119,22 @@ void buildShaders_50( bool vs, bool ps, bool gs, bool ds, bool hs )
 	printf("\n\n");
 }
 
-void funcShader11VS( const c8* filename, void* args )
+void funcShader11VS( const char* filename, void* args )
 {
 	if (!args)
 		return;
 
-	const c8* dirname = (const c8*)args;
-	c8 profile[8];
+	const char* dirname = (const char*)args;
+	char profile[8];
 	getFileNameA(dirname, profile, 8);
 
-	c8 tmp[2];
+	char tmp[2];
 	tmp[0] = profile[strlen(profile)-3];
 	tmp[1] = 0;
-	u32 major = (u32)atoi(tmp); 
+	uint32_t major = (uint32_t)atoi(tmp); 
 	tmp[0] = profile[strlen(profile)-1];
-	u32 minor = (u32)atoi(tmp);
-	c8 sign = profile[0];
+	uint32_t minor = (uint32_t)atoi(tmp);
+	char sign = profile[0];
 	sign = _toupper(sign);
 
 	string256 absfilename = filename;
@@ -150,7 +150,7 @@ void funcShader11VS( const c8* filename, void* args )
 		return;
 	}
 
-	c8 name[MAX_PATH];
+	char name[MAX_PATH];
 	getFullFileNameNoExtensionA(filename, name, MAX_PATH);
 	string256 outfilename = name;
 	outfilename.append(".bls");
@@ -184,9 +184,9 @@ void funcShader11VS( const c8* filename, void* args )
 	macroEnd.Definition = NULL;
 	shaderMacros.push_back(macroEnd);
 
-	c8* buffer = (c8*)Z_AllocateTempMemory(rFile->getSize());
+	char* buffer = (char*)Z_AllocateTempMemory(rFile->getSize());
 	rFile->seek(0);
-	u32 len = rFile->read(buffer, rFile->getSize());
+	uint32_t len = rFile->read(buffer, rFile->getSize());
 
 	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
@@ -208,7 +208,7 @@ void funcShader11VS( const c8* filename, void* args )
 
 		if (pErrorBlob && pErrorBlob->GetBufferSize() > 0)
 		{
-			const c8* error = (const c8*)pErrorBlob->GetBufferPointer();
+			const char* error = (const char*)pErrorBlob->GetBufferPointer();
 			printf("%s\n", error);
 		}
 
@@ -221,12 +221,12 @@ void funcShader11VS( const c8* filename, void* args )
 	D3DReflect( pBlobOut->GetBufferPointer(), pBlobOut->GetBufferSize(), 
 		IID_ID3D11ShaderReflection, (void**) &pReflector);
 
-	u32 constSize = 0;
-	u32 samplerSize = 0;
-	u32 textureSize = 0;
-	u8* constBuffer = NULL;
-	u8* samplerBuffer = NULL;
-	u8* textureBuffer = NULL;
+	uint32_t constSize = 0;
+	uint32_t samplerSize = 0;
+	uint32_t textureSize = 0;
+	uint8_t* constBuffer = NULL;
+	uint8_t* samplerBuffer = NULL;
+	uint8_t* textureBuffer = NULL;
 
 	if (!pReflector)
 	{
@@ -238,7 +238,7 @@ void funcShader11VS( const c8* filename, void* args )
 	D3D11_SHADER_DESC desc;
 	pReflector->GetDesc(&desc);
 
-	for (u32 i=0; i<desc.BoundResources; ++i)
+	for (uint32_t i=0; i<desc.BoundResources; ++i)
 	{
 		D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 		pReflector->GetResourceBindingDesc(i, &resourceDesc);
@@ -266,9 +266,9 @@ void funcShader11VS( const c8* filename, void* args )
 	wfile->write(&blockHeader, sizeof(BlsBlockHeader));
 
 	//const buffer
-	constBuffer = (u8*)Z_AllocateTempMemory(constSize);
-	u8* pointer = constBuffer;
-	for (u32 i=0; i<desc.ConstantBuffers; ++i)
+	constBuffer = (uint8_t*)Z_AllocateTempMemory(constSize);
+	uint8_t* pointer = constBuffer;
+	for (uint32_t i=0; i<desc.ConstantBuffers; ++i)
 	{
 		ID3D11ShaderReflectionConstantBuffer* pConstant = pReflector->GetConstantBufferByIndex(i);
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
@@ -277,21 +277,21 @@ void funcShader11VS( const c8* filename, void* args )
 		D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 		pReflector->GetResourceBindingDescByName(bufferDesc.Name, &resourceDesc);
 
-		u32 v;
+		uint32_t v;
 		//index
 		v = resourceDesc.BindPoint;
-		memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-		pointer += sizeof(u32);
+		memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+		pointer += sizeof(uint32_t);
 		//size
 		v = bufferDesc.Size;
-		memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-		pointer += sizeof(u32);
+		memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+		pointer += sizeof(uint32_t);
 		//tbuffer
 		v = bufferDesc.Type == D3D_SIT_TBUFFER ? 1 : 0;
-		memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-		pointer += sizeof(u32);
+		memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+		pointer += sizeof(uint32_t);
 		//name
-		u32 s = strlen(bufferDesc.Name) + 1;
+		uint32_t s = strlen(bufferDesc.Name) + 1;
 		memcpy_s(pointer, s, bufferDesc.Name, s);
 		pointer += s;
 	}
@@ -304,22 +304,22 @@ void funcShader11VS( const c8* filename, void* args )
 	Z_FreeTempMemory(constBuffer);
 
 	//sampler buffer
-	samplerBuffer = (u8*)Z_AllocateTempMemory(samplerSize);
-	pointer = (u8*)samplerBuffer;
-	for (u32 i=0; i<desc.BoundResources; ++i)
+	samplerBuffer = (uint8_t*)Z_AllocateTempMemory(samplerSize);
+	pointer = (uint8_t*)samplerBuffer;
+	for (uint32_t i=0; i<desc.BoundResources; ++i)
 	{
 		D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 		pReflector->GetResourceBindingDesc(i, &resourceDesc);
 		if (resourceDesc.Type == D3D_SIT_SAMPLER)
 		{
-			u32 v;
+			uint32_t v;
 			//index
 			v = resourceDesc.BindPoint;
-			memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-			pointer += sizeof(u32);
+			memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+			pointer += sizeof(uint32_t);
 
 			//name
-			u32 s = strlen(resourceDesc.Name) + 1;
+			uint32_t s = strlen(resourceDesc.Name) + 1;
 			memcpy_s(pointer, s, resourceDesc.Name, s);
 			pointer += s;
 		}
@@ -333,22 +333,22 @@ void funcShader11VS( const c8* filename, void* args )
 	Z_FreeTempMemory(samplerBuffer);
 
 	//texture buffer
-	textureBuffer = (u8*)Z_AllocateTempMemory(textureSize);
-	pointer = (u8*)textureBuffer;
-	for (u32 i=0; i<desc.BoundResources; ++i)
+	textureBuffer = (uint8_t*)Z_AllocateTempMemory(textureSize);
+	pointer = (uint8_t*)textureBuffer;
+	for (uint32_t i=0; i<desc.BoundResources; ++i)
 	{
 		D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 		pReflector->GetResourceBindingDesc(i, &resourceDesc);
 		if (resourceDesc.Type == D3D_SIT_TEXTURE)
 		{
-			u32 v;
+			uint32_t v;
 			//index
 			v = resourceDesc.BindPoint;
-			memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-			pointer += sizeof(u32);
+			memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+			pointer += sizeof(uint32_t);
 
 			//name
-			u32 s = strlen(resourceDesc.Name) + 1;
+			uint32_t s = strlen(resourceDesc.Name) + 1;
 			memcpy_s(pointer, s, resourceDesc.Name, s);
 			pointer += s;
 		}
@@ -377,22 +377,22 @@ void funcShader11VS( const c8* filename, void* args )
 	delete wfile;
 }
 
-void funcShader11PS( const c8* filename, void* args )
+void funcShader11PS( const char* filename, void* args )
 {
 	if (!args)
 		return;
 
-	const c8* dirname = (const c8*)args;
-	c8 profile[8];
+	const char* dirname = (const char*)args;
+	char profile[8];
 	getFileNameA(dirname, profile, 8);
 
-	c8 tmp[2];
+	char tmp[2];
 	tmp[0] = profile[strlen(profile)-3];
 	tmp[1] = 0;
-	u32 major = (u32)atoi(tmp); 
+	uint32_t major = (uint32_t)atoi(tmp); 
 	tmp[0] = profile[strlen(profile)-1];
-	u32 minor = (u32)atoi(tmp);
-	c8 sign = profile[0];
+	uint32_t minor = (uint32_t)atoi(tmp);
+	char sign = profile[0];
 	sign = _toupper(sign);
 
 	string256 absfilename = filename;
@@ -407,7 +407,7 @@ void funcShader11PS( const c8* filename, void* args )
 		return;
 	}
 
-	c8 name[MAX_PATH];
+	char name[MAX_PATH];
 	getFullFileNameNoExtensionA(filename, name, MAX_PATH);
 	string256 outfilename = name;
 	outfilename.append(".bls");
@@ -433,17 +433,17 @@ void funcShader11PS( const c8* filename, void* args )
 
 	wfile->write(&header, sizeof(header));
 
-	for (u32 i=PS_Macro_None; i<PS_Macro_Num; ++i)
+	for (uint32_t i=PS_Macro_None; i<PS_Macro_Num; ++i)
 	{
 		//make macro
 		std::vector<D3D_SHADER_MACRO>	shaderMacros;
 		std::vector<string128> macroStrings;
-		const c8* strMacro = getPSMacroString((E_PS_MACRO)i);
+		const char* strMacro = getPSMacroString((E_PS_MACRO)i);
 		makeMacroStringList(macroStrings, strMacro);
 
 		printf("compiling: %s, macro: %s\n", absfilename.c_str(), strMacro);
 
-		for (u32 i=0; i<(u32)macroStrings.size(); ++i)
+		for (uint32_t i=0; i<(uint32_t)macroStrings.size(); ++i)
 		{
 			D3D_SHADER_MACRO macro;
 			macro.Name = macroStrings[i].c_str();
@@ -456,9 +456,9 @@ void funcShader11PS( const c8* filename, void* args )
 		macroEnd.Definition = NULL;
 		shaderMacros.push_back(macroEnd);
 
-		c8* buffer = (c8*)Z_AllocateTempMemory(rFile->getSize());
+		char* buffer = (char*)Z_AllocateTempMemory(rFile->getSize());
 		rFile->seek(0);
-		u32 len = rFile->read(buffer, rFile->getSize());
+		uint32_t len = rFile->read(buffer, rFile->getSize());
 
 		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
@@ -480,7 +480,7 @@ void funcShader11PS( const c8* filename, void* args )
 
 			if (pErrorBlob && pErrorBlob->GetBufferSize() > 0)
 			{
-				const c8* error = (const c8*)pErrorBlob->GetBufferPointer();
+				const char* error = (const char*)pErrorBlob->GetBufferPointer();
 				printf("%s\n", error);
 			}
 
@@ -493,12 +493,12 @@ void funcShader11PS( const c8* filename, void* args )
 		D3DReflect( pBlobOut->GetBufferPointer(), pBlobOut->GetBufferSize(), 
 			IID_ID3D11ShaderReflection, (void**) &pReflector);
 
-		u32 constSize = 0;
-		u32 samplerSize = 0;
-		u32 textureSize = 0;
-		u8* constBuffer = NULL;
-		u8* samplerBuffer = NULL;
-		u8* textureBuffer = NULL;
+		uint32_t constSize = 0;
+		uint32_t samplerSize = 0;
+		uint32_t textureSize = 0;
+		uint8_t* constBuffer = NULL;
+		uint8_t* samplerBuffer = NULL;
+		uint8_t* textureBuffer = NULL;
 
 		if (!pReflector)
 		{
@@ -510,7 +510,7 @@ void funcShader11PS( const c8* filename, void* args )
 		D3D11_SHADER_DESC desc;
 		pReflector->GetDesc(&desc);
 
-		for (u32 i=0; i<desc.BoundResources; ++i)
+		for (uint32_t i=0; i<desc.BoundResources; ++i)
 		{
 			D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 			pReflector->GetResourceBindingDesc(i, &resourceDesc);
@@ -538,9 +538,9 @@ void funcShader11PS( const c8* filename, void* args )
 		wfile->write(&blockHeader, sizeof(BlsBlockHeader));
 
 		//const buffer
-		constBuffer = (u8*)Z_AllocateTempMemory(constSize);
-		u8* pointer = constBuffer;
-		for (u32 i=0; i<desc.ConstantBuffers; ++i)
+		constBuffer = (uint8_t*)Z_AllocateTempMemory(constSize);
+		uint8_t* pointer = constBuffer;
+		for (uint32_t i=0; i<desc.ConstantBuffers; ++i)
 		{
 			ID3D11ShaderReflectionConstantBuffer* pConstant = pReflector->GetConstantBufferByIndex(i);
 			D3D11_SHADER_BUFFER_DESC bufferDesc;
@@ -549,21 +549,21 @@ void funcShader11PS( const c8* filename, void* args )
 			D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 			pReflector->GetResourceBindingDescByName(bufferDesc.Name, &resourceDesc);
 
-			u32 v;
+			uint32_t v;
 			//index
 			v = resourceDesc.BindPoint;
-			memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-			pointer += sizeof(u32);
+			memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+			pointer += sizeof(uint32_t);
 			//size
 			v = bufferDesc.Size;
-			memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-			pointer += sizeof(u32);
+			memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+			pointer += sizeof(uint32_t);
 			//tbuffer
 			v = bufferDesc.Type == D3D_SIT_TBUFFER ? 1 : 0;
-			memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-			pointer += sizeof(u32);
+			memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+			pointer += sizeof(uint32_t);
 			//name
-			u32 s = strlen(bufferDesc.Name) + 1;
+			uint32_t s = strlen(bufferDesc.Name) + 1;
 			memcpy_s(pointer, s, bufferDesc.Name, s);
 			pointer += s;
 		}
@@ -576,22 +576,22 @@ void funcShader11PS( const c8* filename, void* args )
 		Z_FreeTempMemory(constBuffer);
 
 		//sampler buffer
-		samplerBuffer = (u8*)Z_AllocateTempMemory(samplerSize);
-		pointer = (u8*)samplerBuffer;
-		for (u32 i=0; i<desc.BoundResources; ++i)
+		samplerBuffer = (uint8_t*)Z_AllocateTempMemory(samplerSize);
+		pointer = (uint8_t*)samplerBuffer;
+		for (uint32_t i=0; i<desc.BoundResources; ++i)
 		{
 			D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 			pReflector->GetResourceBindingDesc(i, &resourceDesc);
 			if (resourceDesc.Type == D3D_SIT_SAMPLER)
 			{
-				u32 v;
+				uint32_t v;
 				//index
 				v = resourceDesc.BindPoint;
-				memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-				pointer += sizeof(u32);
+				memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+				pointer += sizeof(uint32_t);
 
 				//name
-				u32 s = strlen(resourceDesc.Name) + 1;
+				uint32_t s = strlen(resourceDesc.Name) + 1;
 				memcpy_s(pointer, s, resourceDesc.Name, s);
 				pointer += s;
 			}
@@ -605,22 +605,22 @@ void funcShader11PS( const c8* filename, void* args )
 		Z_FreeTempMemory(samplerBuffer);
 
 		//texture buffer
-		textureBuffer = (u8*)Z_AllocateTempMemory(textureSize);
-		pointer = (u8*)textureBuffer;
-		for (u32 i=0; i<desc.BoundResources; ++i)
+		textureBuffer = (uint8_t*)Z_AllocateTempMemory(textureSize);
+		pointer = (uint8_t*)textureBuffer;
+		for (uint32_t i=0; i<desc.BoundResources; ++i)
 		{
 			D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 			pReflector->GetResourceBindingDesc(i, &resourceDesc);
 			if (resourceDesc.Type == D3D_SIT_TEXTURE)
 			{
-				u32 v;
+				uint32_t v;
 				//index
 				v = resourceDesc.BindPoint;
-				memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-				pointer += sizeof(u32);
+				memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+				pointer += sizeof(uint32_t);
 
 				//name
-				u32 s = strlen(resourceDesc.Name) + 1;
+				uint32_t s = strlen(resourceDesc.Name) + 1;
 				memcpy_s(pointer, s, resourceDesc.Name, s);
 				pointer += s;
 			}
@@ -650,22 +650,22 @@ void funcShader11PS( const c8* filename, void* args )
 	delete wfile;
 }
 
-void funcShader11GS( const c8* filename, void* args )
+void funcShader11GS( const char* filename, void* args )
 {
 	if (!args)
 		return;
 
-	const c8* dirname = (const c8*)args;
-	c8 profile[8];
+	const char* dirname = (const char*)args;
+	char profile[8];
 	getFileNameA(dirname, profile, 8);
 
-	c8 tmp[2];
+	char tmp[2];
 	tmp[0] = profile[strlen(profile)-3];
 	tmp[1] = 0;
-	u32 major = (u32)atoi(tmp); 
+	uint32_t major = (uint32_t)atoi(tmp); 
 	tmp[0] = profile[strlen(profile)-1];
-	u32 minor = (u32)atoi(tmp);
-	c8 sign = profile[0];
+	uint32_t minor = (uint32_t)atoi(tmp);
+	char sign = profile[0];
 	sign = _toupper(sign);
 
 	string256 absfilename = filename;
@@ -681,7 +681,7 @@ void funcShader11GS( const c8* filename, void* args )
 		return;
 	}
 
-	c8 name[MAX_PATH];
+	char name[MAX_PATH];
 	getFullFileNameNoExtensionA(filename, name, MAX_PATH);
 	string256 outfilename = name;
 	outfilename.append(".bls");
@@ -715,9 +715,9 @@ void funcShader11GS( const c8* filename, void* args )
 	macroEnd.Definition = NULL;
 	shaderMacros.push_back(macroEnd);
 
-	c8* buffer = (c8*)Z_AllocateTempMemory(rFile->getSize());
+	char* buffer = (char*)Z_AllocateTempMemory(rFile->getSize());
 	rFile->seek(0);
-	u32 len = rFile->read(buffer, rFile->getSize());
+	uint32_t len = rFile->read(buffer, rFile->getSize());
 
 	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
@@ -739,7 +739,7 @@ void funcShader11GS( const c8* filename, void* args )
 
 		if (pErrorBlob && pErrorBlob->GetBufferSize() > 0)
 		{
-			const c8* error = (const c8*)pErrorBlob->GetBufferPointer();
+			const char* error = (const char*)pErrorBlob->GetBufferPointer();
 			printf("%s\n", error);
 		}
 
@@ -752,12 +752,12 @@ void funcShader11GS( const c8* filename, void* args )
 	D3DReflect( pBlobOut->GetBufferPointer(), pBlobOut->GetBufferSize(), 
 		IID_ID3D11ShaderReflection, (void**) &pReflector);
 
-	u32 constSize = 0;
-	u32 samplerSize = 0;
-	u32 textureSize = 0;
-	u8* constBuffer = NULL;
-	u8* samplerBuffer = NULL;
-	u8* textureBuffer = NULL;
+	uint32_t constSize = 0;
+	uint32_t samplerSize = 0;
+	uint32_t textureSize = 0;
+	uint8_t* constBuffer = NULL;
+	uint8_t* samplerBuffer = NULL;
+	uint8_t* textureBuffer = NULL;
 
 	if (!pReflector)
 	{
@@ -769,7 +769,7 @@ void funcShader11GS( const c8* filename, void* args )
 	D3D11_SHADER_DESC desc;
 	pReflector->GetDesc(&desc);
 
-	for (u32 i=0; i<desc.BoundResources; ++i)
+	for (uint32_t i=0; i<desc.BoundResources; ++i)
 	{
 		D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 		pReflector->GetResourceBindingDesc(i, &resourceDesc);
@@ -797,9 +797,9 @@ void funcShader11GS( const c8* filename, void* args )
 	wfile->write(&blockHeader, sizeof(BlsBlockHeader));
 
 	//const buffer
-	constBuffer = (u8*)Z_AllocateTempMemory(constSize);
-	u8* pointer = constBuffer;
-	for (u32 i=0; i<desc.ConstantBuffers; ++i)
+	constBuffer = (uint8_t*)Z_AllocateTempMemory(constSize);
+	uint8_t* pointer = constBuffer;
+	for (uint32_t i=0; i<desc.ConstantBuffers; ++i)
 	{
 		ID3D11ShaderReflectionConstantBuffer* pConstant = pReflector->GetConstantBufferByIndex(i);
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
@@ -808,21 +808,21 @@ void funcShader11GS( const c8* filename, void* args )
 		D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 		pReflector->GetResourceBindingDescByName(bufferDesc.Name, &resourceDesc);
 
-		u32 v;
+		uint32_t v;
 		//index
 		v = resourceDesc.BindPoint;
-		memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-		pointer += sizeof(u32);
+		memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+		pointer += sizeof(uint32_t);
 		//size
 		v = bufferDesc.Size;
-		memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-		pointer += sizeof(u32);
+		memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+		pointer += sizeof(uint32_t);
 		//tbuffer
 		v = bufferDesc.Type == D3D_SIT_TBUFFER ? 1 : 0;
-		memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-		pointer += sizeof(u32);
+		memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+		pointer += sizeof(uint32_t);
 		//name
-		u32 s = strlen(bufferDesc.Name) + 1;
+		uint32_t s = strlen(bufferDesc.Name) + 1;
 		memcpy_s(pointer, s, bufferDesc.Name, s);
 		pointer += s;
 	}
@@ -835,22 +835,22 @@ void funcShader11GS( const c8* filename, void* args )
 	Z_FreeTempMemory(constBuffer);
 
 	//sampler buffer
-	samplerBuffer = (u8*)Z_AllocateTempMemory(samplerSize);
-	pointer = (u8*)samplerBuffer;
-	for (u32 i=0; i<desc.BoundResources; ++i)
+	samplerBuffer = (uint8_t*)Z_AllocateTempMemory(samplerSize);
+	pointer = (uint8_t*)samplerBuffer;
+	for (uint32_t i=0; i<desc.BoundResources; ++i)
 	{
 		D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 		pReflector->GetResourceBindingDesc(i, &resourceDesc);
 		if (resourceDesc.Type == D3D_SIT_SAMPLER)
 		{
-			u32 v;
+			uint32_t v;
 			//index
 			v = resourceDesc.BindPoint;
-			memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-			pointer += sizeof(u32);
+			memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+			pointer += sizeof(uint32_t);
 
 			//name
-			u32 s = strlen(resourceDesc.Name) + 1;
+			uint32_t s = strlen(resourceDesc.Name) + 1;
 			memcpy_s(pointer, s, resourceDesc.Name, s);
 			pointer += s;
 		}
@@ -864,22 +864,22 @@ void funcShader11GS( const c8* filename, void* args )
 	Z_FreeTempMemory(samplerBuffer);
 
 	//texture buffer
-	textureBuffer = (u8*)Z_AllocateTempMemory(textureSize);
-	pointer = (u8*)textureBuffer;
-	for (u32 i=0; i<desc.BoundResources; ++i)
+	textureBuffer = (uint8_t*)Z_AllocateTempMemory(textureSize);
+	pointer = (uint8_t*)textureBuffer;
+	for (uint32_t i=0; i<desc.BoundResources; ++i)
 	{
 		D3D11_SHADER_INPUT_BIND_DESC resourceDesc;
 		pReflector->GetResourceBindingDesc(i, &resourceDesc);
 		if (resourceDesc.Type == D3D_SIT_TEXTURE)
 		{
-			u32 v;
+			uint32_t v;
 			//index
 			v = resourceDesc.BindPoint;
-			memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-			pointer += sizeof(u32);
+			memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+			pointer += sizeof(uint32_t);
 
 			//name
-			u32 s = strlen(resourceDesc.Name) + 1;
+			uint32_t s = strlen(resourceDesc.Name) + 1;
 			memcpy_s(pointer, s, resourceDesc.Name, s);
 			pointer += s;
 		}

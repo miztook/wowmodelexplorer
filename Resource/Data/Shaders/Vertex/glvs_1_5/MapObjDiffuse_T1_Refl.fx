@@ -4,9 +4,7 @@
 //{
 //	mat4	mWorldViewProjection;
 //	mat4	mWorldView;
-//	vec4	LightDir;		// light dir in world space
-//	vec4 	LightColor;		// light color;
-//	vec4	MaterialParams;		//0: ambient, 1: diffuse, 2: specular
+//  mat4	mWorld;
 //	vec4 	FogParams;		//0: fogMode, 1: fogStart, 2: fogEnd, 3: fogDensity
 //	vec4	ClipPlane0;		
 //	vec4	Params;			//0: animTexture, 1: fogEnable
@@ -17,15 +15,13 @@
 
 const int mWorldViewProjection = 0;
 const int mWorldView = 4;
-const int LightDir = 8;
-const int LightColor = 9;
-const int MaterialParams = 10;
-const int FogParams = 11;
-const int ClipPlane0 = 12;
-const int Params = 13;
-const int mTexture = 14;
+const int mWorld = 8;
+const int FogParams = 12;
+const int ClipPlane0 = 13;
+const int Params = 14;
+const int mTexture = 15;
 
-const int VSBUFFER_SIZE = 18;
+const int VSBUFFER_SIZE = 19;
 
 uniform vec4 g_vsbuffer[VSBUFFER_SIZE];
 
@@ -33,10 +29,9 @@ in vec3	Pos;
 in mediump vec3	Normal;
 in mediump vec4 Col0;
 in mediump vec2	Tex0;
-in mediump vec4	BlendWeight;
-in mediump vec4 BlendIndices;
 
 out mediump vec4 v_Diffuse;
+out mediump vec3 v_Normal;
 out mediump vec3 v_Tex0;		// vertex texture coords, z: fog alpha
 out mediump vec2 v_Tex1;
 
@@ -73,19 +68,13 @@ mediump float CalcFogFactor( mediump float d, mediump vec4 fogParams )
 
 void main(void)
 {
-	mediump float ambient = g_vsbuffer[MaterialParams][0];
-	mediump float diffuse = g_vsbuffer[MaterialParams][1];
-		
 	gl_Position = Mul4(vec4(Pos, 1.0), mWorldViewProjection);
 
 	gl_ClipDistance[0] = dot(gl_Position, g_vsbuffer[ClipPlane0]);
+		
+	v_Normal = normalize(Mul3(Normal, mWorld));
 	
-	mediump vec3 lightDir = vec3(g_vsbuffer[LightDir]);
-	mediump vec3 normal = Mul3(Normal, mWorldView);
-	normal = normalize(normal);
-	
-	v_Diffuse.rgb = vec3(g_vsbuffer[LightColor] * clamp(dot(normal, -lightDir), 0.0, 1.0)) * diffuse + ambient;
-	v_Diffuse.a = Col0.a;
+	v_Diffuse = Col0;
 	
 	vec3 tex = vec3(Tex0, 1.0);
     if (g_vsbuffer[Params][0] != 0.0)
@@ -105,6 +94,8 @@ void main(void)
 	
 	v_Tex0 = tex;
 	
+	mediump vec3 normal = vec3(Mul4(vec4(Normal, 1.0), mWorldView));
+	normal = normalize(normal);
 	cameraPos = normalize(cameraPos);
 	vec3 finalPos = cameraPos.xyz - dot(cameraPos, normal) * 2.0 * normal.xyz;
 	v_Tex1.xy = finalPos.xy * 0.5 + 0.5;

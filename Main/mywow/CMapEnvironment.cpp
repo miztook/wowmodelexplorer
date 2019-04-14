@@ -141,12 +141,12 @@ void CMapEnvironment::initSkyLights()
 	*/
 
 	SSkyLight* light = new SSkyLight;
-	light->colorRows[SKY_COLOR_0][0].set(0, SColor(10,10,10).color);
-	light->colorRows[SKY_COLOR_1][0].set(0, SColor(20,20,20).color);
-	light->colorRows[SKY_COLOR_2][0].set(0, SColor(30,30,30).color);
-	light->colorRows[SKY_COLOR_3][0].set(0, SColor(40,40,40).color);
-	light->colorRows[SKY_COLOR_4][0].set(0, SColor(50,50,50).color);
-	light->colorRows[FOG_COLOR][0].set(0, SColor(64,64,64).color);
+// 	light->colorRows[SKY_COLOR_0][0].set(0, SColor(10,10,10).color);
+// 	light->colorRows[SKY_COLOR_1][0].set(0, SColor(20,20,20).color);
+// 	light->colorRows[SKY_COLOR_2][0].set(0, SColor(30,30,30).color);
+// 	light->colorRows[SKY_COLOR_3][0].set(0, SColor(40,40,40).color);
+// 	light->colorRows[SKY_COLOR_4][0].set(0, SColor(50,50,50).color);
+// 	light->colorRows[FOG_COLOR][0].set(0, SColor(64,64,64).color);
 	GlobalLight = light;
 
 	//std::sort(LocalSkyLights.begin(), LocalSkyLights.end());

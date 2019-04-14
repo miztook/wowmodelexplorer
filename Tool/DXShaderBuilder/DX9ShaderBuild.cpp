@@ -22,9 +22,9 @@ HRESULT CD3D9ShaderInclude::Open(D3DXINCLUDE_TYPE Type,
 		return S_FALSE;
 	}
 
-	c8* buffer = (c8*)Z_AllocateTempMemory(rFile->getSize());
+	char* buffer = (char*)Z_AllocateTempMemory(rFile->getSize());
 	rFile->seek(0);
-	u32 len = rFile->read(buffer, rFile->getSize());
+	uint32_t len = rFile->read(buffer, rFile->getSize());
 	delete rFile;
 
 	*Data = (LPCVOID)buffer;
@@ -46,7 +46,7 @@ HRESULT CD3D9ShaderInclude::Close(LPCVOID Data)
 
 void buildShaders_20( bool vs, bool ps )
 {
-	const c8* basedir = g_BaseDir.c_str();
+	const char* basedir = g_BaseDir.c_str();
 
 	printf("2_0.................................................................\n\n");
 
@@ -69,7 +69,7 @@ void buildShaders_20( bool vs, bool ps )
 
 void buildShaders_30( bool vs, bool ps )
 {
-	const c8* basedir = g_BaseDir.c_str();
+	const char* basedir = g_BaseDir.c_str();
 
 	printf("3_0.................................................................\n\n");
 
@@ -90,22 +90,22 @@ void buildShaders_30( bool vs, bool ps )
 	printf("\n\n");
 }
 
-void funcShader9VS(const c8* filename, void* args)
+void funcShader9VS(const char* filename, void* args)
 {
 	if (!args)
 		return;
 
-	const c8* dirname = (const c8*)args;
-	c8 profile[8];
+	const char* dirname = (const char*)args;
+	char profile[8];
 	getFileNameA(dirname, profile, 8);
 
-	c8 tmp[2];
+	char tmp[2];
 	tmp[0] = profile[strlen(profile)-3];
 	tmp[1] = 0;
-	u32 major = (u32)atoi(tmp); 
+	uint32_t major = (uint32_t)atoi(tmp); 
 	tmp[0] = profile[strlen(profile)-1];
-	u32 minor = (u32)atoi(tmp);
-	c8 sign = profile[0];
+	uint32_t minor = (uint32_t)atoi(tmp);
+	char sign = profile[0];
 	sign = _toupper(sign);
 
 	string256 absfilename = filename;
@@ -130,9 +130,9 @@ void funcShader9VS(const c8* filename, void* args)
 	macroEnd.Definition = NULL;
 	shaderMacros.push_back(macroEnd);
 
-	c8* buffer = (c8*)Z_AllocateTempMemory(rFile->getSize());
+	char* buffer = (char*)Z_AllocateTempMemory(rFile->getSize());
 	rFile->seek(0);
-	u32 len = rFile->read(buffer, rFile->getSize());
+	uint32_t len = rFile->read(buffer, rFile->getSize());
 	delete rFile;
 
 	DWORD dwShaderFlags;
@@ -158,7 +158,7 @@ void funcShader9VS(const c8* filename, void* args)
 
 		if (pErrorMsg && pErrorMsg->GetBufferSize() > 0)
 		{
-			const c8* error = (const c8*)pErrorMsg->GetBufferPointer();
+			const char* error = (const char*)pErrorMsg->GetBufferPointer();
 			printf("%s\n", error);
 		}
 
@@ -169,47 +169,47 @@ void funcShader9VS(const c8* filename, void* args)
 		return;
 	}
 
-	u32 constSize = 0;
-	u8* constBuffer = NULL;
+	uint32_t constSize = 0;
+	uint8_t* constBuffer = NULL;
 	if (constantsTable)
 	{
 		D3DXCONSTANTTABLE_DESC table_desc;
 		constantsTable->GetDesc(&table_desc);
-		for (u32 i=0; i<table_desc.Constants; ++i)
+		for (uint32_t i=0; i<table_desc.Constants; ++i)
 		{
 			D3DXCONSTANT_DESC desc;
 			D3DXHANDLE handle = constantsTable->GetConstant(NULL, i);
 			if (handle)
 			{
 				constantsTable->GetConstantDesc(handle, &desc, NULL);
-				constSize += ((sizeof(BlsConst) - 1)+ (u32)strlen(desc.Name) + 1);
+				constSize += ((sizeof(BlsConst) - 1)+ (uint32_t)strlen(desc.Name) + 1);
 			}
 		}
 
-		constBuffer = (u8*)Z_AllocateTempMemory(constSize);
-		u8* pointer = constBuffer;
-		for (u32 i=0; i<table_desc.Constants; ++i)
+		constBuffer = (uint8_t*)Z_AllocateTempMemory(constSize);
+		uint8_t* pointer = constBuffer;
+		for (uint32_t i=0; i<table_desc.Constants; ++i)
 		{
 			D3DXCONSTANT_DESC desc;
 			D3DXHANDLE handle = constantsTable->GetConstant(NULL, i);
 			if (handle)
 			{
 				constantsTable->GetConstantDesc(handle, &desc, NULL);
-				u32 v;
+				uint32_t v;
 				v = desc.RegisterIndex;
 				//index
-				memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-				pointer += sizeof(u32);
+				memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+				pointer += sizeof(uint32_t);
 				//size
 				v = desc.Bytes;
-				memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-				pointer += sizeof(u32);
+				memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+				pointer += sizeof(uint32_t);
 				//
 				v = 0;
-				memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-				pointer += sizeof(u32);
+				memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+				pointer += sizeof(uint32_t);
 				//name
-				u32 s = (u32)strlen(desc.Name) + 1;
+				uint32_t s = (uint32_t)strlen(desc.Name) + 1;
 				memcpy_s(pointer, s, desc.Name, s);
 				pointer += s;
 			}
@@ -226,7 +226,7 @@ void funcShader9VS(const c8* filename, void* args)
 	header._minor = minor;
 	header.shaderCount = 1;
 
-	c8 name[MAX_PATH];
+	char name[MAX_PATH];
 	getFullFileNameNoExtensionA(filename, name, MAX_PATH);
 	string256 outfilename = name;
 	outfilename.append(".bls");
@@ -263,22 +263,22 @@ void funcShader9VS(const c8* filename, void* args)
 	++nSucceed;
 }
 
-void funcShader9PS(const c8* filename, void* args)
+void funcShader9PS(const char* filename, void* args)
 {
 	if (!args)
 		return;
 
-	const c8* dirname = (const c8*)args;
-	c8 profile[8];
+	const char* dirname = (const char*)args;
+	char profile[8];
 	getFileNameA(dirname, profile, 8);
 
-	c8 tmp[2];
+	char tmp[2];
 	tmp[0] = profile[strlen(profile)-3];
 	tmp[1] = 0;
-	u32 major = (u32)atoi(tmp); 
+	uint32_t major = (uint32_t)atoi(tmp); 
 	tmp[0] = profile[strlen(profile)-1];
-	u32 minor = (u32)atoi(tmp);
-	c8 sign = profile[0];
+	uint32_t minor = (uint32_t)atoi(tmp);
+	char sign = profile[0];
 	sign = _toupper(sign);
 
 	string256 absfilename = filename;
@@ -295,7 +295,7 @@ void funcShader9PS(const c8* filename, void* args)
 		return;
 	}
 
-	c8 name[MAX_PATH];
+	char name[MAX_PATH];
 	getFullFileNameNoExtensionA(filename, name, MAX_PATH);
 	string256 outfilename = name;
 	outfilename.append(".bls");
@@ -312,17 +312,17 @@ void funcShader9PS(const c8* filename, void* args)
 
 	wfile->write(&header, sizeof(header));
 
-	for (u32 i=PS_Macro_None; i<PS_Macro_Num; ++i)
+	for (uint32_t i=PS_Macro_None; i<PS_Macro_Num; ++i)
 	{
 		//make macro
 		std::vector<D3DXMACRO>	shaderMacros;
 		std::vector<string128> macroStrings;
-		const c8* strMacro = getPSMacroString((E_PS_MACRO)i);
+		const char* strMacro = getPSMacroString((E_PS_MACRO)i);
 		makeMacroStringList(macroStrings, strMacro);
 
 		printf("compiling: %s, macro: %s\n", absfilename.c_str(), strMacro);
 
-		for (u32 i=0; i<(u32)macroStrings.size(); ++i)
+		for (uint32_t i=0; i<(uint32_t)macroStrings.size(); ++i)
 		{
 			D3DXMACRO macro;
 			macro.Name = macroStrings[i].c_str();
@@ -335,9 +335,9 @@ void funcShader9PS(const c8* filename, void* args)
 		macroEnd.Definition = NULL;
 		shaderMacros.push_back(macroEnd);
 
-		c8* buffer = (c8*)Z_AllocateTempMemory(rFile->getSize());
+		char* buffer = (char*)Z_AllocateTempMemory(rFile->getSize());
 		rFile->seek(0);
-		u32 len = rFile->read(buffer, rFile->getSize());
+		uint32_t len = rFile->read(buffer, rFile->getSize());
 
 		DWORD dwShaderFlags;
 	#ifdef _DEBUG
@@ -362,7 +362,7 @@ void funcShader9PS(const c8* filename, void* args)
 
 			if (pErrorMsg && pErrorMsg->GetBufferSize() > 0)
 			{
-				const c8* error = (const c8*)pErrorMsg->GetBufferPointer();
+				const char* error = (const char*)pErrorMsg->GetBufferPointer();
 				printf("%s\n", error);
 			}
 
@@ -373,47 +373,47 @@ void funcShader9PS(const c8* filename, void* args)
 			return;
 		}
 
-		u32 constSize = 0;
-		u8* constBuffer = NULL;
+		uint32_t constSize = 0;
+		uint8_t* constBuffer = NULL;
 		if (constantsTable)
 		{
 			D3DXCONSTANTTABLE_DESC table_desc;
 			constantsTable->GetDesc(&table_desc);
-			for (u32 i=0; i<table_desc.Constants; ++i)
+			for (uint32_t i=0; i<table_desc.Constants; ++i)
 			{
 				D3DXCONSTANT_DESC desc;
 				D3DXHANDLE handle = constantsTable->GetConstant(NULL, i);
 				if (handle)
 				{
 					constantsTable->GetConstantDesc(handle, &desc, NULL);
-					constSize += ((sizeof(BlsConst) - 1)+ (u32)strlen(desc.Name) + 1);
+					constSize += ((sizeof(BlsConst) - 1)+ (uint32_t)strlen(desc.Name) + 1);
 				}
 			}
 
-			constBuffer = (u8*)Z_AllocateTempMemory(constSize);
-			u8* pointer = constBuffer;
-			for (u32 i=0; i<table_desc.Constants; ++i)
+			constBuffer = (uint8_t*)Z_AllocateTempMemory(constSize);
+			uint8_t* pointer = constBuffer;
+			for (uint32_t i=0; i<table_desc.Constants; ++i)
 			{
 				D3DXCONSTANT_DESC desc;
 				D3DXHANDLE handle = constantsTable->GetConstant(NULL, i);
 				if (handle)
 				{
 					constantsTable->GetConstantDesc(handle, &desc, NULL);
-					u32 v;
+					uint32_t v;
 					v = desc.RegisterIndex;
 					//index
-					memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-					pointer += sizeof(u32);
+					memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+					pointer += sizeof(uint32_t);
 					//size
 					v = desc.Bytes;
-					memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-					pointer += sizeof(u32);
+					memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+					pointer += sizeof(uint32_t);
 					//
 					v = 0;
-					memcpy_s(pointer, sizeof(u32), &v, sizeof(u32));
-					pointer += sizeof(u32);
+					memcpy_s(pointer, sizeof(uint32_t), &v, sizeof(uint32_t));
+					pointer += sizeof(uint32_t);
 					//name
-					u32 s = (u32)strlen(desc.Name) + 1;
+					uint32_t s = (uint32_t)strlen(desc.Name) + 1;
 					memcpy_s(pointer, s, desc.Name, s);
 					pointer += s;
 				}

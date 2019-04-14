@@ -28,7 +28,7 @@
 
 IFileSystem* g_fs = NULL;
 wowEnvironment* g_wowEnv = NULL;
-c8 g_szOuputPath[MAX_PATH];
+char g_szOuputPath[MAX_PATH];
 
 int nTexSucceed = 0;
 int nTexFailed = 0;
@@ -39,12 +39,12 @@ void convertBlpToPVR();
 void convertBlpToKTX();
 void copyShaders();
 
-void callbackBlpToPVR(const c8* filename, void* param);
-void callbackBlpToKTX(const c8* filename, void* param);
+void callbackBlpToPVR(const char* filename, void* param);
+void callbackBlpToKTX(const char* filename, void* param);
 
-void callbackNonTexFile(const c8* filename, void* param);
+void callbackNonTexFile(const char* filename, void* param);
 
-void callbackShaderFile(const c8* filename, void* param);
+void callbackShaderFile(const char* filename, void* param);
 
 CBlpToPVR g_BlpToPVR(PVRCQ_Normal);
 CBlpToKTX g_BlpToKTX(PVRCQ_Normal);
@@ -99,7 +99,7 @@ void copyShaders()
 	Q_iterateFiles(path.c_str(), "*.*", callbackShaderFile, NULL, g_fs->getMpqDirectory());
 }
 
-void callbackShaderFile( const c8* filename, void* param )
+void callbackShaderFile( const char* filename, void* param )
 {
 	if (!hasFileExtensionA(filename, "fx"))
 		return;
@@ -134,7 +134,7 @@ void convertBlpToPVR()
 	g_wowEnv->iterateFiles("*.*", callbackBlpToPVR, NULL);
 }
 
-void callbackBlpToPVR( const c8* filename, void* param )
+void callbackBlpToPVR( const char* filename, void* param )
 {
 	if (!hasFileExtensionA(filename, "blp"))
 	{
@@ -142,9 +142,9 @@ void callbackBlpToPVR( const c8* filename, void* param )
 		return;
 	}
 
-	c8 shortfilename[MAX_PATH];
-	const c8* start = strstr(filename, MPQFILES);
-	u32 len = strlen(MPQFILES);
+	char shortfilename[MAX_PATH];
+	const char* start = strstr(filename, MPQFILES);
+	uint32_t len = strlen(MPQFILES);
 	Q_strcpy(shortfilename, MAX_PATH, start ? start + len : filename);
 
 	IMemFile* file = g_wowEnv->openFile(shortfilename);
@@ -168,7 +168,7 @@ void callbackBlpToPVR( const c8* filename, void* param )
 	}
 
 	//convert
-	c8 path[256];
+	char path[256];
 	getFullFileNameNoExtensionA(filename, path, 256);
 	strcat_s(path, 256, ".pvr");
 
@@ -208,7 +208,7 @@ void convertBlpToKTX( )
 	g_wowEnv->iterateFiles("*.*", callbackBlpToKTX, NULL);
 }
 
-void callbackBlpToKTX( const c8* filename, void* param )
+void callbackBlpToKTX( const char* filename, void* param )
 {
 	if (!hasFileExtensionA(filename, "blp"))
 	{
@@ -216,9 +216,9 @@ void callbackBlpToKTX( const c8* filename, void* param )
 		return;
 	}
 
-	c8 shortfilename[MAX_PATH];
-	const c8* start = strstr(filename, MPQFILES);
-	u32 len = strlen(MPQFILES);
+	char shortfilename[MAX_PATH];
+	const char* start = strstr(filename, MPQFILES);
+	uint32_t len = strlen(MPQFILES);
 	Q_strcpy(shortfilename, MAX_PATH, start ? start + len : filename);
 
 	IMemFile* file = g_wowEnv->openFile(shortfilename);
@@ -242,7 +242,7 @@ void callbackBlpToKTX( const c8* filename, void* param )
 	}
 
 	//convert
-	c8 path[256];
+	char path[256];
 	getFullFileNameNoExtensionA(filename, path, 256);
 	strcat_s(path, 256, ".ktx");
 
@@ -276,7 +276,7 @@ void callbackBlpToKTX( const c8* filename, void* param )
 	image->drop();
 }
 
-void callbackNonTexFile( const c8* filename, void* param )
+void callbackNonTexFile( const char* filename, void* param )
 {
 	if (hasFileExtensionA(filename, "blp") || 
 		hasFileExtensionA(filename, "pvr") || 
@@ -284,9 +284,9 @@ void callbackNonTexFile( const c8* filename, void* param )
 		hasFileExtensionA(filename, "tga"))
 		return;
 
-	c8 shortfilename[MAX_PATH];
-	const c8* start = strstr(filename, MPQFILES);
-	u32 len = strlen(MPQFILES);
+	char shortfilename[MAX_PATH];
+	const char* start = strstr(filename, MPQFILES);
+	uint32_t len = strlen(MPQFILES);
 	Q_strcpy(shortfilename, MAX_PATH, start ? start + len : filename);
 
 	IMemFile* file = g_wowEnv->openFile(shortfilename);

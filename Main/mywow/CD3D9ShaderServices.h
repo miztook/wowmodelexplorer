@@ -5,9 +5,7 @@
 #ifdef MW_COMPILE_WITH_DIRECT3D9
 
 #include "IShaderServices.h"
-#include "CD3D9_VS20.h"
 #include "CD3D9_VS30.h"
-#include "CD3D9_PS20.h"
 #include "CD3D9_PS30.h"
 
 class CD3D9VertexShader;
@@ -63,9 +61,7 @@ private:
 	SShaderState	ShaderState;
 	SShaderState	LastShaderState;
 
-	CD3D9_VS20 vs20Loader;
 	CD3D9_VS30 vs30Loader;
-	CD3D9_PS20 ps20Loader;
 	CD3D9_PS30 ps30Loader;	
 	
 private:

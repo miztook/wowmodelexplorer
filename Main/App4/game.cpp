@@ -2,6 +2,7 @@
 
 bool g_bExit = false;
 bool g_bBackMode = false;
+IM2SceneNode* g_SkyboxSceneNode = nullptr;
 
 void MyMessageHandler::onSize(window_type hwnd, int width, int height)
 {
@@ -38,10 +39,10 @@ void createScene()
 // 	const c8* url = "http://www.battlenet.com.cn/wow/zh/character/%E8%89%BE%E9%9C%B2%E6%81%A9/%E5%B0%8F%E7%9F%B3%E5%A4%B4%E5%86%B2%E5%95%8A/simple";
 // 	CSysUtility::openURLtoJsonFile(url, "test.json");
 
-	g_Engine->getManualMeshServices()->addGridLineMesh("$grid20", 20, 1,SColor(128,128,128) );
+//	g_Engine->getManualMeshServices()->addGridLineMesh("$grid20", 20, 1,SColor(128,128,128) );
 //	g_Engine->getManualMeshServices()->addDecal("$decal", 3, 3, SColor::Red());
 
-	IMeshSceneNode* gridNode = g_Engine->getSceneManager()->addMeshSceneNode("$grid20", NULL);
+//	IMeshSceneNode* gridNode = g_Engine->getSceneManager()->addMeshSceneNode("$grid20", NULL);
 
 //	IMeshSceneNode* decalNode = g_Engine->getSceneManager()->addMeshSceneNode("$decal", NULL);
 	
@@ -130,12 +131,19 @@ void createScene()
 	}
 	*/
 
+	IFileM2* m2Skybox = g_Engine->getResourceLoader()->loadM2("world/outland/passivedoodads/skybox/outlandskybox.m2");
+	g_SkyboxSceneNode = g_Engine->getSceneManager()->addM2SceneNode(m2Skybox, NULL);
+	g_SkyboxSceneNode->buildVisibleGeosets();
+	g_SkyboxSceneNode->playAnimationByName("stand", 0, true);
+	g_SkyboxSceneNode->setScale(2.0f);
+
 	const char* path = "World\\wmo\\Northrend\\Dalaran\\ND_Dalaran.wmo";
 	IFileWMO* wmo = g_Engine->getResourceLoader()->loadWMO(path);
 	IWMOSceneNode* wmoSceneNode = g_Engine->getSceneManager()->addWMOSceneNode(wmo, NULL);
 	matrix4 mat;
 	mat.setScale(0.5f);
 	wmoSceneNode->setRelativeTransformation(mat);
+
 }
 
 void destroyScene()
@@ -145,6 +153,17 @@ void destroyScene()
 
 void idleTick()
 {
-
+	if (g_Engine)
+	{
+		ISceneManager* smgr = g_Engine->getSceneManager();
+		if (smgr)
+		{
+			ICamera* cam = smgr->getActiveCamera();
+			if (cam && g_SkyboxSceneNode)
+			{
+				g_SkyboxSceneNode->setPos(cam->getPosition());
+			}
+		}
+	}
 }
 

@@ -18,27 +18,27 @@ enum PVRCompressionQuality
 
 struct KTX_Header
 {
-	u8 identifier[12];
-	u32 endianness;
-	u32 glType;
-	u32 glTypeSize;
-	u32 glFormat;
-	u32 glInternalFormat;
-	u32 glBaseInternalFormat;
-	u32 pixelWidth;
-	u32 pixelHeight;
-	u32 pixelDepth;
-	u32 numberOfArrayElements;
-	u32 numberOfFaces;
-	u32 numberOfMipmapLevels;
-	u32 bytesOfKeyValueData;
+	uint8_t identifier[12];
+	uint32_t endianness;
+	uint32_t glType;
+	uint32_t glTypeSize;
+	uint32_t glFormat;
+	uint32_t glInternalFormat;
+	uint32_t glBaseInternalFormat;
+	uint32_t pixelWidth;
+	uint32_t pixelHeight;
+	uint32_t pixelDepth;
+	uint32_t numberOfArrayElements;
+	uint32_t numberOfFaces;
+	uint32_t numberOfMipmapLevels;
+	uint32_t bytesOfKeyValueData;
 };
 
 struct KTX_Metadata
 {
-	u32 byteSize;
-	u32 key;
-	u32 data;
+	uint32_t byteSize;
+	uint32_t key;
+	uint32_t data;
 };
 
 #ifdef _MSC_VER

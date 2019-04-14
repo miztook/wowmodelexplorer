@@ -114,8 +114,6 @@ private:
 
 	void buildGroupBuffers();
 
-	void calcBatchVertexCount();
-
 	void buildPortalEntries();
 
 public:

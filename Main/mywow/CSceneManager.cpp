@@ -277,11 +277,11 @@ void CSceneManager::doRender()
 		Driver->drawDebugInfo(Text);
 	}
 
-	drawAreaInfo();
+	//drawAreaInfo();
 
 	//drawDebutText();
 
-	drawSceneInfo();
+	//drawSceneInfo();
 	//drawDebugTexture();
 }
 

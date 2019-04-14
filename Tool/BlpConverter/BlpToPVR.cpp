@@ -12,7 +12,7 @@ CBlpToPVR::CBlpToPVR(PVRCompressionQuality quality) : Quality(quality)
 
 }
 
-bool CBlpToPVR::convertBlpToPVR( IBLPImage* blp, const c8* outputpath )
+bool CBlpToPVR::convertBlpToPVR( IBLPImage* blp, const char* outputpath )
 {
 	if (!hasFileExtensionA(outputpath, "pvr"))
 	{
@@ -45,28 +45,28 @@ bool CBlpToPVR::convertBlpToPVR( IBLPImage* blp, const c8* outputpath )
 		return false;
 	}
 
-	u32 mipLevels = blp->getNumMipLevels();
+	uint32_t mipLevels = blp->getNumMipLevels();
 	bool compressed =  isCompressedFormat(format);
-	u32 bpp = getBytesPerPixelFromFormat(format);
+	uint32_t bpp = getBytesPerPixelFromFormat(format);
 
 	CPVRTextureHeader PVRHeader(nPVRPixelType, size.Height, size.Width, 1, mipLevels, 1, 1);
 	CPVRTexture* pTexture = NULL;
 	
-	u32 mipDataSize[16] = {0};
-	u32 mipDataPitch[16] = {0};
+	uint32_t mipDataSize[16] = {0};
+	uint32_t mipDataPitch[16] = {0};
 	_ASSERT(mipLevels <= 16);
 
-	u32 dataSize = 0;
-	for (u32 i=0; i<mipLevels; ++i)
+	uint32_t dataSize = 0;
+	for (uint32_t i=0; i<mipLevels; ++i)
 	{
 		dimension2du mipsize = size.getMipLevelSize(i);
 		getImagePitchAndBytes(format, mipsize.Width, mipsize.Height, mipDataPitch[i], mipDataSize[i]);
 		dataSize += mipDataSize[i];
 	}
 	
-	u32 offset = 0;
-	u8* data = (u8*)Z_AllocateTempMemory(dataSize);
-	for (u32 i=0; i<mipLevels; ++i)
+	uint32_t offset = 0;
+	uint8_t* data = (uint8_t*)Z_AllocateTempMemory(dataSize);
+	for (uint32_t i=0; i<mipLevels; ++i)
 	{
 		dimension2du mipsize = size.getMipLevelSize(i);
 		blp->copyMipmapData(i, data + offset, mipDataPitch[i], mipsize.Width, mipsize.Height);
@@ -86,14 +86,14 @@ bool CBlpToPVR::convertBlpToPVR( IBLPImage* blp, const c8* outputpath )
 	return ret;
 }
 
-bool CBlpToPVR::processPvrTexture( CPVRTexture* pTexture, IBLPImage* blpImage, const c8* outputpath, bool forceUnCompress )
+bool CBlpToPVR::processPvrTexture( CPVRTexture* pTexture, IBLPImage* blpImage, const char* outputpath, bool forceUnCompress )
 {	
-	u32 width = pTexture->getWidth();
-	u32 height = pTexture->getHeight();
+	uint32_t width = pTexture->getWidth();
+	uint32_t height = pTexture->getHeight();
 	bool isCompressed = isCompressedFormat(blpImage->getColorFormat());
-	const c8* format = getColorFormatString(blpImage->getColorFormat());
-	u8 alphaDepth = blpImage->getAlphaDepth();
-	u32 mipLevel = blpImage->getNumMipLevels();
+	const char* format = getColorFormatString(blpImage->getColorFormat());
+	uint8_t alphaDepth = blpImage->getAlphaDepth();
+	uint32_t mipLevel = blpImage->getNumMipLevels();
 
 	printf("width: %u, height: %u, format: %s, alpha: %u, mipmap: %u\n", width, height, format, alphaDepth, mipLevel);
 	printf("processing...\n");
@@ -121,8 +121,8 @@ bool CBlpToPVR::processPvrTexture( CPVRTexture* pTexture, IBLPImage* blpImage, c
 	}
 
 	//reisze if neccesary
-	u32 nwidth = width;
-	u32 nheight = height;
+	uint32_t nwidth = width;
+	uint32_t nheight = height;
 
 	bool needresize = false;
 
@@ -211,7 +211,7 @@ bool CBlpToPVR::processPvrTexture( CPVRTexture* pTexture, IBLPImage* blpImage, c
 	return true;
 }
 
-c8* CBlpToPVR::getPvrPixelFormatString( pvrtexture::PixelType type )
+char* CBlpToPVR::getPvrPixelFormatString( pvrtexture::PixelType type )
 {
 	if (type.PixelTypeID == PixelType(ePVRTPF_PVRTCI_4bpp_RGBA).PixelTypeID)
 	{

@@ -8,15 +8,15 @@
 
 using namespace pvrtexture;
 
-const c8* g_tempTGAFileName = "temp_rgba8.tga";
-const c8* g_tempKTXFileName = "temp/temp_rgba8.ktx";
+const char* g_tempTGAFileName = "temp_rgba8.tga";
+const char* g_tempKTXFileName = "temp/temp_rgba8.ktx";
 
 CBlpToKTX::CBlpToKTX( PVRCompressionQuality quality ) : Quality(quality)
 {
 
 }
 
-bool CBlpToKTX::convertBlpToKTX( IBLPImage* blp, const c8* outputpath )
+bool CBlpToKTX::convertBlpToKTX( IBLPImage* blp, const char* outputpath )
 {
 	if (!hasFileExtensionA(outputpath, "ktx"))
 	{
@@ -50,28 +50,28 @@ bool CBlpToKTX::convertBlpToKTX( IBLPImage* blp, const c8* outputpath )
 	}
 
 	//!! KTX和PVR不同, mipmap只能在创建纹理时生成，文件本身是不带mipmap的
-	u32 mipLevels = 1; //blp->getNumMipLevels();		
+	uint32_t mipLevels = 1; //blp->getNumMipLevels();		
 	bool compressed =  isCompressedFormat(format);
-	u32 bpp = getBytesPerPixelFromFormat(format);
+	uint32_t bpp = getBytesPerPixelFromFormat(format);
 
 	CPVRTextureHeader PVRHeader(nPVRPixelType, size.Height, size.Width, 1, mipLevels, 1, 1);
 	CPVRTexture* pTexture = NULL;
 
-	u32 mipDataSize[16] = {0};
-	u32 mipDataPitch[16] = {0};
+	uint32_t mipDataSize[16] = {0};
+	uint32_t mipDataPitch[16] = {0};
 	_ASSERT(mipLevels <= 16);
 
-	u32 dataSize = 0;
-	for (u32 i=0; i<mipLevels; ++i)
+	uint32_t dataSize = 0;
+	for (uint32_t i=0; i<mipLevels; ++i)
 	{
 		dimension2du mipsize = size.getMipLevelSize(i);
 		getImagePitchAndBytes(format, mipsize.Width, mipsize.Height, mipDataPitch[i], mipDataSize[i]);
 		dataSize += mipDataSize[i];
 	}
 
-	u32 offset = 0;
-	u8* data = (u8*)Z_AllocateTempMemory(dataSize);
-	for (u32 i=0; i<mipLevels; ++i)
+	uint32_t offset = 0;
+	uint8_t* data = (uint8_t*)Z_AllocateTempMemory(dataSize);
+	for (uint32_t i=0; i<mipLevels; ++i)
 	{
 		dimension2du mipsize = size.getMipLevelSize(i);
 		blp->copyMipmapData(i, data + offset, mipDataPitch[i], mipsize.Width, mipsize.Height);
@@ -92,7 +92,7 @@ bool CBlpToKTX::convertBlpToKTX( IBLPImage* blp, const c8* outputpath )
 }
 
 //注: etcpack.exe convert.exe 都需要，否则转换不成功
-bool CBlpToKTX::processPvrTexture( pvrtexture::CPVRTexture* pTexture, IBLPImage* blpImage, const c8* outputpath )
+bool CBlpToKTX::processPvrTexture( pvrtexture::CPVRTexture* pTexture, IBLPImage* blpImage, const char* outputpath )
 {
 	if(pTexture->getNumMIPLevels() == 0)
 	{
@@ -101,12 +101,12 @@ bool CBlpToKTX::processPvrTexture( pvrtexture::CPVRTexture* pTexture, IBLPImage*
 		return false;
 	}
 
-	u32 width = pTexture->getWidth();
-	u32 height = pTexture->getHeight();
+	uint32_t width = pTexture->getWidth();
+	uint32_t height = pTexture->getHeight();
 	bool isCompressed = isCompressedFormat(blpImage->getColorFormat());
-	const c8* format = getColorFormatString(blpImage->getColorFormat());
-	u8 alphaDepth = blpImage->getAlphaDepth();
-	u32 mipLevel = blpImage->getNumMipLevels();
+	const char* format = getColorFormatString(blpImage->getColorFormat());
+	uint8_t alphaDepth = blpImage->getAlphaDepth();
+	uint32_t mipLevel = blpImage->getNumMipLevels();
 
 	printf("width: %u, height: %u, format: %s, alpha: %u, mipmap: %u\n", width, height, format, alphaDepth, mipLevel);
 	printf("processing...\n");
@@ -165,8 +165,8 @@ bool CBlpToKTX::processPvrTexture( pvrtexture::CPVRTexture* pTexture, IBLPImage*
 	}
 
 	//reisze if neccesary
-	u32 nwidth = width;
-	u32 nheight = height;
+	uint32_t nwidth = width;
+	uint32_t nheight = height;
 
 	bool needresize = false;
 
@@ -285,7 +285,7 @@ bool CBlpToKTX::processPvrTexture( pvrtexture::CPVRTexture* pTexture, IBLPImage*
 	return true;
 }
 
-bool CBlpToKTX::addAlphaMetadata( const c8* filename )
+bool CBlpToKTX::addAlphaMetadata( const char* filename )
 {
 	FILE* file = _fsopen(filename, "rb+", _SH_DENYWR);
 	if (!file)
@@ -295,7 +295,7 @@ bool CBlpToKTX::addAlphaMetadata( const c8* filename )
 	}
 
 	fseek(file, 0, SEEK_END);
-	u32 size = ftell(file);
+	uint32_t size = ftell(file);
 	fseek(file, 0, SEEK_SET);
 
 	if (size < sizeof(KTX_Header))
@@ -305,7 +305,7 @@ bool CBlpToKTX::addAlphaMetadata( const c8* filename )
 		return false;
 	}
 
-	u8* filedata = (u8*)Z_AllocateTempMemory(size);
+	uint8_t* filedata = (uint8_t*)Z_AllocateTempMemory(size);
 	if (fread(filedata, 1, size, file) != size)
 	{
 		fclose(file);
@@ -314,8 +314,8 @@ bool CBlpToKTX::addAlphaMetadata( const c8* filename )
 	}
 
 	KTX_Header* header = reinterpret_cast<KTX_Header*>(filedata);
-	u8* textureData = filedata + sizeof(KTX_Header) + header->bytesOfKeyValueData;
-	u32 textureSize = size - sizeof(KTX_Header) - header->bytesOfKeyValueData;
+	uint8_t* textureData = filedata + sizeof(KTX_Header) + header->bytesOfKeyValueData;
+	uint32_t textureSize = size - sizeof(KTX_Header) - header->bytesOfKeyValueData;
 
 	//write header
 	header->bytesOfKeyValueData = sizeof(KTX_Metadata);
@@ -329,7 +329,7 @@ bool CBlpToKTX::addAlphaMetadata( const c8* filename )
 
 	//write metadata
 	KTX_Metadata metadata;
-	metadata.byteSize = sizeof(u32) * 2;
+	metadata.byteSize = sizeof(uint32_t) * 2;
 	metadata.key = KTX_METADATA_ALPHAINFO;
 	metadata.data = 1;
 	if (fwrite(&metadata, 1, sizeof(KTX_Metadata), file) != sizeof(KTX_Metadata))

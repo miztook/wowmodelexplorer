@@ -109,9 +109,7 @@ private:
 	{
 		matrix4 		mWorldViewProjection;    // World * View * Projection
 		matrix4			mWorldView;		//World * View
-		float		LightDir[4];				//light dir
-		SColorf		LightColor;
-		float		MaterialParams[4];	//0: ambient, 1: diffuse, 2: specular
+		matrix4			mWorld;			//World
 		float		fogParams[4];		//0: fogMode, 1: fogStart, 2: fogEnd, 3: fogDensity
 		float		ClipPlane0[4];
 		float				Params[4];		//0: animTexture, 1: fogEnable
@@ -122,9 +120,7 @@ private:
 	{
 		matrix4 		mWorldViewProjection;    // World * View * Projection
 		matrix4			mWorldView;		//World * View
-		float		LightDir[4];				//light dir
-		SColorf		LightColor;
-		float		MaterialParams[4];	//0: ambient, 1: diffuse, 2: specular
+		matrix4			mWorld;			//World
 		float		fogParams[4];		//0: fogMode, 1: fogStart, 2: fogEnd, 3: fogDensity
 		float		ClipPlane0[4];
 		float				Params[4];		//0: animTexture, 1: fogEnable

@@ -20,3 +20,4 @@ void destroyInput();
 void processInput();
 
 void idleTick();
+

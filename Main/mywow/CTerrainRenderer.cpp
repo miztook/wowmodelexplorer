@@ -79,7 +79,7 @@ void CTerrainRenderer::begin_setupLightFog(ICamera* cam) const
 	//dlight
 	SLight light;
 	light.Type = ELT_DIRECTIONAL;
-	light.DiffuseColor = sceneEnv->DirLightColor;
+	light.LightColor = sceneEnv->DirLightColor;
 	light.Direction = sceneEnv->LightDir;
 
 	sceneService->setLight_Fog(ISceneEnvironment::INDEX_DIR_LIGHT, sceneEnv->EnableDirLight, light, sceneEnv->AmbientColor, param);

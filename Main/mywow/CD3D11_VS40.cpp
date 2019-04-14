@@ -280,7 +280,7 @@ void CD3D11_VS40::Terrain_setShaderConst( IVertexShader* vs, const SMaterial& ma
 	cbuffer.LightDir[1] = l->Direction.Y;
 	cbuffer.LightDir[2] = l->Direction.Z;
 
-	cbuffer.LightColor = SColorf(l->DiffuseColor);
+	cbuffer.LightColor = SColorf(l->LightColor);
 
 	cbuffer.MaterialParams[0] = sceneEnv->TerrainMaterialParams[0];
 	cbuffer.MaterialParams[1] = sceneEnv->TerrainMaterialParams[1];
@@ -326,7 +326,7 @@ void CD3D11_VS40::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMateri
 	cbuffer.LightDir[1] = l->Direction.Y;
 	cbuffer.LightDir[2] = l->Direction.Z;
 
-	cbuffer.LightColor = SColorf(l->DiffuseColor);
+	cbuffer.LightColor = SColorf(l->LightColor);
 
 	cbuffer.MaterialParams[0] = sceneEnv->WmoMaterialParams[0];
 	cbuffer.MaterialParams[1] = sceneEnv->WmoMaterialParams[1];
@@ -373,7 +373,7 @@ void CD3D11_VS40::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMater
 	cbuffer.LightDir[1] = l->Direction.Y;
 	cbuffer.LightDir[2] = l->Direction.Z;
 
-	cbuffer.LightColor = SColorf(l->DiffuseColor);
+	cbuffer.LightColor = SColorf(l->LightColor);
 
 	cbuffer.MaterialParams[0] = sceneEnv->WmoMaterialParams[0];
 	cbuffer.MaterialParams[1] = sceneEnv->WmoMaterialParams[1];

@@ -277,12 +277,20 @@ void COpenGL_PS15::MapObjOpaque_setShaderConst( IPixelShader* ps, const SMateria
 	const SRenderUnit* renderUnit = g_Engine->getSceneRenderServices()->getCurrentUnit();
 
 	// param
-	MapObjOpaque_CB cbuffer;
-	cbuffer.AmbientColor = material.Lighting ? SColorf(sceneStateServices->getAmbientLight()) * material.AmbientColor : material.EmissiveColor;
+	MapObjDiffuse_CB cbuffer;
+	const SLight* l = sceneStateServices->getDynamicLight(ISceneEnvironment::INDEX_DIR_LIGHT);
+	cbuffer.LightDir[0] = l->Direction.X;
+	cbuffer.LightDir[1] = l->Direction.Y;
+	cbuffer.LightDir[2] = l->Direction.Z;
+	cbuffer.LightColor = SColorf(l->LightColor);
+
+	cbuffer.Diffuse = material.DiffuseColor;
+	cbuffer.Emissive = material.EmissiveColor;
+
 	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
+	cbuffer.params[0] = 0.0f;
 
 	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, sizeof(cbuffer));
-
 	services->setSampler_Texture(0, renderUnit->textures[0]);
 }
 
@@ -296,16 +304,21 @@ void COpenGL_PS15::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& mat
 	const SRenderStateBlock& block = services->getRenderStateBlock();
 
 	// param
-	MapObjAlphaTest_CB cbuffer;
-	cbuffer.AmbientColor = material.Lighting ? SColorf(sceneStateServices->getAmbientLight()) * material.AmbientColor : material.EmissiveColor;
+	MapObjDiffuse_CB cbuffer;
+	const SLight* l = sceneStateServices->getDynamicLight(ISceneEnvironment::INDEX_DIR_LIGHT);
+	cbuffer.LightDir[0] = l->Direction.X;
+	cbuffer.LightDir[1] = l->Direction.Y;
+	cbuffer.LightDir[2] = l->Direction.Z;
+	cbuffer.LightColor = SColorf(l->LightColor);
+
+	cbuffer.Diffuse = material.DiffuseColor;
+	cbuffer.Emissive = material.EmissiveColor; 
+	
 	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
 	cbuffer.params[0] = block.alphaTestEnabled ? 1.0f : 0.0f;
-	if(block.alphaTestEnabled)
-		cbuffer.params[1] = block.alphaTestRef / 255.0f;
+	cbuffer.params[1] = block.alphaTestRef / 255.0f;
 
-	uint32_t size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
-	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, size);
-
+	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, sizeof(cbuffer));
 	services->setSampler_Texture(0, renderUnit->textures[0]);
 }
 
@@ -318,15 +331,20 @@ void COpenGL_PS15::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMater
 	const SRenderStateBlock& block = services->getRenderStateBlock();
 
 	// param
-	MapObjAlphaTest_CB cbuffer;
-	cbuffer.AmbientColor = material.Lighting ? SColorf(sceneStateServices->getAmbientLight()) * material.AmbientColor : material.EmissiveColor;
+	MapObjDiffuse_CB cbuffer;
+	const SLight* l = sceneStateServices->getDynamicLight(ISceneEnvironment::INDEX_DIR_LIGHT);
+	cbuffer.LightDir[0] = l->Direction.X;
+	cbuffer.LightDir[1] = l->Direction.Y;
+	cbuffer.LightDir[2] = l->Direction.Z;
+	cbuffer.LightColor = SColorf(l->LightColor);
+
+	cbuffer.Diffuse = material.DiffuseColor;
+	cbuffer.Emissive = material.EmissiveColor;
+
 	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
 	cbuffer.params[0] = block.alphaTestEnabled ? 1.0f : 0.0f;
-	if(block.alphaTestEnabled)
-		cbuffer.params[1] = block.alphaTestRef / 255.0f;
-
-	uint32_t size = block.alphaTestEnabled ? sizeof(cbuffer) : sizeof(cbuffer) - sizeof(cbuffer.params);
-	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, size);
+	cbuffer.params[1] = block.alphaTestRef / 255.0f;
+	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, sizeof(cbuffer));
 
 	services->setSampler_Texture(0, renderUnit->textures[0]);
 
@@ -341,10 +359,18 @@ void COpenGL_PS15::MapObjTwoLayerOpaque_setShaderConst( IPixelShader* ps, const 
 	const SRenderUnit* renderUnit = g_Engine->getSceneRenderServices()->getCurrentUnit();
 
 	// param
-	MapObjOpaque_CB cbuffer;
-	cbuffer.AmbientColor = material.Lighting ? SColorf(sceneStateServices->getAmbientLight()) * material.AmbientColor : material.EmissiveColor;
-	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
+	MapObjDiffuse_CB cbuffer;
+	const SLight* l = sceneStateServices->getDynamicLight(ISceneEnvironment::INDEX_DIR_LIGHT);
+	cbuffer.LightDir[0] = l->Direction.X;
+	cbuffer.LightDir[1] = l->Direction.Y;
+	cbuffer.LightDir[2] = l->Direction.Z;
+	cbuffer.LightColor = SColorf(l->LightColor);
 
+	cbuffer.Diffuse = material.DiffuseColor;
+	cbuffer.Emissive = material.EmissiveColor;
+
+	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
+	cbuffer.params[0] = 0.0f;
 	shaderServices->setShaderUniformF("g_psbuffer", (const float*)&cbuffer, sizeof(cbuffer));
 
 	services->setSampler_Texture(0, renderUnit->textures[0]);

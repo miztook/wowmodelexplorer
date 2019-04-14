@@ -170,6 +170,9 @@ void CWMOSceneNode::renderWMOGroup( uint32_t groupIndex, uint32_t batchIndex ) c
 
 	setMaterial(material, unit.material);
 
+// 	if (unit.material.PsType != EPST_MAPOBJ_DIFFUSE && unit.material.PsType != EPST_MAPOBJ_OPAQUE)
+// 		return;
+
 	unit.distance = dynGroup->distancesq;
 	unit.bufferParam.vbuffer0 = wmo->VertexBuffer;
 	unit.bufferParam.ibuffer = wmo->IndexBuffer;
@@ -266,7 +269,7 @@ void CWMOSceneNode::setMaterial( const SWMOMaterial* material, SMaterial& mat ) 
 	case EnvMetal:
 		{
  			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1_ENV_T2);
-			mat.PsType = EPST_MAPOBJ_ENVMETAL;
+ 			mat.PsType = EPST_MAPOBJ_ENVMETAL;
 		}
 		break;
 	case TwoLayerDiffuse:
@@ -325,27 +328,31 @@ void CWMOSceneNode::setMaterial( const SWMOMaterial* material, SMaterial& mat ) 
 		break;
 	}
 
-	mat.AmbientColor.set(1.0f, 1.0f, 1.0f);
-	mat.SpecularColor.set(0.3f, 0.3f, 0.3f);
+	mat.AmbientColor.set(0.0f, 0.0f, 0.0f);
+	mat.SpecularColor.set(0.0f, 0.0f, 0.0f);
 
 	if (material->flags & 0x4)
 	{
 		mat.Cull = ECM_FRONT;
 	}
 
-	if(material->flags & 0x10)
+	if (material->flags & 0x1)
+	{
+ 		mat.Lighting = false;
+		mat.EmissiveColor = SColorf(1.5f, 1.5f, 1.5f);
+		mat.DiffuseColor.set(0.0f, 0.0f, 0.0f);
+	}
+	else if(material->flags & 0x10)
 	{	
 		mat.Lighting = false;
-		mat.EmissiveColor = SColorf(material->color0);
-	}
-	else if (material->flags & 0x20)
-	{
-		mat.Lighting = false;
-		mat.EmissiveColor = SColorf(material->color1);
+		mat.EmissiveColor = SColorf(material->color0) + SColorf(0.5f, 0.5f, 0.5f);
+		mat.DiffuseColor.set(0.0f, 0.0f, 0.0f);
 	}
 	else
 	{
 		mat.Lighting = true;
+		mat.EmissiveColor.set(0.0f, 0.0f, 0.0f);
+		mat.DiffuseColor.set(1.0f, 1.0f, 1.0f);
 	}
 
 	mat.FogEnable = EnableFog;

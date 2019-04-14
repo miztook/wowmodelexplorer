@@ -5,8 +5,8 @@
 #include <d3dx9.h>
 
 //
-void funcShader9VS( const c8* filename, void* args );
-void funcShader9PS( const c8* filename, void* args );
+void funcShader9VS( const char* filename, void* args );
+void funcShader9PS( const char* filename, void* args );
 
 void buildShaders_20(bool vs, bool ps);
 void buildShaders_30(bool vs, bool ps);
@@ -14,7 +14,7 @@ void buildShaders_30(bool vs, bool ps);
 class CD3D9ShaderInclude : public ID3DXInclude
 {
 public:
-	explicit CD3D9ShaderInclude(const c8* dir) 
+	explicit CD3D9ShaderInclude(const char* dir) 
 	{
 		Q_strcpy(CurrentDir, MAX_TEXT_LENGTH, dir);
 		normalizeDirName(CurrentDir);
@@ -25,5 +25,5 @@ public:
 	STDMETHOD				(Close)(LPCVOID Data);
 
 private:
-	c8			CurrentDir[MAX_TEXT_LENGTH];
+	char			CurrentDir[MAX_TEXT_LENGTH];
 };

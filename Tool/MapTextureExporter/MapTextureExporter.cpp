@@ -48,13 +48,13 @@ void exportMapTextures(const char* dirname)
 	WowClassic::wowDatabase* database = g_Engine->getWowDatabase();
 	IFileSystem* fs = g_Engine->getFileSystem();
 
-	for(u32 iMap = 0; iMap < database->getNumMaps(); ++iMap)
+	for(uint32_t iMap = 0; iMap < database->getNumMaps(); ++iMap)
 	{
 		const SMapRecord* mapRecord = database->getMap(iMap);
 		if(mapRecord->type != 2)
 			continue;
 
-		c8 mapname[MAX_PATH];
+		char mapname[MAX_PATH];
 		sprintf_s(mapname, MAX_PATH, "World\\Maps\\%s\\%s.wdt", mapRecord->name, mapRecord->name);
 
 		CFileWDT* fileWDT = static_cast<CFileWDT*>(g_Engine->getResourceLoader()->loadWDT(mapname, mapRecord->id));
@@ -65,9 +65,9 @@ void exportMapTextures(const char* dirname)
 		wdtDir.append(mapRecord->name);
 		wdtDir.append("/");
 
-		u32 nTiles = fileWDT->getTileCount();
+		uint32_t nTiles = fileWDT->getTileCount();
 		T_FileNameSet texFileNameSet;
-		for (u32 i=0; i<nTiles; ++i)
+		for (uint32_t i=0; i<nTiles; ++i)
 		{
 			STile* tile = fileWDT->getTile(i);
 			if(fileWDT->loadADTTextures(tile))
@@ -79,7 +79,7 @@ void exportMapTextures(const char* dirname)
 					//adtDir.format("%s%d_%d/", wdtDir.c_str(), (int)tile->row, (int)tile->col);
 					//fs->createDirectory(adtDir.c_str());
 
-					for (u32 t=0; t<fileADT->getNumTextures(); ++t)
+					for (uint32_t t=0; t<fileADT->getNumTextures(); ++t)
 					{
 						const char* texName = fileADT->getTextureName(t);
 						texFileNameSet.insert(texName);
@@ -109,8 +109,8 @@ void exportMapTextures(const char* dirname)
 				string512 texDir;
 				texDir.format("%s%d.tga", wdtDir.c_str(), nTextures);
 
-				u32 dataSize = size.Width * size.Height * getBytesPerPixelFromFormat(ECF_R8G8B8);
-				u8* data = (u8*)Z_AllocateTempMemory(dataSize);
+				uint32_t dataSize = size.Width * size.Height * getBytesPerPixelFromFormat(ECF_R8G8B8);
+				uint8_t* data = (uint8_t*)Z_AllocateTempMemory(dataSize);
 				image->copyToScaling(data, size.Width, size.Height, ECF_R8G8B8);
 
 				bool ret = TGAWriteFile(texDir.c_str(), size.Width, size.Height, TGA_FORMAT_BGR, data);
@@ -131,7 +131,7 @@ void exportWmoTextures(const char* dirname)
 	WowClassic::wowDatabase* database = g_Engine->getWowDatabase();
 	IFileSystem* fs = g_Engine->getFileSystem();
 
-	for (u32 iWmo = 0; iWmo < database->getNumWmos(); ++iWmo)
+	for (uint32_t iWmo = 0; iWmo < database->getNumWmos(); ++iWmo)
 	{
 		if (iWmo<=4000)
 			continue;
@@ -142,7 +142,7 @@ void exportWmoTextures(const char* dirname)
 		if (!fileWMO)
 			continue;
 
-		c8 shortname[256];
+		char shortname[256];
 		getFileNameNoExtensionA(wmoname, shortname, 256);
 
 		string512 wmoDir = dirname;
@@ -150,13 +150,13 @@ void exportWmoTextures(const char* dirname)
 		wmoDir.append("/");
 
 		T_FileNameSet texFileNameSet;
-		for (u32 i=0; i<fileWMO->getNumGroups(); ++i)
+		for (uint32_t i=0; i<fileWMO->getNumGroups(); ++i)
 		{
 			CWMOGroup* group = &fileWMO->Groups[i];
-			for (u32 c=0; c<group->NumBatches; ++c)
+			for (uint32_t c=0; c<group->NumBatches; ++c)
 			{
 				const SWMOBatch* batch = &group->Batches[c];
-				u16 matId = batch->matId;
+				uint16_t matId = batch->matId;
 				const SWMOMaterial* material = &fileWMO->Materials[matId]; 
 				if (material->texture0)
 				{
@@ -184,8 +184,8 @@ void exportWmoTextures(const char* dirname)
 				string512 texDir;
 				texDir.format("%s%d.tga", wmoDir.c_str(), nTextures);
 
-				//u32 dataSize = size.Width * size.Height * getBytesPerPixelFromFormat(ECF_R8G8B8);
-				//u8* data = (u8*)Z_AllocateTempMemory(dataSize);
+				//uint32_t dataSize = size.Width * size.Height * getBytesPerPixelFromFormat(ECF_R8G8B8);
+				//uint8_t* data = (uint8_t*)Z_AllocateTempMemory(dataSize);
 				//image->copyToScaling(data, size.Width, size.Height, ECF_R8G8B8);
 
 				bool ret = TGAWriteFile(texDir.c_str(), size.Width, size.Height, TGA_FORMAT_BGRA, image->getData());

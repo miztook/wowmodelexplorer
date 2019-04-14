@@ -17,7 +17,7 @@ wowEnvironment* g_wowEnv = NULL;
 int nSucceed = 0;
 int nFailed = 0;
 
-void readAndSaveFiles(const c8* filename);
+void readAndSaveFiles(const char* filename);
 
 int main()
 {
@@ -44,7 +44,7 @@ int main()
 	return 0;
 }
 
-void readAndSaveFiles( const c8* filename )
+void readAndSaveFiles( const char* filename )
 {
 	IReadFile* rfile = g_fs->createAndOpenFile(filename, false);
 	if (!rfile)
@@ -53,14 +53,14 @@ void readAndSaveFiles( const c8* filename )
 		return;
 	}
 
-	c8 buffer[1024] = {0};
-	c8 name[512] = {0};
-	c8 locale[64] = {0};
+	char buffer[1024] = {0};
+	char name[512] = {0};
+	char locale[64] = {0};
 
-	u32 len = rfile->readLine(buffer, 1024);
+	uint32_t len = rfile->readLine(buffer, 1024);
 	while(len)
 	{
-		u32 count = 0;
+		uint32_t count = 0;
 		while(count < len)
 		{
 			if (buffer[count] == ',' && count > 0)

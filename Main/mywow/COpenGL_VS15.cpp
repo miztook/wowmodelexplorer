@@ -348,7 +348,7 @@ void COpenGL_VS15::Terrain_setShaderConst( IVertexShader* vs, const SMaterial& m
 	cbuffer.LightDir[1] = l->Direction.Y;
 	cbuffer.LightDir[2] = l->Direction.Z;
 
-	cbuffer.LightColor = SColorf(l->DiffuseColor);
+	cbuffer.LightColor = SColorf(l->LightColor);
 
 	cbuffer.MaterialParams[0] = sceneEnv->TerrainMaterialParams[0];
 	cbuffer.MaterialParams[1] = sceneEnv->TerrainMaterialParams[1];
@@ -400,17 +400,8 @@ void COpenGL_VS15::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMater
 	cbuffer.mWorldViewProjection.transpose();
 	driver->getWVMatrix(cbuffer.mWorldView);
 	cbuffer.mWorldView.transpose();
-
-	const SLight* l = sceneStateServices->getDynamicLight(ISceneEnvironment::INDEX_DIR_LIGHT);
-	cbuffer.LightDir[0] = l->Direction.X;
-	cbuffer.LightDir[1] = l->Direction.Y;
-	cbuffer.LightDir[2] = l->Direction.Z;
-
-	cbuffer.LightColor = SColorf(l->DiffuseColor);
-
-	cbuffer.MaterialParams[0] = sceneEnv->WmoMaterialParams[0];
-	cbuffer.MaterialParams[1] = sceneEnv->WmoMaterialParams[1];
-	cbuffer.MaterialParams[2] = sceneEnv->WmoMaterialParams[2];
+	driver->getWMatrix(cbuffer.mWorld);
+	cbuffer.mWorld.transpose();
 
 	//fog
 	cbuffer.fogParams[0] = (float)fogParam.FogType;
@@ -458,17 +449,8 @@ void COpenGL_VS15::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMate
 	cbuffer.mWorldViewProjection.transpose();
 	driver->getWVMatrix(cbuffer.mWorldView);
 	cbuffer.mWorldView.transpose();
-
-	const SLight* l = sceneStateServices->getDynamicLight(ISceneEnvironment::INDEX_DIR_LIGHT);
-	cbuffer.LightDir[0] = l->Direction.X;
-	cbuffer.LightDir[1] = l->Direction.Y;
-	cbuffer.LightDir[2] = l->Direction.Z;
-
-	cbuffer.LightColor = SColorf(l->DiffuseColor);
-
-	cbuffer.MaterialParams[0] = sceneEnv->WmoMaterialParams[0];
-	cbuffer.MaterialParams[1] = sceneEnv->WmoMaterialParams[1];
-	cbuffer.MaterialParams[2] = sceneEnv->WmoMaterialParams[2];
+	driver->getWMatrix(cbuffer.mWorld);
+	cbuffer.mWorld.transpose();
 
 	//fog
 	cbuffer.fogParams[0] = (float)fogParam.FogType;

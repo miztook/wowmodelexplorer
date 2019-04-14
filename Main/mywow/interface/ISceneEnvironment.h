@@ -34,17 +34,17 @@ class ISceneEnvironment
 {
 public:
 	ISceneEnvironment() 
-		: AmbientColor(255, 255, 255), DirLightColor(SColor::White()), LightDir(-vector3df::UnitY())
+		: AmbientColor(255, 255, 255), DirLightColor(SColor::White()), LightDir(0.7071f, -0.7071f, 0)
 	{
 		EnableDirLight = false;
 
-		WmoMaterialParams[EML_AMBIENT] = 0.85f;
-		WmoMaterialParams[EML_DIFFUSE] = 0.15f;
-		WmoMaterialParams[EML_SPECULAR] = 0.1f;
+		WmoMaterialParams[EML_DIFFUSE] = 1.0f;
+		WmoMaterialParams[EML_SPECULAR] = 0.3f;
+		WmoMaterialParams[EML_EMISSIVE] = 0.1f;
 
-		TerrainMaterialParams[EML_AMBIENT] = 0.9f;
-		TerrainMaterialParams[EML_DIFFUSE] = 0.1f;
+		TerrainMaterialParams[EML_DIFFUSE] = 1.0f;
 		TerrainMaterialParams[EML_SPECULAR] = 0.7f;
+		TerrainMaterialParams[EML_EMISSIVE] = 0.1f;
 	}
 	virtual ~ISceneEnvironment() {}
 

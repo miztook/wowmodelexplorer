@@ -10,8 +10,8 @@
 
 bool initOpenGL(HWND hwnd, dimension2du windowSize);
 void releaseOpenGL(HWND hwnd);
-void funcShaderVS(const c8* filename, void* args);
-void funcShaderPS(const c8* filename, void* args);
+void funcShaderVS(const char* filename, void* args);
+void funcShaderPS(const char* filename, void* args);
 void buildShaders_12(bool vs, bool ps);
 void buildShaders_15(bool vs, bool ps);
 
@@ -69,8 +69,8 @@ bool initOpenGL(HWND hwnd, dimension2du windowSize)
 {
 	g_hDC = ::GetDC(hwnd);
 
-	const u8 depthBits = 24;
-	const u8 stencilBits = 8;
+	const uint8_t depthBits = 24;
+	const uint8_t stencilBits = 8;
 
 	// Set up pixel format descriptor with desired parameters
 	PIXELFORMATDESCRIPTOR pfd = {
@@ -166,7 +166,7 @@ void releaseOpenGL( HWND hwnd )
 }
 
 
-void funcShaderVS( const c8* filename, void* args )
+void funcShaderVS( const char* filename, void* args )
 {
 	string256 absfilename = filename;
 
@@ -182,13 +182,13 @@ void funcShaderVS( const c8* filename, void* args )
 	//macro
 	printf("compiling: %s\n", absfilename.c_str());
 
-	c8* buffer = (c8*)Z_AllocateTempMemory(rfile->getSize());
+	char* buffer = (char*)Z_AllocateTempMemory(rfile->getSize());
 	rfile->seek(0);
 
-	c8* p = buffer;
+	char* p = buffer;
 	while(!rfile->isEof())
 	{
-		u32 size = rfile->readText(p, rfile->getSize());
+		uint32_t size = rfile->readText(p, rfile->getSize());
 
 		//if(!isComment(p))			//skip comment
 		p += size;
@@ -219,7 +219,7 @@ void funcShaderVS( const c8* filename, void* args )
 	delete rfile;
 }
 
-void funcShaderPS( const c8* filename, void* args )
+void funcShaderPS( const char* filename, void* args )
 {
 	string256 absfilename = filename;
 
@@ -232,26 +232,26 @@ void funcShaderPS( const c8* filename, void* args )
 		return;
 	}
 
-	for (u32 i=PS_Macro_None; i<PS_Macro_Num; ++i)
+	for (uint32_t i=PS_Macro_None; i<PS_Macro_Num; ++i)
 	{
 		//macro
 		string1024 macroString;
-		const c8* strMacro = getPSMacroString((E_PS_MACRO)i);
+		const char* strMacro = getPSMacroString((E_PS_MACRO)i);
 		makeMacroString(macroString, strMacro);
 
 		printf("compiling: %s, macro: %s\n", absfilename.c_str(), strMacro);
 
-		u32 macroLength = macroString.length();
-		c8* buffer = (c8*)Z_AllocateTempMemory(macroLength + rfile->getSize());
+		uint32_t macroLength = macroString.length();
+		char* buffer = (char*)Z_AllocateTempMemory(macroLength + rfile->getSize());
 		rfile->seek(0);
 
-		c8* p = buffer;
+		char* p = buffer;
 
 		bool version = false;
 		bool macroAdd = false;
 		while(!rfile->isEof())
 		{
-			u32 size = rfile->readText(p, rfile->getSize());
+			uint32_t size = rfile->readText(p, rfile->getSize());
 
 			if(size>1 /*&& !isComment(p)*/)			//skip comment
 			{
@@ -315,7 +315,7 @@ GLhandleARB createHLShader( GLenum shaderType, const char* shader )
 			GL_OBJECT_INFO_LOG_LENGTH_ARB, &maxLength);
 		GLcharARB* infoLog = (GLcharARB*)Z_AllocateTempMemory(sizeof(GLcharARB) * maxLength);
 		g_GLExtension->extGlGetInfoLog(shaderHandle, maxLength, &length, infoLog);
-		printf("%s\n", reinterpret_cast<const c8*>(infoLog));
+		printf("%s\n", reinterpret_cast<const char*>(infoLog));
 		Z_FreeTempMemory(infoLog);
 
 		shaderHandle = NULL;
@@ -326,7 +326,7 @@ GLhandleARB createHLShader( GLenum shaderType, const char* shader )
 
 void buildShaders_12( bool vs, bool ps )
 {
-	const c8* basedir = g_fs->getShaderBaseDirectory();
+	const char* basedir = g_fs->getShaderBaseDirectory();
 
 	printf("1_2.................................................................\n\n");
 
@@ -349,7 +349,7 @@ void buildShaders_12( bool vs, bool ps )
 
 void buildShaders_15( bool vs, bool ps )
 {
-	const c8* basedir = g_fs->getShaderBaseDirectory();
+	const char* basedir = g_fs->getShaderBaseDirectory();
 
 	printf("1_5.................................................................\n\n");
 
