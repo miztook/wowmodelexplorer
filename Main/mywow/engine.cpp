@@ -14,15 +14,6 @@
 #include "CD3D9ManualTextureServices.h"
 #include "CD3D9Helper.h"
 
-//dx11
-#include "CD3D11Driver.h"
-#include "CD3D11HardwareBufferServices.h"
-#include "CD3D11DrawServices.h"
-#include "CD3D11ResourceLoader.h"
-#include "CD3D11TextureWriteServices.h"
-#include "CD3D11ManualTextureServices.h"
-#include "CD3D11Helper.h"
-
 //opengl
 #include "COpenGLDriver.h"
 #include "COpenGLHardwareBufferServices.h"
@@ -187,29 +178,6 @@ bool Engine::initDriver(E_DRIVER_TYPE driverType, uint32_t adapter, bool fullscr
 		ResourceLoader = new CD3D9ResourceLoader;
 		TextureWriteServices = new CD3D9TextureWriteServices;
 		ManualTextureServices = new CD3D9ManualTextureServices;
-
-#endif
-		m_IsDXFamily = true;
-
-		break;
-	case EDT_DIRECT3D11:
-
-#ifdef MW_COMPILE_WITH_DIRECT3D11
-		if (!CD3D11Helper::init())
-		{
-			goto fail;
-		}
-
-		Driver = new CD3D11Driver;
-		if (!static_cast<CD3D11Driver*>(Driver)->initDriver(WindowInfo, adapter, fullscreen, vsync, antialias, multithread))
-		{
-			goto fail;
-		}
-		HardwareBufferServices = new CD3D11HardwareBufferServices;
-		DrawServices = new CD3D11DrawServices;
-		ResourceLoader = new CD3D11ResourceLoader;
-		TextureWriteServices = new CD3D11TextureWriteServices;
-		ManualTextureServices = new CD3D11ManualTextureServices;
 
 #endif
 		m_IsDXFamily = true;

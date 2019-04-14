@@ -51,12 +51,6 @@
     <Filter Include="implementation\input">
       <UniqueIdentifier>{f275d72e-7696-421e-a52e-2b1912bc3aec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="implementation\video\Direct3D11">
-      <UniqueIdentifier>{c4f87801-983c-44fa-a6ec-31ea4d20a222}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="implementation\video\Direct3D11\Shaders">
-      <UniqueIdentifier>{049277a0-d39e-40eb-812c-da7d70c9a409}</UniqueIdentifier>
-    </Filter>
     <Filter Include="implementation\external">
       <UniqueIdentifier>{c4a53ce4-8df9-40ae-9c55-8bcbb328da42}</UniqueIdentifier>
     </Filter>
@@ -245,59 +239,17 @@
     <ClInclude Include="CSceneEnvironment.h">
       <Filter>implementation\scene</Filter>
     </ClInclude>
-    <ClInclude Include="CD3D11Driver.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
     <ClInclude Include="mpq_stormlib.h">
       <Filter>wow</Filter>
     </ClInclude>
     <ClInclude Include="CFileADT.h">
       <Filter>wow</Filter>
     </ClInclude>
-    <ClInclude Include="CD3D11Texture.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11HardwareBufferServices.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11Helper.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11ManualTextureServices.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11MaterialRenderer.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11MaterialRenderServices.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11RenderTarget.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11ResourceLoader.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11SceneStateServices.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11Shader.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11ShaderServices.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
     <ClInclude Include="CResourceLoader.h">
       <Filter>implementation\iosys</Filter>
     </ClInclude>
     <ClInclude Include="CD3D9VertexDeclaration.h">
       <Filter>implementation\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11VertexDeclaration.h">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11Structs.h">
-      <Filter>implementation\video\Direct3D11</Filter>
     </ClInclude>
     <ClInclude Include="CCoordSceneNode.h">
       <Filter>implementation\scene\sceneNode</Filter>
@@ -308,26 +260,11 @@
     <ClInclude Include="CD3D9_PS30.h">
       <Filter>implementation\video\Direct3D9\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="CD3D11_VS40.h">
-      <Filter>implementation\video\Direct3D11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11_PS40.h">
-      <Filter>implementation\video\Direct3D11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11_PS50.h">
-      <Filter>implementation\video\Direct3D11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11_VS50.h">
-      <Filter>implementation\video\Direct3D11\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="CCamera.h">
       <Filter>implementation\scene</Filter>
     </ClInclude>
     <ClInclude Include="CD3D9TextureWriteServices.h">
       <Filter>implementation\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11TextureWriteServices.h">
-      <Filter>implementation\video\Direct3D11</Filter>
     </ClInclude>
     <ClInclude Include="COpenGLDriver.h">
       <Filter>implementation\video\OpenGL</Filter>
@@ -421,9 +358,6 @@
     </ClInclude>
     <ClInclude Include="CD3D9DrawServices.h">
       <Filter>implementation\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="CD3D11DrawServices.h">
-      <Filter>implementation\video\Direct3D11</Filter>
     </ClInclude>
     <ClInclude Include="interface\ai.h">
       <Filter>interface\ai</Filter>
@@ -1099,59 +1033,17 @@
     <ClCompile Include="CSceneEnvironment.cpp">
       <Filter>implementation\scene</Filter>
     </ClCompile>
-    <ClCompile Include="CD3D11Driver_base.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11Driver_draw.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
     <ClCompile Include="mpq_stormlib.cpp">
       <Filter>wow</Filter>
     </ClCompile>
     <ClCompile Include="enginesetting.cpp">
       <Filter>implementation</Filter>
     </ClCompile>
-    <ClCompile Include="CD3D11Texture.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11HardwareBufferServices.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11Helper.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11ManualTextureServices.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11MaterialRenderer.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11MaterialRenderServices.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11RenderTarget.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11ResourceLoader.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11SceneStateServices.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11Shader.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11ShaderServices.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
     <ClCompile Include="CResourceLoader.cpp">
       <Filter>implementation\iosys</Filter>
     </ClCompile>
     <ClCompile Include="CD3D9VertexDeclaration.cpp">
       <Filter>implementation\video\Direct3D9</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11VertexDeclaration.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
     </ClCompile>
     <ClCompile Include="ftsystem_mpq.cpp">
       <Filter>implementation\external\freetype</Filter>
@@ -1165,18 +1057,6 @@
     <ClCompile Include="CD3D9_PS30.cpp">
       <Filter>implementation\video\Direct3D9\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="CD3D11_VS40.cpp">
-      <Filter>implementation\video\Direct3D11\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11_PS40.cpp">
-      <Filter>implementation\video\Direct3D11\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11_PS50.cpp">
-      <Filter>implementation\video\Direct3D11\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11_VS50.cpp">
-      <Filter>implementation\video\Direct3D11\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="wow_m2appearance.cpp">
       <Filter>wow\m2</Filter>
     </ClCompile>
@@ -1188,9 +1068,6 @@
     </ClCompile>
     <ClCompile Include="CD3D9TextureWriteServices.cpp">
       <Filter>implementation\video\Direct3D9</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11TextureWriteServices.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
     </ClCompile>
     <ClCompile Include="COpenGLDriver_base.cpp">
       <Filter>implementation\video\OpenGL</Filter>
@@ -1312,17 +1189,11 @@
     <ClCompile Include="CD3D9DrawServices.cpp">
       <Filter>implementation\video\Direct3D9</Filter>
     </ClCompile>
-    <ClCompile Include="CD3D11DrawServices.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
-    </ClCompile>
     <ClCompile Include="CMemFile.cpp">
       <Filter>implementation\iosys</Filter>
     </ClCompile>
     <ClCompile Include="CD3D9Driver_Renderer.cpp">
       <Filter>implementation\video\Direct3D9</Filter>
-    </ClCompile>
-    <ClCompile Include="CD3D11Driver_Renderer.cpp">
-      <Filter>implementation\video\Direct3D11</Filter>
     </ClCompile>
     <ClCompile Include="COpenGLDriver_Renderer.cpp">
       <Filter>implementation\video\OpenGL</Filter>

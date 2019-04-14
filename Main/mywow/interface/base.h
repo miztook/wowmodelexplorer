@@ -181,7 +181,6 @@ enum E_DRIVER_TYPE : int32_t
 {
 	EDT_NULL = 0,
 	EDT_DIRECT3D9,
-	EDT_DIRECT3D11,
 	EDT_OPENGL,
 	EDT_COUNT,
 };
@@ -192,8 +191,6 @@ inline const char* getEnumString(E_DRIVER_TYPE type)
 	{
 	case EDT_DIRECT3D9:
 		return "Direct3D9";
-	case EDT_DIRECT3D11:
-		return "Direct3D11";
 	case EDT_OPENGL:
 		return "OpenGL";
 	default:
