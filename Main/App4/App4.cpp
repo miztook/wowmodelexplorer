@@ -47,7 +47,7 @@ int main()
 	g_Engine->initSceneManager();
 
 	//g_Engine->getWowDatabase()->buildNpcs("npcs.csv");
-	g_Engine->getWowDatabase()->buildItems();
+	//g_Engine->getWowDatabase()->buildItems();
 	//g_Engine->getWowDatabase()->buildMaps();
 	//g_Engine->getWowDatabase()->buildWmos();
 	//g_Engine->getWowDatabase()->buildStartOutfitClass();
