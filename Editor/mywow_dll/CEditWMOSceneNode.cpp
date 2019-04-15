@@ -63,13 +63,13 @@ void CEditWMOSceneNode::renderWMOGroup( uint32_t groupIndex, uint32_t batchIndex
 	CSceneRenderServices* sceneRenderServices = static_cast<CSceneRenderServices*>(g_Engine->getSceneRenderServices());
 
 	CFileWMO* wmo = static_cast<CFileWMO*>(Wmo);
-	CWMOGroup* group = &Wmo->Groups[groupIndex];
-	SDynGroup* dynGroup = &DynGroups[groupIndex];
+	const CWMOGroup* group = &Wmo->Groups[groupIndex];
+	const SDynGroup* dynGroup = &DynGroups[groupIndex];
 	const SWMOBatch* batch = &group->Batches[batchIndex];
 	uint16_t matId = batch->matId;
 	_ASSERT(matId < Wmo->Header.nMaterials);
 
-	const SWMOMaterial* material = &Wmo->Materials[matId]; 
+	const SWMOMaterial& material = Wmo->Materials[matId]; 
 
 	SRenderUnit unit = {0};
 
@@ -86,13 +86,13 @@ void CEditWMOSceneNode::renderWMOGroup( uint32_t groupIndex, uint32_t batchIndex
 	unit.drawParam.numVertices = batch->getVertexCount();
 	unit.sceneNode = this;
 	unit.matWorld = &AbsoluteTransformation;
-	unit.textures[0] = material->texture0;
-	unit.textures[1] = material->texture1;
+	unit.textures[0] = material.texture0;
+	unit.textures[1] = material.texture1;
 
 	sceneRenderServices->addRenderUnit(&unit, ERT_WMO);
 }
 
-void CEditWMOSceneNode::setMaterial( const SWMOMaterial* material, SMaterial& mat ) const
+void CEditWMOSceneNode::setMaterial( const SWMOMaterial& material, SMaterial& mat ) const
 {
 	CWMOSceneNode::setMaterial(material, mat);
 

@@ -40,7 +40,7 @@ public:
 private:
 	void renderWMOGroup(uint32_t groupIndex, uint32_t batchIndex) const;
 
-	void setMaterial(const SWMOMaterial* material, SMaterial& mat) const;
+	void setMaterial(const SWMOMaterial& material, SMaterial& mat) const;
 
 private:
 	editor::E_OVERRIDE_WIREFRAME		OverrideWireframe;
