@@ -38,10 +38,6 @@ public:
 	{
 		EnableDirLight = false;
 
-		WmoMaterialParams[EML_DIFFUSE] = 1.0f;
-		WmoMaterialParams[EML_SPECULAR] = 0.3f;
-		WmoMaterialParams[EML_EMISSIVE] = 0.1f;
-
 		TerrainMaterialParams[EML_DIFFUSE] = 1.0f;
 		TerrainMaterialParams[EML_SPECULAR] = 0.7f;
 		TerrainMaterialParams[EML_EMISSIVE] = 0.1f;
@@ -67,7 +63,6 @@ public:
 	SColor	AmbientColor;
 	SColor	DirLightColor;	
 
-	float		WmoMaterialParams[EML_COUNT];
 	float		TerrainMaterialParams[EML_COUNT];
 
 	bool EnableDirLight;

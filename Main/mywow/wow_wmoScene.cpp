@@ -19,7 +19,7 @@ wow_wmoScene::~wow_wmoScene()
 	delete[] PortalChecked;
 }
 
-int32_t wow_wmoScene::getIndoorGroupIndexOfPosition( ICamera* cam, const vector3df& pos )
+int32_t wow_wmoScene::getIndoorGroupIndexOfPosition( const ICamera* cam, const vector3df& pos )
 {
 	uint32_t nGroups = FileWmo->Header.nGroups;
 	for (uint32_t i=0; i<nGroups; ++i)
@@ -77,7 +77,7 @@ void wow_wmoScene::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame )
 	VisibleGroups.clear();
 	memset(PortalChecked, 0, sizeof(bool) * nPortals);
 
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 	CameraIndoorGroupIndex = getIndoorGroupIndexOfPosition(cam, cam->getPosition());
 
 	frustum f = cam->getViewFrustum();
@@ -194,7 +194,7 @@ void wow_wmoScene::unloadDoodadSceneNodes()
 	DoodadSceneNodes.clear();
 }
 
-void wow_wmoScene::goThroughPortalFront( uint32_t index, ICamera* cam, const frustum& f, const rectf& rect, bool onlyIndoor )
+void wow_wmoScene::goThroughPortalFront( uint32_t index, const ICamera* cam, const frustum& f, const rectf& rect, bool onlyIndoor )
 {
 	const SWMOPortal* portal = &FileWmo->Portals[index];
 	const CWMOSceneNode::SDynPortal* dynPortal = &WmoSceneNode->DynPortals[index];
@@ -237,7 +237,7 @@ void wow_wmoScene::goThroughPortalFront( uint32_t index, ICamera* cam, const fru
 			return;
 
 		//计算portal的frustum
-		makeFrustum(clipFrustum, cam, rcPortal.UpperLeftCorner.X, rcPortal.UpperLeftCorner.Y, rcPortal.LowerRightCorner.X, rcPortal.LowerRightCorner.Y, minz);
+		makeFrustum(clipFrustum, cam, rcPortal.UpperLeftCorner.X, rcPortal.UpperLeftCorner.Y, rcPortal.LowerRightCorner.X, rcPortal.LowerRightCorner.Y);
 	}
 
 	VisibleGroups.insert(SGroupVisEntry(portal->backGroupIndex, clipFrustum));			
@@ -252,7 +252,7 @@ void wow_wmoScene::goThroughPortalFront( uint32_t index, ICamera* cam, const fru
 	}
 }
 
-void wow_wmoScene::goThroughPortalBack( uint32_t index, ICamera* cam, const frustum& f, const rectf& rect, bool onlyIndoor )
+void wow_wmoScene::goThroughPortalBack( uint32_t index, const ICamera* cam, const frustum& f, const rectf& rect, bool onlyIndoor )
 {
 	const SWMOPortal* portal = &FileWmo->Portals[index];
 	const CWMOSceneNode::SDynPortal* dynPortal = &WmoSceneNode->DynPortals[index];
@@ -295,7 +295,7 @@ void wow_wmoScene::goThroughPortalBack( uint32_t index, ICamera* cam, const frus
 			return;
 
 		//计算portal的frustum
-		makeFrustum(clipFrustum, cam, rcPortal.UpperLeftCorner.X, rcPortal.UpperLeftCorner.Y, rcPortal.LowerRightCorner.X, rcPortal.LowerRightCorner.Y, minz);
+		makeFrustum(clipFrustum, cam, rcPortal.UpperLeftCorner.X, rcPortal.UpperLeftCorner.Y, rcPortal.LowerRightCorner.X, rcPortal.LowerRightCorner.Y);
 	}
 
 	VisibleGroups.insert(SGroupVisEntry(portal->frontGroupIndex, clipFrustum));			
@@ -344,12 +344,12 @@ bool wow_wmoScene::clipPortal2D( rectf& rect, const vector2df& vmin, const vecto
 	return true;
 }
 
-void wow_wmoScene::makeFrustum( frustum& f, ICamera* cam, float left, float top, float right, float bottom, float z )
+void wow_wmoScene::makeFrustum(frustum& f, const ICamera* cam, float left, float top, float right, float bottom)
 {
-	vector3df vleftTop(left, top, z);
-	vector3df vLeftBottom(left, bottom, z);
-	vector3df vRightTop(right, top, z);
-	vector3df vRightBottom(right, bottom, z);
+	vector3df vleftTop(left, top, bottom);
+	vector3df vLeftBottom(left, bottom, bottom);
+	vector3df vRightTop(right, top, bottom);
+	vector3df vRightBottom(right, bottom, bottom);
 
 	matrix4 mat = cam->getInverseViewProjectionMatrix();
 

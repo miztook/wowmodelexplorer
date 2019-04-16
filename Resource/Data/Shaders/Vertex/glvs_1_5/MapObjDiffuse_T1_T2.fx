@@ -5,6 +5,7 @@
 //	mat4	mWorldViewProjection;
 //	mat4	mWorldView;
 //  mat4	mWorld;
+//  vec4 	ViewPos;
 //	vec4 	FogParams;		//0: fogMode, 1: fogStart, 2: fogEnd, 3: fogDensity
 //	vec4	ClipPlane0;		
 //	vec4	Params;			//0: animTexture, 1: fogEnable
@@ -16,12 +17,13 @@
 const int mWorldViewProjection = 0;
 const int mWorldView = 4;
 const int mWorld = 8;
-const int FogParams = 12;
-const int ClipPlane0 = 13;
-const int Params = 14;
-const int mTexture = 15;
+const int ViewPos = 12;
+const int FogParams = 13;
+const int ClipPlane0 = 14;
+const int Params = 15;
+const int mTexture = 16;
 
-const int VSBUFFER_SIZE = 19;
+const int VSBUFFER_SIZE = 20;
 
 uniform vec4 g_vsbuffer[VSBUFFER_SIZE];
 
@@ -35,6 +37,7 @@ out mediump vec4 v_Diffuse;
 out mediump vec3 v_Normal;
 out mediump vec3 v_Tex0;		// vertex texture coords, z: fog alpha
 out mediump vec2 v_Tex1;
+out mediump vec3 v_ViewDir;
 
 vec3 Mul3( vec3 vInputPos, int nMatrix )
 {
@@ -71,6 +74,10 @@ void main(void)
 {
 	gl_Position = Mul4(vec4(Pos, 1.0), mWorldViewProjection);
 
+	vec3 camPos = vec3(g_vsbuffer[ViewPos]);
+	vec3 worldPos = vec3(Mul4(vec4(Pos, 1.0), mWorld));
+	v_ViewDir = normalize(worldPos - camPos);
+	
 	gl_ClipDistance[0] = dot(gl_Position, g_vsbuffer[ClipPlane0]);
 		
 	v_Normal = normalize(Mul3(Normal, mWorld));

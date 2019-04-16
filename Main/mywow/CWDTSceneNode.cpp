@@ -133,7 +133,7 @@ void CWDTSceneNode::registerSceneNode( bool frustumcheck, int sequence )
 
 	IWDTSceneNode::registerSceneNode(frustumcheck, sequence);
 
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 
 	WdtScene->setCameraChunk(nullptr);
 	uint32_t num = WdtScene->getNumBlocks();
@@ -182,7 +182,7 @@ void CWDTSceneNode::onUpdated()
 	}
 }
 
-void CWDTSceneNode::registerVisibleChunks( uint32_t blockIndex, ICamera* cam )
+void CWDTSceneNode::registerVisibleChunks( uint32_t blockIndex, const ICamera* cam )
 {
 	CMapBlock* block = &MapBlocks[blockIndex];
 

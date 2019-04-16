@@ -22,13 +22,13 @@ public:
 
 private:
 	//portal
-	int32_t getIndoorGroupIndexOfPosition(ICamera* cam, const vector3df& pos);
+	int32_t getIndoorGroupIndexOfPosition(const ICamera* cam, const vector3df& pos);
 	
-	void goThroughPortalFront(uint32_t index, ICamera* cam, const frustum& f, const rectf& rect, bool onlyIndoor);
-	void goThroughPortalBack(uint32_t index, ICamera* cam, const frustum& f, const rectf& rect, bool onlyIndoor);
+	void goThroughPortalFront(uint32_t index, const ICamera* cam, const frustum& f, const rectf& rect, bool onlyIndoor);
+	void goThroughPortalBack(uint32_t index, const ICamera* cam, const frustum& f, const rectf& rect, bool onlyIndoor);
 
 	bool clipPortal2D(rectf& rect, const vector2df& vmin, const vector2df& vmax);
-	void makeFrustum(frustum& f, ICamera* cam, float left, float top, float right, float z, float bottom);
+	void makeFrustum(frustum& f, const ICamera* cam, float left, float top, float right, float bottom);
 
 	//
 

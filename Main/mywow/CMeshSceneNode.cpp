@@ -65,7 +65,7 @@ void CMeshSceneNode::tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame, 
 		if (Billboard)
 		{
 			Mat.makeIdentity();
-			ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+			const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 			matrix4 view = cam->getInverseViewMatrix();
 			Mat[0] = view[0]; Mat[4] = view[4]; Mat[8] = view[8]; 
 			Mat[1] = view[1]; Mat[5] = view[5]; Mat[9] = view[9];
@@ -109,7 +109,7 @@ bool CMeshSceneNode::isNodeEligible() const
 {
 	aabbox3df box = getWorldBoundingBox();
 
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 	if (!cam)
 		return false;
 	return cam->getViewFrustum().isInFrustum(box);

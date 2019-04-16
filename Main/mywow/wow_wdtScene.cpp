@@ -132,7 +132,7 @@ bool wow_wdtScene::processADT()
 
 bool wow_wdtScene::updateBlocksByCamera()
 {
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 	int32_t row, col;
 	if (!WdtSceneNode->getTileByPosition(cam->getPosition(), row, col))
 		return false;

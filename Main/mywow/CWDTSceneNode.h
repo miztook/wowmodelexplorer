@@ -70,7 +70,7 @@ protected:
 	};
 
 protected:
-	void registerVisibleChunks(uint32_t blockIndex, ICamera* cam);
+	void registerVisibleChunks(uint32_t blockIndex, const ICamera* cam);
 	void updateMapBlock(uint32_t blockIndex);
 	
 	void collectBlockRenderList(uint32_t blockIndex);

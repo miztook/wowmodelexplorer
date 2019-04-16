@@ -261,7 +261,7 @@ void CParticleSystemSceneNode::render() const
 
 uint32_t CParticleSystemSceneNode::onFillVertexBuffer( SVertex_PCT* vertices, uint32_t vertexCount ) const
 {
-	ICamera* camera = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* camera = g_Engine->getSceneManager()->getActiveCamera();
 
 	const matrix4& view = CurrentView ? *CurrentView : camera->getViewMatrix();
 

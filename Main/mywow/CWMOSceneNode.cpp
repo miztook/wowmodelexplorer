@@ -60,7 +60,7 @@ void CWMOSceneNode::registerSceneNode(bool frustumcheck, int sequence)
 	IWMOSceneNode::registerSceneNode(frustumcheck, sequence);
 
 	//
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 	frustum f = cam->getViewFrustum();
 	f.setFarPlane(cam->getTerrainClipPlane());
 
@@ -204,7 +204,7 @@ bool CWMOSceneNode::isNodeEligible() const
 {
 	aabbox3df box = getWorldBoundingBox();
 
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 	if (!cam)
 		return false;
 	return cam->getViewFrustum().isInFrustum(box);

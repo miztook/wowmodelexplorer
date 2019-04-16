@@ -25,13 +25,13 @@ public:
 	void startLoadingWMOSceneNodes();
 
 	void update();
-	void registerInstances(ICamera* cam);
+	void registerInstances(const ICamera* cam);
 	 void setCameraChunk(CMapChunk* chunk) { CamChunk = chunk; }
 	 const CMapChunk* getCameraChunk() const { return CamChunk; }
 
 private: 
-	void registerVisibleM2Instances(ICamera* cam);
-	void registerVisibleWmoInstances(ICamera* cam);
+	void registerVisibleM2Instances(const ICamera* cam);
+	void registerVisibleWmoInstances(const ICamera* cam);
 
 	void classifyM2Instance(uint32_t index, const matrix4& instMat);
 

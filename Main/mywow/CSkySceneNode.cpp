@@ -38,7 +38,7 @@ void CSkySceneNode::registerSceneNode( bool frustumcheck, int sequence )
 
 void CSkySceneNode::tick( uint32_t timeSinceStart, uint32_t timeSinceLastFrame, bool visible )
 {
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 	WorldMatrix.setTranslation(cam->getPosition());
 
 	MapEnvironment->computeSkyLights(cam->getPosition(), 0);

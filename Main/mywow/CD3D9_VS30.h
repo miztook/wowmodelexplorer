@@ -108,10 +108,9 @@ private:
 	struct SParamMapObjDiffuse
 	{
 		matrix4 		mWorldViewProjection;    // World * View * Projection
-		matrix4		mWorldView;		//World * View
-		float		LightDir[4];				//light dir
-		SColorf		LightColor;
-		float		MaterialParams[4];	//0: ambient, 1: diffuse, 2: specular
+		matrix4			mWorldView;		//World * View
+		matrix4			mWorld;			//World
+		float			ViewPos[4];
 		float		fogParams[4];		//0: fogMode, 1: fogStart, 2: fogEnd, 3: fogDensity
 		float				Params[4];		//0: animTexture, 1: fogEnable
 		matrix4			mTexture;
@@ -120,11 +119,10 @@ private:
 	struct SParamMapObjSpecular
 	{
 		matrix4 		mWorldViewProjection;    // World * View * Projection
-		matrix4		mWorldView;		//World * View
-		float		LightDir[4];				//light dir
-		SColorf		LightColor;
-		float		MaterialParams[4];	//0: ambient, 1: diffuse, 2: specular
-		float	fogParams[4];		//0: fogMode, 1: fogStart, 2: fogEnd, 3: fogDensity
+		matrix4			mWorldView;		//World * View
+		matrix4			mWorld;			//World
+		float			ViewPos[4];
+		float		fogParams[4];		//0: fogMode, 1: fogStart, 2: fogEnd, 3: fogDensity
 		float				Params[4];		//0: animTexture, 1: fogEnable
 		matrix4			mTexture;
 	};

@@ -194,14 +194,14 @@ void wow_tileScene::update( )
 // 	}
 }
 
-void wow_tileScene::registerInstances( ICamera* cam )
+void wow_tileScene::registerInstances( const ICamera* cam )
 {
 	registerVisibleM2Instances(cam);
 
 	registerVisibleWmoInstances(cam);
 }
 
-void wow_tileScene::registerVisibleM2Instances( ICamera* cam )
+void wow_tileScene::registerVisibleM2Instances( const ICamera* cam )
 {
 	CFileADT* adt = static_cast<CFileADT*>(TileSceneNode->Block.tile->fileAdt);
 	frustum f = cam->getViewFrustum();
@@ -268,7 +268,7 @@ void wow_tileScene::registerVisibleM2Instances( ICamera* cam )
 	}
 }
 
-void wow_tileScene::registerVisibleWmoInstances( ICamera* cam )
+void wow_tileScene::registerVisibleWmoInstances( const ICamera* cam )
 {
 	CFileADT* adt = static_cast<CFileADT*>(TileSceneNode->Block.tile->fileAdt);
 	frustum f = cam->getViewFrustum();

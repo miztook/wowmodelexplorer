@@ -77,7 +77,7 @@ void CM2SceneNode::registerSceneNode(bool frustumcheck, int sequence)
 		return;
 
 	//child nodes register before parent
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 	if(cam && !Parent)
 		Distance = cam->getPosition().getDistanceFrom(AbsoluteTransformation.getTranslation());
 	else
@@ -400,7 +400,7 @@ uint32_t CM2SceneNode::onFillVertexBuffer( uint32_t geoset, SVertex_PCT* vertice
 
 	SColor color = M2Instance->DynGeosets[geoset].finalColor;
 
-	ICamera* camera = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* camera = g_Engine->getSceneManager()->getActiveCamera();
 
 	const matrix4& view = CurrentCamera != -1 ? CurrentView : camera->getViewMatrix();
 
@@ -450,7 +450,7 @@ bool CM2SceneNode::isNodeEligible() const
 	if (box.isZero())
 		return false;
 
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 	return cam->getViewFrustum().isInFrustum(box);
 }
 

@@ -391,6 +391,7 @@ void COpenGL_VS15::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMater
 	COpenGLSceneStateServices* sceneStateServices = static_cast<COpenGLSceneStateServices*>(driver->getSceneStateServices());
 	const SFogParam& fogParam = sceneStateServices->getFog();
 	ISceneEnvironment* sceneEnv = g_Engine->getSceneEnvironment();
+	const vector3df& viewPos = g_Engine->getSceneManager()->getActiveCameraPos();
 
 	//para
 	SParamMapObjDiffuse	cbuffer;
@@ -402,6 +403,11 @@ void COpenGL_VS15::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMater
 	cbuffer.mWorldView.transpose();
 	driver->getWMatrix(cbuffer.mWorld);
 	cbuffer.mWorld.transpose();
+	
+	//viewPos
+	cbuffer.ViewPos[0] = viewPos.X;
+	cbuffer.ViewPos[0] = viewPos.Y;
+	cbuffer.ViewPos[0] = viewPos.Z;
 
 	//fog
 	cbuffer.fogParams[0] = (float)fogParam.FogType;
@@ -440,6 +446,7 @@ void COpenGL_VS15::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMate
 	COpenGLSceneStateServices* sceneStateServices = static_cast<COpenGLSceneStateServices*>(g_Engine->getDriver()->getSceneStateServices());
 	const SFogParam& fogParam = sceneStateServices->getFog();
 	ISceneEnvironment* sceneEnv = g_Engine->getSceneEnvironment();
+	const vector3df& viewPos = g_Engine->getSceneManager()->getActiveCameraPos();
 
 	//para
 	SParamMapObjSpecular	cbuffer;
@@ -451,6 +458,11 @@ void COpenGL_VS15::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMate
 	cbuffer.mWorldView.transpose();
 	driver->getWMatrix(cbuffer.mWorld);
 	cbuffer.mWorld.transpose();
+
+	//viewPos
+	cbuffer.ViewPos[0] = viewPos.X;
+	cbuffer.ViewPos[0] = viewPos.Y;
+	cbuffer.ViewPos[0] = viewPos.Z;
 
 	//fog
 	cbuffer.fogParams[0] = (float)fogParam.FogType;

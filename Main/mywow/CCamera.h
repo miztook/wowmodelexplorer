@@ -17,9 +17,9 @@ public:
 	virtual void move_offset_Maya(float xOffset, float yOffset);
 	virtual void pitch_yaw_FPS(float pitchDegree, float yawDegree);
 
-	virtual vector2di getScreenPositionFrom3DPosition(const vector3df& pos, const recti& screensize);
-	virtual line3df getRayFromScreenPosition(const vector2di& pos, const recti& screensize);
-	virtual vector3df get3DPositionFromScreenPosition(const vector2di& pos, const recti& screensize, float distance);
+	virtual vector2di getScreenPositionFrom3DPosition(const vector3df& pos, const recti& screensize) const;
+	virtual line3df getRayFromScreenPosition(const vector2di& pos, const recti& screensize) const;
+	virtual vector3df get3DPositionFromScreenPosition(const vector2di& pos, const recti& screensize, float distance) const;
 
 private:
 	void recalculateViewMatrix();

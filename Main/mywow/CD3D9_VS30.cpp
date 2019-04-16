@@ -358,6 +358,7 @@ void CD3D9_VS30::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMateria
 	CD3D9SceneStateServices* sceneStateServices = static_cast<CD3D9SceneStateServices*>(driver->getSceneStateServices());
 	const SFogParam& fogParam = sceneStateServices->getFog();
 	ISceneEnvironment* sceneEnv = g_Engine->getSceneEnvironment();
+	const vector3df& viewPos = g_Engine->getSceneManager()->getActiveCameraPos();
 
 	// para
 	SParamMapObjDiffuse cbuffer;
@@ -365,17 +366,12 @@ void CD3D9_VS30::MapObjDiffuse_setShaderConst( IVertexShader* vs, const SMateria
 	//wvp
 	driver->getWVPMatrix(cbuffer.mWorldViewProjection);
 	driver->getWVMatrix(cbuffer.mWorldView);
+	driver->getWMatrix(cbuffer.mWorld);
 
-	const SLight* l = sceneStateServices->getDynamicLight(ISceneEnvironment::INDEX_DIR_LIGHT);
-	cbuffer.LightDir[0] = l->Direction.X;
-	cbuffer.LightDir[1] = l->Direction.Y;
-	cbuffer.LightDir[2] = l->Direction.Z;
-
-	cbuffer.LightColor = SColorf(l->LightColor);
-
-	cbuffer.MaterialParams[0] = sceneEnv->WmoMaterialParams[0];
-	cbuffer.MaterialParams[1] = sceneEnv->WmoMaterialParams[1];
-	cbuffer.MaterialParams[2] = sceneEnv->WmoMaterialParams[2];
+	//viewPos
+	cbuffer.ViewPos[0] = viewPos.X;
+	cbuffer.ViewPos[0] = viewPos.Y;
+	cbuffer.ViewPos[0] = viewPos.Z;
 
 	//fog
 	cbuffer.fogParams[0] = (float)fogParam.FogType;
@@ -404,6 +400,7 @@ void CD3D9_VS30::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMateri
 	CD3D9SceneStateServices* sceneStateServices = static_cast<CD3D9SceneStateServices*>(driver->getSceneStateServices());
 	const SFogParam& fogParam = sceneStateServices->getFog();
 	ISceneEnvironment* sceneEnv = g_Engine->getSceneEnvironment();
+	const vector3df& viewPos = g_Engine->getSceneManager()->getActiveCameraPos();
 
 	// para
 	SParamMapObjSpecular cbuffer;
@@ -411,17 +408,12 @@ void CD3D9_VS30::MapObjSpecular_setShaderConst( IVertexShader* vs, const SMateri
 	//wvp
 	driver->getWVPMatrix(cbuffer.mWorldViewProjection);
 	driver->getWVMatrix(cbuffer.mWorldView);
+	driver->getWMatrix(cbuffer.mWorld);
 
-	const SLight* l = sceneStateServices->getDynamicLight(ISceneEnvironment::INDEX_DIR_LIGHT);
-	cbuffer.LightDir[0] = l->Direction.X;
-	cbuffer.LightDir[1] = l->Direction.Y;
-	cbuffer.LightDir[2] = l->Direction.Z;
-
-	cbuffer.LightColor = SColorf(l->LightColor);
-
-	cbuffer.MaterialParams[0] = sceneEnv->WmoMaterialParams[0];
-	cbuffer.MaterialParams[1] = sceneEnv->WmoMaterialParams[1];
-	cbuffer.MaterialParams[2] = sceneEnv->WmoMaterialParams[2];
+	//viewPos
+	cbuffer.ViewPos[0] = viewPos.X;
+	cbuffer.ViewPos[0] = viewPos.Y;
+	cbuffer.ViewPos[0] = viewPos.Z;
 
 	//fog
 	cbuffer.fogParams[0] = (float)fogParam.FogType;

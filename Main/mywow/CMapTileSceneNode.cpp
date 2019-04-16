@@ -59,7 +59,7 @@ void CMapTileSceneNode::registerSceneNode(bool frustumcheck, int sequence)
 
 	g_Engine->getSceneManager()->registerNodeForRendering(this, true, sequence);
 
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 
 	TileScene->setCameraChunk(nullptr);
 	registerVisibleChunks(cam);
@@ -242,7 +242,7 @@ bool CMapTileSceneNode::isNodeEligible() const
 {
 	aabbox3df box = getWorldBoundingBox();
 
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 	if (!cam)
 		return false;
 	return cam->getViewFrustum().isInFrustum(box);
@@ -258,7 +258,7 @@ void CMapTileSceneNode::addWMOSceneNodes()
 	TileScene->addWMOSceneNodes();
 }
 
-void CMapTileSceneNode::registerVisibleChunks(ICamera* cam)
+void CMapTileSceneNode::registerVisibleChunks(const ICamera* cam)
 {
 	CFileADT* adt = static_cast<CFileADT*>(Block.tile->fileAdt);
 	frustum f = cam->getViewFrustum();

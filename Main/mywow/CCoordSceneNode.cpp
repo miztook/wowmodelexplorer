@@ -35,7 +35,7 @@ void CCoordSceneNode::tick(uint32_t timeSinceStart, uint32_t timeSinceLastFrame,
 	if (Position2D != EP2D_NONE)
 	{
 		const recti& screenSize = g_Engine->getDriver()->getViewPort();
-		ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+		const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 				
 		vector2di pos2d = screenSize.UpperLeftCorner;
 
@@ -255,7 +255,7 @@ void CCoordSceneNode::drawText(const SAxisParam& param) const
 	vector3df posZ(0, 0, len);
 
 	const recti& screenSize = g_Engine->getDriver()->getViewPort();
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 
 	if (VisibleX)
 	{
@@ -334,7 +334,7 @@ vector3df CCoordSceneNode::getDir( E_AXIS axis ) const
 
 void CCoordSceneNode::pitch_yaw_FPS( float pitchDegree, float yawDegree )
 {
-	ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
+	const ICamera* cam = g_Engine->getSceneManager()->getActiveCamera();
 
 	quaternion quatX(pitchDegree * DEGTORAD, cam->getRight());			
 	quaternion quatY(yawDegree * DEGTORAD, vector3df::UnitY());

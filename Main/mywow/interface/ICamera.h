@@ -59,9 +59,9 @@ public:
 	virtual void move_offset_Maya(float xOffset, float yOffset) = 0;
 	virtual void pitch_yaw_FPS(float pitchDegree, float yawDegree) = 0;
 
-	virtual vector2di getScreenPositionFrom3DPosition(const vector3df& pos, const recti& screensize) = 0;
-	virtual line3df getRayFromScreenPosition(const vector2di& pos, const recti& screensize) = 0;
-	virtual vector3df get3DPositionFromScreenPosition(const vector2di& pos, const recti& screensize, float distance) = 0;
+	virtual vector2di getScreenPositionFrom3DPosition(const vector3df& pos, const recti& screensize) const = 0;
+	virtual line3df getRayFromScreenPosition(const vector2di& pos, const recti& screensize) const = 0;
+	virtual vector3df get3DPositionFromScreenPosition(const vector2di& pos, const recti& screensize, float distance) const = 0;
 
 public:
 	float		NearValue;

@@ -2,6 +2,7 @@
 
 #include "core.h"
 #include "ISceneNode.h"
+#include "ICamera.h"
 #include "SColor.h"
 #include "CFPSCounter.h"
 #include "CTimer.h"
@@ -56,7 +57,9 @@ public:
 	uint32_t getTimeSinceLastFrame() const { return Timer->getTimeSinceLastFrame(); }
 
 	void setActiveCamera(ICamera* camera) { ActiveCamera = camera; }
+	const ICamera* getActiveCamera() const { return ActiveCamera; }
 	ICamera* getActiveCamera() { return ActiveCamera; }
+	const vector3df& getActiveCameraPos() const { return ActiveCamera->getPosition(); }
 
 	virtual ICamera* addCamera(const vector3df& position, const vector3df& lookat, const vector3df& up, float nearValue, float farValue, float fov) = 0;
 

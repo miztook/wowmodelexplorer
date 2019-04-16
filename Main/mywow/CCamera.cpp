@@ -131,7 +131,7 @@ void CCamera::pitch_yaw_FPS(float pitchDegree, float yawDegree)
 	recalculateFrustum();
 }
 
-vector2di CCamera::getScreenPositionFrom3DPosition(const vector3df& pos, const recti& screensize)
+vector2di CCamera::getScreenPositionFrom3DPosition(const vector3df& pos, const recti& screensize) const
 {
 	dimension2du dim(screensize.getWidth(), screensize.getHeight());
 	dim.Width /= 2;
@@ -151,7 +151,7 @@ vector2di CCamera::getScreenPositionFrom3DPosition(const vector3df& pos, const r
 		dim.Height - round32_(dim.Height * (transformedPos.Y * zDiv)));
 }
 
-line3df CCamera::getRayFromScreenPosition(const vector2di& pos, const recti& screensize)
+line3df CCamera::getRayFromScreenPosition(const vector2di& pos, const recti& screensize) const
 {
 	const matrix4& m = getInverseViewMatrix();
 
@@ -186,7 +186,7 @@ line3df CCamera::getRayFromScreenPosition(const vector2di& pos, const recti& scr
 	return ln;
 }
 
-vector3df CCamera::get3DPositionFromScreenPosition(const vector2di& pos, const recti& screensize, float distance)
+vector3df CCamera::get3DPositionFromScreenPosition(const vector2di& pos, const recti& screensize, float distance) const
 {
 	line3df ln = getRayFromScreenPosition(pos, screensize);
 

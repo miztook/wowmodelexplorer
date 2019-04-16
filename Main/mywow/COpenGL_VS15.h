@@ -110,6 +110,7 @@ private:
 		matrix4 		mWorldViewProjection;    // World * View * Projection
 		matrix4			mWorldView;		//World * View
 		matrix4			mWorld;			//World
+		float			ViewPos[4];		
 		float		fogParams[4];		//0: fogMode, 1: fogStart, 2: fogEnd, 3: fogDensity
 		float		ClipPlane0[4];
 		float				Params[4];		//0: animTexture, 1: fogEnable
@@ -121,6 +122,7 @@ private:
 		matrix4 		mWorldViewProjection;    // World * View * Projection
 		matrix4			mWorldView;		//World * View
 		matrix4			mWorld;			//World
+		float			ViewPos[4];
 		float		fogParams[4];		//0: fogMode, 1: fogStart, 2: fogEnd, 3: fogDensity
 		float		ClipPlane0[4];
 		float				Params[4];		//0: animTexture, 1: fogEnable

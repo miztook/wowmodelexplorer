@@ -77,7 +77,7 @@ protected:
 	};
 
 protected:
-	void registerVisibleChunks(ICamera* cam);
+	void registerVisibleChunks(const ICamera* cam);
 	void addChunkRenderList(bool high, uint8_t row, uint8_t col);
 	void renderChunkRenderList(bool high) const;
 
