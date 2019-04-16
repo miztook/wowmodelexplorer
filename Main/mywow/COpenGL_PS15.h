@@ -70,10 +70,10 @@ private:
 		SColorf			LightColor;
 		SColorf			Diffuse;
 		SColorf			Emissive;
+		SColorf			Specular;
 		SColorf			FogColor;
 		float			params[4];			//0: alphatest, 1: ref
 	};
-
 };
 
 

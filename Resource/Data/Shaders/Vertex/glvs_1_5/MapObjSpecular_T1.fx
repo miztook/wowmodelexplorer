@@ -74,7 +74,7 @@ void main(void)
 
 	vec3 camPos = vec3(g_vsbuffer[ViewPos]);
 	vec3 worldPos = vec3(Mul4(vec4(Pos, 1.0), mWorld));
-	v_ViewDir = normalize(worldPos - camPos);
+	v_ViewDir = normalize(camPos - worldPos);
 	
 	gl_ClipDistance[0] = dot(gl_Position, g_vsbuffer[ClipPlane0]);
 		

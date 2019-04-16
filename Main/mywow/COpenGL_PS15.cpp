@@ -286,6 +286,8 @@ void COpenGL_PS15::MapObjOpaque_setShaderConst( IPixelShader* ps, const SMateria
 
 	cbuffer.Diffuse = material.DiffuseColor;
 	cbuffer.Emissive = material.EmissiveColor;
+	cbuffer.Specular = material.SpecularColor;
+	cbuffer.Specular.a = material.Shininess;
 
 	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
 	cbuffer.params[0] = 0.0f;
@@ -313,6 +315,8 @@ void COpenGL_PS15::MapObj_setShaderConst( IPixelShader* ps, const SMaterial& mat
 
 	cbuffer.Diffuse = material.DiffuseColor;
 	cbuffer.Emissive = material.EmissiveColor; 
+	cbuffer.Specular = material.SpecularColor;
+	cbuffer.Specular.a = material.Shininess;
 	
 	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
 	cbuffer.params[0] = block.alphaTestEnabled ? 1.0f : 0.0f;
@@ -340,6 +344,8 @@ void COpenGL_PS15::MapObjTwoLayer_setShaderConst( IPixelShader* ps, const SMater
 
 	cbuffer.Diffuse = material.DiffuseColor;
 	cbuffer.Emissive = material.EmissiveColor;
+	cbuffer.Specular = material.SpecularColor;
+	cbuffer.Specular.a = material.Shininess;
 
 	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
 	cbuffer.params[0] = block.alphaTestEnabled ? 1.0f : 0.0f;
@@ -368,6 +374,8 @@ void COpenGL_PS15::MapObjTwoLayerOpaque_setShaderConst( IPixelShader* ps, const 
 
 	cbuffer.Diffuse = material.DiffuseColor;
 	cbuffer.Emissive = material.EmissiveColor;
+	cbuffer.Specular = material.SpecularColor;
+	cbuffer.Specular.a = material.Shininess;
 
 	cbuffer.FogColor = SColorf(sceneStateServices->getFog().FogColor);
 	cbuffer.params[0] = 0.0f;

@@ -6,6 +6,7 @@
 //	mediump vec4 	LightColor;		// light color;
 //	mediump vec4	Diffuse;		
 //  mediump vec4	Emissive;
+//  mediump vec4	Specular;		//3: gloss(shiness)
 //	mediump vec4	FogColor;
 //	mediump vec4 	Params;		//0: alphatest, 1: ref	
 //};
@@ -16,10 +17,11 @@ const int LightDir = 0;
 const int LightColor = 1;
 const int Diffuse = 2;
 const int Emissive = 3;
-const int FogColor = 4;
-const int Params = 5;
+const int Specular = 4;
+const int FogColor = 5;
+const int Params = 6;
 
-const int PSBUFFER_SIZE = 6;
+const int PSBUFFER_SIZE = 7;
 
 uniform mediump vec4 g_psbuffer[PSBUFFER_SIZE];
 
@@ -33,12 +35,12 @@ out mediump vec4 COLOR0;
 
 mediump float HalfLambert( mediump vec3 worldNormal, mediump vec3 lightDir )
 {
-	return clamp(dot(worldNormal, -lightDir), 0.0, 1.0) * 0.5 + 0.5;
+	return clamp(dot(worldNormal, lightDir), 0.0, 1.0) * 0.5 + 0.5;
 }
 
 void main(void)
 {
-	mediump vec3 lightDir = vec3(g_psbuffer[LightDir]);
+	mediump vec3 lightDir = -vec3(g_psbuffer[LightDir]);
 	mediump vec3 lightColor = vec3(g_psbuffer[LightColor]);
 	mediump vec3 diffuse = vec3(g_psbuffer[Diffuse]);
 	mediump vec3 emissive = vec3(g_psbuffer[Emissive]);

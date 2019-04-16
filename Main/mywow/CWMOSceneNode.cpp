@@ -367,6 +367,12 @@ void CWMOSceneNode::setMaterial( const SWMOMaterial& material, SMaterial& mat ) 
 		mat.DiffuseColor.set(1.0f, 1.0f, 1.0f);
 	}
 
+	if (material.shaderType == E_WMO_SHADER::Specular)
+	{
+		mat.SpecularColor.set(0.2f, 0.2f, 0.2f);
+		mat.Shininess = 2;
+	}
+
 	bool uClamp = (material.flags & 0x40) != 0;
 	bool vClamp = (material.flags & 0x80) != 0;
 
