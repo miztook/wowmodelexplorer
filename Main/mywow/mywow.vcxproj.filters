@@ -57,9 +57,6 @@
     <Filter Include="implementation\external\freetype">
       <UniqueIdentifier>{0014df1c-29a0-4328-b5e4-e3c9beefba5f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="interface\ai">
-      <UniqueIdentifier>{7fc6ba0b-c514-4b7e-b1b5-616595c8894c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="wow\m2">
       <UniqueIdentifier>{cb1a32c1-9ccb-4e9e-a5a6-e00d5feeea01}</UniqueIdentifier>
     </Filter>
@@ -358,12 +355,6 @@
     </ClInclude>
     <ClInclude Include="CD3D9DrawServices.h">
       <Filter>implementation\video\Direct3D9</Filter>
-    </ClInclude>
-    <ClInclude Include="interface\ai.h">
-      <Filter>interface\ai</Filter>
-    </ClInclude>
-    <ClInclude Include="interface\IM2Entity.h">
-      <Filter>interface\ai</Filter>
     </ClInclude>
     <ClInclude Include="interface\base.h">
       <Filter>interface</Filter>

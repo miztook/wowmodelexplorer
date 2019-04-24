@@ -36,7 +36,6 @@
 #include "scene.h"
 #include "renderer.h"
 #include "input.h"
-#include "ai.h"
 #include "system.h"
 
 #include "enginesetting.h"

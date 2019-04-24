@@ -495,8 +495,6 @@
     <ClInclude Include="interface\IMapTileSceneNode.h" />
     <ClInclude Include="interface\IMaterialRenderServices.h" />
     <ClInclude Include="interface\input.h" />
-    <ClInclude Include="interface\ai.h" />
-    <ClInclude Include="interface\IM2Entity.h" />
     <ClInclude Include="interface\IParticleSystemSceneNode.h" />
     <ClInclude Include="interface\IParticleSystemServices.h" />
     <ClInclude Include="interface\IPVRImage.h" />
