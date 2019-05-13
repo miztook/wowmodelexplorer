@@ -119,7 +119,7 @@ bool CD3D9_PS30::loadPShaderHLSL( CD3D9ShaderServices* shaderServices, E_PS_TYPE
 
 	path.normalize();
 
-	shaderServices->loadPShaderHLSL(path.c_str(), "main", profile, type, macro, g_d3d9ps30_pixelShaderEntries[index].callback);
+	shaderServices->loadPShaderHLSL(path.c_str(), "main", type, macro, g_d3d9ps30_pixelShaderEntries[index].callback);
 
 	return true;
 }

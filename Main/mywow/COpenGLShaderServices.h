@@ -65,8 +65,8 @@ public:
 	bool loadVShader( const char* filename, E_VS_TYPE type, VSHADERCONSTCALLBACK callback );
 	bool loadPShader( const char* filename, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback );
 
-	bool loadVShaderHLSL( const char* filename, const char* entry, const char* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback );
-	bool loadPShaderHLSL( const char* filename, const char* entry, const char* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback );
+	bool loadVShaderHLSL( const char* filename, const char* entry, E_VS_TYPE type, VSHADERCONSTCALLBACK callback );
+	bool loadPShaderHLSL( const char* filename, const char* entry, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback );
 
 	void useVertexShader(IVertexShader* vshader) { ShaderState.vshader = (COpenGLVertexShader*)vshader; }
 	void usePixelShader(IPixelShader* pshader) { ShaderState.pshader = (COpenGLPixelShader*)pshader; }

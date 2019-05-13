@@ -88,7 +88,7 @@ bool CD3D9_VS30::loadVShaderHLSL( CD3D9ShaderServices* shaderServices, E_VS_TYPE
 
 	path.normalize();
 
-	shaderServices->loadVShaderHLSL(path.c_str(), "main", profile, type, g_d3d9vs30_vertexShaderEntries[index].callback);
+	shaderServices->loadVShaderHLSL(path.c_str(), "main", type, g_d3d9vs30_vertexShaderEntries[index].callback);
 
 	return true;
 }
