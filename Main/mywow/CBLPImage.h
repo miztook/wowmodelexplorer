@@ -13,7 +13,7 @@ public:
 	~CBLPImage();
 
 public:
-	virtual bool loadFile(IMemFile* file, bool abgr);	
+	virtual bool loadFile(IMemFile* file);	
 	virtual bool fromImageData(const uint8_t* src, const dimension2du& size, ECOLOR_FORMAT format, bool mipmap);
 	virtual const void* getMipmapData(uint32_t level) const;  
 	virtual bool copyMipmapData(uint32_t level, void* dest, uint32_t pitch, uint32_t width, uint32_t height);

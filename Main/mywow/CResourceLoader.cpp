@@ -247,7 +247,7 @@ IBLPImage* CResourceLoader::loadBLP( const char* filename )
 	if (file && BlpLoader.isALoadableFileExtension(realfilename))
 	{	
 		image = new CBLPImage();
-		if (image->loadFile(file, !g_Engine->isDXFamily()))
+		if (image->loadFile(file))
 		{
 			image->setFileName(realfilename);
 			BlpImageCache.addToCache(image);		
