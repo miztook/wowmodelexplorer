@@ -211,7 +211,7 @@ bool COpenGLShaderServices::loadPShader( const char* filename, E_PS_TYPE type, E
 	return false;
 }
 
-bool COpenGLShaderServices::loadVShaderHLSL( const char* filename, const char* entry, const char* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool COpenGLShaderServices::loadVShaderHLSL( const char* filename, const char* entry, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	string_path absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
@@ -258,7 +258,7 @@ bool COpenGLShaderServices::loadVShaderHLSL( const char* filename, const char* e
 	return true;
 }
 
-bool COpenGLShaderServices::loadPShaderHLSL( const char* filename, const char* entry, const char* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
+bool COpenGLShaderServices::loadPShaderHLSL( const char* filename, const char* entry, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
 {
 	string_path absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);

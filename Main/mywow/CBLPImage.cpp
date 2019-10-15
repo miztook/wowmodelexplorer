@@ -14,10 +14,8 @@ CBLPImage::~CBLPImage()
 	delete[] FileData;
 }
 
-bool CBLPImage::loadFile( IMemFile* file, bool abgr )
+bool CBLPImage::loadFile( IMemFile* file)
 {
-	IsABGR = abgr;
-
 	uint32_t filesize = file->getSize();
 	FileData = new uint8_t[filesize];
 	Q_memcpy(FileData, filesize, file->getBuffer(), filesize);
@@ -233,6 +231,8 @@ bool CBLPImage::copyMipmapData( uint32_t level, void* dest, uint32_t pitch, uint
 	}
 	else
 	{
+		bool argb = !g_Engine->isDXFamily();
+
 		uint32_t* target = (uint32_t*)dest;
 		uint32_t* palette = (uint32_t*)(FileData + sizeof(SBLPHeader));
 		uint32_t	size = width * height;
@@ -275,7 +275,7 @@ bool CBLPImage::copyMipmapData( uint32_t level, void* dest, uint32_t pitch, uint
 					break;
 				}
 
-				if (IsABGR)
+				if (argb)
 					c.set(c.getAlpha(), c.getBlue(), c.getGreen(), c.getRed());
 				target[k] = c.color;
 			}

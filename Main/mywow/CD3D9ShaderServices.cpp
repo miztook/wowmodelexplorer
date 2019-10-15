@@ -84,7 +84,7 @@ bool CD3D9ShaderServices::loadPShader( const char* filename, E_PS_TYPE type, E_P
 	return false;
 }
 
-bool CD3D9ShaderServices::loadVShaderHLSL( const char* filename, const char* entry, const char* profile, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
+bool CD3D9ShaderServices::loadVShaderHLSL( const char* filename, const char* entry, E_VS_TYPE type, VSHADERCONSTCALLBACK callback )
 {
 	string_path absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);
@@ -166,7 +166,7 @@ bool CD3D9ShaderServices::loadVShaderHLSL( const char* filename, const char* ent
 	return true;
 }
 
-bool CD3D9ShaderServices::loadPShaderHLSL( const char* filename, const char* entry, const char* profile, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
+bool CD3D9ShaderServices::loadPShaderHLSL( const char* filename, const char* entry, E_PS_TYPE type, E_PS_MACRO macro, PSHADERCONSTCALLBACK callback )
 {
 	string_path absFileName = g_Engine->getFileSystem()->getShaderBaseDirectory();
 	absFileName.append(filename);

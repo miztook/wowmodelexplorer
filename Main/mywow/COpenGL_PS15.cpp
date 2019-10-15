@@ -113,7 +113,7 @@ bool COpenGL_PS15::loadPShaderHLSL(COpenGLShaderServices* shaderServices, E_PS_T
 
 	path.normalize();
 
-	return shaderServices->loadPShaderHLSL(path.c_str(), "main", profile, g_openglps15_pixelShaderEntries[index].psType, macro, g_openglps15_pixelShaderEntries[index].callback);
+	return shaderServices->loadPShaderHLSL(path.c_str(), "main", g_openglps15_pixelShaderEntries[index].psType, macro, g_openglps15_pixelShaderEntries[index].callback);
 }
 
 void COpenGL_PS15::Default_setShaderConst_T1( IPixelShader* ps, const SMaterial& material, uint32_t pass )

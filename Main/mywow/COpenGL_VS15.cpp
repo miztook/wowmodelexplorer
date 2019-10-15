@@ -81,7 +81,7 @@ bool COpenGL_VS15::loadVShaderHLSL(COpenGLShaderServices* shaderServices, E_VS_T
 
 	path.normalize();
 
-	return shaderServices->loadVShaderHLSL(path.c_str(), "main", profile, g_openglvs15_vertexShaderEntries[index].vsType, g_openglvs15_vertexShaderEntries[index].callback);
+	return shaderServices->loadVShaderHLSL(path.c_str(), "main", g_openglvs15_vertexShaderEntries[index].vsType, g_openglvs15_vertexShaderEntries[index].callback);
 }
 
 void COpenGL_VS15::Default_W_setShaderConst( IVertexShader* vs, const SMaterial& material, uint32_t pass )
