@@ -39,10 +39,10 @@ void createScene()
 // 	const c8* url = "http://www.battlenet.com.cn/wow/zh/character/%E8%89%BE%E9%9C%B2%E6%81%A9/%E5%B0%8F%E7%9F%B3%E5%A4%B4%E5%86%B2%E5%95%8A/simple";
 // 	CSysUtility::openURLtoJsonFile(url, "test.json");
 
-//	g_Engine->getManualMeshServices()->addGridLineMesh("$grid20", 20, 1,SColor(128,128,128) );
+	g_Engine->getManualMeshServices()->addGridLineMesh("$grid20", 20, 1,SColor(128,128,128) );
 //	g_Engine->getManualMeshServices()->addDecal("$decal", 3, 3, SColor::Red());
 
-//	IMeshSceneNode* gridNode = g_Engine->getSceneManager()->addMeshSceneNode("$grid20", NULL);
+	IMeshSceneNode* gridNode = g_Engine->getSceneManager()->addMeshSceneNode("$grid20", NULL);
 
 //	IMeshSceneNode* decalNode = g_Engine->getSceneManager()->addMeshSceneNode("$decal", NULL);
 	
@@ -65,7 +65,6 @@ void createScene()
 	}
 	*/
 
-	/*
 	{
 		IFileM2* m2PandarenMale = g_Engine->getResourceLoader()->loadM2("Character\\SCOURGE\\MALE\\ScourgeMale_HD.m2");
 		IM2SceneNode*  pandarenMaleNode = g_Engine->getSceneManager()->addM2SceneNode(m2PandarenMale, NULL);	
@@ -90,7 +89,7 @@ void createScene()
 	//	cpptext_to_utf8("ÎÒ", tmp, 512);
 	//	decalSceneNode->TextLine1 = tmp;
 	}
-	*/
+
 	/*
 	int filedataid = 1 * 256 * 256 + 200 * 256 + 186;
 	char tmp[20];
@@ -127,10 +126,11 @@ void createScene()
 		pandarenMaleNode->getM2Move()->setDir(-vector3df::UnitZ());
 		pandarenMaleNode->getM2Move()->setPos(vector3df(2, 0, 0));
 		pandarenMaleNode->getM2FSM()->changeState(EMS_STAND);
-		pandarenMaleNode->setDecalSceneNode(true);
+		//pandarenMaleNode->setDecalSceneNode(true);
 	}
 	*/
 
+	/*	*/
 	IFileM2* m2Skybox = g_Engine->getResourceLoader()->loadM2("world/outland/passivedoodads/skybox/outlandskybox.m2");
 	g_SkyboxSceneNode = g_Engine->getSceneManager()->addM2SceneNode(m2Skybox, NULL);
 	g_SkyboxSceneNode->buildVisibleGeosets();

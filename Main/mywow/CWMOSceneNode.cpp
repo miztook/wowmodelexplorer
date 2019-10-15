@@ -178,11 +178,6 @@ void CWMOSceneNode::renderWMOGroup( uint32_t groupIndex, uint32_t batchIndex ) c
 		return;
 	}
 
-	if (material.shaderType != E_WMO_SHADER::Specular)
-	{
-		return;
-	}
-
 	unit.distance = dynGroup->distancesq;
 	unit.bufferParam.vbuffer0 = wmo->VertexBuffer;
 	unit.bufferParam.ibuffer = wmo->IndexBuffer;
@@ -258,80 +253,79 @@ void CWMOSceneNode::setMaterial( const SWMOMaterial& material, SMaterial& mat ) 
 			mat.PsType = EPST_MAPOBJ_SPECULAR;
 		}
 		break;
-/*
-	case Metal:
+
+	case E_WMO_SHADER::Metal:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_SPECULAR_T1);
 			mat.PsType = EPST_MAPOBJ_METAL;
 		}
 		break;
-	case Env:
+	case E_WMO_SHADER::Env:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1_REFL);
 			mat.PsType = EPST_MAPOBJ_ENV;
 		}
 		break;
-	case Opaque:
+	case E_WMO_SHADER::Opaque:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1);
 			mat.PsType = EPST_MAPOBJ_OPAQUE;
 		}
 		break;
-	case EnvMetal:
+	case E_WMO_SHADER::EnvMetal:
 		{
  			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1_ENV_T2);
  			mat.PsType = EPST_MAPOBJ_ENVMETAL;
 		}
 		break;
-	case TwoLayerDiffuse:
+	case E_WMO_SHADER::TwoLayerDiffuse:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1_T2);
 			mat.PsType = EPST_MAPOBJ_TWOLAYERDIFFUSE;
 		}
 		break;
-	case TwoLayerEnvMetal:			//
+	case E_WMO_SHADER::TwoLayerEnvMetal:			//
 		{
   			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_SPECULAR_T1);
 			mat.PsType = EPST_MAPOBJ_METAL;
 		}
 		break;
-	case TwoLayerTerrain:
+	case E_WMO_SHADER::TwoLayerTerrain:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1_T2);
 			mat.PsType = EPST_MAPOBJ_TWOLAYERTERRAIN;
 		}
 		break;
-	case DiffuseEmissive:
+	case E_WMO_SHADER::DiffuseEmissive:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1);
 			mat.PsType = EPST_MAPOBJ_DIFFUSEEMISSIVE;
 		}
 		break;
-	case MaskedEnvMetal:
+	case E_WMO_SHADER::MaskedEnvMetal:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_SPECULAR_T1);
 			mat.PsType = EPST_MAPOBJ_METAL;
 		}
 		break;
-	case EnvMetalEmissive:
+	case E_WMO_SHADER::EnvMetalEmissive:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_SPECULAR_T1);
 			mat.PsType = EPST_MAPOBJ_METAL;
 		}
 		break;
-	case TwoLayerDiffuseOpaque:
+	case E_WMO_SHADER::TwoLayerDiffuseOpaque:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1_T2);
 			mat.PsType = EPST_MAPOBJ_TWOLAYERDIFFUSEOPAQUE;
 		}
 		break;
-	case TwoLayerDiffuseEmissive:
+	case E_WMO_SHADER::TwoLayerDiffuseEmissive:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1_T2);
 			mat.PsType = EPST_MAPOBJ_TWOLAYERDIFFUSE;
 		}
 		break;
-		*/
 	default:
 		{
 			mat.VertexShader = shaderServices->getVertexShader(EVST_MAPOBJ_DIFFUSE_T1);

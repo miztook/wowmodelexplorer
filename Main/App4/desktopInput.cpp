@@ -102,13 +102,12 @@ void CInputListener::onMouseMessage(window_type hwnd, E_INPUT_MESSAGE message, i
 					float blendDeltaX = xChange ? deltaX * blend : deltaX;
 					float blendDeltaY = yChange ? deltaY * blend : deltaY;
 
-					/*
 					if (LCapture)			
 						cam->pitch_yaw_Maya( blendDeltaY * 0.3f, blendDeltaX * 0.3f );			
 					else
 						cam->move_offset_Maya( blendDeltaX * 0.02f, blendDeltaY * 0.02f);
-						*/
-					cam->pitch_yaw_FPS(blendDeltaY * 0.2f, blendDeltaX * 0.2f);
+
+					//cam->pitch_yaw_FPS(blendDeltaY * 0.2f, blendDeltaX * 0.2f);
 
 					LastX += blendDeltaX;
 					LastY += blendDeltaY;
