@@ -130,7 +130,7 @@ void createScene()
 	}
 	*/
 
-	/*	*/
+	/*	
 	IFileM2* m2Skybox = g_Engine->getResourceLoader()->loadM2("world/outland/passivedoodads/skybox/outlandskybox.m2");
 	g_SkyboxSceneNode = g_Engine->getSceneManager()->addM2SceneNode(m2Skybox, NULL);
 	g_SkyboxSceneNode->buildVisibleGeosets();
@@ -143,7 +143,7 @@ void createScene()
 	matrix4 mat;
 	mat.setScale(0.5f);
 	wmoSceneNode->setRelativeTransformation(mat);
-
+	*/
 }
 
 void destroyScene()
