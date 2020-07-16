@@ -1861,13 +1861,13 @@ bool wow_m2instance::setGeosetMaterial(uint32_t subset, SMaterial& material)
 	const STexUnit* texUnit = set->getTexUnit(0);
 	int16_t rfIndex = texUnit->rfIndex;
 	
-	if (rfIndex == -1 || Mesh->RenderFlags[rfIndex].invisible)
+	if (rfIndex == -1 || Mesh->RenderFlags[rfIndex].invisible())
 		return false;
 
 	const IFileM2::SRenderFlag& renderflag = Mesh->RenderFlags[rfIndex];
 
-	material.ZWriteEnable = renderflag.zwrite;
-	material.Lighting = renderflag.lighting;
+	material.ZWriteEnable = renderflag.zwrite();
+	material.Lighting = renderflag.lighting();
 
 	if (set->BillBoard)
 	{
@@ -1875,7 +1875,7 @@ bool wow_m2instance::setGeosetMaterial(uint32_t subset, SMaterial& material)
 	}
 	else
 	{
-		material.Cull = (renderflag.frontCulling && renderflag.blend == 0) ? ECM_FRONT : ECM_NONE;
+		material.Cull = (renderflag.frontCulling() && renderflag.blend == 0) ? ECM_FRONT : ECM_NONE;
 	}
 
 	material.AmbientColor.set(0.9f, 0.9f, 0.9f);

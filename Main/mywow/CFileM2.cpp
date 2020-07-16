@@ -535,11 +535,6 @@ void CFileM2::loadRenderFlags()
 			//raw
 			RenderFlags[i].flags = rfs[i].flags;
 			RenderFlags[i].blend = rfs[i].blend;
-
-			RenderFlags[i].lighting = (rfs[i].flags & RENDERFLAGS_UNLIT) == 0;
-			RenderFlags[i].zwrite = (rfs[i].flags & RENDERFLAGS_UNZWRITE) == 0;
-			RenderFlags[i].frontCulling = (rfs[i].flags & RENDERFLAGS_TWOSIDED) == 0;
-			RenderFlags[i].invisible = (rfs[i].flags & 256) != 0;
 		}
 	}
 }

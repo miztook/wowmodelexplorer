@@ -320,10 +320,10 @@ public:
 		uint16_t	flags;
 		uint16_t	blend;
 		
-		bool lighting;
-		bool zwrite;
-		bool frontCulling;
-		bool invisible;				
+		bool lighting() const { return (flags & RENDERFLAGS_UNLIT) == 0; }
+		bool zwrite() const { return (flags & RENDERFLAGS_UNZWRITE) == 0; }
+		bool frontCulling() const { return (flags & RENDERFLAGS_TWOSIDED) == 0; }
+		bool invisible() const { return (flags & 256) != 0; }
 	};
 
 public:
