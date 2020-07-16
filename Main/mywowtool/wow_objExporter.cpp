@@ -183,7 +183,7 @@ bool wowObjExporter::exportFileM2Vertices(IWriteFile* pFile, const CFileM2* pFil
 
 		const STexUnit* texUnit = pGeoSet->getTexUnit(0);
 		int16_t rfIndex = texUnit->rfIndex;
-		if (rfIndex == -1 || pFileM2->RenderFlags[rfIndex].invisible)
+		if (rfIndex == -1 || pFileM2->RenderFlags[rfIndex].invisible())
 			continue;
 
 		string256 strName;
@@ -267,7 +267,7 @@ bool wowObjExporter::exportFileM2Materials(IWriteFile* pFile, const CFileM2* pFi
 
 		const STexUnit* texUnit = pGeoSet->getTexUnit(0);
 		int16_t rfIndex = texUnit->rfIndex;
-		if (rfIndex == -1 || pFileM2->RenderFlags[rfIndex].invisible)
+		if (rfIndex == -1 || pFileM2->RenderFlags[rfIndex].invisible())
 			continue;
 
 		const IFileM2::SRenderFlag& renderflag = pFileM2->RenderFlags[rfIndex];
