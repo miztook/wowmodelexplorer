@@ -1939,8 +1939,8 @@ bool wow_m2instance::setGeosetMaterial(uint32_t subset, SMaterial& material)
 	if (!setMaterialShaders(material, texUnit, set->BillBoard))
 		return false;
 
-	material.TextureLayer[0].TextureWrapU = set->getTexUnit(0)->WrapX ? ETC_CLAMP : ETC_REPEAT;
-	material.TextureLayer[0].TextureWrapV = set->getTexUnit(0)->WrapY ? ETC_CLAMP : ETC_REPEAT;
+	material.TextureLayer[0].TextureWrapU = set->getTexUnit(0)->WrapX() ? ETC_CLAMP : ETC_REPEAT;
+	material.TextureLayer[0].TextureWrapV = set->getTexUnit(0)->WrapY() ? ETC_CLAMP : ETC_REPEAT;
 
 	return true;
 }

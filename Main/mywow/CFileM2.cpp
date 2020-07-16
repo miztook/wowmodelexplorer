@@ -904,8 +904,6 @@ bool CFileSkin::loadFile( IMemFile* file, CFileM2* m2)
 		texUnit.TexAnimIndex = (t[i]._animationIdx >= 0 && t[i]._animationIdx < (int16_t)numtexanimlookup) ?
 			texanimlookup[t[i]._animationIdx] : -1;
 		texUnit.TexFlags = texUnit.TexID == -1 ? 0 : m2->TextureFlags[texUnit.TexID];
-		texUnit.WrapX = texUnit.TexAnimIndex == -1 && (texUnit.TexFlags & TEXTURE_WRAPX) == 0;
-		texUnit.WrapY = texUnit.TexAnimIndex == -1 && (texUnit.TexFlags & TEXTURE_WRAPY) == 0;
 
 		geo->TexUnits.push_back(texUnit);
 	}

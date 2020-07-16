@@ -183,9 +183,10 @@ struct STexUnit
 	int16_t	TexAnimIndex;
 	uint16_t	Mode;
 	uint16_t	Shading;		//shader?
-	bool	WrapX;
-	bool	WrapY;
 	uint32_t  TexFlags;
+
+	bool WrapX() const { return TexAnimIndex == -1 && (TexFlags & TEXTURE_WRAPX) == 0; }
+	bool WrapY() const { return TexAnimIndex == -1 && (TexFlags & TEXTURE_WRAPY) == 0; }
 };
 
 struct SBRect
