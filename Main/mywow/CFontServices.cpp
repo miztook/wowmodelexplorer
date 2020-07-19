@@ -188,7 +188,7 @@ My_FaceID CFontServices::LookupFaceID( const char* strFontPath, int nFaceIndex, 
 
 	ASSERT(!isAbsoluteFileName(strFontPath));
 
-	T_FaceIDMap::iterator itr = m_FaceIDMap.find(key);
+	auto itr = m_FaceIDMap.find(key);
 	if (itr != m_FaceIDMap.end())
 	{
 		FaceID_Node& node = itr->second;
@@ -215,7 +215,7 @@ void CFontServices::RemoveFaceID( My_FaceID faceId )
 	key.face_index = faceId->face_index;
 	key.font_style = faceId->font_style;
 
-	T_FaceIDMap::iterator itr = m_FaceIDMap.find(key);
+	auto itr = m_FaceIDMap.find(key);
 	if (itr != m_FaceIDMap.end())
 	{
 		FaceID_Node& node = itr->second;

@@ -65,7 +65,6 @@ public:
 
 protected:
 	void updateAttachmentEntry(const SAttachmentEntry* entry);
-	void updateSpellEffectEntry(const SAttachmentEntry* entry);
 
 	void renderGeoset(uint32_t index) const;
 
@@ -114,17 +113,10 @@ protected:
 	int32_t		AnimTimeBlend;
 	int32_t		CurrentCamera;
 
-	typedef std::list<SAttachmentEntry, qzone_allocator<SAttachmentEntry> >	T_AttachmentList;
-	T_AttachmentList		AttachmentList;
-
-	typedef std::list<SFadeEntry, qzone_allocator<SFadeEntry> > T_SceneNodeList;
-	T_SceneNodeList		FadeList;
-
-	typedef std::vector<IParticleSystemSceneNode*>	T_ParticleSystemNodes;
-	T_ParticleSystemNodes		ParticleSystemNodes;
-
-	typedef std::vector<IRibbonSceneNode*>	T_RibbonEmitterNodes;
-	T_RibbonEmitterNodes		RibbonEmitterNodes;
+	std::list<SAttachmentEntry, qzone_allocator<SAttachmentEntry> >		AttachmentList;
+	std::list<SFadeEntry, qzone_allocator<SFadeEntry> >		FadeList;
+	std::vector<IParticleSystemSceneNode*>		ParticleSystemNodes;
+	std::vector<IRibbonSceneNode*>		RibbonEmitterNodes;
 
 	bool	IsNpc;
 	bool AnimateColors;
@@ -134,5 +126,4 @@ protected:
 
 	//friend
 	friend class wow_m2appearance;
-	friend class wow_m2spell;
 };

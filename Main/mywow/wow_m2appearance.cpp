@@ -97,7 +97,7 @@ void wow_m2appearance::sheathLeftWeapon( bool sheath )
 
 	CM2SceneNode* m2SceneNode = static_cast<CM2SceneNode*>(M2SceneNode);
 
-	for (CM2SceneNode::T_AttachmentList::iterator itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
+	for (auto itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 
@@ -118,7 +118,7 @@ void wow_m2appearance::sheathLeftWeapon( bool sheath )
 
 		if (entry1.attachIndex != -1)
 		{
-			for (CM2SceneNode::T_AttachmentList::iterator itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
+			for (auto itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
 			{
 				SAttachmentEntry* entry = &(*itr);
 
@@ -145,7 +145,7 @@ void wow_m2appearance::sheathRightWeapon( bool sheath )
 
 	CM2SceneNode* m2SceneNode = static_cast<CM2SceneNode*>(M2SceneNode);
 
-	for (CM2SceneNode::T_AttachmentList::iterator itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
+	for (auto itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 
@@ -166,7 +166,7 @@ void wow_m2appearance::sheathRightWeapon( bool sheath )
 
 		if (entry1.attachIndex != -1)
 		{
-			for (CM2SceneNode::T_AttachmentList::iterator itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
+			for (auto itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
 			{
 				SAttachmentEntry* entry = &(*itr);
 
@@ -194,7 +194,7 @@ bool wow_m2appearance::isLeftWeaponSheathed() const
 
 	CM2SceneNode* m2SceneNode = static_cast<CM2SceneNode*>(M2SceneNode);
 
-	for (CM2SceneNode::T_AttachmentList::iterator itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
+	for (auto itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 
@@ -214,7 +214,7 @@ bool wow_m2appearance::isRightWeaponSheathed() const
 
 	CM2SceneNode* m2SceneNode = static_cast<CM2SceneNode*>(M2SceneNode);
 
-	for (CM2SceneNode::T_AttachmentList::iterator itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
+	for (auto itr = m2SceneNode->AttachmentList.begin(); itr != m2SceneNode->AttachmentList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 

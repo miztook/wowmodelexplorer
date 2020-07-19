@@ -203,7 +203,7 @@ void CM2SceneNode::tickVisible( uint32_t timeSinceStart, uint32_t timeSinceLastF
 
 			M2Instance->animateBones(CurrentAnim, currentFrame, lastingFrame, blend);
 
-			for (T_ParticleSystemNodes::const_iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
+			for (auto i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 			{
 				(*i)->setEmitDensity(portion);
 
@@ -220,7 +220,7 @@ void CM2SceneNode::tickVisible( uint32_t timeSinceStart, uint32_t timeSinceLastF
 		}
 		else
 		{
-			for (T_ParticleSystemNodes::const_iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
+			for (auto i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 			{
 				(*i)->setEmitDensity(portion);
 
@@ -239,7 +239,7 @@ void CM2SceneNode::tickVisible( uint32_t timeSinceStart, uint32_t timeSinceLastF
 
 		M2Instance->disableBones();
 
-		for (T_ParticleSystemNodes::const_iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
+		for (auto i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 		{
 			(*i)->setEmitDensity(portion);
 
@@ -253,7 +253,7 @@ void CM2SceneNode::tickVisible( uint32_t timeSinceStart, uint32_t timeSinceLastF
 	M2Instance->animateTextures(0, lastingFrame);
 
 	// 更新Attachment位置
-	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
+	for (auto itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 		updateAttachmentEntry(entry);
@@ -614,7 +614,7 @@ bool CM2SceneNode::setMountM2SceneNode( IM2SceneNode* m2Node )
 
 void CM2SceneNode::removeM2ModelEquipment( int32_t slot )
 {
-	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end();)
+	for (auto itr = AttachmentList.begin(); itr != AttachmentList.end();)
 	{
 		SAttachmentEntry* entry = &(*itr);
 
@@ -654,7 +654,7 @@ void CM2SceneNode::removeM2ModelEquipment( int32_t slot )
 
 bool CM2SceneNode::removeMountM2SceneNode()
 {
-	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end();)
+	for (auto itr = AttachmentList.begin(); itr != AttachmentList.end();)
 	{
 		SAttachmentEntry* entry = &(*itr);
 
@@ -681,7 +681,7 @@ bool CM2SceneNode::removeMountM2SceneNode()
 
 void CM2SceneNode::removeAllM2Attachments()
 {
-	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
+	for (auto itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 		if (entry->slot == CS_MOUNT)				//跳过坐骑
@@ -700,7 +700,7 @@ void CM2SceneNode::removeAllM2Attachments()
 void CM2SceneNode::setParticleSpeed(float speed)
 {
 	float particleSpeed = Animation.getAnimationSpeed() * speed;
-	for (T_ParticleSystemNodes::const_iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
+	for (auto i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 	{
 		(*i)->setSpeed(particleSpeed);
 	}
@@ -724,37 +724,6 @@ void CM2SceneNode::updateAttachmentEntry( const SAttachmentEntry* entry )
 	m = m * b.mat;
 
 	node->setRelativeTransformation(m);
-	node->update(true);
-}
-
-void CM2SceneNode::updateSpellEffectEntry( const SAttachmentEntry* entry )
-{
-	const SModelAttachment& attachment = Mesh->Attachments[entry->attachIndex];
-	int32_t bIdx = attachment.boneIndex;
-	if(bIdx == -1)
-		return;
-
-	const SDynBone& b = M2Instance->DynBones[bIdx];
-	IM2SceneNode* node = reinterpret_cast<IM2SceneNode*>(entry->node);
-
-	matrix4 m;
-	if (entry->scale != 1.0f)
-		m.setScale(entry->scale);
-	m.setTranslation(attachment.position);
-	m = m * b.mat * AbsoluteTransformation;
-
-	vector3df dst = -g_Engine->getSceneManager()->getActiveCamera()->getDir();
-	dst.Y = 0.0f;
-	dst.normalize();
-	quaternion q;
-	q.rotationFromTo(vector3df::UnitX(), dst, vector3df::UnitY());
-
-	matrix4 mat;
-	q.getMatrix(mat);
-	mat.setScale(m.getScale());
-	mat.setTranslation(m.getTranslation());
-
-	node->setRelativeTransformation(mat);
 	node->update(true);
 }
 
@@ -818,7 +787,7 @@ bool CM2SceneNode::setModelCamera( int32_t index )
 	{
 		CurrentCamera = -1;
 
-		for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
+		for (auto itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
 		{
 			SAttachmentEntry* entry = &(*itr);
 
@@ -826,7 +795,7 @@ bool CM2SceneNode::setModelCamera( int32_t index )
 			node->CurrentCamera = -1;
 		}
 
-		for (T_ParticleSystemNodes::const_iterator i = ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
+		for (auto i = ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 		{
 			IParticleSystemSceneNode* node = (IParticleSystemSceneNode*)(*i);
 			node->setOwnView(nullptr);
@@ -851,7 +820,7 @@ bool CM2SceneNode::setModelCamera( int32_t index )
 	CurrentView.buildCameraLookAtMatrixLH(pos, target, vector3df(0,1,0));
 
 	//attachments
-	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
+	for (auto itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 
@@ -862,7 +831,7 @@ bool CM2SceneNode::setModelCamera( int32_t index )
 	}
 
 	//particles
-	for (T_ParticleSystemNodes::const_iterator i = ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
+	for (auto i = ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 	{
 		IParticleSystemSceneNode* node = (IParticleSystemSceneNode*)(*i);
 		node->setOwnView(&CurrentView);
@@ -930,7 +899,7 @@ void CM2SceneNode::setModelAlpha( bool enable, float val )
 	//model的alpha状态
 	ModelAlpha = enable && v < 1.0f;
 
-	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
+	for (auto itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 
@@ -951,7 +920,7 @@ void CM2SceneNode::setModelAlpha( bool enable, float val )
 		}
 	}
 
-	for (T_ParticleSystemNodes::const_iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
+	for (auto i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 	{
 		(*i)->setWholeAlpha(enable,v);
 	}
@@ -962,7 +931,7 @@ void CM2SceneNode::setModelColor( bool enable, SColor color )
 	M2Instance->EnableModelColor = enable;
 	M2Instance->ModelColor = color;
 
-	for (T_AttachmentList::iterator itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
+	for (auto itr = AttachmentList.begin(); itr != AttachmentList.end(); ++itr)
 	{
 		SAttachmentEntry* entry = &(*itr);
 
@@ -970,7 +939,7 @@ void CM2SceneNode::setModelColor( bool enable, SColor color )
 		node->setModelColor(enable, color);
 	}
 
-	for (T_ParticleSystemNodes::const_iterator i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
+	for (auto i=ParticleSystemNodes.begin(); i != ParticleSystemNodes.end(); ++i)
 	{
 		(*i)->setWholeColor(enable,color);
 	}
